@@ -1,0 +1,3 @@
+{
+  gROOT->ProcessLine(".x SingleLept_Dev.C+");
+}
