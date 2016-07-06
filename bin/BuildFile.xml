@@ -1,6 +1,7 @@
 <use name="roottmva"/>
 <use name="roofit"/>
 <use name="roostats"/>
+<use name="UserCode/Stop4Body"/>
 <environment>
   <bin name="processSamples"   file="processSamples.cc"></bin>
 </environment>
