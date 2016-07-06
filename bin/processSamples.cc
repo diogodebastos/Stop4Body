@@ -32,6 +32,10 @@
 #include "TLatex.h"
 #include "TLorentzVector.h"
 
+#include "json.hpp"
+
+using json = nlohmann::json;
+
 float DeltaPhi(float p1, float p2) {
 
   float x = p1 - p2;
@@ -41,14 +45,151 @@ float DeltaPhi(float p1, float p2) {
 
 }
 
+struct FileInfo
+{
+  std::string path;
+  double crossSection;
+  double branchingRatio;
+  std::string tag;
+};
+
+void printHelp();
+bool fileExists(std::string);
+
 int main(int argc, char** argv)
 {
-  std::cout << "It compiles!" << std::endl;
+  std::string jsonFileName = "";
+  std::string outputDirectory = "./OUT/";
+
+  if(argc < 2)
+  {
+    std::cout << "You did not pass enough parameters" << std::endl;
+    printHelp();
+    return 0;
+  }
+
+  for(int i = 1; i < argc; ++i)
+  {
+    std::string argument = argv[i];
+
+    if(argument == "--help")
+    {
+      printHelp();
+      return 0;
+    }
+
+    if(argument == "--json")
+      jsonFileName = argv[++i];
+
+    if(argument == "--outDir")
+      outputDirectory = argv[++i];
+  }
+
+  if(jsonFileName == "")
+  {
+    std::cout << "You must define a json file" << std::endl;
+  }
+
+  json jsonFile;
+  std::ifstream inputFile(jsonFileName);
+  inputFile >> jsonFile;
+
+  if(jsonFile.find("lines") == jsonFile.end())
+  {
+    std::cout << "The specified json file is not a valid sample descriptor" << std::endl;
+    return 1;
+  }
+
+  std::vector<FileInfo> filesToProcess;
+  std::vector<std::string> emptyLines;
+  std::vector<std::string> emptyPath;
+  std::vector<std::string> invalidPath;
+
+  for(auto &process : jsonFile["lines"])
+  {
+    if(process.find("files") != process.end())
+    {
+      for(auto &file : process["files"])
+      {
+        std::string path = file["path"];
+        std::string identifier = process["tag"];
+        identifier += ":";
+        identifier += file["tag"];
+        if(path == "")
+          emptyPath.push_back(identifier);
+        else
+        {
+          if(fileExists(path))
+          {
+            FileInfo tmpFile;
+
+            tmpFile.path = path;
+            tmpFile.crossSection = file["xsec"];
+            tmpFile.branchingRatio = file["br"];
+            tmpFile.tag = file["tag"];
+
+            filesToProcess.push_back(tmpFile);
+          }
+          else
+            invalidPath.push_back(identifier + "  ->  " + path);
+        }
+      }
+    }
+    else
+      emptyLines.push_back(process["tag"]);
+  }
+
+
+  for(auto &file : filesToProcess)
+  {
+    std::cout << "Processing file " << file.path << std::endl;
+  }
+
+
+  if(emptyLines.size() != 0)
+  {
+    std::cout << "The following lines did not have any files associated to them: ";
+    for(auto &process : emptyLines)
+      std::cout << process << "; ";
+    std::cout << std::endl;
+  }
+
+  if(emptyPath.size() != 0)
+  {
+    std::cout << "The following files did not have any path defined, or the defined path was empty: ";
+    for(auto &file : emptyPath)
+      std::cout << file << "; ";
+    std::cout << std::endl;
+  }
+
+  if(invalidPath.size() != 0)
+  {
+    std::cout << "The following files could not be found: " << std::endl;
+    for(auto &file : invalidPath)
+      std::cout << "\t" << file << std::endl;
+    std::cout << std::endl;
+  }
 
   return 0;
 }
 
-void addBranch(TString fileinput, TString fileoutput) {
+void printHelp()
+{
+  std::cout << "The program has the following parameters:" << std::endl;
+  std::cout << "\t--help\t- Print this message" << std::endl;
+  std::cout << "\t--json\t- Used to specify the json file which describes the sample, this option is obligatory. The paraeter immediately after this one should be the desired json file" << std::endl;
+  std::cout << "\t--outDir\t- Used to specify the output directory. The parameter immediately after this one should be the desired directory. By default the directory './OUT/' is used" << std::endl;
+
+  return;
+}
+
+bool fileExists(std::string fileName)
+{
+  std::ifstream infile(fileName);
+  return infile.good();
+}
+
+/*void addBranch(TString fileinput, TString fileoutput) {
 
   TFile finput(fileinput);
   TFile foutput(fileoutput,"recreate");
@@ -325,4 +466,4 @@ void addBranch(TString fileinput, TString fileoutput) {
   SyFile.close();
   bdttree->Write("",TObject::kOverwrite);
 
-}
+}// */

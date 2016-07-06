@@ -90,29 +90,6 @@
           "path":"/lstore/cms/bargassa/Stop4body/Summer2015/JetPt20/T2DegStop_300_270_FastSim.root"
         }
       ]
-    },
-    {
-      "tag":"Higgs",
-      "isdata":false,
-      "color":2,
-      "lcolor":1,
-      "label":"Higgs",
-      "files":[
-        {
-          "tag":"MC8TeV_XH125toTauTau",
-          "xsec":1.2492,
-          "br":0.0632,
-          "path":"/WH_ZH_TTH_HToTauTau_M-125_lepdecay_8TeV-pythia6-tauola/Summer12_DR53X-PU_S10_START53_V7A-v1/AODSIM"
-        },
-        {
-          "dtag":"MC8TeV_XH125toWW",
-          "split":1,
-          "xsec":0.0065034022,
-          "br":[ 1 ],
-          "dset":"/WH_ZH_TTH_HToWW_M-125_lepdecay_8TeV-pythia6/Summer12_DR53X-PU_S10_START53_V19-v1/AODSIM",
-          "isfastsim":0
-        }
-      ]
     }
   ]
 }
