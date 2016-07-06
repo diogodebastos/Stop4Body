@@ -41,11 +41,18 @@ float DeltaPhi(float p1, float p2) {
 
 }
 
+int main(int argc, char** argv)
+{
+  std::cout << "It compiles!" << std::endl;
+
+  return 0;
+}
+
 void addBranch(TString fileinput, TString fileoutput) {
 
   TFile finput(fileinput);
   TFile foutput(fileoutput,"recreate");
- 
+
   TTree *inputtree = (TTree*)finput.Get("tree");
   TTree *bdttree= new TTree("bdttree","bdttree");
 
