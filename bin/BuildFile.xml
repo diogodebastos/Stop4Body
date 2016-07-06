@@ -1,0 +1,8 @@
+<use name="roottmva"/>
+<use name="roofit"/>
+<use name="roostats"/>
+<environment>
+  <bin name="processSamples"   file="processSamples.cc"></bin>
+</environment>
+
+<Flags CXXFLAGS="-g"/>
