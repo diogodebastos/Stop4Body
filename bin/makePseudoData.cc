@@ -1,36 +1,185 @@
-#ifndef __CINT__
 #include <TROOT.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TH1D.h>
 #include <TChain.h>
 #include <TCut.h>
-#include <iostream>
-#endif
 #include <TString.h>
 #include <TObject.h>
+#include <TRandom3.h>
+
+#include <iostream>
 #include <vector>
 #include <sstream>
 #include <map>
-#include <TRandom3.h>
 
-string convertDouble(double value) {
-  std::ostringstream o;
-  if (!(o << value))
-    return "";
-  return o.str();
-}
+#include "json.hpp"
+
+using json = nlohmann::json;
+
+struct FileInfo
+{
+  std::string path;
+  double crossSection;
+  double branchingRatio;
+  std::string tag;
+};
 
 void GetYield(
 	      double lumi,     // Input: Luminosity
-	      string pc,       // Input: Name of the channel
+	      std::string pc,       // Input: Name of the channel
 	      TCut Coupure,    // Input: Analysis cut
 	      double& Yield   // Output: Weighted yield of the channel
 	      );
 void SetBranchAddress(TString varname, float *varaddress, TTree* tree1, TTree* tree2, TTree* tree3, TTree* tree4, TTree* tree5);
 void SetBranchAddressI(TString varname, int *varaddress, TTree* tree1, TTree* tree2, TTree* tree3, TTree* tree4, TTree* tree5);
+std::string convertDouble(double value);
+void printHelp();
+bool fileExists(std::string);
 
-void PseudoData(){
+int main(int argc, char** argv)
+{
+  std::string jsonFileName = "";
+  std::string outputDirectory = "./OUT/";
+  std::string inputDirectory = "./OUT/";
+  double luminosity = 10000;
+
+  if(argc < 2)
+  {
+    std::cout << "You did not pass enough parameters" << std::endl;
+    printHelp();
+    return 0;
+  }
+
+  for(int i = 1; i < argc; ++i)
+  {
+    std::string argument = argv[i];
+
+    if(argument == "--help")
+    {
+      printHelp();
+      return 0;
+    }
+
+    if(argument == "--json")
+      jsonFileName = argv[++i];
+
+    if(argument == "--outDir")
+      outputDirectory = argv[++i];
+
+    if(argument == "--inDir")
+      inputDirectory = argv[++i];
+
+    if(argument == "--lumi")
+    {
+      std::stringstream conv;
+      conv << argv[++i];
+      conv >> luminosity;
+    }
+  }
+
+  if(jsonFileName == "")
+  {
+    std::cout << "You must define a json file" << std::endl;
+  }
+  std::cout << "Producing PseudoData from the file '" << jsonFileName << "' with an integrated luminosity of " << luminosity << " fb" <<std::endl;
+
+  json jsonFile;
+  std::ifstream inputFile(jsonFileName);
+  inputFile >> jsonFile;
+
+  if(jsonFile.find("lines") == jsonFile.end())
+  {
+    std::cout << "The specified json file is not a valid sample descriptor" << std::endl;
+    return 1;
+  }
+
+  std::vector<FileInfo> filesToProcess;
+  std::vector<std::string> emptyLines;
+  std::vector<std::string> emptyPath;
+  std::vector<std::string> invalidPath;
+
+  for(auto &process : jsonFile["lines"])
+  {
+    if(process.find("files") != process.end())
+    {
+      for(auto &file : process["files"])
+      {
+        //std::string path = file["path"];
+        std::string path = inputDirectory + "/" + file["tag"] + "_bdt.root";
+        std::string identifier = process["tag"];
+        identifier += ":";
+        identifier += file["tag"];
+        if(path == "")
+          emptyPath.push_back(identifier);
+        else
+        {
+          if(fileExists(path))
+          {
+            FileInfo tmpFile;
+
+            tmpFile.path = path;
+            tmpFile.crossSection = file["xsec"];
+            tmpFile.branchingRatio = file["br"];
+            tmpFile.tag = file["tag"];
+
+            filesToProcess.push_back(tmpFile);
+          }
+          else
+            invalidPath.push_back(identifier + "  ->  " + path);
+        }
+      }
+    }
+    else
+      emptyLines.push_back(process["tag"]);
+  }
+
+
+  if(emptyLines.size() != 0)
+  {
+    std::cout << "The following lines did not have any files associated to them: ";
+    for(auto &process : emptyLines)
+      std::cout << process << "; ";
+    std::cout << std::endl;
+  }
+
+  if(emptyPath.size() != 0)
+  {
+    std::cout << "The following files did not have any path defined, or the defined path was empty: ";
+    for(auto &file : emptyPath)
+      std::cout << file << "; ";
+    std::cout << std::endl;
+  }
+
+  if(invalidPath.size() != 0)
+  {
+    std::cout << "The following files could not be found: " << std::endl;
+    for(auto &file : invalidPath)
+      std::cout << "\t" << file << std::endl;
+    std::cout << std::endl;
+  }
+
+  return 0;
+}
+
+void printHelp()
+{
+  std::cout << "The program has the following parameters:" << std::endl;
+  std::cout << "\t--help\t- Print this message" << std::endl;
+  std::cout << "\t--json\t- Used to specify the json file which describes the samples, this option is obligatory. The parameter immediately after this one should be the desired json file" << std::endl;
+  std::cout << "\t--inDir\t- Used to specify the input directory. The parameter immediately after this one should be the desired directory. By default the directory './OUT'" << std::endl;
+  std::cout << "\t--outDir\t- Used to specify the output directory. The parameter immediately after this one should be the desired directory. By default the directory './OUT/' is used" << std::endl;
+
+  return;
+}
+
+bool fileExists(std::string fileName)
+{
+  std::ifstream infile(fileName);
+  return infile.good();
+}
+
+/*void PseudoData(){
 
   gROOT->ProcessLine(".L MapLoader.C+");
 
@@ -292,11 +441,11 @@ void PseudoData(){
   PDtree->Write();
   cout << "*** THE END ***" << "\n";
 
-}
+}// */
 
 void GetYield(
 	      double lumi,     // Input: Luminosity
-	      string pc,       // Input: Name of the channel
+	      std::string pc,       // Input: Name of the channel
 	      TCut Coupure,    // Input: Analysis cut
 	      double& Yield    // Output: Weighted yield of the channel
 	      ){ 
@@ -363,4 +512,12 @@ void SetBranchAddressI(TString varname, int *varaddress, TTree* tree1, TTree* tr
   tree3->SetBranchAddress(varname, varaddress);
   tree4->SetBranchAddress(varname, varaddress);
   tree5->SetBranchAddress(varname, varaddress);
+}
+
+std::string convertDouble(double value)
+{
+  std::ostringstream o;
+  if (!(o << value))
+    return "";
+  return o.str();
 }
