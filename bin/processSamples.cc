@@ -7,6 +7,8 @@
 #include <iterator>
 #include <algorithm>
 #include <iomanip>
+#include <math.h>
+
 #include "TROOT.h"
 #include "TFile.h"
 #include "TDirectory.h"
@@ -14,7 +16,6 @@
 #include "TObject.h"
 #include "TCanvas.h"
 #include "TMath.h"
-#include <math.h>
 #include "TLegend.h"
 #include "TGraph.h"
 #include "TH1.h"
@@ -205,44 +206,44 @@ int main(int argc, char** argv)
     UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
 
     // New branch in bdt tree
-    Int_t LepID;  TBranch* bdtLepID = bdttree->Branch("LepID",&LepID,"LepID/I");
-    Int_t LepChg;  TBranch* bdtLepChg = bdttree->Branch("LepChg",&LepChg,"LepChg/I");
-    Float_t LepPt;  TBranch* bdtLepPt = bdttree->Branch("LepPt",&LepPt,"LepPt/F");
-    Float_t LepEta;  TBranch* bdtLepEta = bdttree->Branch("LepEta",&LepEta,"LepEta/F");
-    Float_t LepDxy;  TBranch* bdtLepDxy = bdttree->Branch("LepDxy",&LepDxy,"LepDxy/F");
-    Float_t LepDz;  TBranch* bdtLepDz = bdttree->Branch("LepDz",&LepDz,"LepDz/F");
-    Float_t LepSip3;  TBranch* bdtLepSip3 = bdttree->Branch("LepSip3",&LepSip3,"LepSip3/F");
-    Float_t LepIso03;  TBranch* bdtLepIso03 = bdttree->Branch("LepIso03",&LepIso03,"LepIso03/F");
-    Float_t LepIso04;  TBranch* bdtLepIso04 = bdttree->Branch("LepIso04",&LepIso04,"LepIso04/F");
-    Int_t nGoodMu;  TBranch* bdtnGoodMu = bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/I");
-    Int_t nGoodEl;  TBranch* bdtnGoodEl = bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/I");
-    Float_t Met; TBranch* bdtMet= bdttree->Branch("Met",&Met,"Met/F");
-    Float_t mt; TBranch* bdtmt = bdttree->Branch("mt",&mt,"mt/F");
-    Float_t Q80; TBranch *bdtQ80 = bdttree-> Branch("Q80",&Q80,"Q80/F");
-    Float_t CosDeltaPhi; TBranch *bdtCosDeltaPhi = bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
-    Int_t NbLoose30; TBranch* bdtNbLoose30 = bdttree->Branch("NbLoose30",&NbLoose30,"NbLoose30/I"); 
-    Int_t NbTight30;  TBranch* bdtNbTight30 = bdttree->Branch("NbTight30",&NbTight30,"NbTight30/I");
-    Int_t Njet;  TBranch* bdtNjet = bdttree->Branch("Njet",&Njet,"Njet/I");
-    Float_t Jet1Pt;  TBranch* bdtJet1Pt = bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
-    Float_t Jet1Eta;  TBranch* bdtJet1Eta = bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
-    Float_t Jet2Pt;  TBranch* bdtJet2Pt = bdttree->Branch("Jet2Pt",&Jet2Pt,"Jet2Pt/F");
-    Float_t Jet2Eta;  TBranch* bdtJet2Eta = bdttree->Branch("Jet2Eta",&Jet2Eta,"Jet2Eta/F");
-    Float_t DPhiJet1Jet2;  TBranch* bdtDPhiJet1Jet2 = bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2,"DPhiJet1Jet2/F");
-    Float_t JetHBpt;  TBranch* bdtJetHBpt = bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
-    Float_t DrJet1Lep;  TBranch* bdtDrJet1Lep = bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
-    Float_t DrJet2Lep;  TBranch* bdtDrJet2Lep = bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
-    Float_t DrJetHBLep;  TBranch* bdtDrJetHBLep = bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
-    Float_t DrJet1Jet2;  TBranch* bdtDrJet1Jet2 = bdttree->Branch("DrJet1Jet2",&DrJet1Jet2,"DrJet1Jet2/F");
-    Float_t JetLepMass;  TBranch* bdtJetLepMass = bdttree->Branch("JetLepMass",&JetLepMass,"JetLepMass/F");
-    Float_t J3Mass;  TBranch* bdtJ3Mass = bdttree->Branch("J3Mass",&J3Mass,"J3Mass/F");
-    Float_t HT20;  TBranch* bdtHT20 = bdttree->Branch("HT20",&HT20,"HT20/F");
-    Float_t HT25;  TBranch* bdtHT25 = bdttree->Branch("HT25",&HT25,"HT25/F");
-    Float_t HT30;  TBranch* bdtHT30 = bdttree->Branch("HT30",&HT30,"HT30/F");
-    Float_t XS; TBranch* bdtXS=bdttree->Branch("XS",&XS,"XS/F");;
-    Int_t Run;  TBranch* bdtRun = bdttree->Branch("Run",&Run,"Run/I");
-    Int_t Event;  TBranch* bdtEvent = bdttree->Branch("Event",&Event,"Event/I");
-    Int_t LumiSec;  TBranch* bdtLumiSec = bdttree->Branch("LumiSec",&LumiSec,"LumiSec/I");
-    Int_t Nevt;  TBranch* bdtNevt = bdttree->Branch("Nevt",&Nevt,"Nevt/I");
+    Int_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/I");
+    Int_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/I");
+    Float_t LepPt;  bdttree->Branch("LepPt",&LepPt,"LepPt/F");
+    Float_t LepEta;  bdttree->Branch("LepEta",&LepEta,"LepEta/F");
+    Float_t LepDxy;  bdttree->Branch("LepDxy",&LepDxy,"LepDxy/F");
+    Float_t LepDz;  bdttree->Branch("LepDz",&LepDz,"LepDz/F");
+    Float_t LepSip3;  bdttree->Branch("LepSip3",&LepSip3,"LepSip3/F");
+    Float_t LepIso03;  bdttree->Branch("LepIso03",&LepIso03,"LepIso03/F");
+    Float_t LepIso04;  bdttree->Branch("LepIso04",&LepIso04,"LepIso04/F");
+    Int_t nGoodMu;  bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/I");
+    Int_t nGoodEl;  bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/I");
+    Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
+    Float_t mt; bdttree->Branch("mt",&mt,"mt/F");
+    Float_t Q80; bdttree-> Branch("Q80",&Q80,"Q80/F");
+    Float_t CosDeltaPhi; bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
+    Int_t NbLoose30; bdttree->Branch("NbLoose30",&NbLoose30,"NbLoose30/I"); 
+    Int_t NbTight30;  bdttree->Branch("NbTight30",&NbTight30,"NbTight30/I");
+    Int_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/I");
+    Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
+    Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
+    Float_t Jet2Pt;  bdttree->Branch("Jet2Pt",&Jet2Pt,"Jet2Pt/F");
+    Float_t Jet2Eta;  bdttree->Branch("Jet2Eta",&Jet2Eta,"Jet2Eta/F");
+    Float_t DPhiJet1Jet2;  bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2,"DPhiJet1Jet2/F");
+    Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
+    Float_t DrJet1Lep;  bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
+    Float_t DrJet2Lep;  bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
+    Float_t DrJetHBLep;  bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
+    Float_t DrJet1Jet2;  bdttree->Branch("DrJet1Jet2",&DrJet1Jet2,"DrJet1Jet2/F");
+    Float_t JetLepMass;  bdttree->Branch("JetLepMass",&JetLepMass,"JetLepMass/F");
+    Float_t J3Mass;  bdttree->Branch("J3Mass",&J3Mass,"J3Mass/F");
+    Float_t HT20;  bdttree->Branch("HT20",&HT20,"HT20/F");
+    Float_t HT25;  bdttree->Branch("HT25",&HT25,"HT25/F");
+    Float_t HT30;  bdttree->Branch("HT30",&HT30,"HT30/F");
+    Float_t XS; bdttree->Branch("XS",&XS,"XS/F");;
+    Int_t Run;  bdttree->Branch("Run",&Run,"Run/I");
+    Int_t Event;  bdttree->Branch("Event",&Event,"Event/I");
+    Int_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/I");
+    Int_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/I");
 
     // Read the number of entries in the inputtree
     Int_t nentries = (Int_t)inputtree->GetEntries();
