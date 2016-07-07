@@ -140,6 +140,7 @@ int main(int argc, char** argv)
   for(auto &file : filesToProcess)
   {
     std::cout << "Processing file " << file.path << std::endl;
+    std::cout << "Putting output in: " << outputDirectory + "/" + file.tag + "_bdt.root" << std::endl;
 
     TFile finput(file.path.c_str(), "READ");
     TFile foutput((outputDirectory + "/" + file.tag + "_bdt.root").c_str(), "RECREATE");
@@ -247,8 +248,13 @@ int main(int argc, char** argv)
 
     // Read the number of entries in the inputtree
     Int_t nentries = (Int_t)inputtree->GetEntries();
+    std::cout << "\tThe file has " << nentries << " events." << std::endl;
+    std::cout << "\tProgress Bar: " << std::flush;
+    int statusPrint = nentries/20;
     for(Int_t i = 0; i < nentries; i++)
     {
+      if(i%statusPrint == 0 && i != 0)
+        std::cout << "*" << std::flush;
       inputtree->GetEntry(i);
 
       // Preselection
@@ -434,6 +440,7 @@ int main(int argc, char** argv)
       bdttree->Fill();
     }
 
+    foutput.cd();
     bdttree->Write("",TObject::kOverwrite);
   }
 
