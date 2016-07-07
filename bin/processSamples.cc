@@ -439,6 +439,7 @@ int main(int argc, char** argv)
 
       bdttree->Fill();
     }
+    std::cout << std::endl;
 
     foutput.cd();
     bdttree->Write("",TObject::kOverwrite);
