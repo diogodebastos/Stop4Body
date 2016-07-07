@@ -1,0 +1,1077 @@
+#include <string>
+
+void DataMC(){
+
+  gStyle->SetOptStat(000000);
+
+  TChain DataFile("bdttree");
+  DataFile.Add("SET5/PseudoData_bdt.root");
+
+  TChain St1File("bdttree");
+  St1File.Add("SET5/T2DegStop_300_270_bdt.root");
+  float s1xs;
+  St1File.SetBranchAddress("XS",&s1xs);
+  St1File.GetEntry(0);
+  TH1D *s1nev = new TH1D("s1nev","s1nev",10,0.,10000000.);
+  St1File.Draw("Nevt>>s1nev");
+  double *s1Den = St1File.GetV1();
+  double s1Deno = s1Den[0];
+  // Magnifying factor for signal 1
+  const double MgS1 = 50.;
+  //  TChain St2File("bdttree");
+  //  St2File.Add("");
+
+  TChain TopFile("bdttree");
+  TopFile.Add("SET5/TTJets_bdt.root");
+  float tjxs;
+  TopFile.SetBranchAddress("XS",&tjxs);
+  TopFile.GetEntry(0);
+  TH1D *tjnev = new TH1D("tjnev","tjnev",10,0.,10000000.);
+  TopFile.Draw("Nevt>>tjnev");
+  double *tjDen = TopFile.GetV1();
+  double tjDeno = tjDen[0];
+  TChain W1File("bdttree");
+  W1File.Add("SET5/WJets_HT100to200_bdt.root");
+  float w1xs;
+  W1File.SetBranchAddress("XS",&w1xs);
+  W1File.GetEntry(0);
+  TH1D *w1nev = new TH1D("w1nev","w1nev",10,0.,10000000.);
+  W1File.Draw("Nevt>>w1nev");
+  double *w1Den = W1File.GetV1();
+  double w1Deno = w1Den[0];
+  TChain W2File("bdttree");
+  W2File.Add("SET5/WJets_HT200to400_bdt.root");
+  float w2xs;
+  W2File.SetBranchAddress("XS",&w2xs);
+  W2File.GetEntry(0);
+  TH1D *w2nev = new TH1D("w2nev","w2nev",10,0.,10000000.);
+  W2File.Draw("Nevt>>w2nev");
+  double *w2Den = W2File.GetV1();
+  double w2Deno = w2Den[0];
+  TChain W3File("bdttree");
+  W3File.Add("SET5/WJets_HT400to600_bdt.root");
+  float w3xs;
+  W3File.SetBranchAddress("XS",&w3xs);
+  W3File.GetEntry(0);
+  TH1D *w3nev = new TH1D("w3nev","w3nev",10,0.,10000000.);
+  W3File.Draw("Nevt>>w3nev");
+  double *w3Den = W3File.GetV1();
+  double w3Deno = w3Den[0];
+  TChain W4File("bdttree");
+  W4File.Add("SET5/WJets_HT600toInf_bdt.root");
+  float w4xs;
+  W4File.SetBranchAddress("XS",&w4xs);
+  W4File.GetEntry(0);
+  TH1D *w4nev = new TH1D("w4nev","w4nev",10,0.,10000000.);
+  W4File.Draw("Nevt>>w4nev");
+  double *w4Den = W4File.GetV1();
+  double w4Deno = w4Den[0];
+
+  ////////////////////////// WORK AREA //////////////////////////
+
+  const double Lumi = 2300.;
+
+  // MC Triggers
+  TCut trgM   = "Event>-9999.";
+  // Data Triggers
+  TCut trgD   = "Event>-9999.";
+
+  // Lepton selection
+  // Muon channel
+  //  TCut muon = "(abs(LepID)==13)&&(abs(LepEta)<2.1)&&(LepChg<0.)&&(LepIso<0.2)&&(abs(LepDxy)<0.02)&&(abs(LepDz)<0.5)";
+  //  TCut muon = "(abs(LepID)==13)&&(abs(LepEta)<2.1)&&(LepChg<0.)&&(LepIso<0.2)";
+  //  TCut muon = "(abs(LepID)==13)&&(LepChg<0.)&&(LepIso<0.2)";
+  TCut muon = "(abs(LepID)==13)&&(LepIso<0.2)";
+  // Electron channel
+  //  TCut electron = "(abs(LepID)==11)&&(abs(LepEta)<2.1)&&(LepChg<0.)&&(LepIso<0.2)";
+  //  TCut electron = "(abs(LepID)==11)&&(LepChg<0.)&&(LepIso<0.2)";
+  TCut electron = "(abs(LepID)==11)&&(LepIso<0.2)";
+  // Both channels
+  TCut emu = muon||electron;
+  // Decide
+  TCut singlep = emu;
+ 
+  // MET
+  TCut met    = "Met>100.";
+
+  // MT
+  TCut mta = "mt<60";
+  TCut mtb = "(60<mt)&&(mt<88)";
+  TCut mtc = "88<mt";
+
+  // Jets
+  TCut ISRjt = "Jet1Pt > 110.";
+  TCut njet = "Njet30>3";
+
+  // HT
+  TCut HT = "HT20 > 400.";
+
+  // btag
+  TCut Bloose = "NbLoose30>0";
+  TCut NoBloose = "NbLoose30==0";
+  TCut Bhard = "NbTight30>0";
+  TCut NoBhard = "NbTight30==0";
+
+  // 8 TeV Signal regions
+  TCut SR1a = met+NoBloose+HT+mta;
+  TCut SR1b = met+NoBloose+HT+mtb;
+  TCut SR1c = met+NoBloose+HT+mtc;
+  TCut SR2  = met+ISRjt+Bloose+NoBhard;
+
+  // BDT cut
+  TCut BDT = "bdt1>0.5";
+
+  // Selection
+//  TCut Coup   = singlep;
+    TCut Coup   = singlep;
+  //  TCut Coup   = singlep+SR;
+  //  TCut Coup   = singlep+BDT;
+  // Warning: When using Pseudo-data: 
+  //          Don't use single-lepton cut: It's been created w
+  //          TCut Coup   = singlep+ISRjt;
+  TCut CoupD = trgD;
+
+  // String specifying the selection level for made plots
+  std::string SelTitle = "presel";
+
+  ////////////////////////// END OF WORK AREA //////////////////////////
+
+
+  TH1F *dptl = new TH1F("dptl","pT(l)",50,0.,50.);
+  DataFile.Draw("LepPt>>dptl",CoupD);
+  dptl->SetMarkerStyle(20);
+  dptl->SetMarkerSize(0.6);
+  TH1F *s1ptl = new TH1F("s1ptl","pT(l)",50,0.,50.);
+  St1File.Draw("LepPt>>s1ptl",Coup);
+  s1ptl->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1ptl->SetLineWidth(2.5);
+  s1ptl->SetLineColor(2);
+  TH1F *tptl = new TH1F("tptl","pT(l)",50,0.,50.);
+  TopFile.Draw("LepPt>>tptl",Coup);
+  tptl->Scale(Lumi*tjxs/tjDeno);
+  tptl->SetFillColor(4);
+  TH1F *w1ptl = new TH1F("w1ptl","pT(l)",50,0.,50.);
+  W1File.Draw("LepPt>>w1ptl",Coup);
+  w1ptl->Scale(Lumi*w1xs/w1Deno);
+  w1ptl->SetFillColor(3);
+  TH1F *w2ptl = new TH1F("w2ptl","pT(l)",50,0.,50.);
+  W2File.Draw("LepPt>>w2ptl",Coup);
+  w2ptl->Scale(Lumi*w2xs/w2Deno);
+  w2ptl->SetFillColor(3);
+  TH1F *w3ptl = new TH1F("w3ptl","pT(l)",50,0.,50.);
+  W3File.Draw("LepPt>>w3ptl",Coup);
+  w3ptl->Scale(Lumi*w3xs/w3Deno);
+  w3ptl->SetFillColor(3);
+  TH1F *w4ptl = new TH1F("w4ptl","pT(l)",50,0.,50.);
+  W4File.Draw("LepPt>>w4ptl",Coup);
+  w4ptl->Scale(Lumi*w4xs/w4Deno);
+  w4ptl->SetFillColor(3);
+
+  TH1F *detal = new TH1F("detal","eta(l)",50,-3.,3.);
+  DataFile.Draw("LepEta>>detal",CoupD);
+  detal->SetMarkerStyle(20);
+  detal->SetMarkerSize(0.6);
+  TH1F *s1etal = new TH1F("s1etal","eta(l)",50,-3.,3.);
+  St1File.Draw("LepEta>>s1etal",Coup);
+  s1etal->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1etal->SetLineWidth(2.5);
+  s1etal->SetLineColor(2);
+  TH1F *tetal = new TH1F("tetal","eta(l)",50,-3.,3.);
+  TopFile.Draw("LepEta>>tetal",Coup);
+  tetal->Scale(Lumi*tjxs/tjDeno);
+  tetal->SetFillColor(4);
+  TH1F *w1etal = new TH1F("w1etal","eta(l)",50,-3.,3.);
+  W1File.Draw("LepEta>>w1etal",Coup);
+  w1etal->Scale(Lumi*w1xs/w1Deno);
+  w1etal->SetFillColor(3);
+  TH1F *w2etal = new TH1F("w2etal","eta(l)",50,-3.,3.);
+  W2File.Draw("LepEta>>w2etal",Coup);
+  w2etal->Scale(Lumi*w2xs/w2Deno);
+  w2etal->SetFillColor(3);
+  TH1F *w3etal = new TH1F("w3etal","eta(l)",50,-3.,3.);
+  W3File.Draw("LepEta>>w3etal",Coup);
+  w3etal->Scale(Lumi*w3xs/w3Deno);
+  w3etal->SetFillColor(3);
+  TH1F *w4etal = new TH1F("w4etal","eta(l)",50,-3.,3.);
+  W4File.Draw("LepEta>>w4etal",Coup);
+  w4etal->Scale(Lumi*w4xs/w4Deno);
+  w4etal->SetFillColor(3);
+
+  TH1F *dme = new TH1F("dme","MET",100,0.,500.);
+  DataFile.Draw("Met>>dme",CoupD);
+  dme->SetMarkerStyle(20);
+  dme->SetMarkerSize(0.6);
+  TH1F *s1me = new TH1F("s1me","MET",100,0.,500.);
+  St1File.Draw("Met>>s1me",Coup);
+  s1me->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1me->SetLineWidth(2.5);
+  s1me->SetLineColor(2);
+  TH1F *tme = new TH1F("tme","MET",100,0.,500.);
+  TopFile.Draw("Met>>tme",Coup);
+  tme->Scale(Lumi*tjxs/tjDeno);
+  tme->SetFillColor(4);
+  TH1F *w1me = new TH1F("w1me","MET",100,0.,500.);
+  W1File.Draw("Met>>w1me",Coup);
+  w1me->Scale(Lumi*w1xs/w1Deno);
+  w1me->SetFillColor(3);
+  TH1F *w2me = new TH1F("w2me","MET",100,0.,500.);
+  W2File.Draw("Met>>w2me",Coup);
+  w2me->Scale(Lumi*w2xs/w2Deno);
+  w2me->SetFillColor(3);
+  TH1F *w3me = new TH1F("w3me","MET",100,0.,500.);
+  W3File.Draw("Met>>w3me",Coup);
+  w3me->Scale(Lumi*w3xs/w3Deno);
+  w3me->SetFillColor(3);
+  TH1F *w4me = new TH1F("w4me","MET",100,0.,500.);
+  W4File.Draw("Met>>w4me",Coup);
+  w4me->Scale(Lumi*w4xs/w4Deno);
+  w4me->SetFillColor(3);
+
+  TH1F *dht = new TH1F("dht","HT",100,0.,500.);
+  DataFile.Draw("HT20>>dht",CoupD);
+  dht->SetMarkerStyle(20);
+  dht->SetMarkerSize(0.6);
+  TH1F *s1ht = new TH1F("s1ht","HT",100,0.,500.);
+  St1File.Draw("HT20>>s1ht",Coup);
+  s1ht->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1ht->SetLineWidth(2.5);
+  s1ht->SetLineColor(2);
+  TH1F *tht = new TH1F("tht","HT",100,0.,500.);
+  TopFile.Draw("HT20>>tht",Coup);
+  tht->Scale(Lumi*tjxs/tjDeno);
+  tht->SetFillColor(4);
+  TH1F *w1ht = new TH1F("w1ht","HT",100,0.,500.);
+  W1File.Draw("HT20>>w1ht",Coup);
+  w1ht->Scale(Lumi*w1xs/w1Deno);
+  w1ht->SetFillColor(3);
+  TH1F *w2ht = new TH1F("w2ht","HT",100,0.,500.);
+  W2File.Draw("HT20>>w2ht",Coup);
+  w2ht->Scale(Lumi*w2xs/w2Deno);
+  w2ht->SetFillColor(3);
+  TH1F *w3ht = new TH1F("w3ht","HT",100,0.,500.);
+  W3File.Draw("HT20>>w3ht",Coup);
+  w3ht->Scale(Lumi*w3xs/w3Deno);
+  w3ht->SetFillColor(3);
+  TH1F *w4ht = new TH1F("w4ht","HT",100,0.,500.);
+  W4File.Draw("HT20>>w4ht",Coup);
+  w4ht->Scale(Lumi*w4xs/w4Deno);
+  w4ht->SetFillColor(3);
+
+  TH1F *dj1 = new TH1F("dj1","pT(jet1)",50,100.,300.);
+  DataFile.Draw("Jet1Pt>>dj1",CoupD);
+  dj1->SetMarkerStyle(20);
+  dj1->SetMarkerSize(0.6);
+  TH1F *s1j1 = new TH1F("s1j1","pT(jet1)",50,100.,300.);
+  St1File.Draw("Jet1Pt>>s1j1",Coup);
+  s1j1->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1j1->SetLineWidth(2.5);
+  s1j1->SetLineColor(2);
+  TH1F *tj1 = new TH1F("tj1","pT(jet1)",50,100.,300.);
+  TopFile.Draw("Jet1Pt>>tj1",Coup);
+  tj1->Scale(Lumi*tjxs/tjDeno);
+  tj1->SetFillColor(4);
+  TH1F *w1j1 = new TH1F("w1j1","pT(jet1)",50,100.,300.);
+  W1File.Draw("Jet1Pt>>w1j1",Coup);
+  w1j1->Scale(Lumi*w1xs/w1Deno);
+  w1j1->SetFillColor(3);
+  TH1F *w2j1 = new TH1F("w2j1","pT(jet1)",50,100.,300.);
+  W2File.Draw("Jet1Pt>>w2j1",Coup);
+  w2j1->Scale(Lumi*w2xs/w2Deno);
+  w2j1->SetFillColor(3);
+  TH1F *w3j1 = new TH1F("w3j1","pT(jet1)",50,100.,300.);
+  W3File.Draw("Jet1Pt>>w3j1",Coup);
+  w3j1->Scale(Lumi*w3xs/w3Deno);
+  w3j1->SetFillColor(3);
+  TH1F *w4j1 = new TH1F("w4j1","pT(jet1)",50,100.,300.);
+  W4File.Draw("Jet1Pt>>w4j1",Coup);
+  w4j1->Scale(Lumi*w4xs/w4Deno);
+  w4j1->SetFillColor(3);
+
+  TH1F *dj2 = new TH1F("dj2","pT(jet2)",50,0.,200.);
+  DataFile.Draw("Jet2Pt>>dj2",CoupD);
+  dj2->SetMarkerStyle(20);
+  dj2->SetMarkerSize(0.6);
+  TH1F *s1j2 = new TH1F("s1j2","pT(jet2)",50,0.,200.);
+  St1File.Draw("Jet2Pt>>s1j2",Coup);
+  s1j2->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1j2->SetLineWidth(2.5);
+  s1j2->SetLineColor(2);
+  TH1F *tj2 = new TH1F("tj2","pT(jet2)",50,0.,200.);
+  TopFile.Draw("Jet2Pt>>tj2",Coup);
+  tj2->Scale(Lumi*tjxs/tjDeno);
+  tj2->SetFillColor(4);
+  TH1F *w1j2 = new TH1F("w1j2","pT(jet2)",50,0.,200.);
+  W1File.Draw("Jet2Pt>>w1j2",Coup);
+  w1j2->Scale(Lumi*w1xs/w1Deno);
+  w1j2->SetFillColor(3);
+  TH1F *w2j2 = new TH1F("w2j2","pT(jet2)",50,0.,200.);
+  W2File.Draw("Jet2Pt>>w2j2",Coup);
+  w2j2->Scale(Lumi*w2xs/w2Deno);
+  w2j2->SetFillColor(3);
+  TH1F *w3j2 = new TH1F("w3j2","pT(jet2)",50,0.,200.);
+  W3File.Draw("Jet2Pt>>w3j2",Coup);
+  w3j2->Scale(Lumi*w3xs/w3Deno);
+  w3j2->SetFillColor(3);
+  TH1F *w4j2 = new TH1F("w4j2","pT(jet2)",50,0.,200.);
+  W4File.Draw("Jet2Pt>>w4j2",Coup);
+  w4j2->Scale(Lumi*w4xs/w4Deno);
+  w4j2->SetFillColor(3);
+
+  TH1F *djp = new TH1F("djp","Jet Multiplicity",10,0.,10.);
+  DataFile.Draw("Njet30>>djp",CoupD);
+  djp->SetMarkerStyle(20);
+  djp->SetMarkerSize(0.6);
+  TH1F *s1jp = new TH1F("s1jp","Jet multiplicity",10,0.,10.);
+  St1File.Draw("Njet30>>s1jp",Coup);
+  s1jp->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1jp->SetLineWidth(2.5);
+  s1jp->SetLineColor(2);
+  TH1F *tjp = new TH1F("tjp","Jet multiplicity",10,0.,10.);
+  TopFile.Draw("Njet30>>tjp",Coup);
+  tjp->Scale(Lumi*tjxs/tjDeno);
+  tjp->SetFillColor(4);
+  TH1F *w1jp = new TH1F("w1jp","Jet multiplicity",10,0.,10.);
+  W1File.Draw("Njet30>>w1jp",Coup);
+  w1jp->Scale(Lumi*w1xs/w1Deno);
+  w1jp->SetFillColor(3);
+  TH1F *w2jp = new TH1F("w2jp","Jet multiplicity",10,0.,10.);
+  W2File.Draw("Njet30>>w2jp",Coup);
+  w2jp->Scale(Lumi*w2xs/w2Deno);
+  w2jp->SetFillColor(3);
+  TH1F *w3jp = new TH1F("w3jp","Jet multiplicity",10,0.,10.);
+  W3File.Draw("Njet30>>w3jp",Coup);
+  w3jp->Scale(Lumi*w3xs/w3Deno);
+  w3jp->SetFillColor(3);
+  TH1F *w4jp = new TH1F("w4jp","Jet multiplicity",10,0.,10.);
+  W4File.Draw("Njet30>>w4jp",Coup);
+  w4jp->Scale(Lumi*w4xs/w4Deno);
+  w4jp->SetFillColor(3);
+
+  TH1F *dbp = new TH1F("dbp","B multiplicity",10,0.,10.);
+  DataFile.Draw("NbLoose30>>dbp",CoupD);
+  dbp->SetMarkerStyle(20);
+  dbp->SetMarkerSize(0.6);
+  TH1F *s1bp = new TH1F("s1bp","B multiplicity",10,0.,10.);
+  St1File.Draw("NbLoose30>>s1bp",Coup);
+  s1bp->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1bp->SetLineWidth(2.5);
+  s1bp->SetLineColor(2);
+  TH1F *tbp = new TH1F("tbp","B multiplicity",10,0.,10.);
+  TopFile.Draw("NbLoose30>>tbp",Coup);
+  tbp->Scale(Lumi*tjxs/tjDeno);
+  tbp->SetFillColor(4);
+  TH1F *w1bp = new TH1F("w1bp","B multiplicity",10,0.,10.);
+  W1File.Draw("NbLoose30>>w1bp",Coup);
+  w1bp->Scale(Lumi*w1xs/w1Deno);
+  w1bp->SetFillColor(3);
+  TH1F *w2bp = new TH1F("w2bp","B multiplicity",10,0.,10.);
+  W2File.Draw("NbLoose30>>w2bp",Coup);
+  w2bp->Scale(Lumi*w2xs/w2Deno);
+  w2bp->SetFillColor(3);
+  TH1F *w3bp = new TH1F("w3bp","B multiplicity",10,0.,10.);
+  W3File.Draw("NbLoose30>>w3bp",Coup);
+  w3bp->Scale(Lumi*w3xs/w3Deno);
+  w3bp->SetFillColor(3);
+  TH1F *w4bp = new TH1F("w4bp","B multiplicity",10,0.,10.);
+  W4File.Draw("NbLoose30>>w4bp",Coup);
+  w4bp->Scale(Lumi*w4xs/w4Deno);
+  w4bp->SetFillColor(3);
+
+  TH1F *dq = new TH1F("dq","Q80",50,-2.,1.);
+  DataFile.Draw("Q80>>dq",CoupD);
+  dq->SetMarkerStyle(20);
+  dq->SetMarkerSize(0.6);
+  TH1F *s1q = new TH1F("s1q","Q80",50,-2.,1.);
+  St1File.Draw("Q80>>s1q",Coup);
+  s1q->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1q->SetLineWidth(2.5);
+  s1q->SetLineColor(2);
+  TH1F *tq = new TH1F("tq","Q80",50,-2.,1.);
+  TopFile.Draw("Q80>>tq",Coup);
+  tq->Scale(Lumi*tjxs/tjDeno);
+  tq->SetFillColor(4);
+  TH1F *w1q = new TH1F("w1q","Q80",50,-2.,1.);
+  W1File.Draw("Q80>>w1q",Coup);
+  w1q->Scale(Lumi*w1xs/w1Deno);
+  w1q->SetFillColor(3);
+  TH1F *w2q = new TH1F("w2q","Q80",50,-2.,1.);
+  W2File.Draw("Q80>>w2q",Coup);
+  w2q->Scale(Lumi*w2xs/w2Deno);
+  w2q->SetFillColor(3);
+  TH1F *w3q = new TH1F("w3q","Q80",50,-2.,1.);
+  W3File.Draw("Q80>>w3q",Coup);
+  w3q->Scale(Lumi*w3xs/w3Deno);
+  w3q->SetFillColor(3);
+  TH1F *w4q = new TH1F("w4q","Q80",50,-2.,1.);
+  W4File.Draw("Q80>>w4q",Coup);
+  w4q->Scale(Lumi*w4xs/w4Deno);
+  w4q->SetFillColor(3);
+
+  TH1F *dcos = new TH1F("dcos","CosDeltaPhi",50,0.,1.);
+  DataFile.Draw("CosDeltaPhi>>dcos",CoupD);
+  dcos->SetMarkerStyle(20);
+  dcos->SetMarkerSize(0.6);
+  TH1F *s1cos = new TH1F("s1cos","CosDeltaPhi",50,0.,1.);
+  St1File.Draw("CosDeltaPhi>>s1cos",Coup);
+  s1cos->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1cos->SetLineWidth(2.5);
+  s1cos->SetLineColor(2);
+  TH1F *tcos = new TH1F("tcos","CosDeltaPhi",50,0.,1.);
+  TopFile.Draw("CosDeltaPhi>>tcos",Coup);
+  tcos->Scale(Lumi*tjxs/tjDeno);
+  tcos->SetFillColor(4);
+  TH1F *w1cos = new TH1F("w1cos","CosDeltaPhi",50,0.,1.);
+  W1File.Draw("CosDeltaPhi>>w1cos",Coup);
+  w1cos->Scale(Lumi*w1xs/w1Deno);
+  w1cos->SetFillColor(3);
+  TH1F *w2cos = new TH1F("w2cos","CosDeltaPhi",50,0.,1.);
+  W2File.Draw("CosDeltaPhi>>w2cos",Coup);
+  w2cos->Scale(Lumi*w2xs/w2Deno);
+  w2cos->SetFillColor(3);
+  TH1F *w3cos = new TH1F("w3cos","CosDeltaPhi",50,0.,1.);
+  W3File.Draw("CosDeltaPhi>>w3cos",Coup);
+  w3cos->Scale(Lumi*w3xs/w3Deno);
+  w3cos->SetFillColor(3);
+  TH1F *w4cos = new TH1F("w4cos","CosDeltaPhi",50,0.,1.);
+  W4File.Draw("CosDeltaPhi>>w4cos",Coup);
+  w4cos->Scale(Lumi*w4xs/w4Deno);
+  w4cos->SetFillColor(3);
+
+  TH1F *ddrlj1 = new TH1F("ddrlj1","DrJet1Lep",50,0.,5.);
+  DataFile.Draw("DrJet1Lep>>ddrlj1",CoupD);
+  ddrlj1->SetMarkerStyle(20);
+  ddrlj1->SetMarkerSize(0.6);
+  TH1F *s1drlj1 = new TH1F("s1drlj1","DrJet1Lep",50,0.,5.);
+  St1File.Draw("DrJet1Lep>>s1drlj1",Coup);
+  s1drlj1->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1drlj1->SetLineWidth(2.5);
+  s1drlj1->SetLineColor(2);
+  TH1F *tdrlj1 = new TH1F("tdrlj1","DrJet1Lep",50,0.,5.);
+  TopFile.Draw("DrJet1Lep>>tdrlj1",Coup);
+  tdrlj1->Scale(Lumi*tjxs/tjDeno);
+  tdrlj1->SetFillColor(4);
+  TH1F *w1drlj1 = new TH1F("w1drlj1","DrJet1Lep",50,0.,5.);
+  W1File.Draw("DrJet1Lep>>w1drlj1",Coup);
+  w1drlj1->Scale(Lumi*w1xs/w1Deno);
+  w1drlj1->SetFillColor(3);
+  TH1F *w2drlj1 = new TH1F("w2drlj1","DrJet1Lep",50,0.,5.);
+  W2File.Draw("DrJet1Lep>>w2drlj1",Coup);
+  w2drlj1->Scale(Lumi*w2xs/w2Deno);
+  w2drlj1->SetFillColor(3);
+  TH1F *w3drlj1 = new TH1F("w3drlj1","DrJet1Lep",50,0.,5.);
+  W3File.Draw("DrJet1Lep>>w3drlj1",Coup);
+  w3drlj1->Scale(Lumi*w3xs/w3Deno);
+  w3drlj1->SetFillColor(3);
+  TH1F *w4drlj1 = new TH1F("w4drlj1","DrJet1Lep",50,0.,5.);
+  W4File.Draw("DrJet1Lep>>w4drlj1",Coup);
+  w4drlj1->Scale(Lumi*w4xs/w4Deno);
+  w4drlj1->SetFillColor(3);
+
+  TH1F *ddrj1j2 = new TH1F("ddrj1j2","DrJet1Jet2",50,0.,5.);
+  DataFile.Draw("DrJet1Jet2>>ddrj1j2",CoupD);
+  ddrj1j2->SetMarkerStyle(20);
+  ddrj1j2->SetMarkerSize(0.6);
+  TH1F *s1drj1j2 = new TH1F("s1drj1j2","DrJet1Jet2",50,0.,5.);
+  St1File.Draw("DrJet1Jet2>>s1drj1j2",Coup);
+  s1drj1j2->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1drj1j2->SetLineWidth(2.5);
+  s1drj1j2->SetLineColor(2);
+  TH1F *tdrj1j2 = new TH1F("tdrj1j2","DrJet1Jet2",50,0.,5.);
+  TopFile.Draw("DrJet1Jet2>>tdrj1j2",Coup);
+  tdrj1j2->Scale(Lumi*tjxs/tjDeno);
+  tdrj1j2->SetFillColor(4);
+  TH1F *w1drj1j2 = new TH1F("w1drj1j2","DrJet1Jet2",50,0.,5.);
+  W1File.Draw("DrJet1Jet2>>w1drj1j2",Coup);
+  w1drj1j2->Scale(Lumi*w1xs/w1Deno);
+  w1drj1j2->SetFillColor(3);
+  TH1F *w2drj1j2 = new TH1F("w2drj1j2","DrJet1Jet2",50,0.,5.);
+  W2File.Draw("DrJet1Jet2>>w2drj1j2",Coup);
+  w2drj1j2->Scale(Lumi*w2xs/w2Deno);
+  w2drj1j2->SetFillColor(3);
+  TH1F *w3drj1j2 = new TH1F("w3drj1j2","DrJet1Jet2",50,0.,5.);
+  W3File.Draw("DrJet1Jet2>>w3drj1j2",Coup);
+  w3drj1j2->Scale(Lumi*w3xs/w3Deno);
+  w3drj1j2->SetFillColor(3);
+  TH1F *w4drj1j2 = new TH1F("w4drj1j2","DrJet1Jet2",50,0.,5.);
+  W4File.Draw("DrJet1Jet2>>w4drj1j2",Coup);
+  w4drj1j2->Scale(Lumi*w4xs/w4Deno);
+  w4drj1j2->SetFillColor(3);
+
+  TH1F *ddrlb = new TH1F("ddrlb","DrJetHBLep",50,0.,5.);
+  DataFile.Draw("DrJetHBLep>>ddrlb",CoupD);
+  ddrlb->SetMarkerStyle(20);
+  ddrlb->SetMarkerSize(0.6);
+  TH1F *s1drlb = new TH1F("s1drlb","DrJetHBLep",50,0.,5.);
+  St1File.Draw("DrJetHBLep>>s1drlb",Coup);
+  s1drlb->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1drlb->SetLineWidth(2.5);
+  s1drlb->SetLineColor(2);
+  TH1F *tdrlb = new TH1F("tdrlb","DrJetHBLep",50,0.,5.);
+  TopFile.Draw("DrJetHBLep>>tdrlb",Coup);
+  tdrlb->Scale(Lumi*tjxs/tjDeno);
+  tdrlb->SetFillColor(4);
+  TH1F *w1drlb = new TH1F("w1drlb","DrJetHBLep",50,0.,5.);
+  W1File.Draw("DrJetHBLep>>w1drlb",Coup);
+  w1drlb->Scale(Lumi*w1xs/w1Deno);
+  w1drlb->SetFillColor(3);
+  TH1F *w2drlb = new TH1F("w2drlb","DrJetHBLep",50,0.,5.);
+  W2File.Draw("DrJetHBLep>>w2drlb",Coup);
+  w2drlb->Scale(Lumi*w2xs/w2Deno);
+  w2drlb->SetFillColor(3);
+  TH1F *w3drlb = new TH1F("w3drlb","DrJetHBLep",50,0.,5.);
+  W3File.Draw("DrJetHBLep>>w3drlb",Coup);
+  w3drlb->Scale(Lumi*w3xs/w3Deno);
+  w3drlb->SetFillColor(3);
+  TH1F *w4drlb = new TH1F("w4drlb","DrJetHBLep",50,0.,5.);
+  W4File.Draw("DrJetHBLep>>w4drlb",Coup);
+  w4drlb->Scale(Lumi*w4xs/w4Deno);
+  w4drlb->SetFillColor(3);
+
+  TH1F *dmassjl = new TH1F("dmassjl","JetLepMass",50,0.,250.);
+  DataFile.Draw("JetLepMass>>dmassjl",CoupD);
+  dmassjl->SetMarkerStyle(20);
+  dmassjl->SetMarkerSize(0.6);
+  TH1F *s1massjl = new TH1F("s1massjl","JetLepMass",50,0.,250.);
+  St1File.Draw("JetLepMass>>s1massjl",Coup);
+  s1massjl->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1massjl->SetLineWidth(2.5);
+  s1massjl->SetLineColor(2);
+  TH1F *tmassjl = new TH1F("tmassjl","JetLepMass",50,0.,250.);
+  TopFile.Draw("JetLepMass>>tmassjl",Coup);
+  tmassjl->Scale(Lumi*tjxs/tjDeno);
+  tmassjl->SetFillColor(4);
+  TH1F *w1massjl = new TH1F("w1massjl","JetLepMass",50,0.,250.);
+  W1File.Draw("JetLepMass>>w1massjl",Coup);
+  w1massjl->Scale(Lumi*w1xs/w1Deno);
+  w1massjl->SetFillColor(3);
+  TH1F *w2massjl = new TH1F("w2massjl","JetLepMass",50,0.,250.);
+  W2File.Draw("JetLepMass>>w2massjl",Coup);
+  w2massjl->Scale(Lumi*w2xs/w2Deno);
+  w2massjl->SetFillColor(3);
+  TH1F *w3massjl = new TH1F("w3massjl","JetLepMass",50,0.,250.);
+  W3File.Draw("JetLepMass>>w3massjl",Coup);
+  w3massjl->Scale(Lumi*w3xs/w3Deno);
+  w3massjl->SetFillColor(3);
+  TH1F *w4massjl = new TH1F("w4massjl","JetLepMass",50,0.,250.);
+  W4File.Draw("JetLepMass>>w4massjl",Coup);
+  w4massjl->Scale(Lumi*w4xs/w4Deno);
+  w4massjl->SetFillColor(3);
+
+  TH1F *dmassj3 = new TH1F("dmassj3","J3Mass",50,0.,500.);
+  DataFile.Draw("J3Mass>>dmassj3",CoupD);
+  dmassj3->SetMarkerStyle(20);
+  dmassj3->SetMarkerSize(0.6);
+  TH1F *s1massj3 = new TH1F("s1massj3","J3Mass",50,0.,500.);
+  St1File.Draw("J3Mass>>s1massj3",Coup);
+  s1massj3->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1massj3->SetLineWidth(2.5);
+  s1massj3->SetLineColor(2);
+  TH1F *tmassj3 = new TH1F("tmassj3","J3Mass",50,0.,500.);
+  TopFile.Draw("J3Mass>>tmassj3",Coup);
+  tmassj3->Scale(Lumi*tjxs/tjDeno);
+  tmassj3->SetFillColor(4);
+  TH1F *w1massj3 = new TH1F("w1massj3","J3Mass",50,0.,500.);
+  W1File.Draw("J3Mass>>w1massj3",Coup);
+  w1massj3->Scale(Lumi*w1xs/w1Deno);
+  w1massj3->SetFillColor(3);
+  TH1F *w2massj3 = new TH1F("w2massj3","J3Mass",50,0.,500.);
+  W2File.Draw("J3Mass>>w2massj3",Coup);
+  w2massj3->Scale(Lumi*w2xs/w2Deno);
+  w2massj3->SetFillColor(3);
+  TH1F *w3massj3 = new TH1F("w3massj3","J3Mass",50,0.,500.);
+  W3File.Draw("J3Mass>>w3massj3",Coup);
+  w3massj3->Scale(Lumi*w3xs/w3Deno);
+  w3massj3->SetFillColor(3);
+  TH1F *w4massj3 = new TH1F("w4massj3","J3Mass",50,0.,500.);
+  W4File.Draw("J3Mass>>w4massj3",Coup);
+  w4massj3->Scale(Lumi*w4xs/w4Deno);
+  w4massj3->SetFillColor(3);
+
+  TH1F *dbdt = new TH1F("dbdt","BDToutput",130,-0.60,0.70);
+  DataFile.Draw("bdt1>>dbdt",CoupD);
+  dbdt->SetMarkerStyle(20);
+  dbdt->SetMarkerSize(0.6);
+  TH1F *s1bdt = new TH1F("s1bdt","BDToutput",130,-0.60,0.70);
+  St1File.Draw("bdt1>>s1bdt",Coup);
+  s1bdt->Scale(MgS1*Lumi*s1xs/s1Deno);
+  s1bdt->SetLineWidth(2.5);
+  s1bdt->SetLineColor(2);
+  TH1F *tbdt = new TH1F("tbdt","BDToutput",130,-0.60,0.70);
+  TopFile.Draw("bdt1>>tbdt",Coup);
+  tbdt->Scale(Lumi*tjxs/tjDeno);
+  tbdt->SetFillColor(4);
+  TH1F *w1bdt = new TH1F("w1bdt","BDToutput",130,-0.60,0.70);
+  W1File.Draw("bdt1>>w1bdt",Coup);
+  w1bdt->Scale(Lumi*w1xs/w1Deno);
+  w1bdt->SetFillColor(3);
+  TH1F *w2bdt = new TH1F("w2bdt","BDToutput",130,-0.60,0.70);
+  W2File.Draw("bdt1>>w2bdt",Coup);
+  w2bdt->Scale(Lumi*w2xs/w2Deno);
+  w2bdt->SetFillColor(3);
+  TH1F *w3bdt = new TH1F("w3bdt","BDToutput",130,-0.60,0.70);
+  W3File.Draw("bdt1>>w3bdt",Coup);
+  w3bdt->Scale(Lumi*w3xs/w3Deno);
+  w3bdt->SetFillColor(3);
+  TH1F *w4bdt = new TH1F("w4bdt","BDToutput",130,-0.60,0.70);
+  W4File.Draw("bdt1>>w4bdt",Coup);
+  w4bdt->Scale(Lumi*w4xs/w4Deno);
+  w4bdt->SetFillColor(3);
+
+
+  TString what;
+  cout << "Make{m} , View{v} plots ?" << "\n";
+  cin >> what ;
+  TCanvas *c1 = new TCanvas("c1"," ",1400,1000);
+  c1->SetBorderSize(2);
+
+  THStack *PtPlot = new THStack("PtSt", "pT(l); pT [GeV/c]; Evt / 1 GeV/c");
+  PtPlot->Add(w1ptl);
+  PtPlot->Add(w2ptl);
+  PtPlot->Add(w3ptl);
+  PtPlot->Add(w4ptl);
+  PtPlot->Add(tptl);
+  THStack *EtaPlot = new THStack("EtaSt", "#eta(l); #eta; Evt ");
+  EtaPlot->Add(w1etal);
+  EtaPlot->Add(w2etal);
+  EtaPlot->Add(w3etal);
+  EtaPlot->Add(w4etal);
+  EtaPlot->Add(tetal);
+  THStack *MetPlot = new THStack("MetSt", "MET; MET [GeV]; Evt / 5 GeV");
+  MetPlot->Add(w1me);
+  MetPlot->Add(w2me);
+  MetPlot->Add(w3me);
+  MetPlot->Add(w4me);
+  MetPlot->Add(tme);
+  THStack *HTPlot = new THStack("HTSt", "H_T; H_T [GeV]; Evt / 5 GeV/c");
+  HTPlot->Add(w1ht);
+  HTPlot->Add(w2ht);
+  HTPlot->Add(w3ht);
+  HTPlot->Add(w4ht);
+  HTPlot->Add(tht);
+  THStack *J1Plot = new THStack("J1St", "pT(jet1); pT [GeV/c]; Evt / 4 GeV/c");
+  J1Plot->Add(w1j1);
+  J1Plot->Add(w2j1);
+  J1Plot->Add(w3j1);
+  J1Plot->Add(w4j1);
+  J1Plot->Add(tj1);
+  THStack *J2Plot = new THStack("J2St", "pT(jet2); pT [GeV/c]; Evt / 4 GeV/c");
+  J2Plot->Add(w1j2);
+  J2Plot->Add(w2j2);
+  J2Plot->Add(w3j2);
+  J2Plot->Add(w4j2);
+  J2Plot->Add(tj2);
+  THStack *NJPlot = new THStack("NJSt", "N(jet); N(jet); Evt");
+  NJPlot->Add(w1jp);
+  NJPlot->Add(w2jp);
+  NJPlot->Add(w3jp);
+  NJPlot->Add(w4jp);
+  NJPlot->Add(tjp);
+  THStack *BJPlot = new THStack("BJSt", "N(b loose); N(b); Evt");
+  BJPlot->Add(w1bp);
+  BJPlot->Add(w2bp);
+  BJPlot->Add(w3bp);
+  BJPlot->Add(w4bp);
+  BJPlot->Add(tbp);
+  THStack *Q80Plot = new THStack("Q80St", "Q80; Q80; Evt");
+  Q80Plot->Add(w1q);
+  Q80Plot->Add(w2q);
+  Q80Plot->Add(w3q);
+  Q80Plot->Add(w4q);
+  Q80Plot->Add(tq);
+  THStack *CosPlot = new THStack("CosSt", "Cos(#Delta#phi); Cos(#Delta#phi); Evt");
+  CosPlot->Add(w1cos);
+  CosPlot->Add(w2cos);
+  CosPlot->Add(w3cos);
+  CosPlot->Add(w4cos);
+  CosPlot->Add(tcos);
+  THStack *Drlj1Plot = new THStack("Drlj1St", "#DeltaR(l,jet1); #DeltaR; Evt");
+  Drlj1Plot->Add(w1drlj1);
+  Drlj1Plot->Add(w2drlj1);
+  Drlj1Plot->Add(w3drlj1);
+  Drlj1Plot->Add(w4drlj1);
+  Drlj1Plot->Add(tdrlj1);
+  THStack *Drj1j2Plot = new THStack("Drj1j2St", "#DeltaR(jet1,jet2); #DeltaR; Evt");
+  Drj1j2Plot->Add(w1drj1j2);
+  Drj1j2Plot->Add(w2drj1j2);
+  Drj1j2Plot->Add(w3drj1j2);
+  Drj1j2Plot->Add(w4drj1j2);
+  Drj1j2Plot->Add(tdrj1j2);
+  THStack *DrlbPlot = new THStack("DrlbSt", "#DeltaR(l,b); #DeltaR; Evt");
+  DrlbPlot->Add(w1drlb);
+  DrlbPlot->Add(w2drlb);
+  DrlbPlot->Add(w3drlb);
+  DrlbPlot->Add(w4drlb);
+  DrlbPlot->Add(tdrlb);
+  THStack *MassLJPlot = new THStack("MassLJSt", "M(l,j); M; Evt / 5 GeV/c^2");
+  MassLJPlot->Add(w1massjl);
+  MassLJPlot->Add(w2massjl);
+  MassLJPlot->Add(w3massjl);
+  MassLJPlot->Add(w4massjl);
+  MassLJPlot->Add(tmassjl);
+  THStack *MassJ3Plot = new THStack("MassLJSt", "M(3j); M; Evt / 4 GeV/c^2");
+  MassJ3Plot->Add(w1massj3);
+  MassJ3Plot->Add(w2massj3);
+  MassJ3Plot->Add(w3massj3);
+  MassJ3Plot->Add(w4massj3);
+  MassJ3Plot->Add(tmassj3);
+  THStack *bdtPlot = new THStack("PtSt", "BDT output; BDToutput; Evt / ");
+  bdtPlot->Add(w1bdt);
+  bdtPlot->Add(w2bdt);
+  bdtPlot->Add(w3bdt);
+  bdtPlot->Add(w4bdt);
+  bdtPlot->Add(tbdt);
+
+
+  if (what=="View" || what=="V" || what=="v" ){
+    c1->SetFillColor(10);
+    c1->SetBorderSize(2);
+    c1->Divide(5,3);
+
+    c1->cd(1);
+    PtPlot->Draw("hist");
+    s1ptl->Draw("same");
+    dptl->Draw("E0 X0 same");
+    //    s2ptl->Draw("same");
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dptl,"Data","P");
+    lg->AddEntry(tptl,"ttbar","f");
+    lg->AddEntry(w1ptl,"W+jets","f");
+    lg->AddEntry(s1ptl,"(300,270) x 50","f");
+    //    lg->AddEntry(s2ptl,"(600,150)","f");
+    lg->Draw();
+    
+    c1->cd(2);
+    EtaPlot->Draw("hist");
+    s1etal->Draw("same");
+    detal->Draw("E0 X0 same");
+    //    s2etal->Draw("same");
+    
+    c1->cd(3);
+    MetPlot->Draw("hist");
+    s1me->Draw("same");
+    dme->Draw("E0 X0 same");
+    //    s2me->Draw("same");
+    
+    c1->cd(4);
+    HTPlot->Draw("hist");
+    s1ht->Draw("same");
+    dht->Draw("E0 X0 same");
+    //    s2ht->Draw("same");
+
+    c1->cd(5);
+    J1Plot->Draw("hist");
+    s1j1->Draw("same");
+    dj1->Draw("E0 X0 same");
+    //    s2j1->Draw("same");
+    
+    c1->cd(6);
+    J2Plot->Draw("hist");
+    s1j2->Draw("same");
+    dj2->Draw("E0 X0 same");
+    //    s2j2->Draw("same");
+    
+    c1->cd(7);
+    NJPlot->Draw("hist");
+    s1jp->Draw("same");
+    djp->Draw("E0 X0 same");
+    //    s2jp->Draw("same");
+
+    c1->cd(8);
+    BJPlot->Draw("hist");
+    s1bp->Draw("same");
+    dbp->Draw("E0 X0 same");
+    //    s2bp->Draw("same");
+
+    c1->cd(9);
+    Q80Plot->Draw("hist");
+    s1q->Draw("same");
+    dq->Draw("E0 X0 same");
+    //    s2q->Draw("same");
+
+    c1->cd(10);
+    CosPlot->Draw("hist");
+    s1cos->Draw("same");
+    dcos->Draw("E0 X0 same");
+    //    s2cos->Draw("same");
+
+    c1->cd(11);
+    Drlj1Plot->Draw("hist");
+    s1drlj1->Draw("same");
+    ddrlj1->Draw("E0 X0 same");
+    //    s2drlj1->Draw("same");
+
+    c1->cd(12);
+    Drj1j2Plot->Draw("hist");
+    s1drj1j2->Draw("same");
+    ddrj1j2->Draw("E0 X0 same");
+    //    s2drj1j2->Draw("same");
+
+    c1->cd(13);
+    DrlbPlot->Draw("hist");
+    s1drlb->Draw("same");
+    ddrlb->Draw("E0 X0 same");
+    //    s2drlb->Draw("same");
+
+    c1->cd(14);
+    MassLJPlot->Draw("hist");
+    s1massjl->Draw("same");
+    dmassjl->Draw("E0 X0 same");
+    //    s2massjl->Draw("same");
+
+    c1->cd(15);
+    MassJ3Plot->Draw("hist");
+    s1massj3->Draw("same");
+    dmassj3->Draw("E0 X0 same");
+    //    s2massj3->Draw("same");
+
+  }
+
+  std::string PlotTitle;
+  if(what=="Make" || what=="M" || what=="m" ){
+
+    PtPlot->Draw("hist");
+    s1ptl->Draw("same");
+    dptl->Draw("E0 X0 same");
+    //    s2ptl->Draw("same");
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dptl,"Data","P");
+    lg->AddEntry(tptl,"ttbar","f");
+    lg->AddEntry(w1ptl,"W+jets","f");
+    lg->AddEntry(s1ptl,"(300,270) x 50","l");
+    //    lg->AddEntry(s2ptl,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/LepPt_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    EtaPlot->Draw("hist");
+    s1etal->Draw("same");
+    detal->Draw("E0 X0 same");
+    //    s2etal->Draw("same");
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(detal,"Data","P");
+    lg->AddEntry(tetal,"ttbar","f");
+    lg->AddEntry(w1etal,"W+jets","f");
+    lg->AddEntry(s1etal,"(300,270) x 50","l");
+    //    lg->AddEntry(s2etal,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/LepEta_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    MetPlot->Draw("hist");
+    s1me->Draw("same");
+    dme->Draw("E0 X0 same");
+    //    s2me->Draw("same");
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dme,"Data","P");
+    lg->AddEntry(tme,"ttbar","f");
+    lg->AddEntry(w1me,"W+jets","f");
+    lg->AddEntry(s1me,"(300,270) x 50","l");
+    //    lg->AddEntry(s2me,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/MET_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    HTPlot->Draw("hist");
+    s1ht->Draw("same");
+    dht->Draw("E0 X0 same");
+    //    s2ht->Draw("same");
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dht,"Data","P");
+    lg->AddEntry(tht,"ttbar","f");
+    lg->AddEntry(w1ht,"W+jets","f");
+    lg->AddEntry(s1ht,"(300,270) x 50","l");
+    //    lg->AddEntry(s2ht,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/HT_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    J1Plot->Draw("hist");
+    s1j1->Draw("same");
+    dj1->Draw("E0 X0 same");
+    //    s2j1->Draw("same");
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dj1,"Data","P");
+    lg->AddEntry(tj1,"ttbar","f");
+    lg->AddEntry(w1j1,"W+jets","f");
+    lg->AddEntry(s1j1,"(300,270) x 50","l");
+    //    lg->AddEntry(s2j1,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/J1_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    J2Plot->Draw("hist");
+    s1j2->Draw("same");
+    dj2->Draw("E0 X0 same");
+    //    s2j2->Draw("same");
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dj2,"Data","P");
+    lg->AddEntry(tj2,"ttbar","f");
+    lg->AddEntry(w1j2,"W+jets","f");
+    lg->AddEntry(s1j2,"(300,270) x 50","l");
+    //    lg->AddEntry(s2j2,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/J2_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    NJPlot->Draw("hist");
+    s1jp->Draw("same");
+    djp->Draw("E0 X0 same");
+//    s2jp->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(djp,"Data","P");
+    lg->AddEntry(tjp,"ttbar","f");
+    lg->AddEntry(w1jp,"W+jets","f");
+    lg->AddEntry(s1jp,"(300,270) x 50","l");
+    //    lg->AddEntry(s2jp,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/JetMult_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    BJPlot->Draw("hist");
+    s1bp->Draw("same");
+    dbp->Draw("E0 X0 same");
+//    s2bp->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dbp,"Data","P");
+    lg->AddEntry(tbp,"ttbar","f");
+    lg->AddEntry(w1bp,"W+jets","f");
+    lg->AddEntry(s1bp,"(300,270) x 50","l");
+    //    lg->AddEntry(s2bp,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/BMult_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    Q80Plot->Draw("hist");
+    s1q->Draw("same");
+    dq->Draw("E0 X0 same");
+//    s2q->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dq,"Data","P");
+    lg->AddEntry(tq,"ttbar","f");
+    lg->AddEntry(w1q,"W+jets","f");
+    lg->AddEntry(s1q,"(300,270) x 50","l");
+    //    lg->AddEntry(s2q,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/Q80_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    CosPlot->Draw("hist");
+    s1cos->Draw("same");
+    dcos->Draw("E0 X0 same");
+//    s2cos->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dcos,"Data","P");
+    lg->AddEntry(tcos,"ttbar","f");
+    lg->AddEntry(w1cos,"W+jets","f");
+    lg->AddEntry(s1cos,"(300,270) x 50","l");
+    //    lg->AddEntry(s2cos,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/CosDeltaPhi_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    Drlj1Plot->Draw("hist");
+    s1drlj1->Draw("same");
+    ddrlj1->Draw("E0 X0 same");
+//    s2drlj1->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(ddrlj1,"Data","P");
+    lg->AddEntry(tdrlj1,"ttbar","f");
+    lg->AddEntry(w1drlj1,"W+jets","f");
+    lg->AddEntry(s1drlj1,"(300,270) x 50","l");
+    //    lg->AddEntry(s2drlj1,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/DeltaRlj1_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    Drj1j2Plot->Draw("hist");
+    s1drj1j2->Draw("same");
+    ddrj1j2->Draw("E0 X0 same");
+//    s2drj1j2->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(ddrj1j2,"Data","P");
+    lg->AddEntry(tdrj1j2,"ttbar","f");
+    lg->AddEntry(w1drj1j2,"W+jets","f");
+    lg->AddEntry(s1drj1j2,"(300,270) x 50","l");
+    //    lg->AddEntry(s2j1j2,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/DeltaRj1j2_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    DrlbPlot->Draw("hist");
+    s1drlb->Draw("same");
+    ddrlb->Draw("E0 X0 same");
+//    s2drlb->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(ddrlb,"Data","P");
+    lg->AddEntry(tdrlb,"ttbar","f");
+    lg->AddEntry(w1drlb,"W+jets","f");
+    lg->AddEntry(s1drlb,"(300,270) x 50","l");
+    //    lg->AddEntry(s2drlb,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/DeltaRlb_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    MassLJPlot->Draw("hist");
+    s1massjl->Draw("same");
+    dmassjl->Draw("E0 X0 same");
+//    s2massjl->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dmassjl,"Data","P");
+    lg->AddEntry(tmassjl,"ttbar","f");
+    lg->AddEntry(w1massjl,"W+jets","f");
+    lg->AddEntry(s1massjl,"(300,270) x 50","l");
+    //    lg->AddEntry(s2massjl,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/MassJL_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    MassJ3Plot->Draw("hist");
+    s1massj3->Draw("same");
+    dmassj3->Draw("E0 X0 same");
+//    s2massj3->Draw();
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dmassj3,"Data","P");
+    lg->AddEntry(tmassj3,"ttbar","f");
+    lg->AddEntry(w1massj3,"W+jets","f");
+    lg->AddEntry(s1massj3,"(300,270) x 50","l");
+    //    lg->AddEntry(s2massj3,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/MassJ3_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+    bdtPlot->Draw("hist");
+    s1bdt->Draw("same");
+    dbdt->Draw("E0 X0 same");
+    //    s2bdt->Draw("same");
+    TLegend *lg = new TLegend(.65,.65,0.99,1.);
+    lg->SetFillColor(0);
+    lg->AddEntry(dbdt,"Data","P");
+    lg->AddEntry(tbdt,"ttbar","f");
+    lg->AddEntry(w1bdt,"W+jets","f");
+    lg->AddEntry(s1bdt,"(300,270) x 50","l");
+    //    lg->AddEntry(s2bdt,"(600,150)","l");
+    lg->Draw();
+    PlotTitle = "plots/BDTout_"+SelTitle+".png";
+    c1->SaveAs(PlotTitle.c_str());
+
+
+  }
+
+
+}
