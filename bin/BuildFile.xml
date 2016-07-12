@@ -6,6 +6,7 @@
 <use name="UserCode/Stop4Body"/>
 <environment>
   <bin name="processSamples"   file="processSamples.cc"></bin>
+  <bin name="makePseudoData"   file="makePseudoData.cc"></bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
