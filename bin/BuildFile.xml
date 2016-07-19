@@ -8,6 +8,7 @@
   <bin name="processSamples"   file="processSamples.cc"></bin>
   <bin name="makePseudoData"   file="makePseudoData.cc"></bin>
   <bin name="trainMVA"         file="trainMVA.cc">      </bin>
+  <bin name="applyMVA"         file="applyMVA.cc">      </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
