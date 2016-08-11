@@ -205,10 +205,28 @@ int main(int argc, char** argv)
     UInt_t run;  inputtree->SetBranchAddress("run", &run);
     ULong64_t evt;  inputtree->SetBranchAddress("evt", &evt);
     UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
+    Float_t Tracks_pt[200];  inputtree->SetBranchAddress("Tracks_pt", &Tracks_pt);
+    Float_t Tracks_eta[200];  inputtree->SetBranchAddress("Tracks_eta", &Tracks_eta);
+    Float_t Tracks_dz[200];  inputtree->SetBranchAddress("Tracks_dz", &Tracks_dz);
+    Float_t Tracks_dxy[200];  inputtree->SetBranchAddress("Tracks_dxy", &Tracks_dxy);
+    Float_t Tracks_phi[200];  inputtree->SetBranchAddress("Tracks_phi", &Tracks_phi);
+    Float_t Tracks_CosPhiJet12[200];  inputtree->SetBranchAddress("Tracks_CosPhiJet12", &Tracks_CosPhiJet12);
+    Float_t Tracks_matchedJetDr[200];  inputtree->SetBranchAddress("Tracks_matchedJetDr", &Tracks_matchedJetDr);
+    Float_t Tracks_matchedJetIndex[200];  inputtree->SetBranchAddress("Tracks_matchedJetIndex", &Tracks_matchedJetIndex);
+    Int_t nTracks;  inputtree->SetBranchAddress("nTracks", &nTracks);
+
+    Int_t HLT_PFMET170_JetIdCleaned;   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
+    Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight", &HLT_PFMET90_PFMHT90_IDTight);
+    Int_t HLT_PFMETNoMu90_PFMHTNoMu90_IDTight ;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90_IDTight", &HLT_PFMETNoMu90_PFMHTNoMu90_IDTight);
+    Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
+    Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
+    Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
+    Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
+    Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
 
     // New branch in bdt tree
-    Int_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/I");
-    Int_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/I");
+    Float_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/F");
+    Float_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/F");
     Float_t LepPt;  bdttree->Branch("LepPt",&LepPt,"LepPt/F");
     Float_t LepEta;  bdttree->Branch("LepEta",&LepEta,"LepEta/F");
     Float_t LepDxy;  bdttree->Branch("LepDxy",&LepDxy,"LepDxy/F");
@@ -216,15 +234,16 @@ int main(int argc, char** argv)
     Float_t LepSip3;  bdttree->Branch("LepSip3",&LepSip3,"LepSip3/F");
     Float_t LepIso03;  bdttree->Branch("LepIso03",&LepIso03,"LepIso03/F");
     Float_t LepIso04;  bdttree->Branch("LepIso04",&LepIso04,"LepIso04/F");
-    Int_t nGoodMu;  bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/I");
-    Int_t nGoodEl;  bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/I");
+    Float_t nGoodMu;  bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
+    Float_t nGoodEl;  bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
+    Float_t nGoodTrack;  bdttree->Branch("nGoodTrack",&nGoodTrack,"nGoodTrack/F");
     Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
     Float_t mt; bdttree->Branch("mt",&mt,"mt/F");
     Float_t Q80; bdttree-> Branch("Q80",&Q80,"Q80/F");
     Float_t CosDeltaPhi; bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
-    Int_t NbLoose30; bdttree->Branch("NbLoose30",&NbLoose30,"NbLoose30/I"); 
-    Int_t NbTight30;  bdttree->Branch("NbTight30",&NbTight30,"NbTight30/I");
-    Int_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/I");
+    Float_t NbLoose30; bdttree->Branch("NbLoose30",&NbLoose30,"NbLoose30/F");
+    Float_t NbTight30;  bdttree->Branch("NbTight30",&NbTight30,"NbTight30/F");
+    Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
     Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
     Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
     Float_t Jet2Pt;  bdttree->Branch("Jet2Pt",&Jet2Pt,"Jet2Pt/F");
@@ -240,11 +259,19 @@ int main(int argc, char** argv)
     Float_t HT20;  bdttree->Branch("HT20",&HT20,"HT20/F");
     Float_t HT25;  bdttree->Branch("HT25",&HT25,"HT25/F");
     Float_t HT30;  bdttree->Branch("HT30",&HT30,"HT30/F");
-    Float_t XS; bdttree->Branch("XS",&XS,"XS/F");;
-    Int_t Run;  bdttree->Branch("Run",&Run,"Run/I");
-    Int_t Event;  bdttree->Branch("Event",&Event,"Event/I");
-    Int_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/I");
-    Int_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/I");
+    Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
+    Float_t Run;  bdttree->Branch("Run",&Run,"Run/F");
+    Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
+    Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
+    Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
+    Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
+    Float_t PFMET90_PFMHT90_IDTight; bdttree->Branch("PFMET90_PFMHT90_IDTight", &PFMET90_PFMHT90_IDTight,"PFMET90_PFMHT90_IDTight/F");
+    Float_t PFMETNoMu90_PFMHTNoMu90_IDTight; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90_IDTight", &PFMETNoMu90_PFMHTNoMu90_IDTight,"PFMETNoMu90_PFMHTNoMu90_IDTight/F");
+    Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
+    Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
+    Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
+    Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
+    Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
 
     // Read the number of entries in the inputtree
     Int_t nentries = (Int_t)inputtree->GetEntries();
@@ -260,6 +287,7 @@ int main(int argc, char** argv)
       // Preselection
       nGoodMu = 0;
       nGoodEl = 0;
+      Int_t ilep = nLepGood;
       for(Int_t l = 0; l < nLepGood; l++)
       {
         bool lPTETA = (LepGood_pt[l] > 5.0)
@@ -277,6 +305,24 @@ int main(int argc, char** argv)
             nGoodMu += 1;
           if( abs(LepGood_pdgId[l]) == 11 )
             nGoodEl += 1;
+          if(l < ilep)
+            ilep = l;
+        }
+      }
+
+      nGoodTrack=0;
+      for (Int_t l = 0; l < nTracks; l++)
+      {
+        int index=Tracks_matchedJetIndex[l];
+
+        if( Tracks_pt[l] > 2.5
+          && fabs(Tracks_eta[l]) < 2.5
+          && fabs(Tracks_dz[l]) < 0.1
+          && fabs(Tracks_dxy[l]) < 0.1
+          && Tracks_CosPhiJet12[l]  < 0.7
+          && ( Tracks_matchedJetDr[l] > 0.4 || (index >=0 && Jet_pt[ index ]  < 60 )))
+        {
+          nGoodTrack++;
         }
       }
 
@@ -293,8 +339,8 @@ int main(int argc, char** argv)
       Int_t ij = 0;
       for(Int_t j = 0; j < nJet20; j++)
       {
-        float dpi = DeltaPhi(Jet_phi[j],LepGood_phi[0]);
-        float dei = Jet_eta[j]-LepGood_eta[0];
+        float dpi = DeltaPhi(Jet_phi[j],LepGood_phi[ilep]);
+        float dei = Jet_eta[j]-LepGood_eta[ilep];
         float dri = sqrt( pow(dpi,2) + pow(dei,2) );
         if(dri < DrJetLepMax)
         {
@@ -304,7 +350,7 @@ int main(int argc, char** argv)
       }
 
       TLorentzVector VJ, VLep, JLep;
-      VLep.SetPtEtaPhiM(LepGood_pt[0], LepGood_eta[0], LepGood_phi[0], LepGood_mass[0]);
+      VLep.SetPtEtaPhiM(LepGood_pt[ilep], LepGood_eta[ilep], LepGood_phi[ilep], LepGood_mass[ilep]);
       VJ.SetPtEtaPhiM(Jet_pt[ij], Jet_eta[ij], Jet_phi[ij], Jet_mass[ij]);
       JLep = VJ + VLep;
       JetLepMass = JLep.M();
@@ -323,8 +369,8 @@ int main(int argc, char** argv)
       {
         Jet1Pt = Jet_pt[0];
         Jet1Eta = Jet_eta[0];
-        float dphi = DeltaPhi(Jet_phi[0], LepGood_phi[0]);
-        float deta = Jet_eta[0] - LepGood_eta[0];
+        float dphi = DeltaPhi(Jet_phi[0], LepGood_phi[ilep]);
+        float deta = Jet_eta[0] - LepGood_eta[ilep];
         DrJet1Lep = sqrt( pow(dphi,2) + pow(deta,2) );
       }
       else
@@ -346,8 +392,8 @@ int main(int argc, char** argv)
         DPhiJet1Jet2 = dphijj;
         DrJet1Jet2 = sqrt( pow(dphijj,2) + pow(detajj,2) );
 
-        float dphi = DeltaPhi(Jet_phi[1], LepGood_phi[0]);
-        float deta = Jet_eta[1] - LepGood_eta[0];
+        float dphi = DeltaPhi(Jet_phi[1], LepGood_phi[ilep]);
+        float deta = Jet_eta[1] - LepGood_eta[ilep];
         DrJet2Lep = sqrt( pow(dphi,2) + pow(deta,2) );
       }
       else
@@ -373,19 +419,19 @@ int main(int argc, char** argv)
       }
       JetHBpt = Jet_pt[iBtag];
       float dphib, detab;
-      dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[0]);
-      detab = Jet_eta[iBtag] - LepGood_eta[0];
+      dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[ilep]);
+      detab = Jet_eta[iBtag] - LepGood_eta[ilep];
       DrJetHBLep = sqrt( pow(dphib,2) + pow(detab,2) );
 
-      LepChg=LepGood_charge[0];
-      LepID=LepGood_pdgId[0];
-      LepPt=LepGood_pt[0];
-      LepEta=LepGood_eta[0];
-      LepDxy=LepGood_dxy[0];
-      LepDz=LepGood_dz[0];
-      LepSip3=LepGood_sip3d[0];
-      LepIso03=LepGood_relIso03[0];
-      LepIso04=LepGood_relIso04[0];
+      LepChg=LepGood_charge[ilep];
+      LepID=LepGood_pdgId[ilep];
+      LepPt=LepGood_pt[ilep];
+      LepEta=LepGood_eta[ilep];
+      LepDxy=LepGood_dxy[ilep];
+      LepDz=LepGood_dz[ilep];
+      LepSip3=LepGood_sip3d[ilep];
+      LepIso03=LepGood_relIso03[ilep];
+      LepIso04=LepGood_relIso04[ilep];
       HT20 = 0.;
       HT25 = 0.;
       HT30 = 0.;
@@ -409,6 +455,15 @@ int main(int argc, char** argv)
       XS = xsec;
       //XS = file.crossSection;
 
+      PFMET170JetIdCleaned                = HLT_PFMET170_JetIdCleaned;
+      PFMET90_PFMHT90_IDTight             = HLT_PFMET90_PFMHT90_IDTight;
+      PFMETNoMu90_PFMHTNoMu90_IDTight     = HLT_PFMETNoMu90_PFMHTNoMu90_IDTight;
+      HBHENoiseFilter                     = Flag_HBHENoiseFilter;
+      HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
+      eeBadScFilter                       = Flag_eeBadScFilter;
+      EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
+      goodVertices                        = Flag_goodVertices;
+
       // Skim
       bool emu = (nGoodMu == 1)  ||  (nGoodEl == 1);
       bool isISR = (Jet_pt[0] > 110.)  &&  (Njet > 0);
@@ -419,7 +474,7 @@ int main(int argc, char** argv)
       if(!dPhi)    continue;
       if(!met)     continue;
 
-      if(abs(LepGood_pdgId[0]) == 13  &&  doSync)
+      if(abs(LepGood_pdgId[ilep]) == 13  &&  doSync)
       {
         SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
         SyFile << " pT(l): " << LepPt << " eta(l): " << LepEta << " pdgID: " << LepID << std::endl;
