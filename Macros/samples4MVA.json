@@ -105,6 +105,21 @@
           "path":""
         }
       ]
+    },
+    {
+      "tag":"PseudoData_Injected",
+      "isdata":true,
+      "color":1,
+      "fill":0,
+      "marker":20,
+      "files":[
+        {
+          "tag": "PseudoData_Injected",
+          "xsec": 1.0,
+          "br": 1.0,
+          "path":""
+        }
+      ]
     }
   ]
 }
