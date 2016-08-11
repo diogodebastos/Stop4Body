@@ -15,7 +15,7 @@
 #include <map>
 #include <fstream>
 
-#include "json.hpp"
+#include "UserCode/Stop4Body/interface/json.hpp"
 
 using json = nlohmann::json;
 
@@ -37,6 +37,7 @@ int main(int argc, char** argv)
   std::string inputDirectory = "./OUT/";
   double luminosity = 10000;
   bool noPresel = false;
+  bool includeSignal = false;
 
   if(argc < 2)
   {
@@ -73,6 +74,9 @@ int main(int argc, char** argv)
 
     if(argument == "--noPresel")
       noPresel = true;
+
+    if(argument == "--injectSignal")
+      includeSignal = true;
   }
 
   if(jsonFileName == "")
@@ -84,6 +88,8 @@ int main(int argc, char** argv)
   json jsonFile;
   std::ifstream inputFile(jsonFileName);
   inputFile >> jsonFile;
+
+  std::cout << "Finished reading the json file" << std::endl;
 
   if(jsonFile.find("lines") == jsonFile.end())
   {
@@ -128,7 +134,8 @@ int main(int argc, char** argv)
                 processFile = false;
             if(process.count("issignal") == 1)
               if(process["issignal"] == true)
-                processFile = false;
+                if(!includeSignal)
+                  processFile = false;
 
             if(processFile)
               filesToProcess.push_back(tmpFile);
