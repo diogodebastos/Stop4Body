@@ -133,8 +133,25 @@ int main(int argc, char** argv)
                          "!H:!V:NTrees=500:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2:IgnoreNegWeightsInTraining" );
 
   if (Use["BDT"])  // Adaptive Boost
+  {
     factory->BookMethod( TMVA::Types::kBDT, "BDT",
                          "!H:!V:NTrees=400:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
+    //factory->BookMethod( TMVA::Types::kBDT, "BDT",
+    //                     "!H:!V:NTrees=400:nEventsMin=400:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
+    for(int i = 1; i <= 20; ++i)
+    //for(int i = 3; i <= 3; ++i)
+    {
+      double val = i/2.0;
+      std::string valStr;
+
+      std::stringstream converter;
+      converter << val;
+      converter >> valStr;
+
+      factory->BookMethod( TMVA::Types::kBDT, ("BDT_NodeSize"+valStr).c_str(),
+                           ("!H:!V:NTrees=400:MinNodeSize="+valStr+"%:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning").c_str() );
+    }
+  }
 
   if (Use["BDTB"]) // Bagging
     factory->BookMethod( TMVA::Types::kBDT, "BDTB",
