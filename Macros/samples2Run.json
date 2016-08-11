@@ -1,0 +1,89 @@
+{
+  "lines":[
+    {
+      "tag":"WJets",
+      "isdata":false,
+      "color":811,
+      "lcolor":1,
+      "label":"W + Jets",
+      "files":[
+        {
+          "tag":"Wjets_100to200",
+          "xsec": 1629.87,
+          "br": 1.0,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/Wjets_100to200_bdt.root"
+        },
+        {
+          "tag":"Wjets_200to400",
+          "xsec": 435.6,
+          "br": 1.0,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/Wjets_200to400_bdt.root"
+        },
+        {
+          "tag":"Wjets_400to600",
+          "xsec": 59.169,
+          "br": 1.0,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/Wjets_400to600_bdt.root"
+        },
+        {
+          "tag":"Wjets_600toInf",
+          "xsec": 22.7117,
+          "br": 1.0,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/Wjets_600toInf_bdt.root"
+        }
+      ]
+    },
+    {
+      "tag":"ttbar",
+      "isdata":false,
+      "color":614,
+      "lcolor":1,
+      "label":"t#bar{t}",
+      "files":[
+        {
+          "tag":"TTJets_LO",
+          "xsec": 831.76,
+          "br": 1.0,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/TTJets_LO_bdt.root"
+        }
+      ]
+    },
+    {
+      "tag":"stop",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"stop",
+      "files":[
+        {
+          "tag":"T2DegStop_300_270",
+          "xsec": 1.0,
+          "br": 1.0,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_300_270_bdt.root"
+        }
+      ]
+    },
+    {
+      "tag":"PseudoData",
+      "isdata":true,
+      "color":1,
+      "fill":0,
+      "marker":20,
+      "label":"Data",
+      "files":[
+        {
+          "tag": "PseudoData",
+          "xsec": 1.0,
+          "br": 1.0,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/PseudoData_bdt.root"
+        }
+      ]
+    }
+  ]
+}
