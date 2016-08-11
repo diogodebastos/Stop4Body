@@ -20,7 +20,7 @@
 #include <map>
 #include <fstream>
 
-#include "json.hpp"
+#include "UserCode/Stop4Body/interface/json.hpp"
 
 using json = nlohmann::json;
 
@@ -42,6 +42,7 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./OUT/";
   std::vector<std::string> methods;
   methods.clear();
+  std::string suffix = "";
 
   // Default MVA methods to be trained + tested
   std::map<std::string,int> Use;
@@ -51,7 +52,6 @@ int main(int argc, char** argv)
   Use["BDTB"]            = 0; // uses Bagging
   Use["BDTD"]            = 0; // decorrelation + Adaptive Boost
   Use["BDTF"]            = 0; // allow usage of fisher discriminant for node splitting
-  //
   // --- Friedman's RuleFit method, ie, an optimised series of cuts ("rules")
   Use["RuleFit"]         = 0;
 
@@ -83,6 +83,9 @@ int main(int argc, char** argv)
 
     if(argument == "--method")
       methods.push_back(argv[++i]);
+
+    if(argument == "--suffix")
+      suffix = argv[++i];
   }
 
   if(jsonFileName == "")
@@ -95,7 +98,10 @@ int main(int argc, char** argv)
   {
     if(Use.count(method) != 1)
     {
-      std::cout << "Unknown method \"" << method << "\", ignoring the request" << std::endl;
+      std::cout << "Unknown method \"" << method << "\"." << std::endl;
+      std::cout << "Ignoring it" << std::endl;
+      //std::cout << "Trusting the user and adding it" << std::endl;
+      //Use[method] = 1;
     }
     else
       Use[method] = 1;
@@ -172,6 +178,8 @@ int main(int argc, char** argv)
   //Float_t LepSip3, LepIso03, LepIso04, HT25, HT30, DPhiJet1Jet2,
 
   Float_t NbLoose30f, LepChgf, Njetf;
+  Njetf = 0;
+  Njet = Njetf;
 
   // Base BDT
   reader->AddVariable("Jet1Pt", &Jet1Pt);
@@ -204,7 +212,10 @@ int main(int argc, char** argv)
     {
       TString methodName = TString(it->first) + TString(" method");
       std::cout << "method being used " << methodName << std::endl;
-      TString weightfile = dir + prefix + TString("_") + TString(it->first) + TString(".weights.xml");
+      TString weightfile = dir + prefix + TString("_") + TString(it->first);
+      if(suffix != "")
+        weightfile += TString("_"+suffix);
+      weightfile += TString(".weights.xml");
       std::cout << "weight file being used : "    <<  weightfile << std::endl;
       reader->BookMVA( methodName, weightfile );
     }
