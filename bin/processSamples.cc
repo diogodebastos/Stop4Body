@@ -33,7 +33,7 @@
 #include "TLatex.h"
 #include "TLorentzVector.h"
 
-#include "json.hpp"
+#include "UserCode/Stop4Body/interface/json.hpp"
 
 using json = nlohmann::json;
 
