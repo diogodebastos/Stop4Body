@@ -98,6 +98,31 @@ void SingleLept_Dev (){
   //  TCut presel = singlep+ISRjet+dphij1j2;
   TCut presel = singlep+ISRjet+dphij1j2+met;
 
+  presel = singlep+ISRjet+dphij1j2+("Met<300");
+  presel = singlep+ISRjet+dphij1j2+("Met<200");
+  presel = singlep+ISRjet+dphij1j2+met+("NbLoose30>=2");
+  presel = singlep+ISRjet+dphij1j2+met+("NbTight30>=1");
+  presel = singlep+ISRjet+dphij1j2+met+("NbTight30>=2");
+  presel = singlep+ISRjet+dphij1j2+("Met<300")+("NbLoose30>=2");
+  presel = singlep+ISRjet+dphij1j2+("Met<200")+("NbLoose30>=2");
+  presel = singlep+ISRjet+dphij1j2+("Met<300")+("NbTight30>=1");
+  presel = singlep+ISRjet+dphij1j2+("Met<200")+("NbTight30>=1");
+  presel = singlep+ISRjet+dphij1j2+("Met<300")+("NbTight30>=2");
+  presel = singlep+ISRjet+dphij1j2+("Met<200")+("NbTight30>=2");
+  presel = singlep+ISRjet+dphij1j2+("Met<300")+("NbLoose30==0");
+  presel = singlep+ISRjet+dphij1j2+("Met<200")+("NbLoose30==0");
+
+  presel = singlep+ISRjet+dphij1j2+met+("BDT<=0.2")+("NbTight30>0");
+  presel = singlep+ISRjet+dphij1j2+met+("BDT<=0.2")+("NbTight30==0");
+  presel = singlep+ISRjet+dphij1j2+met+("BDT<=0.2")+("NbTight30>1");
+  presel = singlep+ISRjet+dphij1j2+met+("BDT<=0.2")+("NbLoose30==0");
+
+  presel = singlep+ISRjet+dphij1j2+("Met<300")+("NbLoose30>=2");
+  presel = singlep+ISRjet+dphij1j2+("Met<300")+("NbTight30>=1");
+  presel = singlep+ISRjet+dphij1j2+("Met<300")+("NbTight30>=2");
+  presel = singlep+ISRjet+dphij1j2+("Met<300")+("NbLoose30==0");
+  presel = singlep+ISRjet+dphij1j2+("Met<300");
+
   // MT
   TCut mta = "mt<60";
   TCut mtb = "(60<mt)&&(mt<88)";
@@ -461,10 +486,10 @@ void GetYield(
   //  if (pc=="W2Jets"){    ProcFile.Add("FrigoRoottuple/Summer2015/Jet20/Wjets200to400_bdt.root");  }
   //  if (pc=="W3Jets"){    ProcFile.Add("FrigoRoottuple/Summer2015/Jet20/Wjets400to600_bdt.root");  }
   //  if (pc=="W4Jets"){    ProcFile.Add("FrigoRoottuple/Summer2015/Jet20/Wjets600toInf_bdt.root");  }
-  if (pc=="W1Jets"){    ProcFile.Add("SET7013/Wjets100to200_bdt.root");  }
-  if (pc=="W2Jets"){    ProcFile.Add("SET7013/Wjets200to400_bdt.root");  }
-  if (pc=="W3Jets"){    ProcFile.Add("SET7013/Wjets400to600_bdt.root");  }
-  if (pc=="W4Jets"){    ProcFile.Add("SET7013/Wjets600toInf_bdt.root");  }
+  if (pc=="W1Jets"){    ProcFile.Add("SET7013/Wjets_100to200_bdt.root");  }
+  if (pc=="W2Jets"){    ProcFile.Add("SET7013/Wjets_200to400_bdt.root");  }
+  if (pc=="W3Jets"){    ProcFile.Add("SET7013/Wjets_400to600_bdt.root");  }
+  if (pc=="W4Jets"){    ProcFile.Add("SET7013/Wjets_600toInf_bdt.root");  }
   if (pc=="Wmunu"){    ProcFile.Add("");  }
   if (pc=="Wenu"){    ProcFile.Add("");  }
   if (pc=="Wtaunu"){    ProcFile.Add("");  }
