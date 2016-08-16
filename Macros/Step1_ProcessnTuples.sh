@@ -1,6 +1,7 @@
 #!/bin/bash
 
 OUTDIR=~/local-area/Stop4Body/New/
+OUTDIR=~/working/Stop/Samples/
 
 if [[ ! -d ${OUTDIR} ]] ; then
   mkdir -p ${OUTDIR}
