@@ -280,6 +280,11 @@ int main(int argc, char** argv)
     int statusPrint = nentries/20;
     for(Int_t i = 0; i < nentries; i++)
     {
+      // Uncomment this if you suspect the loop is not going through the events
+      /*if(i%2 == 0)
+        std::cout << "$\b" << std::flush;
+      else
+        std::cout << " \b" << std::flush;// */
       if(i%statusPrint == 0 && i != 0)
         std::cout << "*" << std::flush;
       inputtree->GetEntry(i);
