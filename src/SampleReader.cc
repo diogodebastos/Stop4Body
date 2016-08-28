@@ -1,15 +1,20 @@
 #include "UserCode/Stop4Body/interface/SampleReader.h"
 
 #include <fstream>
+#include <sstream>
 
 #include "TDirectory.h"
 
-SampleInfo::SampleInfo(json jsonInfo): crossSection_(0.0), branchingRatio_(1.0), tag_("")
+SampleInfo::SampleInfo(json jsonInfo, std::string baseDir = "", std::string suffix = ""):
+  baseDir_(baseDir),
+  suffix_(suffix),
+  crossSection_(0.0),
+  branchingRatio_(1.0),
+  tag_(""),
+  split_(1)
 {
   if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("path") == 0)
-  {
     throw MissingJSONParam("Not all parameters are defined for the sample");
-  }
 
   crossSection_ = jsonInfo["xsec"];
   tag_ = jsonInfo["tag"];
@@ -17,15 +22,34 @@ SampleInfo::SampleInfo(json jsonInfo): crossSection_(0.0), branchingRatio_(1.0),
   if(jsonInfo.count("br") > 0)
     branchingRatio_ = jsonInfo["br"];
 
-  filePaths_.push_back(jsonInfo["path"]);
+  if(jsonInfo.count("split") > 0)
+    split_ = jsonInfo["split"];
+
+  std::string basePath = jsonInfo["path"];
+  if(baseDir_ != "")
+  {
+    split = 1;
+    basePath = baseDir_ + "/" + tag_;
+    if(suffix_ != "")
+      basePath += "_" + suffix_;
+  }
+
+  if(split == 1)
+    filePaths_.push_back(basePath + ".root");
+  else
+  {
+    for(int i = 1; i <= split; ++i)
+    {
+      std::stringstream converter;
+      converter << basePath << "_" << i << ".root";
+      filePaths_.push_back(converter.str());
+    }
+  }
 }
 
-std::vector<std::string> SampleInfo::getAllFiles()
-{
-  return filePaths_;
-}
-
-ProcessInfo::ProcessInfo(json jsonInfo):
+ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir = "", std::string suffix = ""):
+  baseDir_(baseDir),
+  suffix_(suffix),
   tag_(""),
   label_(""),
   isdata_(false),
@@ -78,7 +102,7 @@ ProcessInfo::ProcessInfo(json jsonInfo):
   {
     try
     {
-      SampleInfo thisSample(sample);
+      SampleInfo thisSample(sample, baseDir_, suffix_);
       samples_.push_back(thisSample);
     }
     catch(SampleReaderException& exception)
@@ -155,7 +179,10 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
   return retVal;
 }
 
-SampleReader::SampleReader(std::string fileName): inputFile_(fileName)
+SampleReader::SampleReader(std::string fileName, std::string baseDir = "", std::string suffix = ""):
+  inputFile_(fileName),
+  baseDir_(baseDir),
+  suffix_(suffix)
 {
   json jsonFile;
   std::ifstream inputFile(inputFile_);
@@ -168,7 +195,7 @@ SampleReader::SampleReader(std::string fileName): inputFile_(fileName)
   {
     try
     {
-      ProcessInfo thisProcess(process);
+      ProcessInfo thisProcess(process, baseDir_, suffix_);
       processes_.push_back(process);
     }
     catch(SampleReaderException& exception)
@@ -203,6 +230,8 @@ SampleReader SampleReader::getData()
   SampleReader retVal;
 
   retVal.inputFile_ = inputFile_;
+  retVal.baseDir_ = baseDir_;
+  retVal.suffix_ = suffix_;
   for(auto& process : processes_)
   {
     if(process.isdata())
@@ -217,6 +246,8 @@ SampleReader SampleReader::getMCBkg()
   SampleReader retVal;
 
   retVal.inputFile_ = inputFile_;
+  retVal.baseDir_ = baseDir_;
+  retVal.suffix_ = suffix_;
   for(auto& process : processes_)
   {
     if(!process.isdata() && !process.issignal())
@@ -231,6 +262,8 @@ SampleReader SampleReader::getMCSig()
   SampleReader retVal;
 
   retVal.inputFile_ = inputFile_;
+  retVal.baseDir_ = baseDir_;
+  retVal.suffix_ = suffix_;
   for(auto& process : processes_)
   {
     if(!process.isdata() && process.issignal())
