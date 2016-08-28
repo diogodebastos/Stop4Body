@@ -246,10 +246,17 @@ int main(int argc, char** argv)
     Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
     Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
     Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
+    Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F"); // *
     Float_t Jet2Pt;  bdttree->Branch("Jet2Pt",&Jet2Pt,"Jet2Pt/F");
     Float_t Jet2Eta;  bdttree->Branch("Jet2Eta",&Jet2Eta,"Jet2Eta/F");
+    Float_t Jet2CSV;  bdttree->Branch("Jet2CSV",&Jet2CSV,"Jet2CSV/F"); // *
+    Float_t Jet3Pt;  bdttree->Branch("Jet3Pt",&Jet3Pt,"Jet3Pt/F"); // *
+    Float_t Jet3Eta;  bdttree->Branch("Jet3Eta",&Jet3Eta,"Jet3Eta/F"); // *
+    Float_t Jet3CSV;  bdttree->Branch("Jet3CSV",&Jet3CSV,"Jet3CSV/F"); // *
     Float_t DPhiJet1Jet2;  bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2,"DPhiJet1Jet2/F");
     Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
+    Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F"); // *
+    Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F"); // *
     Float_t DrJet1Lep;  bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
     Float_t DrJet2Lep;  bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
     Float_t DrJetHBLep;  bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
@@ -374,6 +381,7 @@ int main(int argc, char** argv)
       {
         Jet1Pt = Jet_pt[0];
         Jet1Eta = Jet_eta[0];
+        Jet1CSV = Jet_btagCSV[0];
         float dphi = DeltaPhi(Jet_phi[0], LepGood_phi[ilep]);
         float deta = Jet_eta[0] - LepGood_eta[ilep];
         DrJet1Lep = sqrt( pow(dphi,2) + pow(deta,2) );
@@ -382,9 +390,14 @@ int main(int argc, char** argv)
       {
         Jet1Pt = -999.;
         Jet1Eta = -999.;
+        Jet1CSV = -999.;
         DrJet1Lep = -999.;
         Jet2Pt = -999.;
         Jet2Eta = -999.;
+        Jet2CSV = -999.;
+        Jet3Pt = -999.;
+        Jet3Eta = -999.;
+        Jet3CSV = -999.;
       }
 
       if(nJet20>=2)
@@ -392,6 +405,7 @@ int main(int argc, char** argv)
         float dphijj, detajj;
         Jet2Pt = Jet_pt[1];
         Jet2Eta = Jet_eta[1];
+        Jet2CSV = Jet_btagCSV[1];
         dphijj = DeltaPhi(Jet_phi[0], Jet_phi[1]);
         detajj = Jet_eta[0] - Jet_eta[1];
         DPhiJet1Jet2 = dphijj;
@@ -405,15 +419,31 @@ int main(int argc, char** argv)
       {
         Jet2Pt = -999.;
         Jet2Eta = -999.;
+        Jet2CSV = -999.;
         DPhiJet1Jet2 = -999.;
         DrJet1Jet2 = -999.;
         DrJet2Lep = -999.;
       }
 
+      if(nJet20>=3)
+      {
+        Jet3Pt = Jet_pt[2];
+        Jet3Eta = Jet_eta[2];
+        Jet3CSV = Jet_btagCSV[2];
+      }
+      else
+      {
+        Jet3Pt = -999.;
+        Jet3Eta = -999.;
+        Jet3CSV = -999.;
+      }
+
       JetHBpt = -999.;
+      JetHBeta = -999.;
+      JetHBindex = -1;
       DrJetHBLep = -999.;
       Float_t BtagMax = -999.;
-      Int_t iBtag = 0;
+      Int_t iBtag = -1;
       for(Int_t j = 0; j < nJet20; j++)
       {
         if((Jet_btagCSV[j] != -10)  &&  (Jet_btagCSV[j] > BtagMax))
@@ -422,11 +452,17 @@ int main(int argc, char** argv)
           iBtag = j;
         }
       }
-      JetHBpt = Jet_pt[iBtag];
-      float dphib, detab;
-      dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[ilep]);
-      detab = Jet_eta[iBtag] - LepGood_eta[ilep];
-      DrJetHBLep = sqrt( pow(dphib,2) + pow(detab,2) );
+
+      if(iBtag >= 0)
+      {
+        JetHBpt = Jet_pt[iBtag];
+        JetHBeta = Jet_eta[iBtag];
+        JetHBindex = iBtag;
+        float dphib, detab;
+        dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[ilep]);
+        detab = Jet_eta[iBtag] - LepGood_eta[ilep];
+        DrJetHBLep = sqrt( pow(dphib,2) + pow(detab,2) );
+      }
 
       LepChg=LepGood_charge[ilep];
       LepID=LepGood_pdgId[ilep];
@@ -478,6 +514,16 @@ int main(int argc, char** argv)
       if(!isISR)   continue;
       if(!dPhi)    continue;
       if(!met)     continue;
+
+      // MET filters
+      /*if(HBHENoiseFilter                    != 1)  continue;
+      if(HBHENoiseIsoFilter                 != 1)  continue;
+      if(EcalDeadCellTriggerPrimitiveFilter != 1)  continue;
+      if(goodVertices                       != 1)  continue;
+      if(eeBadScFilter                      != 1)  continue;
+      //if(globalTightHalo2016Filter          != 1)  continue;
+      //if(badMuonFilter                      != 1)  continue;
+      //if(badChargedHadronFilter             != 1)  continue; // */
 
       if(abs(LepGood_pdgId[ilep]) == 13  &&  doSync)
       {
