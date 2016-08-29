@@ -239,9 +239,12 @@ SampleReader::SampleReader(std::string fileName, std::string baseDir = "", std::
     }
     catch(SampleReaderException& exception)
     {
-      if(exception.type() == SampleReaderException::ExceptionType::MissingParamsInJSON)
+      switch(exception.type())
+      {
+      case SampleReaderException::ExceptionType::MissingParamsInJSON:
         std::cout << "Unable to read '" << process["tag"] << "', there are missing fields in the JSON file." << std::endl;
-      else
+        break;
+      default:
         throw; //Re-throw the exception
     }
   }
