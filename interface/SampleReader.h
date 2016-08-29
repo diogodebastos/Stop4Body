@@ -13,12 +13,10 @@
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
-using json = nlohmann::json;
-
 class SampleReaderException: public std::runtime_error
 {
 public:
-  enum class ExceptionType {Base, FileNotFound, MissingParamsInJSON};
+  enum class ExceptionType {Base, FileNotFound, MissingParamsInJSON, EmptySampleInfo, EmptyProcessInfo, EmptySampleReader};
 
   explicit SampleReaderException(const std::string message):
     std::runtime_error(""),
@@ -61,21 +59,61 @@ private:
 protected:
 };
 
+class FileNotFound: public SampleReaderException
+{
+public:
+  explicit FileNotFound(const std::string message):
+    SampleReaderException(message, ExceptionType::FileNotFound)
+  {
+  }
+
+private:
+protected:
+};
+
+class EmptySampleInfo: public SampleReaderException
+{
+public:
+  explicit FileNotFound(const std::vector<std::string> filesNotFound):
+    SampleReaderException("", ExceptionType::EmptySampleInfo),
+    missingFiles_(filesNotFound)
+  {
+    // TODO: build error message
+  }
+
+private:
+protected:
+  std::vector<std::string> missingFiles_
+};
+
 class SampleInfo
 {
 public:
   SampleInfo() = delete;
-  SampleInfo(json, std::string, std::string);
+  SampleInfo(nlohmann::json, std::string, std::string);
   //~SampleInfo();
 
   std::vector<std::string> getAllFiles() const {return filePaths_;};
 
-  double crossSection() const {return crossSection_;};
-  double branchingRatio() const {return branchingRatio_;};
-  std::string tag() const {return tag_;};
-  int split() const {return split_;};
+  double crossSection() const {return crossSection_;}
+  double branchingRatio() const {return branchingRatio_;}
+  std::string tag() const {return tag_;}
+  int split() const {return split_;}
+
+  // Iteration
+  typedef typename std::vector<std::string>::iterator iterator;
+  typedef typename std::vector<std::string>::const_iterator const_iterator;
+
+  iterator begin() {return filePaths_.begin();}
+  const_iterator begin() const {return filePaths_.begin();}
+  const_iterator cbegin() const {return filePaths_.cbegin();}
+  iterator end() {return filePaths_.end();}
+  const_iterator end() const {return filePaths_.end();}
+  const_iterator cend() const {return filePaths_.cend();}
 
 private:
+  bool fileExists(std::string fileName);
+
 protected:
   std::string baseDir_;
   std::string suffix_;
@@ -85,32 +123,44 @@ protected:
   int split_;
 
   std::vector<std::string> filePaths_;
+  std::vector<std::string> missingFiles_;
 };
 
 class ProcessInfo
 {
 public:
   ProcessInfo() = delete;
-  ProcessInfo(json, std::string, std::string);
+  ProcessInfo(nlohmann::json, std::string, std::string);
   //~ProcessInfo();
 
   std::vector<std::string> getAllFiles();
   TH1D* getHist(std::string, std::string, std::string, int, double, double);
   doubleUnc getYield(std::string, std::string);
 
-  std::string tag() {return tag_;};
-  std::string label() {return label_;};
-  bool isdata() {return isdata_;};
-  bool issignal() {return issignal_;};
-  bool isfastsim() {return isfastsim_;};
-  bool spimpose() {return spimpose_;};
-  int color() {return color_;};
-  int lcolor() {return lcolor_;};
-  int lwidth() {return lwidth_;};
-  int lstyle() {return lstyle_;};
-  int fill() {return fill_;};
-  int mcolor() {return mcolor_;};
-  int marker() {return marker_;};
+  std::string tag() {return tag_;}
+  std::string label() {return label_;}
+  bool isdata() {return isdata_;}
+  bool issignal() {return issignal_;}
+  bool isfastsim() {return isfastsim_;}
+  bool spimpose() {return spimpose_;}
+  int color() {return color_;}
+  int lcolor() {return lcolor_;}
+  int lwidth() {return lwidth_;}
+  int lstyle() {return lstyle_;}
+  int fill() {return fill_;}
+  int mcolor() {return mcolor_;}
+  int marker() {return marker_;}
+
+  // Iteration
+  typedef typename std::vector<SampleInfo>::iterator iterator;
+  typedef typename std::vector<SampleInfo>::const_iterator const_iterator;
+
+  iterator begin() {return samples_.begin();}
+  const_iterator begin() const {return samples_.begin();}
+  const_iterator cbegin() const {return samples_.cbegin();}
+  iterator end() {return samples_.end();}
+  const_iterator end() const {return samples_.end();}
+  const_iterator cend() const {return samples_.cend();}
 
 private:
 protected:
@@ -150,6 +200,17 @@ public:
   SampleReader getData();
   SampleReader getMCBkg();
   SampleReader getMCSig();
+
+  // Iteration
+  typedef typename std::vector<ProcessInfo>::iterator iterator;
+  typedef typename std::vector<ProcessInfo>::const_iterator const_iterator;
+
+  iterator begin() {return processes_.begin();}
+  const_iterator begin() const {return processes_.begin();}
+  const_iterator cbegin() const {return processes_.cbegin();}
+  iterator end() {return processes_.end();}
+  const_iterator end() const {return processes_.end();}
+  const_iterator cend() const {return processes_.cend();}
 
 private:
   SampleReader(std::string baseDir, std::string suffix): inputFile_(""), baseDir_(baseDir), suffix_(suffix) {};

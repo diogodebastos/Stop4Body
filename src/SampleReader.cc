@@ -5,6 +5,8 @@
 
 #include "TDirectory.h"
 
+using json = nlohmann::json;
+
 SampleInfo::SampleInfo(json jsonInfo, std::string baseDir = "", std::string suffix = ""):
   baseDir_(baseDir),
   suffix_(suffix),
@@ -34,17 +36,38 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir = "", std::string suff
       basePath += "_" + suffix_;
   }
 
+  std::string tmpStr = "";
   if(split == 1)
-    filePaths_.push_back(basePath + ".root");
+  {
+    tmpStr = basePath + ".root";
+    if(fileExists(tmpStr))
+      filePaths_.push_back(tmpStr);
+    else
+      //throw FileNotFound("Unable to find file: " + tmpStr);
+      missingFiles_.push_back(tmpStr);
+  }
   else
   {
     for(int i = 1; i <= split; ++i)
     {
       std::stringstream converter;
       converter << basePath << "_" << i << ".root";
-      filePaths_.push_back(converter.str());
+      tmpStr = converter.str();
+      if(fileExists(tmpStr))
+        filePaths_.push_back(tmpStr);
+      else
+        missingFiles_.push_back(tmpStr);
     }
   }
+
+  if(filePaths_.size() == 0)
+    throw EmptySampleInfo(missingFiles_);
+}
+
+bool SampleInfo::fileExists(std::string fileName)
+{
+  std::ifstream infile(fileName);
+  return infile.good();
 }
 
 ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir = "", std::string suffix = ""):
@@ -107,10 +130,14 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir = "", std::string su
     }
     catch(SampleReaderException& exception)
     {
-      if(exception.type() == SampleReaderException::ExceptionType::MissingParamsInJSON)
+      switch(exception.type())
+      {
+      case SampleReaderException::ExceptionType::MissingParamsInJSON:
         std::cout << "Unable to read '" << sample["tag"] << "'" << std::endl;
-      else
+        break;
+      default:
         throw; //Re-throw the exception
+      }
     }
   }
 }
