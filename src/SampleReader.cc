@@ -139,12 +139,19 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir = "", std::string su
       case SampleReaderException::ExceptionType::EmptySampleInfo:
         std::cout << "Unable to read any file for the sample '" << sample["tag"] << "'" << std::endl;
         std::cout << "The expected files were: " << exception.what() << std::endl;
+        for(auto file : *static_cast<std::vector<std::string>*>(exception.extra_info()))
+        {
+          missingFiles_.push_back(file);
+        }
         break;
       default:
         throw; //Re-throw the exception
       }
     }
   }
+
+  if(filePaths_.size() == 0)
+    throw EmptyProcessInfo(missingFiles_);
 }
 
 std::vector<std::string> ProcessInfo::getAllFiles()
