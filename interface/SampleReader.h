@@ -79,8 +79,32 @@ protected:
 class EmptySampleInfo: public SampleReaderException
 {
 public:
-  explicit FileNotFound(const std::vector<std::string> filesNotFound):
+  explicit EmptySampleInfo(const std::vector<std::string> filesNotFound):
     SampleReaderException("", ExceptionType::EmptySampleInfo),
+    missingFiles_(filesNotFound)
+  {
+    msg_ = "";
+    for(auto & file : missingFiles_)
+      msg_ += "'" + file + "', ";
+    msg_.pop_back();
+    msg_.pop_back();
+  }
+
+  virtual void* extra_info() const throw()
+  {
+    return &missingFiles_;
+  }
+
+private:
+protected:
+  std::vector<std::string> missingFiles_;
+};
+
+class EmptyProcessInfo: public SampleReaderException
+{
+public:
+  explicit EmptyProcessInfo(const std::vector<std::string> filesNotFound):
+    SampleReaderException("", ExceptionType::EmptyProcessInfo),
     missingFiles_(filesNotFound)
   {
     msg_ = "";
@@ -195,6 +219,7 @@ protected:
   int mcolor_;
 
   std::vector<SampleInfo> samples_;
+  std::vector<std::string> missingFiles_;
 };
 
 class SampleReader
