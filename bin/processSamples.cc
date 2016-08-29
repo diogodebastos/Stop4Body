@@ -180,7 +180,7 @@ int main(int argc, char** argv)
       {
         std::cout << "\t  Processing file: " << file << std::endl;
         TFile finput(file.c_str(), "READ");
-        foutput.cd()
+        foutput.cd();
         TTree *inputtree = (TTree*)finput.Get("tree");
 
         // Read Branches you are interested in from the input tree
@@ -525,7 +525,7 @@ int main(int argc, char** argv)
   return 0;
 
 
-  if(emptyLines.size() != 0)
+  /*if(emptyLines.size() != 0)
   {
     std::cout << "The following lines did not have any files associated to them: ";
     for(auto &process : emptyLines)
@@ -547,7 +547,7 @@ int main(int argc, char** argv)
     for(auto &file : invalidPath)
       std::cout << "\t" << file << std::endl;
     std::cout << std::endl;
-  }
+  }*/
 
   return 0;
 }
