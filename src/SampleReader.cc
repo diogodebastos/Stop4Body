@@ -150,7 +150,7 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir = "", std::string su
     }
   }
 
-  if(filePaths_.size() == 0)
+  if(samples_.size() == 0)
     throw EmptyProcessInfo(missingFiles_);
 }
 
@@ -256,6 +256,9 @@ SampleReader::SampleReader(std::string fileName, std::string baseDir = "", std::
         throw; //Re-throw the exception
     }
   }
+
+  if(processes_.size() == 0)
+    std::cout << "No files were found for any of the processes." << std::endl;
 }
 
 std::vector<std::string> SampleReader::getAllFiles()
