@@ -7,7 +7,7 @@
 
 using json = nlohmann::json;
 
-SampleInfo::SampleInfo(json jsonInfo, std::string baseDir = "", std::string suffix = ""):
+SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   baseDir_(baseDir),
   suffix_(suffix),
   crossSection_(0.0),
@@ -71,7 +71,7 @@ bool SampleInfo::fileExists(std::string fileName)
   return infile.good();
 }
 
-ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir = "", std::string suffix = ""):
+ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix):
   baseDir_(baseDir),
   suffix_(suffix),
   tag_(""),

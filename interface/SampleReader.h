@@ -128,7 +128,7 @@ class SampleInfo
 {
 public:
   SampleInfo() = delete;
-  SampleInfo(nlohmann::json, std::string, std::string);
+  SampleInfo(nlohmann::json jsonInfo, std::string baseDir = "", std::string suffix = "");
   //~SampleInfo();
 
   std::vector<std::string> getAllFiles() const {return filePaths_;};
@@ -168,7 +168,7 @@ class ProcessInfo
 {
 public:
   ProcessInfo() = delete;
-  ProcessInfo(nlohmann::json, std::string, std::string);
+  ProcessInfo(nlohmann::json jsonInfo, std::string baseDir = "", std::string suffix = "");
   //~ProcessInfo();
 
   std::vector<std::string> getAllFiles();
