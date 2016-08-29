@@ -11,25 +11,25 @@
           "tag":"Wjets_100to200",
           "xsec": 1629.87,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets100to200.root"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets100to200"
         },
         {
           "tag":"Wjets_200to400",
           "xsec": 435.6,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets200to400.root"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets200to400"
         },
         {
           "tag":"Wjets_400to600",
           "xsec": 59.169,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets400to600.root"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets400to600"
         },
         {
           "tag":"Wjets_600toInf",
           "xsec": 22.7117,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets600toInf.root"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets600toInf"
         }
       ]
     },
@@ -44,7 +44,22 @@
           "tag":"TTJets_LO",
           "xsec": 831.76,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/TTjets_LO.root"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/TTjets_LO"
+        }
+      ]
+    },
+    {
+      "tag":"QCD",
+      "isdata":false,
+      "color":614,
+      "lcolor":1,
+      "label":"QCD",
+      "files":[
+        {
+          "tag":"TTJets_LO",
+          "xsec": 831.76,
+          "br": 1.0,
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/TTjets_LO"
         }
       ]
     },
@@ -66,7 +81,7 @@
           "xsec": 1.0,
           "br": 1.0,
           "path_old":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/T2DegStop_300_270_Fullsim.root",
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/signal.root"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/signal"
         }
       ]
     },
@@ -88,7 +103,7 @@
           "tag":"T2DegStop_300_270_FastSim",
           "xsec": 1.0,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/T2DegStop_300_270_FastSim.root"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/T2DegStop_300_270_FastSim"
         }
       ]
     }

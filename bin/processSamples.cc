@@ -33,8 +33,8 @@
 #include "TLatex.h"
 #include "TLorentzVector.h"
 
-#include "UserCode/Stop4Body/interface/SampleReader.h"
 #include "UserCode/Stop4Body/interface/json.hpp"
+#include "UserCode/Stop4Body/interface/SampleReader.h"
 
 using json = nlohmann::json;
 
@@ -55,6 +55,7 @@ int main(int argc, char** argv)
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
   bool doSync = false;
+  std::string suffix = "";
 
   if(argc < 2)
   {
@@ -79,14 +80,31 @@ int main(int argc, char** argv)
     if(argument == "--outDir")
       outputDirectory = argv[++i];
 
-    if(argument == "doSync")
+    if(argument == "--doSync")
       doSync = true;
+
+    if(argument == "--suffix")
+      suffix = argv[++i];
   }
 
   if(jsonFileName == "")
   {
     std::cout << "You must define a json file" << std::endl;
+    return 1;
   }
+
+  std::cout << "Reading JSON file" << std::endl;
+  SampleReader samples(jsonFileName);
+
+  for(auto &process : samples)
+  {
+    std:cout << "Processing process: " << process.tag() << std::endl;
+    for(auto &sample : process)
+    {
+      std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
+    }
+  }
+  return 0;
 
   json jsonFile;
   std::ifstream inputFile(jsonFileName);
@@ -586,7 +604,8 @@ void printHelp()
   std::cout << "\t--help\t- Print this message" << std::endl;
   std::cout << "\t--json\t- Used to specify the json file which describes the sample, this option is obligatory. The paraeter immediately after this one should be the desired json file" << std::endl;
   std::cout << "\t--outDir\t- Used to specify the output directory. The parameter immediately after this one should be the desired directory. By default the directory './OUT/' is used" << std::endl;
-  std::cout << "\t--doSync\t- Whether a txt file with the event output should be created for synchronization purposes." << std::endl;
+  std::cout << "\t--doSync\t- Whether a txt file with the event output should be created for synchronization purposes" << std::endl;
+  std::cout << "\t--suffix\t- Suffix to add at the end of the name of the output files." << std::endl;
 
   return;
 }
