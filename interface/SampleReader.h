@@ -39,7 +39,7 @@ public:
     return msg_.c_str();
   }
 
-  virtual void* extra_info() const throw()
+  virtual void* extra_info() throw()
   {
     return nullptr;
   }
