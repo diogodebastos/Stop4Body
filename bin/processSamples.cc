@@ -102,210 +102,162 @@ int main(int argc, char** argv)
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
-    }
-  }
-  return 0;
+      std::string outputFile = outputDirectory + "/" + sample.tag();
+      if(suffix != "")
+        outputFile += "_" + suffix;
+      outputFile += ".root";
+      std::cout << "\t  Putting output in: " << outputFile << std::endl;
 
-  json jsonFile;
-  std::ifstream inputFile(jsonFileName);
-  inputFile >> jsonFile;
+      TFile foutput(outputFile.c_str(), "RECREATE");
 
-  if(jsonFile.find("lines") == jsonFile.end())
-  {
-    std::cout << "The specified json file is not a valid sample descriptor" << std::endl;
-    return 1;
-  }
-
-  std::vector<FileInfo> filesToProcess;
-  std::vector<std::string> emptyLines;
-  std::vector<std::string> emptyPath;
-  std::vector<std::string> invalidPath;
-
-  for(auto &process : jsonFile["lines"])
-  {
-    if(process.find("files") != process.end())
-    {
-      for(auto &file : process["files"])
+      std::ofstream SyFile;
+      if(doSync)
       {
-        std::string path = file["path"];
-        std::string identifier = process["tag"];
-        identifier += ":";
-        identifier += file["tag"];
-        if(path == "")
-          emptyPath.push_back(identifier);
-        else
-        {
-          if(fileExists(path))
-          {
-            FileInfo tmpFile;
-
-            tmpFile.path = path;
-            tmpFile.crossSection = file["xsec"];
-            tmpFile.branchingRatio = file["br"];
-            tmpFile.tag = file["tag"];
-
-            filesToProcess.push_back(tmpFile);
-          }
-          else
-            invalidPath.push_back(identifier + "  ->  " + path);
-        }
+        SyFile.open(outputDirectory + "/" + sample.tag() + "_synch.txt", std::ofstream::out | std::ofstream::trunc);
+        SyFile.setf(std::ios::fixed);
+        SyFile.precision(3);
       }
-    }
-    else
-      emptyLines.push_back(process["tag"]);
-  }
 
+      TTree *bdttree= new TTree("bdttree","bdttree");
 
-  for(auto &file : filesToProcess)
-  {
-    std::cout << "Processing file " << file.path << std::endl;
-    std::cout << "Putting output in: " << outputDirectory + "/" + file.tag + "_bdt.root" << std::endl;
+      // New branch in bdt tree
+      Float_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/F");
+      Float_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/F");
+      Float_t LepPt;  bdttree->Branch("LepPt",&LepPt,"LepPt/F");
+      Float_t LepEta;  bdttree->Branch("LepEta",&LepEta,"LepEta/F");
+      Float_t LepDxy;  bdttree->Branch("LepDxy",&LepDxy,"LepDxy/F");
+      Float_t LepDz;  bdttree->Branch("LepDz",&LepDz,"LepDz/F");
+      Float_t LepSip3;  bdttree->Branch("LepSip3",&LepSip3,"LepSip3/F");
+      Float_t LepIso03;  bdttree->Branch("LepIso03",&LepIso03,"LepIso03/F");
+      Float_t LepIso04;  bdttree->Branch("LepIso04",&LepIso04,"LepIso04/F");
+      Float_t nGoodMu;  bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
+      Float_t nGoodEl;  bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
+      Float_t nGoodTrack;  bdttree->Branch("nGoodTrack",&nGoodTrack,"nGoodTrack/F");
+      Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
+      Float_t mt; bdttree->Branch("mt",&mt,"mt/F");
+      Float_t Q80; bdttree-> Branch("Q80",&Q80,"Q80/F");
+      Float_t CosDeltaPhi; bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
+      Float_t NbLoose30; bdttree->Branch("NbLoose30",&NbLoose30,"NbLoose30/F");
+      Float_t NbTight30;  bdttree->Branch("NbTight30",&NbTight30,"NbTight30/F");
+      Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
+      Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
+      Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
+      Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F"); // *
+      Float_t Jet2Pt;  bdttree->Branch("Jet2Pt",&Jet2Pt,"Jet2Pt/F");
+      Float_t Jet2Eta;  bdttree->Branch("Jet2Eta",&Jet2Eta,"Jet2Eta/F");
+      Float_t Jet2CSV;  bdttree->Branch("Jet2CSV",&Jet2CSV,"Jet2CSV/F"); // *
+      Float_t Jet3Pt;  bdttree->Branch("Jet3Pt",&Jet3Pt,"Jet3Pt/F"); // *
+      Float_t Jet3Eta;  bdttree->Branch("Jet3Eta",&Jet3Eta,"Jet3Eta/F"); // *
+      Float_t Jet3CSV;  bdttree->Branch("Jet3CSV",&Jet3CSV,"Jet3CSV/F"); // *
+      Float_t DPhiJet1Jet2;  bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2,"DPhiJet1Jet2/F");
+      Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
+      Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F"); // *
+      Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F"); // *
+      Float_t DrJet1Lep;  bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
+      Float_t DrJet2Lep;  bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
+      Float_t DrJetHBLep;  bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
+      Float_t DrJet1Jet2;  bdttree->Branch("DrJet1Jet2",&DrJet1Jet2,"DrJet1Jet2/F");
+      Float_t JetLepMass;  bdttree->Branch("JetLepMass",&JetLepMass,"JetLepMass/F");
+      Float_t J3Mass;  bdttree->Branch("J3Mass",&J3Mass,"J3Mass/F");
+      Float_t HT20;  bdttree->Branch("HT20",&HT20,"HT20/F");
+      Float_t HT25;  bdttree->Branch("HT25",&HT25,"HT25/F");
+      Float_t HT30;  bdttree->Branch("HT30",&HT30,"HT30/F");
+      Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
+      Float_t Run;  bdttree->Branch("Run",&Run,"Run/F");
+      Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
+      Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
+      Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
+      Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
+      Float_t PFMET90_PFMHT90_IDTight; bdttree->Branch("PFMET90_PFMHT90_IDTight", &PFMET90_PFMHT90_IDTight,"PFMET90_PFMHT90_IDTight/F");
+      Float_t PFMETNoMu90_PFMHTNoMu90_IDTight; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90_IDTight", &PFMETNoMu90_PFMHTNoMu90_IDTight,"PFMETNoMu90_PFMHTNoMu90_IDTight/F");
+      Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
+      Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
+      Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
+      Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
+      Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
 
-    TFile finput(file.path.c_str(), "READ");
-    TFile foutput((outputDirectory + "/" + file.tag + "_bdt.root").c_str(), "RECREATE");
+      for(auto &file : sample)
+      {
+        std::cout << "\t  Processing file: " << file << std::endl;
+        TFile finput(file.c_str(), "READ");
+        foutput.cd()
+        TTree *inputtree = (TTree*)finput.Get("tree");
 
-    std::ofstream SyFile;
-    if(doSync)
-    {
-      SyFile.open(outputDirectory + "/" + file.tag + "_synch.txt", std::ofstream::out | std::ofstream::trunc);
-      SyFile.setf(std::ios::fixed);
-      SyFile.precision(3);
-    }
+        // Read Branches you are interested in from the input tree
+        Float_t mtw1;        inputtree->SetBranchAddress("mtw1"       , &mtw1);
+        Float_t mtw2;        inputtree->SetBranchAddress("mtw2"       , &mtw2);
+        Float_t mtw;        inputtree->SetBranchAddress("mtw"       , &mtw);
+        Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
+        Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
+        Int_t nBJetLoose30; inputtree->SetBranchAddress("nBJetLoose30"       , &nBJetLoose30);
+        Int_t nBJetTight30; inputtree->SetBranchAddress("nBJetTight30"       , &nBJetTight30);
+        Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+        Int_t LepGood_pdgId[40];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
+        Int_t LepGood_mediumMuonId[40]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
+        Float_t LepGood_pt[40];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
+        Float_t LepGood_eta[40];  inputtree->SetBranchAddress("LepGood_eta", &LepGood_eta);
+        Float_t LepGood_phi[40];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
+        Float_t LepGood_relIso03[40]; inputtree->SetBranchAddress("LepGood_relIso03",&LepGood_relIso03);
+        Float_t LepGood_relIso04[40]; inputtree->SetBranchAddress("LepGood_relIso04",&LepGood_relIso04);
+        Float_t LepGood_dxy[40]; inputtree->SetBranchAddress("LepGood_dxy",&LepGood_dxy);
+        Float_t LepGood_dz[40]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
+        Float_t LepGood_sip3d[40]; inputtree->SetBranchAddress("LepGood_sip3d",&LepGood_sip3d);
+        Float_t LepGood_mass[40]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
+        Int_t LepGood_charge[40]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
+        Int_t nLepOther;      inputtree->SetBranchAddress("nLepOther"   , &nLepOther);
+        Int_t LepOther_pdgId[40];  inputtree->SetBranchAddress("LepOther_pdgId", &LepOther_pdgId);
+        Int_t LepOther_mediumMuonId[40]; inputtree->SetBranchAddress("LepOther_mediumMuonId",&LepOther_mediumMuonId);
+        Float_t LepOther_pt[40];  inputtree->SetBranchAddress("LepOther_pt", &LepOther_pt);
+        Float_t LepOther_eta[40];  inputtree->SetBranchAddress("LepOther_eta", &LepOther_eta);
+        Float_t LepOther_phi[40];  inputtree->SetBranchAddress("LepOther_phi", &LepOther_phi);
+        Float_t LepOther_relIso03[40]; inputtree->SetBranchAddress("LepOther_relIso03",&LepOther_relIso03);
+        Float_t LepOther_relIso04[40]; inputtree->SetBranchAddress("LepOther_relIso04",&LepOther_relIso04);
+        Float_t LepOther_dxy[40]; inputtree->SetBranchAddress("LepOther_dxy",&LepOther_dxy);
+        Float_t LepOther_dz[40]; inputtree->SetBranchAddress("LepOther_dz",&LepOther_dz);
+        Float_t LepOther_sip3d[40]; inputtree->SetBranchAddress("LepOther_sip3d",&LepOther_sip3d);
+        Float_t LepOther_mass[40]; inputtree->SetBranchAddress("LepOther_mass",&LepOther_mass);
+        Int_t LepOther_charge[40]; inputtree->SetBranchAddress("LepOther_charge",&LepOther_charge);
+        Float_t Jet_chEMEF[40];  inputtree->SetBranchAddress("Jet_chEMEF", &Jet_chEMEF);
+        Float_t Jet_neEMEF[40];  inputtree->SetBranchAddress("Jet_neEMEF", &Jet_neEMEF);
+        Float_t Jet_chHEF[40];  inputtree->SetBranchAddress("Jet_chHEF", &Jet_chHEF);
+        Float_t Jet_neHEF[40];  inputtree->SetBranchAddress("Jet_neHEF", &Jet_neHEF);
+        Float_t Jet_pt[40];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
+        Float_t Jet_eta[40];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
+        Float_t Jet_phi[40];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
+        Float_t Jet_btagCSV[40];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
+        Float_t Jet_mass[40];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
+        Float_t xsec; inputtree->SetBranchAddress("xsec",&xsec);
+        Int_t nJet20;  inputtree->SetBranchAddress("nJet20", &nJet20);
+        Int_t nJet30;  inputtree->SetBranchAddress("nJet30", &nJet30);
+        UInt_t run;  inputtree->SetBranchAddress("run", &run);
+        ULong64_t evt;  inputtree->SetBranchAddress("evt", &evt);
+        UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
+        Float_t Tracks_pt[200];  inputtree->SetBranchAddress("Tracks_pt", &Tracks_pt);
+        Float_t Tracks_eta[200];  inputtree->SetBranchAddress("Tracks_eta", &Tracks_eta);
+        Float_t Tracks_dz[200];  inputtree->SetBranchAddress("Tracks_dz", &Tracks_dz);
+        Float_t Tracks_dxy[200];  inputtree->SetBranchAddress("Tracks_dxy", &Tracks_dxy);
+        Float_t Tracks_phi[200];  inputtree->SetBranchAddress("Tracks_phi", &Tracks_phi);
+        Float_t Tracks_CosPhiJet12[200];  inputtree->SetBranchAddress("Tracks_CosPhiJet12", &Tracks_CosPhiJet12);
+        Float_t Tracks_matchedJetDr[200];  inputtree->SetBranchAddress("Tracks_matchedJetDr", &Tracks_matchedJetDr);
+        Float_t Tracks_matchedJetIndex[200];  inputtree->SetBranchAddress("Tracks_matchedJetIndex", &Tracks_matchedJetIndex);
+        Int_t nTracks;  inputtree->SetBranchAddress("nTracks", &nTracks);
 
-    TTree *inputtree = (TTree*)finput.Get("tree");
-    TTree *bdttree= new TTree("bdttree","bdttree");
+        Int_t HLT_PFMET170_JetIdCleaned;   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
+        Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight", &HLT_PFMET90_PFMHT90_IDTight);
+        Int_t HLT_PFMETNoMu90_PFMHTNoMu90_IDTight ;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90_IDTight", &HLT_PFMETNoMu90_PFMHTNoMu90_IDTight);
+        Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
+        Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
+        Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
+        Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
+        Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
 
-    // Read Branches you are interested in from the input tree
-    Float_t mtw1;        inputtree->SetBranchAddress("mtw1"       , &mtw1);
-    Float_t mtw2;        inputtree->SetBranchAddress("mtw2"       , &mtw2);
-    Float_t mtw;        inputtree->SetBranchAddress("mtw"       , &mtw);
-    Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
-    Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
-    Int_t nBJetLoose30; inputtree->SetBranchAddress("nBJetLoose30"       , &nBJetLoose30);
-    Int_t nBJetTight30; inputtree->SetBranchAddress("nBJetTight30"       , &nBJetTight30);
-    Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
-    Int_t LepGood_pdgId[40];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
-    Int_t LepGood_mediumMuonId[40]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
-    Float_t LepGood_pt[40];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
-    Float_t LepGood_eta[40];  inputtree->SetBranchAddress("LepGood_eta", &LepGood_eta);
-    Float_t LepGood_phi[40];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
-    Float_t LepGood_relIso03[40]; inputtree->SetBranchAddress("LepGood_relIso03",&LepGood_relIso03);
-    Float_t LepGood_relIso04[40]; inputtree->SetBranchAddress("LepGood_relIso04",&LepGood_relIso04);
-    Float_t LepGood_dxy[40]; inputtree->SetBranchAddress("LepGood_dxy",&LepGood_dxy);
-    Float_t LepGood_dz[40]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
-    Float_t LepGood_sip3d[40]; inputtree->SetBranchAddress("LepGood_sip3d",&LepGood_sip3d);
-    Float_t LepGood_mass[40]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
-    Int_t LepGood_charge[40]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
-    Int_t nLepOther;      inputtree->SetBranchAddress("nLepOther"   , &nLepOther);
-    Int_t LepOther_pdgId[40];  inputtree->SetBranchAddress("LepOther_pdgId", &LepOther_pdgId);
-    Int_t LepOther_mediumMuonId[40]; inputtree->SetBranchAddress("LepOther_mediumMuonId",&LepOther_mediumMuonId);
-    Float_t LepOther_pt[40];  inputtree->SetBranchAddress("LepOther_pt", &LepOther_pt);
-    Float_t LepOther_eta[40];  inputtree->SetBranchAddress("LepOther_eta", &LepOther_eta);
-    Float_t LepOther_phi[40];  inputtree->SetBranchAddress("LepOther_phi", &LepOther_phi);
-    Float_t LepOther_relIso03[40]; inputtree->SetBranchAddress("LepOther_relIso03",&LepOther_relIso03);
-    Float_t LepOther_relIso04[40]; inputtree->SetBranchAddress("LepOther_relIso04",&LepOther_relIso04);
-    Float_t LepOther_dxy[40]; inputtree->SetBranchAddress("LepOther_dxy",&LepOther_dxy);
-    Float_t LepOther_dz[40]; inputtree->SetBranchAddress("LepOther_dz",&LepOther_dz);
-    Float_t LepOther_sip3d[40]; inputtree->SetBranchAddress("LepOther_sip3d",&LepOther_sip3d);
-    Float_t LepOther_mass[40]; inputtree->SetBranchAddress("LepOther_mass",&LepOther_mass);
-    Int_t LepOther_charge[40]; inputtree->SetBranchAddress("LepOther_charge",&LepOther_charge);
-    Float_t Jet_chEMEF[40];  inputtree->SetBranchAddress("Jet_chEMEF", &Jet_chEMEF);
-    Float_t Jet_neEMEF[40];  inputtree->SetBranchAddress("Jet_neEMEF", &Jet_neEMEF);
-    Float_t Jet_chHEF[40];  inputtree->SetBranchAddress("Jet_chHEF", &Jet_chHEF);
-    Float_t Jet_neHEF[40];  inputtree->SetBranchAddress("Jet_neHEF", &Jet_neHEF);
-    Float_t Jet_pt[40];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
-    Float_t Jet_eta[40];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
-    Float_t Jet_phi[40];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
-    Float_t Jet_btagCSV[40];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
-    Float_t Jet_mass[40];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
-    Float_t xsec; inputtree->SetBranchAddress("xsec",&xsec);
-    Int_t nJet20;  inputtree->SetBranchAddress("nJet20", &nJet20);
-    Int_t nJet30;  inputtree->SetBranchAddress("nJet30", &nJet30);
-    UInt_t run;  inputtree->SetBranchAddress("run", &run);
-    ULong64_t evt;  inputtree->SetBranchAddress("evt", &evt);
-    UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
-    Float_t Tracks_pt[200];  inputtree->SetBranchAddress("Tracks_pt", &Tracks_pt);
-    Float_t Tracks_eta[200];  inputtree->SetBranchAddress("Tracks_eta", &Tracks_eta);
-    Float_t Tracks_dz[200];  inputtree->SetBranchAddress("Tracks_dz", &Tracks_dz);
-    Float_t Tracks_dxy[200];  inputtree->SetBranchAddress("Tracks_dxy", &Tracks_dxy);
-    Float_t Tracks_phi[200];  inputtree->SetBranchAddress("Tracks_phi", &Tracks_phi);
-    Float_t Tracks_CosPhiJet12[200];  inputtree->SetBranchAddress("Tracks_CosPhiJet12", &Tracks_CosPhiJet12);
-    Float_t Tracks_matchedJetDr[200];  inputtree->SetBranchAddress("Tracks_matchedJetDr", &Tracks_matchedJetDr);
-    Float_t Tracks_matchedJetIndex[200];  inputtree->SetBranchAddress("Tracks_matchedJetIndex", &Tracks_matchedJetIndex);
-    Int_t nTracks;  inputtree->SetBranchAddress("nTracks", &nTracks);
-
-    Int_t HLT_PFMET170_JetIdCleaned;   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
-    Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight", &HLT_PFMET90_PFMHT90_IDTight);
-    Int_t HLT_PFMETNoMu90_PFMHTNoMu90_IDTight ;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90_IDTight", &HLT_PFMETNoMu90_PFMHTNoMu90_IDTight);
-    Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
-    Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
-    Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
-    Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
-    Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
-
-    // New branch in bdt tree
-    Float_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/F");
-    Float_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/F");
-    Float_t LepPt;  bdttree->Branch("LepPt",&LepPt,"LepPt/F");
-    Float_t LepEta;  bdttree->Branch("LepEta",&LepEta,"LepEta/F");
-    Float_t LepDxy;  bdttree->Branch("LepDxy",&LepDxy,"LepDxy/F");
-    Float_t LepDz;  bdttree->Branch("LepDz",&LepDz,"LepDz/F");
-    Float_t LepSip3;  bdttree->Branch("LepSip3",&LepSip3,"LepSip3/F");
-    Float_t LepIso03;  bdttree->Branch("LepIso03",&LepIso03,"LepIso03/F");
-    Float_t LepIso04;  bdttree->Branch("LepIso04",&LepIso04,"LepIso04/F");
-    Float_t nGoodMu;  bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
-    Float_t nGoodEl;  bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
-    Float_t nGoodTrack;  bdttree->Branch("nGoodTrack",&nGoodTrack,"nGoodTrack/F");
-    Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
-    Float_t mt; bdttree->Branch("mt",&mt,"mt/F");
-    Float_t Q80; bdttree-> Branch("Q80",&Q80,"Q80/F");
-    Float_t CosDeltaPhi; bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
-    Float_t NbLoose30; bdttree->Branch("NbLoose30",&NbLoose30,"NbLoose30/F");
-    Float_t NbTight30;  bdttree->Branch("NbTight30",&NbTight30,"NbTight30/F");
-    Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
-    Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
-    Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
-    Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F"); // *
-    Float_t Jet2Pt;  bdttree->Branch("Jet2Pt",&Jet2Pt,"Jet2Pt/F");
-    Float_t Jet2Eta;  bdttree->Branch("Jet2Eta",&Jet2Eta,"Jet2Eta/F");
-    Float_t Jet2CSV;  bdttree->Branch("Jet2CSV",&Jet2CSV,"Jet2CSV/F"); // *
-    Float_t Jet3Pt;  bdttree->Branch("Jet3Pt",&Jet3Pt,"Jet3Pt/F"); // *
-    Float_t Jet3Eta;  bdttree->Branch("Jet3Eta",&Jet3Eta,"Jet3Eta/F"); // *
-    Float_t Jet3CSV;  bdttree->Branch("Jet3CSV",&Jet3CSV,"Jet3CSV/F"); // *
-    Float_t DPhiJet1Jet2;  bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2,"DPhiJet1Jet2/F");
-    Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
-    Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F"); // *
-    Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F"); // *
-    Float_t DrJet1Lep;  bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
-    Float_t DrJet2Lep;  bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
-    Float_t DrJetHBLep;  bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
-    Float_t DrJet1Jet2;  bdttree->Branch("DrJet1Jet2",&DrJet1Jet2,"DrJet1Jet2/F");
-    Float_t JetLepMass;  bdttree->Branch("JetLepMass",&JetLepMass,"JetLepMass/F");
-    Float_t J3Mass;  bdttree->Branch("J3Mass",&J3Mass,"J3Mass/F");
-    Float_t HT20;  bdttree->Branch("HT20",&HT20,"HT20/F");
-    Float_t HT25;  bdttree->Branch("HT25",&HT25,"HT25/F");
-    Float_t HT30;  bdttree->Branch("HT30",&HT30,"HT30/F");
-    Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
-    Float_t Run;  bdttree->Branch("Run",&Run,"Run/F");
-    Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
-    Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
-    Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
-    Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
-    Float_t PFMET90_PFMHT90_IDTight; bdttree->Branch("PFMET90_PFMHT90_IDTight", &PFMET90_PFMHT90_IDTight,"PFMET90_PFMHT90_IDTight/F");
-    Float_t PFMETNoMu90_PFMHTNoMu90_IDTight; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90_IDTight", &PFMETNoMu90_PFMHTNoMu90_IDTight,"PFMETNoMu90_PFMHTNoMu90_IDTight/F");
-    Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
-    Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
-    Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
-    Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
-    Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
-
-    // Read the number of entries in the inputtree
-    Int_t nentries = (Int_t)inputtree->GetEntries();
-    std::cout << "\tThe file has " << nentries << " events." << std::endl;
-    std::cout << "\tProgress Bar: " << std::flush;
-    int statusPrint = nentries/20;
-    for(Int_t i = 0; i < nentries; i++)
-    {
+        // Read the number of entries in the inputtree
+        Int_t nentries = (Int_t)inputtree->GetEntries();
+        std::cout << "\t    The file has " << nentries << " events." << std::endl;
+        std::cout << "\t    Progress Bar: " << std::flush;
+        int statusPrint = nentries/20;
+        for(Int_t i = 0; i < nentries; i++)
+        {
       // Uncomment this if you suspect the loop is not going through the events
       /*if(i%2 == 0)
         std::cout << "$\b" << std::flush;
@@ -563,12 +515,14 @@ int main(int argc, char** argv)
       }
 
       bdttree->Fill();
+        }
+        std::cout << std::endl;
+      }
+      foutput.cd();
+      bdttree->Write("",TObject::kOverwrite);
     }
-    std::cout << std::endl;
-
-    foutput.cd();
-    bdttree->Write("",TObject::kOverwrite);
   }
+  return 0;
 
 
   if(emptyLines.size() != 0)
