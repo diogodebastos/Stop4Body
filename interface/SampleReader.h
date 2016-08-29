@@ -65,16 +65,24 @@ class SampleInfo
 {
 public:
   SampleInfo() = delete;
-  SampleInfo(json);
+  SampleInfo(json, std::string, std::string);
   //~SampleInfo();
 
-  std::vector<std::string> getAllFiles();
+  std::vector<std::string> getAllFiles() const {return filePaths_;};
+
+  double crossSection() const {return crossSection_;};
+  double branchingRatio() const {return branchingRatio_;};
+  std::string tag() const {return tag_;};
+  int split() const {return split_;};
 
 private:
 protected:
+  std::string baseDir_;
+  std::string suffix_;
   double crossSection_;
   double branchingRatio_;
   std::string tag_;
+  int split_;
 
   std::vector<std::string> filePaths_;
 };
@@ -83,7 +91,7 @@ class ProcessInfo
 {
 public:
   ProcessInfo() = delete;
-  ProcessInfo(json);
+  ProcessInfo(json, std::string, std::string);
   //~ProcessInfo();
 
   std::vector<std::string> getAllFiles();
@@ -106,6 +114,8 @@ public:
 
 private:
 protected:
+  std::string baseDir_;
+  std::string suffix_;
   std::string tag_;
   std::string label_;
   bool isdata_;
@@ -126,7 +136,7 @@ protected:
 class SampleReader
 {
 public:
-  SampleReader(std::string);
+  SampleReader(std::string, std::string, std::string);
   //~SampleReader();
 
   void printErrors(std::ostream&);
@@ -142,10 +152,12 @@ public:
   SampleReader getMCSig();
 
 private:
-  SampleReader(): inputFile_("") {};
+  SampleReader(std::string baseDir, std::string suffix): inputFile_(""), baseDir_(baseDir), suffix_(suffix) {};
 
 protected:
   std::string inputFile_;
+  std::string baseDir_;
+  std::string suffix_;
   std::vector<ProcessInfo> processes_;
 };
 

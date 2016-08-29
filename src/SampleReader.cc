@@ -227,7 +227,7 @@ void SampleReader::printErrors(std::ostream& stream)
 
 SampleReader SampleReader::getData()
 {
-  SampleReader retVal;
+  SampleReader retVal(baseDir_, suffix_);
 
   retVal.inputFile_ = inputFile_;
   retVal.baseDir_ = baseDir_;
@@ -243,7 +243,7 @@ SampleReader SampleReader::getData()
 
 SampleReader SampleReader::getMCBkg()
 {
-  SampleReader retVal;
+  SampleReader retVal(baseDir_, suffix_);
 
   retVal.inputFile_ = inputFile_;
   retVal.baseDir_ = baseDir_;
@@ -259,7 +259,7 @@ SampleReader SampleReader::getMCBkg()
 
 SampleReader SampleReader::getMCSig()
 {
-  SampleReader retVal;
+  SampleReader retVal(baseDir_, suffix_);
 
   retVal.inputFile_ = inputFile_;
   retVal.baseDir_ = baseDir_;
