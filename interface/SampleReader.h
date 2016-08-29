@@ -259,6 +259,7 @@ protected:
   std::string baseDir_;
   std::string suffix_;
   std::vector<ProcessInfo> processes_;
+  std::vector<std::string> missingFiles_;
 };
 
 #endif
