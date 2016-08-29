@@ -39,6 +39,11 @@ public:
     return msg_.c_str();
   }
 
+  virtual void* extra_info() const throw()
+  {
+    return nullptr;
+  }
+
   ExceptionType type() {return type_;}
 
 private:
@@ -85,9 +90,14 @@ public:
     msg_.pop_back();
   }
 
+  virtual void* extra_info() const throw()
+  {
+    return &missingFiles_;
+  }
+
 private:
 protected:
-  std::vector<std::string> missingFiles_
+  std::vector<std::string> missingFiles_;
 };
 
 class SampleInfo

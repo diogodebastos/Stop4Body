@@ -52,7 +52,8 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir = "", std::string suff
     {
       std::stringstream converter;
       converter << basePath << "_" << i << ".root";
-      tmpStr = converter.str();
+      //tmpStr = converter.str();
+      converter >> tmpStr;
       if(fileExists(tmpStr))
         filePaths_.push_back(tmpStr);
       else
@@ -232,7 +233,7 @@ SampleReader::SampleReader(std::string fileName, std::string baseDir = "", std::
     catch(SampleReaderException& exception)
     {
       if(exception.type() == SampleReaderException::ExceptionType::MissingParamsInJSON)
-        std::cout << "Unable to read '" << process["tag"] << "'" << std::endl;
+        std::cout << "Unable to read '" << process["tag"] << "', there are missing fields in the JSON file." << std::endl;
       else
         throw; //Re-throw the exception
     }
