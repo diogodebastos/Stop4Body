@@ -175,19 +175,20 @@ public:
   TH1D* getHist(std::string, std::string, std::string, int, double, double);
   doubleUnc getYield(std::string, std::string);
 
-  std::string tag() {return tag_;}
-  std::string label() {return label_;}
-  bool isdata() {return isdata_;}
-  bool issignal() {return issignal_;}
-  bool isfastsim() {return isfastsim_;}
-  bool spimpose() {return spimpose_;}
-  int color() {return color_;}
-  int lcolor() {return lcolor_;}
-  int lwidth() {return lwidth_;}
-  int lstyle() {return lstyle_;}
-  int fill() {return fill_;}
-  int mcolor() {return mcolor_;}
-  int marker() {return marker_;}
+  std::string tag() const {return tag_;}
+  std::string label() const {return label_;}
+  bool isdata() const {return isdata_;}
+  bool issignal() const {return issignal_;}
+  bool isfastsim() const {return isfastsim_;}
+  bool spimpose() const {return spimpose_;}
+  int color() const {return color_;}
+  int lcolor() const {return lcolor_;}
+  int lwidth() const {return lwidth_;}
+  int lstyle() const {return lstyle_;}
+  int fill() const {return fill_;}
+  int mcolor() const {return mcolor_;}
+  int marker() const {return marker_;}
+  std::string tag() const {return tag_;}
 
   // Iteration
   typedef typename std::vector<SampleInfo>::iterator iterator;
