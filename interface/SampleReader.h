@@ -78,7 +78,11 @@ public:
     SampleReaderException("", ExceptionType::EmptySampleInfo),
     missingFiles_(filesNotFound)
   {
-    // TODO: build error message
+    msg_ = "";
+    for(auto & file : missingFiles_)
+      msg_ += "'" + file + "', ";
+    msg_.pop_back();
+    msg_.pop_back();
   }
 
 private:

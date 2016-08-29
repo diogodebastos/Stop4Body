@@ -133,7 +133,11 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir = "", std::string su
       switch(exception.type())
       {
       case SampleReaderException::ExceptionType::MissingParamsInJSON:
-        std::cout << "Unable to read '" << sample["tag"] << "'" << std::endl;
+        std::cout << "Unable to read '" << sample["tag"] << "', there are missing fields in the JSON file." << std::endl;
+        break;
+      case SampleReaderException::ExceptionType::EmptySampleInfo:
+        std::cout << "Unable to read any file for the sample '" << sample["tag"] << "'" << std::endl;
+        std::cout << "The expected files were: " << exception.what() << std::endl;
         break;
       default:
         throw; //Re-throw the exception
