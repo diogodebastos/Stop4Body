@@ -30,14 +30,14 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir = "", std::string suff
   std::string basePath = jsonInfo["path"];
   if(baseDir_ != "")
   {
-    split = 1;
+    split_ = 1;
     basePath = baseDir_ + "/" + tag_;
     if(suffix_ != "")
       basePath += "_" + suffix_;
   }
 
   std::string tmpStr = "";
-  if(split == 1)
+  if(split_ == 1)
   {
     tmpStr = basePath + ".root";
     if(fileExists(tmpStr))
@@ -48,7 +48,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir = "", std::string suff
   }
   else
   {
-    for(int i = 1; i <= split; ++i)
+    for(int i = 1; i <= split_; ++i)
     {
       std::stringstream converter;
       converter << basePath << "_" << i << ".root";
@@ -218,7 +218,7 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
   return retVal;
 }
 
-SampleReader::SampleReader(std::string fileName, std::string baseDir = "", std::string suffix = ""):
+SampleReader::SampleReader(std::string fileName, std::string baseDir, std::string suffix):
   inputFile_(fileName),
   baseDir_(baseDir),
   suffix_(suffix)
@@ -254,6 +254,7 @@ SampleReader::SampleReader(std::string fileName, std::string baseDir = "", std::
         break;
       default:
         throw; //Re-throw the exception
+      }
     }
   }
 
@@ -280,7 +281,7 @@ void SampleReader::printErrors(std::ostream& stream)
 
 SampleReader SampleReader::getData()
 {
-  SampleReader retVal(baseDir_, suffix_);
+  SampleReader retVal;
 
   retVal.inputFile_ = inputFile_;
   retVal.baseDir_ = baseDir_;
@@ -296,7 +297,7 @@ SampleReader SampleReader::getData()
 
 SampleReader SampleReader::getMCBkg()
 {
-  SampleReader retVal(baseDir_, suffix_);
+  SampleReader retVal;
 
   retVal.inputFile_ = inputFile_;
   retVal.baseDir_ = baseDir_;
@@ -312,7 +313,7 @@ SampleReader SampleReader::getMCBkg()
 
 SampleReader SampleReader::getMCSig()
 {
-  SampleReader retVal(baseDir_, suffix_);
+  SampleReader retVal;
 
   retVal.inputFile_ = inputFile_;
   retVal.baseDir_ = baseDir_;

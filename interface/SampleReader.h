@@ -90,7 +90,7 @@ public:
     msg_.pop_back();
   }
 
-  virtual void* extra_info() const throw()
+  virtual void* extra_info() throw()
   {
     return &missingFiles_;
   }
@@ -114,7 +114,7 @@ public:
     msg_.pop_back();
   }
 
-  virtual void* extra_info() const throw()
+  virtual void* extra_info() throw()
   {
     return &missingFiles_;
   }
@@ -188,7 +188,6 @@ public:
   int fill() const {return fill_;}
   int mcolor() const {return mcolor_;}
   int marker() const {return marker_;}
-  std::string tag() const {return tag_;}
 
   // Iteration
   typedef typename std::vector<SampleInfo>::iterator iterator;
@@ -226,7 +225,7 @@ protected:
 class SampleReader
 {
 public:
-  SampleReader(std::string, std::string, std::string);
+  SampleReader(std::string fileName, std::string baseDir = "", std::string suffix = "");
   //~SampleReader();
 
   void printErrors(std::ostream&);
@@ -253,7 +252,7 @@ public:
   const_iterator cend() const {return processes_.cend();}
 
 private:
-  SampleReader(std::string baseDir, std::string suffix): inputFile_(""), baseDir_(baseDir), suffix_(suffix) {};
+  SampleReader(): inputFile_(""), baseDir_(""), suffix_("") {};
 
 protected:
   std::string inputFile_;

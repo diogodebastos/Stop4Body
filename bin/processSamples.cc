@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 
   for(auto &process : samples)
   {
-    std:cout << "Processing process: " << process.tag() << std::endl;
+    std::cout << "Processing process: " << process.tag() << std::endl;
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
