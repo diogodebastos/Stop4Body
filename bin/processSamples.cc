@@ -258,263 +258,263 @@ int main(int argc, char** argv)
         int statusPrint = nentries/20;
         for(Int_t i = 0; i < nentries; i++)
         {
-      // Uncomment this if you suspect the loop is not going through the events
-      /*if(i%2 == 0)
-        std::cout << "$\b" << std::flush;
-      else
-        std::cout << " \b" << std::flush;// */
-      if(i%statusPrint == 0 && i != 0)
-        std::cout << "*" << std::flush;
-      inputtree->GetEntry(i);
+          // Uncomment this if you suspect the loop is not going through the events
+          /*if(i%2 == 0)
+            std::cout << "$\b" << std::flush;
+          else
+            std::cout << " \b" << std::flush;// */
+          if(i%statusPrint == 0 && i != 0)
+            std::cout << "*" << std::flush;
+          inputtree->GetEntry(i);
 
-      // Preselection
-      nGoodMu = 0;
-      nGoodEl = 0;
-      Int_t ilep = nLepGood;
-      for(Int_t l = 0; l < nLepGood; l++)
-      {
-        bool lPTETA = (LepGood_pt[l] > 5.0)
-                   && (LepGood_pt[l] < 30.0)
-                   && (abs(LepGood_eta[l]) < 2.4);
-        bool lID = (abs(LepGood_dxy[l]) < 0.05)
-                && (abs(LepGood_dz[l]) < 0.2)
-                && (LepGood_sip3d[l] < 4.0);
-        bool lIS = ((LepGood_pt[l] >= 25.0) && (LepGood_relIso04[l] < 0.2))
-                || ((LepGood_pt[l] <  25.0) && ((LepGood_pt[l] * LepGood_relIso04[l]) < 5.0));
+          // Preselection
+          nGoodMu = 0;
+          nGoodEl = 0;
+          Int_t ilep = nLepGood;
+          for(Int_t l = 0; l < nLepGood; l++)
+          {
+            bool lPTETA = (LepGood_pt[l] > 5.0)
+                       && (LepGood_pt[l] < 30.0)
+                       && (abs(LepGood_eta[l]) < 2.4);
+            bool lID = (abs(LepGood_dxy[l]) < 0.05)
+                    && (abs(LepGood_dz[l]) < 0.2)
+                    && (LepGood_sip3d[l] < 4.0);
+            bool lIS = ((LepGood_pt[l] >= 25.0) && (LepGood_relIso04[l] < 0.2))
+                    || ((LepGood_pt[l] <  25.0) && ((LepGood_pt[l] * LepGood_relIso04[l]) < 5.0));
 
-        if( lPTETA && lID && lIS )
-        {
-          if( (abs(LepGood_pdgId[l]) == 13)  &&  (LepGood_mediumMuonId[l] == 1) )
-            nGoodMu += 1;
-          if( abs(LepGood_pdgId[l]) == 11 )
-            nGoodEl += 1;
-          if(l < ilep)
-            ilep = l;
-        }
-      }
+            if( lPTETA && lID && lIS )
+            {
+              if( (abs(LepGood_pdgId[l]) == 13)  &&  (LepGood_mediumMuonId[l] == 1) )
+                nGoodMu += 1;
+              if( abs(LepGood_pdgId[l]) == 11 )
+                nGoodEl += 1;
+              if(l < ilep)
+                ilep = l;
+            }
+          }
 
-      nGoodTrack=0;
-      for (Int_t l = 0; l < nTracks; l++)
-      {
-        int index=Tracks_matchedJetIndex[l];
+          nGoodTrack=0;
+          for (Int_t l = 0; l < nTracks; l++)
+          {
+            int index=Tracks_matchedJetIndex[l];
 
-        if( Tracks_pt[l] > 2.5
-          && fabs(Tracks_eta[l]) < 2.5
-          && fabs(Tracks_dz[l]) < 0.1
-          && fabs(Tracks_dxy[l]) < 0.1
-          && Tracks_CosPhiJet12[l]  < 0.7
-          && ( Tracks_matchedJetDr[l] > 0.4 || (index >=0 && Jet_pt[ index ]  < 60 )))
-        {
-          nGoodTrack++;
-        }
-      }
+            if( Tracks_pt[l] > 2.5
+              && fabs(Tracks_eta[l]) < 2.5
+              && fabs(Tracks_dz[l]) < 0.1
+              && fabs(Tracks_dxy[l]) < 0.1
+              && Tracks_CosPhiJet12[l]  < 0.7
+              && ( Tracks_matchedJetDr[l] > 0.4 || (index >=0 && Jet_pt[ index ]  < 60 )))
+            {
+              nGoodTrack++;
+            }
+          }
 
-      // Set the value of the branches in the bdttree
-      Nevt = nentries;
-      mt = mtw;
-      Q80 = mtw1;
-      CosDeltaPhi = mtw2;
-      Met = met_pt;
-      NbLoose30 = nBJetLoose30;
-      NbTight30 = nBJetTight30;
+          // Set the value of the branches in the bdttree
+          Nevt = nentries;
+          mt = mtw;
+          Q80 = mtw1;
+          CosDeltaPhi = mtw2;
+          Met = met_pt;
+          NbLoose30 = nBJetLoose30;
+          NbTight30 = nBJetTight30;
 
-      float DrJetLepMax = 999.;
-      Int_t ij = 0;
-      for(Int_t j = 0; j < nJet20; j++)
-      {
-        float dpi = DeltaPhi(Jet_phi[j],LepGood_phi[ilep]);
-        float dei = Jet_eta[j]-LepGood_eta[ilep];
-        float dri = sqrt( pow(dpi,2) + pow(dei,2) );
-        if(dri < DrJetLepMax)
-        {
-          DrJetLepMax = dri;
-          ij = j;
-        }
-      }
+          float DrJetLepMax = 999.;
+          Int_t ij = 0;
+          for(Int_t j = 0; j < nJet20; j++)
+          {
+            float dpi = DeltaPhi(Jet_phi[j],LepGood_phi[ilep]);
+            float dei = Jet_eta[j]-LepGood_eta[ilep];
+            float dri = sqrt( pow(dpi,2) + pow(dei,2) );
+            if(dri < DrJetLepMax)
+            {
+              DrJetLepMax = dri;
+              ij = j;
+            }
+          }
 
-      TLorentzVector VJ, VLep, JLep;
-      VLep.SetPtEtaPhiM(LepGood_pt[ilep], LepGood_eta[ilep], LepGood_phi[ilep], LepGood_mass[ilep]);
-      VJ.SetPtEtaPhiM(Jet_pt[ij], Jet_eta[ij], Jet_phi[ij], Jet_mass[ij]);
-      JLep = VJ + VLep;
-      JetLepMass = JLep.M();
+          TLorentzVector VJ, VLep, JLep;
+          VLep.SetPtEtaPhiM(LepGood_pt[ilep], LepGood_eta[ilep], LepGood_phi[ilep], LepGood_mass[ilep]);
+          VJ.SetPtEtaPhiM(Jet_pt[ij], Jet_eta[ij], Jet_phi[ij], Jet_mass[ij]);
+          JLep = VJ + VLep;
+          JetLepMass = JLep.M();
 
-      TLorentzVector VJ3i, VJ3;
-      for(Int_t j = 0; j < nJet20; j++)
-      {
-        if (j == ij)
-          continue;
-        VJ3i.SetPtEtaPhiM(Jet_pt[j], Jet_eta[j], Jet_phi[j], Jet_mass[j]);
-        VJ3 += VJ3i;
-      }
-      J3Mass = VJ3.M();
+          TLorentzVector VJ3i, VJ3;
+          for(Int_t j = 0; j < nJet20; j++)
+          {
+            if (j == ij)
+              continue;
+            VJ3i.SetPtEtaPhiM(Jet_pt[j], Jet_eta[j], Jet_phi[j], Jet_mass[j]);
+            VJ3 += VJ3i;
+          }
+          J3Mass = VJ3.M();
 
-      if(nJet20 >= 1)
-      {
-        Jet1Pt = Jet_pt[0];
-        Jet1Eta = Jet_eta[0];
-        Jet1CSV = Jet_btagCSV[0];
-        float dphi = DeltaPhi(Jet_phi[0], LepGood_phi[ilep]);
-        float deta = Jet_eta[0] - LepGood_eta[ilep];
-        DrJet1Lep = sqrt( pow(dphi,2) + pow(deta,2) );
-      }
-      else
-      {
-        Jet1Pt = -999.;
-        Jet1Eta = -999.;
-        Jet1CSV = -999.;
-        DrJet1Lep = -999.;
-        Jet2Pt = -999.;
-        Jet2Eta = -999.;
-        Jet2CSV = -999.;
-        Jet3Pt = -999.;
-        Jet3Eta = -999.;
-        Jet3CSV = -999.;
-      }
+          if(nJet20 >= 1)
+          {
+            Jet1Pt = Jet_pt[0];
+            Jet1Eta = Jet_eta[0];
+            Jet1CSV = Jet_btagCSV[0];
+            float dphi = DeltaPhi(Jet_phi[0], LepGood_phi[ilep]);
+            float deta = Jet_eta[0] - LepGood_eta[ilep];
+            DrJet1Lep = sqrt( pow(dphi,2) + pow(deta,2) );
+          }
+          else
+          {
+            Jet1Pt = -999.;
+            Jet1Eta = -999.;
+            Jet1CSV = -999.;
+            DrJet1Lep = -999.;
+            Jet2Pt = -999.;
+            Jet2Eta = -999.;
+            Jet2CSV = -999.;
+            Jet3Pt = -999.;
+            Jet3Eta = -999.;
+            Jet3CSV = -999.;
+          }
 
-      if(nJet20>=2)
-      {
-        float dphijj, detajj;
-        Jet2Pt = Jet_pt[1];
-        Jet2Eta = Jet_eta[1];
-        Jet2CSV = Jet_btagCSV[1];
-        dphijj = DeltaPhi(Jet_phi[0], Jet_phi[1]);
-        detajj = Jet_eta[0] - Jet_eta[1];
-        DPhiJet1Jet2 = dphijj;
-        DrJet1Jet2 = sqrt( pow(dphijj,2) + pow(detajj,2) );
+          if(nJet20>=2)
+          {
+            float dphijj, detajj;
+            Jet2Pt = Jet_pt[1];
+            Jet2Eta = Jet_eta[1];
+            Jet2CSV = Jet_btagCSV[1];
+            dphijj = DeltaPhi(Jet_phi[0], Jet_phi[1]);
+            detajj = Jet_eta[0] - Jet_eta[1];
+            DPhiJet1Jet2 = dphijj;
+            DrJet1Jet2 = sqrt( pow(dphijj,2) + pow(detajj,2) );
 
-        float dphi = DeltaPhi(Jet_phi[1], LepGood_phi[ilep]);
-        float deta = Jet_eta[1] - LepGood_eta[ilep];
-        DrJet2Lep = sqrt( pow(dphi,2) + pow(deta,2) );
-      }
-      else
-      {
-        Jet2Pt = -999.;
-        Jet2Eta = -999.;
-        Jet2CSV = -999.;
-        DPhiJet1Jet2 = -999.;
-        DrJet1Jet2 = -999.;
-        DrJet2Lep = -999.;
-      }
+            float dphi = DeltaPhi(Jet_phi[1], LepGood_phi[ilep]);
+            float deta = Jet_eta[1] - LepGood_eta[ilep];
+            DrJet2Lep = sqrt( pow(dphi,2) + pow(deta,2) );
+          }
+          else
+          {
+            Jet2Pt = -999.;
+            Jet2Eta = -999.;
+            Jet2CSV = -999.;
+            DPhiJet1Jet2 = -999.;
+            DrJet1Jet2 = -999.;
+            DrJet2Lep = -999.;
+          }
 
-      if(nJet20>=3)
-      {
-        Jet3Pt = Jet_pt[2];
-        Jet3Eta = Jet_eta[2];
-        Jet3CSV = Jet_btagCSV[2];
-      }
-      else
-      {
-        Jet3Pt = -999.;
-        Jet3Eta = -999.;
-        Jet3CSV = -999.;
-      }
+          if(nJet20>=3)
+          {
+            Jet3Pt = Jet_pt[2];
+            Jet3Eta = Jet_eta[2];
+            Jet3CSV = Jet_btagCSV[2];
+          }
+          else
+          {
+            Jet3Pt = -999.;
+            Jet3Eta = -999.;
+            Jet3CSV = -999.;
+          }
 
-      JetHBpt = -999.;
-      JetHBeta = -999.;
-      JetHBindex = -1;
-      DrJetHBLep = -999.;
-      Float_t BtagMax = -999.;
-      Int_t iBtag = -1;
-      for(Int_t j = 0; j < nJet20; j++)
-      {
-        if((Jet_btagCSV[j] != -10)  &&  (Jet_btagCSV[j] > BtagMax))
-        {
-          BtagMax = Jet_btagCSV[j];
-          iBtag = j;
-        }
-      }
+          JetHBpt = -999.;
+          JetHBeta = -999.;
+          JetHBindex = -1;
+          DrJetHBLep = -999.;
+          Float_t BtagMax = -999.;
+          Int_t iBtag = -1;
+          for(Int_t j = 0; j < nJet20; j++)
+          {
+            if((Jet_btagCSV[j] != -10)  &&  (Jet_btagCSV[j] > BtagMax))
+            {
+              BtagMax = Jet_btagCSV[j];
+              iBtag = j;
+            }
+          }
 
-      if(iBtag >= 0)
-      {
-        JetHBpt = Jet_pt[iBtag];
-        JetHBeta = Jet_eta[iBtag];
-        JetHBindex = iBtag;
-        float dphib, detab;
-        dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[ilep]);
-        detab = Jet_eta[iBtag] - LepGood_eta[ilep];
-        DrJetHBLep = sqrt( pow(dphib,2) + pow(detab,2) );
-      }
+          if(iBtag >= 0)
+          {
+            JetHBpt = Jet_pt[iBtag];
+            JetHBeta = Jet_eta[iBtag];
+            JetHBindex = iBtag;
+            float dphib, detab;
+            dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[ilep]);
+            detab = Jet_eta[iBtag] - LepGood_eta[ilep];
+            DrJetHBLep = sqrt( pow(dphib,2) + pow(detab,2) );
+          }
 
-      LepChg=LepGood_charge[ilep];
-      LepID=LepGood_pdgId[ilep];
-      LepPt=LepGood_pt[ilep];
-      LepEta=LepGood_eta[ilep];
-      LepDxy=LepGood_dxy[ilep];
-      LepDz=LepGood_dz[ilep];
-      LepSip3=LepGood_sip3d[ilep];
-      LepIso03=LepGood_relIso03[ilep];
-      LepIso04=LepGood_relIso04[ilep];
-      HT20 = 0.;
-      HT25 = 0.;
-      HT30 = 0.;
-      Njet = 0;
-      for(Int_t j = 0; j < nJet20; j++)
-      {
-        if(Jet_pt[j] > 20.)
-        {
-          HT20 += Jet_pt[j];
-          Njet += 1;
-        }
-        if(Jet_pt[j] > 25.)
-          HT25 += Jet_pt[j];
-        if(Jet_pt[j] > 30.)
-          HT30 += Jet_pt[j];
-      }
+          LepChg=LepGood_charge[ilep];
+          LepID=LepGood_pdgId[ilep];
+          LepPt=LepGood_pt[ilep];
+          LepEta=LepGood_eta[ilep];
+          LepDxy=LepGood_dxy[ilep];
+          LepDz=LepGood_dz[ilep];
+          LepSip3=LepGood_sip3d[ilep];
+          LepIso03=LepGood_relIso03[ilep];
+          LepIso04=LepGood_relIso04[ilep];
+          HT20 = 0.;
+          HT25 = 0.;
+          HT30 = 0.;
+          Njet = 0;
+          for(Int_t j = 0; j < nJet20; j++)
+          {
+            if(Jet_pt[j] > 20.)
+            {
+              HT20 += Jet_pt[j];
+              Njet += 1;
+            }
+            if(Jet_pt[j] > 25.)
+              HT25 += Jet_pt[j];
+            if(Jet_pt[j] > 30.)
+              HT30 += Jet_pt[j];
+          }
 
-      Run = run;
-      Event = evt;
-      LumiSec = lumi;
-      XS = xsec;
-      //XS = file.crossSection;
+          Run = run;
+          Event = evt;
+          LumiSec = lumi;
+          XS = xsec;
+          //XS = file.crossSection;
 
-      PFMET170JetIdCleaned                = HLT_PFMET170_JetIdCleaned;
-      PFMET90_PFMHT90_IDTight             = HLT_PFMET90_PFMHT90_IDTight;
-      PFMETNoMu90_PFMHTNoMu90_IDTight     = HLT_PFMETNoMu90_PFMHTNoMu90_IDTight;
-      HBHENoiseFilter                     = Flag_HBHENoiseFilter;
-      HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
-      eeBadScFilter                       = Flag_eeBadScFilter;
-      EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
-      goodVertices                        = Flag_goodVertices;
+          PFMET170JetIdCleaned                = HLT_PFMET170_JetIdCleaned;
+          PFMET90_PFMHT90_IDTight             = HLT_PFMET90_PFMHT90_IDTight;
+          PFMETNoMu90_PFMHTNoMu90_IDTight     = HLT_PFMETNoMu90_PFMHTNoMu90_IDTight;
+          HBHENoiseFilter                     = Flag_HBHENoiseFilter;
+          HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
+          eeBadScFilter                       = Flag_eeBadScFilter;
+          EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
+          goodVertices                        = Flag_goodVertices;
 
-      // Skim
-      bool emu = (nGoodMu == 1)  ||  (nGoodEl == 1);
-      bool isISR = (Jet_pt[0] > 110.)  &&  (Njet > 0);
-      bool dPhi = DPhiJet1Jet2 < 2.5;
-      bool met = Met > 100.;
-      if(!emu)     continue;
-      if(!isISR)   continue;
-      if(!dPhi)    continue;
-      if(!met)     continue;
+          // Skim
+          bool emu = (nGoodMu == 1)  ||  (nGoodEl == 1);
+          bool isISR = (Jet_pt[0] > 110.)  &&  (Njet > 0);
+          bool dPhi = DPhiJet1Jet2 < 2.5;
+          bool met = Met > 100.;
+          if(!emu)     continue;
+          if(!isISR)   continue;
+          if(!dPhi)    continue;
+          if(!met)     continue;
 
-      // MET filters
-      /*if(HBHENoiseFilter                    != 1)  continue;
-      if(HBHENoiseIsoFilter                 != 1)  continue;
-      if(EcalDeadCellTriggerPrimitiveFilter != 1)  continue;
-      if(goodVertices                       != 1)  continue;
-      if(eeBadScFilter                      != 1)  continue;
-      //if(globalTightHalo2016Filter          != 1)  continue;
-      //if(badMuonFilter                      != 1)  continue;
-      //if(badChargedHadronFilter             != 1)  continue; // */
+          // MET filters
+          /*if(HBHENoiseFilter                    != 1)  continue;
+          if(HBHENoiseIsoFilter                 != 1)  continue;
+          if(EcalDeadCellTriggerPrimitiveFilter != 1)  continue;
+          if(goodVertices                       != 1)  continue;
+          if(eeBadScFilter                      != 1)  continue;
+          //if(globalTightHalo2016Filter          != 1)  continue;
+          //if(badMuonFilter                      != 1)  continue;
+          //if(badChargedHadronFilter             != 1)  continue; // */
 
-      if(abs(LepGood_pdgId[ilep]) == 13  &&  doSync)
-      {
-        SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
-        SyFile << " pT(l): " << LepPt << " eta(l): " << LepEta << " pdgID: " << LepID << std::endl;
-        SyFile << " Met: " << Met << " Q80: " << Q80 << " CosDeltaPhi: " << CosDeltaPhi << std::endl;
-        SyFile << " N(j): " << Njet << " pT(j1): " << Jet1Pt << " pT(j2): " << Jet2Pt << " pT(j3): " << Jet_pt[2] << " HT: " << HT25 << std::endl;
-        //SyFile << " eta(j1): " << Jet1Eta << " eta(j2): " << Jet2Eta;
-        //SyFile << " dPhi(j1,j2): " << DPhiJet1Jet2;
-        SyFile << " N(b): " << NbLoose30 << " pT(b): " << JetHBpt << std::endl;
+          if(abs(LepGood_pdgId[ilep]) == 13  &&  doSync)
+          {
+            SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
+            SyFile << " pT(l): " << LepPt << " eta(l): " << LepEta << " pdgID: " << LepID << std::endl;
+            SyFile << " Met: " << Met << " Q80: " << Q80 << " CosDeltaPhi: " << CosDeltaPhi << std::endl;
+            SyFile << " N(j): " << Njet << " pT(j1): " << Jet1Pt << " pT(j2): " << Jet2Pt << " pT(j3): " << Jet_pt[2] << " HT: " << HT25 << std::endl;
+            //SyFile << " eta(j1): " << Jet1Eta << " eta(j2): " << Jet2Eta;
+            //SyFile << " dPhi(j1,j2): " << DPhiJet1Jet2;
+            SyFile << " N(b): " << NbLoose30 << " pT(b): " << JetHBpt << std::endl;
 
-        for(Int_t j = 0; j < Njet; j++)
-        {
-          SyFile << " pT(j): " << Jet_pt[j] << " btag(j): " << Jet_btagCSV[j] << std::endl;
-        }
+            for(Int_t j = 0; j < Njet; j++)
+            {
+              SyFile << " pT(j): " << Jet_pt[j] << " btag(j): " << Jet_btagCSV[j] << std::endl;
+            }
 
-        SyFile << " dR(j1,l): " << DrJet1Lep << " dR(b,l): " << DrJetHBLep << " dR(j1,j2): " << DrJet1Jet2 << " M(l,j): " << JetLepMass << " M(3j): " << J3Mass << std::endl;
-      }
+            SyFile << " dR(j1,l): " << DrJet1Lep << " dR(b,l): " << DrJetHBLep << " dR(j1,j2): " << DrJet1Jet2 << " M(l,j): " << JetLepMass << " M(3j): " << J3Mass << std::endl;
+          }
 
-      bdttree->Fill();
+          bdttree->Fill();
         }
         std::cout << std::endl;
       }
