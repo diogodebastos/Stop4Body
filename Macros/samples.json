@@ -193,6 +193,22 @@
           "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/T2DegStop_300_270_FastSim"
         }
       ]
+    },
+    {
+      "tag":"Data",
+      "isdata":true,
+      "color":1,
+      "fill":0,
+      "marker":20,
+      "label":"Data",
+      "files":[
+        {
+          "tag":"METDataSet",
+          "xsec": 1.0,
+          "br": 1.0,
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/METDataSet"
+        }
+      ]
     }
   ]
 }
