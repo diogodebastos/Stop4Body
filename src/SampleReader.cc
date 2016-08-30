@@ -48,7 +48,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   }
   else
   {
-    for(int i = 1; i <= split_; ++i)
+    for(int i = 0; i < split_; ++i)
     {
       std::stringstream converter;
       converter << basePath << "_" << i << ".root";
