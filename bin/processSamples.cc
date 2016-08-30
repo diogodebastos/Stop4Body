@@ -176,6 +176,15 @@ int main(int argc, char** argv)
       Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
       Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
 
+      // Get total number of entries
+      Nevt = 0;
+      for(auto &file : sample)
+      {
+        TFile finput(file.c_str(), "READ");
+        TTree *inputtree = static_cast<TTree*>(finput.Get("tree"));
+        Nevt += static_cast<Int_t>(inputtree->GetEntries());
+      }
+
       for(auto &file : sample)
       {
         std::cout << "\t  Processing file: " << file << std::endl;
@@ -310,7 +319,7 @@ int main(int argc, char** argv)
           }
 
           // Set the value of the branches in the bdttree
-          Nevt = nentries;
+          //Nevt = nentries;
           mt = mtw;
           Q80 = mtw1;
           CosDeltaPhi = mtw2;
