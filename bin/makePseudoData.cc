@@ -207,7 +207,7 @@ int main(int argc, char** argv)
         slimmedTree->SetBranchAddress("Nevt", &NEvt);
         slimmedTree->GetEntry(0);
         double readEvents = slimmedTree->GetEntries();
-        double yield = readEvents/NEvt * file.crossSection * file.branchingRatio * luminosity;
+        double yield = readEvents/NEvt * sample.crossSection() * sample.branchingRatio() * luminosity;
 
         std::cout << "\t    The total number of initial events: " << NEvt << std::endl;
         std::cout << "\t    " << readEvents << " events were read from the file." << std::endl;
