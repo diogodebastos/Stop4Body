@@ -86,7 +86,7 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  if(inDir == "")
+  if(inputDirectory == "")
   {
     std::cout << "You must define an input directory" << std::endl;
     return 1;
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
   std::cout << "Producing PseudoData from the file '" << jsonFileName << "' with an integrated luminosity of " << luminosity << " fb" <<std::endl;
 
   std::cout << "Reading JSON file" << std::endl;
-  SampleReader samples(jsonFileName, inDir);
+  SampleReader samples(jsonFileName, inputDirectory);
 
   return 0;
 
