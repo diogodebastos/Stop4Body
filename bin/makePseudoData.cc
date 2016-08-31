@@ -198,60 +198,60 @@ int main(int argc, char** argv)
       {
         std::cout << "\t  Processing file: " << file << std::endl;
 
-    TFile inputFile(file.path.c_str(), "READ");
-    outputFile.cd();
-    TTree* inputTree = static_cast<TTree*>(inputFile.Get("bdttree"));
-    TTree* slimmedTree = static_cast<TTree*>(inputTree->CopyTree(presel));
-    float NEvt = 0;
-    slimmedTree->SetBranchAddress("Nevt", &NEvt);
-    slimmedTree->GetEntry(0);
-    double readEvents = slimmedTree->GetEntries();
-    double yield = readEvents/NEvt * file.crossSection * file.branchingRatio * luminosity;
+        TFile inputFile(file.c_str(), "READ");
+        outputFile.cd();
+        TTree* inputTree = static_cast<TTree*>(inputFile.Get("bdttree"));
+        TTree* slimmedTree = static_cast<TTree*>(inputTree->CopyTree(presel));
+        float NEvt = 0;
+        slimmedTree->SetBranchAddress("Nevt", &NEvt);
+        slimmedTree->GetEntry(0);
+        double readEvents = slimmedTree->GetEntries();
+        double yield = readEvents/NEvt * file.crossSection * file.branchingRatio * luminosity;
 
-    std::cout << "\tThe total number of initial events: " << NEvt << std::endl;
-    std::cout << "\t" << readEvents << " events were read from the file." << std::endl;
-    std::cout << "\tYield: " << yield << std::endl;
-    if(yield > readEvents)
-    {
-      std::cout << "ERROR: with the chosen luminosity, the expected yield is larger than the number of available events." << std::endl;
-      std::cout << "It is not possible to generate the pseudo data, please choose a different value for the luminosity or different samples with more events" << std::endl;
-      return 1;
-    }
+        std::cout << "\t    The total number of initial events: " << NEvt << std::endl;
+        std::cout << "\t    " << readEvents << " events were read from the file." << std::endl;
+        std::cout << "\t    Yield: " << yield << std::endl;
+        if(yield > readEvents)
+        {
+          std::cout << "ERROR: with the chosen luminosity, the expected yield is larger than the number of available events." << std::endl;
+          std::cout << "It is not possible to generate the pseudo data, please choose a different value for the luminosity or different samples with more events" << std::endl;
+          return 1;
+        }
 
-    for(auto & var : VarMap)
-      slimmedTree->SetBranchAddress(var.first, &var.second);
-    for(auto & var : VarMapI)
-      slimmedTree->SetBranchAddress(var.first, &var.second);
+        for(auto & var : VarMap)
+          slimmedTree->SetBranchAddress(var.first, &var.second);
+        for(auto & var : VarMapI)
+          slimmedTree->SetBranchAddress(var.first, &var.second);
 
-    std::vector<size_t> eventsToKeep;
-    int numberOfEvents = randomizer->Poisson(yield);
-    if(numberOfEvents > readEvents)
-    {
-      std::cout << "WARNING: The poisson smearing resulted in a number of events larger than the events available in the file." << std::endl;
-      std::cout << "This may be just bad luck, or the total number of events and the expected yield have values very close to each other, please reevaluate the situaation and try again." << std::endl;
-      return 1;
-    }
+        std::vector<size_t> eventsToKeep;
+        int numberOfEvents = randomizer->Poisson(yield);
+        if(numberOfEvents > readEvents)
+        {
+          std::cout << "WARNING: The poisson smearing resulted in a number of events larger than the events available in the file." << std::endl;
+          std::cout << "This may be just bad luck, or the total number of events and the expected yield have values very close to each other, please reevaluate the situation and try again." << std::endl;
+          return 1;
+        }
 
-    std::cout << "\tSelecting events to keep" << std::endl;
-    for(int i = 0; i < numberOfEvents; ++i)
-    {
-      size_t evtindex = readEvents;
-      while(evtindex == readEvents)
-        evtindex = randomizer->Uniform(readEvents);
-      if(std::find(eventsToKeep.begin(), eventsToKeep.end(), evtindex) == eventsToKeep.end())
-        eventsToKeep.push_back(evtindex);
-      else
-        --i;
-    }
+        std::cout << "\t    Selecting events to keep" << std::endl;
+        for(int i = 0; i < numberOfEvents; ++i)
+        {
+          size_t evtindex = readEvents;
+          while(evtindex == readEvents)
+            evtindex = randomizer->Uniform(readEvents);
+          if(std::find(eventsToKeep.begin(), eventsToKeep.end(), evtindex) == eventsToKeep.end())
+            eventsToKeep.push_back(evtindex);
+          else
+            --i;
+        }
 
-    std::cout << "\tCopying selected events from input to output" << std::endl;
-    for(auto & i : eventsToKeep)
-    {
-      slimmedTree->GetEntry(i);
-      PDtree->Fill();
-    }
+        std::cout << "\t    Copying selected events from input to output" << std::endl;
+        for(auto & i : eventsToKeep)
+        {
+          slimmedTree->GetEntry(i);
+          PDtree->Fill();
+        }
 
-    delete slimmedTree;
+        delete slimmedTree;
       }
     }
   }
