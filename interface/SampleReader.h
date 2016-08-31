@@ -239,6 +239,7 @@ public:
   SampleReader getData();
   SampleReader getMCBkg();
   SampleReader getMCSig();
+  SampleReader getMC();
 
   // Iteration
   typedef typename std::vector<ProcessInfo>::iterator iterator;

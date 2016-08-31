@@ -329,6 +329,22 @@ SampleReader SampleReader::getMCSig()
   return retVal;
 }
 
+SampleReader SampleReader::getMCSig()
+{
+  SampleReader retVal;
+
+  retVal.inputFile_ = inputFile_;
+  retVal.baseDir_ = baseDir_;
+  retVal.suffix_ = suffix_;
+  for(auto& process : processes_)
+  {
+    if(!process.isdata())
+      retVal.processes_.push_back(process);
+  }
+
+  return retVal;
+}
+
 TChain* SampleReader::getChain()
 {
   TChain* retVal = new TChain("bdttree");
