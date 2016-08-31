@@ -237,7 +237,7 @@ SampleReader::SampleReader(std::string fileName, std::string baseDir, std::strin
     try
     {
       ProcessInfo thisProcess(process, baseDir_, suffix_);
-      processes_.push_back(process);
+      processes_.push_back(thisProcess);
     }
     catch(SampleReaderException& exception)
     {
