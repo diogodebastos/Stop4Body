@@ -36,6 +36,7 @@ int main(int argc, char** argv)
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
   std::string inputDirectory = "";
+  std::string suffix = "";
   double luminosity = 10000;
   bool noPresel = false;
   bool includeSignal = false;
@@ -65,6 +66,9 @@ int main(int argc, char** argv)
 
     if(argument == "--inDir")
       inputDirectory = argv[++i];
+
+    if(argument == "--suffix")
+      suffix = argv[++i];
 
     if(argument == "--lumi")
     {
@@ -97,73 +101,6 @@ int main(int argc, char** argv)
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory);
 
-  return 0;
-
-  json jsonFile;
-  std::ifstream inputFile(jsonFileName);
-  inputFile >> jsonFile;
-
-  std::cout << "Finished reading the json file" << std::endl;
-
-  if(jsonFile.find("lines") == jsonFile.end())
-  {
-    std::cout << "The specified json file is not a valid sample descriptor" << std::endl;
-    return 1;
-  }
-
-  std::vector<FileInfo> filesToProcess;
-  std::vector<std::string> emptyLines;
-  std::vector<std::string> emptyPath;
-  std::vector<std::string> invalidPath;
-
-  for(auto &process : jsonFile["lines"])
-  {
-    if(process.find("files") != process.end())
-    {
-      for(auto &file : process["files"])
-      {
-        //std::string path = file["path"];
-        std::string path = inputDirectory + "/";
-        path += file["tag"];
-        path += "_bdt.root";
-        std::string identifier = process["tag"];
-        identifier += ":";
-        identifier += file["tag"];
-        if(path == "")
-          emptyPath.push_back(identifier);
-        else
-        {
-          if(fileExists(path))
-          {
-            FileInfo tmpFile;
-
-            tmpFile.path = path;
-            tmpFile.crossSection = file["xsec"];
-            tmpFile.branchingRatio = file["br"];
-            tmpFile.tag = file["tag"];
-
-            bool processFile = true;
-            if(process.count("isdata") == 1)
-              if(process["isdata"] == true)
-                processFile = false;
-            if(process.count("issignal") == 1)
-              if(process["issignal"] == true)
-                if(!includeSignal)
-                  processFile = false;
-
-            if(processFile)
-              filesToProcess.push_back(tmpFile);
-          }
-          else
-            invalidPath.push_back(identifier + "  ->  " + path);
-        }
-      }
-    }
-    else
-      emptyLines.push_back(process["tag"]);
-  }
-
-
   // Selection
   TCut muon = "nGoodMu == 1";
   TCut electron = "nGoodEl == 1";
@@ -177,7 +114,7 @@ int main(int argc, char** argv)
 
   //TDirectory* curDir = gDirectory;
 
-  TFile outputFile((outputDirectory+"/PseudoData_bdt.root").c_str(), "RECREATE");
+  TFile outputFile((outputDirectory+"/PseudoData" + ((suffix=="")?(".root"):("_"+suffix+".root"))).c_str(), "RECREATE");
   outputFile.cd();
   TTree* PDtree = new TTree("bdttree", "Same tree");
   std::map<TString, float> VarMap;
@@ -197,12 +134,20 @@ int main(int argc, char** argv)
   VarMap["HT30"] = 0.;
   VarMap["Jet1Pt"] = 0.;
   VarMap["Jet1Eta"] = -999;
+  VarMap["Jet1CSV"] = -999;
   //VarMap["Jet1Phi"] = -999;
   VarMap["Jet2Pt"] = 0.;
   VarMap["Jet2Eta"] = -999;
+  VarMap["Jet2CSV"] = -999;
+  //VarMap["Jet2Phi"] = -999;
+  VarMap["Jet3Pt"] = 0.;
+  VarMap["Jet3Eta"] = -999;
+  VarMap["Jet3CSV"] = -999;
   //VarMap["Jet2Phi"] = -999;
   VarMap["DPhiJet1Jet2"] = 0;
   VarMap["JetHBpt"] = 0.;
+  VarMap["JetHBeta"] = 0.;
+  VarMap["JetHBindex"] = 0.;
   VarMap["Q80"] = 0.;
   VarMap["CosDeltaPhi"] = 0.;
   VarMap["DrJet1Lep"] = 0.;
@@ -216,12 +161,22 @@ int main(int argc, char** argv)
   VarMap["NbTight30"] = 0.;
   VarMap["nGoodMu"] = 0;
   VarMap["nGoodEl"] = 0;
+  VarMap["nGoodTrack"] = 0;
   VarMap["LepID"] = -999;
   VarMap["LepChg"] = -999;
-  DummyVars["XS"] = -999;
+  VarMap["PFMET170JetIdCleaned"] = -999;
+  VarMap["PFMET90_PFMHT90_IDTight"] = -999;
+  VarMap["PFMETNoMu90_PFMHTNoMu90_IDTight"] = -999;
+  VarMap["HBHENoiseFilter"] = -999;
+  VarMap["HBHENoiseIsoFilter"] = -999;
+  VarMap["eeBadScFilter"] = -999;
+  VarMap["EcalDeadCellTriggerPrimitiveFilter"] = -999;
+  VarMap["goodVertices"] = -999;
+  DummyVars["XS"] = 1.0;
   DummyVars["Event"] = -999;
   DummyVars["LumiSec"] = -999;
   DummyVars["Nevt"] = -999;
+  DummyVars["Run"] = -999;
 
   for(auto & var : VarMap)
     PDtree->Branch(var.first, &var.second);
@@ -233,9 +188,15 @@ int main(int argc, char** argv)
   //curDir->cd();
   TRandom3 *randomizer = new TRandom3();
 
-  for(auto &file : filesToProcess)
+  for(auto &process : samples)
   {
-    std::cout << "Processing " << file.tag << std::endl;
+    std::cout << "Processing process: " << process.tag() << std::endl;
+    for(auto &sample : process)
+    {
+      std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
+      for(auto &file : sample)
+      {
+        std::cout << "\t  Processing file: " << file << std::endl;
 
     TFile inputFile(file.path.c_str(), "READ");
     outputFile.cd();
@@ -291,13 +252,15 @@ int main(int argc, char** argv)
     }
 
     delete slimmedTree;
+      }
+    }
   }
 
   outputFile.cd();
-  PDtree->Write();
+  PDtree->Write("",TObject::kOverwrite);
 
 
-  if(emptyLines.size() != 0)
+  /*if(emptyLines.size() != 0)
   {
     std::cout << "The following lines did not have any files associated to them: ";
     for(auto &process : emptyLines)
@@ -319,7 +282,7 @@ int main(int argc, char** argv)
     for(auto &file : invalidPath)
       std::cout << "\t" << file << std::endl;
     std::cout << std::endl;
-  }
+  }*/
 
   return 0;
 }
