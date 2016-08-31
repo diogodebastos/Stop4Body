@@ -235,7 +235,6 @@ int main(int argc, char** argv)
         Float_t Jet_phi[40];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
         Float_t Jet_btagCSV[40];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
         Float_t Jet_mass[40];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
-        Float_t xsec; inputtree->SetBranchAddress("xsec",&xsec);
         Int_t nJet20;  inputtree->SetBranchAddress("nJet20", &nJet20);
         Int_t nJet30;  inputtree->SetBranchAddress("nJet30", &nJet30);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
@@ -250,6 +249,10 @@ int main(int argc, char** argv)
         Float_t Tracks_matchedJetDr[200];  inputtree->SetBranchAddress("Tracks_matchedJetDr", &Tracks_matchedJetDr);
         Float_t Tracks_matchedJetIndex[200];  inputtree->SetBranchAddress("Tracks_matchedJetIndex", &Tracks_matchedJetIndex);
         Int_t nTracks;  inputtree->SetBranchAddress("nTracks", &nTracks);
+
+        Float_t xsec = 1;
+        if(!process.isdata())
+          inputtree->SetBranchAddress("xsec",&xsec);
 
         Int_t HLT_PFMET170_JetIdCleaned;   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
         Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight", &HLT_PFMET90_PFMHT90_IDTight);
