@@ -16,6 +16,7 @@
 #include <fstream>
 
 #include "UserCode/Stop4Body/interface/json.hpp"
+#include "UserCode/Stop4Body/interface/SampleReader.h"
 
 using json = nlohmann::json;
 
@@ -34,7 +35,7 @@ int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
-  std::string inputDirectory = "./OUT/";
+  std::string inputDirectory = "";
   double luminosity = 10000;
   bool noPresel = false;
   bool includeSignal = false;
@@ -82,8 +83,21 @@ int main(int argc, char** argv)
   if(jsonFileName == "")
   {
     std::cout << "You must define a json file" << std::endl;
+    return 1;
   }
+
+  if(inDir == "")
+  {
+    std::cout << "You must define an input directory" << std::endl;
+    return 1;
+  }
+
   std::cout << "Producing PseudoData from the file '" << jsonFileName << "' with an integrated luminosity of " << luminosity << " fb" <<std::endl;
+
+  std::cout << "Reading JSON file" << std::endl;
+  SampleReader samples(jsonFileName, inDir);
+
+  return 0;
 
   json jsonFile;
   std::ifstream inputFile(jsonFileName);
