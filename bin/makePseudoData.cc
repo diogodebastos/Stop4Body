@@ -194,6 +194,7 @@ int main(int argc, char** argv)
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
+      // TODO: if the sample is split into multiple files, this will not work
       for(auto &file : sample)
       {
         std::cout << "\t  Processing file: " << file << std::endl;
