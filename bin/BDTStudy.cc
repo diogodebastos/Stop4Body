@@ -25,8 +25,10 @@ void printHelp();
 int main(int argc, char **argv)
 {
   std::string jsonFileName = "";
+  std::string inputDirectory = "";
   std::string outputDirectory = "./OUT/";
   std::string drawMVA = "BDT";
+  std::string suffix = "";
   double luminosity = 5000;
 
   if(argc < 2)
@@ -52,6 +54,12 @@ int main(int argc, char **argv)
     if(argument == "--outDir")
       outputDirectory = argv[++i];
 
+    if(argument == "--inDir")
+      inputDirectory = argv[++i];
+
+    if(argument == "--suffix")
+      suffix = argv[++i];
+
     if(argument == "--lumi")
     {
       std::stringstream conv;
@@ -66,11 +74,17 @@ int main(int argc, char **argv)
   if(jsonFileName == "")
   {
     std::cout << "You must define a json file" << std::endl;
-    return 0;
+    return 1;
+  }
+
+  if(inputDirectory == "")
+  {
+    std::cout << "You must define an input directory" << std::endl;
+    return 1;
   }
 
   std::cout << "Reading JSON file" << std::endl;
-  SampleReader samples(jsonFileName);
+  SampleReader samples(jsonFileName, inputDirectory);
 
   std::map<std::string, std::string> regions;
   //regions["test1"] = "(nGoodMu == 1 || nGoodEl == 1)";
@@ -78,7 +92,7 @@ int main(int argc, char **argv)
   //regions["test3"] = "(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110)";
   regions["SR"]       = ("(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5)");
   regions["CR_ttbar"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 > 0)");
-  regions["CR_wjets"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 == 0)");
+  regions["CR_wjets"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbLoose30 == 0)");
   regions["VR_ttbar"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 > 1)");
   regions["VR_wjets"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbLoose30 == 0)");
 
