@@ -99,7 +99,11 @@ int main(int argc, char** argv)
   std::cout << "Producing PseudoData from the file '" << jsonFileName << "' with an integrated luminosity of " << luminosity << " fb" <<std::endl;
 
   std::cout << "Reading JSON file" << std::endl;
-  SampleReader samples(jsonFileName, inputDirectory);
+  SampleReader samples(jsonFileName, inputDirectory, suffix);
+  if(includeSignal)
+    samples = samples.getMC();
+  else
+    samples = samples.getMCBkg();
 
   // Selection
   TCut muon = "nGoodMu == 1";
