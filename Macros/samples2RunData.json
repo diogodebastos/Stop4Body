@@ -173,7 +173,7 @@
       ]
     },
     {
-      "tag":"PseudoData_Injected",
+      "tag":"Data",
       "isdata":true,
       "color":1,
       "fill":0,
@@ -181,10 +181,10 @@
       "label":"Data",
       "files":[
         {
-          "tag": "PseudoData_Injected",
+          "tag":"METDataSet",
           "xsec": 1.0,
           "br": 1.0,
-          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/PseudoData_Injected"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/METDataSet"
         }
       ]
     }
