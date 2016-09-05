@@ -21,6 +21,7 @@
 #include <fstream>
 
 #include "UserCode/Stop4Body/interface/json.hpp"
+#include "UserCode/Stop4Body/interface/SampleReader.h"
 
 using json = nlohmann::json;
 
@@ -38,7 +39,7 @@ bool fileExists(std::string);
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
-  std::string inputDirectory = "./IN/";
+  std::string inputDirectory = "";
   std::string outputDirectory = "./OUT/";
   std::vector<std::string> methods;
   methods.clear();
@@ -91,7 +92,13 @@ int main(int argc, char** argv)
   if(jsonFileName == "")
   {
     std::cout << "You must define a json file" << std::endl;
-    return 0;
+    return 1;
+  }
+
+  if(inputDirectory == "")
+  {
+    std::cout << "You must define an input directory" << std::endl;
+    return 1;
   }
 
   for(auto & method : methods)
@@ -107,58 +114,10 @@ int main(int argc, char** argv)
       Use[method] = 1;
   }
 
-  std::cout << "Reading json file" << std::endl;
-  json jsonFile;
-  std::ifstream inputFile(jsonFileName);
-  inputFile >> jsonFile;
+  std::cout << "Reading JSON file" << std::endl;
+  SampleReader samples(jsonFileName, inputDirectory);
 
-  if(jsonFile.find("lines") == jsonFile.end())
-  {
-    std::cout << "The specified json file is not a valid sample descriptor" << std::endl;
-    return 1;
-  }
-
-  std::vector<FileInfo> filesToProcess;
-  std::vector<std::string> emptyLines;
-  std::vector<std::string> emptyPath;
-  std::vector<std::string> invalidPath;
-
-  for(auto &process : jsonFile["lines"])
-  {
-    if(process.find("files") != process.end())
-    {
-      for(auto &file : process["files"])
-      {
-        //std::string path = file["path"];
-        std::string path = "";
-        path += file["tag"];
-        path += "_bdt.root";
-        std::string identifier = process["tag"];
-        identifier += ":";
-        identifier += file["tag"];
-        if(path == "")
-          emptyPath.push_back(identifier);
-        else
-        {
-          if(fileExists(inputDirectory+"/"+path))
-          {
-            FileInfo tmpFile;
-
-            tmpFile.path = path;
-            tmpFile.crossSection = file["xsec"];
-            tmpFile.branchingRatio = file["br"];
-            tmpFile.tag = file["tag"];
-
-            filesToProcess.push_back(tmpFile);
-          }
-          else
-            invalidPath.push_back(identifier + "  ->  " + inputDirectory + "/" + path);
-        }
-      }
-    }
-    else
-      emptyLines.push_back(process["tag"]);
-  }
+  std::vector<FileInfo> filesToProcess = samples.getAllFiles();
 
   std::cout << "Processing " << filesToProcess.size() << " files." << std::endl;
 
@@ -309,7 +268,7 @@ int main(int argc, char** argv)
 
 
 
-  if(emptyLines.size() != 0)
+  /*if(emptyLines.size() != 0)
   {
     std::cout << "The following lines did not have any files associated to them: ";
     for(auto &process : emptyLines)
@@ -331,7 +290,7 @@ int main(int argc, char** argv)
     for(auto &file : invalidPath)
       std::cout << "\t" << file << std::endl;
     std::cout << std::endl;
-  }
+  }*/
 
   return 0;
 }
