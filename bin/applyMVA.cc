@@ -44,6 +44,7 @@ int main(int argc, char** argv)
   std::vector<std::string> methods;
   methods.clear();
   std::string suffix = "";
+  std::string MVAsuffix = "";
 
   // Default MVA methods to be trained + tested
   std::map<std::string,int> Use;
@@ -87,6 +88,9 @@ int main(int argc, char** argv)
 
     if(argument == "--suffix")
       suffix = argv[++i];
+
+    if(argument == "--mvaSuffix")
+      MVAsuffix = argv[++i];
   }
 
   if(jsonFileName == "")
@@ -115,9 +119,9 @@ int main(int argc, char** argv)
   }
 
   std::cout << "Reading JSON file" << std::endl;
-  SampleReader samples(jsonFileName, inputDirectory);
+  SampleReader samples(jsonFileName, inputDirectory, suffix);
 
-  std::vector<FileInfo> filesToProcess = samples.getAllFiles();
+  std::vector<std::string> filesToProcess = samples.getAllFiles();
 
   std::cout << "Processing " << filesToProcess.size() << " files." << std::endl;
 
@@ -132,13 +136,11 @@ int main(int argc, char** argv)
   Float_t LepPt, LepEta, LepDxy, LepDz, Met, mt, Q80, CosDeltaPhi;
   Float_t Jet1Pt,Jet1Eta,Jet2Pt,Jet2Eta,JetHBpt,DrJet1Lep,DrJet2Lep,DrJetHBLep,DrJet1Jet2,JetLepMass;
   Float_t J3Mass,HT20,XS;
-  Int_t Njet, NbLoose30, NbTight30, LepID, LepChg, Nevt, Event;
+  Float_t Njet, NbLoose30, NbTight30, LepID, LepChg, Nevt, Event;
   //Int_t nGoodMu, nGoodEl;
   //Float_t LepSip3, LepIso03, LepIso04, HT25, HT30, DPhiJet1Jet2,
 
-  Float_t NbLoose30f, LepChgf, Njetf;
-  Njetf = 0;
-  Njet = Njetf;
+  Float_t NbLoose30f, LepChgf;
 
   // Base BDT
   reader->AddVariable("Jet1Pt", &Jet1Pt);
@@ -154,7 +156,7 @@ int main(int argc, char** argv)
   //reader->AddVariable("Jet1Pt", &Jet1Pt);
   //reader->AddVariable("Jet2Pt", &Jet2Pt);
   reader->AddVariable("JetHBpt", &JetHBpt);
-  reader->AddVariable("Njet", &Njetf);
+  reader->AddVariable("Njet", &Njet);
   //reader->AddVariable("JetLepMass",&JetLepMass);
   //reader->AddVariable("J3Mass",&J3Mass);
   //reader->AddVariable("DrJet1Lep", &DrJet1Lep);
@@ -172,8 +174,8 @@ int main(int argc, char** argv)
       TString methodName = TString(it->first) + TString(" method");
       std::cout << "method being used " << methodName << std::endl;
       TString weightfile = dir + prefix + TString("_") + TString(it->first);
-      if(suffix != "")
-        weightfile += TString("_"+suffix);
+      if(MVAsuffix != "")
+        weightfile += TString("_"+MVAsuffix);
       weightfile += TString(".weights.xml");
       std::cout << "weight file being used : "    <<  weightfile << std::endl;
       reader->BookMVA( methodName, weightfile );
@@ -184,9 +186,9 @@ int main(int argc, char** argv)
   {
     auto cwd = gDirectory;
 
-    std::cout << "Processing file " << inputDirectory + "/" + file.path << std::endl;
-    TFile *inputFile = new TFile((inputDirectory + "/" + file.path).c_str(), "READ");
-    TFile *outputFile = new TFile((outputDirectory + "/" + file.path).c_str(), "RECREATE");
+    std::cout << "Processing file " << inputDirectory + "/" + file << std::endl;
+    TFile *inputFile = new TFile((inputDirectory + "/" + file).c_str(), "READ");
+    TFile *outputFile = new TFile((outputDirectory + "/" + file.substr(0, file.find_last_of("."))+"_bdt.root").c_str(), "RECREATE");
 
     TTree* OutputTree = static_cast<TTree*>(inputFile->Get("bdttree"))->CloneTree();
 
