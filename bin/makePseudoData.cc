@@ -99,7 +99,11 @@ int main(int argc, char** argv)
   std::cout << "Producing PseudoData from the file '" << jsonFileName << "' with an integrated luminosity of " << luminosity << " fb" <<std::endl;
 
   std::cout << "Reading JSON file" << std::endl;
-  SampleReader samples(jsonFileName, inputDirectory);
+  SampleReader samples(jsonFileName, inputDirectory, suffix);
+  if(includeSignal)
+    samples = samples.getMC();
+  else
+    samples = samples.getMCBkg();
 
   // Selection
   TCut muon = "nGoodMu == 1";
@@ -207,7 +211,7 @@ int main(int argc, char** argv)
         slimmedTree->SetBranchAddress("Nevt", &NEvt);
         slimmedTree->GetEntry(0);
         double readEvents = slimmedTree->GetEntries();
-        double yield = readEvents/NEvt * file.crossSection * file.branchingRatio * luminosity;
+        double yield = readEvents/NEvt * sample.crossSection() * sample.branchingRatio() * luminosity;
 
         std::cout << "\t    The total number of initial events: " << NEvt << std::endl;
         std::cout << "\t    " << readEvents << " events were read from the file." << std::endl;
