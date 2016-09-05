@@ -329,7 +329,7 @@ SampleReader SampleReader::getMCSig()
   return retVal;
 }
 
-SampleReader SampleReader::getMCSig()
+SampleReader SampleReader::getMC()
 {
   SampleReader retVal;
 
