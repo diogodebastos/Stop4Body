@@ -39,6 +39,7 @@ int main(int argc, char** argv)
   //
   // --- Friedman's RuleFit method, ie, an optimised series of cuts ("rules")
   Use["RuleFit"]         = 0;
+  Use["NN"]              = 0;
 
   if(argc < 2)
   {
@@ -151,6 +152,49 @@ int main(int argc, char** argv)
       factory->BookMethod( TMVA::Types::kBDT, ("BDT_NodeSize"+valStr).c_str(),
                            ("!H:!V:NTrees=400:MinNodeSize="+valStr+"%:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning").c_str() );
     }
+  }
+
+  if(Use["NN"])
+  {
+    std::vector<std::string> firstLayer = {"N", "2N", "N/2"};
+    std::vector<std::string> secondLayer = {"N", "N-1", "N/2", "2N"};
+    std::vector<std::string> nCycles = {"50", "100", "150", "200", "300", "500", "1000", "2000"};
+    std::vector<std::string> learningRate = {"0.01", "0.02", "0.04", "0.08", "0.12"};
+    std::vector<std::string> decayRate = {"0.005", "0.01", "0.02"};
+    std::vector<std::string> other = {};
+
+    for(auto& layer1 : firstLayer)
+    {
+      for(auto& layer2 : secondLayer)
+      {
+        for(auto& cycles : nCycles)
+        {
+          for(auto& learn : learningRate)
+          {
+            for(auto& decay : decayRate)
+            {
+              std::string name = "MLP_" + layer1 + "_" + layer2 + "_" + cycles + "_" + learn + "_" + decay;
+              std::string options = "!H:!V:VarTransform=N:TestRate=1:NCycles="+cycles+":HiddenLayers="+layer1+","+layer2+":LearningRate="+learn+":DecayRate="+decay;
+
+              factory->BookMethod(TMVA::Types::kMLP, name.c_str(), options.c_str());
+            }
+          }
+        }
+      }
+    }
+
+    for(size_t i = 0; i < other.size(); ++i)
+    {
+      std::stringstream converter;
+      converter << "other" << i;
+
+      std::string name;
+      converter >> name;
+      std::string options = "!H:!V:VarTransform=N:TestRate=1" + other[i];
+
+      factory->BookMethod(TMVA::Types::kMLP, name.c_str(), options.c_str());
+    }
+
   }
 
   if (Use["BDTB"]) // Bagging
