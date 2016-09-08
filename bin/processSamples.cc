@@ -153,6 +153,9 @@ int main(int argc, char** argv)
       Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
       Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F"); // *
       Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F"); // *
+      Float_t JetB2pt;  bdttree->Branch("JetB2pt",&JetB2pt,"JetB2pt/F");
+      Float_t JetB2eta;  bdttree->Branch("JetB2eta",&JetB2eta,"JetB2eta/F"); // *
+      Float_t JetB2index; bdttree->Branch("JetB2index", &JetB2index, "JetB2index/F"); // *
       Float_t DrJet1Lep;  bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
       Float_t DrJet2Lep;  bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
       Float_t DrJetHBLep;  bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
@@ -424,17 +427,35 @@ int main(int argc, char** argv)
           JetHBpt = -999.;
           JetHBeta = -999.;
           JetHBindex = -1;
+          JetB2pt = -999.;
+          JetB2eta = -999.;
+          JetB2index = -1;
           DrJetHBLep = -999.;
           Float_t BtagMax = -999.;
           Int_t iBtag = -1;
+          std::vector<std::pair<int,float>> bjetList;
           for(Int_t j = 0; j < nJet20; j++)
           {
+            if(Jet_btagCSV[j] != -10)
+            {
+              bjetList.push_back(std::make_pair(j,Jet_btagCSV[j]));
+            }
+
             if((Jet_btagCSV[j] != -10)  &&  (Jet_btagCSV[j] > BtagMax))
             {
               BtagMax = Jet_btagCSV[j];
               iBtag = j;
             }
           }
+          // Sort bjetList using the standard sort algorithm and a lambda function for the comparison
+          std::sort(bjetList.begin(), bjetList.end(), [](const std::pair<int,float> &left, const std::pair<int,float> &right) {
+              return left.second > right.second;
+              });
+          //std::cout << "The list of bjets:" << std::endl;
+          //for(auto & entry : bjetList)
+          //  std::cout << "\t" << entry.first << "; csv-" << entry.second << std::endl;
+          //std::cout << "Testing: " << iBtag << " is it equal to " << bjetList[0].first << std::endl;
+          //return 4;
 
           if(iBtag >= 0)
           {
@@ -445,6 +466,12 @@ int main(int argc, char** argv)
             dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[ilep]);
             detab = Jet_eta[iBtag] - LepGood_eta[ilep];
             DrJetHBLep = sqrt( pow(dphib,2) + pow(detab,2) );
+          }
+          if(bjetList.size() > 1)
+          {
+            JetB2pt = Jet_pt[bjetList[1].first];
+            JetB2eta = Jet_eta[bjetList[1].first];
+            JetB2index = bjetList[1].first;
           }
 
           LepChg=LepGood_charge[ilep];
