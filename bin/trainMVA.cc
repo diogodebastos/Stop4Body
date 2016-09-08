@@ -125,6 +125,8 @@ int main(int argc, char** argv)
 
   TCut mycuts = "Met > 100";
   TCut mycutb = "Met > 100";
+  mycuts = "Met > 280";
+  mycutb = "Met > 280";
 
   factory->PrepareTrainingAndTestTree( mycuts, mycutb, "nTrain_Signal=0:nTrain_Background=0:nTest_Signal=0:nTest_Background=0:SplitMode=Random:NormMode=EqualNumEvents" );
 
