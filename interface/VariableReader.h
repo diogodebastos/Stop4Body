@@ -17,6 +17,7 @@ public:
   max_(max),
   bins_(bins)
   {}
+  VariableInfo(nlohmann::json jsonInfo);
 
   std::string expression() const {return expression_;}
   std::string name() const {return name_;}
