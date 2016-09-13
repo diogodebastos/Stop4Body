@@ -1,0 +1,9 @@
+{
+  "variables":[
+    {
+      "expression":"MET",
+      "max":200.0,
+      "bins":20
+    }
+  ]
+}
