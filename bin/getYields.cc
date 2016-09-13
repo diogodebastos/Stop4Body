@@ -20,6 +20,7 @@
 #include <fstream>
 
 #include "UserCode/Stop4Body/interface/json.hpp"
+#include "UserCode/Stop4Body/interface/SampleReader.h"
 
 using json = nlohmann::json;
 
@@ -74,8 +75,10 @@ bool fileExists(std::string);
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
-  std::string inputDirectory = "./IN/";
+  std::string inputDirectory = "";
   std::string outputDirectory = "./OUT/";
+  std::string suffix = "";
+  std::string variablesJson = "";
   double luminosity = 5000;
 
   if(argc < 2)
@@ -104,6 +107,12 @@ int main(int argc, char** argv)
     if(argument == "--inDir")
       inputDirectory = argv[++i];
 
+    if(argument == "--suffix")
+      suffix = argv[++i];
+
+    if(argument == "--variables")
+      variablesJson = argv[++i];
+
     if(argument == "--lumi")
     {
       std::stringstream convert;
@@ -115,89 +124,24 @@ int main(int argc, char** argv)
   if(jsonFileName == "")
   {
     std::cout << "You must define a json file" << std::endl;
-    return 0;
-  }
-
-  std::cout << "Reading json file" << std::endl;
-  json jsonFile;
-  std::ifstream inputFile(jsonFileName);
-  inputFile >> jsonFile;
-
-  if(jsonFile.find("lines") == jsonFile.end())
-  {
-    std::cout << "The specified json file is not a valid sample descriptor" << std::endl;
     return 1;
   }
 
-  std::map<std::string,ProcessInfo> processes;
-  std::vector<std::string> emptyLines;
-  std::vector<std::string> emptyPath;
-  std::vector<std::string> invalidPath;
-
-  for(auto &process : jsonFile["lines"])
+  if(variablesJson == "")
   {
-    if(process.find("files") != process.end())
-    {
-      ProcessInfo thisProcess;
-
-      thisProcess.tag() = process["tag"];
-      thisProcess.color() = process["color"];
-      thisProcess.lcolor() = process["lcolor"];
-      thisProcess.label() = process["label"];
-
-      if(process.count("isdata") != 0)
-        thisProcess.isdata() = process["isdata"];
-      if(process.count("issignal") != 0)
-        thisProcess.issignal() = process["issignal"];
-      if(process.count("spimpose") != 0)
-        thisProcess.spimpose() = process["spimpose"];
-      if(process.count("lwidth") != 0)
-        thisProcess.lwidth() = process["lwidth"];
-      if(process.count("lstyle") != 0)
-        thisProcess.lstyle() = process["lstyle"];
-      if(process.count("fill") != 0)
-        thisProcess.fill() = process["fill"];
-      if(process.count("marker") != 0)
-        thisProcess.marker() = process["marker"];
-      if(process.count("isfastsim") != 0)
-        thisProcess.isfastsim() = process["isfastsim"];
-
-      for(auto &file : process["files"])
-      {
-        std::string path = inputDirectory + "/";
-        path += file["tag"];
-        path += "_bdt.root";
-        std::string identifier = process["tag"];
-        identifier += ":";
-        identifier += file["tag"];
-        if(path == "")
-          emptyPath.push_back(identifier);
-        else
-        {
-          if(fileExists(path))
-          {
-            FileInfo tmpFile;
-            tmpFile.path = path;
-            tmpFile.crossSection = file["xsec"];
-            tmpFile.branchingRatio = file["br"];
-            tmpFile.tag = file["tag"];
-            thisProcess.files().push_back(tmpFile);
-          }
-          else
-            invalidPath.push_back(identifier + "  ->  " + path);
-        }
-      }
-
-      if(thisProcess.files().size() != 0)
-      {
-        processes[thisProcess.tag()] = thisProcess;
-      }
-    }
-    else
-      emptyLines.push_back(process["tag"]);
+    std::cout << "You must define a json file with the variables to plot" << std::endl;
+    return 1;
   }
 
-  std::cout << "Found " << processes.size() << " processes with valid files" << std::endl;
+  if(inputDirectory == "")
+  {
+    std::cout << "You must define an input directory" << std::endl;
+    return 1;
+  }
+
+  std::cout << "Reading json file" << std::endl;
+  SampleReader samples(jsonFileName, inputDirectory, suffix);
+
 
   gStyle->SetOptStat(000000);
   TCut muon = "(nGoodMu==1)";
@@ -208,32 +152,26 @@ int main(int argc, char** argv)
   TCut dphij1j2 = "DPhiJet1Jet2 < 2.5";
   TCut presel = singlep+ISRjet+dphij1j2+met;
 
-
-
-
-  if(emptyLines.size() != 0)
+  std::string mcWeight;
   {
-    std::cout << "The following lines did not have any files associated to them: ";
-    for(auto &process : emptyLines)
-      std::cout << process << "; ";
-    std::cout << std::endl;
+    std::stringstream converter;
+    converter << "XS*" << luminosity << "/Nevt";
+    converter >> mcWeight;
   }
 
-  if(emptyPath.size() != 0)
-  {
-    std::cout << "The following files did not have any path defined, or the defined path was empty: ";
-    for(auto &file : emptyPath)
-      std::cout << file << "; ";
-    std::cout << std::endl;
-  }
+  auto MC = samples.getMCBkg();
+  auto Sig = samples.getMCSig();
+  auto Data = samples.getData();
 
-  if(invalidPath.size() != 0)
-  {
-    std::cout << "The following files could not be found: " << std::endl;
-    for(auto &file : invalidPath)
-      std::cout << "\t" << file << std::endl;
-    std::cout << std::endl;
-  }
+  std::cout << "Total MC yield: " << MC.getYield() << std::endl;
+  for(auto & sample : MC)
+    std::cout << "\t" << sample.label() << " yield: " << sample.getYield() << std::endl;
+  std::cout << "Total Data yield: " << Data.getYield() << std::endl;
+  std::cout << "Total Signal yield: " << Sig.getYield() << std::endl;
+
+
+
+
 
   return 0;
 }
