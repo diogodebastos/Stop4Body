@@ -118,11 +118,11 @@ int main(int argc, char** argv)
   auto Sig = samples.getMCSig();
   auto Data = samples.getData();
 
-  std::cout << "Total MC yield: " << MC.getYield(presel, mcWeight) << std::endl;
+  std::cout << "Total MC yield: " << MC.getYield(presel.GetTitle(), mcWeight) << std::endl;
   for(auto & sample : MC)
-    std::cout << "\t" << sample.label() << " yield: " << sample.getYield(presel, mcWeight) << std::endl;
-  std::cout << "Total Data yield: " << Data.getYield(presel, "") << std::endl;
-  std::cout << "Total Signal yield: " << Sig.getYield(presel, mcWeight) << std::endl;
+    std::cout << "\t" << sample.label() << " yield: " << sample.getYield(presel.GetTitle(), mcWeight) << std::endl;
+  std::cout << "Total Data yield: " << Data.getYield(presel.GetTitle(), "") << std::endl;
+  std::cout << "Total Signal yield: " << Sig.getYield(presel.GetTitle(), mcWeight) << std::endl;
 
 
 
