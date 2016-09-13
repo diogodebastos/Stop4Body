@@ -35,6 +35,7 @@ struct FileInfo
 
 void printHelp();
 bool fileExists(std::string);
+bool replace(std::string&, const std::string&, const std::string&);
 
 int main(int argc, char** argv)
 {
@@ -186,9 +187,12 @@ int main(int argc, char** argv)
   {
     auto cwd = gDirectory;
 
-    std::cout << "Processing file " << inputDirectory + "/" + file << std::endl;
-    TFile *inputFile = new TFile((inputDirectory + "/" + file).c_str(), "READ");
-    TFile *outputFile = new TFile((outputDirectory + "/" + file.substr(0, file.find_last_of("."))+"_bdt.root").c_str(), "RECREATE");
+    std::string outFile = file.substr(0, file.find_last_of("."))+"_bdt.root";
+    replace(outFile, inputDirectory, outputDirectory);
+    std::cout << "Processing file " << file << " and saving output in " << outFile << std::endl;
+
+    TFile *inputFile = new TFile(file.c_str(), "READ");
+    TFile *outputFile = new TFile(outFile.c_str(), "RECREATE");
 
     TTree* OutputTree = static_cast<TTree*>(inputFile->Get("bdttree"))->CloneTree();
 
@@ -247,7 +251,6 @@ int main(int argc, char** argv)
       OutputTree->GetEntry(ievt);
       NbLoose30f = NbLoose30;
       LepChgf = LepChg;
-      Njetf = Njet;
       for(auto & mva : MVAs)
       {
         //if (ievt%1000 == 0) std::cout << "Evaluating method: \"" << mva.first << "\"" << std::endl;
@@ -303,6 +306,15 @@ void printHelp()
   std::cout << "\t--help\t- Print this message" << std::endl;
 
   return;
+}
+
+bool replace(std::string& str, const std::string& from, const std::string& to)
+{
+    size_t start_pos = str.find(from);
+    if(start_pos == std::string::npos)
+        return false;
+    str.replace(start_pos, from.length(), to);
+    return true;
 }
 
 bool fileExists(std::string fileName)

@@ -84,7 +84,7 @@ int main(int argc, char **argv)
   }
 
   std::cout << "Reading JSON file" << std::endl;
-  SampleReader samples(jsonFileName, inputDirectory);
+  SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   std::map<std::string, std::string> regions;
   //regions["test1"] = "(nGoodMu == 1 || nGoodEl == 1)";
