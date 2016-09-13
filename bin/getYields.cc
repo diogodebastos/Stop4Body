@@ -24,51 +24,6 @@
 
 using json = nlohmann::json;
 
-struct FileInfo
-{
-  std::string path;
-  double crossSection;
-  double branchingRatio;
-  std::string tag;
-};
-
-class ProcessInfo
-{
-public:
-  ProcessInfo(): _tag(""), _label(""), _color(0), _lcolor(0), _lwidth(0), _lstyle(0), _fill(0), _marker(0), _isdata(false), _issignal(false), _isfastsim(false), _spimpose(false) {};
-
-  std::string & tag() {return _tag;};
-  std::string & label() {return _label;};
-  int & color() {return _color;};
-  int & lcolor() {return _lcolor;};
-  int & lwidth() {return _lwidth;};
-  int & lstyle() {return _lstyle;};
-  int & fill() {return _fill;};
-  int & marker() {return _marker;};
-  bool & isdata() {return _isdata;};
-  bool & issignal() {return _issignal;};
-  bool & isfastsim() {return _isfastsim;};
-  bool & spimpose() {return _spimpose;};
-
-  std::vector<FileInfo> & files() {return _files;};
-
-private:
-  std::string _tag;
-  std::string _label;
-  int _color;
-  int _lcolor;
-  int _lwidth;
-  int _lstyle;
-  int _fill;
-  int _marker;
-  bool _isdata;
-  bool _issignal;
-  bool _isfastsim;
-  bool _spimpose;
-
-  std::vector<FileInfo> _files;
-};
-
 void printHelp();
 bool fileExists(std::string);
 
