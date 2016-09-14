@@ -1,8 +1,9 @@
 {
   "variables":[
     {
-      "expression":"MET",
-      "max":200.0,
+      "expression":"Met",
+      "min":250.0,
+      "max":500.0,
       "bins":20
     }
   ]
