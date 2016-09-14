@@ -126,22 +126,29 @@ int main(int argc, char** argv)
 
   VariableJsonLoader variables(variablesJson);
   std::cout << "Processing variable plots" << std::endl;
+  //std::cout << "  Preselection: " << presel << std::endl;
   for(auto & variable : variables)
   {
-    std::cout << "  Processing " << variable.name() << std::endl;
+    //std::cout << "  Processing " << variable.name() << std::endl;
 
-    auto dataH = Data.getHist("Data", variable.expression(), variable.label()+";Evt.", presel.GetTitle(), variable.bins(), variable.min(), variable.max());
-    auto mcH = MC.getHist("MC", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+presel.GetTitle()+")", variable.bins(), variable.min(), variable.max());
-    auto sigH = Sig.getHist("Signal", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+presel.GetTitle()+")", variable.bins(), variable.min(), variable.max());
+    auto dataH = Data.getHist(variable.name()+"_Data", variable.expression(), variable.label()+";Evt.", presel.GetTitle(), variable.bins(), variable.min(), variable.max());
+    auto mcH = MC.getHist(variable.name()+"_MC", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+presel.GetTitle()+")", variable.bins(), variable.min(), variable.max());
+    auto sigH = Sig.getHist(variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+presel.GetTitle()+")", variable.bins(), variable.min(), variable.max());
     auto mcS = MC.getStack(variable.expression(), variable.label()+";Evt.", mcWeight+"*("+presel.GetTitle()+")", variable.bins(), variable.min(), variable.max());
 
-    std::cout << "    Got histograms, getting ratio" << std::endl;
+    //std::cout << "    Got histograms, getting ratio" << std::endl;
 
     auto ratio = static_cast<TH1D*>(dataH->Clone("ratio"));
     ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
     ratio->Divide(mcH);
 
-    std::cout << "    Got ratio, creating canvas" << std::endl;
+    //std::cout << "    Got ratio, creating canvas" << std::endl;
+
+    /*TCanvas c2(variable.name().c_str(),"",800,600);
+    mcS->Draw("hist");
+    dataH->Draw("same");
+    c2.SaveAs((outputDirectory+"/"+variable.name()+"_test.png").c_str());
+    c2.SaveAs((outputDirectory+"/"+variable.name()+"_test.C").c_str()); // */
 
     TCanvas c1(variable.name().c_str(), "", 800, 800);
     gStyle->SetOptStat(0);
@@ -216,16 +223,19 @@ int main(int argc, char** argv)
     bgUncH->GetYaxis()->SetTitleSize(0.036*yscale);
     ratio->Draw("same");
 
-    std::cout << "    Finished drawing, saving output" << std::endl;
+    //std::cout << "    Finished drawing, saving output" << std::endl;
+    //std::cout << "      Saving to: " << outputDirectory+"/"+variable.name()+".png" << std::endl;
 
     c1.SaveAs((outputDirectory+"/"+variable.name()+".png").c_str());
     c1.SaveAs((outputDirectory+"/"+variable.name()+".C").c_str());
+
+    //std::cout << "    Finished saving plots" << std::endl;
   }
 
   std::cout << "Total MC yield: " << MC.getYield(presel.GetTitle(), mcWeight) << std::endl;
   for(auto & sample : MC)
     std::cout << "\t" << sample.label() << " yield: " << sample.getYield(presel.GetTitle(), mcWeight) << std::endl;
-  std::cout << "Total Data yield: " << Data.getYield(presel.GetTitle(), "") << std::endl;
+  std::cout << "Total Data yield: " << Data.getYield(presel.GetTitle(), "1") << std::endl;
   std::cout << "Total Signal yield: " << Sig.getYield(presel.GetTitle(), mcWeight) << std::endl;
 
 
