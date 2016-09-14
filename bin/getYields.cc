@@ -105,6 +105,7 @@ int main(int argc, char** argv)
 
 
   gStyle->SetOptStat(000000);
+  gStyle->SetOptTitle(0);
   TCut muon = "(nGoodMu==1)";
   TCut electron = "(nGoodEl==1)";
   TCut singlep = muon||electron;
