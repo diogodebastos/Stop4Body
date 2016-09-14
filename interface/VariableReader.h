@@ -46,12 +46,12 @@ public:
   typedef typename std::vector<VariableInfo>::iterator iterator;
   typedef typename std::vector<VariableInfo>::const_iterator const_iterator;
 
-  iterator begin() {return processes_.begin();}
-  const_iterator begin() const {return processes_.begin();}
-  const_iterator cbegin() const {return processes_.cbegin();}
-  iterator end() {return processes_.end();}
-  const_iterator end() const {return processes_.end();}
-  const_iterator cend() const {return processes_.cend();}
+  iterator begin() {return variables_.begin();}
+  const_iterator begin() const {return variables_.begin();}
+  const_iterator cbegin() const {return variables_.cbegin();}
+  iterator end() {return variables_.end();}
+  const_iterator end() const {return variables_.end();}
+  const_iterator cend() const {return variables_.cend();}
 
 private:
 protected:

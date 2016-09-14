@@ -9,6 +9,11 @@
 #include <TRandom3.h>
 #include <TDirectory.h>
 #include <TStyle.h>
+#include <TLegend.h>
+#include <TPad.h>
+#include <TPaveText.h>
+#include <TCanvas.h>
+#include <TGraphErrors.h>
 
 #include "TMVA/Factory.h"
 #include "TMVA/Tools.h"
@@ -119,7 +124,7 @@ int main(int argc, char** argv)
   auto Sig = samples.getMCSig();
   auto Data = samples.getData();
 
-  VariableReader variables(variablesJson);
+  VariableJsonLoader variables(variablesJson);
   std::cout << "Processing variable plots" << std::endl;
   for(auto & variable : variables)
   {
@@ -129,6 +134,14 @@ int main(int argc, char** argv)
     auto mcH = MC.getHist("MC", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+presel.GetTitle()+")", variable.bins(), variable.min(), variable.max());
     auto sigH = Sig.getHist("Signal", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+presel.GetTitle()+")", variable.bins(), variable.min(), variable.max());
     auto mcS = MC.getStack(variable.expression(), variable.label()+";Evt.", mcWeight+"*("+presel.GetTitle()+")", variable.bins(), variable.min(), variable.max());
+
+    std::cout << "    Got histograms, getting ratio" << std::endl;
+
+    auto ratio = static_cast<TH1D*>(dataH->Clone("ratio"));
+    ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
+    ratio->Divide(mcH);
+
+    std::cout << "    Got ratio, creating canvas" << std::endl;
 
     TCanvas c1(variable.name().c_str(), "", 800, 800);
     gStyle->SetOptStat(0);
@@ -202,6 +215,8 @@ int main(int argc, char** argv)
     bgUncH->GetYaxis()->SetLabelSize(0.033*yscale);
     bgUncH->GetYaxis()->SetTitleSize(0.036*yscale);
     ratio->Draw("same");
+
+    std::cout << "    Finished drawing, saving output" << std::endl;
 
     c1.SaveAs((outputDirectory+"/"+variable.name()+".png").c_str());
     c1.SaveAs((outputDirectory+"/"+variable.name()+".C").c_str());
