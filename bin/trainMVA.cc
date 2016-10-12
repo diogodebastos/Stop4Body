@@ -158,8 +158,8 @@ int main(int argc, char** argv)
 
   if(Use["NN"])
   {
-    std::vector<std::string> firstLayer = {"N", "2N", "N/2"};
-    std::vector<std::string> secondLayer = {"N", "N-1", "N/2", "2N"};
+    std::vector<std::string> firstLayer = {"N", "2N", "0.5N"};
+    std::vector<std::string> secondLayer = {"N", "N-1", "0.5N", "2N"};
     std::vector<std::string> nCycles = {"50", "100", "150", "200", "300", "500", "1000", "2000"};
     std::vector<std::string> learningRate = {"0.01", "0.02", "0.04", "0.08", "0.12"};
     std::vector<std::string> decayRate = {"0.005", "0.01", "0.02"};
