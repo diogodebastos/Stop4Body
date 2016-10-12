@@ -12,7 +12,7 @@ if [[ -d ${INPUT} ]] ; then
     mkdir -p ${OUTPUT_Data}
   fi
 
-  getYields --json samples2Run.json --inDir ${INPUT} --variables variables.json
-  getYields --json samples2RunData.json --inDir ${INPUT} --variables variables.json --lumi 1700
+  #getYields --json samples2Run.json --inDir ${INPUT} --variables variables.json --outDir ${OUTPUT_PD}
+  getYields --json samples2RunData.json --inDir ${INPUT} --variables variables.json --outDir ${OUTPUT_Data} --lumi 1700
 fi
 
