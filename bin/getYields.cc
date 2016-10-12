@@ -113,6 +113,7 @@ int main(int argc, char** argv)
   TCut met    = "Met>300.";
   TCut dphij1j2 = "DPhiJet1Jet2 < 2.5";
   TCut presel = singlep+ISRjet+dphij1j2+met;
+  //presel = singlep+ISRjet+met;
 
   std::string mcWeight;
   {
@@ -162,8 +163,8 @@ int main(int argc, char** argv)
     mcS->Draw("hist");
     dataH->Draw("same");
     sigH->Draw("hist same");
-    //TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
-    TLegend *legA = gPad->BuildLegend(0.155,0.69,0.35,0.89, "NDC");
+    TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
+    //TLegend *legA = gPad->BuildLegend(0.155,0.69,0.35,0.89, "NDC");
     legA->SetFillColor(0); legA->SetFillStyle(0); legA->SetLineColor(0);
     legA->SetHeader("");
     legA->SetTextFont(42);
