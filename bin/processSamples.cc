@@ -171,20 +171,28 @@ int main(int argc, char** argv)
       Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
       Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
       Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
-      Float_t PFMET90_PFMHT90_IDTight; bdttree->Branch("PFMET90_PFMHT90_IDTight", &PFMET90_PFMHT90_IDTight,"PFMET90_PFMHT90_IDTight/F");
-      Float_t PFMETNoMu90_PFMHTNoMu90_IDTight; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90_IDTight", &PFMETNoMu90_PFMHTNoMu90_IDTight,"PFMETNoMu90_PFMHTNoMu90_IDTight/F");
+      Float_t PFMET90_PFMHT90; bdttree->Branch("PFMET90_PFMHT90", &PFMET90_PFMHT90,"PFMET90_PFMHT90/F");
+      Float_t PFMETNoMu90_PFMHTNoMu90; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90", &PFMETNoMu90_PFMHTNoMu90,"PFMETNoMu90_PFMHTNoMu90/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
       Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
       Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
       Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
       Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
+      Float_t genGravitinoM; bdttree->Branch("genGravitinoM", &genGravitinoM, "genGravitinoM/F");
+      Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
+      Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
+      Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
 
       // Get total number of entries
       Nevt = 0;
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
-        TTree *inputtree = static_cast<TTree*>(finput.Get("tree"));
+        TTree *inputtree;
+        if(process.selection() != "")
+          inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
+        else
+          inputtree = static_cast<TTree*>(finput.Get("tree"));
         Nevt += static_cast<Int_t>(inputtree->GetEntries());
       }
 
@@ -193,7 +201,11 @@ int main(int argc, char** argv)
         std::cout << "\t  Processing file: " << file << std::endl;
         TFile finput(file.c_str(), "READ");
         foutput.cd();
-        TTree *inputtree = (TTree*)finput.Get("tree");
+        TTree *inputtree;
+        if(process.selection() != "")
+          inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
+        else
+          inputtree = static_cast<TTree*>(finput.Get("tree"));
 
         // Read Branches you are interested in from the input tree
         Float_t mtw1;        inputtree->SetBranchAddress("mtw1"       , &mtw1);
@@ -257,14 +269,27 @@ int main(int argc, char** argv)
         if(!process.isdata())
           inputtree->SetBranchAddress("xsec",&xsec);
 
+        // 2015 HLT
+        /*Int_t HLT_PFMET170_JetIdCleaned;   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
+        Int_t HLT_PFMET90_PFMHT90;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90", &HLT_PFMET90_PFMHT90);
+        Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);// */
+
+        // 2016 HLT
         Int_t HLT_PFMET170_JetIdCleaned;   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
-        Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight", &HLT_PFMET90_PFMHT90_IDTight);
-        Int_t HLT_PFMETNoMu90_PFMHTNoMu90_IDTight ;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90_IDTight", &HLT_PFMETNoMu90_PFMHTNoMu90_IDTight);
+        Int_t HLT_PFMET90_PFMHT90;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90", &HLT_PFMET90_PFMHT90);
+        Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);
+
         Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
         Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
         Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
         Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
         Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
+
+        // Variables that are copied directly to output tree
+        inputtree->SetBranchAddress("GenSusyMGravitino", &genGravitinoM);
+        inputtree->SetBranchAddress("GenSusyMStop", &genStopM);
+        inputtree->SetBranchAddress("GenSusyMSbottom", &genSbottomM);
+        inputtree->SetBranchAddress("GenSusyMNeutralino", &genNeutralinoM);
 
         // Read the number of entries in the inputtree
         Int_t nentries = (Int_t)inputtree->GetEntries();
@@ -507,8 +532,8 @@ int main(int argc, char** argv)
           //XS = file.crossSection;
 
           PFMET170JetIdCleaned                = HLT_PFMET170_JetIdCleaned;
-          PFMET90_PFMHT90_IDTight             = HLT_PFMET90_PFMHT90_IDTight;
-          PFMETNoMu90_PFMHTNoMu90_IDTight     = HLT_PFMETNoMu90_PFMHTNoMu90_IDTight;
+          PFMET90_PFMHT90                     = HLT_PFMET90_PFMHT90;
+          PFMETNoMu90_PFMHTNoMu90             = HLT_PFMETNoMu90_PFMHTNoMu90;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
           eeBadScFilter                       = Flag_eeBadScFilter;

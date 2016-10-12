@@ -1,11 +1,10 @@
 #!/bin/bash
 
-OUTDIR=~/local-area/Stop4Body/New/
-OUTDIR=~/working/Stop/Samples/
+OUTDIR=~/local-area/Stop4Body/nTuples_v2016-10-11/
 
 if [[ ! -d ${OUTDIR} ]] ; then
   mkdir -p ${OUTDIR}
 fi
 
 processSamples --json samples.json --outDir ${OUTDIR}
-hadd ${OUTDIR}/Background_bdt.root ${OUTDIR}/Wjets_100to200_bdt.root ${OUTDIR}/Wjets_200to400_bdt.root ${OUTDIR}/Wjets_400to600_bdt.root ${OUTDIR}/Wjets_600toInf_bdt.root ${OUTDIR}/TTJets_LO_bdt.root
+hadd ${OUTDIR}/Background.root ${OUTDIR}/Wjets_100to200.root ${OUTDIR}/Wjets_200to400.root ${OUTDIR}/Wjets_400to600.root ${OUTDIR}/Wjets_600toInf.root ${OUTDIR}/TTJets.root

@@ -11,25 +11,38 @@
           "tag":"Wjets_100to200",
           "xsec": 1629.87,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets100to200"
+          "split":642,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT100to200/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":642,
+          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT100to200_ext/treeProducerSusySingleLepton_tree"
         },
         {
           "tag":"Wjets_200to400",
           "xsec": 435.6,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets200to400"
+          "split":119,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT200to400/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":343,
+          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT200to400_ext/treeProducerSusySingleLepton_tree"
         },
         {
           "tag":"Wjets_400to600",
           "xsec": 59.169,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets400to600"
+          "split":44,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT400to600/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":125,
+          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT400to600_ext/treeProducerSusySingleLepton_tree"
         },
         {
           "tag":"Wjets_600toInf",
           "xsec": 22.7117,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/Wjets600toInf"
+          "split":24,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT600toInf/treeProducerSusySingleLepton_tree"
         }
       ]
     },
@@ -41,10 +54,11 @@
       "label":"t#bar{t}",
       "files":[
         {
-          "tag":"TTJets_LO",
+          "tag":"TTJets",
           "xsec": 831.76,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/TTjets_LO"
+          "split":796,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/TTJets/TTJets/treeProducerSusySingleLepton_tree"
         }
       ]
     },
@@ -151,7 +165,7 @@
       ]
     },
     {
-      "tag":"stop",
+      "tag":"signal_point_1",
       "isdata":false,
       "issignal":true,
       "spimpose":true,
@@ -161,36 +175,38 @@
       "lstyle":3,
       "fill":0,
       "marker":1,
-      "label":"stop",
+      "label":"stop 300, neut 270",
+      "selection":"(GenSusyMStop==300)&&(GenSusyMNeutralino==270)",
       "files":[
         {
           "tag":"T2DegStop_300_270",
           "xsec": 1.0,
           "br": 1.0,
-          "path_old":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/T2DegStop_300_270_Fullsim.root",
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/signal"
+          "split":242,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80/treeProducerSusySingleLepton_tree"
         }
       ]
     },
     {
-      "tag":"stopFS",
+      "tag":"signal_deltaM30",
       "isdata":false,
-      "isfastsim":true,
       "issignal":true,
       "spimpose":true,
-      "color":808,
+      "color":807,
       "lcolor":1,
       "lwidth":3,
       "lstyle":3,
       "fill":0,
       "marker":1,
-      "label":"stop",
+      "label":"#Delta M = 30",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==30)",
       "files":[
         {
-          "tag":"T2DegStop_300_270_FastSim",
+          "tag":"T2DegStop_deltaM30",
           "xsec": 1.0,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/T2DegStop_300_270_FastSim"
+          "split":242,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80/treeProducerSusySingleLepton_tree"
         }
       ]
     },
@@ -238,7 +254,7 @@
           "tag":"METDataSet",
           "xsec": 1.0,
           "br": 1.0,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/WithTracks/METDataSet"
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/METDataSet"
         }
       ]
     }
