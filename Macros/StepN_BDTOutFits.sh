@@ -1,9 +1,9 @@
 #!/bin/bash
 
-INPUT=~/local-area/Stop4Body/nTuples_v2016-08-31_bdt/
-OUTPUT=~/local-area/Stop4Body/BDT_Fits/
-OUTPUT_INJ=~/local-area/Stop4Body/BDT_Fits_Injected/
-OUTPUT_DAT=~/local-area/Stop4Body/BDT_Fits_Data/
+INPUT=~cbeiraod/local-area/Stop4Body/nTuples_v2016-08-31_bdt/
+OUTPUT=~cbeiraod/local-area/Stop4Body/BDT_Fits/
+OUTPUT_INJ=~cbeiraod/local-area/Stop4Body/BDT_Fits_Injected/
+OUTPUT_DAT=~cbeiraod/local-area/Stop4Body/BDT_Fits_Data/
 
 if [[ ! -d ${OUTPUT} ]] ; then
   mkdir -p ${OUTPUT}

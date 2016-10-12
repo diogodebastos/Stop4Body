@@ -1,7 +1,7 @@
 #!/bin/bash
 
-INPUT=~/local-area/Stop4Body/nTuples_v2016-08-31/
-OUTPUT=~/local-area/Stop4Body/nTuples_v2016-08-31_bdt/
+INPUT=~cbeiraod/local-area/Stop4Body/nTuples_v2016-08-31/
+OUTPUT=~cbeiraod/local-area/Stop4Body/nTuples_v2016-08-31_bdt/
 
 if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then
@@ -18,7 +18,6 @@ if [[ -d ${INPUT} ]] ; then
   #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize2
   # SET9005
   #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize2.5
-
   # SET9006
   #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize1.5
 
