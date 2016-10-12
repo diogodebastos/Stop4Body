@@ -177,6 +177,7 @@ public:
 
   std::string tag() const {return tag_;}
   std::string label() const {return label_;}
+  std::string selection() const {return selection_;}
   bool isdata() const {return isdata_;}
   bool issignal() const {return issignal_;}
   bool isfastsim() const {return isfastsim_;}
@@ -206,6 +207,7 @@ protected:
   std::string suffix_;
   std::string tag_;
   std::string label_;
+  std::string selection_;
   bool isdata_;
   bool issignal_;
   bool isfastsim_;

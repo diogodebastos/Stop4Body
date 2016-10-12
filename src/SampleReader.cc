@@ -121,6 +121,8 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix)
     mcolor_ = color_;
   if(jsonInfo.count("marker") > 0)
     marker_ = jsonInfo["marker"];
+  if(jsonInfo.count("selection") > 0)
+    selection_ = jsonInfo["selection"];
 
   for(auto& sample : jsonInfo["files"])
   {
