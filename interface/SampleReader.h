@@ -137,6 +137,7 @@ public:
   double branchingRatio() const {return branchingRatio_;}
   std::string tag() const {return tag_;}
   int split() const {return split_;}
+  std::string filterEfficiencyFile() const {return filterEfficiencyFile_;}
 
   // Iteration
   typedef typename std::vector<std::string>::iterator iterator;
@@ -159,6 +160,7 @@ protected:
   double branchingRatio_;
   std::string tag_;
   int split_;
+  std::string filterEfficiencyFile_;
 
   std::vector<std::string> filePaths_;
   std::vector<std::string> missingFiles_;

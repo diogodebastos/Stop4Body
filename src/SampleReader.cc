@@ -27,6 +27,10 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   if(jsonInfo.count("split") > 0)
     split_ = jsonInfo["split"];
 
+  filterEfficiencyFile_ = "";
+  if(jsonInfo.count("filterEfficiencyFile") > 0)
+    filterEfficiencyFile_ = jsonInfo["filterEfficiencyFile"];
+
   std::string basePath = jsonInfo["path"];
   if(baseDir_ != "")
   {
