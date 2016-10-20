@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <math.h>
+#include <memory>
 
 #include "TROOT.h"
 #include "TFile.h"
@@ -108,8 +109,6 @@ int main(int argc, char** argv)
       outputFile += ".root";
       std::cout << "\t  Putting output in: " << outputFile << std::endl;
 
-      TFile foutput(outputFile.c_str(), "RECREATE");
-
       std::ofstream SyFile;
       if(doSync)
       {
@@ -118,6 +117,7 @@ int main(int argc, char** argv)
         SyFile.precision(3);
       }
 
+      TFile foutput(outputFile.c_str(), "RECREATE");
       TTree *bdttree= new TTree("bdttree","bdttree");
 
       // New branch in bdt tree
@@ -139,7 +139,10 @@ int main(int argc, char** argv)
       Float_t CosDeltaPhi; bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
       Float_t NbLoose30; bdttree->Branch("NbLoose30",&NbLoose30,"NbLoose30/F");
       Float_t NbTight30;  bdttree->Branch("NbTight30",&NbTight30,"NbTight30/F");
+      Float_t NbLoose20; bdttree->Branch("NbLoose20",&NbLoose20,"NbLoose20/F");
+      Float_t NbTight20;  bdttree->Branch("NbTight20",&NbTight20,"NbTight20/F");
       Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
+      Float_t Njet30;  bdttree->Branch("Njet30",&Njet30,"Njet30/F");
       Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
       Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
       Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F"); // *
@@ -182,12 +185,25 @@ int main(int argc, char** argv)
       Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
       Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
+      Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
+
+
+      TH1* filterEfficiencyH = nullptr;
+      if(sample.filterEfficiencyFile() != "")
+      {
+        TDirectory* cwd = gDirectory;
+        TFile filterEfficiencyFile(sample.filterEfficiencyFile().c_str(), "READ");
+        TCanvas* canvas = static_cast<TCanvas*>(filterEfficiencyFile.Get("c1"));
+        cwd->cd();
+        filterEfficiencyH = static_cast<TH1*>(canvas->GetPrimitive("filterEfficiencies")->Clone("filterEfficiency"));
+      }
 
       // Get total number of entries
       Nevt = 0;
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
+        foutput.cd();
         TTree *inputtree;
         if(process.selection() != "")
           inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
@@ -210,11 +226,13 @@ int main(int argc, char** argv)
         // Read Branches you are interested in from the input tree
         Float_t mtw1;        inputtree->SetBranchAddress("mtw1"       , &mtw1);
         Float_t mtw2;        inputtree->SetBranchAddress("mtw2"       , &mtw2);
-        Float_t mtw;        inputtree->SetBranchAddress("mtw"       , &mtw);
+        Float_t mtw;         inputtree->SetBranchAddress("mtw"       , &mtw);
         Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
         Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
-        Int_t nBJetLoose30; inputtree->SetBranchAddress("nBJetLoose30"       , &nBJetLoose30);
-        Int_t nBJetTight30; inputtree->SetBranchAddress("nBJetTight30"       , &nBJetTight30);
+        Int_t nBJetLoose30;  inputtree->SetBranchAddress("nBJetLoose30"       , &nBJetLoose30);
+        Int_t nBJetTight30;  inputtree->SetBranchAddress("nBJetTight30"       , &nBJetTight30);
+        Int_t nBJetLoose20;  inputtree->SetBranchAddress("nBJetLoose20"       , &nBJetLoose20);
+        Int_t nBJetTight20;  inputtree->SetBranchAddress("nBJetTight20"       , &nBJetTight20);
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_pdgId[40];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
         Int_t LepGood_mediumMuonId[40]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
@@ -275,7 +293,7 @@ int main(int argc, char** argv)
         Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);// */
 
         // 2016 HLT
-        Int_t HLT_PFMET170_JetIdCleaned;   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
+        Int_t HLT_PFMET170_JetIdCleaned = 0;//   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
         Int_t HLT_PFMET90_PFMHT90;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90", &HLT_PFMET90_PFMHT90);
         Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);
 
@@ -285,11 +303,15 @@ int main(int argc, char** argv)
         Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
         Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
 
-        // Variables that are copied directly to output tree
-        inputtree->SetBranchAddress("GenSusyMGravitino", &genGravitinoM);
+        // Variables that are copied directly to output tree (unfortunately there is a type mismatch)
+        /*inputtree->SetBranchAddress("GenSusyMGravitino", &genGravitinoM);
         inputtree->SetBranchAddress("GenSusyMStop", &genStopM);
         inputtree->SetBranchAddress("GenSusyMSbottom", &genSbottomM);
-        inputtree->SetBranchAddress("GenSusyMNeutralino", &genNeutralinoM);
+        inputtree->SetBranchAddress("GenSusyMNeutralino", &genNeutralinoM);// */
+        Int_t GenSusyMGravitino; inputtree->SetBranchAddress("GenSusyMGravitino", &GenSusyMGravitino);
+        Int_t GenSusyMStop; inputtree->SetBranchAddress("GenSusyMStop", &GenSusyMStop);
+        Int_t GenSusyMSbottom; inputtree->SetBranchAddress("GenSusyMSbottom", &GenSusyMSbottom);
+        Int_t GenSusyMNeutralino; inputtree->SetBranchAddress("GenSusyMNeutralino", &GenSusyMNeutralino);
 
         // Read the number of entries in the inputtree
         Int_t nentries = (Int_t)inputtree->GetEntries();
@@ -306,6 +328,13 @@ int main(int argc, char** argv)
           if(i%statusPrint == 0 && i != 0)
             std::cout << "*" << std::flush;
           inputtree->GetEntry(i);
+
+          // Filter Efficiency
+          if(filterEfficiencyH != nullptr)
+          {
+            auto theBin = filterEfficiencyH->FindBin(genStopM, genNeutralinoM);
+            filterEfficiency = filterEfficiencyH->GetBinContent(theBin);
+          }
 
           // Preselection
           nGoodMu = 0;
@@ -357,6 +386,8 @@ int main(int argc, char** argv)
           Met = met_pt;
           NbLoose30 = nBJetLoose30;
           NbTight30 = nBJetTight30;
+          NbLoose20 = nBJetLoose20;
+          NbTight20 = nBJetTight20;
 
           float DrJetLepMax = 999.;
           Int_t ij = 0;
@@ -512,6 +543,7 @@ int main(int argc, char** argv)
           HT25 = 0.;
           HT30 = 0.;
           Njet = 0;
+          Njet30 = 0;
           for(Int_t j = 0; j < nJet20; j++)
           {
             if(Jet_pt[j] > 20.)
@@ -522,7 +554,10 @@ int main(int argc, char** argv)
             if(Jet_pt[j] > 25.)
               HT25 += Jet_pt[j];
             if(Jet_pt[j] > 30.)
+            {
               HT30 += Jet_pt[j];
+              Njet30 += 1;
+            }
           }
 
           Run = run;
@@ -540,9 +575,15 @@ int main(int argc, char** argv)
           EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
           goodVertices                        = Flag_goodVertices;
 
+          genGravitinoM  = GenSusyMGravitino;
+          genStopM       = GenSusyMStop;
+          genSbottomM    = GenSusyMSbottom;
+          genNeutralinoM = GenSusyMNeutralino;
+
           // Skim
           bool emu = (nGoodMu == 1)  ||  (nGoodEl == 1);
-          bool isISR = (Jet_pt[0] > 110.)  &&  (Njet > 0);
+          //emu = (nGoodMu + nGoodEl == 1);
+          bool isISR = (Jet_pt[0] > 90.)  &&  (Njet > 0);
           bool dPhi = DPhiJet1Jet2 < 2.5;
           bool met = Met > 100.;
           if(!emu)     continue;
@@ -584,6 +625,8 @@ int main(int argc, char** argv)
       }
       foutput.cd();
       bdttree->Write("",TObject::kOverwrite);
+      if(filterEfficiencyH != nullptr)
+        delete filterEfficiencyH;
     }
   }
   return 0;

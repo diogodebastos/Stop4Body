@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTDIR=~cbeiraod/local-area/Stop4Body/nTuples_v2016-10-11/
+OUTDIR=~cbeiraod/local-area/Stop4Body/nTuples_v2016-10-20/
 
 if [[ ! -d ${OUTDIR} ]] ; then
   mkdir -p ${OUTDIR}
