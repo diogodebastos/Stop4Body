@@ -271,6 +271,7 @@ int main(int argc, char** argv)
         Float_t LepOther_dz[40]; inputtree->SetBranchAddress("LepOther_dz",&LepOther_dz);
         Float_t LepOther_sip3d[40]; inputtree->SetBranchAddress("LepOther_sip3d",&LepOther_sip3d);
         Float_t LepOther_mass[40]; inputtree->SetBranchAddress("LepOther_mass",&LepOther_mass);
+        Int_t LepOther_eleCutIdSpring15_25ns_v1[40]; inputtree->SetBranchAddress("LepOther_eleCutIdSpring15_25ns_v1", &LepOther_eleCutIdSpring15_25ns_v1);
         Int_t LepOther_charge[40]; inputtree->SetBranchAddress("LepOther_charge",&LepOther_charge);
         Float_t Jet_chEMEF[40];  inputtree->SetBranchAddress("Jet_chEMEF", &Jet_chEMEF);
         Float_t Jet_neEMEF[40];  inputtree->SetBranchAddress("Jet_neEMEF", &Jet_neEMEF);
@@ -345,7 +346,7 @@ int main(int argc, char** argv)
           // Object ID
           std::vector<int> validJets;
           std::vector<int> validTracks;
-          std::vector<std::pair<bool, int>> validLeptons;
+          std::vector<std::pair<int, int>> validLeptons; // First is the type, second the index for that type
 
           for(Int_t i = 0; i < nJet20; ++i)
           {
@@ -355,7 +356,7 @@ int main(int argc, char** argv)
             }
           }
 
-          for (Int_t l = 0; l < nTracks; l++)
+          for(Int_t l = 0; l < nTracks; ++l)
           {
             int index=Tracks_matchedJetIndex[l];
 
@@ -370,6 +371,80 @@ int main(int argc, char** argv)
             }
           }
 
+          nGoodMu = 0;
+          nGoodEl = 0;
+          for(Int_t type = 0; type < 2; ++type)
+          {
+            Int_t   leptonNumber                     = nLepGood;
+            Int_t   *lepton_pdgId                    = LepGood_pdgId;
+            //Int_t   *lepton_mediumMuonId             = LepGood_mediumMuonId;
+            Int_t   *lepton_eleCutIdSpring15_25ns_v1 = LepGood_eleCutIdSpring15_25ns_v1;
+            //Int_t   *lepton_charge                   = LepGood_charge;
+            Float_t *lepton_pt                       = LepGood_pt;
+            Float_t *lepton_eta                      = LepGood_eta;
+            //Float_t *lepton_phi                      = LepGood_phi;
+            Float_t *lepton_relIso03                 = LepGood_relIso03;
+            //Float_t *lepton_relIso04                 = LepGood_relIso04;
+            Float_t *lepton_dxy                      = LepGood_dxy;
+            Float_t *lepton_dz                       = LepGood_dz;
+            //Float_t *lepton_sip3d                    = LepGood_sip3d;
+            //Float_t *lepton_mass                     = LepGood_mass;
+            if(type == 1)
+            {
+              leptonNumber                    = nLepOther;
+              lepton_pdgId                    = LepOther_pdgId;
+              //lepton_mediumMuonId             = LepOther_mediumMuonId;
+              lepton_eleCutIdSpring15_25ns_v1 = LepOther_eleCutIdSpring15_25ns_v1;
+              //lepton_charge                   = LepGood_charge;
+              lepton_pt                       = LepOther_pt;
+              lepton_eta                      = LepOther_eta;
+              //lepton_phi                      = LepOther_phi;
+              lepton_relIso03                 = LepOther_relIso03;
+              //lepton_relIso04                 = LepOther_relIso04;
+              lepton_dxy                      = LepOther_dxy;
+              lepton_dz                       = LepOther_dz;
+              //lepton_sip3d                    = LepOther_sip3d;
+              //lepton_mass                     = LepOther_mass;
+            }
+
+            for(Int_t i = 0; i < leptonNumber; ++i)
+            {
+              bool lPTETA = lepton_pt[i] > 5.0
+                         && lepton_pt[i] < 30.0;
+              if(abs(lepton_pdgId[i]) == 13)
+              {
+                lPTETA = lPTETA && (abs(lepton_eta[i]) < 2.4);
+              }
+              else
+              {
+                lPTETA = lPTETA && (abs(lepton_eta[i]) < 2.5);
+                // ECAL Gap
+                lPTETA = lPTETA && (  (abs(lepton_eta[i]) > ECALGap_MaxEta)
+                                   || (abs(lepton_eta[i]) < ECALGap_MinEta)   );
+              }
+
+              bool lID = (abs(lepton_dxy[i]) < 0.02)
+                      && (abs(lepton_dz[i]) < 0.5);
+              if(abs(lepton_pdgId[i]) == 11)
+                lID = lID && (lepton_eleCutIdSpring15_25ns_v1[i] >= 1);
+
+              bool lIS = ((lepton_pt[i] >= 25.0) && (lepton_relIso03[i] < 0.2))
+                      || ((lepton_pt[i] <  25.0) && ((lepton_pt[i] * lepton_relIso03[i]) < 5.0));
+
+              if(lPTETA && lID && lIS)
+              {
+                validLeptons.push_back(std::make_pair(type, i));
+                if(abs(lepton_pdgId[i]) == 13)
+                {
+                  nGoodMu += 1;
+                }
+                if(abs(lepton_pdgId[i]) == 11 )
+                {
+                  nGoodEl += 1;
+                }
+              }
+            }
+          }
 
 
 
