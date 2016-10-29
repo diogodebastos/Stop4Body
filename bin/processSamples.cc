@@ -162,9 +162,11 @@ int main(int argc, char** argv)
       Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
       Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F"); // *
       Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F"); // *
+      Float_t JetHBCSV; bdttree->Branch("JetHBCSV", &JetHBCSV, "JetHBCSV/F"); // *
       Float_t JetB2pt;  bdttree->Branch("JetB2pt",&JetB2pt,"JetB2pt/F");
       Float_t JetB2eta;  bdttree->Branch("JetB2eta",&JetB2eta,"JetB2eta/F"); // *
       Float_t JetB2index; bdttree->Branch("JetB2index", &JetB2index, "JetB2index/F"); // *
+      Float_t JetB2CSV; bdttree->Branch("JetB2CSV", &JetB2CSV, "JetB2CSV/F");
       Float_t DrJet1Lep;  bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
       Float_t DrJet2Lep;  bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
       Float_t DrJetHBLep;  bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
@@ -255,6 +257,7 @@ int main(int argc, char** argv)
         Float_t LepGood_dz[40]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
         Float_t LepGood_sip3d[40]; inputtree->SetBranchAddress("LepGood_sip3d",&LepGood_sip3d);
         Float_t LepGood_mass[40]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
+        Int_t LepGood_eleCutIdSpring15_25ns_v1[40]; inputtree->SetBranchAddress("LepGood_eleCutIdSpring15_25ns_v1", &LepGood_eleCutIdSpring15_25ns_v1);
         Int_t LepGood_charge[40]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
         Int_t nLepOther;      inputtree->SetBranchAddress("nLepOther"   , &nLepOther);
         Int_t LepOther_pdgId[40];  inputtree->SetBranchAddress("LepOther_pdgId", &LepOther_pdgId);
@@ -339,6 +342,37 @@ int main(int argc, char** argv)
             std::cout << "*" << std::flush;
           inputtree->GetEntry(i);
 
+          // Object ID
+          std::vector<int> validJets;
+          std::vector<int> validTracks;
+          std::vector<std::pair<bool, int>> validLeptons;
+
+          for(Int_t i = 0; i < nJet20; ++i)
+          {
+            if(abs(Jet_eta[i]) < 2.4)
+            {
+              validJets.push_back(i);
+            }
+          }
+
+          for (Int_t l = 0; l < nTracks; l++)
+          {
+            int index=Tracks_matchedJetIndex[l];
+
+            if( Tracks_pt[l] > 2.5
+              && fabs(Tracks_eta[l]) < 2.5
+              && fabs(Tracks_dz[l]) < 0.1
+              && fabs(Tracks_dxy[l]) < 0.1
+              && Tracks_CosPhiJet12[l]  < 0.7
+              && ( Tracks_matchedJetDr[l] > 0.4 || (index >=0 && Jet_pt[ index ]  < 60 )))
+            {
+              validTracks.push_back(l);
+            }
+          }
+
+
+
+
           // Filter Efficiency
           if(filterEfficiencyH != nullptr)
           {
@@ -362,6 +396,8 @@ int main(int argc, char** argv)
             bool lID = (abs(LepGood_dxy[l]) < 0.02)
                     && (abs(LepGood_dz[l]) < 0.5);
                     //&& (LepGood_sip3d[l] < 4.0);
+            if(abs(LepGood_pdgId[l]) == 11)
+              lID = lID && (LepGood_eleCutIdSpring15_25ns_v1[l] >= 1);
             bool lIS = ((LepGood_pt[l] >= 25.0) && (LepGood_relIso03[l] < 0.2))
                     || ((LepGood_pt[l] <  25.0) && ((LepGood_pt[l] * LepGood_relIso03[l]) < 5.0));
 
@@ -383,21 +419,7 @@ int main(int argc, char** argv)
             }
           }
 
-          nGoodTrack=0;
-          for (Int_t l = 0; l < nTracks; l++)
-          {
-            int index=Tracks_matchedJetIndex[l];
-
-            if( Tracks_pt[l] > 2.5
-              && fabs(Tracks_eta[l]) < 2.5
-              && fabs(Tracks_dz[l]) < 0.1
-              && fabs(Tracks_dxy[l]) < 0.1
-              && Tracks_CosPhiJet12[l]  < 0.7
-              && ( Tracks_matchedJetDr[l] > 0.4 || (index >=0 && Jet_pt[ index ]  < 60 )))
-            {
-              nGoodTrack++;
-            }
-          }
+          nGoodTrack = validTracks.size();
 
           // Set the value of the branches in the bdttree
           //Nevt = nentries;
@@ -412,12 +434,6 @@ int main(int argc, char** argv)
 
           float DrJetLepMax = 999.;
           Int_t ij = 0;
-          std::vector<int> validJets;
-          for(Int_t i = 0; i < nJet20; ++i)
-          {
-            if(abs(Jet_eta[i]) < 2.4)
-              validJets.push_back(i);
-          }
 
           for(auto &j : validJets)
           {
@@ -511,9 +527,11 @@ int main(int argc, char** argv)
           JetHBpt = -999.;
           JetHBeta = -999.;
           JetHBindex = -1;
+          JetHBCSV = -999.;
           JetB2pt = -999.;
           JetB2eta = -999.;
           JetB2index = -1;
+          JetB2CSV = -999.;
           DrJetHBLep = -999.;
           Float_t BtagMax = -999.;
           Int_t iBtag = -1;
@@ -546,6 +564,7 @@ int main(int argc, char** argv)
             JetHBpt = Jet_pt[iBtag];
             JetHBeta = Jet_eta[iBtag];
             JetHBindex = iBtag;
+            JetHBCSV = Jet_btagCSV[iBtag];
             float dphib, detab;
             dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[ilep]);
             detab = Jet_eta[iBtag] - LepGood_eta[ilep];
@@ -556,6 +575,7 @@ int main(int argc, char** argv)
             JetB2pt = Jet_pt[bjetList[1].first];
             JetB2eta = Jet_eta[bjetList[1].first];
             JetB2index = bjetList[1].first;
+            JetB2CSV = Jet_btagCSV[bjetList[1].first];
           }
 
           LepChg=LepGood_charge[ilep];
@@ -612,13 +632,13 @@ int main(int argc, char** argv)
 
           // Skim
           bool emu = (nGoodMu + nGoodEl == 1);
-          bool isISR = (Jet_pt[0] > 90.)  &&  (Njet > 0);
-          bool dPhi = DPhiJet1Jet2 < 2.5;
-          bool met = Met > 100.;
+          //bool isISR = (Jet_pt[0] > 90.)  &&  (Njet > 0);
+          //bool dPhi = DPhiJet1Jet2 < 2.5;
+          //bool met = Met > 100.;
           if(!emu)     continue;
-          if(!isISR)   continue;
+          /*if(!isISR)   continue;
           if(!dPhi)    continue;
-          if(!met)     continue;
+          if(!met)     continue;// */
 
           // MET filters
           /*if(HBHENoiseFilter                    != 1)  continue;
