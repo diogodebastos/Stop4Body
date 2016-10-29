@@ -347,6 +347,7 @@ int main(int argc, char** argv)
           std::vector<int> validJets;
           std::vector<int> validTracks;
           std::vector<std::pair<int, int>> validLeptons; // First is the type, second the index for that type
+          std::vector<std::pair<int,float>> bjetList;
 
           for(Int_t i = 0; i < nJet20; ++i)
           {
@@ -355,6 +356,17 @@ int main(int argc, char** argv)
               validJets.push_back(i);
             }
           }
+
+          for(auto &j : validJets)
+          {
+            if(Jet_btagCSV[j] != -10)
+            {
+              bjetList.push_back(std::make_pair(j,Jet_btagCSV[j]));
+            }
+          }
+          std::sort(bjetList.begin(), bjetList.end(), [](const std::pair<int,float> &left, const std::pair<int,float> &right) {
+              return left.second > right.second;
+              });
 
           for(Int_t l = 0; l < nTracks; ++l)
           {
@@ -445,56 +457,31 @@ int main(int argc, char** argv)
               }
             }
           }
-
-
-
-          // Filter Efficiency
-          if(filterEfficiencyH != nullptr)
-          {
-            auto theBin = filterEfficiencyH->FindBin(genStopM, genNeutralinoM);
-            filterEfficiency = filterEfficiencyH->GetBinContent(theBin);
-          }
-
-          // Preselection
-          nGoodMu = 0;
-          nGoodEl = 0;
-          Int_t ilep = nLepGood;
-          for(Int_t l = 0; l < nLepGood; l++)
-          {
-            bool lPTETA = (LepGood_pt[l] > 5.0)
-                       && (LepGood_pt[l] < 30.0);
-                       //&& (abs(LepGood_eta[l]) < 2.4);
-            if(abs(LepGood_pdgId[l]) == 13)
-              lPTETA = lPTETA && (abs(LepGood_eta[l]) < 2.4);
-            else
-              lPTETA = lPTETA && (abs(LepGood_eta[l]) < 2.5) && (abs(LepGood_eta[l]) > ECALGap_MaxEta || abs(LepGood_eta[l]) < ECALGap_MinEta);
-            bool lID = (abs(LepGood_dxy[l]) < 0.02)
-                    && (abs(LepGood_dz[l]) < 0.5);
-                    //&& (LepGood_sip3d[l] < 4.0);
-            if(abs(LepGood_pdgId[l]) == 11)
-              lID = lID && (LepGood_eleCutIdSpring15_25ns_v1[l] >= 1);
-            bool lIS = ((LepGood_pt[l] >= 25.0) && (LepGood_relIso03[l] < 0.2))
-                    || ((LepGood_pt[l] <  25.0) && ((LepGood_pt[l] * LepGood_relIso03[l]) < 5.0));
-
-            if( lPTETA && lID && lIS )
-            {
-              bool isLep = false;
-              if( (abs(LepGood_pdgId[l]) == 13))//  &&  (LepGood_mediumMuonId[l] == 1) )
+          std::sort(validLeptons.begin(), validLeptons.end(), [LepGood_pt, LepOther_pt](const std::pair<int,int> &left, const std::pair<int,int> &right) {
+              Float_t left_pt, right_pt;
+              if(left.first == 1)
               {
-                nGoodMu += 1;
-                isLep = true;
+                left_pt = LepOther_pt[left.second];
               }
-              if( abs(LepGood_pdgId[l]) == 11 )
+              else
               {
-                nGoodEl += 1;
-                isLep = true;
+                left_pt = LepGood_pt[left.second];
               }
-              if(isLep && l < ilep)
-                ilep = l;
-            }
-          }
+              if(right.first == 1)
+              {
+                right_pt = LepOther_pt[right.second];
+              }
+              else
+              {
+                right_pt = LepGood_pt[right.second];
+              }
+              return left_pt > right_pt;
+              });
 
-          nGoodTrack = validTracks.size();
+          if(validLeptons.size() == 0)
+            continue;
+
+
 
           // Set the value of the branches in the bdttree
           //Nevt = nentries;
@@ -507,13 +494,48 @@ int main(int argc, char** argv)
           NbLoose20 = nBJetLoose20;
           NbTight20 = nBJetTight20;
 
+          nGoodTrack = validTracks.size();
+
           float DrJetLepMax = 999.;
           Int_t ij = 0;
+          TLorentzVector VLep;
+          float lep_phi, lep_eta;
+          Int_t lep_ind = validLeptons[0].second;
+          if(validLeptons[0].first == 1)
+          {
+            VLep.SetPtEtaPhiM(LepOther_pt[lep_ind], LepOther_eta[lep_ind], LepOther_phi[lep_ind], LepOther_mass[lep_ind]);
+            lep_phi  = LepOther_phi[lep_ind];
+            lep_eta  = LepOther_eta[lep_ind];
+            LepChg   = LepOther_charge[lep_ind];
+            LepID    = LepOther_pdgId[lep_ind];
+            LepPt    = LepOther_pt[lep_ind];
+            LepEta   = LepOther_eta[lep_ind];
+            LepDxy   = LepOther_dxy[lep_ind];
+            LepDz    = LepOther_dz[lep_ind];
+            LepSip3  = LepOther_sip3d[lep_ind];
+            LepIso03 = LepOther_relIso03[lep_ind];
+            LepIso04 = LepOther_relIso04[lep_ind];
+          }
+          else
+          {
+            VLep.SetPtEtaPhiM(LepGood_pt[lep_ind], LepGood_eta[lep_ind], LepGood_phi[lep_ind], LepGood_mass[lep_ind]);
+            lep_phi  = LepGood_phi[lep_ind];
+            lep_eta  = LepGood_eta[lep_ind];
+            LepChg   = LepGood_charge[lep_ind];
+            LepID    = LepGood_pdgId[lep_ind];
+            LepPt    = LepGood_pt[lep_ind];
+            LepEta   = LepGood_eta[lep_ind];
+            LepDxy   = LepGood_dxy[lep_ind];
+            LepDz    = LepGood_dz[lep_ind];
+            LepSip3  = LepGood_sip3d[lep_ind];
+            LepIso03 = LepGood_relIso03[lep_ind];
+            LepIso04 = LepGood_relIso04[lep_ind];
+          }
 
           for(auto &j : validJets)
           {
-            float dpi = DeltaPhi(Jet_phi[j],LepGood_phi[ilep]);
-            float dei = Jet_eta[j]-LepGood_eta[ilep];
+            float dpi = DeltaPhi(Jet_phi[j],lep_phi);
+            float dei = Jet_eta[j]-lep_eta;
             float dri = sqrt( pow(dpi,2) + pow(dei,2) );
             if(dri < DrJetLepMax)
             {
@@ -522,8 +544,7 @@ int main(int argc, char** argv)
             }
           }
 
-          TLorentzVector VJ, VLep, JLep;
-          VLep.SetPtEtaPhiM(LepGood_pt[ilep], LepGood_eta[ilep], LepGood_phi[ilep], LepGood_mass[ilep]);
+          TLorentzVector VJ, JLep;
           VJ.SetPtEtaPhiM(Jet_pt[ij], Jet_eta[ij], Jet_phi[ij], Jet_mass[ij]);
           JLep = VJ + VLep;
           JetLepMass = JLep.M();
@@ -543,8 +564,8 @@ int main(int argc, char** argv)
             Jet1Pt = Jet_pt[validJets[0]];
             Jet1Eta = Jet_eta[validJets[0]];
             Jet1CSV = Jet_btagCSV[validJets[0]];
-            float dphi = DeltaPhi(Jet_phi[validJets[0]], LepGood_phi[ilep]);
-            float deta = Jet_eta[validJets[0]] - LepGood_eta[ilep];
+            float dphi = DeltaPhi(Jet_phi[validJets[0]], lep_phi);
+            float deta = Jet_eta[validJets[0]] - lep_eta;
             DrJet1Lep = sqrt( pow(dphi,2) + pow(deta,2) );
           }
           else
@@ -572,8 +593,8 @@ int main(int argc, char** argv)
             DPhiJet1Jet2 = dphijj;
             DrJet1Jet2 = sqrt( pow(dphijj,2) + pow(detajj,2) );
 
-            float dphi = DeltaPhi(Jet_phi[validJets[1]], LepGood_phi[ilep]);
-            float deta = Jet_eta[validJets[1]] - LepGood_eta[ilep];
+            float dphi = DeltaPhi(Jet_phi[validJets[1]], lep_phi);
+            float deta = Jet_eta[validJets[1]] - lep_eta;
             DrJet2Lep = sqrt( pow(dphi,2) + pow(deta,2) );
           }
           else
@@ -608,43 +629,20 @@ int main(int argc, char** argv)
           JetB2index = -1;
           JetB2CSV = -999.;
           DrJetHBLep = -999.;
-          Float_t BtagMax = -999.;
-          Int_t iBtag = -1;
-          std::vector<std::pair<int,float>> bjetList;
-          for(auto &j : validJets)
-          {
-            if(Jet_btagCSV[j] != -10)
-            {
-              bjetList.push_back(std::make_pair(j,Jet_btagCSV[j]));
-            }
 
-            if((Jet_btagCSV[j] != -10)  &&  (Jet_btagCSV[j] > BtagMax))
-            {
-              BtagMax = Jet_btagCSV[j];
-              iBtag = j;
-            }
-          }
-          // Sort bjetList using the standard sort algorithm and a lambda function for the comparison
-          std::sort(bjetList.begin(), bjetList.end(), [](const std::pair<int,float> &left, const std::pair<int,float> &right) {
-              return left.second > right.second;
-              });
-          //std::cout << "The list of bjets:" << std::endl;
-          //for(auto & entry : bjetList)
-          //  std::cout << "\t" << entry.first << "; csv-" << entry.second << std::endl;
-          //std::cout << "Testing: " << iBtag << " is it equal to " << bjetList[0].first << std::endl;
-          //return 4;
-
-          if(iBtag >= 0)
+          if(bjetList.size() >= 1)
           {
+            Int_t iBtag = bjetList[0].first;
             JetHBpt = Jet_pt[iBtag];
             JetHBeta = Jet_eta[iBtag];
             JetHBindex = iBtag;
             JetHBCSV = Jet_btagCSV[iBtag];
             float dphib, detab;
-            dphib = DeltaPhi(Jet_phi[iBtag], LepGood_phi[ilep]);
-            detab = Jet_eta[iBtag] - LepGood_eta[ilep];
+            dphib = DeltaPhi(Jet_phi[iBtag], lep_phi);
+            detab = Jet_eta[iBtag] - lep_eta;
             DrJetHBLep = sqrt( pow(dphib,2) + pow(detab,2) );
           }
+
           if(bjetList.size() > 1)
           {
             JetB2pt = Jet_pt[bjetList[1].first];
@@ -653,15 +651,6 @@ int main(int argc, char** argv)
             JetB2CSV = Jet_btagCSV[bjetList[1].first];
           }
 
-          LepChg=LepGood_charge[ilep];
-          LepID=LepGood_pdgId[ilep];
-          LepPt=LepGood_pt[ilep];
-          LepEta=LepGood_eta[ilep];
-          LepDxy=LepGood_dxy[ilep];
-          LepDz=LepGood_dz[ilep];
-          LepSip3=LepGood_sip3d[ilep];
-          LepIso03=LepGood_relIso03[ilep];
-          LepIso04=LepGood_relIso04[ilep];
           HT20 = 0.;
           HT25 = 0.;
           HT30 = 0.;
@@ -705,15 +694,33 @@ int main(int argc, char** argv)
           EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
           goodVertices                        = Flag_goodVertices;
 
+          // Filter Efficiency
+          if(filterEfficiencyH != nullptr)
+          {
+            auto theBin = filterEfficiencyH->FindBin(genStopM, genNeutralinoM);
+            filterEfficiency = filterEfficiencyH->GetBinContent(theBin);
+          }
+
           // Skim
-          bool emu = (nGoodMu + nGoodEl == 1);
-          //bool isISR = (Jet_pt[0] > 90.)  &&  (Njet > 0);
-          //bool dPhi = DPhiJet1Jet2 < 2.5;
-          //bool met = Met > 100.;
-          if(!emu)     continue;
-          /*if(!isISR)   continue;
+          if(validLeptons.size() == 0)  // Done above
+            continue;
+          if(validLeptons.size() >= 2)
+          {
+            float lep_pt;
+            if(validLeptons[1].first == 1)
+              lep_pt = LepOther_pt[validLeptons[1].second];
+            else
+              lep_pt = LepGood_pt[validLeptons[1].second];
+
+            if(lep_pt > 20)
+              continue;
+          }
+          bool isISR = (Jet_pt[0] > 90.)  &&  (Njet > 0);
+          bool dPhi = DPhiJet1Jet2 < 2.5;
+          bool met = Met > 100.;
+          if(!isISR)   continue;
           if(!dPhi)    continue;
-          if(!met)     continue;// */
+          if(!met)     continue;
 
           // MET filters
           /*if(HBHENoiseFilter                    != 1)  continue;
@@ -725,7 +732,12 @@ int main(int argc, char** argv)
           //if(badMuonFilter                      != 1)  continue;
           //if(badChargedHadronFilter             != 1)  continue; // */
 
-          if(abs(LepGood_pdgId[ilep]) == 13  &&  doSync)
+          auto lead_pdgId = LepGood_pdgId[0];
+          if(validLeptons[0].first == 1)
+            lead_pdgId = LepOther_pdgId[validLeptons[0].second];
+          else
+            lead_pdgId = LepGood_pdgId[validLeptons[0].second];
+          if(abs(lead_pdgId) == 13  &&  doSync)
           {
             SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
             SyFile << " pT(l): " << LepPt << " eta(l): " << LepEta << " pdgID: " << LepID << std::endl;
@@ -735,7 +747,7 @@ int main(int argc, char** argv)
             //SyFile << " dPhi(j1,j2): " << DPhiJet1Jet2;
             SyFile << " N(b): " << NbLoose30 << " pT(b): " << JetHBpt << std::endl;
 
-            for(Int_t j = 0; j < Njet; j++)
+            for(auto& j : validJets)
             {
               SyFile << " pT(j): " << Jet_pt[j] << " btag(j): " << Jet_btagCSV[j] << std::endl;
             }
