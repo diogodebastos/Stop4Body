@@ -430,8 +430,8 @@ int main(int argc, char** argv)
 
             for(Int_t i = 0; i < leptonNumber; ++i)
             {
-              bool lPTETA = lepton_pt[i] > 5.0
-                         && lepton_pt[i] < 30.0;
+              bool lPTETA = lepton_pt[i] > 5.0;
+                         //&& lepton_pt[i] < 30.0;
               if(abs(lepton_pdgId[i]) == 13)
               {
                 lPTETA = lPTETA && (abs(lepton_eta[i]) < 2.4);
@@ -745,6 +745,17 @@ int main(int argc, char** argv)
           // Skim
           if(validLeptons.size() == 0)  // Done above
             continue;
+          if(validLeptons.size() >= 1)
+          {
+            float lep_pt;
+            if(validLeptons[0].first == 1)
+              lep_pt = LepOther_pt[validLeptons[0].second];
+            else
+              lep_pt = LepGood_pt[validLeptons[0].second];
+
+            if(lep_pt > 30)
+              continue;
+          }
           if(validLeptons.size() >= 2)
           {
             float lep_pt;
