@@ -54,6 +54,9 @@ float DeltaPhi(float, float);
 
 const double ECALGap_MinEta =  1.4442; // ECAL gap parameters
 const double ECALGap_MaxEta =  1.5660;
+const double CSV_Loose = 0.3;
+const double CSV_Medium = 0.3;
+const double CSV_Tight = 0.3;
 
 doubleUnc stopCrossSection(double stopM, double lspM);
 
@@ -147,6 +150,12 @@ int main(int argc, char** argv)
       Float_t NbTight30;  bdttree->Branch("NbTight30",&NbTight30,"NbTight30/F");
       Float_t NbLoose20; bdttree->Branch("NbLoose20",&NbLoose20,"NbLoose20/F");
       Float_t NbTight20;  bdttree->Branch("NbTight20",&NbTight20,"NbTight20/F");
+      Float_t NbLoose20to50; bdttree->Branch("NbLoose20to50",&NbLoose20to50,"NbLoose20to50/F");
+      Float_t NbLoose50;     bdttree->Branch("NbLoose50",&NbLoose50,"NbLoose50/F");
+      Float_t NbMedium20to50; bdttree->Branch("NbMedium20to50",&NbMedium20to50,"NbMedium20to50/F");
+      Float_t NbMedium50;     bdttree->Branch("NbMedium50",&NbMedium50,"NbMedium50/F");
+      Float_t NbTight20to50; bdttree->Branch("NbTight20to50",&NbTight20to50,"NbTight20to50/F");
+      Float_t NbTight50;     bdttree->Branch("NbTight50",&NbTight50,"NbTight50/F");
       Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
       Float_t Njet30;  bdttree->Branch("Njet30",&Njet30,"Njet30/F");
       Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
@@ -649,6 +658,38 @@ int main(int argc, char** argv)
             JetB2eta = Jet_eta[bjetList[1].first];
             JetB2index = bjetList[1].first;
             JetB2CSV = Jet_btagCSV[bjetList[1].first];
+          }
+
+          NbLoose20to50 = 0;
+          NbLoose50 = 0;
+          NbMedium20to50 = 0;
+          NbMedium50 = 0;
+          NbTight20to50 = 0;
+          NbTight50 = 0;
+          for(auto& bjet : bjetList)
+          {
+            auto& index = bjet.first;
+            auto& csv = bjet.second;
+            auto& pt = Jet_pt[index];
+
+            if(pt > 50)
+            {
+              if(csv > CSV_Loose)
+                ++NbLoose50;
+              if(csv > CSV_Medium)
+                ++NbMedium50;
+              if(csv > CSV_Tight)
+                ++NbTight50;
+            }
+            else
+            {
+              if(csv > CSV_Loose)
+                ++NbLoose20to50;
+              if(csv > CSV_Medium)
+                ++NbMedium20to50;
+              if(csv > CSV_Tight)
+                ++NbTight20to50;
+            }
           }
 
           HT20 = 0.;
