@@ -54,9 +54,9 @@ float DeltaPhi(float, float);
 
 const double ECALGap_MinEta =  1.4442; // ECAL gap parameters
 const double ECALGap_MaxEta =  1.5660;
-const double CSV_Loose = 0.3;
-const double CSV_Medium = 0.3;
-const double CSV_Tight = 0.3;
+const double CSV_Loose = 0.460;
+const double CSV_Medium = 0.800;
+const double CSV_Tight = 0.935;
 
 doubleUnc stopCrossSection(double stopM, double lspM);
 
@@ -435,6 +435,8 @@ int main(int argc, char** argv)
               if(abs(lepton_pdgId[i]) == 13)
               {
                 lPTETA = lPTETA && (abs(lepton_eta[i]) < 2.4);
+                if(type == 1) // Only add LepOther for electrons, not for muons
+                  continue;
               }
               else
               {
@@ -745,7 +747,7 @@ int main(int argc, char** argv)
           // Skim
           if(validLeptons.size() == 0)  // Done above
             continue;
-          if(validLeptons.size() >= 1)
+          /*if(validLeptons.size() >= 1)
           {
             float lep_pt;
             if(validLeptons[0].first == 1)
@@ -755,7 +757,7 @@ int main(int argc, char** argv)
 
             if(lep_pt > 30)
               continue;
-          }
+          }// */
           if(validLeptons.size() >= 2)
           {
             float lep_pt;
