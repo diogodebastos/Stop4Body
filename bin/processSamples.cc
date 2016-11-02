@@ -356,11 +356,11 @@ int main(int argc, char** argv)
           std::vector<int> validJets;
           std::vector<int> validTracks;
           std::vector<std::pair<int, int>> validLeptons; // First is the type, second the index for that type
-          std::vector<std::pair<int,float>> bjetList;
+          std::vector<std::pair<int,float>> bjetList; // First is the jet index, second is the jet CSV value
 
           for(Int_t i = 0; i < nJet20; ++i)
           {
-            if(abs(Jet_eta[i]) < 2.4)
+            if(abs(Jet_eta[i]) < 2.4 && Jet_pt[i] > 20)
             {
               validJets.push_back(i);
             }
@@ -507,14 +507,11 @@ int main(int argc, char** argv)
 
           nGoodTrack = validTracks.size();
 
-          float DrJetLepMax = 999.;
-          Int_t ij = 0;
           TLorentzVector VLep;
           float lep_phi, lep_eta;
           Int_t lep_ind = validLeptons[0].second;
           if(validLeptons[0].first == 1)
           {
-            VLep.SetPtEtaPhiM(LepOther_pt[lep_ind], LepOther_eta[lep_ind], LepOther_phi[lep_ind], LepOther_mass[lep_ind]);
             lep_phi  = LepOther_phi[lep_ind];
             lep_eta  = LepOther_eta[lep_ind];
             LepChg   = LepOther_charge[lep_ind];
@@ -526,10 +523,10 @@ int main(int argc, char** argv)
             LepSip3  = LepOther_sip3d[lep_ind];
             LepIso03 = LepOther_relIso03[lep_ind];
             LepIso04 = LepOther_relIso04[lep_ind];
+            VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepOther_mass[lep_ind]);
           }
           else
           {
-            VLep.SetPtEtaPhiM(LepGood_pt[lep_ind], LepGood_eta[lep_ind], LepGood_phi[lep_ind], LepGood_mass[lep_ind]);
             lep_phi  = LepGood_phi[lep_ind];
             lep_eta  = LepGood_eta[lep_ind];
             LepChg   = LepGood_charge[lep_ind];
@@ -541,13 +538,17 @@ int main(int argc, char** argv)
             LepSip3  = LepGood_sip3d[lep_ind];
             LepIso03 = LepGood_relIso03[lep_ind];
             LepIso04 = LepGood_relIso04[lep_ind];
+            VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[lep_ind]);
           }
 
+          float DrJetLepMax = 999999.;
+          Int_t ij = 0;
           for(auto &j : validJets)
           {
             float dpi = DeltaPhi(Jet_phi[j],lep_phi);
             float dei = Jet_eta[j]-lep_eta;
-            float dri = sqrt( pow(dpi,2) + pow(dei,2) );
+            //float dri = sqrt( pow(dpi,2) + pow(dei,2) );
+            float dri = pow(dpi,2) + pow(dei,2);
             if(dri < DrJetLepMax)
             {
               DrJetLepMax = dri;
@@ -656,10 +657,11 @@ int main(int argc, char** argv)
 
           if(bjetList.size() > 1)
           {
-            JetB2pt = Jet_pt[bjetList[1].first];
-            JetB2eta = Jet_eta[bjetList[1].first];
-            JetB2index = bjetList[1].first;
-            JetB2CSV = Jet_btagCSV[bjetList[1].first];
+            Int_t iBtag = bjetList[1].first;
+            JetB2pt = Jet_pt[iBtag];
+            JetB2eta = Jet_eta[iBtag];
+            JetB2index = iBtag;
+            JetB2CSV = Jet_btagCSV[iBtag];
           }
 
           NbLoose20to50 = 0;
@@ -769,9 +771,11 @@ int main(int argc, char** argv)
             if(lep_pt > 20)
               continue;
           }
-          bool isISR = (Jet_pt[0] > 90.)  &&  (Njet > 0);
-          bool dPhi = DPhiJet1Jet2 < 2.5;
-          bool met = Met > 100.;
+          if(Njet == 0)
+            continue;
+          bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
+          bool dPhi = (DPhiJet1Jet2 < 2.5);
+          bool met = (Met > 100.);
           if(!isISR)   continue;
           if(!dPhi)    continue;
           if(!met)     continue;
