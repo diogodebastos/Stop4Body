@@ -66,6 +66,7 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./OUT/";
   bool doSync = false;
   std::string suffix = "";
+  size_t max_sync_count = 0;
 
   if(argc < 2)
   {
@@ -91,7 +92,12 @@ int main(int argc, char** argv)
       outputDirectory = argv[++i];
 
     if(argument == "--doSync")
+    {
+      std::stringstream converter;
       doSync = true;
+      converter << argv[++i];
+      converter >> max_sync_count;
+    }
 
     if(argument == "--suffix")
       suffix = argv[++i];
@@ -125,6 +131,8 @@ int main(int argc, char** argv)
         SyFile.setf(std::ios::fixed);
         SyFile.precision(3);
       }
+
+      size_t sync_count = 0;
 
       TFile foutput(outputFile.c_str(), "RECREATE");
       TTree *bdttree= new TTree("bdttree","bdttree");
@@ -190,6 +198,7 @@ int main(int argc, char** argv)
       Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
       Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
       Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
+      Float_t Ncut0;  bdttree->Branch("Ncut0",&Ncut0,"Ncut0/F");
       Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
       Float_t PFMET90_PFMHT90; bdttree->Branch("PFMET90_PFMHT90", &PFMET90_PFMHT90,"PFMET90_PFMHT90/F");
       Float_t PFMETNoMu90_PFMHTNoMu90; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90", &PFMETNoMu90_PFMHTNoMu90,"PFMETNoMu90_PFMHTNoMu90/F");
@@ -350,6 +359,10 @@ int main(int argc, char** argv)
             std::cout << " \b" << std::flush;// */
           if(i%statusPrint == 0 && i != 0)
             std::cout << "*" << std::flush;
+
+          if(doSync && max_sync_count > 0 && sync_count >= max_sync_count)
+            break;
+
           inputtree->GetEntry(i);
 
           // Object ID
@@ -489,8 +502,8 @@ int main(int argc, char** argv)
               return left_pt > right_pt;
               });
 
-          if(validLeptons.size() == 0)
-            continue;
+          //if(validLeptons.size() == 0)
+          //  continue;
 
 
 
@@ -509,6 +522,8 @@ int main(int argc, char** argv)
 
           TLorentzVector VLep;
           float lep_phi, lep_eta;
+          if(validLeptons.size() != 0)
+          {
           Int_t lep_ind = validLeptons[0].second;
           if(validLeptons[0].first == 1)
           {
@@ -539,6 +554,21 @@ int main(int argc, char** argv)
             LepIso03 = LepGood_relIso03[lep_ind];
             LepIso04 = LepGood_relIso04[lep_ind];
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[lep_ind]);
+          }
+          }
+          else
+          {
+            lep_eta = -999;
+            lep_phi = -999;
+            LepChg = -999;
+            LepID = -999;
+            LepPt = -999;
+            LepEta = -999;
+            LepDxy = -999;
+            LepDz = -999;
+            LepSip3 = -999;
+            LepIso03 = -999;
+            LepIso04 = -999;
           }
 
           float DrJetLepMax = 999999.;
@@ -746,6 +776,73 @@ int main(int argc, char** argv)
             filterEfficiency = filterEfficiencyH->GetBinContent(theBin);
           }
 
+
+          if(doSync)
+          {
+            if(sync_count < max_sync_count)
+            {
+              SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
+              SyFile << "   Mstop: " << genStopM << "; Mlsp: " << genNeutralinoM << std::endl;
+              SyFile << "   HT: " << HT30 << "; MET: " << Met << std::endl;
+              SyFile << "   Njet(pT>30): " << Njet30 << std::endl;
+              SyFile << "   leading jet:  pT: " << Jet1Pt << "; eta: " << Jet1Eta << std::endl;
+              SyFile << "   subleading jet:  pT: " << Jet2Pt << "; eta: " << Jet2Eta << std::endl;
+              SyFile << "   Nlep: " << nGoodEl+nGoodMu << std::endl;
+              SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; PDG ID: " << LepID << std::endl;
+              SyFile << "   weight: " << lumi*XS*filterEfficiency/Nevt << std::endl;
+              SyFile << "   passed: ";
+              if(HT30 > 200 && Met > 200 && Jet1Pt > 90)
+              {
+                SyFile << "Cut0";
+                bool passCut1 = false;
+                if(validLeptons.size() == 1)
+                  passCut1 = true;
+                if(validLeptons.size() > 1)
+                {
+                  float lep_pt;
+                  if(validLeptons[1].first == 1)
+                    lep_pt = LepOther_pt[validLeptons[1].second];
+                  else
+                    lep_pt = LepGood_pt[validLeptons[1].second];
+
+                  if(lep_pt < 20)
+                    passCut1 = true;
+                }
+
+                if(passCut1 && LepPt < 30)
+                {
+                  SyFile << ";Cut1";
+
+                  if(Jet1Pt > 100)
+                  {
+                    SyFile << ";Cut2";
+                    if(DPhiJet1Jet2 < 2.5)
+                    {
+                      SyFile << ";Cut3";
+                      if(Met > 280)
+                        SyFile << ";Cut4";
+                    }
+                  }
+                }
+              }
+              else
+              {
+                SyFile << "None";
+              }
+              SyFile << std::endl << std::endl;
+
+              ++sync_count;
+            }
+          }
+
+          if(validJets.size() > 0)
+          {
+            if(HT30 > 200 && Met > 200 && Jet_pt[validJets[0]] > 90)
+            {
+              ++Ncut0;
+            }
+          }
+
           // Skim
           if(validLeptons.size() == 0)  // Done above
             continue;
@@ -773,12 +870,12 @@ int main(int argc, char** argv)
           }
           if(Njet == 0)
             continue;
-          bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
+          /*bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
           bool dPhi = (DPhiJet1Jet2 < 2.5);
           bool met = (Met > 100.);
           if(!isISR)   continue;
           if(!dPhi)    continue;
-          if(!met)     continue;
+          if(!met)     continue;// */
 
           // MET filters
           /*if(HBHENoiseFilter                    != 1)  continue;
@@ -789,29 +886,6 @@ int main(int argc, char** argv)
           //if(globalTightHalo2016Filter          != 1)  continue;
           //if(badMuonFilter                      != 1)  continue;
           //if(badChargedHadronFilter             != 1)  continue; // */
-
-          auto lead_pdgId = LepGood_pdgId[0];
-          if(validLeptons[0].first == 1)
-            lead_pdgId = LepOther_pdgId[validLeptons[0].second];
-          else
-            lead_pdgId = LepGood_pdgId[validLeptons[0].second];
-          if(abs(lead_pdgId) == 13  &&  doSync)
-          {
-            SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
-            SyFile << " pT(l): " << LepPt << " eta(l): " << LepEta << " pdgID: " << LepID << std::endl;
-            SyFile << " Met: " << Met << " Q80: " << Q80 << " CosDeltaPhi: " << CosDeltaPhi << std::endl;
-            SyFile << " N(j): " << Njet << " pT(j1): " << Jet1Pt << " pT(j2): " << Jet2Pt << " pT(j3): " << Jet_pt[2] << " HT: " << HT25 << std::endl;
-            //SyFile << " eta(j1): " << Jet1Eta << " eta(j2): " << Jet2Eta;
-            //SyFile << " dPhi(j1,j2): " << DPhiJet1Jet2;
-            SyFile << " N(b): " << NbLoose30 << " pT(b): " << JetHBpt << std::endl;
-
-            for(auto& j : validJets)
-            {
-              SyFile << " pT(j): " << Jet_pt[j] << " btag(j): " << Jet_btagCSV[j] << std::endl;
-            }
-
-            SyFile << " dR(j1,l): " << DrJet1Lep << " dR(b,l): " << DrJetHBLep << " dR(j1,j2): " << DrJet1Jet2 << " M(l,j): " << JetLepMass << " M(3j): " << J3Mass << std::endl;
-          }
 
           bdttree->Fill();
         }
