@@ -300,6 +300,7 @@ int main(int argc, char** argv)
         Float_t Jet_phi[40];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
         Float_t Jet_btagCSV[40];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
         Float_t Jet_mass[40];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
+        Float_t Jet_rawPt[40]; inputtree->SetBranchAddress("Jet_rawPt", &Jet_rawPt);
         Int_t nJet20;  inputtree->SetBranchAddress("nJet20", &nJet20);
         Int_t nJet30;  inputtree->SetBranchAddress("nJet30", &nJet30);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
@@ -785,11 +786,11 @@ int main(int argc, char** argv)
               SyFile << "   Mstop: " << genStopM << "; Mlsp: " << genNeutralinoM << std::endl;
               SyFile << "   HT: " << HT30 << "; MET: " << Met << std::endl;
               SyFile << "   Njet(pT>30): " << Njet30 << std::endl;
-              SyFile << "   leading jet:  pT: " << Jet1Pt << "; eta: " << Jet1Eta << std::endl;
-              SyFile << "   subleading jet:  pT: " << Jet2Pt << "; eta: " << Jet2Eta << std::endl;
+              SyFile << "   leading jet:  pT: " << Jet1Pt << "; eta: " << Jet1Eta << "; raw pT: " << ((validJets.size() > 0)?(Jet_rawPt[validJets[0]]):(-999)) << std::endl;
+              SyFile << "   subleading jet:  pT: " << Jet2Pt << "; eta: " << Jet2Eta << "; raw pT: " << ((validJets.size() > 1)?(Jet_rawPt[validJets[1]]):(-999)) << std::endl;
               SyFile << "   Nlep: " << nGoodEl+nGoodMu << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; PDG ID: " << LepID << std::endl;
-              SyFile << "   weight: " << lumi*XS*filterEfficiency/Nevt << std::endl;
+              SyFile << "   weight: " << 10000*XS*filterEfficiency/Nevt << std::endl;
               SyFile << "   passed: ";
               if(HT30 > 200 && Met > 200 && Jet1Pt > 90)
               {
