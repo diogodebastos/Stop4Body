@@ -33,6 +33,7 @@
 #include "TStyle.h"
 #include "TLatex.h"
 #include "TLorentzVector.h"
+#include "TVectorD.h"
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
@@ -198,7 +199,11 @@ int main(int argc, char** argv)
       Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
       Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
       Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
-      Float_t Ncut0;  bdttree->Branch("Ncut0",&Ncut0,"Ncut0/F");
+      Float_t Ncut0;  //bdttree->Branch("Ncut0",&Ncut0,"Ncut0/F");
+      Float_t Ncut1;
+      Float_t Ncut2;
+      Float_t Ncut3;
+      Float_t Ncut4;
       Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
       Float_t PFMET90_PFMHT90; bdttree->Branch("PFMET90_PFMHT90", &PFMET90_PFMHT90,"PFMET90_PFMHT90/F");
       Float_t PFMETNoMu90_PFMHTNoMu90; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90", &PFMETNoMu90_PFMHTNoMu90,"PFMETNoMu90_PFMHTNoMu90/F");
@@ -226,6 +231,11 @@ int main(int argc, char** argv)
 
       // Get total number of entries
       Nevt = 0;
+      Ncut0 = 0;
+      Ncut1 = 0;
+      Ncut2 = 0;
+      Ncut3 = 0;
+      Ncut4 = 0;
       std::cout << "\t  Getting Initial number of events: " << std::flush;
       for(auto &file : sample)
       {
@@ -244,6 +254,8 @@ int main(int argc, char** argv)
 
       for(auto &file : sample)
       {
+        if(doSync && max_sync_count > 0 && sync_count >= max_sync_count)
+          break;
         std::cout << "\t  Processing file: " << file << std::endl;
         TFile finput(file.c_str(), "READ");
         foutput.cd();
@@ -841,11 +853,40 @@ int main(int argc, char** argv)
             if(HT30 > 200 && Met > 200 && Jet_pt[validJets[0]] > 90)
             {
               ++Ncut0;
+              bool passCut1 = false;
+              if(validLeptons.size() == 1)
+                passCut1 = true;
+              if(validLeptons.size() > 1)
+              {
+                float lep_pt;
+                if(validLeptons[1].first == 1)
+                  lep_pt = LepOther_pt[validLeptons[1].second];
+                else
+                  lep_pt = LepGood_pt[validLeptons[1].second];
+
+                if(lep_pt < 20)
+                  passCut1 = true;
+              }
+
+              if(passCut1 && LepPt < 30)
+              {
+                ++Ncut1;
+                if(Jet1Pt > 100)
+                {
+                  ++Ncut2;
+                  if(DPhiJet1Jet2 < 2.5)
+                  {
+                    ++Ncut3;
+                    if(Met > 280)
+                      ++Ncut4;
+                  }
+                }
+              }
             }
           }
 
           // Skim
-          if(validLeptons.size() == 0)  // Done above
+          if(validLeptons.size() == 0)  // Commented out above
             continue;
           /*if(validLeptons.size() >= 1)
           {
@@ -896,6 +937,15 @@ int main(int argc, char** argv)
       }
       foutput.cd();
       bdttree->Write("",TObject::kOverwrite);
+
+      TVectorD v(5);
+      v[0] = Ncut0;
+      v[1] = Ncut1;
+      v[2] = Ncut2;
+      v[3] = Ncut3;
+      v[4] = Ncut4;
+      v.Write("Ncut");
+
       if(filterEfficiencyH != nullptr)
         delete filterEfficiencyH;
     }
