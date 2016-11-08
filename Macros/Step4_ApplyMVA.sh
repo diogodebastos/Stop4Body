@@ -8,19 +8,6 @@ if [[ -d ${INPUT} ]] ; then
     mkdir -p ${OUTPUT}
   fi
 
-  # SET9001
-  #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize0.5
-  # SET9002
-  #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize1
-  # SET9003
-  #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize1.5
-  # SET9004
-  #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize2
-  # SET9005
-  #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize2.5
-  # SET9006
-  #applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT} --mvaSuffix NodeSize1.5
-
   applyMVA --json samples.json --method BDT --inDir ${INPUT} --outDir ${OUTPUT}
 fi
 
