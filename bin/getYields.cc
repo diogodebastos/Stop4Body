@@ -106,19 +106,20 @@ int main(int argc, char** argv)
 
   gStyle->SetOptStat(000000);
   gStyle->SetOptTitle(0);
-  TCut muon = "(nGoodMu==1)";
-  TCut electron = "(nGoodEl==1)";
-  TCut singlep = muon||electron;
-  TCut ISRjet = "Jet1Pt > 110.";
-  TCut met    = "Met>300.";
-  TCut dphij1j2 = "DPhiJet1Jet2 < 2.5";
+  //TCut muon = "(nGoodMu==1)";
+  //TCut electron = "(nGoodEl==1)";
+  //TCut singlep = muon||electron;
+  TCut singlep = "nGoodMu==1 && LepPt < 30";
+  TCut ISRjet = "Jet1Pt > 110. && HT30 > 200";
+  TCut met    = "Met>280.";
+  TCut dphij1j2 = "((Njet30>1)&&(DPhiJet1Jet2 < 2.5)) || Njet30 == 1";
   TCut presel = singlep+ISRjet+dphij1j2+met;
   //presel = singlep+ISRjet+met;
 
   std::string mcWeight;
   {
     std::stringstream converter;
-    converter << "XS*" << luminosity << "/Nevt";
+    converter << "XS*filterEfficiency*" << luminosity << "/Nevt";
     converter >> mcWeight;
   }
 
