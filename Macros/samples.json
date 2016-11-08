@@ -12,10 +12,7 @@
           "xsec": 1629.87,
           "br": 1.0,
           "split":642,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT100to200/treeProducerSusySingleLepton_tree",
-          "hasExtension":true,
-          "extSplit":642,
-          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT100to200_ext/treeProducerSusySingleLepton_tree"
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT100to200_ext/treeProducerSusySingleLepton_tree",
         },
         {
           "tag":"Wjets_200to400",
@@ -38,6 +35,37 @@
           "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT400to600_ext/treeProducerSusySingleLepton_tree"
         },
         {
+          "tag":"Wjets_600to800",
+          "xsec": 14.5805,
+          "br": 1.0,
+          "split":90,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT600to800/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"Wjets_800to1200",
+          "xsec": 6.65612,
+          "br": 1.0,
+          "split":35,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT800to1200/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":150,
+          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT800to1200_ext/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"Wjets_1200to2500",
+          "xsec": 1.60809,
+          "br": 1.0,
+          "split":6,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT1200to2500/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"Wjets_2500toInf",
+          "xsec": 0.0389136,
+          "br": 1.0,
+          "split":8,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT2500toInf/treeProducerSusySingleLepton_tree"
+        },
+        {
           "tag":"Wjets_600toInf",
           "xsec": 22.7117,
           "br": 1.0,
@@ -57,8 +85,24 @@
           "tag":"TTJets",
           "xsec": 831.76,
           "br": 1.0,
-          "split":796,
+          "split":800,
           "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/TTJets/TTJets/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    },
+    {
+      "tag":"ttbar_lo",
+      "isdata":false,
+      "color":614,
+      "lcolor":1,
+      "label":"t#bar{t}",
+      "files":[
+        {
+          "tag":"TTJets_LO",
+          "xsec": 831.76,
+          "br": 1.0,
+          "split":297,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/TTJets/TTJets_LO/treeProducerSusySingleLepton_tree"
         }
       ]
     },
@@ -184,7 +228,55 @@
           "br": 1.0,
           "split":242,
           "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80/treeProducerSusySingleLepton_tree"
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM10",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 10",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==10)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM10",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split":242,
+          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM20",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 20",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==20)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM20",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split":242,
+          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
         }
       ]
     },
@@ -208,7 +300,127 @@
           "br": 1.0,
           "split":242,
           "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80/treeProducerSusySingleLepton_tree"
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM40",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 40",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==40)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM40",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split":242,
+          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM50",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 50",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==50)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM50",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split":242,
+          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM60",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 60",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==60)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM60",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split":242,
+          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM70",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 70",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==70)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM70",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split":242,
+          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM80",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 80",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==80)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM80",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split":242,
+          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80_FastSimJEC/treeProducerSusySingleLepton_tree"
         }
       ]
     },
@@ -253,10 +465,39 @@
       "label":"Data",
       "files":[
         {
-          "tag":"METDataSet",
+          "tag":"2016B",
           "xsec": 1.0,
           "br": 1.0,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/METDataSet"
+          "split": 518,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016B_PromptReco_v2/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"2016C",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 251,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016C_PromptReco_v2/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"2016D",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 252,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016D_PromptReco_v2/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"2016E",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 289,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016E_PromptReco_v2/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"2016F",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 211,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016F_PromptReco_v1/treeProducerSusySingleLepton_tree"
         }
       ]
     }
