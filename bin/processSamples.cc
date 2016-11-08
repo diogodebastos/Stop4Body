@@ -912,7 +912,7 @@ int main(int argc, char** argv)
           }
           if(Njet == 0)
             continue;
-          /*bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
+          bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
           bool dPhi = (DPhiJet1Jet2 < 2.5);
           bool met = (Met > 100.);
           if(!isISR)   continue;
