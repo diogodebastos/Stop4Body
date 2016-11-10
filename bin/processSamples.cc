@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <math.h>
 #include <memory>
+#include <cmath>
+#include <cstdlib>
 
 #include "TROOT.h"
 #include "TFile.h"
@@ -66,6 +68,7 @@ int main(int argc, char** argv)
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
   bool doSync = false;
+  bool noSkim = false;
   std::string suffix = "";
   size_t max_sync_count = 0;
 
@@ -102,6 +105,9 @@ int main(int argc, char** argv)
 
     if(argument == "--suffix")
       suffix = argv[++i];
+
+    if(argument == "--noSkim")
+      noSkim = true;
   }
 
   if(jsonFileName == "")
@@ -308,6 +314,7 @@ int main(int argc, char** argv)
         Float_t Jet_chHEF[40];  inputtree->SetBranchAddress("Jet_chHEF", &Jet_chHEF);
         Float_t Jet_neHEF[40];  inputtree->SetBranchAddress("Jet_neHEF", &Jet_neHEF);
         Float_t Jet_pt[40];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
+        Int_t Jet_id[40];  inputtree->SetBranchAddress("Jet_id", &Jet_id);
         Float_t Jet_eta[40];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
         Float_t Jet_phi[40];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
         Float_t Jet_btagCSV[40];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
@@ -384,9 +391,14 @@ int main(int argc, char** argv)
           std::vector<std::pair<int, int>> validLeptons; // First is the type, second the index for that type
           std::vector<std::pair<int,float>> bjetList; // First is the jet index, second is the jet CSV value
 
+          validJets.clear();
+          validTracks.clear();
+          validLeptons.clear();
+          bjetList.clear();
+
           for(Int_t i = 0; i < nJet20; ++i)
           {
-            if(abs(Jet_eta[i]) < 2.4 && Jet_pt[i] > 20)
+            if(std::abs(Jet_eta[i]) < 2.4 && Jet_pt[i] > 20)
             {
               validJets.push_back(i);
             }
@@ -408,9 +420,9 @@ int main(int argc, char** argv)
             int index=Tracks_matchedJetIndex[l];
 
             if( Tracks_pt[l] > 2.5
-              && fabs(Tracks_eta[l]) < 2.5
-              && fabs(Tracks_dz[l]) < 0.1
-              && fabs(Tracks_dxy[l]) < 0.1
+              && std::abs(Tracks_eta[l]) < 2.5
+              && std::abs(Tracks_dz[l]) < 0.1
+              && std::abs(Tracks_dxy[l]) < 0.1
               && Tracks_CosPhiJet12[l]  < 0.7
               && ( Tracks_matchedJetDr[l] > 0.4 || (index >=0 && Jet_pt[ index ]  < 60 )))
             {
@@ -458,23 +470,23 @@ int main(int argc, char** argv)
             {
               bool lPTETA = lepton_pt[i] > 5.0;
                          //&& lepton_pt[i] < 30.0;
-              if(abs(lepton_pdgId[i]) == 13)
+              if(std::abs(lepton_pdgId[i]) == 13)
               {
-                lPTETA = lPTETA && (abs(lepton_eta[i]) < 2.4);
+                lPTETA = lPTETA && (std::abs(lepton_eta[i]) < 2.4);
                 if(type == 1) // Only add LepOther for electrons, not for muons
                   continue;
               }
               else
               {
-                lPTETA = lPTETA && (abs(lepton_eta[i]) < 2.5);
+                lPTETA = lPTETA && (std::abs(lepton_eta[i]) < 2.5);
                 // ECAL Gap
-                lPTETA = lPTETA && (  (abs(lepton_eta[i]) > ECALGap_MaxEta)
-                                   || (abs(lepton_eta[i]) < ECALGap_MinEta)   );
+                lPTETA = lPTETA && (  (std::abs(lepton_eta[i]) > ECALGap_MaxEta)
+                                   || (std::abs(lepton_eta[i]) < ECALGap_MinEta)   );
               }
 
-              bool lID = (abs(lepton_dxy[i]) < 0.02)
-                      && (abs(lepton_dz[i]) < 0.5);
-              if(abs(lepton_pdgId[i]) == 11)
+              bool lID = (std::abs(lepton_dxy[i]) < 0.02)
+                      && (std::abs(lepton_dz[i]) < 0.5);
+              if(std::abs(lepton_pdgId[i]) == 11)
                 lID = lID && (lepton_eleCutIdSpring15_25ns_v1[i] >= 1);
 
               bool lIS = ((lepton_pt[i] >= 25.0) && (lepton_relIso03[i] < 0.2))
@@ -483,11 +495,11 @@ int main(int argc, char** argv)
               if(lPTETA && lID && lIS)
               {
                 validLeptons.push_back(std::make_pair(type, i));
-                if(abs(lepton_pdgId[i]) == 13)
+                if(std::abs(lepton_pdgId[i]) == 13)
                 {
                   nGoodMu += 1;
                 }
-                if(abs(lepton_pdgId[i]) == 11 )
+                if(std::abs(lepton_pdgId[i]) == 11 )
                 {
                   nGoodEl += 1;
                 }
@@ -798,8 +810,10 @@ int main(int argc, char** argv)
               SyFile << "   Mstop: " << genStopM << "; Mlsp: " << genNeutralinoM << std::endl;
               SyFile << "   HT: " << HT30 << "; MET: " << Met << std::endl;
               SyFile << "   Njet(pT>30): " << Njet30 << std::endl;
-              SyFile << "   leading jet:  pT: " << Jet1Pt << "; eta: " << Jet1Eta << "; raw pT: " << ((validJets.size() > 0)?(Jet_rawPt[validJets[0]]):(-999)) << std::endl;
-              SyFile << "   subleading jet:  pT: " << Jet2Pt << "; eta: " << Jet2Eta << "; raw pT: " << ((validJets.size() > 1)?(Jet_rawPt[validJets[1]]):(-999)) << std::endl;
+              //SyFile << "   leading jet:  pT: " << Jet1Pt << "; eta: " << Jet1Eta << "; raw pT: " << ((validJets.size() > 0)?(Jet_rawPt[validJets[0]]):(-999)) << std::endl;
+              //SyFile << "   subleading jet:  pT: " << Jet2Pt << "; eta: " << Jet2Eta << "; raw pT: " << ((validJets.size() > 1)?(Jet_rawPt[validJets[1]]):(-999)) << std::endl;
+              for(int i = 0; i < Njet30; ++i)
+                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[validJets[i]] << "; eta: " << Jet_eta[validJets[i]] << "; raw pT: " << Jet_rawPt[validJets[i]] << "; ID: " << Jet_id[validJets[i]] << "; abs(eta): " << std::abs(Jet_eta[validJets[i]]) << std::endl;
               SyFile << "   Nlep: " << nGoodEl+nGoodMu << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; PDG ID: " << LepID << std::endl;
               SyFile << "   weight: " << 10000*XS*filterEfficiency/Nevt << std::endl;
@@ -841,6 +855,18 @@ int main(int argc, char** argv)
               else
               {
                 SyFile << "None";
+              }
+              //if(lumi == 91151 && evt == 195485531)
+              if(true)
+              {
+                //SyFile << std::endl << "Y no lepton?";
+                SyFile << std::endl << "nLepGood: " << nLepGood << "    nLepOther: " << nLepOther << std::endl;
+                SyFile << "LepGood:" << std::endl;
+                for(int i = 0; i < nLepGood; ++i)
+                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; relIso03: " << LepGood_relIso03[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << "; eleCutIdSpring15_25ns: " << LepGood_eleCutIdSpring15_25ns_v1[i] << std::endl;
+                SyFile << "LepOther:" << std::endl;
+                for(int i = 0; i < nLepOther; ++i)
+                  SyFile << "   lep " << i+1 << ": ID: " << LepOther_pdgId[i] << "; pt: " << LepOther_pt[i] << "; eta:" << LepOther_eta[i] << "; relIso03: " << LepOther_relIso03[i] << "; dxy: " << LepOther_dxy[i] << "; dz: " << LepOther_dz[i] << "; eleCutIdSpring15_25ns: " << LepOther_eleCutIdSpring15_25ns_v1[i] << std::endl;
               }
               SyFile << std::endl << std::endl;
 
@@ -912,12 +938,15 @@ int main(int argc, char** argv)
           }
           if(Njet == 0)
             continue;
-          bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
-          bool dPhi = (DPhiJet1Jet2 < 2.5);
-          bool met = (Met > 100.);
-          if(!isISR)   continue;
-          if(!dPhi)    continue;
-          if(!met)     continue;// */
+          if(!noSkim)
+          {
+            bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
+            bool dPhi = (DPhiJet1Jet2 < 2.5);
+            bool met = (Met > 100.);
+            if(!isISR)   continue;
+            if(!dPhi)    continue;
+            if(!met)     continue;
+          }
 
           // MET filters
           /*if(HBHENoiseFilter                    != 1)  continue;
@@ -1008,7 +1037,7 @@ float DeltaPhi(float p1, float p2)
   while(x < -TMath::Pi())
     x += (2.*TMath::Pi());
 
-  return abs(x);
+  return std::abs(x);
 }
 
 doubleUnc stopCrossSection(double stopM, double lspM)
