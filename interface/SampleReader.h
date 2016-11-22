@@ -138,6 +138,9 @@ public:
   std::string tag() const {return tag_;}
   int split() const {return split_;}
   std::string filterEfficiencyFile() const {return filterEfficiencyFile_;}
+  bool hasExtension() const {return hasExtension_;}
+  int extSplit() const {return extSplit_;}
+  std::string extBaseDir() const {return extBaseDir_;}
 
   // Iteration
   typedef typename std::vector<std::string>::iterator iterator;
@@ -161,6 +164,9 @@ protected:
   std::string tag_;
   int split_;
   std::string filterEfficiencyFile_;
+  bool hasExtension_;
+  int extSplit_;
+  std::string extBaseDir_;
 
   std::vector<std::string> filePaths_;
   std::vector<std::string> missingFiles_;

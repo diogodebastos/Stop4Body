@@ -13,7 +13,11 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   crossSection_(0.0),
   branchingRatio_(1.0),
   tag_(""),
-  split_(1)
+  split_(1),
+  filterEfficiencyFile_(""),
+  hasExtension_(false),
+  extSplit_(1),
+  extBaseDir_("")
 {
   if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("path") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
@@ -31,11 +35,27 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   if(jsonInfo.count("filterEfficiencyFile") > 0)
     filterEfficiencyFile_ = jsonInfo["filterEfficiencyFile"];
 
+  if(jsonInfo.count("hasExtension") > 0)
+  {
+    if(jsonInfo.count("extPath") == 0)
+      throw MissingJSONParam("Not all parameters are defined for the sample extension");
+
+    extBaseDir_ = jsonInfo["extPath"];
+    hasExtension_ = jsonInfo["hasExtension"];
+
+    if(hasExtension_)
+    {
+      if(jsonInfo.count("extSplit") > 0)
+        extSplit_ = jsonInfo["extSplit"];
+    }
+  }
+
   std::string basePath = jsonInfo["path"];
   if(baseDir_ != "")
   {
     split_ = 1;
     basePath = baseDir_ + "/" + tag_;
+    hasExtension_ = false;
     if(suffix_ != "")
       basePath += "_" + suffix_;
   }
@@ -62,6 +82,31 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
         filePaths_.push_back(tmpStr);
       else
         missingFiles_.push_back(tmpStr);
+    }
+  }
+
+  if(hasExtension_)
+  {
+    if(extSplit_ == 1)
+    {
+      tmpStr = extBaseDir_ + ".root";
+      if(fileExists(tmpStr))
+        filePaths_.push_back(tmpStr);
+      else
+        missingFiles_.push_back(tmpStr);
+    }
+    else
+    {
+      for(int i = 0; i < extSplit_; ++i)
+      {
+        std::stringstream converter;
+        converter << extBaseDir_ << "_" << i << ".root";
+        converter >> tmpStr;
+        if(fileExists(tmpStr))
+          filePaths_.push_back(tmpStr);
+        else
+          missingFiles_.push_back(tmpStr);
+      }
     }
   }
 

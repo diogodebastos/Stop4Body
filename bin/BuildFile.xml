@@ -12,6 +12,7 @@
   <bin name="getYields"        file="getYields.cc">     </bin>
   <bin name="BDTStudy"         file="BDTStudy.cc">      </bin>
   <bin name="mergeJSONs"       file="mergeJSONs.cc">    </bin>
+  <bin name="splitTrainingTest" file="splitTrainingTest.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>

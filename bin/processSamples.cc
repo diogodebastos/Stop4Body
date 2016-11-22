@@ -69,6 +69,7 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./OUT/";
   bool doSync = false;
   bool noSkim = false;
+  bool oldVeto = false;
   std::string suffix = "";
   size_t max_sync_count = 0;
 
@@ -108,6 +109,9 @@ int main(int argc, char** argv)
 
     if(argument == "--noSkim")
       noSkim = true;
+
+    if(argument == "--oldVeto")
+      oldVeto = true;
   }
 
   if(jsonFileName == "")
@@ -173,6 +177,7 @@ int main(int argc, char** argv)
       Float_t NbTight50;     bdttree->Branch("NbTight50",&NbTight50,"NbTight50/F");
       Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
       Float_t Njet30;  bdttree->Branch("Njet30",&Njet30,"Njet30/F");
+      Float_t Njet60;  bdttree->Branch("Njet60",&Njet60,"Njet60/F");
       Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
       Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
       Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F"); // *
@@ -183,6 +188,7 @@ int main(int argc, char** argv)
       Float_t Jet3Eta;  bdttree->Branch("Jet3Eta",&Jet3Eta,"Jet3Eta/F"); // *
       Float_t Jet3CSV;  bdttree->Branch("Jet3CSV",&Jet3CSV,"Jet3CSV/F"); // *
       Float_t DPhiJet1Jet2;  bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2,"DPhiJet1Jet2/F");
+      Float_t DPhiJet1Jet2_30;  bdttree->Branch("DPhiJet1Jet2_30",&DPhiJet1Jet2_30,"DPhiJet1Jet2_30/F");
       Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
       Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F"); // *
       Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F"); // *
@@ -293,7 +299,11 @@ int main(int argc, char** argv)
         Float_t LepGood_dz[40]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
         Float_t LepGood_sip3d[40]; inputtree->SetBranchAddress("LepGood_sip3d",&LepGood_sip3d);
         Float_t LepGood_mass[40]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
-        Int_t LepGood_eleCutIdSpring15_25ns_v1[40]; inputtree->SetBranchAddress("LepGood_eleCutIdSpring15_25ns_v1", &LepGood_eleCutIdSpring15_25ns_v1);
+        Int_t LepGood_eleVeto[40];
+        if(oldVeto)
+          inputtree->SetBranchAddress("LepGood_eleCutIdSpring15_25ns_v1", &LepGood_eleVeto);
+        else
+          inputtree->SetBranchAddress("LepGood_SPRING15_25ns_v1", &LepGood_eleVeto);
         Int_t LepGood_charge[40]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
         Int_t nLepOther;      inputtree->SetBranchAddress("nLepOther"   , &nLepOther);
         Int_t LepOther_pdgId[40];  inputtree->SetBranchAddress("LepOther_pdgId", &LepOther_pdgId);
@@ -307,7 +317,11 @@ int main(int argc, char** argv)
         Float_t LepOther_dz[40]; inputtree->SetBranchAddress("LepOther_dz",&LepOther_dz);
         Float_t LepOther_sip3d[40]; inputtree->SetBranchAddress("LepOther_sip3d",&LepOther_sip3d);
         Float_t LepOther_mass[40]; inputtree->SetBranchAddress("LepOther_mass",&LepOther_mass);
-        Int_t LepOther_eleCutIdSpring15_25ns_v1[40]; inputtree->SetBranchAddress("LepOther_eleCutIdSpring15_25ns_v1", &LepOther_eleCutIdSpring15_25ns_v1);
+        Int_t LepOther_eleVeto[40];
+        if(oldVeto)
+          inputtree->SetBranchAddress("LepOther_eleCutIdSpring15_25ns_v1", &LepOther_eleVeto);
+        else
+          inputtree->SetBranchAddress("LepOther_SPRING15_25ns_v1", &LepOther_eleVeto);
         Int_t LepOther_charge[40]; inputtree->SetBranchAddress("LepOther_charge",&LepOther_charge);
         Float_t Jet_chEMEF[40];  inputtree->SetBranchAddress("Jet_chEMEF", &Jet_chEMEF);
         Float_t Jet_neEMEF[40];  inputtree->SetBranchAddress("Jet_neEMEF", &Jet_neEMEF);
@@ -437,7 +451,7 @@ int main(int argc, char** argv)
             Int_t   leptonNumber                     = nLepGood;
             Int_t   *lepton_pdgId                    = LepGood_pdgId;
             //Int_t   *lepton_mediumMuonId             = LepGood_mediumMuonId;
-            Int_t   *lepton_eleCutIdSpring15_25ns_v1 = LepGood_eleCutIdSpring15_25ns_v1;
+            Int_t   *lepton_eleVeto = LepGood_eleVeto;
             //Int_t   *lepton_charge                   = LepGood_charge;
             Float_t *lepton_pt                       = LepGood_pt;
             Float_t *lepton_eta                      = LepGood_eta;
@@ -453,7 +467,7 @@ int main(int argc, char** argv)
               leptonNumber                    = nLepOther;
               lepton_pdgId                    = LepOther_pdgId;
               //lepton_mediumMuonId             = LepOther_mediumMuonId;
-              lepton_eleCutIdSpring15_25ns_v1 = LepOther_eleCutIdSpring15_25ns_v1;
+              lepton_eleVeto = LepOther_eleVeto;
               //lepton_charge                   = LepGood_charge;
               lepton_pt                       = LepOther_pt;
               lepton_eta                      = LepOther_eta;
@@ -487,7 +501,7 @@ int main(int argc, char** argv)
               bool lID = (std::abs(lepton_dxy[i]) < 0.02)
                       && (std::abs(lepton_dz[i]) < 0.5);
               if(std::abs(lepton_pdgId[i]) == 11)
-                lID = lID && (lepton_eleCutIdSpring15_25ns_v1[i] >= 1);
+                lID = lID && (lepton_eleVeto[i] >= 1);
 
               bool lIS = ((lepton_pt[i] >= 25.0) && (lepton_relIso03[i] < 0.2))
                       || ((lepton_pt[i] <  25.0) && ((lepton_pt[i] * lepton_relIso03[i]) < 5.0));
@@ -658,6 +672,10 @@ int main(int argc, char** argv)
             dphijj = DeltaPhi(Jet_phi[validJets[0]], Jet_phi[validJets[1]]);
             detajj = Jet_eta[validJets[0]] - Jet_eta[validJets[1]];
             DPhiJet1Jet2 = dphijj;
+            if(Jet_pt[validJets[1]] > 30)
+              DPhiJet1Jet2_30 = dphijj;
+            else
+              DPhiJet1Jet2_30 = -999.;
             DrJet1Jet2 = sqrt( pow(dphijj,2) + pow(detajj,2) );
 
             float dphi = DeltaPhi(Jet_phi[validJets[1]], lep_phi);
@@ -670,6 +688,7 @@ int main(int argc, char** argv)
             Jet2Eta = -999.;
             Jet2CSV = -999.;
             DPhiJet1Jet2 = -999.;
+            DPhiJet1Jet2_30 = -999.;
             DrJet1Jet2 = -999.;
             DrJet2Lep = -999.;
           }
@@ -756,6 +775,7 @@ int main(int argc, char** argv)
           HT30 = 0.;
           Njet = 0;
           Njet30 = 0;
+          Njet60 = 0;
           for(auto &j : validJets)
           {
             if(Jet_pt[j] > 20.)
@@ -769,6 +789,10 @@ int main(int argc, char** argv)
             {
               HT30 += Jet_pt[j];
               Njet30 += 1;
+            }
+            if(Jet_pt[j] > 60.)
+            {
+              Njet60 += 1;
             }
           }
 
@@ -816,6 +840,7 @@ int main(int argc, char** argv)
                 SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[validJets[i]] << "; eta: " << Jet_eta[validJets[i]] << "; raw pT: " << Jet_rawPt[validJets[i]] << "; ID: " << Jet_id[validJets[i]] << "; abs(eta): " << std::abs(Jet_eta[validJets[i]]) << std::endl;
               SyFile << "   Nlep: " << nGoodEl+nGoodMu << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; PDG ID: " << LepID << std::endl;
+              SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2 << std::endl;
               SyFile << "   weight: " << 10000*XS*filterEfficiency/Nevt << std::endl;
               SyFile << "   passed: ";
               if(HT30 > 200 && Met > 200 && Jet1Pt > 90)
@@ -843,7 +868,7 @@ int main(int argc, char** argv)
                   if(Jet1Pt > 100)
                   {
                     SyFile << ";Cut2";
-                    if(DPhiJet1Jet2 < 2.5)
+                    if((DPhiJet1Jet2 < 2.5 && Njet30 >= 2) || Njet30 == 1)
                     {
                       SyFile << ";Cut3";
                       if(Met > 280)
@@ -863,10 +888,13 @@ int main(int argc, char** argv)
                 SyFile << std::endl << "nLepGood: " << nLepGood << "    nLepOther: " << nLepOther << std::endl;
                 SyFile << "LepGood:" << std::endl;
                 for(int i = 0; i < nLepGood; ++i)
-                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; relIso03: " << LepGood_relIso03[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << "; eleCutIdSpring15_25ns: " << LepGood_eleCutIdSpring15_25ns_v1[i] << std::endl;
+                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; relIso03: " << LepGood_relIso03[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << "; eleVeto: " << LepGood_eleVeto[i] << std::endl;
                 SyFile << "LepOther:" << std::endl;
                 for(int i = 0; i < nLepOther; ++i)
-                  SyFile << "   lep " << i+1 << ": ID: " << LepOther_pdgId[i] << "; pt: " << LepOther_pt[i] << "; eta:" << LepOther_eta[i] << "; relIso03: " << LepOther_relIso03[i] << "; dxy: " << LepOther_dxy[i] << "; dz: " << LepOther_dz[i] << "; eleCutIdSpring15_25ns: " << LepOther_eleCutIdSpring15_25ns_v1[i] << std::endl;
+                  SyFile << "   lep " << i+1 << ": ID: " << LepOther_pdgId[i] << "; pt: " << LepOther_pt[i] << "; eta:" << LepOther_eta[i] << "; relIso03: " << LepOther_relIso03[i] << "; dxy: " << LepOther_dxy[i] << "; dz: " << LepOther_dz[i] << "; eleVeto: " << LepOther_eleVeto[i] << std::endl;
+                SyFile << "nJetGood: " << nJet20 << std::endl;
+                for(int i = 0; i < nJet20; ++i)
+                  SyFile << "   jet " << i+1 << ": pt: " << Jet_pt[i] << "; eta: " << Jet_eta[i] << "; phi: " << Jet_phi[i] << "; mass: " << Jet_mass[i] << "; ID: " << Jet_id[i] << std::endl;
               }
               SyFile << std::endl << std::endl;
 
@@ -900,7 +928,7 @@ int main(int argc, char** argv)
                 if(Jet1Pt > 100)
                 {
                   ++Ncut2;
-                  if(DPhiJet1Jet2 < 2.5)
+                  if((DPhiJet1Jet2 < 2.5 && Njet30 >= 2) || Njet30 == 1)
                   {
                     ++Ncut3;
                     if(Met > 280)
