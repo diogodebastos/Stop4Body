@@ -6,6 +6,8 @@
 #include "UserCode/Stop4Body/interface/json.hpp"
 using json = nlohmann::json;
 
+bool fileExists(std::string);
+
 int main(int argc, char** argv)
 {
   std::string outputJSON = "";
