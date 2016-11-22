@@ -1,0 +1,28 @@
+{
+  "lines":[
+    {
+      "tag":"signal_point_800_720",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"stop 800, neut 720",
+      "selection":"(GenSusyMStop==800)&&(GenSusyMNeutralino==720)",
+      "files":[
+        {
+          "tag":"T2DegStop_800_720",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split":242,
+          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    }
+  ]
+}
