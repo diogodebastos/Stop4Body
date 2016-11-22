@@ -77,7 +77,7 @@ int main(int argc, char** argv)
   }
 
   std::ofstream outputFile(outputJSON);
-  outputFile << outJsonFile;
+  outputFile << outJsonFile.dump(2);
 
   return 0;
 }
