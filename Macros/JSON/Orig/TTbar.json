@@ -1,0 +1,20 @@
+{
+  "lines":[
+    {
+      "tag":"ttbar",
+      "isdata":false,
+      "color":614,
+      "lcolor":1,
+      "label":"t#bar{t}",
+      "files":[
+        {
+          "tag":"TTJets",
+          "xsec": 831.76,
+          "br": 1.0,
+          "split":800,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/TTJets/TTJets/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "lines":[
+    {
+      "tag":"PseudoData_Injected",
+      "isdata":true,
+      "color":1,
+      "fill":0,
+      "marker":20,
+      "label":"Data",
+      "files":[
+        {
+          "tag": "PseudoData_Injected",
+          "xsec": 1.0,
+          "br": 1.0,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/PseudoData_Injected"
+        }
+      ]
+    }
+  ]
+}

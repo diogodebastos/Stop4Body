@@ -1,0 +1,41 @@
+{
+  "lines":[
+    {
+      "tag":"ZJets",
+      "isdata":false,
+      "color":831,
+      "lcolor":1,
+      "label":"Z+Jets",
+      "files":[
+        {
+          "tag":"ZJetsToNuNu_HT100to200",
+          "xsec": 1,
+          "br": 1.0,
+          "split": 1,
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/QCDandZinv/ZJetsToNuNu_HT100to200/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"ZJetsToNuNu_HT200to400",
+          "xsec": 96.38,
+          "br": 1.0,
+          "split": 1,
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/QCDandZinv/ZJetsToNuNu_HT200to400/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"ZJetsToNuNu_HT400to600",
+          "xsec": 13.46,
+          "br": 1.0,
+          "split": 1,
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/QCDandZinv/ZJetsToNuNu_HT400to600/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"ZJetsToNuNu_HT600toInf",
+          "xsec": 5.17,
+          "br": 1.0,
+          "split": 1,
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/QCDandZinv/ZJetsToNuNu_HT600toInf/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    }
+  ]
+}
