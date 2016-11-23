@@ -14,6 +14,9 @@ cp $JSON_PATH/Orig/Data.json $JSON_PATH/
 # Make a json for all PD
 mergeJSONs $JSON_PATH/allPD.json $JSON_PATH/Orig/PD.json $JSON_PATH/Orig/PDInj.json
 
+# Dopy the json with the info for each deltaM over, so that all locations are consistent
+cp $JSON_PATH/Orig/DeltaM.json $JSON_PATH/
+
 # Make a json for each group of signal points with the same stop mass
 mergeJSONs $JSON_PATH/stop250.json $JSON_PATH/Orig/SignalPoints/Sig_250_170.json $JSON_PATH/Orig/SignalPoints/Sig_250_180.json $JSON_PATH/Orig/SignalPoints/Sig_250_190.json $JSON_PATH/Orig/SignalPoints/Sig_250_200.json $JSON_PATH/Orig/SignalPoints/Sig_250_210.json $JSON_PATH/Orig/SignalPoints/Sig_250_220.json $JSON_PATH/Orig/SignalPoints/Sig_250_230.json $JSON_PATH/Orig/SignalPoints/Sig_250_240.json
 mergeJSONs $JSON_PATH/stop275.json $JSON_PATH/Orig/SignalPoints/Sig_275_195.json $JSON_PATH/Orig/SignalPoints/Sig_275_205.json $JSON_PATH/Orig/SignalPoints/Sig_275_215.json $JSON_PATH/Orig/SignalPoints/Sig_275_225.json $JSON_PATH/Orig/SignalPoints/Sig_275_235.json $JSON_PATH/Orig/SignalPoints/Sig_275_245.json $JSON_PATH/Orig/SignalPoints/Sig_275_255.json $JSON_PATH/Orig/SignalPoints/Sig_275_265.json
