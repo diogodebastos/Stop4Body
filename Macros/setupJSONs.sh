@@ -42,6 +42,9 @@ mergeJSONs $JSON_PATH/stop750.json $JSON_PATH/Orig/SignalPoints/Sig_750_670.json
 mergeJSONs $JSON_PATH/stop775.json $JSON_PATH/Orig/SignalPoints/Sig_775_695.json $JSON_PATH/Orig/SignalPoints/Sig_775_705.json $JSON_PATH/Orig/SignalPoints/Sig_775_715.json $JSON_PATH/Orig/SignalPoints/Sig_775_725.json $JSON_PATH/Orig/SignalPoints/Sig_775_735.json $JSON_PATH/Orig/SignalPoints/Sig_775_745.json $JSON_PATH/Orig/SignalPoints/Sig_775_755.json $JSON_PATH/Orig/SignalPoints/Sig_775_765.json
 mergeJSONs $JSON_PATH/stop800.json $JSON_PATH/Orig/SignalPoints/Sig_800_720.json $JSON_PATH/Orig/SignalPoints/Sig_800_730.json $JSON_PATH/Orig/SignalPoints/Sig_800_740.json $JSON_PATH/Orig/SignalPoints/Sig_800_750.json $JSON_PATH/Orig/SignalPoints/Sig_800_760.json $JSON_PATH/Orig/SignalPoints/Sig_800_770.json $JSON_PATH/Orig/SignalPoints/Sig_800_780.json $JSON_PATH/Orig/SignalPoints/Sig_800_790.json
 
+# Make JSON file for sync exercise
+mergeJSONs $JSON_PATH/sync.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json $JSON_PATH/Orig/TTbar_LO.json
+
 
 
 
