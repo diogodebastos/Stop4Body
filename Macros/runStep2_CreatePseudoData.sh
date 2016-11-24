@@ -1,11 +1,12 @@
 #!/bin/bash
 
-INPUT=~cbeiraod/local-area/Stop4Body/LepFix/
-OUTPUT=~cbeiraod/local-area/Stop4Body/LepFix/
+. setupJSONs.sh
+. setupPaths.sh
 
-if [[ -d ~/local-area/Stop4Body/New ]] ; then
-  makePseudoData --json samplesInj.json --inDir ${INPUT} --outDir ${OUTPUT} --lumi 5000 --noPresel --injectSignal
-  mv ${OUTPUT}/PseudoData.root ${OUTPUT}/PseudoData_Injected.root
-  makePseudoData --json samplesInj.json --inDir ${INPUT} --outDir ${OUTPUT} --lumi 5000 --noPresel
+if [[ -d ${NTUPLE_DIR} ]]; then
+  makePseudoData --json ${JSON_PATH}/makePD_Inj_300_270.json --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel --injectSignal
+  mv ${NTUPLE_DIR}/PseudoData.root ${NTUPLE_DIR}/PseudoData_Injected_300_270.root
+
+  makePseudoData --json ${JSON_PATH}/makePD.json             --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel
 fi
 
