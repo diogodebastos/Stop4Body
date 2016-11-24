@@ -149,6 +149,14 @@ int main(int argc, char** argv)
       TTree *bdttree= new TTree("bdttree","bdttree");
 
       // New branch in bdt tree
+      Float_t Run;  bdttree->Branch("Run",&Run,"Run/F");
+      Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
+      Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
+      Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
+      Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
+      Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
+      Float_t puWeight; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
+      Float_t genWeight; bdttree->Branch("genWeight", &genWeight, "genWeight/F");
       Float_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/F");
       Float_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/F");
       Float_t LepPt;  bdttree->Branch("LepPt",&LepPt,"LepPt/F");
@@ -206,11 +214,6 @@ int main(int argc, char** argv)
       Float_t HT20;  bdttree->Branch("HT20",&HT20,"HT20/F");
       Float_t HT25;  bdttree->Branch("HT25",&HT25,"HT25/F");
       Float_t HT30;  bdttree->Branch("HT30",&HT30,"HT30/F");
-      Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
-      Float_t Run;  bdttree->Branch("Run",&Run,"Run/F");
-      Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
-      Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
-      Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
       Float_t Ncut0;  //bdttree->Branch("Ncut0",&Ncut0,"Ncut0/F");
       Float_t Ncut1;
       Float_t Ncut2;
@@ -334,7 +337,8 @@ int main(int argc, char** argv)
         Float_t Jet_btagCSV[40];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
         Float_t Jet_mass[40];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
         Float_t Jet_rawPt[40]; inputtree->SetBranchAddress("Jet_rawPt", &Jet_rawPt);
-        Int_t nJet20;  inputtree->SetBranchAddress("nJet20", &nJet20);
+        //Int_t nJet20;  inputtree->SetBranchAddress("nJet20", &nJet20);
+        Int_t nJet20;  inputtree->SetBranchAddress("nJet20a", &nJet20);
         Int_t nJet30;  inputtree->SetBranchAddress("nJet30", &nJet30);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
         ULong64_t evt;  inputtree->SetBranchAddress("evt", &evt);
@@ -348,6 +352,9 @@ int main(int argc, char** argv)
         Float_t Tracks_matchedJetDr[200];  inputtree->SetBranchAddress("Tracks_matchedJetDr", &Tracks_matchedJetDr);
         Float_t Tracks_matchedJetIndex[200];  inputtree->SetBranchAddress("Tracks_matchedJetIndex", &Tracks_matchedJetIndex);
         Int_t nTracks;  inputtree->SetBranchAddress("nTracks", &nTracks);
+        Int_t nVert_i; inputtree->SetBranchAddress("nVert", &nVert_i);
+        inputtree->SetBranchAddress("puWeight", &puWeight);
+        inputtree->SetBranchAddress("genWeight", &genWeight);
 
         Float_t xsec = 1;
         if(!process.isdata())
@@ -398,6 +405,7 @@ int main(int argc, char** argv)
             break;
 
           inputtree->GetEntry(i);
+          nVert = nVert_i;
 
           // Object ID
           std::vector<int> validJets;
