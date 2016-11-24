@@ -64,13 +64,6 @@
           "br": 1.0,
           "split":8,
           "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT2500toInf/treeProducerSusySingleLepton_tree"
-        },
-        {
-          "tag":"Wjets_600toInf",
-          "xsec": 22.7117,
-          "br": 1.0,
-          "split":24,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT600toInf/treeProducerSusySingleLepton_tree"
         }
       ]
     }
