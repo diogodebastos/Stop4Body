@@ -106,90 +106,38 @@ int main(int argc, char** argv)
     samples = samples.getMCBkg();
 
   // Selection
-  TCut muon = "nGoodMu == 1";
-  TCut electron = "nGoodEl == 1";
-  TCut singlep = muon || electron;
+  TCut muon = "(abs(LepID) == 13)";
+  TCut electron = "(abs(LepID) == 11)";
+  TCut singlep = (muon || electron) && "LepPt < 30";
+  //TCut implicit = "(HT30 > 200) && (Met > 200) && (Jet1Pt > 90) && (LepPt < 30)";
   TCut met    = "Met > 300.";
   TCut ISRjet = "Jet1Pt > 110.";
-  TCut dphij1j2 = "DPhiJet1Jet2 < 2.5";
+  TCut dphij1j2 = "DPhiJet1Jet2_30 < 2.5 || Jet2Pt < 60";
   TCut presel = singlep+ISRjet+dphij1j2+met;
   if(noPresel)
     presel = "";
 
-  //TDirectory* curDir = gDirectory;
+  TDirectory* cwd = gDirectory;
+
+  auto fileSample = samples.getAllFiles()[0];
+  TFile tmpFile(fileSample.c_str(), "READ");
+  TTree* tmpTree = static_cast<TTree*>(tmpFile->Get("bdttree"));
 
   TFile outputFile((outputDirectory+"/PseudoData" + ((suffix=="")?(".root"):("_"+suffix+".root"))).c_str(), "RECREATE");
   outputFile.cd();
-  TTree* PDtree = new TTree("bdttree", "Same tree");
-  std::map<TString, float> VarMap;
-  std::map<TString, int> VarMapI;
-  std::map<TString, float> DummyVars;
-  VarMap["LepPt"] = 0.;
-  VarMap["LepEta"] = 0.;
-  VarMap["LepDxy"] = -999;
-  VarMap["LepDz"] = -999;
-  VarMap["LepSip3"] = -999;
-  VarMap["LepIso03"] = -999;
-  VarMap["LepIso04"] = -999;
-  VarMap["Met"] = 0.;
-  VarMap["mt"] = -999;
-  VarMap["HT20"] = 0.;
-  VarMap["HT25"] = 0.;
-  VarMap["HT30"] = 0.;
-  VarMap["Jet1Pt"] = 0.;
-  VarMap["Jet1Eta"] = -999;
-  VarMap["Jet1CSV"] = -999;
-  //VarMap["Jet1Phi"] = -999;
-  VarMap["Jet2Pt"] = 0.;
-  VarMap["Jet2Eta"] = -999;
-  VarMap["Jet2CSV"] = -999;
-  //VarMap["Jet2Phi"] = -999;
-  VarMap["Jet3Pt"] = 0.;
-  VarMap["Jet3Eta"] = -999;
-  VarMap["Jet3CSV"] = -999;
-  //VarMap["Jet2Phi"] = -999;
-  VarMap["DPhiJet1Jet2"] = 0;
-  VarMap["JetHBpt"] = 0.;
-  VarMap["JetHBeta"] = 0.;
-  VarMap["JetHBindex"] = 0.;
-  VarMap["Q80"] = 0.;
-  VarMap["CosDeltaPhi"] = 0.;
-  VarMap["DrJet1Lep"] = 0.;
-  VarMap["DrJet2Lep"] = 0.;
-  VarMap["DrJet1Jet2"] = 0.;
-  VarMap["DrJetHBLep"] = 0.;
-  VarMap["JetLepMass"] = 0.;
-  VarMap["J3Mass"] = 0.;
-  VarMap["Njet"] = 0.;
-  VarMap["NbLoose30"] = 0.;
-  VarMap["NbTight30"] = 0.;
-  VarMap["nGoodMu"] = 0;
-  VarMap["nGoodEl"] = 0;
-  VarMap["nGoodTrack"] = 0;
-  VarMap["LepID"] = -999;
-  VarMap["LepChg"] = -999;
-  VarMap["PFMET170JetIdCleaned"] = -999;
-  VarMap["PFMET90_PFMHT90_IDTight"] = -999;
-  VarMap["PFMETNoMu90_PFMHTNoMu90_IDTight"] = -999;
-  VarMap["HBHENoiseFilter"] = -999;
-  VarMap["HBHENoiseIsoFilter"] = -999;
-  VarMap["eeBadScFilter"] = -999;
-  VarMap["EcalDeadCellTriggerPrimitiveFilter"] = -999;
-  VarMap["goodVertices"] = -999;
-  DummyVars["XS"] = 1.0;
-  DummyVars["Event"] = -999;
-  DummyVars["LumiSec"] = -999;
-  DummyVars["Nevt"] = -999;
-  DummyVars["Run"] = -999;
+  TTree* PDtree = static_cast<TTree*>(tmpTree->CloneTree(0));
 
-  for(auto & var : VarMap)
-    PDtree->Branch(var.first, &var.second);
-  for(auto & var : VarMapI)
-    PDtree->Branch(var.first, &var.second);
-  for(auto & var : DummyVars)
-    PDtree->Branch(var.first, &var.second);
+  delete tmpTree;
+  tmpFile.Close();
 
-  //curDir->cd();
+  // Hard coded variables (because they make no sense being defined for Pseudo-data):
+  Float_t XS = 1;
+  Float_t Event = -999;
+  Float_t LumiSec = -999;
+  Float_t Nevt = -999;
+  Float_t Run = -999;
+
+
   TRandom3 *randomizer = new TRandom3();
 
   for(auto &process : samples)
@@ -204,11 +152,14 @@ int main(int argc, char** argv)
         std::cout << "\t  Processing file: " << file << std::endl;
 
         TFile inputFile(file.c_str(), "READ");
-        outputFile.cd();
         TTree* inputTree = static_cast<TTree*>(inputFile.Get("bdttree"));
-        TTree* slimmedTree = static_cast<TTree*>(inputTree->CopyTree(presel));
-        float NEvt = 0;
-        slimmedTree->SetBranchAddress("Nevt", &NEvt);
+        TTree* slimmedTree = inputTree;
+        if(presel != "")
+          slimmedTree = static_cast<TTree*>(inputTree->CopyTree(presel));
+        outputFile.cd();
+
+        float Nevt = 0;
+        slimmedTree->SetBranchAddress("Nevt", &Nevt);
         slimmedTree->GetEntry(0);
         double readEvents = slimmedTree->GetEntries();
         double yield = readEvents/NEvt * sample.crossSection() * sample.branchingRatio() * luminosity;
@@ -223,11 +174,6 @@ int main(int argc, char** argv)
           return 1;
         }
 
-        for(auto & var : VarMap)
-          slimmedTree->SetBranchAddress(var.first, &var.second);
-        for(auto & var : VarMapI)
-          slimmedTree->SetBranchAddress(var.first, &var.second);
-
         std::vector<size_t> eventsToKeep;
         int numberOfEvents = randomizer->Poisson(yield);
         if(numberOfEvents > readEvents)
@@ -236,6 +182,13 @@ int main(int argc, char** argv)
           std::cout << "This may be just bad luck, or the total number of events and the expected yield have values very close to each other, please reevaluate the situation and try again." << std::endl;
           return 1;
         }
+
+        inputTree->CopyAddresses(PDtree);
+        PDtree->SetBranchAddress("XS", &XS);
+        PDtree->SetBranchAddress("Event", &Event);
+        PDtree->SetBranchAddress("LumiSec", &LumiSec);
+        PDtree->SetBranchAddress("Nevt", &Nevt);
+        PDtree->SetBranchAddress("Run", &Run);
 
         std::cout << "\t    Selecting events to keep" << std::endl;
         for(int i = 0; i < numberOfEvents; ++i)
@@ -257,37 +210,14 @@ int main(int argc, char** argv)
         }
 
         delete slimmedTree;
+        delete inputTree;
       }
     }
   }
 
   outputFile.cd();
   PDtree->Write("",TObject::kOverwrite);
-
-
-  /*if(emptyLines.size() != 0)
-  {
-    std::cout << "The following lines did not have any files associated to them: ";
-    for(auto &process : emptyLines)
-      std::cout << process << "; ";
-    std::cout << std::endl;
-  }
-
-  if(emptyPath.size() != 0)
-  {
-    std::cout << "The following files did not have any path defined, or the defined path was empty: ";
-    for(auto &file : emptyPath)
-      std::cout << file << "; ";
-    std::cout << std::endl;
-  }
-
-  if(invalidPath.size() != 0)
-  {
-    std::cout << "The following files could not be found: " << std::endl;
-    for(auto &file : invalidPath)
-      std::cout << "\t" << file << std::endl;
-    std::cout << std::endl;
-  }*/
+  cwd->cd();
 
   return 0;
 }
