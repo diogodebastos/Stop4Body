@@ -6,13 +6,20 @@ touch $JSON_PATH/tmp.json
 rm $JSON_PATH/*.json
 
 # Make a JSON for all MC except signal
-mergeJSONs $JSON_PATH/allMC.json $JSON_PATH/Orig/QCD.json $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json $JSON_PATH/Orig/Zjets.json
+mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/Orig/QCD.json      $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json $JSON_PATH/Orig/Zjets.json
 
 # Copy the data json over, so that all locations are consistent
 cp $JSON_PATH/Orig/Data.json $JSON_PATH/
 
 # Make a json for all PD
-mergeJSONs $JSON_PATH/allPD.json $JSON_PATH/Orig/PD.json $JSON_PATH/Orig/PDInj.json
+mergeJSONs $JSON_PATH/allPD.json              $JSON_PATH/Orig/PD.json       $JSON_PATH/Orig/PDInj.json
+
+# Make a JSON for producing the PD
+mergeJSONs $JSON_PATH/makePD.json             $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Wjets.json
+mergeJSONs $JSON_PATH/makePD_Inj_300_270.json $JSON_PATH/makePD.json        $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+
+# Make the JSON for synchronization
+mergeJSONs $JSON_PATH/synch.json              $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 
 # Dopy the json with the info for each deltaM over, so that all locations are consistent
 cp $JSON_PATH/Orig/DeltaM.json $JSON_PATH/
@@ -43,7 +50,7 @@ mergeJSONs $JSON_PATH/stop775.json $JSON_PATH/Orig/SignalPoints/Sig_775_695.json
 mergeJSONs $JSON_PATH/stop800.json $JSON_PATH/Orig/SignalPoints/Sig_800_720.json $JSON_PATH/Orig/SignalPoints/Sig_800_730.json $JSON_PATH/Orig/SignalPoints/Sig_800_740.json $JSON_PATH/Orig/SignalPoints/Sig_800_750.json $JSON_PATH/Orig/SignalPoints/Sig_800_760.json $JSON_PATH/Orig/SignalPoints/Sig_800_770.json $JSON_PATH/Orig/SignalPoints/Sig_800_780.json $JSON_PATH/Orig/SignalPoints/Sig_800_790.json
 
 # Make JSON file for sync exercise
-mergeJSONs $JSON_PATH/sync.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json $JSON_PATH/Orig/TTbar_LO.json
+mergeJSONs $JSON_PATH/sync.json    $JSON_PATH/Orig/SignalPoints/Sig_300_270.json $JSON_PATH/Orig/TTbar_LO.json
 
 
 
