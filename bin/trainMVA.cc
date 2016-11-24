@@ -25,6 +25,8 @@ int main(int argc, char** argv)
 {
   std::string signalFileName = "signal.root";
   std::string backgroundFileName = "background.root";
+  std::string signalFileName_test = "";
+  std::string backgroundFileName_test = "";
   std::vector<std::string> methods;
   methods.clear();
 
@@ -64,6 +66,12 @@ int main(int argc, char** argv)
     if(argument == "--backgroundFile")
       backgroundFileName = argv[++i];
 
+    if(argument == "--testSignalFile")
+      signalFileName_test = argv[++i];
+
+    if(argument == "--testBackgroundFile")
+      backgroundFileName_test = argv[++i];
+
     if(argument == "--method")
       methods.push_back(argv[++i]);
   }
@@ -80,8 +88,14 @@ int main(int argc, char** argv)
 
   std::cout << "==> Start TMVAClassification" << std::endl;
   std::cout << "\tProcessing files:" << std::endl;
-  std::cout << "\t  - Signal: " << signalFileName << std::endl;
-  std::cout << "\t  - Background: " << backgroundFileName << std::endl;
+  if(signalFileName_test == "")
+    std::cout << "\t  - Signal: " << signalFileName << std::endl;
+  else
+    std::cout << "\t  - Signal(train): " << signalFileName << "   Signal(test): " << signalFileName_test << std::endl;
+  if(backgroundFileName_test == "")
+    std::cout << "\t  - Background: " << backgroundFileName << std::endl;
+  else
+    std::cout << "\t  - Background(train): " << backgroundFileName << "   Background(test): " << backgroundFileName_test << std::endl;
 
   // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
   TString outfileName( "TMVA.root" );
@@ -112,14 +126,44 @@ int main(int argc, char** argv)
   TFile *inputsignal = TFile::Open( signalFileName.c_str() );
   TFile *inputbkg= TFile::Open( backgroundFileName.c_str() );
 
-  TTree *signal     = (TTree*)inputsignal->Get("bdttree");
-  TTree *background = (TTree*)inputbkg->Get("bdttree");
+  TTree *signal     = static_cast<TTree*>(inputsignal->Get("bdttree"));
+  TTree *background = static_cast<TTree*>(inputbkg->Get("bdttree"));
+  TTree *signal_test = nullptr;
+  TTree *background_test = nullptr;
+
+  if(signalFileName_test != "")
+  {
+    TFile *inputsignal_test = TFile::Open( signalFileName_test.c_str() );
+    signal_test = static_cast<TTree*>(inputsignal_test->Get("bdttree"));
+  }
+  if(backgroundFileName_test != "")
+  {
+    TFile *inputbkg_test = TFile::Open( backgroundFileName_test.c_str() );
+    background_test = static_cast<TTree*>(inputbkg_test->Get("bdttree"));
+  }
 
   Double_t signalWeight     = 1.0;
   Double_t backgroundWeight = 1.0;
 
-  factory->AddSignalTree    ( signal,     signalWeight     );
-  factory->AddBackgroundTree( background, backgroundWeight );
+  if(signalFileName_test == "")
+  {
+    factory->AddSignalTree    ( signal,          signalWeight     );
+  }
+  else
+  {
+    factory->AddSignalTree    ( signal,          signalWeight,    TMVA::Types::kTraining );
+    factory->AddSignalTree    ( signal_test,     signalWeight,    TMVA::Types::kTesting  );
+  }
+  if()
+  {
+    factory->AddBackgroundTree( background,      backgroundWeight );
+  }
+  else
+  {
+    factory->AddBackgroundTree( background,      backgroundWeight, TMVA::Types::kTraining );
+    factory->AddBackgroundTree( background_test, backgroundWeight, TMVA::Types::kTesting  );
+  }
+
   factory->SetBackgroundWeightExpression( "XS" );
   factory->SetSignalWeightExpression("XS");
 
