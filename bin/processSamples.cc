@@ -70,6 +70,7 @@ int main(int argc, char** argv)
   bool doSync = false;
   bool noSkim = false;
   bool oldVeto = false;
+  bool threshold30 = false;
   std::string suffix = "";
   size_t max_sync_count = 0;
 
@@ -112,6 +113,9 @@ int main(int argc, char** argv)
 
     if(argument == "--oldVeto")
       oldVeto = true;
+
+    if(argument == "--jetThreshold30ForPreselection")
+      threshold30 = true;
   }
 
   if(jsonFileName == "")
@@ -876,7 +880,8 @@ int main(int argc, char** argv)
                   if(Jet1Pt > 100)
                   {
                     SyFile << ";Cut2";
-                    if((DPhiJet1Jet2 < 2.5 && Njet30 >= 2) || Njet30 == 1)
+                    if( ((threshold30 && DPhiJet1Jet2_30 < 2.5) || (!threshold30 && DPhiJet1Jet2 < 2.5))
+                     || (Jet2Pt < 60) )
                     {
                       SyFile << ";Cut3";
                       if(Met > 280)
@@ -936,7 +941,8 @@ int main(int argc, char** argv)
                 if(Jet1Pt > 100)
                 {
                   ++Ncut2;
-                  if((DPhiJet1Jet2 < 2.5 && Njet30 >= 2) || Njet30 == 1)
+                  if( ((threshold30 && DPhiJet1Jet2_30 < 2.5) || (!threshold30 && DPhiJet1Jet2 < 2.5))
+                   || (Jet2Pt < 60) )
                   {
                     ++Ncut3;
                     if(Met > 280)
@@ -977,7 +983,9 @@ int main(int argc, char** argv)
           if(!noSkim)
           {
             bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
-            bool dPhi = (DPhiJet1Jet2 < 2.5);
+            bool dPhi = (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60);
+            if(threshold30)
+              dPhi = (DPhiJet1Jet2_30 < 2.5 || Jet2Pt < 60);
             bool met = (Met > 100.);
             if(!isISR)   continue;
             if(!dPhi)    continue;
