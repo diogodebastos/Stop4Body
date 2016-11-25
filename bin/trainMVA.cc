@@ -109,7 +109,7 @@ int main(int argc, char** argv)
   factory->AddVariable("mt",'F');
   factory->AddVariable("Met",'F');
   factory->AddVariable("HT20",'F');
-  factory->AddVariable("NbLoose30",'I');
+  factory->AddVariable("NbLoose30",'F');
   factory->AddVariable("LepChg",'F');
   factory->AddVariable("LepEta",'F');
   factory->AddVariable("LepPt",'F');
@@ -117,7 +117,7 @@ int main(int argc, char** argv)
   //   factory->AddVariable("CosDeltaPhi",'F');
   //   factory->AddVariable("Jet2Pt",'F');
   factory->AddVariable("JetHBpt",'F');
-  factory->AddVariable("Njet",'I');
+  factory->AddVariable("Njet",'F');
   //   factory->AddVariable("JetLepMass",'F');
   //   factory->AddVariable("J3Mass",'F');
   //   factory->AddVariable("DrJet1Lep",'F');
