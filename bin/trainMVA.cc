@@ -154,7 +154,7 @@ int main(int argc, char** argv)
     factory->AddSignalTree    ( signal,          signalWeight,    TMVA::Types::kTraining );
     factory->AddSignalTree    ( signal_test,     signalWeight,    TMVA::Types::kTesting  );
   }
-  if()
+  if(backgroundFileName_test == "")
   {
     factory->AddBackgroundTree( background,      backgroundWeight );
   }
@@ -164,8 +164,8 @@ int main(int argc, char** argv)
     factory->AddBackgroundTree( background_test, backgroundWeight, TMVA::Types::kTesting  );
   }
 
-  factory->SetBackgroundWeightExpression( "XS" );
-  factory->SetSignalWeightExpression("XS");
+  factory->SetBackgroundWeightExpression( "XS/Nevt" );
+  factory->SetSignalWeightExpression("1/Nevt");
 
   TCut mycuts = "Met > 100";
   TCut mycutb = "Met > 100";
