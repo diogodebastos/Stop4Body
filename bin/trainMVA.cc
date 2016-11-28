@@ -187,11 +187,8 @@ int main(int argc, char** argv)
   if (Use["BDT"])  // Adaptive Boost
   {
     factory->BookMethod( TMVA::Types::kBDT, "BDT",
-                         "!H:!V:NTrees=400:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
-    //factory->BookMethod( TMVA::Types::kBDT, "BDT",
-    //                     "!H:!V:NTrees=400:nEventsMin=400:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
-    for(int i = 1; i <= 20; ++i)
-    //for(int i = 3; i <= 3; ++i)
+                         "!H:!V:NTrees=400:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning:VarTransform=D" );
+    /*for(int i = 1; i <= 20; ++i)
     {
       double val = i/2.0;
       std::string valStr;
@@ -202,7 +199,7 @@ int main(int argc, char** argv)
 
       factory->BookMethod( TMVA::Types::kBDT, ("BDT_NodeSize"+valStr).c_str(),
                            ("!H:!V:NTrees=400:MinNodeSize="+valStr+"%:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning").c_str() );
-    }
+    }// */
   }
 
   if(Use["NN"])
