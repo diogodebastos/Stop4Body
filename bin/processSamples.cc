@@ -1023,32 +1023,8 @@ int main(int argc, char** argv)
         delete filterEfficiencyH;
     }
   }
-  return 0;
 
-
-  /*if(emptyLines.size() != 0)
-  {
-    std::cout << "The following lines did not have any files associated to them: ";
-    for(auto &process : emptyLines)
-      std::cout << process << "; ";
-    std::cout << std::endl;
-  }
-
-  if(emptyPath.size() != 0)
-  {
-    std::cout << "The following files did not have any path defined, or the defined path was empty: ";
-    for(auto &file : emptyPath)
-      std::cout << file << "; ";
-    std::cout << std::endl;
-  }
-
-  if(invalidPath.size() != 0)
-  {
-    std::cout << "The following files could not be found: " << std::endl;
-    for(auto &file : invalidPath)
-      std::cout << "\t" << file << std::endl;
-    std::cout << std::endl;
-  }*/
+  std::cout << "Done!" << std::endl << std::endl;
 
   return 0;
 }
