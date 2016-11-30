@@ -12,6 +12,7 @@
           "tag":"2016B",
           "xsec": 1.0,
           "br": 1.0,
+          "recordedLumi":5877,
           "split": 518,
           "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016B_PromptReco_v2/treeProducerSusySingleLepton_tree"
         }
