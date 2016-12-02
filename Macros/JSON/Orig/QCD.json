@@ -25,8 +25,11 @@
           "tag":"QCD_HT300to500",
           "xsec": 1,
           "br": 1.0,
-          "split": 1,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/QCDandZinv/QCD_HT300to500/treeProducerSusySingleLepton_tree"
+          "split": 410,
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/QCD_HT300to500/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":907,
+          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/QCD_HT300to500_ext/treeProducerSusySingleLepton_tree"
         },
         {
           "tag":"QCD_HT500to700",
@@ -40,7 +43,10 @@
           "xsec": 6524.0,
           "br": 1.0,
           "split": 1,
-          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/QCDandZinv/QCD_HT700to1000/treeProducerSusySingleLepton_tree"
+          "path":"/afs/cern.ch/user/c/cbeiraod/eos/cms/store/user/lara/QCDandZinv/QCD_HT700to1000/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":672,
+          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/QCD_HT700to1000_ext/treeProducerSusySingleLepton_tree"
         },
         {
           "tag":"QCD_HT1000to1500",
