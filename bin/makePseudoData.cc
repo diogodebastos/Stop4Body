@@ -121,7 +121,7 @@ int main(int argc, char** argv)
 
   auto fileSample = samples.getAllFiles()[0];
   TFile tmpFile(fileSample.c_str(), "READ");
-  TTree* tmpTree = static_cast<TTree*>(tmpFile->Get("bdttree"));
+  TTree* tmpTree = static_cast<TTree*>(tmpFile.Get("bdttree"));
 
   TFile outputFile((outputDirectory+"/PseudoData" + ((suffix=="")?(".root"):("_"+suffix+".root"))).c_str(), "RECREATE");
   outputFile.cd();
@@ -158,8 +158,8 @@ int main(int argc, char** argv)
           slimmedTree = static_cast<TTree*>(inputTree->CopyTree(presel));
         outputFile.cd();
 
-        float Nevt = 0;
-        slimmedTree->SetBranchAddress("Nevt", &Nevt);
+        float NEvt = 0;
+        slimmedTree->SetBranchAddress("Nevt", &NEvt);
         slimmedTree->GetEntry(0);
         double readEvents = slimmedTree->GetEntries();
         double yield = readEvents/NEvt * sample.crossSection() * sample.branchingRatio() * luminosity;
