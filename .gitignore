@@ -28,4 +28,8 @@
 *.out
 *.app
 
+# Sublime files
 *.sublime-workspace
+
+# Generated JSONs
+Macros/JSON/*.json
