@@ -851,6 +851,11 @@ int main(int argc, char** argv)
             filterEfficiency = filterEfficiencyH->GetBinContent(theBin);
           }
 
+          if(!process.isdata())
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight);
+          else
+            weight = 1;
+
 
           if(doSync)
           {
