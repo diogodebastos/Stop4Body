@@ -228,6 +228,7 @@ int main(int argc, char** argv)
       Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
       Float_t PFMET90_PFMHT90; bdttree->Branch("PFMET90_PFMHT90", &PFMET90_PFMHT90,"PFMET90_PFMHT90/F");
       Float_t PFMETNoMu90_PFMHTNoMu90; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90", &PFMETNoMu90_PFMHTNoMu90,"PFMETNoMu90_PFMHTNoMu90/F");
+      Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
       Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
       Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
@@ -389,6 +390,7 @@ int main(int argc, char** argv)
         Int_t HLT_PFMET90_PFMHT90;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90", &HLT_PFMET90_PFMHT90);
         Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);
 
+        Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
         Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
         Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
         Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
@@ -840,6 +842,7 @@ int main(int argc, char** argv)
           PFMET170JetIdCleaned                = HLT_PFMET170_JetIdCleaned;
           PFMET90_PFMHT90                     = HLT_PFMET90_PFMHT90;
           PFMETNoMu90_PFMHTNoMu90             = HLT_PFMETNoMu90_PFMHTNoMu90;
+          METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
           eeBadScFilter                       = Flag_eeBadScFilter;
@@ -1018,6 +1021,7 @@ int main(int argc, char** argv)
 
 
           // MET filters
+          //if ( METFilters                         != 1 ) continue;
           if ( HBHENoiseFilter                    != 1 ) continue;
           if ( HBHENoiseIsoFilter                 != 1 ) continue;
           if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
