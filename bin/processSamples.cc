@@ -850,6 +850,8 @@ int main(int argc, char** argv)
             auto theBin = filterEfficiencyH->FindBin(genStopM, genNeutralinoM);
             filterEfficiency = filterEfficiencyH->GetBinContent(theBin);
           }
+          else
+            filterEfficiency = 1.0;
 
           if(!process.isdata())
             weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight);
