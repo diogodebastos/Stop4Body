@@ -9,7 +9,7 @@
       "label":"Data",
       "files":[
         {
-          "tag":"2016B",
+          "tag":"Data_2016B",
           "xsec": 1.0,
           "br": 1.0,
           "recordedLumi":5877,
@@ -17,7 +17,7 @@
           "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016B_PromptReco_v2/treeProducerSusySingleLepton_tree"
         },
         {
-          "tag":"2016C",
+          "tag":"Data_2016C",
           "xsec": 1.0,
           "br": 1.0,
           "recordedLumi":2646,
@@ -25,7 +25,7 @@
           "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016C_PromptReco_v2/treeProducerSusySingleLepton_tree"
         },
         {
-          "tag":"2016D",
+          "tag":"Data_2016D",
           "xsec": 1.0,
           "br": 1.0,
           "recordedLumi":4353,
@@ -33,7 +33,7 @@
           "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016D_PromptReco_v2/treeProducerSusySingleLepton_tree"
         },
         {
-          "tag":"2016E",
+          "tag":"Data_2016E",
           "xsec": 1.0,
           "br": 1.0,
           "recordedLumi":4049,
@@ -41,7 +41,7 @@
           "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016E_PromptReco_v2/treeProducerSusySingleLepton_tree"
         },
         {
-          "tag":"2016F",
+          "tag":"Data_2016F",
           "xsec": 1.0,
           "br": 1.0,
           "recordedLumi":0,

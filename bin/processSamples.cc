@@ -159,8 +159,10 @@ int main(int argc, char** argv)
       Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
       Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
       Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
+      Float_t weight; bdttree->Branch("weight", &weight, "weight/F");
       Float_t puWeight; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
       Float_t genWeight; bdttree->Branch("genWeight", &genWeight, "genWeight/F");
+      Float_t sumGenWeight; bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
       Float_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/F");
       Float_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/F");
       Float_t LepPt;  bdttree->Branch("LepPt",&LepPt,"LepPt/F");
@@ -226,11 +228,13 @@ int main(int argc, char** argv)
       Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
       Float_t PFMET90_PFMHT90; bdttree->Branch("PFMET90_PFMHT90", &PFMET90_PFMHT90,"PFMET90_PFMHT90/F");
       Float_t PFMETNoMu90_PFMHTNoMu90; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90", &PFMETNoMu90_PFMHTNoMu90,"PFMETNoMu90_PFMHTNoMu90/F");
+      Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
       Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
       Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
       Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
       Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
+      Float_t globalTightHalo2016Filter; bdttree->Branch("globalTightHalo2016Filter", &globalTightHalo2016Filter, "globalTightHalo2016Filter/F");
       Float_t genGravitinoM; bdttree->Branch("genGravitinoM", &genGravitinoM, "genGravitinoM/F");
       Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
       Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
@@ -250,12 +254,13 @@ int main(int argc, char** argv)
 
       // Get total number of entries
       Nevt = 0;
+      sumGenWeight = 0;
       Ncut0 = 0;
       Ncut1 = 0;
       Ncut2 = 0;
       Ncut3 = 0;
       Ncut4 = 0;
-      std::cout << "\t  Getting Initial number of events: " << std::flush;
+      std::cout << "\t  Getting Initial number of events and sum of gen weights: " << std::flush;
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
@@ -265,11 +270,22 @@ int main(int argc, char** argv)
           inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
         else
           inputtree = static_cast<TTree*>(finput.Get("tree"));
-        Nevt += static_cast<Int_t>(inputtree->GetEntries());
+
+        Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
+        Nevt += thisNevt;
+
+        Float_t thisGenWeight = 0;
+        inputtree->SetBranchAddress("genWeight", &thisGenWeight);
+        for(Int_t i = 0; i < thisNevt; ++i)
+        {
+          inputtree->GetEntry(i);
+          sumGenWeight += thisGenWeight;
+        }
+
         if(process.selection() != "")
           delete inputtree;
       }
-      std::cout << Nevt << std::endl;
+      std::cout << Nevt << "; " << sumGenWeight << std::endl;
 
       for(auto &file : sample)
       {
@@ -374,11 +390,13 @@ int main(int argc, char** argv)
         Int_t HLT_PFMET90_PFMHT90;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90", &HLT_PFMET90_PFMHT90);
         Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);
 
+        Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
         Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
         Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
         Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
         Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
         Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
+        Int_t Flag_globalTightHalo2016Filter; inputtree->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter);
 
         // Variables that are copied directly to output tree (unfortunately there is a type mismatch)
         /*inputtree->SetBranchAddress("GenSusyMGravitino", &genGravitinoM);
@@ -824,11 +842,13 @@ int main(int argc, char** argv)
           PFMET170JetIdCleaned                = HLT_PFMET170_JetIdCleaned;
           PFMET90_PFMHT90                     = HLT_PFMET90_PFMHT90;
           PFMETNoMu90_PFMHTNoMu90             = HLT_PFMETNoMu90_PFMHTNoMu90;
+          METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
           eeBadScFilter                       = Flag_eeBadScFilter;
           EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
           goodVertices                        = Flag_goodVertices;
+          globalTightHalo2016Filter           = Flag_globalTightHalo2016Filter;
 
           // Filter Efficiency
           if(filterEfficiencyH != nullptr)
@@ -836,6 +856,13 @@ int main(int argc, char** argv)
             auto theBin = filterEfficiencyH->FindBin(genStopM, genNeutralinoM);
             filterEfficiency = filterEfficiencyH->GetBinContent(theBin);
           }
+          else
+            filterEfficiency = 1.0;
+
+          if(!process.isdata())
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight);
+          else
+            weight = 1;
 
 
           if(doSync)
@@ -992,15 +1019,17 @@ int main(int argc, char** argv)
             if(!met)     continue;
           }
 
+
           // MET filters
-          /*if(HBHENoiseFilter                    != 1)  continue;
-          if(HBHENoiseIsoFilter                 != 1)  continue;
-          if(EcalDeadCellTriggerPrimitiveFilter != 1)  continue;
-          if(goodVertices                       != 1)  continue;
-          if(eeBadScFilter                      != 1)  continue;
-          //if(globalTightHalo2016Filter          != 1)  continue;
-          //if(badMuonFilter                      != 1)  continue;
-          //if(badChargedHadronFilter             != 1)  continue; // */
+          //if ( METFilters                         != 1 ) continue;
+          if ( HBHENoiseFilter                    != 1 ) continue;
+          if ( HBHENoiseIsoFilter                 != 1 ) continue;
+          if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
+          if ( goodVertices                       != 1 ) continue;
+          if ( eeBadScFilter                      != 1 ) continue;
+          if ( globalTightHalo2016Filter          != 1 ) continue;
+          //if ( badMuonFilter                      != 1 ) continue;
+          //if ( badChargedHadronFilter             != 1 ) continue;
 
           bdttree->Fill();
         }

@@ -13,6 +13,7 @@ eval `scramv1 runtime -sh`
 cd UserCode/Stop4Body/Macros/
 
 . setupPaths.sh
-processSamples --json $JSON_PATH/stop450.json --outDir ${NTUPLE_DIR}
+MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --json $JSON_PATH/stop450.json --outDir ${NTUPLE_DIR}"
+eval $MY_PROCESS_SAMPLES_CMD
 
 splitTrainingTest --json $JSON_PATH/stop450.json --inDir ${NTUPLE_DIR} --testOutDir ${TEST_DIR} --trainOutDir ${TRAIN_DIR}
