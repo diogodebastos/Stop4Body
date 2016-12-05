@@ -9,7 +9,7 @@
       "label":"Data",
       "files":[
         {
-          "tag":"2016B",
+          "tag":"Data_2016B",
           "xsec": 1.0,
           "br": 1.0,
           "recordedLumi":5877,
