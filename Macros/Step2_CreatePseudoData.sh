@@ -1,12 +1,23 @@
 #!/bin/bash
 
-. setupJSONs.sh
+alias cmsenv='eval `scramv1 runtime -sh`'
+
+cd /exper-sw/cmst3/cmssw/users/cbeiraod/
+. setup.sh
+
+#cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/
+cd $CMSSW_BASE/src/
+eval `scramv1 runtime -sh`
+
+#cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/
+cd UserCode/Stop4Body/Macros/
+
 . setupPaths.sh
 
 if [[ -d ${NTUPLE_DIR} ]]; then
-  makePseudoData --json ${JSON_PATH}/makePD_Inj_300_270.json --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel --injectSignal
+  makePseudoData --lumi 10000 --json ${JSON_PATH}/makePD_Inj_300_270.json --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel --injectSignal
   mv ${NTUPLE_DIR}/PseudoData.root ${NTUPLE_DIR}/PseudoData_Injected_300_270.root
 
-  makePseudoData --json ${JSON_PATH}/makePD.json             --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel
+  makePseudoData --lumi 10000 --json ${JSON_PATH}/makePD.json             --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel
 fi
 
