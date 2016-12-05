@@ -1,0 +1,90 @@
+{
+  "lines":[
+    {
+      "tag":"DYJets",
+      "isdata":false,
+      "color":831,
+      "lcolor":1,
+      "label":"DY + Jets",
+      "files":[
+        {
+          "tag":"DYJetsToLL_M50_HT100to200",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 72,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT100to200/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":198,
+          "extPath":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT100to200_ext/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT200to400",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 36,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT200to400/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":233,
+          "extPath":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT200to400_ext/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT400to600",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 31,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT400to600/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":183,
+          "extPath":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT400to600_ext/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT600toInf",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 28,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT600toInf/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":99,
+          "extPath":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT600toInf_ext/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"DYJetsToLL_M5to50_HT100to200",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 27,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT100to200/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":1,
+          "extPath":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT100to200_ext/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"DYJetsToLL_M5to50_HT200to400",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 31,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT200to400/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":55,
+          "extPath":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT200to400_ext/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"DYJetsToLL_M5to50_HT400to600",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 29,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT400to600/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"DYJetsToLL_M5to50_HT600toInf",
+          "xsec": 1.0,
+          "br": 1.0,
+          "split": 26,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT600toInf/treeProducerSusySingleLepton_tree",
+          "hasExtension":true,
+          "extSplit":46,
+          "extPath":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT600toInf_ext/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    }
+  ]
+}
