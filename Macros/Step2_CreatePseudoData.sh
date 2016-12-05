@@ -19,5 +19,8 @@ if [[ -d ${NTUPLE_DIR} ]]; then
   mv ${NTUPLE_DIR}/PseudoData.root ${NTUPLE_DIR}/PseudoData_Injected_300_270.root
 
   makePseudoData --lumi 10000 --json ${JSON_PATH}/makePD.json             --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel
+
+  ln -s ${NTUPLE_DIR}/PseudoData*.root ${TEST_DIR}/
+  ln -s ${NTUPLE_DIR}/PseudoData*.root ${TRAIN_DIR}/
 fi
 
