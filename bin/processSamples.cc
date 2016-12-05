@@ -233,6 +233,7 @@ int main(int argc, char** argv)
       Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
       Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
       Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
+      Float_t globalTightHalo2016Filter; bdttree->Branch("globalTightHalo2016Filter", &globalTightHalo2016Filter, "globalTightHalo2016Filter/F");
       Float_t genGravitinoM; bdttree->Branch("genGravitinoM", &genGravitinoM, "genGravitinoM/F");
       Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
       Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
@@ -393,6 +394,7 @@ int main(int argc, char** argv)
         Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
         Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
         Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
+        Int_t Flag_globalTightHalo2016Filter; inputtree->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter);
 
         // Variables that are copied directly to output tree (unfortunately there is a type mismatch)
         /*inputtree->SetBranchAddress("GenSusyMGravitino", &genGravitinoM);
@@ -843,6 +845,7 @@ int main(int argc, char** argv)
           eeBadScFilter                       = Flag_eeBadScFilter;
           EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
           goodVertices                        = Flag_goodVertices;
+          globalTightHalo2016Filter           = Flag_globalTightHalo2016Filter;
 
           // Filter Efficiency
           if(filterEfficiencyH != nullptr)
@@ -1013,15 +1016,16 @@ int main(int argc, char** argv)
             if(!met)     continue;
           }
 
+
           // MET filters
-          /*if(HBHENoiseFilter                    != 1)  continue;
-          if(HBHENoiseIsoFilter                 != 1)  continue;
-          if(EcalDeadCellTriggerPrimitiveFilter != 1)  continue;
-          if(goodVertices                       != 1)  continue;
-          if(eeBadScFilter                      != 1)  continue;
-          //if(globalTightHalo2016Filter          != 1)  continue;
-          //if(badMuonFilter                      != 1)  continue;
-          //if(badChargedHadronFilter             != 1)  continue; // */
+          if ( HBHENoiseFilter                    != 1 ) continue;
+          if ( HBHENoiseIsoFilter                 != 1 ) continue;
+          if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
+          if ( goodVertices                       != 1 ) continue;
+          if ( eeBadScFilter                      != 1 ) continue;
+          if ( globalTightHalo2016Filter          != 1 ) continue;
+          //if ( badMuonFilter                      != 1 ) continue;
+          //if ( badChargedHadronFilter             != 1 ) continue;
 
           bdttree->Fill();
         }
