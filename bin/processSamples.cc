@@ -159,8 +159,10 @@ int main(int argc, char** argv)
       Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
       Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
       Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
+      Float_t weight; bdttree->Branch("weight", &weight, "weight/F");
       Float_t puWeight; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
       Float_t genWeight; bdttree->Branch("genWeight", &genWeight, "genWeight/F");
+      Float_t sumGenWeight; bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
       Float_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/F");
       Float_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/F");
       Float_t LepPt;  bdttree->Branch("LepPt",&LepPt,"LepPt/F");
@@ -250,12 +252,13 @@ int main(int argc, char** argv)
 
       // Get total number of entries
       Nevt = 0;
+      sumGenWeight = 0;
       Ncut0 = 0;
       Ncut1 = 0;
       Ncut2 = 0;
       Ncut3 = 0;
       Ncut4 = 0;
-      std::cout << "\t  Getting Initial number of events: " << std::flush;
+      std::cout << "\t  Getting Initial number of events and sum of gen weights: " << std::flush;
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
@@ -265,11 +268,22 @@ int main(int argc, char** argv)
           inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
         else
           inputtree = static_cast<TTree*>(finput.Get("tree"));
-        Nevt += static_cast<Int_t>(inputtree->GetEntries());
+
+        Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
+        Nevt += thisNevt;
+
+        Float_t thisGenWeight = 0;
+        inputtree->SetBranchAddress("genWeight", &thisGenWeight);
+        for(Int_t i = 0; i < thisNevt; ++i)
+        {
+          inputtree->GetEntry(i);
+          sumGenWeight += thisGenWeight;
+        }
+
         if(process.selection() != "")
           delete inputtree;
       }
-      std::cout << Nevt << std::endl;
+      std::cout << Nevt << "; " << sumGenWeight << std::endl;
 
       for(auto &file : sample)
       {
