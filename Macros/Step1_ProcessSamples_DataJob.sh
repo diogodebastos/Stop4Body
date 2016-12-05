@@ -15,3 +15,6 @@ cd UserCode/Stop4Body/Macros/
 . setupPaths.sh
 MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --json $JSON_PATH/Data.json --outDir ${NTUPLE_DIR}"
 eval $MY_PROCESS_SAMPLES_CMD
+
+ln -s ${NTUPLE_DIR}/Data_*.root ${TRAIN_DIR}/
+ln -s ${NTUPLE_DIR}/Data_*.root ${TEST_DIR}/
