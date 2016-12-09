@@ -1,0 +1,34 @@
+{
+  "lines":[
+    {
+      "tag":"VV",
+      "isdata":false,
+      "color":831,
+      "lcolor":1,
+      "label":"Multiboson",
+      "files":[
+        {
+          "tag":"WW",
+          "xsec": 1,
+          "br": 1.0,
+          "split": 24,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/VV/WW/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"ZZ",
+          "xsec": 96.38,
+          "br": 1.0,
+          "split": 25,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/VV/ZZ/treeProducerSusySingleLepton_tree"
+        },
+        {
+          "tag":"WZ",
+          "xsec": 13.46,
+          "br": 1.0,
+          "split": 24,
+          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/VV/WZ/treeProducerSusySingleLepton_tree"
+        }
+      ]
+    }
+  ]
+}
