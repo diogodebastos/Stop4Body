@@ -12,28 +12,28 @@
           "xsec": 1.0,
           "br": 1.0,
           "split": 520,
-          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/SingleTop/TBar_tch/treeProducerSusySingleLepton_tree"
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SingleTop/TBar_tch/treeProducerSusySingleLepton_tree"
         },
         {
           "tag":"TBar_tWch",
           "xsec": 1.0,
           "br": 1.0,
           "split": 26,
-          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/SingleTop/TBar_tWch/treeProducerSusySingleLepton_tree"
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SingleTop/TBar_tWch/treeProducerSusySingleLepton_tree"
         },
         {
           "tag":"T_tch",
           "xsec": 1.0,
           "br": 1.0,
           "split": 324,
-          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/SingleTop/T_tch/treeProducerSusySingleLepton_tree"
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SingleTop/T_tch/treeProducerSusySingleLepton_tree"
         },
         {
           "tag":"T_tWch",
           "xsec": 1.0,
           "br": 1.0,
           "split": 25,
-          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/HEPPY_OUT/SingleTop/T_tWch/treeProducerSusySingleLepton_tree"
+          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SingleTop/T_tWch/treeProducerSusySingleLepton_tree"
         }
       ]
     }
