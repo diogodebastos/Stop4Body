@@ -121,7 +121,7 @@ int main(int argc, char** argv)
   }
 
   std::vector<CutInfo> cutFlow;
-  cutFlow.push_back(CutInfo("Preselection", "HT30 > 200", "$H_T > 300$"));
+  cutFlow.push_back(CutInfo("Preselection", "HT30 > 200", "$H_T > 200$"));
   cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
   cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
   cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
