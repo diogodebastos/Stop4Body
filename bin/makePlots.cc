@@ -21,6 +21,10 @@ class CutInfo
 public:
   CutInfo(std::string name, std::string cut, std::string latex): name_(name), cut_(cut), latex_(latex) {}
 
+  std::string name()  const {return name_;}
+  std::string cut()   const {return cut_;}
+  std::string latex() const {return latex_;}
+
 private:
 protected:
   std::string name_;
