@@ -1,6 +1,12 @@
 {
   "variables":[
     {
+      "expression":"nVert",
+      "min":0.0,
+      "max":100.0,
+      "bins":100
+    },
+    {
       "expression":"Met",
       "min":250.0,
       "max":600.0,
