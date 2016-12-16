@@ -33,3 +33,7 @@
 
 # Generated JSONs
 Macros/JSON/*.json
+
+# Other generated files
+Macros/*.sh.o*
+Macros/*.sh.e*
