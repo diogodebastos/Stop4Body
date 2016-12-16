@@ -13,6 +13,7 @@
   <bin name="BDTStudy"         file="BDTStudy.cc">      </bin>
   <bin name="mergeJSONs"       file="mergeJSONs.cc">    </bin>
   <bin name="splitTrainingTest" file="splitTrainingTest.cc"> </bin>
+  <bin name="makePlots"        file="makePlots.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
