@@ -131,6 +131,29 @@ int main(int argc, char** argv)
   cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
   cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
 
+  std::string selection = "";
+  for(auto& cut : cutFlow)
+  {
+    if(cut.cut() != "")
+    {
+      if(selection == "")
+        selection  = "(" + cut.cut() + ")";
+      else
+        selection += " && (" + cut.cut() + ")";
+    }
+
+    for(auto & variable : variables)
+    {
+      auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data", variable.expression(), variable.label()+";Evt.", selection, variable.bins(), variable.min(), variable.max());
+
+      // Temporary break so that it evaluates quickly
+      break;
+    }
+
+    // Temporary break so that it evaluates quickly
+    break;
+  }
+
   return 0;
 }
 
