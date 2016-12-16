@@ -427,7 +427,7 @@ THStack* SampleReader::getStack(std::string variable, std::string axis, std::str
 
   for(auto& process : processes_)
   {
-    TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax)
+    TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax);
     retVal->Add(tmp);
     delete tmp;
   }
