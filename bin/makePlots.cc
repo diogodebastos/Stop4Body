@@ -105,7 +105,8 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  std::cout << "Reading json file" << std::endl;
+  std::cout << "Reading json files" << std::endl;
+  VariableJsonLoader variables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   auto MC = samples.getMCBkg();
