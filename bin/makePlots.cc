@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     std::stringstream converter;
     if(isSplit)
       converter << "2*";
-    converter << "weight*" << luminosity;
+    converter << "weight/puWeight*" << luminosity;
     converter >> mcWeight;
   }
 
@@ -160,7 +160,7 @@ int main(int argc, char** argv)
 
       auto mcS   =   MC.getStack(variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
 
-      auto ratio = static_cast<TH1D*>(dataH->Clone(cut.name()+"_"+variable.name()+"_Ratio"));
+      auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
       ratio->Divide(mcH);
 
@@ -261,9 +261,6 @@ int main(int argc, char** argv)
       // Temporary break so that it evaluates quickly
       break;
     }
-
-    // Temporary break so that it evaluates quickly
-    break;
   }
 
   return 0;
