@@ -6,8 +6,9 @@ touch $JSON_PATH/tmp.json
 rm    $JSON_PATH/*.json
 
 # Make a JSON for all MC except signal
-mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/Orig/QCD.json      $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json $JSON_PATH/Orig/ZInv.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/VV.json
-mergeJSONs $JSON_PATH/updateMC.json           $JSON_PATH/Orig/ZInv.json     $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/VV.json
+mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
+mergeJSONs $JSON_PATH/otherMC.json            $JSON_PATH/Orig/QCD.json      $JSON_PATH/Orig/ZInv.json  $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/VV.json
+mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/backgroundMC.json  $JSON_PATH/otherMC.json
 
 # Copy the data JSON over, so that all locations are consistent
 cp         $JSON_PATH/Orig/Data.json          $JSON_PATH/

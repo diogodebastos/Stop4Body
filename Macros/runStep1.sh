@@ -14,7 +14,8 @@ if [[ ! -d ${TRAIN_DIR} ]] ; then
 fi
 
 # Submit job for all MC
-qsub Step1_ProcessSamples_MCJob.sh
+qsub Step1_ProcessSamples_backgroundMCJob.sh
+qsub Step1_ProcessSamples_otherMCJob.sh
 
 # Submit job for all Data
 qsub Step1_ProcessSamples_DataJob.sh

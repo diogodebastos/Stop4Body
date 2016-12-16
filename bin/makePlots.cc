@@ -21,6 +21,10 @@ class CutInfo
 public:
   CutInfo(std::string name, std::string cut, std::string latex): name_(name), cut_(cut), latex_(latex) {}
 
+  std::string name()  const {return name_;}
+  std::string cut()   const {return cut_;}
+  std::string latex() const {return latex_;}
+
 private:
 protected:
   std::string name_;
@@ -101,7 +105,8 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  std::cout << "Reading json file" << std::endl;
+  std::cout << "Reading json files" << std::endl;
+  VariableJsonLoader variables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   auto MC = samples.getMCBkg();
@@ -125,6 +130,29 @@ int main(int argc, char** argv)
   cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
   cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
   cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
+
+  std::string selection = "";
+  for(auto& cut : cutFlow)
+  {
+    if(cut.cut() != "")
+    {
+      if(selection == "")
+        selection  = "(" + cut.cut() + ")";
+      else
+        selection += " && (" + cut.cut() + ")";
+    }
+
+    for(auto & variable : variables)
+    {
+      auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data", variable.expression(), variable.label()+";Evt.", selection, variable.bins(), variable.min(), variable.max());
+
+      // Temporary break so that it evaluates quickly
+      break;
+    }
+
+    // Temporary break so that it evaluates quickly
+    break;
+  }
 
   return 0;
 }

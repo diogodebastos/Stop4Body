@@ -13,10 +13,10 @@ eval `scramv1 runtime -sh`
 cd UserCode/Stop4Body/Macros/
 
 . setupPaths.sh
-MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --json $JSON_PATH/allMC.json --outDir ${NTUPLE_DIR}"
+MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --json $JSON_PATH/backgroundMC.json --outDir ${NTUPLE_DIR}"
 eval $MY_PROCESS_SAMPLES_CMD
 
-splitTrainingTest --json $JSON_PATH/allMC.json --inDir ${NTUPLE_DIR} --testOutDir ${TEST_DIR} --trainOutDir ${TRAIN_DIR}
+splitTrainingTest --json $JSON_PATH/backgroundMC.json --inDir ${NTUPLE_DIR} --testOutDir ${TEST_DIR} --trainOutDir ${TRAIN_DIR}
 
 hadd ${NTUPLE_DIR}/Background_TTbar.root ${NTUPLE_DIR}/Wjets_100to200.root ${NTUPLE_DIR}/Wjets_200to400.root ${NTUPLE_DIR}/Wjets_400to600.root ${NTUPLE_DIR}/Wjets_600to800.root ${NTUPLE_DIR}/Wjets_800to1200.root ${NTUPLE_DIR}/Wjets_1200to2500.root ${NTUPLE_DIR}/Wjets_2500toInf.root ${NTUPLE_DIR}/TTJets.root
 hadd ${NTUPLE_DIR}/Background_TTbarLO.root ${NTUPLE_DIR}/Wjets_100to200.root ${NTUPLE_DIR}/Wjets_200to400.root ${NTUPLE_DIR}/Wjets_400to600.root ${NTUPLE_DIR}/Wjets_600to800.root ${NTUPLE_DIR}/Wjets_800to1200.root ${NTUPLE_DIR}/Wjets_1200to2500.root ${NTUPLE_DIR}/Wjets_2500toInf.root ${NTUPLE_DIR}/TTJets_LO.root
