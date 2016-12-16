@@ -1,6 +1,13 @@
 #include <TROOT.h>
 #include <TFile.h>
 #include <TTree.h>
+#include <TStyle.h>
+#include <TH1D.h>
+#include <TCanvas.h>
+#include <TPad.h>
+#include <TLegend.h>
+#include <TPaveText.h>
+#include <TGraphErrors.h>
 
 #include <iostream>
 #include <vector>
@@ -105,6 +112,9 @@ int main(int argc, char** argv)
     return 1;
   }
 
+  gStyle->SetOptStat(000000);
+  gStyle->SetOptTitle(0);
+
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
@@ -144,7 +154,109 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
-      auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data", variable.expression(), variable.label()+";Evt.", selection, variable.bins(), variable.min(), variable.max());
+      auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.",               selection    , variable.bins(), variable.min(), variable.max());
+      auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
+      auto sigH  =  Sig.getHist(cut.name()+"_"+variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
+
+      auto mcS   =   MC.getStack(variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
+
+      auto ratio = static_cast<TH1D*>(dataH->Clone(cut.name()+"_"+variable.name()+"_Ratio"));
+      ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
+      ratio->Divide(mcH);
+
+      TCanvas c1((cut.name()+"_"+variable.name()).c_str(), "", 800, 800);
+      gStyle->SetOptStat(0);
+
+      TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
+      TPad* t2 = new TPad("t2","t2", 0.0, 0.0, 1.0, 0.2);
+
+      t1->Draw();
+      t1->cd();
+      t1->SetLogy(true);
+      mcS->Draw("hist");
+      dataH->Draw("same");
+      sigH->Draw("hist same");
+
+      TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
+      //TLegend *legA = gPad->BuildLegend(0.155,0.69,0.35,0.89, "NDC");
+      legA->SetFillColor(0);
+      legA->SetFillStyle(0);
+      legA->SetLineColor(0);
+      legA->SetHeader("");
+      legA->SetTextFont(42);
+
+      TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
+      T->SetFillColor(0);
+      T->SetFillStyle(0);
+      T->SetLineColor(0);
+      T->SetTextAlign(12);
+      char Buffer[1024];
+      sprintf(Buffer, "CMS preliminary, #sqrt{s}=%.1f TeV, #scale[0.5]{#int} L=%.1f fb^{-1}", 13.0, luminosity/1000);
+      T->AddText(Buffer);
+      T->Draw("same");
+      T->SetBorderSize(0);
+
+      c1.cd();
+      t2->Draw();
+      t2->cd();
+      t2->SetGridy(true);
+      t2->SetPad(0,0.0,1.0,0.2);
+      t2->SetTopMargin(0);
+      t2->SetBottomMargin(0.5);
+
+      TH1D *bgUncH = static_cast<TH1D*>(mcH->Clone((cut.name()+"_"+variable.name()+"_bgUncH").c_str()));
+      for(int xbin=1; xbin <= bgUncH->GetXaxis()->GetNbins(); xbin++)
+      {
+        if(bgUncH->GetBinContent(xbin)==0)
+          continue;
+
+        double unc = bgUncH->GetBinError(xbin) / bgUncH->GetBinContent(xbin);
+
+        // Add systematic uncertainties
+        unc = unc*unc;
+        unc += 0.026*0.026; // Luminosity uncertainty
+        unc = std::sqrt(unc);
+
+        bgUncH->SetBinContent(xbin,1);
+        bgUncH->SetBinError(xbin,unc);
+      }
+
+      TGraphErrors *bgUnc = new TGraphErrors(bgUncH);
+      bgUnc->SetLineColor(1);
+      bgUnc->SetFillStyle(3001);
+      bgUnc->SetFillColor(kGray);
+      bgUnc->SetMarkerColor(1);
+      bgUnc->SetMarkerStyle(1);
+      bgUncH->Reset("ICE");
+      bgUncH->Draw();
+      bgUnc->Draw("3");
+      double yscale = (1.0-0.2)/(0.18-0);
+      bgUncH->GetYaxis()->SetTitle("Data/#Sigma MC");
+      bgUncH->SetMinimum(0.4);
+      bgUncH->SetMaximum(1.6);
+      bgUncH->GetXaxis()->SetTitle("");
+      bgUncH->GetXaxis()->SetTitleOffset(1.3);
+      bgUncH->GetXaxis()->SetLabelSize(0.033*yscale);
+      bgUncH->GetXaxis()->SetTitleSize(0.036*yscale);
+      bgUncH->GetXaxis()->SetTickLength(0.03*yscale);
+      bgUncH->GetYaxis()->SetTitleOffset(0.3);
+      bgUncH->GetYaxis()->SetNdivisions(5);
+      bgUncH->GetYaxis()->SetLabelSize(0.033*yscale);
+      bgUncH->GetYaxis()->SetTitleSize(0.036*yscale);
+      ratio->Draw("same");
+
+      c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+".png").c_str());
+      c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+".C").c_str());
+
+      delete dataH;
+      delete mcH;
+      delete sigH;
+      delete mcS;
+      delete ratio;
+      delete legA;
+      delete T;
+      delete bgUncH;
+      delete bgUnc;
 
       // Temporary break so that it evaluates quickly
       break;
