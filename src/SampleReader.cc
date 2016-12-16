@@ -18,7 +18,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   hasExtension_(false),
   extSplit_(1),
   extBaseDir_(""),
-  recordedLumi(0)
+  recordedLumi_(0)
 {
   if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("path") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
@@ -275,7 +275,7 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
   return retVal;
 }
 
-double ProcessInfo::getLumi()
+double ProcessInfo::getLumi() const
 {
   double lumi = 0;
 
@@ -454,7 +454,7 @@ doubleUnc SampleReader::getYield(std::string cut, std::string weight)
   return retVal;
 }
 
-double SampleReader::getLumi()
+double SampleReader::getLumi() const
 {
   double lumi = 0;
 
