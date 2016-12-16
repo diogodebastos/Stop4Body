@@ -427,6 +427,7 @@ THStack* SampleReader::getStack(std::string variable, std::string axis, std::str
 
   for(auto& process : processes_)
   {
+    // TODO: do same as below so that resources are deleted
     retVal->Add(process.getHist(variable, axis, weight, bins, xmin, xmax));
   }
 
@@ -439,7 +440,11 @@ TH1D* SampleReader::getHist(std::string name, std::string variable, std::string 
   retVal->Sumw2();
 
   for(auto& process : processes_)
-    retVal->Add(process.getHist(variable, axis, weight, bins, xmin, xmax));
+  {
+    TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax);
+    retVal->Add(tmp);
+    delete tmp;
+  }
 
   return retVal;
 }
