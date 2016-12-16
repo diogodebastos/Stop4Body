@@ -283,7 +283,7 @@ int main(int argc, char** argv)
         {
           inputtree->GetEntry(i);
           sumGenWeight += thisGenWeight;
-          puDistrib->Fill(nvtx, thisGenWeight);
+          puDistrib.Fill(nvtx, thisGenWeight);
         }
 
         if(process.selection() != "")

@@ -52,7 +52,7 @@ int main(int argc, char** argv)
   if(argc < 2)
   {
     std::cout << "You did not pass enough parameters" << std::endl;
-    printHelp();
+    //printHelp();
     return 0;
   }
 
@@ -111,9 +111,8 @@ int main(int argc, char** argv)
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
-          sumGenWeight += thisGenWeight;
-          sampleNVTX->Fill(nvtx, thisGenWeight);
-          processNVTX->Fill(nvtx, thisGenWeight);
+          sampleNVTX.Fill(nvtx, thisGenWeight);
+          processNVTX.Fill(nvtx, thisGenWeight);
         }
 
         if(process.selection() != "")
