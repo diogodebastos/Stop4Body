@@ -5,14 +5,15 @@
 <use name="roostats"/>
 <use name="UserCode/Stop4Body"/>
 <environment>
-  <bin name="processSamples"   file="processSamples.cc"></bin>
-  <bin name="makePseudoData"   file="makePseudoData.cc"></bin>
-  <bin name="trainMVA"         file="trainMVA.cc">      </bin>
-  <bin name="applyMVA"         file="applyMVA.cc">      </bin>
-  <bin name="getYields"        file="getYields.cc">     </bin>
-  <bin name="BDTStudy"         file="BDTStudy.cc">      </bin>
-  <bin name="mergeJSONs"       file="mergeJSONs.cc">    </bin>
+  <bin name="processSamples"    file="processSamples.cc"></bin>
+  <bin name="makePseudoData"    file="makePseudoData.cc"></bin>
+  <bin name="trainMVA"          file="trainMVA.cc">      </bin>
+  <bin name="applyMVA"          file="applyMVA.cc">      </bin>
+  <bin name="getYields"         file="getYields.cc">     </bin>
+  <bin name="BDTStudy"          file="BDTStudy.cc">      </bin>
+  <bin name="mergeJSONs"        file="mergeJSONs.cc">    </bin>
   <bin name="splitTrainingTest" file="splitTrainingTest.cc"> </bin>
+  <bin name="makePlots"         file="makePlots.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
