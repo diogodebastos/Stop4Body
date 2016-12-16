@@ -17,7 +17,8 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   filterEfficiencyFile_(""),
   hasExtension_(false),
   extSplit_(1),
-  extBaseDir_("")
+  extBaseDir_(""),
+  recordedLumi(0)
 {
   if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("path") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
@@ -49,6 +50,9 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
         extSplit_ = jsonInfo["extSplit"];
     }
   }
+
+  if(jsonInfo.count("recordedLumi") > 0)
+    recordedLumi_ = jsonInfo["recordedLumi"];
 
   std::string basePath = jsonInfo["path"];
   if(baseDir_ != "")
@@ -271,6 +275,16 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
   return retVal;
 }
 
+double ProcessInfo::getLumi()
+{
+  double lumi = 0;
+
+  for(auto& sample: samples_)
+    lumi += sample.recordedLumi();
+
+  return lumi;
+}
+
 SampleReader::SampleReader(std::string fileName, std::string baseDir, std::string suffix):
   inputFile_(fileName),
   baseDir_(baseDir),
@@ -438,4 +452,15 @@ doubleUnc SampleReader::getYield(std::string cut, std::string weight)
     retVal += process.getYield(cut, weight);
 
   return retVal;
+}
+
+double SampleReader::getLumi()
+{
+  double lumi = 0;
+
+  for(auto& process : processes_)
+    if(process.isdata())
+      lumi += process.getLumi();
+
+  return lumi;
 }

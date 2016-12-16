@@ -141,6 +141,7 @@ public:
   bool hasExtension() const {return hasExtension_;}
   int extSplit() const {return extSplit_;}
   std::string extBaseDir() const {return extBaseDir_;}
+  double recordedLumi() const {return recordedLumi_;}
 
   // Iteration
   typedef typename std::vector<std::string>::iterator iterator;
@@ -167,6 +168,7 @@ protected:
   bool hasExtension_;
   int extSplit_;
   std::string extBaseDir_;
+  double recordedLumi_;
 
   std::vector<std::string> filePaths_;
   std::vector<std::string> missingFiles_;
@@ -182,6 +184,7 @@ public:
   std::vector<std::string> getAllFiles();
   TH1D* getHist(std::string, std::string, std::string, int, double, double);
   doubleUnc getYield(std::string, std::string);
+  double getLumi() const;
 
   std::string tag() const {return tag_;}
   std::string label() const {return label_;}
@@ -245,6 +248,7 @@ public:
   TH1D* getHist(std::string, std::string, std::string, std::string, int, double, double);
   //void draw(std::string, std::string, std::string);
   doubleUnc getYield(std::string, std::string);
+  double getLumi() const;
 
   SampleReader getData();
   SampleReader getMCBkg();
