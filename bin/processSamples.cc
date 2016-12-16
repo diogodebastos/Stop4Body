@@ -260,7 +260,8 @@ int main(int argc, char** argv)
       Ncut2 = 0;
       Ncut3 = 0;
       Ncut4 = 0;
-      std::cout << "\t  Getting Initial number of events and sum of gen weights: " << std::flush;
+      TH1D puDistrib((sample.tag()+"nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+      std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
@@ -275,11 +276,14 @@ int main(int argc, char** argv)
         Nevt += thisNevt;
 
         Float_t thisGenWeight = 0;
+        Int_t nvtx = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
+        inputtree->SetBranchAddress("nVert", &nvtx);
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
           sumGenWeight += thisGenWeight;
+          puDistrib->Fill(nvtx, thisGenWeight);
         }
 
         if(process.selection() != "")
@@ -1047,6 +1051,7 @@ int main(int argc, char** argv)
       v[3] = Ncut3;
       v[4] = Ncut4;
       v.Write("Ncut");
+      puDistrib.Write();
 
       if(filterEfficiencyH != nullptr)
         delete filterEfficiencyH;
