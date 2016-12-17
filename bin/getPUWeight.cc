@@ -125,7 +125,10 @@ int main(int argc, char** argv)
         Float_t nTrueInt = 0;
         inputtree->SetBranchAddress("nVert", &nvtx);
         if(process.isdata())
-        {}
+        {
+          thisGenWeight = 1;
+          nTrueInt = 1;
+        }
         else
         {
           inputtree->SetBranchAddress("genWeight", &thisGenWeight);
