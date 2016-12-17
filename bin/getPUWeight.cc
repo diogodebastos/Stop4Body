@@ -149,6 +149,7 @@ int main(int argc, char** argv)
       sampleNTrue.Write();
 
       TH1D* samplePUweight = static_cast<TH1D*>(dataPU->Clone(("sample_"+sample.tag()+"_puWeight").c_str()));
+      sampleNTrue->Scale(1/sampleNTrue->Integral());
       samplePUweight->Divide(&sampleNTrue);
       samplePUweight->Write();
     }
@@ -157,6 +158,7 @@ int main(int argc, char** argv)
     processNTrue.Write();
 
     TH1D* processPUweight = static_cast<TH1D*>(dataPU->Clone(("process_"+process.tag()+"_puWeight").c_str()));
+    processNTrue->Scale(1/processNTrue->Integral());
     processPUweight->Divide(&processNTrue);
     processPUweight->Write();
   }
