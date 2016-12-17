@@ -48,6 +48,7 @@ int main(int argc, char** argv)
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
+  std::string dataPUFileName = "";
 
   if(argc < 2)
   {
@@ -68,6 +69,9 @@ int main(int argc, char** argv)
 
     if(argument == "--suffix")
       suffix = argv[++i];
+
+    if(argument == "--dataPU")
+      dataPUFileName = argv[++i];
   }
 
   if(jsonFileName == "")
@@ -76,8 +80,18 @@ int main(int argc, char** argv)
     return 1;
   }
 
+  if(dataPUFileName == "")
+  {
+    std::cout << "You must define a root file with the data PU distribution" << std::endl;
+    return 1;
+  }
+
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName);
+
+  TFile finput(dataPUFileName.c_str(), "READ");
+  TH1D* dataPU = static_cast<TH1D*>(finput.Get("pileup"));
+  dataPU->Scale(1/dataPU->Integral());
 
   TFile foutput((outputDirectory+"/puWeights.root").c_str(), "RECREATE");
 
@@ -86,11 +100,13 @@ int main(int argc, char** argv)
     std::cout << "Processing process: " << process.tag() << std::endl;
 
     TH1D processNVTX(("process_"+process.tag()+"_nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+    TH1D processNTrue(("process_"+process.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", 100, 0, 100);
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
 
       TH1D sampleNVTX(("sample_"+sample.tag()+"_nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+      TH1D sampleNTrue(("sample_"+sample.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", 100, 0, 100);
 
       for(auto &file : sample)
       {
@@ -106,13 +122,23 @@ int main(int argc, char** argv)
 
         Float_t thisGenWeight = 0;
         Int_t nvtx = 0;
-        inputtree->SetBranchAddress("genWeight", &thisGenWeight);
+        Float_t nTrueInt = 0;
         inputtree->SetBranchAddress("nVert", &nvtx);
+        if(process.isdata())
+        {}
+        else
+        {
+          inputtree->SetBranchAddress("genWeight", &thisGenWeight);
+          inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
+        }
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
+          sumGenWeight += thisGenWeight;
           sampleNVTX.Fill(nvtx, thisGenWeight);
           processNVTX.Fill(nvtx, thisGenWeight);
+          sampleNTrue.Fill(nTrueInt, thisGenWeight);
+          processNTrue.Fill(nTrueInt, thisGenWeight);
         }
 
         if(process.selection() != "")
@@ -120,9 +146,21 @@ int main(int argc, char** argv)
       }
 
       sampleNVTX.Write();
+      sampleNTrue.Write();
+
+      TH1D* samplePUweight = static_cast<TH1D*>(dataPU->Clone(("sample_"+sample.tag()+"_puWeight").c_str()));
+      sampleNTrue->Scale(1/sampleNTrue->Integral());
+      samplePUweight->Divide(&sampleNTrue);
+      samplePUweight->Write();
     }
 
     processNVTX.Write();
+    processNTrue.Write();
+
+    TH1D* processPUweight = static_cast<TH1D*>(dataPU->Clone(("process_"+process.tag()+"_puWeight").c_str()));
+    processNTrue->Scale(1/processNTrue->Integral());
+    processPUweight->Divide(&processNTrue);
+    processPUweight->Write();
   }
 
   std::cout << "Done!" << std::endl << std::endl;
