@@ -9,14 +9,12 @@ fi
 
 cd Step0Scripts
 
-qsub Step0_GetPUWeights.sh
-
 # Submit job for all MC
 qsub Step0_GetPUWeights_backgroundMCJob.sh
 qsub Step0_GetPUWeights_otherMCJob.sh
 
 # Submit job for all Data
-qsub Step1_ProcessSamples_DataJob.sh
+qsub Step0_GetPUWeights_DataJob.sh
 
 # Submit job for each group of signal points with a given stop mass
 qsub Step0_GetPUWeights_Stop250Job.sh
