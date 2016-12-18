@@ -124,12 +124,23 @@ int main(int argc, char** argv)
     return 1;
   }
 
+  if(!fileExists(outputDirectory+"/puWeights.root"))
+  {
+    std::cout << "You must first obtain the PU weights before trying to process the samples" << std::endl;
+    return 1;
+  }
+
+  TDirectory* cwd = gDirectory;
+  TFile puWeightFile((outputDirectory + "/puWeights.root").c_str(), "READ");
+  cwd->cd();
+
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName);
 
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
+    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile->Get(("process_"+process.tag()+"_puWeight").c_str()));
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
@@ -381,8 +392,12 @@ int main(int argc, char** argv)
         inputtree->SetBranchAddress("genWeight", &genWeight);
 
         Float_t xsec = 1;
+        Float_t nTrueInt = 1;
         if(!process.isdata())
-          inputtree->SetBranchAddress("xsec",&xsec);
+        {
+          inputtree->SetBranchAddress("xsec", &xsec);
+          inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
+        }
 
         // 2015 HLT
         /*Int_t HLT_PFMET170_JetIdCleaned;   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
@@ -432,6 +447,7 @@ int main(int argc, char** argv)
 
           inputtree->GetEntry(i);
           nVert = nVert_i;
+          puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt));
 
           // Object ID
           std::vector<int> validJets;
