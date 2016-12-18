@@ -113,17 +113,17 @@ int main(int argc, char** argv)
     std::cout << "Processing process: " << process.tag() << std::endl;
 
     TH1D processNVTX(("process_"+process.tag()+"_nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
-    processNVTX->Sumw2();
+    processNVTX.Sumw2();
     TH1D processNTrue(("process_"+process.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", 100, 0, 100);
-    processNTrue->Sumw2();
+    processNTrue.Sumw2();
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
 
       TH1D sampleNVTX(("sample_"+sample.tag()+"_nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
-      sampleNVTX->Sumw2();
+      sampleNVTX.Sumw2();
       TH1D sampleNTrue(("sample_"+sample.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", 100, 0, 100);
-      sampleNTrue->Sumw2();
+      sampleNTrue.Sumw2();
 
       for(auto &file : sample)
       {
