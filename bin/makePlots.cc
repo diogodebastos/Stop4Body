@@ -141,6 +141,42 @@ int main(int argc, char** argv)
   cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
   cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
 
+  ofstream cutFlowTable(outputDirectory+"/cutFlow.tex");
+
+  cutFlowTable << "\\begin{tabular}{";
+  cutFlowTable << "c|";
+  for(auto& process : MC)
+  {
+    cutFlowTable << "c";
+  }
+  cutFlowTable << "|c";
+  for(auto& process : Data)
+  {
+    cutFlowTable << "c";
+  }
+  cutFlowTable << "|";
+  for(auto& process : Sig)
+  {
+    cutFlowTable << "c";
+  }
+  cutFlowTable << "}\n";
+
+  //cutFlowTable << " & ";
+  for(auto& process : MC)
+  {
+    cutFlowTable << " & " << process.label();
+  }
+  cutFlowTable << " & Sum";
+  for(auto& process : Data)
+  {
+    cutFlowTable << " & " << process.label();
+  }
+  for(auto& process : Sig)
+  {
+    cutFlowTable << " & " << process.label();
+  }
+  cutFlowTable << "\\\\\n";
+
   std::string selection = "";
   for(auto& cut : cutFlow)
   {
@@ -257,11 +293,26 @@ int main(int argc, char** argv)
       delete T;
       delete bgUncH;
       delete bgUnc;
-
-      // Temporary break so that it evaluates quickly
-      break;
     }
+
+    cutFlowTable << cut.name();
+    for(auto& process : MC)
+    {
+      cutFlowTable << " & " << process.getYield(selection, mcWeight);
+    }
+    cutFlowTable << " & " << MC.getYield(selection, mcWeight);
+    for(auto& process : Data)
+    {
+      cutFlowTable << " & " << process.getYield(selection, mcWeight);
+    }
+    for(auto& process : Sig)
+    {
+      cutFlowTable << " & " << process.getYield(selection, mcWeight);
+    }
+    cutFlowTable << "\\\\\n";
   }
+
+  cutFlowTable << "\\end{tabular}";
 
   return 0;
 }
