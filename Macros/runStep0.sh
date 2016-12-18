@@ -42,3 +42,5 @@ qsub Step0_GetPUWeights_Stop725Job.sh
 qsub Step0_GetPUWeights_Stop750Job.sh
 qsub Step0_GetPUWeights_Stop775Job.sh
 qsub Step0_GetPUWeights_Stop800Job.sh
+
+cd -
