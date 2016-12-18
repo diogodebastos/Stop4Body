@@ -141,23 +141,26 @@ int main(int argc, char** argv)
   cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
   cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
 
-  ofstream cutFlowTable(outputDirectory+"/cutFlow.tex");
+  std::ofstream cutFlowTable(outputDirectory+"/cutFlow.tex");
 
   cutFlowTable << "\\begin{tabular}{";
   cutFlowTable << "c|";
   for(auto& process : MC)
   {
     cutFlowTable << "c";
+    process.label();
   }
   cutFlowTable << "|c";
   for(auto& process : Data)
   {
     cutFlowTable << "c";
+    process.label();
   }
   cutFlowTable << "|";
   for(auto& process : Sig)
   {
     cutFlowTable << "c";
+    process.label();
   }
   cutFlowTable << "}\n";
 
