@@ -43,6 +43,19 @@
 
 using json = nlohmann::json;
 
+std::string getBaseName(const std::string& s)
+{
+  char sep = '/';
+
+  size_t i = s.rfind(sep, s.length());
+  if (i != std::string::npos)
+  {
+    return s.substr(i+1, s.length() - i);
+  }
+
+  return "";
+}
+
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
@@ -93,20 +106,24 @@ int main(int argc, char** argv)
   TH1D* dataPU = static_cast<TH1D*>(finput.Get("pileup"));
   dataPU->Scale(1/dataPU->Integral());
 
-  TFile foutput((outputDirectory+"/puWeights.root").c_str(), "RECREATE");
+  TFile foutput((outputDirectory + "/puWeights_" + getBaseName(jsonFileName) + ".root").c_str(), "RECREATE");
 
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
 
     TH1D processNVTX(("process_"+process.tag()+"_nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+    processNVTX->Sumw2();
     TH1D processNTrue(("process_"+process.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", 100, 0, 100);
+    processNTrue->Sumw2();
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
 
       TH1D sampleNVTX(("sample_"+sample.tag()+"_nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+      sampleNVTX->Sumw2();
       TH1D sampleNTrue(("sample_"+sample.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", 100, 0, 100);
+      sampleNTrue->Sumw2();
 
       for(auto &file : sample)
       {
