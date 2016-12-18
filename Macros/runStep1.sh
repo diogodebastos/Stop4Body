@@ -13,6 +13,8 @@ if [[ ! -d ${TRAIN_DIR} ]] ; then
   mkdir -p ${TRAIN_DIR}
 fi
 
+cd Step1Scripts
+
 # Submit job for all MC
 qsub Step1_ProcessSamples_backgroundMCJob.sh
 qsub Step1_ProcessSamples_otherMCJob.sh
@@ -44,3 +46,5 @@ qsub Step1_ProcessSamples_Stop725Job.sh
 qsub Step1_ProcessSamples_Stop750Job.sh
 qsub Step1_ProcessSamples_Stop775Job.sh
 qsub Step1_ProcessSamples_Stop800Job.sh
+
+cd -
