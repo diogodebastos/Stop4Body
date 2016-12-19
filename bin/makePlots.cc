@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     std::stringstream converter;
     if(isSplit)
       converter << "2*";
-    converter << "weight/puWeight*" << luminosity;
+    converter << "weight*" << luminosity;
     converter >> mcWeight;
   }
 
