@@ -290,6 +290,9 @@ int main(int argc, char** argv)
       delete dataH;
       delete mcH;
       delete sigH;
+      // Delete individual hists in the stack
+      TList* histList = mcS->GetHists();
+      histList->Delete();
       delete mcS;
       delete ratio;
       delete legA;
