@@ -26,6 +26,7 @@ mergeJSONs $JSON_PATH/synch.json              $JSON_PATH/Orig/TTbar_LO.json $JSO
 # Make the JSONs for plotting
 mergeJSONs $JSON_PATH/plot2016B.json          $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016B_LO.json       $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016.json           $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 
 # Copy the JSON with the info for each deltaM over, so that all locations are consistent
 cp         $JSON_PATH/Orig/DeltaM.json        $JSON_PATH/
