@@ -13,6 +13,13 @@
       "bins":35
     },
     {
+      "name":"Met_ext",
+      "expression":"Met",
+      "min":0.0,
+      "max":600.0,
+      "bins":35
+    },
+    {
       "expression":"Jet1Pt",
       "label":"p_{T}(J_{1})",
       "min":100.0,
