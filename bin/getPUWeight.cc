@@ -169,7 +169,9 @@ int main(int argc, char** argv)
 
       TH1D* samplePUweight = static_cast<TH1D*>(dataPU->Clone(("sample_"+sample.tag()+"_puWeight").c_str()));
       sampleNTrue.Scale(1/sampleNTrue.Integral());
-      samplePUweight->Divide(&sampleNTrue);
+      sampleNVTX.Scale(1/sampleNVTX.Integral());
+      //samplePUweight->Divide(&sampleNTrue);
+      samplePUweight->Divide(&sampleNVTX);
       samplePUweight->Write();
     }
 
