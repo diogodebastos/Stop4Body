@@ -140,7 +140,7 @@ int main(int argc, char** argv)
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
-    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile->Get(("process_"+process.tag()+"_puWeight").c_str()));
+    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_"+process.tag()+"_puWeight").c_str()));
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
