@@ -309,7 +309,7 @@ int main(int argc, char** argv)
     cutFlowTable << " & " << MC.getYield(selection, mcWeight);
     for(auto& process : Data)
     {
-      cutFlowTable << " & " << process.getYield(selection, mcWeight);
+      cutFlowTable << " & " << process.getYield(selection, "1");
     }
     for(auto& process : Sig)
     {
