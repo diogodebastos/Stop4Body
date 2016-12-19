@@ -11,7 +11,10 @@ cd Step0Scripts
 
 # Submit job for all MC
 qsub Step0_GetPUWeights_backgroundMCJob.sh
-qsub Step0_GetPUWeights_otherMCJob.sh
+qsub Step0_GetPUWeights_otherMCJob1.sh
+qsub Step0_GetPUWeights_otherMCJob2.sh
+qsub Step0_GetPUWeights_otherMCJob3.sh
+qsub Step0_GetPUWeights_otherMCJob4.sh
 
 # Submit job for all Data
 qsub Step0_GetPUWeights_DataJob.sh
