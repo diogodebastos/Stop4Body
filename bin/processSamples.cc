@@ -140,7 +140,7 @@ int main(int argc, char** argv)
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
-    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile->Get(("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
@@ -287,7 +287,7 @@ int main(int argc, char** argv)
         Nevt += thisNevt;
 
         Float_t thisGenWeight = 0;
-        Int_t nvtx = 0;
+        //Int_t nvtx = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
         //inputtree->SetBranchAddress("nVert", &nvtx);
         for(Int_t i = 0; i < thisNevt; ++i)
