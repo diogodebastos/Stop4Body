@@ -140,7 +140,7 @@ int main(int argc, char** argv)
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
-    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile->Get(("process_"+process.tag()+"_puWeight").c_str()));
+    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile->Get(("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
@@ -271,7 +271,7 @@ int main(int argc, char** argv)
       Ncut2 = 0;
       Ncut3 = 0;
       Ncut4 = 0;
-      TH1D puDistrib((sample.tag()+"nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+      //TH1D puDistrib((sample.tag()+"nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
       std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
       for(auto &file : sample)
       {
@@ -289,12 +289,12 @@ int main(int argc, char** argv)
         Float_t thisGenWeight = 0;
         Int_t nvtx = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
-        inputtree->SetBranchAddress("nVert", &nvtx);
+        //inputtree->SetBranchAddress("nVert", &nvtx);
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
           sumGenWeight += thisGenWeight;
-          puDistrib.Fill(nvtx, thisGenWeight);
+          //puDistrib.Fill(nvtx, thisGenWeight);
         }
 
         if(process.selection() != "")
@@ -1067,11 +1067,13 @@ int main(int argc, char** argv)
       v[3] = Ncut3;
       v[4] = Ncut4;
       v.Write("Ncut");
-      puDistrib.Write();
+      //puDistrib.Write();
 
       if(filterEfficiencyH != nullptr)
         delete filterEfficiencyH;
     }
+
+    delete puWeightDistrib;
   }
 
   std::cout << "Done!" << std::endl << std::endl;
