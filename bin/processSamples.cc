@@ -287,7 +287,7 @@ int main(int argc, char** argv)
         Nevt += thisNevt;
 
         Float_t thisGenWeight = 0;
-        Int_t nvtx = 0;
+        //Int_t nvtx = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
         //inputtree->SetBranchAddress("nVert", &nvtx);
         for(Int_t i = 0; i < thisNevt; ++i)
