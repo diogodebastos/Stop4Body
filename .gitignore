@@ -37,3 +37,5 @@ Macros/JSON/*.json
 # Other generated files
 Macros/*.sh.o*
 Macros/*.sh.e*
+Macros/Step*Scripts/*.sh.o*
+Macros/Step*Scripts/*.sh.e*
