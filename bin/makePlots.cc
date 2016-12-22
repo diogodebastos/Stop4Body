@@ -48,6 +48,7 @@ int main(int argc, char** argv)
   std::string variablesJson = "";
   double luminosity = -1.0;
   bool isSplit = false;
+  bool noPUweight = false;
 
   if(argc < 2)
   {
@@ -92,6 +93,11 @@ int main(int argc, char** argv)
     {
       isSplit = true;
     }
+
+    if(argument == "--noPUweight")
+    {
+      noPUweight = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -131,7 +137,10 @@ int main(int argc, char** argv)
     std::stringstream converter;
     if(isSplit)
       converter << "2*";
-    converter << "weight*" << luminosity;
+    converter << "weight";
+    if(noPUweight)
+      converter << "/puWeight";
+    converter << "*" << luminosity;
     converter >> mcWeight;
   }
 
