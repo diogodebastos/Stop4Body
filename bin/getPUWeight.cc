@@ -140,6 +140,7 @@ int main(int argc, char** argv)
         Float_t thisGenWeight = 0;
         Int_t nvtx = 0;
         Float_t nTrueInt = 0;
+        Float_t xsec = 1;
         inputtree->SetBranchAddress("nVert", &nvtx);
         if(process.isdata())
         {
@@ -150,14 +151,15 @@ int main(int argc, char** argv)
         {
           inputtree->SetBranchAddress("genWeight", &thisGenWeight);
           inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
+          inputtree->SetBranchAddress("xsec", &xsec);
         }
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
-          sampleNVTX.Fill(nvtx, thisGenWeight);
-          processNVTX.Fill(nvtx, thisGenWeight);
-          sampleNTrue.Fill(nTrueInt, thisGenWeight);
-          processNTrue.Fill(nTrueInt, thisGenWeight);
+          sampleNVTX.Fill(nvtx, thisGenWeight*xsec);
+          processNVTX.Fill(nvtx, thisGenWeight*xsec);
+          sampleNTrue.Fill(nTrueInt, thisGenWeight*xsec);
+          processNTrue.Fill(nTrueInt, thisGenWeight*xsec);
         }
 
         if(process.selection() != "")
@@ -170,8 +172,8 @@ int main(int argc, char** argv)
       TH1D* samplePUweight = static_cast<TH1D*>(dataPU->Clone(("sample_"+sample.tag()+"_puWeight").c_str()));
       sampleNTrue.Scale(1/sampleNTrue.Integral());
       sampleNVTX.Scale(1/sampleNVTX.Integral());
-      //samplePUweight->Divide(&sampleNTrue); // This is the recommended, but for some reason it is giving weird results
-      samplePUweight->Divide(&sampleNVTX); // Trying this one instead
+      samplePUweight->Divide(&sampleNTrue); // This is the recommended, but for some reason it is giving weird results
+      //samplePUweight->Divide(&sampleNVTX); // Trying this one instead
       samplePUweight->Write();
     }
 
@@ -180,7 +182,9 @@ int main(int argc, char** argv)
 
     TH1D* processPUweight = static_cast<TH1D*>(dataPU->Clone(("process_"+process.tag()+"_puWeight").c_str()));
     processNTrue.Scale(1/processNTrue.Integral());
+    processNVTX.Scale(1/processNVTX.Integral());
     processPUweight->Divide(&processNTrue);
+    //processPUweight->Divide(&processNVTX);
     processPUweight->Write();
   }
 
