@@ -447,7 +447,8 @@ int main(int argc, char** argv)
 
           inputtree->GetEntry(i);
           nVert = nVert_i;
-          puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt));
+          //puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt));
+          puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nVert));
 
           // Object ID
           std::vector<int> validJets;
