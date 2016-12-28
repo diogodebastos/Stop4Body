@@ -251,6 +251,7 @@ int main(int argc, char** argv)
       Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
       Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
+      Float_t splitFactor=1; bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
 
 
       TH1* filterEfficiencyH = nullptr;
