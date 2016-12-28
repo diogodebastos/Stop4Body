@@ -73,6 +73,7 @@ int main(int argc, char** argv)
   bool threshold30 = false;
   std::string suffix = "";
   size_t max_sync_count = 0;
+  bool doAltPU = false;
 
   if(argc < 2)
   {
@@ -116,6 +117,9 @@ int main(int argc, char** argv)
 
     if(argument == "--jetThreshold30ForPreselection")
       threshold30 = true;
+
+    if(argument == "--doAltPU")
+      doAltPU == true;
   }
 
   if(jsonFileName == "")
@@ -140,7 +144,22 @@ int main(int argc, char** argv)
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
-    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+
+    TH1D* puWeightDistrib = nullptr;
+    if(!doAltPU)
+    {
+      puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+    }
+    else
+    {
+      puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_Data_nvtx").c_str())->Clone("puWeightDistrib"));
+      puWeightDistrib->Scale(1/puWeightDistrib->Integral());
+      TH1D* mcDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_"+process.tag()+"_nvtx").c_str())->Clone("mcPUDistrib"));
+      mcDistrib->Scale(1/mcDistrib->Integral());
+      puWeightDistrib->Divide(mcDistrib);
+      delete mcDistrib;
+    }
+
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
@@ -251,6 +270,7 @@ int main(int argc, char** argv)
       Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
       Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
+      Float_t splitFactor=1; bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
 
 
       TH1* filterEfficiencyH = nullptr;

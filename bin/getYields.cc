@@ -103,13 +103,17 @@ int main(int argc, char** argv)
   std::cout << "Reading json file" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
+  auto MC = samples.getMCBkg();
+  auto Sig = samples.getMCSig();
+  auto Data = samples.getData();
+
 
   gStyle->SetOptStat(000000);
   gStyle->SetOptTitle(0);
   //TCut muon = "(nGoodMu==1)";
   //TCut electron = "(nGoodEl==1)";
   //TCut singlep = muon||electron;
-  TCut singlep = "nGoodMu==1 && LepPt < 30";
+  TCut singlep = "LepPt < 30";
   TCut ISRjet = "Jet1Pt > 110. && HT30 > 200";
   TCut met    = "Met>280.";
   TCut dphij1j2 = "((Njet30>1)&&(DPhiJet1Jet2 < 2.5)) || Njet30 == 1";
@@ -122,10 +126,6 @@ int main(int argc, char** argv)
     converter << "XS*filterEfficiency*" << luminosity << "/Nevt";
     converter >> mcWeight;
   }
-
-  auto MC = samples.getMCBkg();
-  auto Sig = samples.getMCSig();
-  auto Data = samples.getData();
 
   VariableJsonLoader variables(variablesJson);
   std::cout << "Processing variable plots" << std::endl;
