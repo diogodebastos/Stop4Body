@@ -49,6 +49,7 @@ int main(int argc, char** argv)
   double luminosity = -1.0;
   bool isSplit = false;
   bool noPUweight = false;
+  bool puTest = false;
 
   if(argc < 2)
   {
@@ -97,6 +98,11 @@ int main(int argc, char** argv)
     if(argument == "--noPUweight")
     {
       noPUweight = true;
+    }
+
+    if(argument == "--puTest")
+    {
+      puTest = true;
     }
   }
 
@@ -222,8 +228,17 @@ int main(int argc, char** argv)
       t1->cd();
       t1->SetLogy(true);
       mcS->Draw("hist");
-      dataH->Draw("same");
-      sigH->Draw("hist same");
+      if(!puTest)
+      {
+        dataH->Draw("same");
+        sigH->Draw("hist same");
+      }
+      else
+      {
+        TH1D* data2 = static_cast<TH1D*>(dataH->Clone("dataToDraw"));
+        data2->Scale(mcH->Integral()/data2->Integral());
+        data2->Draw("same");
+      }
 
       TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
       //TLegend *legA = gPad->BuildLegend(0.155,0.69,0.35,0.89, "NDC");

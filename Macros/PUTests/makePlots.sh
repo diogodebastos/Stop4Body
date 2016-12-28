@@ -17,6 +17,6 @@ fi
 #  mkdir -p ${PLOTS_ALT}
 #fi
 
-makePlots --json ${JSON_PATH}/puTests.json --inDir ${PU_TEST_DIR} --variables variables.json --outDir ${BASE_PLOT_DIR}
-makePlots --json ${JSON_PATH}/puTests.json --inDir ${PU_TEST_DIR} --variables variables.json --outDir ${PLOTS_NO_PU}   --noPUweight
-#makePlots --json ${JSON_PATH}/puTests.json --inDir ${PU_TEST_DIR} --variables variables.json --outDir ${PLOTS_ALT}     --
+makePlots --puTest --json ${JSON_PATH}/puTests.json --inDir ${PU_TEST_DIR} --variables variables.json --outDir ${BASE_PLOT_DIR}
+makePlots --puTest --json ${JSON_PATH}/puTests.json --inDir ${PU_TEST_DIR} --variables variables.json --outDir ${PLOTS_NO_PU}   --noPUweight
+#makePlots --puTest --json ${JSON_PATH}/puTests.json --inDir ${PU_TEST_DIR} --variables variables.json --outDir ${PLOTS_ALT}     --
