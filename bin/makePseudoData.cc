@@ -210,7 +210,7 @@ int main(int argc, char** argv)
         }
 
         delete slimmedTree;
-        delete inputTree;
+        //delete inputTree;
       }
     }
   }
