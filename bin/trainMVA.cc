@@ -119,6 +119,7 @@ int main(int argc, char** argv)
   factory->AddVariable("HT30",'F');
   //factory->AddVariable("NbLoose20",'F');
   factory->AddVariable("NbLoose30",'F');
+  factory->AddVariable("JetHBCSV", 'F');
 
   // Other variables
   //factory->AddVariable("Q80",'F');
