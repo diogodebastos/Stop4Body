@@ -114,11 +114,15 @@ int main(int argc, char** argv)
 
       TFile testFile(testOutputFile.c_str(), "RECREATE");
       TTree* testTree = static_cast<TTree*>(inTree->CloneTree(0));
+      Float_t testSplitFactor = 2;
       inTree->CopyAddresses(testTree);
+      testTree->SetBranchAddress("splitFactor", &testSplitFactor);
 
       TFile trainFile(trainOutputFile.c_str(), "RECREATE");
       TTree* trainTree = static_cast<TTree*>(inTree->CloneTree(0));
+      Float_t trainSplitFactor = 2;
       inTree->CopyAddresses(trainTree);
+      trainTree->SetBranchAddress("splitFactor", &trainSplitFactor);
 
       cwd->cd();
 
