@@ -29,7 +29,7 @@ int main(int argc, char **argv)
   std::string outputDirectory = "./OUT/";
   std::string drawMVA = "BDT";
   std::string suffix = "";
-  double luminosity = 5000;
+  double luminosity = 0;
 
   if(argc < 2)
   {
@@ -85,20 +85,22 @@ int main(int argc, char **argv)
 
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
+  if(luminosity <= 0)
+    luminosity = samples.getData().getLumi();
 
   std::map<std::string, std::string> regions;
-  //regions["test1"] = "(nGoodMu == 1 || nGoodEl == 1)";
-  //regions["test2"] = "(nGoodMu == 1 || nGoodEl == 1) && (Met > 300)";
-  //regions["test3"] = "(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110)";
-  regions["SR"]       = ("(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5)");
-  regions["CR_ttbar"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 > 0)");
-  regions["CR_wjets"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbLoose30 == 0)");
-  regions["VR_ttbar"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 > 1)");
-  regions["VR_wjets"] = ("(nGoodMu == 1 || nGoodEl == 1) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbLoose30 == 0)");
+  //regions["test1"] = "(LepPt < 30)";
+  //regions["test2"] = "(LepPt < 30) && (Met > 300)";
+  //regions["test3"] = "(LepPt < 30) && (Met > 300) && (Jet1Pt > 110)";
+  regions["SR"]       = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5)");
+  regions["CR_ttbar"] = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 > 0)");
+  regions["CR_wjets"] = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbLoose30 == 0)");
+  regions["VR_ttbar"] = ("(LepPt < 30) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 > 1)");
+  regions["VR_wjets"] = ("(LepPt < 30) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbLoose30 == 0)");
 
   std::stringstream converter;
   std::string mcWeight;
-  converter << "XS*" << luminosity << "/Nevt";
+  converter << "2*XS*" << luminosity << "/Nevt";
   converter >> mcWeight;
 
   for(auto& region : regions)
