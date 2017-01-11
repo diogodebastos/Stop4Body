@@ -15,6 +15,6 @@ cd UserCode/Stop4Body/Macros/PUTests/
 . ../setupPaths.sh
 
 if [[ -d ${PU_TEST_DIR} ]]; then
-  getPUWeight --json ${JSON_PATH}/Orig/Data_2016B.json  --outDir ${PU_TEST_DIR} --dataPU ../DataPileupHistogram.root
+  getPUWeight --json ${JSON_PATH}/Orig/Data.json  --outDir ${PU_TEST_DIR} --dataPU ../DataPileupHistogram.root
 fi
 
