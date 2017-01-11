@@ -119,7 +119,7 @@ int main(int argc, char** argv)
       threshold30 = true;
 
     if(argument == "--doAltPU")
-      doAltPU == true;
+      doAltPU = true;
   }
 
   if(jsonFileName == "")
@@ -148,13 +148,13 @@ int main(int argc, char** argv)
     TH1D* puWeightDistrib = nullptr;
     if(!doAltPU)
     {
-      puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+      puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
     }
     else
     {
-      puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_Data_nvtx").c_str())->Clone("puWeightDistrib"));
+      puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get( "process_Data_nvtx" )->Clone("puWeightDistrib"));
       puWeightDistrib->Scale(1/puWeightDistrib->Integral());
-      TH1D* mcDistrib = static_cast<TH1D*>(puWeightFile.Get(("process_"+process.tag()+"_nvtx").c_str())->Clone("mcPUDistrib"));
+      TH1D* mcDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_nvtx").c_str())->Clone("mcPUDistrib"));
       mcDistrib->Scale(1/mcDistrib->Integral());
       puWeightDistrib->Divide(mcDistrib);
       delete mcDistrib;
