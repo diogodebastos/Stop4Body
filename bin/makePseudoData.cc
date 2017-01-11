@@ -136,6 +136,8 @@ int main(int argc, char** argv)
   Float_t LumiSec = -999;
   Float_t Nevt = -999;
   Float_t Run = -999;
+  Float_t weight = 1;
+  Float_t splitFactor = 1;
 
 
   TRandom3 *randomizer = new TRandom3();
@@ -189,6 +191,8 @@ int main(int argc, char** argv)
         PDtree->SetBranchAddress("LumiSec", &LumiSec);
         PDtree->SetBranchAddress("Nevt", &Nevt);
         PDtree->SetBranchAddress("Run", &Run);
+        PDtree->SetBranchAddress("weight", &weight);
+        PDtree->SetBranchAddress("splitFactor", &splitFactor);
 
         std::cout << "\t    Selecting events to keep" << std::endl;
         for(int i = 0; i < numberOfEvents; ++i)
@@ -210,7 +214,8 @@ int main(int argc, char** argv)
         }
 
         delete slimmedTree;
-        //delete inputTree;
+        if(presel != "")
+          delete inputTree;
       }
     }
   }
