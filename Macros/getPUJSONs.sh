@@ -10,5 +10,7 @@ wget ${PILEUP_LATEST} -O pileup_latest.txt
 wget ${GOLDEN_JSON} -O GOLDEN_JSON.txt
 
 # Details: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupJSONFileforData
-pileupCalc.py -i GOLDEN_JSON.txt --inputLumiJSON pileup_latest.txt  --calcMode true --minBiasXsec 69200 --maxPileupBin 100 --numPileupBins 100 DataPileupHistogram.root
-#pileupCalc.py -i GOLDEN_JSON.txt --inputLumiJSON pileup_latest.txt  --calcMode observed --minBiasXsec 69200 --maxPileupBin 100 --numPileupBins 100 DataPileupHistogram.root
+pileupCalc.py -i GOLDEN_JSON.txt --inputLumiJSON pileup_latest.txt  --calcMode true --minBiasXsec 63000 --maxPileupBin 100 --numPileupBins 100 DataPileupHistogram.root
+
+MC_PU=https://github.com/HephySusySW/Workspace/raw/80X-master/DegenerateStopAnalysis/python/cmgPostProcessing/pileup/mcSpring16_25ns_pu.root
+wget ${MC_PU} -O MCPileupHistogram.root

@@ -62,6 +62,7 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
   std::string dataPUFileName = "";
+  std::string mcPUFileName = "";
 
   if(argc < 2)
   {
@@ -85,6 +86,9 @@ int main(int argc, char** argv)
 
     if(argument == "--dataPU")
       dataPUFileName = argv[++i];
+
+    if(argument == "--otherMCPU")
+      mcPUFileName = argv[++i];
   }
 
   if(jsonFileName == "")
@@ -105,6 +109,16 @@ int main(int argc, char** argv)
   TFile finput(dataPUFileName.c_str(), "READ");
   TH1D* dataPU = static_cast<TH1D*>(finput.Get("pileup"));
   dataPU->Scale(1/dataPU->Integral());
+
+  TH1D* mcPU = nullptr;
+  if(mcPUFileName != "")
+  {
+    mcPU = static_cast<TH1D*>( dataPU->Clone("mcPU") );
+    TFile finput2(mcPUFileName.c_str(), "READ");
+    TH1D* tmp = static_cast<TH1D*>(finput.Get("pileup"));
+    tmp->Scale(1/mcPU->Integral());
+    mcPU->Divide(tmp);
+  }
 
   TFile foutput((outputDirectory + "/puWeights_" + getBaseName(jsonFileName) + ".root").c_str(), "RECREATE");
 
@@ -169,6 +183,7 @@ int main(int argc, char** argv)
       sampleNVTX.Write();
       sampleNTrue.Write();
 
+      mcPU->Clone(("sample_"+sample.tag()+"_puWeight_alt").c_str())->Write();
       TH1D* samplePUweight = static_cast<TH1D*>(dataPU->Clone(("sample_"+sample.tag()+"_puWeight").c_str()));
       sampleNTrue.Scale(1/sampleNTrue.Integral());
       sampleNVTX.Scale(1/sampleNVTX.Integral());
@@ -180,6 +195,7 @@ int main(int argc, char** argv)
     processNVTX.Write();
     processNTrue.Write();
 
+    mcPU->Clone(("process_"+process.tag()+"_puWeight_alt").c_str())->Write();
     TH1D* processPUweight = static_cast<TH1D*>(dataPU->Clone(("process_"+process.tag()+"_puWeight").c_str()));
     processNTrue.Scale(1/processNTrue.Integral());
     processNVTX.Scale(1/processNVTX.Integral());
