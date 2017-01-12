@@ -146,21 +146,21 @@ int main(int argc, char** argv)
   reader->AddVariable("Jet1Pt", &Jet1Pt);
   reader->AddVariable("mt", &mt);
   reader->AddVariable("Met", &Met);
-  reader->AddVariable("HT30", &HT30);
-  reader->AddVariable("NbLoose30", &NbLoose30);
   reader->AddVariable("LepChg", &LepChg);
   reader->AddVariable("LepEta", &LepEta);
   reader->AddVariable("LepPt", &LepPt);
+  reader->AddVariable("JetHBpt", &JetHBpt);
+  reader->AddVariable("DrJetHBLep",&DrJetHBLep);
+  reader->AddVariable("Njet30", &Njet30);
+  reader->AddVariable("HT30", &HT30);
+  reader->AddVariable("NbLoose30", &NbLoose30);
   //reader->AddVariable("Q80", &Q80);
   //reader->AddVariable("CosDeltaPhi", &CosDeltaPhi);
   //reader->AddVariable("Jet1Pt", &Jet1Pt);
   //reader->AddVariable("Jet2Pt", &Jet2Pt);
-  reader->AddVariable("JetHBpt", &JetHBpt);
-  reader->AddVariable("Njet30", &Njet30);
   //reader->AddVariable("JetLepMass",&JetLepMass);
   //reader->AddVariable("J3Mass",&J3Mass);
   //reader->AddVariable("DrJet1Lep", &DrJet1Lep);
-  reader->AddVariable("DrJetHBLep",&DrJetHBLep);
   //reader->AddVariable("DrJet1Jet2",&DrJet1Jet2);
   //reader->AddVariable("HT25",&HT25);
 
