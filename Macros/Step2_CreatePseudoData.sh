@@ -15,9 +15,11 @@ cd UserCode/Stop4Body/Macros/
 . setupPaths.sh
 
 if [[ -d ${NTUPLE_DIR} ]]; then
+  #makePseudoData --lumi 16925 --json ${JSON_PATH}/makePD_Inj_300_270.json --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel --injectSignal
   makePseudoData --lumi 10000 --json ${JSON_PATH}/makePD_Inj_300_270.json --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel --injectSignal
   mv ${NTUPLE_DIR}/PseudoData.root ${NTUPLE_DIR}/PseudoData_Injected_300_270.root
 
+  #makePseudoData --lumi 16925 --json ${JSON_PATH}/makePD.json             --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel
   makePseudoData --lumi 10000 --json ${JSON_PATH}/makePD.json             --inDir ${NTUPLE_DIR} --outDir ${NTUPLE_DIR} --noPresel
 
   ln -s ${NTUPLE_DIR}/PseudoData*.root ${TEST_DIR}/
