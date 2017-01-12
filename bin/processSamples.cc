@@ -146,18 +146,23 @@ int main(int argc, char** argv)
     std::cout << "Processing process: " << process.tag() << std::endl;
 
     TH1D* puWeightDistrib = nullptr;
+    TH1D* puWeightDistrib_alt = nullptr;
+    TH1D* puWeightDistrib_nai = nullptr;
     if(!doAltPU)
     {
       puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+
+      puWeightDistrib_alt = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight_alt").c_str())->Clone("puWeightDistrib_alt"));
+
+      puWeightDistrib_nai = static_cast<TH1D*>(puWeightFile.Get( "process_Data_nvtx" )->Clone("puWeightDistrib"));
+      puWeightDistrib_nai->Scale(1/puWeightDistrib_nai->Integral());
+      TH1D* mcDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_nvtx").c_str())->Clone("mcPUDistrib"));
+      mcDistrib->Scale(1/mcDistrib->Integral());
+      puWeightDistrib_nai->Divide(mcDistrib);
+      delete mcDistrib;
     }
     else
     {
-      puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get( "process_Data_nvtx" )->Clone("puWeightDistrib"));
-      puWeightDistrib->Scale(1/puWeightDistrib->Integral());
-      TH1D* mcDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_nvtx").c_str())->Clone("mcPUDistrib"));
-      mcDistrib->Scale(1/mcDistrib->Integral());
-      puWeightDistrib->Divide(mcDistrib);
-      delete mcDistrib;
     }
 
     for(auto &sample : process)
@@ -191,6 +196,9 @@ int main(int argc, char** argv)
       Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
       Float_t weight; bdttree->Branch("weight", &weight, "weight/F");
       Float_t puWeight; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
+      Float_t puWeight_alt; bdttree->Branch("puWeight_alt", &puWeight_alt, "puWeight_alt/F"); // Alternate
+      Float_t puWeight_nai; bdttree->Branch("puWeight_nai", &puWeight_nai, "puWeight_nai/F"); // Naive
+      Float_t puWeight_HEP; bdttree->Branch("puWeight_HEP", &puWeight_HEP, "puWeight_HEP/F"); // HEPPY
       Float_t genWeight; bdttree->Branch("genWeight", &genWeight, "genWeight/F");
       Float_t sumGenWeight; bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
       Float_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/F");
@@ -467,7 +475,10 @@ int main(int argc, char** argv)
 
           inputtree->GetEntry(i);
           nVert = nVert_i;
+          puWeight_HEP = puWeight;
           puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt));
+          puWeight_alt = puWeightDistrib_alt->GetBinContent(puWeightDistrib_alt->FindBin(nTrueInt));
+          puWeight_nai = puWeightDistrib_nai->GetBinContent(puWeightDistrib_nai->FindBin(nVert));
           //puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nVert));
 
           // Object ID
