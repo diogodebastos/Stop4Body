@@ -34,7 +34,7 @@ bool fileExists(std::string);
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
-  std::string outputDirectory = "./OUT/";
+  std::string outputFileName = "./OUT/PD.root";
   std::string inputDirectory = "";
   std::string suffix = "";
   double luminosity = 10000;
@@ -61,8 +61,8 @@ int main(int argc, char** argv)
     if(argument == "--json")
       jsonFileName = argv[++i];
 
-    if(argument == "--outDir")
-      outputDirectory = argv[++i];
+    if(argument == "--outFile")
+      outputFileName = argv[++i];
 
     if(argument == "--inDir")
       inputDirectory = argv[++i];
@@ -97,6 +97,7 @@ int main(int argc, char** argv)
   }
 
   std::cout << "Producing PseudoData from the file '" << jsonFileName << "' with an integrated luminosity of " << luminosity << " fb" <<std::endl;
+  std::cout << "Saving output in: " << outputFileName << std::endl;
 
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
@@ -106,9 +107,7 @@ int main(int argc, char** argv)
     samples = samples.getMCBkg();
 
   // Selection
-  TCut muon = "(abs(LepID) == 13)";
-  TCut electron = "(abs(LepID) == 11)";
-  TCut singlep = (muon || electron) && "LepPt < 30";
+  TCut singlep = "LepPt < 30";
   //TCut implicit = "(HT30 > 200) && (Met > 200) && (Jet1Pt > 90) && (LepPt < 30)";
   TCut met    = "Met > 300.";
   TCut ISRjet = "Jet1Pt > 110.";
@@ -123,7 +122,7 @@ int main(int argc, char** argv)
   TFile tmpFile(fileSample.c_str(), "READ");
   TTree* tmpTree = static_cast<TTree*>(tmpFile.Get("bdttree"));
 
-  TFile outputFile((outputDirectory+"/PseudoData" + ((suffix=="")?(".root"):("_"+suffix+".root"))).c_str(), "RECREATE");
+  TFile outputFile(outputFileName.c_str(), "RECREATE");
   outputFile.cd();
   TTree* PDtree = static_cast<TTree*>(tmpTree->CloneTree(0));
 
@@ -212,6 +211,7 @@ int main(int argc, char** argv)
           slimmedTree->GetEntry(i);
           PDtree->Fill();
         }
+        std::cout << "\t    Done!" << std::endl;
 
         delete slimmedTree;
         if(presel != "")
@@ -220,6 +220,7 @@ int main(int argc, char** argv)
     }
   }
 
+  std::cout << "Finished filling file: " << outputFileName << std::endl;
   outputFile.cd();
   PDtree->Write("",TObject::kOverwrite);
   cwd->cd();

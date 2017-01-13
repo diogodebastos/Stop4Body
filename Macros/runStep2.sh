@@ -3,5 +3,10 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-# Submit job
+cd Step2Scripts
+
+# Submit jobs
 qsub Step2_CreatePseudoData.sh
+qsub Step2_CreatePseudoData_Inj.sh
+
+cd -
