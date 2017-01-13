@@ -116,7 +116,7 @@ int main(int argc, char** argv)
   {
     mcPU = static_cast<TH1D*>( dataPU->Clone("mcPU") );
     TFile finput2(mcPUFileName.c_str(), "READ");
-    TH1D* tmp = static_cast<TH1D*>(finput.Get("pileup"));
+    TH1D* tmp = static_cast<TH1D*>(finput2.Get("pileup"));
     tmp->Scale(1/mcPU->Integral());
     mcPU->Divide(tmp);
   }
