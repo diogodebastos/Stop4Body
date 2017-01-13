@@ -63,6 +63,7 @@ int main(int argc, char** argv)
   std::string suffix = "";
   std::string dataPUFileName = "";
   std::string mcPUFileName = "";
+  int nBins = 50;
 
   if(argc < 2)
   {
@@ -126,17 +127,17 @@ int main(int argc, char** argv)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
 
-    TH1D processNVTX(("process_"+process.tag()+"_nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+    TH1D processNVTX(("process_"+process.tag()+"_nvtx").c_str(), "nvtx;Evt.", nBins, 0, nBins);
     processNVTX.Sumw2();
-    TH1D processNTrue(("process_"+process.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", 100, 0, 100);
+    TH1D processNTrue(("process_"+process.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", nBins, 0, nBins);
     processNTrue.Sumw2();
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
 
-      TH1D sampleNVTX(("sample_"+sample.tag()+"_nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+      TH1D sampleNVTX(("sample_"+sample.tag()+"_nvtx").c_str(), "nvtx;Evt.", nBins, 0, nBins);
       sampleNVTX.Sumw2();
-      TH1D sampleNTrue(("sample_"+sample.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", 100, 0, 100);
+      TH1D sampleNTrue(("sample_"+sample.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", nBins, 0, nBins);
       sampleNTrue.Sumw2();
 
       for(auto &file : sample)
