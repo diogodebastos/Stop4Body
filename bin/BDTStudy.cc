@@ -301,6 +301,7 @@ int main(int argc, char **argv)
 
     auto dataSamples = samples.getData();
     auto mcSamples = samples.getMCBkg();
+    auto sigSamples = samples.getMCSig();
     std::string cut;
 
     outFile << "\\begin{table}" << std::endl;
@@ -327,6 +328,13 @@ int main(int argc, char **argv)
     outFile << "\\hline" << std::endl;
     outFile << "\\end{tabular}" << std::endl;
     outFile << "\\end{table}" << std::endl;
+
+    outFile << std::endl << std::endl;
+    outFile << "Data: " << dataSamples.getYield(cut, "1") << std::endl;
+    outFile << "MC: " << mcSamples.getYield(cut, mcWeight) << std::endl;
+    for(auto & process: mcSamples)
+      outFile << "\t" << process.label() << ": " << process.getYield(cut, mcWeight) << std::endl;
+    outFile << "Signal: " << sigSamples.getYield(cut, mcWeight) << std::endl;
 
 
     delete ratio;
