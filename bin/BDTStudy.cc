@@ -92,11 +92,11 @@ int main(int argc, char **argv)
   //regions["test1"] = "(LepPt < 30)";
   //regions["test2"] = "(LepPt < 30) && (Met > 300)";
   //regions["test3"] = "(LepPt < 30) && (Met > 300) && (Jet1Pt > 110)";
-  regions["SR"]       = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5)");
-  regions["CR_ttbar"] = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 > 0)");
-  regions["CR_wjets"] = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbLoose30 == 0)");
-  regions["VR_ttbar"] = ("(LepPt < 30) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbTight30 > 1)");
-  regions["VR_wjets"] = ("(LepPt < 30) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5) && (NbLoose30 == 0)");
+  regions["SR"]       = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2_30 < 2.5) && (HT30 > 200)");
+  regions["CR_ttbar"] = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2_30 < 2.5) && (HT30 > 200) && (NbTight30 > 0)");
+  regions["CR_wjets"] = ("(LepPt < 30) && (Met > 300) && (Jet1Pt > 110) && (DPhiJet1Jet2_30 < 2.5) && (HT30 > 200) && (NbLoose30 == 0)");
+  regions["VR_ttbar"] = ("(LepPt < 30) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2_30 < 2.5) && (HT30 > 200) && (NbTight30 > 1)");
+  regions["VR_wjets"] = ("(LepPt < 30) && (Met < 300) && (Jet1Pt > 110) && (DPhiJet1Jet2_30 < 2.5) && (HT30 > 200) && (NbLoose30 == 0)");
 
   std::stringstream converter;
   std::string mcWeight;
