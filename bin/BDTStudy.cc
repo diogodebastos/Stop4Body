@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 
   std::stringstream converter;
   std::string mcWeight;
-  converter << "2*weight*" << luminosity;
+  converter << "splitFactor*weight*" << luminosity;
   converter >> mcWeight;
 
   for(auto& region : regions)
