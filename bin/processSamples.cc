@@ -293,7 +293,7 @@ int main(int argc, char** argv)
 
       // Get total number of entries
       Nevt = 0;
-      sumGenWeight = 0;
+      double sumGenWeightCounting = 0;
       Ncut0 = 0;
       Ncut1 = 0;
       Ncut2 = 0;
@@ -318,16 +318,19 @@ int main(int argc, char** argv)
         //Int_t nvtx = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
         //inputtree->SetBranchAddress("nVert", &nvtx);
+        double smallCounter = 0;
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
-          sumGenWeight += thisGenWeight;
+          smallCounter += thisGenWeight;
           //puDistrib.Fill(nvtx, thisGenWeight);
         }
+        sumGenWeightCounting += smallCounter;
 
         if(process.selection() != "")
           delete inputtree;
       }
+      sumGenWeight = sumGenWeightCounting; // Consider implementing the streaming float summation: http://dl.acm.org/citation.cfm?id=1824815
       std::cout << Nevt << "; " << sumGenWeight << std::endl;
 
       for(auto &file : sample)
