@@ -124,6 +124,27 @@ bool SampleInfo::fileExists(std::string fileName)
   return infile.good();
 }
 
+doubleUnc SampleInfo::getYield(std::string, std::string)
+{
+  TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
+  tmpHist.Sumw2();
+
+  TChain* chain = new TChain("bdttree");
+  for(auto& file : filePaths_)
+  {
+    chain->Add(file.c_str());
+  }
+
+  chain->Draw((weight+">>tmpHist").c_str(), (weight+"*("+cut+")").c_str(), "goff");
+
+  doubleUnc retVal(tmpHist.GetBinContent(1),tmpHist.GetBinError(1));
+
+  retVal += doubleUnc(tmpHist.GetBinContent(0),tmpHist.GetBinError(0));
+  retVal += doubleUnc(tmpHist.GetBinContent(2),tmpHist.GetBinError(2));
+
+  return retVal;
+}
+
 ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix):
   baseDir_(baseDir),
   suffix_(suffix),

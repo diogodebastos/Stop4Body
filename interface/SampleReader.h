@@ -132,6 +132,7 @@ public:
   //~SampleInfo();
 
   std::vector<std::string> getAllFiles() const {return filePaths_;};
+  doubleUnc getYield(std::string, std::string);
 
   double crossSection() const {return crossSection_;}
   double branchingRatio() const {return branchingRatio_;}
