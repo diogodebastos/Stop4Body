@@ -143,18 +143,23 @@ int main(int argc, char** argv)
     std::stringstream converter;
     if(isSplit)
       converter << "2*";
-    converter << "weight";
+    converter << "weight"; // Full
+    //converter << "weight/puWeight"; // Full no PU
+    //converter << "XS*filterEfficiency*puWeight*genWeight/sumGenWeight";
     if(noPUweight)
       converter << "/puWeight";
     converter << "*" << luminosity;
     converter >> mcWeight;
   }
+  std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
   std::vector<CutInfo> cutFlow;
   cutFlow.push_back(CutInfo("Preselection", "HT30 > 200", "$H_T > 200$"));
-  cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
-  cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
-  cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
+  //cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
+  //cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
+  //cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
+  cutFlow.push_back(CutInfo("Selection", "(Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)", "Selection"));
+  cutFlow.push_back(CutInfo("Test", "Njet60 < 3", "$N(jet_{60}) < 3$"));
 
   std::ofstream cutFlowTable(outputDirectory+"/cutFlow.tex");
 
@@ -205,6 +210,8 @@ int main(int argc, char** argv)
       else
         selection += " && (" + cut.cut() + ")";
     }
+
+    std::cout << "Getting variables and yields with selection (" << selection << ") and weight (" << mcWeight << ")" << std::endl;
 
     for(auto & variable : variables)
     {
@@ -328,16 +335,24 @@ int main(int argc, char** argv)
     cutFlowTable << cut.name();
     for(auto& process : MC)
     {
-      cutFlowTable << " & " << process.getYield(selection, mcWeight);
+      auto yield = process.getYield(selection, mcWeight);
+      cutFlowTable << " & " << yield;
+      std::cout << process.label() << ": " << yield << std::endl;
+      for(auto& sample: process)
+        std::cout << sample.tag() << ": " << sample.getYield(selection, mcWeight) << std::endl;
     }
     cutFlowTable << " & " << MC.getYield(selection, mcWeight);
     for(auto& process : Data)
     {
-      cutFlowTable << " & " << process.getYield(selection, "1");
+      auto yield = process.getYield(selection, "1");
+      cutFlowTable << " & " << yield;
+      std::cout << process.label() << ": " << yield << std::endl;
     }
     for(auto& process : Sig)
     {
-      cutFlowTable << " & " << process.getYield(selection, mcWeight);
+      auto yield = process.getYield(selection, mcWeight);
+      cutFlowTable << " & " << yield;
+      std::cout << process.label() << ": " << yield << std::endl;
     }
     cutFlowTable << "\\\\\n";
   }
