@@ -464,8 +464,13 @@ TH1D* SampleReader::getHist(std::string name, std::string variable, std::string 
   for(auto& process : processes_)
   {
     TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax);
-    retVal->Add(tmp);
-    delete tmp;
+    if(retVal == nullptr)
+      retVal = tmp;
+    else
+    {
+      retVal->Add(tmp);
+      delete tmp;
+    }
   }
 
   return retVal;

@@ -215,9 +215,11 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
-      auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.",               selection    , variable.bins(), variable.min(), variable.max());
+      //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.",               selection    , variable.bins(), variable.min(), variable.max());
+      auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.",               selection    , variable.bins(), variable.min(), variable.max());
       auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
-      auto sigH  =  Sig.getHist(cut.name()+"_"+variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
+      //auto sigH  =  Sig.getHist(cut.name()+"_"+variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
+      auto sigH  =  Sig.process(0).getHist(variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
 
       auto mcS   =   MC.getStack(variable.expression(), variable.label()+";Evt.", mcWeight+"*("+selection+")", variable.bins(), variable.min(), variable.max());
 
