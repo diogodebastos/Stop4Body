@@ -256,6 +256,9 @@ public:
   SampleReader getMCSig();
   SampleReader getMC();
 
+  size_t nProcesses() const {return processes_.size();}
+  ProcessInfo process(size_t i) const {return processes_[i];}
+
   // Iteration
   typedef typename std::vector<ProcessInfo>::iterator iterator;
   typedef typename std::vector<ProcessInfo>::const_iterator const_iterator;
