@@ -124,7 +124,7 @@ bool SampleInfo::fileExists(std::string fileName)
   return infile.good();
 }
 
-doubleUnc SampleInfo::getYield(std::string, std::string)
+doubleUnc SampleInfo::getYield(std::string cut, std::string weight)
 {
   TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
   tmpHist.Sumw2();
