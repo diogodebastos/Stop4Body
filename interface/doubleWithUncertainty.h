@@ -50,7 +50,7 @@ public:
   doubleUnc  operator* (const double& val) const;
   doubleUnc  operator/ (const double& val) const;
 
-  operator double() const {return value_;}
+  explicit operator double() const {return value_;}
 
   doubleUnc sqrt() const;
 
