@@ -447,7 +447,7 @@ int main(int argc, char** argv)
                                              nISRBin4 +
                                              nISRBin5 +
                                              nISRBin6  ) /
-                    (ISRweightFromNISRJet(0)*nISRBin0 +
+ static_cast<double>(ISRweightFromNISRJet(0)*nISRBin0 +
                      ISRweightFromNISRJet(1)*nISRBin1 +
                      ISRweightFromNISRJet(2)*nISRBin2 +
                      ISRweightFromNISRJet(3)*nISRBin3 +
