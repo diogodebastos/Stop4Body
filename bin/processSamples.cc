@@ -41,6 +41,12 @@
 #include "UserCode/Stop4Body/interface/SampleReader.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
+#define GENPART_LIMIT  40
+#define JETCOLL_LIMIT  40
+#define LEPCOLL_LIMIT  40
+#define TAUCOLL_LIMIT  40
+#define TRACOLL_LIMIT 200
+
 using json = nlohmann::json;
 
 struct FileInfo
@@ -62,6 +68,9 @@ const double CSV_Medium = 0.800;
 const double CSV_Tight = 0.935;
 
 doubleUnc stopCrossSection(double stopM, double lspM);
+doubleUnc triggerEfficiencyFromMET(double met_pt);
+doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt, double met_phi);
+doubleUnc ISRweightFromNISRJet(int nISRJet);
 
 int main(int argc, char** argv)
 {
@@ -279,6 +288,10 @@ int main(int argc, char** argv)
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
       Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
       Float_t splitFactor=1; bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
+      Float_t triggerEfficiency=1; bdttree->Branch("triggerEfficiency", &triggerEfficiency, "triggerEfficiency/F");
+      Float_t WISRSF=1; bdttree->Branch("WISRSF", &WISRSF, "WISRSF/F");
+      Float_t nISRJet=0; bdttree->Branch("nISRJet", &nISRJet, "nISRJet/F");
+      Float_t ISRweight=1; bdttree->Branch("ISRweight", &ISRweight, "ISRweight/F");
 
 
       TH1* filterEfficiencyH = nullptr;
@@ -299,6 +312,7 @@ int main(int argc, char** argv)
       Ncut2 = 0;
       Ncut3 = 0;
       Ncut4 = 0;
+      int nISRBin0 = 0, nISRBin1 = 0, nISRBin2 = 0, nISRBin3 = 0, nISRBin4 = 0, nISRBin5 = 0, nISRBin6 = 0;
       //TH1D puDistrib((sample.tag()+"nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
       std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
       for(auto &file : sample)
@@ -317,6 +331,31 @@ int main(int argc, char** argv)
         Float_t thisGenWeight = 0;
         //Int_t nvtx = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
+        Int_t nJet;  inputtree->SetBranchAddress("nJet", &nJet);
+        //Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
+        Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
+        Float_t Jet_phi[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
+        Int_t nGenPart;
+        Int_t GenPart_motherId[GENPART_LIMIT];
+        Int_t GenPart_motherIndex[GENPART_LIMIT];
+        Int_t GenPart_grandmotherId[GENPART_LIMIT];
+        Int_t GenPart_pdgId[GENPART_LIMIT];
+        Int_t GenPart_status[GENPART_LIMIT];
+        //Float_t GenPart_pt[GENPART_LIMIT];
+        Float_t GenPart_phi[GENPART_LIMIT];
+        Float_t GenPart_eta[GENPART_LIMIT];
+        if(!process.isdata())
+        {
+          inputtree->SetBranchAddress("nGenPart", &nGenPart);
+          inputtree->SetBranchAddress("GenPart_motherId", &GenPart_motherId);
+          inputtree->SetBranchAddress("GenPart_motherIndex", &GenPart_motherIndex);
+          inputtree->SetBranchAddress("GenPart_grandmotherId", &GenPart_grandmotherId);
+          inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
+          inputtree->SetBranchAddress("GenPart_status", &GenPart_status);
+          //inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
+          inputtree->SetBranchAddress("GenPart_phi", &GenPart_phi);
+          inputtree->SetBranchAddress("GenPart_eta", &GenPart_eta);
+        }
         //inputtree->SetBranchAddress("nVert", &nvtx);
         double smallCounter = 0;
         for(Int_t i = 0; i < thisNevt; ++i)
@@ -324,6 +363,72 @@ int main(int argc, char** argv)
           inputtree->GetEntry(i);
           smallCounter += thisGenWeight;
           //puDistrib.Fill(nvtx, thisGenWeight);
+
+          if(!process.isdata())
+          {
+            int nISR = 0;
+            for(int i = 0; i < nJet; ++i)
+            {
+              bool matched = false;
+              for(int j = 0; j < nGenPart; ++j)
+              {
+                if(matched) break;
+
+                auto baseIndex = GenPart_motherIndex[j];
+
+                if(baseIndex < 0 || baseIndex > GENPART_LIMIT)
+                {
+                  if(baseIndex > GENPART_LIMIT)
+                    std::cout << "Unable to find mother" << std::endl;
+                  continue;
+                }
+
+                if(GenPart_status[baseIndex] != 23 || std::abs(GenPart_pdgId[baseIndex]) > 5) continue;
+
+                auto momID = GenPart_grandmotherId[j];
+                if(GenPart_motherId[baseIndex] != momID)
+                  std::cout << "Serious Issue has occured" << std::endl;
+                if(!(momID == 6 || momID == 23 || momID == 24 || momID == 25 || momID > 1e6)) continue;
+
+                float dphi = DeltaPhi(Jet_phi[i], GenPart_phi[j]);
+                float deta = Jet_eta[i] - GenPart_eta[j];
+                if(sqrt( pow(dphi,2) + pow(deta,2) ) < 0.3)
+                {
+                  //std::cout << "Matched Jet(" << Jet_pt[i] << ", " << Jet_eta[i] << ", " << Jet_phi[i] << ")";
+                  //std::cout << " to Gen(" << GenPart_pt[j] << ", " << GenPart_eta[j] << ", " << GenPart_phi[j] << ")" << std::endl;
+                  matched = true;
+                  break;
+                }
+              }
+
+              if(!matched) ++nISR;
+            }
+
+            switch(nISR)
+            {
+              case 0:
+                ++nISRBin0;
+                break;
+              case 1:
+                ++nISRBin1;
+                break;
+              case 2:
+                ++nISRBin2;
+                break;
+              case 3:
+                ++nISRBin3;
+                break;
+              case 4:
+                ++nISRBin4;
+                break;
+              case 5:
+                ++nISRBin5;
+                break;
+              default: // Case greater than or equal to 6
+                ++nISRBin6;
+                break;
+            }
+          }
         }
         sumGenWeightCounting += smallCounter;
 
@@ -332,6 +437,25 @@ int main(int argc, char** argv)
       }
       sumGenWeight = sumGenWeightCounting; // Consider implementing the streaming float summation: http://dl.acm.org/citation.cfm?id=1824815
       std::cout << Nevt << "; " << sumGenWeight << std::endl;
+      double ISRCParam = 1;
+      if(!process.isdata())
+      {
+        ISRCParam = (                        nISRBin0 +
+                                             nISRBin1 +
+                                             nISRBin2 +
+                                             nISRBin3 +
+                                             nISRBin4 +
+                                             nISRBin5 +
+                                             nISRBin6  ) /
+                    (ISRweightFromNISRJet(0)*nISRBin0 +
+                     ISRweightFromNISRJet(1)*nISRBin1 +
+                     ISRweightFromNISRJet(2)*nISRBin2 +
+                     ISRweightFromNISRJet(3)*nISRBin3 +
+                     ISRweightFromNISRJet(4)*nISRBin4 +
+                     ISRweightFromNISRJet(5)*nISRBin5 +
+                     ISRweightFromNISRJet(6)*nISRBin6  );
+        std::cout << "C value for ISR reweighting: " << ISRCParam << std::endl;
+      }
 
       for(auto &file : sample)
       {
@@ -357,66 +481,67 @@ int main(int argc, char** argv)
         Int_t nBJetLoose20;  inputtree->SetBranchAddress("nBJetLoose20"       , &nBJetLoose20);
         Int_t nBJetTight20;  inputtree->SetBranchAddress("nBJetTight20"       , &nBJetTight20);
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
-        Int_t LepGood_pdgId[40];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
-        Int_t LepGood_mediumMuonId[40]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
-        Float_t LepGood_pt[40];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
-        Float_t LepGood_eta[40];  inputtree->SetBranchAddress("LepGood_eta", &LepGood_eta);
-        Float_t LepGood_phi[40];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
-        Float_t LepGood_relIso03[40]; inputtree->SetBranchAddress("LepGood_relIso03",&LepGood_relIso03);
-        Float_t LepGood_relIso04[40]; inputtree->SetBranchAddress("LepGood_relIso04",&LepGood_relIso04);
-        Float_t LepGood_dxy[40]; inputtree->SetBranchAddress("LepGood_dxy",&LepGood_dxy);
-        Float_t LepGood_dz[40]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
-        Float_t LepGood_sip3d[40]; inputtree->SetBranchAddress("LepGood_sip3d",&LepGood_sip3d);
-        Float_t LepGood_mass[40]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
-        Int_t LepGood_eleVeto[40];
+        Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
+        Int_t LepGood_mediumMuonId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
+        Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
+        Float_t LepGood_eta[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eta", &LepGood_eta);
+        Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
+        Float_t LepGood_relIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_relIso03",&LepGood_relIso03);
+        Float_t LepGood_relIso04[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_relIso04",&LepGood_relIso04);
+        Float_t LepGood_dxy[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_dxy",&LepGood_dxy);
+        Float_t LepGood_dz[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
+        Float_t LepGood_sip3d[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_sip3d",&LepGood_sip3d);
+        Float_t LepGood_mass[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
+        Int_t LepGood_eleVeto[LEPCOLL_LIMIT];
         if(oldVeto)
           inputtree->SetBranchAddress("LepGood_eleCutIdSpring15_25ns_v1", &LepGood_eleVeto);
         else
           inputtree->SetBranchAddress("LepGood_SPRING15_25ns_v1", &LepGood_eleVeto);
-        Int_t LepGood_charge[40]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
+        Int_t LepGood_charge[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
         Int_t nLepOther;      inputtree->SetBranchAddress("nLepOther"   , &nLepOther);
-        Int_t LepOther_pdgId[40];  inputtree->SetBranchAddress("LepOther_pdgId", &LepOther_pdgId);
-        Int_t LepOther_mediumMuonId[40]; inputtree->SetBranchAddress("LepOther_mediumMuonId",&LepOther_mediumMuonId);
-        Float_t LepOther_pt[40];  inputtree->SetBranchAddress("LepOther_pt", &LepOther_pt);
-        Float_t LepOther_eta[40];  inputtree->SetBranchAddress("LepOther_eta", &LepOther_eta);
-        Float_t LepOther_phi[40];  inputtree->SetBranchAddress("LepOther_phi", &LepOther_phi);
-        Float_t LepOther_relIso03[40]; inputtree->SetBranchAddress("LepOther_relIso03",&LepOther_relIso03);
-        Float_t LepOther_relIso04[40]; inputtree->SetBranchAddress("LepOther_relIso04",&LepOther_relIso04);
-        Float_t LepOther_dxy[40]; inputtree->SetBranchAddress("LepOther_dxy",&LepOther_dxy);
-        Float_t LepOther_dz[40]; inputtree->SetBranchAddress("LepOther_dz",&LepOther_dz);
-        Float_t LepOther_sip3d[40]; inputtree->SetBranchAddress("LepOther_sip3d",&LepOther_sip3d);
-        Float_t LepOther_mass[40]; inputtree->SetBranchAddress("LepOther_mass",&LepOther_mass);
-        Int_t LepOther_eleVeto[40];
+        Int_t LepOther_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepOther_pdgId", &LepOther_pdgId);
+        Int_t LepOther_mediumMuonId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_mediumMuonId",&LepOther_mediumMuonId);
+        Float_t LepOther_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepOther_pt", &LepOther_pt);
+        Float_t LepOther_eta[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepOther_eta", &LepOther_eta);
+        Float_t LepOther_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepOther_phi", &LepOther_phi);
+        Float_t LepOther_relIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_relIso03",&LepOther_relIso03);
+        Float_t LepOther_relIso04[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_relIso04",&LepOther_relIso04);
+        Float_t LepOther_dxy[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_dxy",&LepOther_dxy);
+        Float_t LepOther_dz[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_dz",&LepOther_dz);
+        Float_t LepOther_sip3d[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_sip3d",&LepOther_sip3d);
+        Float_t LepOther_mass[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_mass",&LepOther_mass);
+        Int_t LepOther_eleVeto[LEPCOLL_LIMIT];
         if(oldVeto)
           inputtree->SetBranchAddress("LepOther_eleCutIdSpring15_25ns_v1", &LepOther_eleVeto);
         else
           inputtree->SetBranchAddress("LepOther_SPRING15_25ns_v1", &LepOther_eleVeto);
-        Int_t LepOther_charge[40]; inputtree->SetBranchAddress("LepOther_charge",&LepOther_charge);
-        Float_t Jet_chEMEF[40];  inputtree->SetBranchAddress("Jet_chEMEF", &Jet_chEMEF);
-        Float_t Jet_neEMEF[40];  inputtree->SetBranchAddress("Jet_neEMEF", &Jet_neEMEF);
-        Float_t Jet_chHEF[40];  inputtree->SetBranchAddress("Jet_chHEF", &Jet_chHEF);
-        Float_t Jet_neHEF[40];  inputtree->SetBranchAddress("Jet_neHEF", &Jet_neHEF);
-        Float_t Jet_pt[40];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
-        Int_t Jet_id[40];  inputtree->SetBranchAddress("Jet_id", &Jet_id);
-        Float_t Jet_eta[40];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
-        Float_t Jet_phi[40];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
-        Float_t Jet_btagCSV[40];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
-        Float_t Jet_mass[40];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
-        Float_t Jet_rawPt[40]; inputtree->SetBranchAddress("Jet_rawPt", &Jet_rawPt);
+        Int_t LepOther_charge[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_charge",&LepOther_charge);
+        Float_t Jet_chEMEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_chEMEF", &Jet_chEMEF);
+        Float_t Jet_neEMEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_neEMEF", &Jet_neEMEF);
+        Float_t Jet_chHEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_chHEF", &Jet_chHEF);
+        Float_t Jet_neHEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_neHEF", &Jet_neHEF);
+        Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
+        Int_t Jet_id[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_id", &Jet_id);
+        Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
+        Float_t Jet_phi[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
+        Float_t Jet_btagCSV[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
+        Float_t Jet_mass[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
+        Float_t Jet_rawPt[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawPt", &Jet_rawPt);
+        Int_t nJet;  inputtree->SetBranchAddress("nJet", &nJet);
         //Int_t nJet20;  inputtree->SetBranchAddress("nJet20", &nJet20);
         Int_t nJet20;  inputtree->SetBranchAddress("nJet20a", &nJet20);
         Int_t nJet30;  inputtree->SetBranchAddress("nJet30", &nJet30);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
         ULong64_t evt;  inputtree->SetBranchAddress("evt", &evt);
         UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
-        Float_t Tracks_pt[200];  inputtree->SetBranchAddress("Tracks_pt", &Tracks_pt);
-        Float_t Tracks_eta[200];  inputtree->SetBranchAddress("Tracks_eta", &Tracks_eta);
-        Float_t Tracks_dz[200];  inputtree->SetBranchAddress("Tracks_dz", &Tracks_dz);
-        Float_t Tracks_dxy[200];  inputtree->SetBranchAddress("Tracks_dxy", &Tracks_dxy);
-        Float_t Tracks_phi[200];  inputtree->SetBranchAddress("Tracks_phi", &Tracks_phi);
-        Float_t Tracks_CosPhiJet12[200];  inputtree->SetBranchAddress("Tracks_CosPhiJet12", &Tracks_CosPhiJet12);
-        Float_t Tracks_matchedJetDr[200];  inputtree->SetBranchAddress("Tracks_matchedJetDr", &Tracks_matchedJetDr);
-        Float_t Tracks_matchedJetIndex[200];  inputtree->SetBranchAddress("Tracks_matchedJetIndex", &Tracks_matchedJetIndex);
+        Float_t Tracks_pt[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_pt", &Tracks_pt);
+        Float_t Tracks_eta[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_eta", &Tracks_eta);
+        Float_t Tracks_dz[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_dz", &Tracks_dz);
+        Float_t Tracks_dxy[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_dxy", &Tracks_dxy);
+        Float_t Tracks_phi[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_phi", &Tracks_phi);
+        Float_t Tracks_CosPhiJet12[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_CosPhiJet12", &Tracks_CosPhiJet12);
+        Float_t Tracks_matchedJetDr[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_matchedJetDr", &Tracks_matchedJetDr);
+        Float_t Tracks_matchedJetIndex[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_matchedJetIndex", &Tracks_matchedJetIndex);
         Int_t nTracks;  inputtree->SetBranchAddress("nTracks", &nTracks);
         Int_t nVert_i; inputtree->SetBranchAddress("nVert", &nVert_i);
         inputtree->SetBranchAddress("puWeight", &puWeight);
@@ -424,10 +549,28 @@ int main(int argc, char** argv)
 
         Float_t xsec = 1;
         Float_t nTrueInt = 1;
+        Int_t nGenPart;
+        Int_t GenPart_motherId[GENPART_LIMIT];
+        Int_t GenPart_motherIndex[GENPART_LIMIT];
+        Int_t GenPart_grandmotherId[GENPART_LIMIT];
+        Int_t GenPart_pdgId[GENPART_LIMIT];
+        Int_t GenPart_status[GENPART_LIMIT];
+        Float_t GenPart_pt[GENPART_LIMIT];
+        Float_t GenPart_phi[GENPART_LIMIT];
+        Float_t GenPart_eta[GENPART_LIMIT];
         if(!process.isdata())
         {
           inputtree->SetBranchAddress("xsec", &xsec);
           inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
+          inputtree->SetBranchAddress("nGenPart", &nGenPart);
+          inputtree->SetBranchAddress("GenPart_motherId", &GenPart_motherId);
+          inputtree->SetBranchAddress("GenPart_motherIndex", &GenPart_motherIndex);
+          inputtree->SetBranchAddress("GenPart_grandmotherId", &GenPart_grandmotherId);
+          inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
+          inputtree->SetBranchAddress("GenPart_status", &GenPart_status);
+          inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
+          inputtree->SetBranchAddress("GenPart_phi", &GenPart_phi);
+          inputtree->SetBranchAddress("GenPart_eta", &GenPart_eta);
         }
 
         // 2015 HLT
@@ -484,10 +627,45 @@ int main(int argc, char** argv)
           puWeight_nai = puWeightDistrib_nai->GetBinContent(puWeightDistrib_nai->FindBin(nVert));
           //puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nVert));
 
+          if(!process.isdata())
+          {
+            nISRJet=0;
+            for(int i = 0; i < nJet; ++i)
+            {
+              bool matched = false;
+              for(int j = 0; j < nGenPart; ++j)
+              {
+                if(matched) break;
+
+                auto baseIndex = GenPart_motherIndex[j];
+
+                if(baseIndex < 0 || baseIndex > GENPART_LIMIT)
+                {
+                  continue;
+                }
+
+                if(GenPart_status[baseIndex] != 23 || std::abs(GenPart_pdgId[baseIndex]) > 5) continue;
+
+                auto momID = GenPart_grandmotherId[j];
+                if(!(momID == 6 || momID == 23 || momID == 24 || momID == 25 || momID > 1e6)) continue;
+
+                float dphi = DeltaPhi(Jet_phi[i], GenPart_phi[j]);
+                float deta = Jet_eta[i] - GenPart_eta[j];
+                if(sqrt( pow(dphi,2) + pow(deta,2) ) < 0.3)
+                {
+                  matched = true;
+                  break;
+                }
+              }
+
+              if(!matched) ++nISRJet;
+            }
+          }
+
           // Object ID
           std::vector<int> validJets;
           std::vector<int> validTracks;
-          std::vector<std::pair<int, int>> validLeptons; // First is the type, second the index for that type
+          std::vector<std::pair<int, int>> validLeptons; // First is the type (0 - LepGood, 1 - LepOther), second the index for that type
           std::vector<std::pair<int,float>> bjetList; // First is the jet index, second is the jet CSV value
 
           validJets.clear();
@@ -693,6 +871,15 @@ int main(int argc, char** argv)
             LepSip3 = -999;
             LepIso03 = -999;
             LepIso04 = -999;
+          }
+
+          if(!process.isdata())
+          {
+            triggerEfficiency = triggerEfficiencyFromMET(met_pt);
+            if(process.tag() == "WJets")
+              WISRSF = WISRScaleFactorFromLepMet(lep_pt, lep_phi, met_pt, met_phi);
+            if(process.tag() == "ttbar" || process.tag() == "ttbar_lo" || process.issignal())
+              ISRweight = ISRCParam*ISRweightFromNISRJet(nISRJet);
           }
 
           float DrJetLepMax = 999999.;
@@ -915,7 +1102,7 @@ int main(int argc, char** argv)
             filterEfficiency = 1.0;
 
           if(!process.isdata())
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight);
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*WISRSF*ISRweight;
           else
             weight = 1;
 
@@ -1145,6 +1332,101 @@ float DeltaPhi(float p1, float p2)
     x += (2.*TMath::Pi());
 
   return std::abs(x);
+}
+
+// Taken from Ivan's presentation, here: https://indico.cern.ch/event/613194/
+doubleUnc triggerEfficiencyFromMET(double met_pt)
+{
+  double val = 0, unc = 0;
+
+  double recenterMet = (met_pt - 127.2)/76.58;
+
+  val = 0.9673 * 0.5 * (1.0 + TMath::Erf(recenterMet));
+
+  double term1 = 0.0008709 * 0.5 * (1.0 + TMath::Erf(recenterMet));
+  term1 = term1 * term1;
+  double term2 = (0.9673/76.58)*(0.9673/76.58) * std::exp(2*recenterMet*recenterMet) / TMath::Pi();
+  term2 *= 1.811*1.811 + 2.091*2.091*recenterMet*recenterMet;
+  unc = std::sqrt(term1 + term2);
+
+  doubleUnc retVal(val, unc);
+  return retVal;
+}
+
+// Taken from Ivan's presentation, here: https://indico.cern.ch/event/613194/
+doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt, double met_phi)
+{
+  double lep_x = lep_pt * std::cos(lep_phi);
+  double lep_y = lep_pt * std::sin(lep_phi);
+  double met_x = met_pt * std::cos(met_phi);
+  double met_y = met_pt * std::sin(met_phi);
+
+  double w_pt = std::sqrt((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y));
+
+  double val = 1, unc = 0;
+  if(w_pt > 800)
+    val = 0.74, unc = 0.13;
+  else
+  {
+    if(w_pt > 650)
+      val = 0.78, unc = 0.11;
+    else
+    {
+      if(w_pt > 450)
+        val = 0.84, unc = 0.08;
+      else
+      {
+        if(w_pt > 350)
+          val = 0.9, unc = 0.05;
+        else
+        {
+          if(w_pt > 250)
+            val = 0.96, unc = 0.02;
+          else
+          {
+            if(w_pt > 200)
+              val = 0.98, unc = 0.01;
+            else
+              val = 1, unc = 0.01;
+          }
+        }
+      }
+    }
+  }
+
+  doubleUnc retVal(val, unc);
+  return retVal;
+}
+
+// Taken from: https://indico.cern.ch/event/557678/contributions/2247944/attachments/1311994/1963568/16-07-19_ana_manuelf_isr.pdf
+// TODO: Update to latest (probably https://indico.cern.ch/event/592621/contributions/2398559/attachments/1383909/2105089/16-12-05_ana_manuelf_isr.pdf)
+doubleUnc ISRweightFromNISRJet(int nISRJet)
+{
+  switch(nISRJet)
+  {
+    case 0:
+      return doubleUnc(1.000, 0);
+      break;
+    case 1:
+      return doubleUnc(0.882, 0);
+      break;
+    case 2:
+      return doubleUnc(0.792, 0);
+      break;
+    case 3:
+      return doubleUnc(0.702, 0);
+      break;
+    case 4:
+      return doubleUnc(0.648, 0);
+      break;
+    case 5:
+      return doubleUnc(0.601, 0);
+      break;
+    default:
+      return doubleUnc(0.515, 0);
+      break;
+  }
+  return doubleUnc(0, 0);
 }
 
 doubleUnc stopCrossSection(double stopM, double lspM)
