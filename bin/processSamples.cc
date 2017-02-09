@@ -875,11 +875,11 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
-            triggerEfficiency = triggerEfficiencyFromMET(met_pt);
+            triggerEfficiency = static_cast<double>(triggerEfficiencyFromMET(met_pt));
             if(process.tag() == "WJets")
-              WISRSF = WISRScaleFactorFromLepMet(lep_pt, lep_phi, met_pt, met_phi);
+              WISRSF = static_cast<double>(WISRScaleFactorFromLepMet(lep_pt, lep_phi, met_pt, met_phi));
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lo" || process.issignal())
-              ISRweight = ISRCParam*ISRweightFromNISRJet(nISRJet);
+              ISRweight = ISRCParam*static_cast<double>(ISRweightFromNISRJet(nISRJet));
           }
 
           float DrJetLepMax = 999999.;
