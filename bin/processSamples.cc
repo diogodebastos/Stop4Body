@@ -877,7 +877,7 @@ int main(int argc, char** argv)
           {
             triggerEfficiency = static_cast<double>(triggerEfficiencyFromMET(met_pt));
             if(process.tag() == "WJets")
-              WISRSF = static_cast<double>(WISRScaleFactorFromLepMet(lep_pt, lep_phi, met_pt, met_phi));
+              WISRSF = static_cast<double>(WISRScaleFactorFromLepMet(LepPt, lep_phi, met_pt, met_phi));
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lo" || process.issignal())
               ISRweight = ISRCParam*static_cast<double>(ISRweightFromNISRJet(nISRJet));
           }
