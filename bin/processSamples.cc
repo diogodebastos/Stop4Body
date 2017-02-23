@@ -238,7 +238,13 @@ int main(int argc, char** argv)
       Float_t NbTight50;     bdttree->Branch("NbTight50",&NbTight50,"NbTight50/F");
       Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
       Float_t Njet30;  bdttree->Branch("Njet30",&Njet30,"Njet30/F");
+      Float_t Njet40;  bdttree->Branch("Njet40",&Njet40,"Njet40/F");
+      Float_t Njet50;  bdttree->Branch("Njet50",&Njet50,"Njet50/F");
       Float_t Njet60;  bdttree->Branch("Njet60",&Njet60,"Njet60/F");
+      Float_t Njet70;  bdttree->Branch("Njet70",&Njet70,"Njet70/F");
+      Float_t Njet80;  bdttree->Branch("Njet80",&Njet80,"Njet80/F");
+      Float_t Njet90;  bdttree->Branch("Njet90",&Njet90,"Njet90/F");
+      Float_t Njet100;  bdttree->Branch("Njet100",&Njet100,"Njet100/F");
       Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
       Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
       Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F"); // *
@@ -1047,7 +1053,13 @@ int main(int argc, char** argv)
           HT30 = 0.;
           Njet = 0;
           Njet30 = 0;
+          Njet40 = 0;
+          Njet50 = 0;
           Njet60 = 0;
+          Njet70 = 0;
+          Njet80 = 0;
+          Njet90 = 0;
+          Njet100 = 0;
           for(auto &j : validJets)
           {
             if(Jet_pt[j] > 20.)
@@ -1062,9 +1074,33 @@ int main(int argc, char** argv)
               HT30 += Jet_pt[j];
               Njet30 += 1;
             }
+            if(Jet_pt[j] > 40.)
+            {
+              Njet40 += 1;
+            }
+            if(Jet_pt[j] > 50.)
+            {
+              Njet50 += 1;
+            }
             if(Jet_pt[j] > 60.)
             {
               Njet60 += 1;
+            }
+            if(Jet_pt[j] > 70.)
+            {
+              Njet70 += 1;
+            }
+            if(Jet_pt[j] > 80.)
+            {
+              Njet80 += 1;
+            }
+            if(Jet_pt[j] > 90.)
+            {
+              Njet90 += 1;
+            }
+            if(Jet_pt[j] > 100.)
+            {
+              Njet100 += 1;
             }
           }
 
