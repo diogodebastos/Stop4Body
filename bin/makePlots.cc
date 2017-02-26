@@ -51,6 +51,7 @@ int main(int argc, char** argv)
   bool isSplit = false;
   bool noPUweight = false;
   bool puTest = false;
+  bool verbose = false;
 
   if(argc < 2)
   {
@@ -107,6 +108,11 @@ int main(int argc, char** argv)
     if(argument == "--puTest")
     {
       puTest = true;
+    }
+
+    if(argument == "--verbose")
+    {
+      verbose = true;
     }
   }
 
@@ -388,22 +394,27 @@ int main(int argc, char** argv)
     {
       auto yield = process.getYield(selection, mcWeight);
       cutFlowTable << " & " << yield;
-      std::cout << process.label() << ": " << yield << std::endl;
-      for(auto& sample: process)
-        std::cout << sample.tag() << ": " << sample.getYield(selection, mcWeight) << std::endl;
+      if(verbose)
+      {
+        std::cout << process.label() << ": " << yield << std::endl;
+        for(auto& sample: process)
+          std::cout << sample.tag() << ": " << sample.getYield(selection, mcWeight) << std::endl;
+      }
     }
     cutFlowTable << " & " << MC.getYield(selection, mcWeight);
     for(auto& process : Data)
     {
       auto yield = process.getYield(selection, "1");
       cutFlowTable << " & " << yield;
-      std::cout << process.label() << ": " << yield << std::endl;
+      if(verbose)
+        std::cout << process.label() << ": " << yield << std::endl;
     }
     for(auto& process : Sig)
     {
       auto yield = process.getYield(selection, mcWeight);
       cutFlowTable << " & " << yield;
-      std::cout << process.label() << ": " << yield << std::endl;
+      if(verbose)
+        std::cout << process.label() << ": " << yield << std::endl;
     }
     cutFlowTable << "\\\\\n";
   }
