@@ -165,7 +165,7 @@ int main(int argc, char** argv)
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
   std::vector<CutInfo> cutFlow;
-  if(cutsJson == '')
+  if(cutsJson == "")
   {
     cutFlow.push_back(CutInfo("Preselection", "HT30 > 200", "$H_T > 200$"));
     //cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
