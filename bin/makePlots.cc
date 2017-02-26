@@ -52,6 +52,7 @@ int main(int argc, char** argv)
   bool noPUweight = false;
   bool puTest = false;
   bool verbose = false;
+  bool cumulativeCuts = false;
 
   if(argc < 2)
   {
@@ -114,6 +115,11 @@ int main(int argc, char** argv)
     {
       verbose = true;
     }
+
+    if(argument == "--cumulative")
+    {
+      cumulativeCuts = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -171,8 +177,8 @@ int main(int argc, char** argv)
     //cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
     //cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
     //cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
-    cutFlow.push_back(CutInfo("Selection", "(Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)", "Selection"));
-    cutFlow.push_back(CutInfo("Test", "Njet60 < 3", "$N(jet_{60}) < 3$"));
+    cutFlow.push_back(CutInfo("Selection", "(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)", "Selection"));
+    cutFlow.push_back(CutInfo("Test", "(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 3)", "$N(jet_{60}) < 3$"));
   }
   else
   {
@@ -260,10 +266,17 @@ int main(int argc, char** argv)
   {
     if(cut.cut() != "")
     {
-      if(selection == "")
-        selection  = "(" + cut.cut() + ")";
+      if(cumulativeCuts)
+      {
+        if(selection == "")
+          selection  = "(" + cut.cut() + ")";
+        else
+          selection += " && (" + cut.cut() + ")";
+      }
       else
-        selection += " && (" + cut.cut() + ")";
+      {
+        selection = cut.cut();
+      }
     }
 
     std::cout << "Getting variables and yields with selection (" << selection << ") and weight (" << mcWeight << ")" << std::endl;
