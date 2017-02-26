@@ -46,6 +46,7 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./plots/";
   std::string suffix = "";
   std::string variablesJson = "";
+  std::string cutsJson = "";
   double luminosity = -1.0;
   bool isSplit = false;
   bool noPUweight = false;
@@ -82,6 +83,9 @@ int main(int argc, char** argv)
 
     if(argument == "--variables")
       variablesJson = argv[++i];
+
+    if(argument == "--cuts")
+      cutsJson = argv[++i];
 
     if(argument == "--lumi")
     {
@@ -155,12 +159,56 @@ int main(int argc, char** argv)
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
   std::vector<CutInfo> cutFlow;
-  cutFlow.push_back(CutInfo("Preselection", "HT30 > 200", "$H_T > 200$"));
-  //cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
-  //cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
-  //cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
-  cutFlow.push_back(CutInfo("Selection", "(Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)", "Selection"));
-  cutFlow.push_back(CutInfo("Test", "Njet60 < 3", "$N(jet_{60}) < 3$"));
+  if(cutsJson == '')
+  {
+    cutFlow.push_back(CutInfo("Preselection", "HT30 > 200", "$H_T > 200$"));
+    //cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
+    //cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
+    //cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
+    cutFlow.push_back(CutInfo("Selection", "(Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)", "Selection"));
+    cutFlow.push_back(CutInfo("Test", "Njet60 < 3", "$N(jet_{60}) < 3$"));
+  }
+  else
+  {
+    json jsonFile;
+    std::ifstream inputFile(cutsJson);
+    inputFile >> jsonFile;
+
+    if(jsonFile.count("cuts") == 0)
+      throw MissingJSONParam("The JSON file does not contain the 'cuts' entry. It is not a valid file.");
+
+    for(auto& cut : jsonFile["cuts"])
+    {
+      try
+      {
+        std::string cutName, cutString, cutLatex;
+
+        if(cut.count("name") == 0)
+          throw MissingJSONParam("The cut does not have a name.");
+        cutName = cut["name"];
+
+        if(cut.count("expression") == 0)
+          throw MissingJSONParam("The cut does not have an expression.");
+        cutString = cut["expression"];
+
+        if(cut.count("latex") == 0)
+        {
+          cutLatex = cutName;
+        }
+        else
+        {
+          cutLatex = cut["latex"];
+        }
+
+        cutFlow.push_back(CutInfo(cutName, cutString, cutLatex));
+      }
+      catch(MissingJSONParam& exception)
+      {
+        std::cout << "Incomplete cut found, skipping it." << std::endl;
+        std::cout << "The message was: " << exception.what() << std::endl;
+      }
+    }
+  }
 
   std::ofstream cutFlowTable(outputDirectory+"/cutFlow.tex");
 

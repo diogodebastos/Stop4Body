@@ -1,0 +1,69 @@
+{
+  "cuts":[
+    {
+      "name":"Preselection",
+      "expression":"HT30 > 200",
+      "latex":"$H_T > 200$"
+    },
+    {
+      "name":"Base",
+      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)",
+      "latex":"Base Selection"
+    },
+    {
+      "name":"Njet60_3",
+      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 3)",
+      "latex":"$N(jet_{60}) < 3$"
+    }
+  ],
+  "variables":[
+    {
+      "name":"Met",
+      "expression":"Met",
+      "min":200.0,
+      "max":1000.0,
+      "bins":40
+    },
+    {
+      "expression":"HT30",
+      "label":"H_{T}(p_{T}>30)",
+      "min":100.0,
+      "max":1000.0,
+      "bins":25
+    },
+    {
+      "expression":"Jet1Pt",
+      "label":"p_{T}(J_{1})",
+      "min":100.0,
+      "max":1000.0,
+      "bins":25
+    },
+    {
+      "expression":"mt",
+      "label":"M_{T}",
+      "max":300.0,
+      "bins":20
+    },
+    {
+      "expression":"NbLoose30",
+      "label":"N_{b}^{L}",
+      "min":-0.5,
+      "max":6.5,
+      "bins":7
+    },
+    {
+      "expression":"Njet",
+      "label":"N_{J}",
+      "min":-0.5,
+      "max":6.5,
+      "bins":7
+    },
+    {
+      "name":"LepPt",
+      "expression":"LepPt",
+      "label":"p_{T}(l)",
+      "max":200.0,
+      "bins":40
+    }
+  ]
+}
