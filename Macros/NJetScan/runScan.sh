@@ -1,7 +1,7 @@
 #!/bin/bash
 
-../setupJSONs.sh
-../setupPaths.sh
+. ../setupJSONs.sh
+. ../setupPaths.sh
 
 PLOT_DIR=./scanPlots
 SAMPLE_JSON=${JSON_PATH}/plot2016BCD.json
