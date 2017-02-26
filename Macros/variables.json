@@ -3,8 +3,8 @@
     {
       "expression":"nVert",
       "min":0.0,
-      "max":100.0,
-      "bins":100
+      "max":50.0,
+      "bins":50
     },
     {
       "expression":"Met",
@@ -20,21 +20,15 @@
       "bins":35
     },
     {
-      "expression":"Jet1Pt",
-      "label":"p_{T}(J_{1})",
+      "expression":"HT20",
+      "label":"H_{T}(p_{T}>20)",
       "min":100.0,
       "max":1000.0,
       "bins":25
     },
     {
-      "expression":"mt",
-      "label":"M_{T}",
-      "max":300.0,
-      "bins":20
-    },
-    {
-      "expression":"HT20",
-      "label":"H_{T}(p_{T}>20)",
+      "expression":"HT30",
+      "label":"H_{T}(p_{T}>30)",
       "min":100.0,
       "max":1000.0,
       "bins":25
@@ -47,32 +41,6 @@
       "bins":7
     },
     {
-      "expression":"LepChg",
-      "label":"Lepton Charge",
-      "min":-1.1,
-      "max":1.1,
-      "bins":20
-    },
-    {
-      "expression":"LepEta",
-      "label":"#eta(l)",
-      "min":-4,
-      "max":4,
-      "bins":20
-    },
-    {
-      "expression":"LepPt",
-      "label":"p_{T}(l)",
-      "max":35.0,
-      "bins":20
-    },
-    {
-      "expression":"JetHBpt",
-      "label":"p_{T}(J_{B1})",
-      "max":100.0,
-      "bins":20
-    },
-    {
       "expression":"Njet",
       "label":"N_{J}",
       "min":-0.5,
@@ -80,9 +48,9 @@
       "bins":7
     },
     {
-      "expression":"DrJetHBLep",
-      "label":"#Delta R (J_{B1},l)",
-      "max":5,
+      "expression":"LepPt",
+      "label":"p_{T}(l)",
+      "max":35.0,
       "bins":20
     }
   ]
