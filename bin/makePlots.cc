@@ -144,6 +144,7 @@ int main(int argc, char** argv)
     if(isSplit)
       converter << "2*";
     converter << "weight"; // Full
+    //converter << "weight/(triggerEfficiency*WISRSF*ISRweight)"; // Incrementally adding new tests
     //converter << "weight/puWeight"; // Full no PU
     //converter << "XS*filterEfficiency*puWeight*genWeight/sumGenWeight";
     if(noPUweight)
