@@ -34,6 +34,8 @@ mergeJSONs $JSON_PATH/synch.json              $JSON_PATH/Orig/TTbar_LO.json $JSO
 # Make the JSONs for plotting
 mergeJSONs $JSON_PATH/plot2016B.json          $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016B_LO.json       $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016BCD.json        $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016BCD.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016BCD_LO.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016BCD.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016.json           $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016_LO.json        $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016_PD_LO.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/PD.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
