@@ -129,6 +129,8 @@ doubleUnc SampleInfo::getYield(std::string cut, std::string weight)
   TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
   tmpHist.Sumw2();
 
+  auto cwd = gDirectory;
+
   TChain* chain = new TChain("bdttree");
   for(auto& file : filePaths_)
   {
@@ -141,6 +143,9 @@ doubleUnc SampleInfo::getYield(std::string cut, std::string weight)
 
   retVal += doubleUnc(tmpHist.GetBinContent(0),tmpHist.GetBinError(0));
   retVal += doubleUnc(tmpHist.GetBinContent(2),tmpHist.GetBinError(2));
+
+  cwd->cd();
+  delete chain;
 
   return retVal;
 }
@@ -270,6 +275,7 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
   retVal->SetMarkerStyle(marker_);
 
   cwd->cd();
+  delete chain;
 
   return retVal;
 }
@@ -278,6 +284,8 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
 {
   TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
   tmpHist.Sumw2();
+
+  auto cwd = gDirectory;
 
   TChain* chain = new TChain("bdttree");
   auto files = getAllFiles();
@@ -292,6 +300,9 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
 
   retVal += doubleUnc(tmpHist.GetBinContent(0),tmpHist.GetBinError(0));
   retVal += doubleUnc(tmpHist.GetBinContent(2),tmpHist.GetBinError(2));
+
+  cwd->cd();
+  delete chain;
 
   return retVal;
 }
