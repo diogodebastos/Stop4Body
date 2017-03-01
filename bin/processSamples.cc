@@ -227,7 +227,7 @@ int main(int argc, char** argv)
       Float_t Q80; bdttree-> Branch("Q80",&Q80,"Q80/F");
       Float_t CosDeltaPhi; bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
 
-      Float_t nIsr; bdttree->Branch("nIsr", &nIsr, "nIsr/F");
+      Float_t nIsr_out; bdttree->Branch("nIsr", &nIsr_out, "nIsr/F");
       Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
       Float_t Njet30;  bdttree->Branch("Njet30",&Njet30,"Njet30/F");
       Float_t Njet40;  bdttree->Branch("Njet40",&Njet40,"Njet40/F");
@@ -336,7 +336,7 @@ int main(int argc, char** argv)
 
         Float_t thisGenWeight = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
-        inputtree->SetBranchAddress("nIsr", &nIsr);
+        Int_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
         double smallCounter = 0;
         for(Int_t i = 0; i < thisNevt; ++i)
         {
@@ -379,20 +379,20 @@ int main(int argc, char** argv)
       double ISRCParam = 1;
       if(!process.isdata())
       {
-        ISRCParam = (                        nISRBin0 +
-                                             nISRBin1 +
-                                             nISRBin2 +
-                                             nISRBin3 +
-                                             nISRBin4 +
-                                             nISRBin5 +
-                                             nISRBin6  ) /
- static_cast<double>(ISRweightFromNISRJet(0)*nISRBin0 +
-                     ISRweightFromNISRJet(1)*nISRBin1 +
-                     ISRweightFromNISRJet(2)*nISRBin2 +
-                     ISRweightFromNISRJet(3)*nISRBin3 +
-                     ISRweightFromNISRJet(4)*nISRBin4 +
-                     ISRweightFromNISRJet(5)*nISRBin5 +
-                     ISRweightFromNISRJet(6)*nISRBin6  );
+        ISRCParam = (                        nIsrBin0 +
+                                             nIsrBin1 +
+                                             nIsrBin2 +
+                                             nIsrBin3 +
+                                             nIsrBin4 +
+                                             nIsrBin5 +
+                                             nIsrBin6  ) /
+ static_cast<double>(ISRweightFromNISRJet(0)*nIsrBin0 +
+                     ISRweightFromNISRJet(1)*nIsrBin1 +
+                     ISRweightFromNISRJet(2)*nIsrBin2 +
+                     ISRweightFromNISRJet(3)*nIsrBin3 +
+                     ISRweightFromNISRJet(4)*nIsrBin4 +
+                     ISRweightFromNISRJet(5)*nIsrBin5 +
+                     ISRweightFromNISRJet(6)*nIsrBin6  );
         std::cout << "C value for ISR reweighting: " << ISRCParam << std::endl;
       }
 
@@ -445,7 +445,7 @@ int main(int argc, char** argv)
 
         //inputtree->SetBranchAddress("puWeight", &puWeight);
         inputtree->SetBranchAddress("genWeight", &genWeight);
-        inputtree->SetBranchAddress("nIsr", &nIsr);
+        Int_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
         Float_t xsec = 1;
         Float_t nTrueInt = 1;
@@ -502,6 +502,7 @@ int main(int argc, char** argv)
 
           inputtree->GetEntry(i);
           nVert = nVert_i;
+          nIsr_out = nIsr;
           puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt));
 
           // Object ID
