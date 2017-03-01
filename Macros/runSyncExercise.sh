@@ -1,15 +1,16 @@
 #!/bin/bash
 
-alias cmsenv='eval `scramv1 runtime -sh`'
+. setupJSONs.sh
+. setupPaths.sh
 
-cd /exper-sw/cmst3/cmssw/users/cbeiraod/
-. setup.sh
+if [[ -d ${SYNC_DIR}]] ; then
+  rm -Rf ${SYNC_DIR}
+fi
 
-cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/
-#cmsenv
-eval `scramv1 runtime -sh`
+mkdir -p ${SYNC_DIR}
 
-cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/
+cd SyncExercise
 
-source SyncExercise.sh
+qsub SyncExercise.sh
 
+cd -
