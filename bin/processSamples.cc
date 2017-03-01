@@ -849,7 +849,7 @@ int main(int argc, char** argv)
           Event = evt;
           LumiSec = lumi;
           if(overrideXSec)
-            XS = sample.crossSection;
+            XS = sample.crossSection();
           else
             XS = xsec;
           if(process.issignal())
@@ -892,7 +892,7 @@ int main(int argc, char** argv)
               SyFile << "   Mstop: " << genStopM << "; Mlsp: " << genNeutralinoM << std::endl;
               SyFile << "   HT: " << HT << "; MET: " << Met << std::endl;
               SyFile << "   Njet: " << Njet << std::endl;
-              for(int i = 0; i < validJets.size(); ++i)
+              for(size_t i = 0; i < validJets.size(); ++i)
               {
                 auto jet = validJets[i];
                 SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_id[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
