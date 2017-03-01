@@ -79,10 +79,10 @@ int main(int argc, char** argv)
   bool doSync = false;
   bool noSkim = false;
   bool oldVeto = false;
-  bool threshold30 = false;
   std::string suffix = "";
   size_t max_sync_count = 0;
-  bool doAltPU = false;
+  double jetPtThreshold = 30;
+  bool overrideXSec = false;
 
   if(argc < 2)
   {
@@ -124,11 +124,15 @@ int main(int argc, char** argv)
     if(argument == "--oldVeto")
       oldVeto = true;
 
-    if(argument == "--jetThreshold30ForPreselection")
-      threshold30 = true;
+    if(argument == "--jetPtThreshold")
+    {
+      std::stringstream converter;
+      converter << argv[++i];
+      converter >> jetPtThreshold;
+    }
 
-    if(argument == "--doAltPU")
-      doAltPU = true;
+    if(argument == "--overrideXSec")
+      overrideXSec = true;
   }
 
   if(jsonFileName == "")
@@ -154,25 +158,7 @@ int main(int argc, char** argv)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
 
-    TH1D* puWeightDistrib = nullptr;
-    TH1D* puWeightDistrib_alt = nullptr;
-    TH1D* puWeightDistrib_nai = nullptr;
-    if(!doAltPU)
-    {
-      puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
-
-      puWeightDistrib_alt = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight_alt").c_str())->Clone("puWeightDistrib_alt"));
-
-      puWeightDistrib_nai = static_cast<TH1D*>(puWeightFile.Get( "process_Data_nvtx" )->Clone("puWeightDistrib"));
-      puWeightDistrib_nai->Scale(1/puWeightDistrib_nai->Integral());
-      TH1D* mcDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_nvtx").c_str())->Clone("mcPUDistrib"));
-      mcDistrib->Scale(1/mcDistrib->Integral());
-      puWeightDistrib_nai->Divide(mcDistrib);
-      delete mcDistrib;
-    }
-    else
-    {
-    }
+    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
 
     for(auto &sample : process)
     {
@@ -203,39 +189,45 @@ int main(int argc, char** argv)
       Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
       Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
       Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
-      Float_t weight; bdttree->Branch("weight", &weight, "weight/F");
-      Float_t puWeight; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
-      Float_t puWeight_alt; bdttree->Branch("puWeight_alt", &puWeight_alt, "puWeight_alt/F"); // Alternate
-      Float_t puWeight_nai; bdttree->Branch("puWeight_nai", &puWeight_nai, "puWeight_nai/F"); // Naive
-      Float_t puWeight_HEP; bdttree->Branch("puWeight_HEP", &puWeight_HEP, "puWeight_HEP/F"); // HEPPY
+
+      Float_t genGravitinoM; bdttree->Branch("genGravitinoM", &genGravitinoM, "genGravitinoM/F");
+      Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
+      Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
+      Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
+
       Float_t genWeight; bdttree->Branch("genWeight", &genWeight, "genWeight/F");
       Float_t sumGenWeight; bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
-      Float_t LepID;  bdttree->Branch("LepID",&LepID,"LepID/F");
-      Float_t LepChg;  bdttree->Branch("LepChg",&LepChg,"LepChg/F");
-      Float_t LepPt;  bdttree->Branch("LepPt",&LepPt,"LepPt/F");
-      Float_t LepEta;  bdttree->Branch("LepEta",&LepEta,"LepEta/F");
-      Float_t LepDxy;  bdttree->Branch("LepDxy",&LepDxy,"LepDxy/F");
-      Float_t LepDz;  bdttree->Branch("LepDz",&LepDz,"LepDz/F");
-      Float_t LepSip3;  bdttree->Branch("LepSip3",&LepSip3,"LepSip3/F");
-      Float_t LepIso03;  bdttree->Branch("LepIso03",&LepIso03,"LepIso03/F");
-      Float_t LepIso04;  bdttree->Branch("LepIso04",&LepIso04,"LepIso04/F");
-      Float_t nGoodMu;  bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
-      Float_t nGoodEl;  bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
-      Float_t nGoodTrack;  bdttree->Branch("nGoodTrack",&nGoodTrack,"nGoodTrack/F");
+      Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
+      Float_t splitFactor=1; bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
+      Float_t triggerEfficiency=1; bdttree->Branch("triggerEfficiency", &triggerEfficiency, "triggerEfficiency/F");
+      Float_t WISRSF=1; bdttree->Branch("WISRSF", &WISRSF, "WISRSF/F");
+      Float_t ISRweight=1; bdttree->Branch("ISRweight", &ISRweight, "ISRweight/F");
+      Float_t puWeight; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
+      Float_t weight; bdttree->Branch("weight", &weight, "weight/F");
+
+      Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
+      Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
+      Float_t LepPt;     bdttree->Branch("LepPt",     &LepPt,     "LepPt/F");
+      Float_t LepEta;    bdttree->Branch("LepEta",    &LepEta,    "LepEta/F");
+      Float_t LepDxy;    bdttree->Branch("LepDxy",    &LepDxy,    "LepDxy/F");
+      Float_t LepDz;     bdttree->Branch("LepDz",     &LepDz,     "LepDz/F");
+      Float_t LepIso03;  bdttree->Branch("LepIso03",  &LepIso03,  "LepIso03/F");
+      Float_t Lep2ID;    bdttree->Branch("Lep2ID",    &Lep2ID,    "Lep2ID/F");
+      Float_t Lep2Chg;   bdttree->Branch("Lep2Chg",   &Lep2Chg,   "Lep2Chg/F");
+      Float_t Lep2Pt;    bdttree->Branch("Lep2Pt",    &Lep2Pt,    "Lep2Pt/F");
+      Float_t Lep2Eta;   bdttree->Branch("Lep2Eta",   &Lep2Eta,   "Lep2Eta/F");
+      Float_t Lep2Dxy;   bdttree->Branch("Lep2Dxy",   &Lep2Dxy,   "Lep2Dxy/F");
+      Float_t Lep2Dz;    bdttree->Branch("Lep2Dz",    &Lep2Dz,    "Lep2Dz/F");
+      Float_t Lep2Iso03; bdttree->Branch("Lep2Iso03", &Lep2Iso03, "Lep2Iso03/F");
+      Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
+      Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
       Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
       Float_t mt; bdttree->Branch("mt",&mt,"mt/F");
+      Float_t mt_old; bdttree->Branch("mt_old",&mt_old,"mt_old/F");
       Float_t Q80; bdttree-> Branch("Q80",&Q80,"Q80/F");
       Float_t CosDeltaPhi; bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
-      Float_t NbLoose30; bdttree->Branch("NbLoose30",&NbLoose30,"NbLoose30/F");
-      Float_t NbTight30;  bdttree->Branch("NbTight30",&NbTight30,"NbTight30/F");
-      Float_t NbLoose20; bdttree->Branch("NbLoose20",&NbLoose20,"NbLoose20/F");
-      Float_t NbTight20;  bdttree->Branch("NbTight20",&NbTight20,"NbTight20/F");
-      Float_t NbLoose20to50; bdttree->Branch("NbLoose20to50",&NbLoose20to50,"NbLoose20to50/F");
-      Float_t NbLoose50;     bdttree->Branch("NbLoose50",&NbLoose50,"NbLoose50/F");
-      Float_t NbMedium20to50; bdttree->Branch("NbMedium20to50",&NbMedium20to50,"NbMedium20to50/F");
-      Float_t NbMedium50;     bdttree->Branch("NbMedium50",&NbMedium50,"NbMedium50/F");
-      Float_t NbTight20to50; bdttree->Branch("NbTight20to50",&NbTight20to50,"NbTight20to50/F");
-      Float_t NbTight50;     bdttree->Branch("NbTight50",&NbTight50,"NbTight50/F");
+
+      Float_t nIsr; bdttree->Branch("nIsr", &nIsr, "nIsr/F");
       Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
       Float_t Njet30;  bdttree->Branch("Njet30",&Njet30,"Njet30/F");
       Float_t Njet40;  bdttree->Branch("Njet40",&Njet40,"Njet40/F");
@@ -247,40 +239,44 @@ int main(int argc, char** argv)
       Float_t Njet100;  bdttree->Branch("Njet100",&Njet100,"Njet100/F");
       Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
       Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
-      Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F"); // *
+      Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F");
       Float_t Jet2Pt;  bdttree->Branch("Jet2Pt",&Jet2Pt,"Jet2Pt/F");
       Float_t Jet2Eta;  bdttree->Branch("Jet2Eta",&Jet2Eta,"Jet2Eta/F");
-      Float_t Jet2CSV;  bdttree->Branch("Jet2CSV",&Jet2CSV,"Jet2CSV/F"); // *
-      Float_t Jet3Pt;  bdttree->Branch("Jet3Pt",&Jet3Pt,"Jet3Pt/F"); // *
-      Float_t Jet3Eta;  bdttree->Branch("Jet3Eta",&Jet3Eta,"Jet3Eta/F"); // *
-      Float_t Jet3CSV;  bdttree->Branch("Jet3CSV",&Jet3CSV,"Jet3CSV/F"); // *
+      Float_t Jet2CSV;  bdttree->Branch("Jet2CSV",&Jet2CSV,"Jet2CSV/F");
+      Float_t Jet3Pt;  bdttree->Branch("Jet3Pt",&Jet3Pt,"Jet3Pt/F");
+      Float_t Jet3Eta;  bdttree->Branch("Jet3Eta",&Jet3Eta,"Jet3Eta/F");
+      Float_t Jet3CSV;  bdttree->Branch("Jet3CSV",&Jet3CSV,"Jet3CSV/F");
       Float_t DPhiJet1Jet2;  bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2,"DPhiJet1Jet2/F");
-      Float_t DPhiJet1Jet2_30;  bdttree->Branch("DPhiJet1Jet2_30",&DPhiJet1Jet2_30,"DPhiJet1Jet2_30/F");
+      Float_t HT;  bdttree->Branch("HT",&HT,"HT/F");
+
+      Float_t NbLoose; bdttree->Branch("NbLoose",&NbLoose,"NbLoose/F");
+      Float_t NbTight;  bdttree->Branch("NbTight",&NbTight,"NbTight/F");
+      Float_t NbLooseTo50; bdttree->Branch("NbLooseTo50",&NbLooseTo50,"NbLooseTo50/F");
+      Float_t NbLoose50;     bdttree->Branch("NbLoose50",&NbLoose50,"NbLoose50/F");
+      Float_t NbMediumTo50; bdttree->Branch("NbMediumTo50",&NbMediumTo50,"NbMediumTo50/F");
+      Float_t NbMedium50;     bdttree->Branch("NbMedium50",&NbMedium50,"NbMedium50/F");
+      Float_t NbTightTo50; bdttree->Branch("NbTightTo50",&NbTightTo50,"NbTightTo50/F");
+      Float_t NbTight50;     bdttree->Branch("NbTight50",&NbTight50,"NbTight50/F");
       Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
-      Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F"); // *
-      Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F"); // *
-      Float_t JetHBCSV; bdttree->Branch("JetHBCSV", &JetHBCSV, "JetHBCSV/F"); // *
+      Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F");
+      Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F");
+      Float_t JetHBCSV; bdttree->Branch("JetHBCSV", &JetHBCSV, "JetHBCSV/F");
       Float_t JetB2pt;  bdttree->Branch("JetB2pt",&JetB2pt,"JetB2pt/F");
-      Float_t JetB2eta;  bdttree->Branch("JetB2eta",&JetB2eta,"JetB2eta/F"); // *
-      Float_t JetB2index; bdttree->Branch("JetB2index", &JetB2index, "JetB2index/F"); // *
+      Float_t JetB2eta;  bdttree->Branch("JetB2eta",&JetB2eta,"JetB2eta/F");
+      Float_t JetB2index; bdttree->Branch("JetB2index", &JetB2index, "JetB2index/F");
       Float_t JetB2CSV; bdttree->Branch("JetB2CSV", &JetB2CSV, "JetB2CSV/F");
+
       Float_t DrJet1Lep;  bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
       Float_t DrJet2Lep;  bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
       Float_t DrJetHBLep;  bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
       Float_t DrJet1Jet2;  bdttree->Branch("DrJet1Jet2",&DrJet1Jet2,"DrJet1Jet2/F");
       Float_t JetLepMass;  bdttree->Branch("JetLepMass",&JetLepMass,"JetLepMass/F");
       Float_t J3Mass;  bdttree->Branch("J3Mass",&J3Mass,"J3Mass/F");
-      Float_t HT20;  bdttree->Branch("HT20",&HT20,"HT20/F");
-      Float_t HT25;  bdttree->Branch("HT25",&HT25,"HT25/F");
-      Float_t HT30;  bdttree->Branch("HT30",&HT30,"HT30/F");
-      Float_t Ncut0;  //bdttree->Branch("Ncut0",&Ncut0,"Ncut0/F");
-      Float_t Ncut1;
-      Float_t Ncut2;
-      Float_t Ncut3;
-      Float_t Ncut4;
+
       Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
       Float_t PFMET90_PFMHT90; bdttree->Branch("PFMET90_PFMHT90", &PFMET90_PFMHT90,"PFMET90_PFMHT90/F");
       Float_t PFMETNoMu90_PFMHTNoMu90; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90", &PFMETNoMu90_PFMHTNoMu90,"PFMETNoMu90_PFMHTNoMu90/F");
+
       Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
       Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
@@ -288,16 +284,19 @@ int main(int argc, char** argv)
       Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
       Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
       Float_t globalTightHalo2016Filter; bdttree->Branch("globalTightHalo2016Filter", &globalTightHalo2016Filter, "globalTightHalo2016Filter/F");
-      Float_t genGravitinoM; bdttree->Branch("genGravitinoM", &genGravitinoM, "genGravitinoM/F");
-      Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
-      Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
-      Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
-      Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
-      Float_t splitFactor=1; bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
-      Float_t triggerEfficiency=1; bdttree->Branch("triggerEfficiency", &triggerEfficiency, "triggerEfficiency/F");
-      Float_t WISRSF=1; bdttree->Branch("WISRSF", &WISRSF, "WISRSF/F");
-      Float_t nISRJet=0; bdttree->Branch("nISRJet", &nISRJet, "nISRJet/F");
-      Float_t ISRweight=1; bdttree->Branch("ISRweight", &ISRweight, "ISRweight/F");
+      Float_t badMuonMoriond2017; bdttree->Branch("badMuonMoriond2017", &badMuonMoriond2017, "badMuonMoriond2017/F");
+      Float_t badCloneMuonMoriond2017; bdttree->Branch("badCloneMuonMoriond2017", &badCloneMuonMoriond2017, "badCloneMuonMoriond2017/F");
+      Float_t badMuonFilter; bdttree->Branch("badMuonFilter", &badMuonFilter, "badMuonFilter/F");
+      Float_t badChargedHadronFilter; bdttree->Branch("badChargedHadronFilter", &badChargedHadronFilter, "badChargedHadronFilter/F");
+
+
+      Float_t Ncut0;  //bdttree->Branch("Ncut0",&Ncut0,"Ncut0/F");
+      Float_t Ncut1;
+      Float_t Ncut2;
+      Float_t Ncut3;
+      Float_t Ncut4;
+      Float_t Ncut5;
+      Float_t Ncut6;
 
 
       TH1* filterEfficiencyH = nullptr;
@@ -310,7 +309,7 @@ int main(int argc, char** argv)
         filterEfficiencyH = static_cast<TH1*>(canvas->GetPrimitive("filterEfficiencies")->Clone("filterEfficiency"));
       }
 
-      // Get total number of entries
+      // Get total number of entries and other important values
       Nevt = 0;
       double sumGenWeightCounting = 0;
       Ncut0 = 0;
@@ -318,8 +317,9 @@ int main(int argc, char** argv)
       Ncut2 = 0;
       Ncut3 = 0;
       Ncut4 = 0;
-      int nISRBin0 = 0, nISRBin1 = 0, nISRBin2 = 0, nISRBin3 = 0, nISRBin4 = 0, nISRBin5 = 0, nISRBin6 = 0;
-      //TH1D puDistrib((sample.tag()+"nvtx").c_str(), "nvtx;Evt.", 100, 0, 100);
+      Ncut5 = 0;
+      Ncut6 = 0;
+      int nIsrBin0 = 0, nIsrBin1 = 0, nIsrBin2 = 0, nIsrBin3 = 0, nIsrBin4 = 0, nIsrBin5 = 0, nIsrBin6 = 0;
       std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
       for(auto &file : sample)
       {
@@ -335,105 +335,38 @@ int main(int argc, char** argv)
         Nevt += thisNevt;
 
         Float_t thisGenWeight = 0;
-        //Int_t nvtx = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
-        Int_t nJet;  inputtree->SetBranchAddress("nJet", &nJet);
-        //Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
-        Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
-        Float_t Jet_phi[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
-        Int_t nGenPart;
-        Int_t GenPart_motherId[GENPART_LIMIT];
-        Int_t GenPart_motherIndex[GENPART_LIMIT];
-        Int_t GenPart_grandmotherId[GENPART_LIMIT];
-        Int_t GenPart_pdgId[GENPART_LIMIT];
-        Int_t GenPart_status[GENPART_LIMIT];
-        //Float_t GenPart_pt[GENPART_LIMIT];
-        Float_t GenPart_phi[GENPART_LIMIT];
-        Float_t GenPart_eta[GENPART_LIMIT];
-        if(!process.isdata())
-        {
-          inputtree->SetBranchAddress("nGenPart", &nGenPart);
-          inputtree->SetBranchAddress("GenPart_motherId", &GenPart_motherId);
-          inputtree->SetBranchAddress("GenPart_motherIndex", &GenPart_motherIndex);
-          inputtree->SetBranchAddress("GenPart_grandmotherId", &GenPart_grandmotherId);
-          inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
-          inputtree->SetBranchAddress("GenPart_status", &GenPart_status);
-          //inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
-          inputtree->SetBranchAddress("GenPart_phi", &GenPart_phi);
-          inputtree->SetBranchAddress("GenPart_eta", &GenPart_eta);
-        }
-        //inputtree->SetBranchAddress("nVert", &nvtx);
+        inputtree->SetBranchAddress("nIsr", &nIsr);
         double smallCounter = 0;
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
+
           smallCounter += thisGenWeight;
-          //puDistrib.Fill(nvtx, thisGenWeight);
 
-          if(!process.isdata())
+          switch(nIsr)
           {
-            int nISR = 0;
-            for(int i = 0; i < nJet; ++i)
-            {
-              bool matched = false;
-              for(int j = 0; j < nGenPart; ++j)
-              {
-                if(matched) break;
-
-                auto baseIndex = GenPart_motherIndex[j];
-
-                if(baseIndex < 0 || baseIndex > GENPART_LIMIT)
-                {
-                  if(baseIndex > GENPART_LIMIT)
-                    std::cout << "Unable to find mother" << std::endl;
-                  continue;
-                }
-
-                if(GenPart_status[baseIndex] != 23 || std::abs(GenPart_pdgId[baseIndex]) > 5) continue;
-
-                auto momID = GenPart_grandmotherId[j];
-                if(GenPart_motherId[baseIndex] != momID)
-                  std::cout << "Serious Issue has occured" << std::endl;
-                if(!(momID == 6 || momID == 23 || momID == 24 || momID == 25 || momID > 1e6)) continue;
-
-                float dphi = DeltaPhi(Jet_phi[i], GenPart_phi[j]);
-                float deta = Jet_eta[i] - GenPart_eta[j];
-                if(sqrt( pow(dphi,2) + pow(deta,2) ) < 0.3)
-                {
-                  //std::cout << "Matched Jet(" << Jet_pt[i] << ", " << Jet_eta[i] << ", " << Jet_phi[i] << ")";
-                  //std::cout << " to Gen(" << GenPart_pt[j] << ", " << GenPart_eta[j] << ", " << GenPart_phi[j] << ")" << std::endl;
-                  matched = true;
-                  break;
-                }
-              }
-
-              if(!matched) ++nISR;
-            }
-
-            switch(nISR)
-            {
-              case 0:
-                ++nISRBin0;
-                break;
-              case 1:
-                ++nISRBin1;
-                break;
-              case 2:
-                ++nISRBin2;
-                break;
-              case 3:
-                ++nISRBin3;
-                break;
-              case 4:
-                ++nISRBin4;
-                break;
-              case 5:
-                ++nISRBin5;
-                break;
-              default: // Case greater than or equal to 6
-                ++nISRBin6;
-                break;
-            }
+            case 0:
+              nIsrBin0++;
+              break;
+            case 1:
+              nIsrBin1++;
+              break;
+            case 2:
+              nIsrBin2++;
+              break;
+            case 3:
+              nIsrBin3++;
+              break;
+            case 4:
+              nIsrBin4++;
+              break;
+            case 5:
+              nIsrBin5++;
+              break;
+            default:
+              nIsrBin6++;
+              break;
           }
         }
         sumGenWeightCounting += smallCounter;
@@ -482,10 +415,6 @@ int main(int argc, char** argv)
         Float_t mtw;         inputtree->SetBranchAddress("mtw"       , &mtw);
         Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
         Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
-        Int_t nBJetLoose30;  inputtree->SetBranchAddress("nBJetLoose30"       , &nBJetLoose30);
-        Int_t nBJetTight30;  inputtree->SetBranchAddress("nBJetTight30"       , &nBJetTight30);
-        Int_t nBJetLoose20;  inputtree->SetBranchAddress("nBJetLoose20"       , &nBJetLoose20);
-        Int_t nBJetTight20;  inputtree->SetBranchAddress("nBJetTight20"       , &nBJetTight20);
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
         Int_t LepGood_mediumMuonId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
@@ -493,39 +422,15 @@ int main(int argc, char** argv)
         Float_t LepGood_eta[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eta", &LepGood_eta);
         Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
         Float_t LepGood_relIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_relIso03",&LepGood_relIso03);
-        Float_t LepGood_relIso04[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_relIso04",&LepGood_relIso04);
+        Float_t LepGood_absIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_absIso03",&LepGood_absIso03);
         Float_t LepGood_dxy[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_dxy",&LepGood_dxy);
         Float_t LepGood_dz[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
-        Float_t LepGood_sip3d[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_sip3d",&LepGood_sip3d);
         Float_t LepGood_mass[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
-        Int_t LepGood_eleVeto[LEPCOLL_LIMIT];
-        if(oldVeto)
-          inputtree->SetBranchAddress("LepGood_eleCutIdSpring15_25ns_v1", &LepGood_eleVeto);
-        else
-          inputtree->SetBranchAddress("LepGood_SPRING15_25ns_v1", &LepGood_eleVeto);
+        Float_t LepGood_mt[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mt", &LepGood_mt);
+        Float_t LepGood_Q80[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_Q80", &LepGood_Q80);
+        Float_t LepGood_cosPhiLepMet[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_cosPhiLepMet", &LepGood_cosPhiLepMet);
         Int_t LepGood_charge[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
-        Int_t nLepOther;      inputtree->SetBranchAddress("nLepOther"   , &nLepOther);
-        Int_t LepOther_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepOther_pdgId", &LepOther_pdgId);
-        Int_t LepOther_mediumMuonId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_mediumMuonId",&LepOther_mediumMuonId);
-        Float_t LepOther_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepOther_pt", &LepOther_pt);
-        Float_t LepOther_eta[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepOther_eta", &LepOther_eta);
-        Float_t LepOther_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepOther_phi", &LepOther_phi);
-        Float_t LepOther_relIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_relIso03",&LepOther_relIso03);
-        Float_t LepOther_relIso04[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_relIso04",&LepOther_relIso04);
-        Float_t LepOther_dxy[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_dxy",&LepOther_dxy);
-        Float_t LepOther_dz[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_dz",&LepOther_dz);
-        Float_t LepOther_sip3d[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_sip3d",&LepOther_sip3d);
-        Float_t LepOther_mass[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_mass",&LepOther_mass);
-        Int_t LepOther_eleVeto[LEPCOLL_LIMIT];
-        if(oldVeto)
-          inputtree->SetBranchAddress("LepOther_eleCutIdSpring15_25ns_v1", &LepOther_eleVeto);
-        else
-          inputtree->SetBranchAddress("LepOther_SPRING15_25ns_v1", &LepOther_eleVeto);
-        Int_t LepOther_charge[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepOther_charge",&LepOther_charge);
-        Float_t Jet_chEMEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_chEMEF", &Jet_chEMEF);
-        Float_t Jet_neEMEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_neEMEF", &Jet_neEMEF);
-        Float_t Jet_chHEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_chHEF", &Jet_chHEF);
-        Float_t Jet_neHEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_neHEF", &Jet_neHEF);
+        Int_t nJetIn;  inputtree->SetBranchAddress("nJet", &nJetIn);
         Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
         Int_t Jet_id[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_id", &Jet_id);
         Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
@@ -533,50 +438,21 @@ int main(int argc, char** argv)
         Float_t Jet_btagCSV[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
         Float_t Jet_mass[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
         Float_t Jet_rawPt[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawPt", &Jet_rawPt);
-        Int_t nJet;  inputtree->SetBranchAddress("nJet", &nJet);
-        //Int_t nJet20;  inputtree->SetBranchAddress("nJet20", &nJet20);
-        Int_t nJet20;  inputtree->SetBranchAddress("nJet20a", &nJet20);
-        Int_t nJet30;  inputtree->SetBranchAddress("nJet30", &nJet30);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
         ULong64_t evt;  inputtree->SetBranchAddress("evt", &evt);
         UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
-        Float_t Tracks_pt[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_pt", &Tracks_pt);
-        Float_t Tracks_eta[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_eta", &Tracks_eta);
-        Float_t Tracks_dz[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_dz", &Tracks_dz);
-        Float_t Tracks_dxy[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_dxy", &Tracks_dxy);
-        Float_t Tracks_phi[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_phi", &Tracks_phi);
-        Float_t Tracks_CosPhiJet12[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_CosPhiJet12", &Tracks_CosPhiJet12);
-        Float_t Tracks_matchedJetDr[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_matchedJetDr", &Tracks_matchedJetDr);
-        Float_t Tracks_matchedJetIndex[TRACOLL_LIMIT];  inputtree->SetBranchAddress("Tracks_matchedJetIndex", &Tracks_matchedJetIndex);
-        Int_t nTracks;  inputtree->SetBranchAddress("nTracks", &nTracks);
         Int_t nVert_i; inputtree->SetBranchAddress("nVert", &nVert_i);
-        inputtree->SetBranchAddress("puWeight", &puWeight);
+
+        //inputtree->SetBranchAddress("puWeight", &puWeight);
         inputtree->SetBranchAddress("genWeight", &genWeight);
+        inputtree->SetBranchAddress("nIsr", &nIsr);
 
         Float_t xsec = 1;
         Float_t nTrueInt = 1;
-        Int_t nGenPart;
-        Int_t GenPart_motherId[GENPART_LIMIT];
-        Int_t GenPart_motherIndex[GENPART_LIMIT];
-        Int_t GenPart_grandmotherId[GENPART_LIMIT];
-        Int_t GenPart_pdgId[GENPART_LIMIT];
-        Int_t GenPart_status[GENPART_LIMIT];
-        Float_t GenPart_pt[GENPART_LIMIT];
-        Float_t GenPart_phi[GENPART_LIMIT];
-        Float_t GenPart_eta[GENPART_LIMIT];
         if(!process.isdata())
         {
           inputtree->SetBranchAddress("xsec", &xsec);
           inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
-          inputtree->SetBranchAddress("nGenPart", &nGenPart);
-          inputtree->SetBranchAddress("GenPart_motherId", &GenPart_motherId);
-          inputtree->SetBranchAddress("GenPart_motherIndex", &GenPart_motherIndex);
-          inputtree->SetBranchAddress("GenPart_grandmotherId", &GenPart_grandmotherId);
-          inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
-          inputtree->SetBranchAddress("GenPart_status", &GenPart_status);
-          inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
-          inputtree->SetBranchAddress("GenPart_phi", &GenPart_phi);
-          inputtree->SetBranchAddress("GenPart_eta", &GenPart_eta);
         }
 
         // 2015 HLT
@@ -596,12 +472,11 @@ int main(int argc, char** argv)
         Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
         Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
         Int_t Flag_globalTightHalo2016Filter; inputtree->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter);
+        Int_t Flag_badMuonMoriond2017; inputtree->SetBranchAddress("Flag_badMuonMoriond2017", &Flag_badMuonMoriond2017);
+        Int_t Flag_badCloneMuonMoriond2017; inputtree->SetBranchAddress("Flag_badCloneMuonMoriond2017", &Flag_badCloneMuonMoriond2017);
+        Int_t Flag_badMuonFilter; inputtree->SetBranchAddress("Flag_badMuonFilter", &Flag_badMuonFilter);
+        Int_t Flag_badChargedHadronFilter; inputtree->SetBranchAddress("Flag_badChargedHadronFilter", &Flag_badChargedHadronFilter);
 
-        // Variables that are copied directly to output tree (unfortunately there is a type mismatch)
-        /*inputtree->SetBranchAddress("GenSusyMGravitino", &genGravitinoM);
-        inputtree->SetBranchAddress("GenSusyMStop", &genStopM);
-        inputtree->SetBranchAddress("GenSusyMSbottom", &genSbottomM);
-        inputtree->SetBranchAddress("GenSusyMNeutralino", &genNeutralinoM);// */
         Int_t GenSusyMGravitino; inputtree->SetBranchAddress("GenSusyMGravitino", &GenSusyMGravitino);
         Int_t GenSusyMStop; inputtree->SetBranchAddress("GenSusyMStop", &GenSusyMStop);
         Int_t GenSusyMSbottom; inputtree->SetBranchAddress("GenSusyMSbottom", &GenSusyMSbottom);
@@ -627,256 +502,123 @@ int main(int argc, char** argv)
 
           inputtree->GetEntry(i);
           nVert = nVert_i;
-          puWeight_HEP = puWeight;
           puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt));
-          puWeight_alt = puWeightDistrib_alt->GetBinContent(puWeightDistrib_alt->FindBin(nTrueInt));
-          puWeight_nai = puWeightDistrib_nai->GetBinContent(puWeightDistrib_nai->FindBin(nVert));
-          //puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nVert));
-
-          if(!process.isdata())
-          {
-            nISRJet=0;
-            for(int i = 0; i < nJet; ++i)
-            {
-              bool matched = false;
-              for(int j = 0; j < nGenPart; ++j)
-              {
-                if(matched) break;
-
-                auto baseIndex = GenPart_motherIndex[j];
-
-                if(baseIndex < 0 || baseIndex > GENPART_LIMIT)
-                {
-                  continue;
-                }
-
-                if(GenPart_status[baseIndex] != 23 || std::abs(GenPart_pdgId[baseIndex]) > 5) continue;
-
-                auto momID = GenPart_grandmotherId[j];
-                if(!(momID == 6 || momID == 23 || momID == 24 || momID == 25 || momID > 1e6)) continue;
-
-                float dphi = DeltaPhi(Jet_phi[i], GenPart_phi[j]);
-                float deta = Jet_eta[i] - GenPart_eta[j];
-                if(sqrt( pow(dphi,2) + pow(deta,2) ) < 0.3)
-                {
-                  matched = true;
-                  break;
-                }
-              }
-
-              if(!matched) ++nISRJet;
-            }
-          }
 
           // Object ID
           std::vector<int> validJets;
-          std::vector<int> validTracks;
-          std::vector<std::pair<int, int>> validLeptons; // First is the type (0 - LepGood, 1 - LepOther), second the index for that type
-          std::vector<std::pair<int,float>> bjetList; // First is the jet index, second is the jet CSV value
+          std::vector<int> validLeptons;
+          std::vector<int> bjetList; // Same as validJets, but sorted by CSV value
 
           validJets.clear();
-          validTracks.clear();
           validLeptons.clear();
           bjetList.clear();
 
-          for(Int_t i = 0; i < nJet20; ++i)
+          for(Int_t i = 0; i < nJetIn; ++i)
           {
-            if(std::abs(Jet_eta[i]) < 2.4 && Jet_pt[i] > 20)
+            if(std::abs(Jet_eta[i]) < 2.4 && Jet_pt[i] > jetPtThreshold)
             {
               validJets.push_back(i);
+              bjetList.push_back(i);
             }
           }
-
-          for(auto &j : validJets)
-          {
-            if(Jet_btagCSV[j] != -10)
-            {
-              bjetList.push_back(std::make_pair(j,Jet_btagCSV[j]));
-            }
-          }
-          std::sort(bjetList.begin(), bjetList.end(), [](const std::pair<int,float> &left, const std::pair<int,float> &right) {
-              return left.second > right.second;
+          std::sort(validJets.begin(), validJets.end(), [Jet_pt] (const int &left, const int &right) {
+            return Jet_pt[left] > Jet_pt[right];
+          });
+          std::sort(bjetList.begin(), bjetList.end(), [Jet_btagCSV] (const int &left, const int &right) {
+              return Jet_btagCSV[left] > Jet_btagCSV[right];
               });
-
-          for(Int_t l = 0; l < nTracks; ++l)
-          {
-            int index=Tracks_matchedJetIndex[l];
-
-            if( Tracks_pt[l] > 2.5
-              && std::abs(Tracks_eta[l]) < 2.5
-              && std::abs(Tracks_dz[l]) < 0.1
-              && std::abs(Tracks_dxy[l]) < 0.1
-              && Tracks_CosPhiJet12[l]  < 0.7
-              && ( Tracks_matchedJetDr[l] > 0.4 || (index >=0 && Jet_pt[ index ]  < 60 )))
-            {
-              validTracks.push_back(l);
-            }
-          }
 
           nGoodMu = 0;
           nGoodEl = 0;
-          for(Int_t type = 0; type < 2; ++type)
+          for(int i = 0; i < nLepGood; ++i)
           {
-            Int_t   leptonNumber                     = nLepGood;
-            Int_t   *lepton_pdgId                    = LepGood_pdgId;
-            //Int_t   *lepton_mediumMuonId             = LepGood_mediumMuonId;
-            Int_t   *lepton_eleVeto = LepGood_eleVeto;
-            //Int_t   *lepton_charge                   = LepGood_charge;
-            Float_t *lepton_pt                       = LepGood_pt;
-            Float_t *lepton_eta                      = LepGood_eta;
-            //Float_t *lepton_phi                      = LepGood_phi;
-            Float_t *lepton_relIso03                 = LepGood_relIso03;
-            //Float_t *lepton_relIso04                 = LepGood_relIso04;
-            Float_t *lepton_dxy                      = LepGood_dxy;
-            Float_t *lepton_dz                       = LepGood_dz;
-            //Float_t *lepton_sip3d                    = LepGood_sip3d;
-            //Float_t *lepton_mass                     = LepGood_mass;
-            if(type == 1)
+            bool lPTETA = LepGood_pt[i] > 5.0;
+            if(std::abs(LepGood_pdgId[i]) == 13) // If a muon
+              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.4)
+            else // If an electron
             {
-              leptonNumber                    = nLepOther;
-              lepton_pdgId                    = LepOther_pdgId;
-              //lepton_mediumMuonId             = LepOther_mediumMuonId;
-              lepton_eleVeto = LepOther_eleVeto;
-              //lepton_charge                   = LepGood_charge;
-              lepton_pt                       = LepOther_pt;
-              lepton_eta                      = LepOther_eta;
-              //lepton_phi                      = LepOther_phi;
-              lepton_relIso03                 = LepOther_relIso03;
-              //lepton_relIso04                 = LepOther_relIso04;
-              lepton_dxy                      = LepOther_dxy;
-              lepton_dz                       = LepOther_dz;
-              //lepton_sip3d                    = LepOther_sip3d;
-              //lepton_mass                     = LepOther_mass;
+              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.5)
+              // Also veto the gap in the ECAL
+              lPTETA = lPTETA && ( (std::abs(LepGood_eta[i]) > ECALGap_MaxEta)
+                                || (std::abs(LepGood_eta[i]) < ECALGap_MinEta) );
             }
 
-            for(Int_t i = 0; i < leptonNumber; ++i)
+            bool lID = (LepGood_dxy[i] < 0.02)
+                    && (LepGood_dz[i] < 0.5);
+
+            bool lIS = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
+
+            if(lPTETA && lID && lIS)
             {
-              bool lPTETA = lepton_pt[i] > 5.0;
-                         //&& lepton_pt[i] < 30.0;
-              if(std::abs(lepton_pdgId[i]) == 13)
-              {
-                lPTETA = lPTETA && (std::abs(lepton_eta[i]) < 2.4);
-                if(type == 1) // Only add LepOther for electrons, not for muons
-                  continue;
-              }
+              validLeptons.push_back(i);
+              if(std::abs(LepGood_pdgId[i]) == 13)
+                nGoodMu++;
               else
-              {
-                lPTETA = lPTETA && (std::abs(lepton_eta[i]) < 2.5);
-                // ECAL Gap
-                lPTETA = lPTETA && (  (std::abs(lepton_eta[i]) > ECALGap_MaxEta)
-                                   || (std::abs(lepton_eta[i]) < ECALGap_MinEta)   );
-              }
-
-              bool lID = (std::abs(lepton_dxy[i]) < 0.02)
-                      && (std::abs(lepton_dz[i]) < 0.5);
-              if(std::abs(lepton_pdgId[i]) == 11)
-                lID = lID && (lepton_eleVeto[i] >= 1);
-
-              bool lIS = ((lepton_pt[i] >= 25.0) && (lepton_relIso03[i] < 0.2))
-                      || ((lepton_pt[i] <  25.0) && ((lepton_pt[i] * lepton_relIso03[i]) < 5.0));
-
-              if(lPTETA && lID && lIS)
-              {
-                validLeptons.push_back(std::make_pair(type, i));
-                if(std::abs(lepton_pdgId[i]) == 13)
-                {
-                  nGoodMu += 1;
-                }
-                if(std::abs(lepton_pdgId[i]) == 11 )
-                {
-                  nGoodEl += 1;
-                }
-              }
+                nGoodEl++;
             }
           }
-          std::sort(validLeptons.begin(), validLeptons.end(), [LepGood_pt, LepOther_pt](const std::pair<int,int> &left, const std::pair<int,int> &right) {
-              Float_t left_pt, right_pt;
-              if(left.first == 1)
-              {
-                left_pt = LepOther_pt[left.second];
-              }
-              else
-              {
-                left_pt = LepGood_pt[left.second];
-              }
-              if(right.first == 1)
-              {
-                right_pt = LepOther_pt[right.second];
-              }
-              else
-              {
-                right_pt = LepGood_pt[right.second];
-              }
-              return left_pt > right_pt;
-              });
+          std::sort(validLeptons.begin(), validLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
+            return LepGood_pt[left] > LepGood_pt[right];
+          });
 
-          //if(validLeptons.size() == 0)
-          //  continue;
-
-
-
-          // Set the value of the branches in the bdttree
-          //Nevt = nentries;
-          mt = mtw;
-          Q80 = mtw1;
-          CosDeltaPhi = mtw2;
+          // Setting the values to be saved in the output tree
+          mt_old = mtw;
           Met = met_pt;
-          NbLoose30 = nBJetLoose30;
-          NbTight30 = nBJetTight30;
-          NbLoose20 = nBJetLoose20;
-          NbTight20 = nBJetTight20;
-
-          nGoodTrack = validTracks.size();
 
           TLorentzVector VLep;
           float lep_phi, lep_eta;
-          if(validLeptons.size() != 0)
+          if(validLeptons.size() > 0)
           {
-          Int_t lep_ind = validLeptons[0].second;
-          if(validLeptons[0].first == 1)
-          {
-            lep_phi  = LepOther_phi[lep_ind];
-            lep_eta  = LepOther_eta[lep_ind];
-            LepChg   = LepOther_charge[lep_ind];
-            LepID    = LepOther_pdgId[lep_ind];
-            LepPt    = LepOther_pt[lep_ind];
-            LepEta   = LepOther_eta[lep_ind];
-            LepDxy   = LepOther_dxy[lep_ind];
-            LepDz    = LepOther_dz[lep_ind];
-            LepSip3  = LepOther_sip3d[lep_ind];
-            LepIso03 = LepOther_relIso03[lep_ind];
-            LepIso04 = LepOther_relIso04[lep_ind];
-            VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepOther_mass[lep_ind]);
+            auto leptonIndex = validLeptons[0];
+            mt          = LepGood_mt[leptonIndex];
+            Q80         = LepGood_Q80[leptonIndex];
+            CosDeltaPhi = LepGood_cosPhiLepMet[leptonIndex];
+            lep_phi     = LepGood_phi[leptonIndex];
+            lep_eta     = LepGood_eta[leptonIndex];
+            LepChg      = LepGood_charge[leptonIndex];
+            LepID       = LepGood_pdgId[leptonIndex];
+            LepPt       = LepGood_pt[leptonIndex];
+            LepEta      = LepGood_eta[leptonIndex];
+            LepDxy      = LepGood_dxy[leptonIndex];
+            LepDz       = LepGood_dz[leptonIndex];
+            LepIso03    = LepGood_relIso03[leptonIndex];
+            VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
           }
           else
           {
-            lep_phi  = LepGood_phi[lep_ind];
-            lep_eta  = LepGood_eta[lep_ind];
-            LepChg   = LepGood_charge[lep_ind];
-            LepID    = LepGood_pdgId[lep_ind];
-            LepPt    = LepGood_pt[lep_ind];
-            LepEta   = LepGood_eta[lep_ind];
-            LepDxy   = LepGood_dxy[lep_ind];
-            LepDz    = LepGood_dz[lep_ind];
-            LepSip3  = LepGood_sip3d[lep_ind];
-            LepIso03 = LepGood_relIso03[lep_ind];
-            LepIso04 = LepGood_relIso04[lep_ind];
-            VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[lep_ind]);
+            mt          = -9999;
+            Q80         =  9999; // Q80 has a range of [-Inf, 1], so it does not make sense to give it a negative value when not defined
+            CosDeltaPhi = -9999;
+            lep_phi     = -9999;
+            lep_eta     = -9999;
+            LepChg      = -9999;
+            LepID       = -9999;
+            LepPt       = -9999;
+            LepEta      = -9999;
+            LepDxy      = -9999;
+            LepDz       = -9999;
+            LepIso03    = -9999;
           }
+          if(validLeptons.size() > 1)
+          {
+            auto leptonIndex = validLeptons[1];
+            Lep2Chg      = LepGood_charge[leptonIndex];
+            Lep2ID       = LepGood_pdgId[leptonIndex];
+            Lep2Pt       = LepGood_pt[leptonIndex];
+            Lep2Eta      = LepGood_eta[leptonIndex];
+            Lep2Dxy      = LepGood_dxy[leptonIndex];
+            Lep2Dz       = LepGood_dz[leptonIndex];
+            Lep2Iso03    = LepGood_relIso03[leptonIndex];
           }
           else
           {
-            lep_eta = -999;
-            lep_phi = -999;
-            LepChg = -999;
-            LepID = -999;
-            LepPt = -999;
-            LepEta = -999;
-            LepDxy = -999;
-            LepDz = -999;
-            LepSip3 = -999;
-            LepIso03 = -999;
-            LepIso04 = -999;
+            Lep2Chg      = -9999;
+            Lep2ID       = -9999;
+            Lep2Pt       = -9999;
+            Lep2Eta      = -9999;
+            Lep2Dxy      = -9999;
+            Lep2Dz       = -9999;
+            Lep2Iso03    = -9999;
           }
 
           if(!process.isdata())
@@ -885,148 +627,161 @@ int main(int argc, char** argv)
             if(process.tag() == "WJets")
               WISRSF = static_cast<double>(WISRScaleFactorFromLepMet(LepPt, lep_phi, met_pt, met_phi));
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lo" || process.issignal())
-              ISRweight = ISRCParam*static_cast<double>(ISRweightFromNISRJet(nISRJet));
+              ISRweight = ISRCParam * static_cast<double>(ISRweightFromNISRJet(nIsr));
           }
 
-          float DrJetLepMax = 999999.;
-          Int_t ij = 0;
-          for(auto &j : validJets)
+          if(validLeptons.size() > 0 && validJets.size() > 0)
           {
-            float dpi = DeltaPhi(Jet_phi[j],lep_phi);
-            float dei = Jet_eta[j]-lep_eta;
-            //float dri = sqrt( pow(dpi,2) + pow(dei,2) );
-            float dri = pow(dpi,2) + pow(dei,2);
-            if(dri < DrJetLepMax)
+            double smallestDeltaR = 999999999.;
+            int closestJet = -1;
+
+            for(auto &jet : validJets)
             {
-              DrJetLepMax = dri;
-              ij = j;
+              double dphi = DeltaPhi(Jet_phi[jet], lep_phi);
+              double deta = Jet_eta[jet] - lep_eta;
+              double dr = std::pow(dphi,2) + std::pow(deta,2); // The square of the dr is used since it is injective
+              if(dr < smallestDeltaR)
+              {
+                smallestDeltaR = dr;
+                closestJet = jet;
+              }
             }
-          }
 
-          TLorentzVector VJ, JLep;
-          VJ.SetPtEtaPhiM(Jet_pt[ij], Jet_eta[ij], Jet_phi[ij], Jet_mass[ij]);
-          JLep = VJ + VLep;
-          JetLepMass = JLep.M();
+            TLorentzVector VJ, JLep;
+            VJ.SetPtEtaPhiM(Jet_pt[closestJet], Jet_eta[closestJet], Jet_phi[closestJet], Jet_mass[closestJet]);
+            JLep = VJ + VLep;
+            JetLepMass = JLep.M();
 
-          TLorentzVector VJ3i, VJ3;
-          for(auto &j : validJets)
-          {
-            if (j == ij)
-              continue;
-            VJ3i.SetPtEtaPhiM(Jet_pt[j], Jet_eta[j], Jet_phi[j], Jet_mass[j]);
-            VJ3 += VJ3i;
-          }
-          J3Mass = VJ3.M();
+            TLorentzVector VJ3;
+            for(auto &jet : validJets)
+            {
+              if(jet == closestJet)
+                continue;
+              TLorentzVector VJi;
+              VJi.SetPtEtaPhiM(Jet_pt[jet], Jet_eta[jet], Jet_phi[jet], Jet_mass[jet]);
+              VJ3 += VJi;
+            }
+            J3Mass = VJ3.M();
 
-          if(validJets.size() >= 1)
-          {
-            Jet1Pt = Jet_pt[validJets[0]];
-            Jet1Eta = Jet_eta[validJets[0]];
-            Jet1CSV = Jet_btagCSV[validJets[0]];
-            float dphi = DeltaPhi(Jet_phi[validJets[0]], lep_phi);
-            float deta = Jet_eta[validJets[0]] - lep_eta;
-            DrJet1Lep = sqrt( pow(dphi,2) + pow(deta,2) );
+            double dphi = DeltaPhi(Jet_phi[validJets[0]], lep_phi);
+            double deta = Jet_eta[validJets[0]] - lep_eta;
+            DrJet1Lep = std::sqrt( std::pow(dphi, 2) + std::pow(deta, 2) );
+
+            double dphib, detab;
+            int bJetIndex = bjetList[0];
+            dphib = DeltaPhi(Jet_phi[bJetIndex], lep_phi);
+            detab = Jet_eta[bJetIndex] - lep_eta;
+            DrJetHBLep = std::sqrt( std::pow(dphib, 2) + std::pow(detab, 2) );
           }
           else
           {
-            Jet1Pt = -999.;
-            Jet1Eta = -999.;
-            Jet1CSV = -999.;
-            DrJet1Lep = -999.;
-            Jet2Pt = -999.;
-            Jet2Eta = -999.;
-            Jet2CSV = -999.;
-            Jet3Pt = -999.;
-            Jet3Eta = -999.;
-            Jet3CSV = -999.;
+            JetLepMass = -9999;
+            J3Mass = -9999;
+            DrJet1Lep = -9999;
+            DrJetHBLep = -9999.;
           }
 
-          if(validJets.size() >= 2)
+          if(validJets.size() > 0)
           {
-            float dphijj, detajj;
-            Jet2Pt = Jet_pt[validJets[1]];
-            Jet2Eta = Jet_eta[validJets[1]];
-            Jet2CSV = Jet_btagCSV[validJets[1]];
-            dphijj = DeltaPhi(Jet_phi[validJets[0]], Jet_phi[validJets[1]]);
-            detajj = Jet_eta[validJets[0]] - Jet_eta[validJets[1]];
+            int jetIndex = validJets[0];
+            Jet1Pt = Jet_pt[jetIndex];
+            Jet1Eta = Jet_eta[jetIndex];
+            Jet1CSV = Jet_btagCSV[jetIndex];
+
+            int bJetIndex = bjetList[0];
+            JetHBpt = Jet_pt[bJetIndex];
+            JetHBeta = Jet_eta[bJetIndex];
+            JetHBCSV = Jet_btagCSV[bJetIndex];
+            JetHBindex = bJetIndex;
+          }
+          else
+          {
+            Jet1Pt = -9999;
+            Jet1Eta = -9999;
+            Jet1CSV = -9999;
+
+            JetHBpt = -9999;
+            JetHBeta = -9999;
+            JetHBCSV = -9999;
+            JetHBindex = -9999;
+          }
+
+          if(validJets.size() > 1)
+          {
+            int jetIndex = validJets[1];
+            Jet2Pt = Jet_pt[jetIndex];
+            Jet2Eta = Jet_eta[jetIndex];
+            Jet2CSV = Jet_btagCSV[jetIndex];
+
+            double dphijj, detajj;
+            dphijj = DeltaPhi(Jet_phi[validJets[0]], Jet_phi[jetIndex]);
+            detajj = Jet_eta[validJets[0]] - Jet_eta[jetIndex];
             DPhiJet1Jet2 = dphijj;
-            if(Jet_pt[validJets[1]] > 30)
-              DPhiJet1Jet2_30 = dphijj;
+            DrJet1Jet2 = std::sqrt( std::pow(dphijj,2) + std::pow(detajj,2) );
+
+            if(validLeptons.size() > 0)
+            {
+              float dphi = DeltaPhi(Jet_phi[jetIndex], lep_phi);
+              float deta = Jet_eta[jetIndex] - lep_eta;
+              DrJet2Lep = std::sqrt( std::pow(dphi,2) + std::pow(deta,2) );
+            }
             else
-              DPhiJet1Jet2_30 = -999.;
-            DrJet1Jet2 = sqrt( pow(dphijj,2) + pow(detajj,2) );
+            {
+              DrJet2Lep = -9999;
+            }
 
-            float dphi = DeltaPhi(Jet_phi[validJets[1]], lep_phi);
-            float deta = Jet_eta[validJets[1]] - lep_eta;
-            DrJet2Lep = sqrt( pow(dphi,2) + pow(deta,2) );
+            int bJetIndex = bjetList[1];
+            JetB2pt = Jet_pt[bJetIndex];
+            JetB2eta = Jet_eta[bJetIndex];
+            JetB2CSV = Jet_btagCSV[bJetIndex];
+            JetB2index = bJetIndex;
           }
           else
           {
-            Jet2Pt = -999.;
-            Jet2Eta = -999.;
-            Jet2CSV = -999.;
-            DPhiJet1Jet2 = -999.;
-            DPhiJet1Jet2_30 = -999.;
-            DrJet1Jet2 = -999.;
-            DrJet2Lep = -999.;
+            Jet2Pt = -9999;
+            Jet2Eta = -9999;
+            Jet2CSV = -9999;
+            DPhiJet1Jet2 = -9999;
+            DrJet1Jet2 = -9999;
+            DrJet2Lep = -9999;
+
+            JetB2pt = -9999;
+            JetB2eta = -9999;
+            JetB2CSV = -9999;
+            JetB2index = -9999;
           }
 
-          if(validJets.size() >= 3)
+          if(validJets.size() > 2)
           {
-            Jet3Pt = Jet_pt[validJets[2]];
-            Jet3Eta = Jet_eta[validJets[2]];
-            Jet3CSV = Jet_btagCSV[validJets[2]];
+            int jetIndex = validJets[2];
+            Jet3Pt = Jet_pt[jetIndex];
+            Jet3Eta = Jet_eta[jetIndex];
+            Jet3CSV = Jet_btagCSV[jetIndex];
           }
           else
           {
-            Jet3Pt = -999.;
-            Jet3Eta = -999.;
-            Jet3CSV = -999.;
+            Jet3Pt = -9999;
+            Jet3Eta = -9999;
+            Jet3CSV = -9999;
           }
 
-          JetHBpt = -999.;
-          JetHBeta = -999.;
-          JetHBindex = -1;
-          JetHBCSV = -999.;
-          JetB2pt = -999.;
-          JetB2eta = -999.;
-          JetB2index = -1;
-          JetB2CSV = -999.;
-          DrJetHBLep = -999.;
-
-          if(bjetList.size() >= 1)
-          {
-            Int_t iBtag = bjetList[0].first;
-            JetHBpt = Jet_pt[iBtag];
-            JetHBeta = Jet_eta[iBtag];
-            JetHBindex = iBtag;
-            JetHBCSV = Jet_btagCSV[iBtag];
-            float dphib, detab;
-            dphib = DeltaPhi(Jet_phi[iBtag], lep_phi);
-            detab = Jet_eta[iBtag] - lep_eta;
-            DrJetHBLep = sqrt( pow(dphib,2) + pow(detab,2) );
-          }
-
-          if(bjetList.size() > 1)
-          {
-            Int_t iBtag = bjetList[1].first;
-            JetB2pt = Jet_pt[iBtag];
-            JetB2eta = Jet_eta[iBtag];
-            JetB2index = iBtag;
-            JetB2CSV = Jet_btagCSV[iBtag];
-          }
-
-          NbLoose20to50 = 0;
+          NbLoose = 0;
+          NbTight = 0;
+          NbLooseTo50 = 0;
           NbLoose50 = 0;
-          NbMedium20to50 = 0;
+          NbMediumTo50 = 0;
           NbMedium50 = 0;
-          NbTight20to50 = 0;
+          NbTightTo50 = 0;
           NbTight50 = 0;
-          for(auto& bjet : bjetList)
+          for(auto &bjet : bjetList)
           {
-            auto& index = bjet.first;
-            auto& csv = bjet.second;
-            auto& pt = Jet_pt[index];
+            const auto &csv = Jet_btagCSV[bjet];
+            const auto &pt = Jet_pt[bjet];
+
+            if(csv > CSV_Loose)
+              ++NbLoose;
+            if(csv > CSV_Tight)
+              ++NbTight;
 
             if(pt > 50)
             {
@@ -1040,18 +795,20 @@ int main(int argc, char** argv)
             else
             {
               if(csv > CSV_Loose)
-                ++NbLoose20to50;
+                ++NbLooseTo50;
               if(csv > CSV_Medium)
-                ++NbMedium20to50;
+                ++NbMediumTo50;
               if(csv > CSV_Tight)
-                ++NbTight20to50;
+                ++NbTightTo50;
             }
+
+            // Since the bjetList is sorted by CSV, as soon as it goes below the loose definition, there are no further bjets
+            if(csv < CSV_Loose)
+              break;
           }
 
-          HT20 = 0.;
-          HT25 = 0.;
-          HT30 = 0.;
-          Njet = 0;
+          HT = 0;
+          Njet = validJets.size();
           Njet30 = 0;
           Njet40 = 0;
           Njet50 = 0;
@@ -1060,48 +817,26 @@ int main(int argc, char** argv)
           Njet80 = 0;
           Njet90 = 0;
           Njet100 = 0;
-          for(auto &j : validJets)
+          for(auto &jet : validJets)
           {
-            if(Jet_pt[j] > 20.)
-            {
-              HT20 += Jet_pt[j];
-              Njet += 1;
-            }
-            if(Jet_pt[j] > 25.)
-              HT25 += Jet_pt[j];
-            if(Jet_pt[j] > 30.)
-            {
-              HT30 += Jet_pt[j];
-              Njet30 += 1;
-            }
-            if(Jet_pt[j] > 40.)
-            {
-              Njet40 += 1;
-            }
-            if(Jet_pt[j] > 50.)
-            {
-              Njet50 += 1;
-            }
-            if(Jet_pt[j] > 60.)
-            {
-              Njet60 += 1;
-            }
-            if(Jet_pt[j] > 70.)
-            {
-              Njet70 += 1;
-            }
-            if(Jet_pt[j] > 80.)
-            {
-              Njet80 += 1;
-            }
-            if(Jet_pt[j] > 90.)
-            {
-              Njet90 += 1;
-            }
-            if(Jet_pt[j] > 100.)
-            {
-              Njet100 += 1;
-            }
+            HT += Jet_pt[jet];
+
+            if(Jet_pt[jet] > 30)
+              ++Njet30;
+            if(Jet_pt[jet] > 40)
+              ++Njet40;
+            if(Jet_pt[jet] > 50)
+              ++Njet50;
+            if(Jet_pt[jet] > 60)
+              ++Njet60;
+            if(Jet_pt[jet] > 70)
+              ++Njet70;
+            if(Jet_pt[jet] > 80)
+              ++Njet80;
+            if(Jet_pt[jet] > 90)
+              ++Njet90;
+            if(Jet_pt[jet] > 100)
+              ++Njet100;
           }
 
           genGravitinoM  = GenSusyMGravitino;
@@ -1112,8 +847,10 @@ int main(int argc, char** argv)
           Run = run;
           Event = evt;
           LumiSec = lumi;
-          XS = xsec;
-          //XS = file.crossSection;
+          if(overrideXSec)
+            XS = file.crossSection;
+          else
+            XS = xsec;
           if(process.issignal())
             XS = stopCrossSection(genStopM, genNeutralinoM).value();
 
@@ -1127,6 +864,10 @@ int main(int argc, char** argv)
           EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
           goodVertices                        = Flag_goodVertices;
           globalTightHalo2016Filter           = Flag_globalTightHalo2016Filter;
+          badMuonMoriond2017                  = Flag_badMuonMoriond2017;
+          badCloneMuonMoriond2017             = Flag_badCloneMuonMoriond2017;
+          badMuonFilter                       = Flag_badMuonFilter;
+          badChargedHadronFilter              = Flag_badChargedHadronFilter;
 
           // Filter Efficiency
           if(filterEfficiencyH != nullptr)
@@ -1142,39 +883,33 @@ int main(int argc, char** argv)
           else
             weight = 1;
 
-
           if(doSync)
           {
             if(sync_count < max_sync_count)
             {
               SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
               SyFile << "   Mstop: " << genStopM << "; Mlsp: " << genNeutralinoM << std::endl;
-              SyFile << "   HT: " << HT30 << "; MET: " << Met << std::endl;
-              SyFile << "   Njet(pT>30): " << Njet30 << std::endl;
-              //SyFile << "   leading jet:  pT: " << Jet1Pt << "; eta: " << Jet1Eta << "; raw pT: " << ((validJets.size() > 0)?(Jet_rawPt[validJets[0]]):(-999)) << std::endl;
-              //SyFile << "   subleading jet:  pT: " << Jet2Pt << "; eta: " << Jet2Eta << "; raw pT: " << ((validJets.size() > 1)?(Jet_rawPt[validJets[1]]):(-999)) << std::endl;
-              for(int i = 0; i < Njet30; ++i)
-                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[validJets[i]] << "; eta: " << Jet_eta[validJets[i]] << "; raw pT: " << Jet_rawPt[validJets[i]] << "; ID: " << Jet_id[validJets[i]] << "; abs(eta): " << std::abs(Jet_eta[validJets[i]]) << std::endl;
-              SyFile << "   Nlep: " << nGoodEl+nGoodMu << std::endl;
+              SyFile << "   HT: " << HT << "; MET: " << Met << std::endl;
+              SyFile << "   Njet: " << Njet << std::endl;
+              for(int i = 0; i < validJets.size(); ++i)
+              {
+                auto jet = validJets[i];
+                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_id[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
+              }
+              SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; PDG ID: " << LepID << std::endl;
               SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2 << std::endl;
-              SyFile << "   weight: " << 10000*XS*filterEfficiency/Nevt << std::endl;
+              SyFile << "   weight: " << weight << "(without SFs: " << XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
               SyFile << "   passed: ";
-              if(HT30 > 200 && Met > 200 && Jet1Pt > 90)
+              if(HT > 200 && Met > 200 && Jet1Pt > 90) // TODO: Probably change these cuts to reflect newest selection
               {
                 SyFile << "Cut0";
                 bool passCut1 = false;
                 if(validLeptons.size() == 1)
                   passCut1 = true;
-                if(validLeptons.size() > 1)
+                if(validLeptons.size() > 1) // TODO: Probably change this threshold to "== 2"
                 {
-                  float lep_pt;
-                  if(validLeptons[1].first == 1)
-                    lep_pt = LepOther_pt[validLeptons[1].second];
-                  else
-                    lep_pt = LepGood_pt[validLeptons[1].second];
-
-                  if(lep_pt < 20)
+                  if(LepGood_pt[validLeptons[1]] < 20)
                     passCut1 = true;
                 }
 
@@ -1185,10 +920,11 @@ int main(int argc, char** argv)
                   if(Jet1Pt > 100)
                   {
                     SyFile << ";Cut2";
-                    if( ((threshold30 && DPhiJet1Jet2_30 < 2.5) || (!threshold30 && DPhiJet1Jet2 < 2.5))
-                     || (Jet2Pt < 60) )
+
+                    if(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60)
                     {
                       SyFile << ";Cut3";
+
                       if(Met > 280)
                         SyFile << ";Cut4";
                     }
@@ -1196,118 +932,104 @@ int main(int argc, char** argv)
                 }
               }
               else
-              {
                 SyFile << "None";
-              }
+
+              //Printout detailed info (for a specific event for instance)
               //if(lumi == 91151 && evt == 195485531)
               if(true)
               {
-                //SyFile << std::endl << "Y no lepton?";
-                SyFile << std::endl << "nLepGood: " << nLepGood << "    nLepOther: " << nLepOther << std::endl;
+                SyFile << std::endl << "nLepGood: " << nLepGood << std::endl;
                 SyFile << "LepGood:" << std::endl;
                 for(int i = 0; i < nLepGood; ++i)
                   SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; relIso03: " << LepGood_relIso03[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << "; eleVeto: " << LepGood_eleVeto[i] << std::endl;
-                SyFile << "LepOther:" << std::endl;
-                for(int i = 0; i < nLepOther; ++i)
-                  SyFile << "   lep " << i+1 << ": ID: " << LepOther_pdgId[i] << "; pt: " << LepOther_pt[i] << "; eta:" << LepOther_eta[i] << "; relIso03: " << LepOther_relIso03[i] << "; dxy: " << LepOther_dxy[i] << "; dz: " << LepOther_dz[i] << "; eleVeto: " << LepOther_eleVeto[i] << std::endl;
-                SyFile << "nJetGood: " << nJet20 << std::endl;
-                for(int i = 0; i < nJet20; ++i)
+                SyFile << "nJetGood: " << nJet << std::endl;
+                for(int i = 0; i < nJet; ++i)
                   SyFile << "   jet " << i+1 << ": pt: " << Jet_pt[i] << "; eta: " << Jet_eta[i] << "; phi: " << Jet_phi[i] << "; mass: " << Jet_mass[i] << "; ID: " << Jet_id[i] << std::endl;
               }
+
               SyFile << std::endl << std::endl;
 
               ++sync_count;
             }
           }
 
-          if(validJets.size() > 0)
+          // Compute selection cuts
+          bool metRequirement = Met > 300;
+          bool htRequirement = HT > 200;
+          bool jetRequirement = Jet1Pt > 100;
+          bool antiQCDRequirement = DPhiJet1Jet2 < 2.5 || Jet2Pt < 60;
+          bool leptonRequirement = false;
+          if(validLeptons.size() == 1)
+            leptonRequirement = true;
+          if(validLeptons.size() == 2)
           {
-            if(HT30 > 200 && Met > 200 && Jet_pt[validJets[0]] > 90)
+            if(LepGood_pt[validLeptons[1]] < 20)
+              leptonRequirement = true;
+          }
+          bool deltaMRequirement = LepPt < 30;
+
+          // Fill counters for parallel selection computation
+          ++Ncut0;
+          if(metRequirement)
+          {
+            ++Ncut1;
+            if(htRequirement)
             {
-              ++Ncut0;
-              bool passCut1 = false;
-              if(validLeptons.size() == 1)
-                passCut1 = true;
-              if(validLeptons.size() > 1)
+              ++Ncut2;
+              if(jetRequirement)
               {
-                float lep_pt;
-                if(validLeptons[1].first == 1)
-                  lep_pt = LepOther_pt[validLeptons[1].second];
-                else
-                  lep_pt = LepGood_pt[validLeptons[1].second];
-
-                if(lep_pt < 20)
-                  passCut1 = true;
-              }
-
-              if(passCut1 && LepPt < 30)
-              {
-                ++Ncut1;
-                if(Jet1Pt > 100)
+                ++Ncut3;
+                if(antiQCDRequirement)
                 {
-                  ++Ncut2;
-                  if( ((threshold30 && DPhiJet1Jet2_30 < 2.5) || (!threshold30 && DPhiJet1Jet2 < 2.5))
-                   || (Jet2Pt < 60) )
+                  ++Ncut4;
+                  if(leptonRequirement)
                   {
-                    ++Ncut3;
-                    if(Met > 280)
-                      ++Ncut4;
+                    ++Ncut5;
+                    if(deltaMRequirement)
+                    {
+                      ++Ncut6;
+                    }
                   }
                 }
               }
             }
           }
 
-          // Skim
-          if(validLeptons.size() == 0)  // Commented out above
-            continue;
-          /*if(validLeptons.size() >= 1)
-          {
-            float lep_pt;
-            if(validLeptons[0].first == 1)
-              lep_pt = LepOther_pt[validLeptons[0].second];
-            else
-              lep_pt = LepGood_pt[validLeptons[0].second];
-
-            if(lep_pt > 30)
-              continue;
-          }// */
-          if(validLeptons.size() >= 2)
-          {
-            float lep_pt;
-            if(validLeptons[1].first == 1)
-              lep_pt = LepOther_pt[validLeptons[1].second];
-            else
-              lep_pt = LepGood_pt[validLeptons[1].second];
-
-            if(lep_pt > 20)
-              continue;
-          }
-          if(Njet == 0)
-            continue;
           if(!noSkim)
           {
-            bool isISR = ((Jet_pt[validJets[0]] > 90.)  &&  (Njet > 0));
-            bool dPhi = (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60);
-            if(threshold30)
-              dPhi = (DPhiJet1Jet2_30 < 2.5 || Jet2Pt < 60);
-            bool met = (Met > 100.);
-            if(!isISR)   continue;
-            if(!dPhi)    continue;
-            if(!met)     continue;
+            // No need to keep events without leptons or jets
+            if(validLeptons.size() == 0 || validJets.size() == 0)
+              continue;
+
+            // If the pT of the second lepton is above 20, we do not want to keep it TODO: Reevaluate if we want these events skimmed or not
+            if(validLeptons.size() > 1 && Lep2Pt > 20)
+              continue;
+
+            // So-called ISR jet requirement (even though it's on the pT of the leading jet)
+            if(JetPt < 90)
+              continue;
+
+            // Cut to help reduce the QCD background
+            if(!(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
+              continue;
+
+            // Minimal requirement on MET
+            if(Met < 100)
+              continue;
+
+            // MET filters
+            //if ( METFilters                         != 1 ) continue;
+            if ( HBHENoiseFilter                    != 1 ) continue;
+            if ( HBHENoiseIsoFilter                 != 1 ) continue;
+            if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
+            if ( goodVertices                       != 1 ) continue;
+            if ( eeBadScFilter                      != 1 ) continue;
+            if ( globalTightHalo2016Filter          != 1 ) continue;
+            //if ( badMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
+            if ( badMuonMoriond2017                 != 1 ) continue;
+            if ( badCloneMuonMoriond2017            != 1 ) continue;
+            if ( badChargedHadronFilter             != 1 ) continue;
           }
-
-
-          // MET filters
-          //if ( METFilters                         != 1 ) continue;
-          if ( HBHENoiseFilter                    != 1 ) continue;
-          if ( HBHENoiseIsoFilter                 != 1 ) continue;
-          if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
-          if ( goodVertices                       != 1 ) continue;
-          if ( eeBadScFilter                      != 1 ) continue;
-          if ( globalTightHalo2016Filter          != 1 ) continue;
-          //if ( badMuonFilter                      != 1 ) continue;
-          //if ( badChargedHadronFilter             != 1 ) continue;
 
           bdttree->Fill();
         }
@@ -1318,13 +1040,15 @@ int main(int argc, char** argv)
       foutput.cd();
       bdttree->Write("",TObject::kOverwrite);
 
-      TVectorD v(5);
+      TVectorD v(7);
       v[0] = Ncut0;
       v[1] = Ncut1;
       v[2] = Ncut2;
       v[3] = Ncut3;
       v[4] = Ncut4;
-      v.Write("Ncut");
+      v[5] = Ncut5;
+      v[6] = Ncut6;
+      v.Write("ParellelSelection");
       //puDistrib.Write();
 
       if(filterEfficiencyH != nullptr)
