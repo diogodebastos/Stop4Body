@@ -524,7 +524,7 @@ int main(int argc, char** argv)
           }
           std::sort(validJets.begin(), validJets.end(), [Jet_pt] (const int &left, const int &right) {
             return Jet_pt[left] > Jet_pt[right];
-          });
+            });
           std::sort(bjetList.begin(), bjetList.end(), [Jet_btagCSV] (const int &left, const int &right) {
               return Jet_btagCSV[left] > Jet_btagCSV[right];
               });
@@ -535,10 +535,10 @@ int main(int argc, char** argv)
           {
             bool lPTETA = LepGood_pt[i] > 5.0;
             if(std::abs(LepGood_pdgId[i]) == 13) // If a muon
-              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.4)
+              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.4);
             else // If an electron
             {
-              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.5)
+              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.5);
               // Also veto the gap in the ECAL
               lPTETA = lPTETA && ( (std::abs(LepGood_eta[i]) > ECALGap_MaxEta)
                                 || (std::abs(LepGood_eta[i]) < ECALGap_MinEta) );
@@ -560,7 +560,7 @@ int main(int argc, char** argv)
           }
           std::sort(validLeptons.begin(), validLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
             return LepGood_pt[left] > LepGood_pt[right];
-          });
+            });
 
           // Setting the values to be saved in the output tree
           mt_old = mtw;
@@ -849,7 +849,7 @@ int main(int argc, char** argv)
           Event = evt;
           LumiSec = lumi;
           if(overrideXSec)
-            XS = file.crossSection;
+            XS = sample.crossSection;
           else
             XS = xsec;
           if(process.issignal())
@@ -942,9 +942,9 @@ int main(int argc, char** argv)
                 SyFile << std::endl << "nLepGood: " << nLepGood << std::endl;
                 SyFile << "LepGood:" << std::endl;
                 for(int i = 0; i < nLepGood; ++i)
-                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; relIso03: " << LepGood_relIso03[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << "; eleVeto: " << LepGood_eleVeto[i] << std::endl;
-                SyFile << "nJetGood: " << nJet << std::endl;
-                for(int i = 0; i < nJet; ++i)
+                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; relIso03: " << LepGood_relIso03[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << std::endl;
+                SyFile << "nJetGood: " << nJetIn << std::endl;
+                for(int i = 0; i < nJetIn; ++i)
                   SyFile << "   jet " << i+1 << ": pt: " << Jet_pt[i] << "; eta: " << Jet_eta[i] << "; phi: " << Jet_phi[i] << "; mass: " << Jet_mass[i] << "; ID: " << Jet_id[i] << std::endl;
               }
 
@@ -1007,7 +1007,7 @@ int main(int argc, char** argv)
               continue;
 
             // So-called ISR jet requirement (even though it's on the pT of the leading jet)
-            if(JetPt < 90)
+            if(Jet1Pt < 90)
               continue;
 
             // Cut to help reduce the QCD background
