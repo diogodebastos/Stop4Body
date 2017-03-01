@@ -78,7 +78,6 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./OUT/";
   bool doSync = false;
   bool noSkim = false;
-  bool oldVeto = false;
   std::string suffix = "";
   size_t max_sync_count = 0;
   double jetPtThreshold = 30;
@@ -120,9 +119,6 @@ int main(int argc, char** argv)
 
     if(argument == "--noSkim")
       noSkim = true;
-
-    if(argument == "--oldVeto")
-      oldVeto = true;
 
     if(argument == "--jetPtThreshold")
     {
