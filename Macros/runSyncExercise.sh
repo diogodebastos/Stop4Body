@@ -3,7 +3,7 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-if [[ -d ${SYNC_DIR}]] ; then
+if [[ -d ${SYNC_DIR} ]] ; then
   rm -Rf ${SYNC_DIR}
 fi
 
