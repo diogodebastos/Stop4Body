@@ -63,8 +63,8 @@ float DeltaPhi(float, float);
 
 const double ECALGap_MinEta =  1.4442; // ECAL gap parameters
 const double ECALGap_MaxEta =  1.5660;
-const double CSV_Loose = 0.460;
-const double CSV_Medium = 0.800;
+const double CSV_Loose = 0.5426;
+const double CSV_Medium = 0.800; // TODO: Update
 const double CSV_Tight = 0.935;
 
 doubleUnc stopCrossSection(double stopM, double lspM);
