@@ -53,6 +53,7 @@ int main(int argc, char** argv)
   bool puTest = false;
   bool verbose = false;
   bool cumulativeCuts = false;
+  bool rawEvents = false;
 
   if(argc < 2)
   {
@@ -120,6 +121,11 @@ int main(int argc, char** argv)
     {
       cumulativeCuts = true;
     }
+
+    if(argument == "--rawEvents")
+    {
+      rawEvents = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -168,6 +174,8 @@ int main(int argc, char** argv)
     converter << "*" << luminosity;
     converter >> mcWeight;
   }
+  if(rawEvents)
+    mcWeight = 1.0;
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
   std::vector<CutInfo> cutFlow;
