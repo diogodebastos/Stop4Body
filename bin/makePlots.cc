@@ -175,7 +175,7 @@ int main(int argc, char** argv)
     converter >> mcWeight;
   }
   if(rawEvents)
-    mcWeight = 1.0;
+    mcWeight = "1.0";
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
   std::vector<CutInfo> cutFlow;
