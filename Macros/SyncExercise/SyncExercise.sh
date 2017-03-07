@@ -20,5 +20,5 @@ getPUWeight --json ${JSON_FILE}  --outDir ${SYNC_DIR} --dataPU DataPileupHistogr
 
 mv ${SYNC_DIR}/puWeights_Sig_300_270.json.root ${SYNC_DIR}/puWeights.root
 
+processSamples --json ${JSON_FILE} --outDir ${SYNC_DIR} --doSync 300 --noSkim
 processSamples --json ${JSON_FILE} --outDir ${SYNC_DIR}              --noSkim
-#processSamples --json ${JSON_FILE} --outDir ${SYNC_DIR} --doSync 300 --noSkim
