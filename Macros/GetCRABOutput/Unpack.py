@@ -62,7 +62,7 @@ def unpackPath(path, basePath, prod, label, datasets = [], listOnly = False, ski
           print "  Missing chunk : ", ds, '- Chunk'+str(i)
 
         if len(missingChunks)==0:
-          hasAllFiles=True
+          haveAllFiles=True
 
         if listOnly:
           continue
