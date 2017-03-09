@@ -60,7 +60,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
       {
         std::stringstream converter;
         std::string file;
-        converter << basePath << "_Chunk" << i << "/treeProducerStop4Body/tree.root";
+        converter << basePath << "/Chunk" << i << "/treeProducerStop4Body/tree.root";
         converter >> file;
         if(fileExists(file))
           filePaths_.push_back(file);
