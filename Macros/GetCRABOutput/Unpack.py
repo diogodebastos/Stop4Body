@@ -51,6 +51,7 @@ def unpackPath(path, basePath, prod, label, datasets = [], listOnly = False, ski
     print ds,':\t', timeStamps
 
     haveAllFiles = False;
+    previousHaveAllFiles = True;
 
     for TS in timeStamps:
       if haveAllFiles:
@@ -58,6 +59,7 @@ def unpackPath(path, basePath, prod, label, datasets = [], listOnly = False, ski
 
       kSplit = listDir(basePath+'/'+prod+'/'+label+'/'+ds+'/'+TS)
       for k in kSplit:
+        previousHaveAllFiles = haveAllFiles
         haveAllFiles = False;
         startPath = basePath+'/'+prod+'/'+label+'/'+ds+'/'+TS+'/'+k
 
@@ -85,7 +87,7 @@ def unpackPath(path, basePath, prod, label, datasets = [], listOnly = False, ski
           print "    Missing chunk : ", ds, '- Chunk'+str(i)
 
         if listOnly:
-          if len(missingChunks) == 0:
+          if len(missingChunks) == 0 && previousHaveAllFiles == True:
             haveAllFiles = True
           continue
 
