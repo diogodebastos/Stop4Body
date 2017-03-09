@@ -11,8 +11,12 @@
           "tag":"TTJets",
           "xsec": 831.76,
           "br": 1.0,
-          "split":800,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/TTJets/TTJets/treeProducerSusySingleLepton_tree"
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/TTJets/TTJets/treeProducerSusySingleLepton_tree",
+              "split":800
+            }
+          ]
         }
       ]
     }

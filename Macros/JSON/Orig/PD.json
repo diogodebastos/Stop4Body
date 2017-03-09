@@ -13,7 +13,12 @@
           "xsec": 1.0,
           "br": 1.0,
           "recordedLumi":10000,
-          "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/PseudoData"
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/PseudoData",
+              "split":1
+            }
+          ]
         }
       ]
     }

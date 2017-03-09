@@ -137,11 +137,8 @@ public:
   double crossSection() const {return crossSection_;}
   double branchingRatio() const {return branchingRatio_;}
   std::string tag() const {return tag_;}
-  int split() const {return split_;}
+  int split() const {return filePaths_.size();}
   std::string filterEfficiencyFile() const {return filterEfficiencyFile_;}
-  bool hasExtension() const {return hasExtension_;}
-  int extSplit() const {return extSplit_;}
-  std::string extBaseDir() const {return extBaseDir_;}
   double recordedLumi() const {return recordedLumi_;}
 
   // Iteration
@@ -164,11 +161,7 @@ protected:
   double crossSection_;
   double branchingRatio_;
   std::string tag_;
-  int split_;
   std::string filterEfficiencyFile_;
-  bool hasExtension_;
-  int extSplit_;
-  std::string extBaseDir_;
   double recordedLumi_;
 
   std::vector<std::string> filePaths_;

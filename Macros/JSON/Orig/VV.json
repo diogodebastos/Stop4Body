@@ -11,22 +11,34 @@
           "tag":"WW",
           "xsec": 1,
           "br": 1.0,
-          "split": 24,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/WW/treeProducerSusySingleLepton_tree"
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/WW/treeProducerSusySingleLepton_tree",
+              "split":24
+            }
+          ]
         },
         {
           "tag":"ZZ",
           "xsec": 96.38,
           "br": 1.0,
-          "split": 25,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/ZZ/treeProducerSusySingleLepton_tree"
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/ZZ/treeProducerSusySingleLepton_tree",
+              "split":25
+            }
+          ]
         },
         {
           "tag":"WZ",
           "xsec": 13.46,
           "br": 1.0,
-          "split": 24,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/WZ/treeProducerSusySingleLepton_tree"
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/WZ/treeProducerSusySingleLepton_tree",
+              "split":24
+            }
+          ]
         }
       ]
     }

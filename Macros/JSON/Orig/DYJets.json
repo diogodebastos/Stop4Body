@@ -9,80 +9,119 @@
       "files":[
         {
           "tag":"DYJetsToLL_M50_HT100to200",
-          "xsec": 1.0,
-          "br": 1.0,
-          "split": 72,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT100to200/treeProducerSusySingleLepton_tree",
-          "hasExtension":true,
-          "extSplit":198,
-          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT100to200_ext/treeProducerSusySingleLepton_tree"
+          "xsec":1.0,
+          "br":1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT100to200/treeProducerSusySingleLepton_tree",
+              "split":72
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT100to200_ext/treeProducerSusySingleLepton_tree",
+              "split":198
+            }
+          ]
         },
         {
           "tag":"DYJetsToLL_M50_HT200to400",
-          "xsec": 1.0,
-          "br": 1.0,
-          "split": 36,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT200to400/treeProducerSusySingleLepton_tree",
-          "hasExtension":true,
-          "extSplit":233,
-          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT200to400_ext/treeProducerSusySingleLepton_tree"
+          "xsec":1.0,
+          "br":1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT200to400/treeProducerSusySingleLepton_tree",
+              "split":36
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT200to400_ext/treeProducerSusySingleLepton_tree",
+              "split":233
+            }
+          ]
         },
         {
           "tag":"DYJetsToLL_M50_HT400to600",
-          "xsec": 1.0,
-          "br": 1.0,
-          "split": 31,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT400to600/treeProducerSusySingleLepton_tree",
-          "hasExtension":true,
-          "extSplit":183,
-          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT400to600_ext/treeProducerSusySingleLepton_tree"
+          "xsec":1.0,
+          "br":1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT400to600/treeProducerSusySingleLepton_tree",
+              "split":31
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT400to600_ext/treeProducerSusySingleLepton_tree",
+              "split":183
+            }
+          ]
         },
         {
           "tag":"DYJetsToLL_M50_HT600toInf",
-          "xsec": 1.0,
-          "br": 1.0,
-          "split": 28,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT600toInf/treeProducerSusySingleLepton_tree",
-          "hasExtension":true,
-          "extSplit":99,
-          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT600toInf_ext/treeProducerSusySingleLepton_tree"
+          "xsec":1.0,
+          "br":1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT600toInf/treeProducerSusySingleLepton_tree",
+              "split":28
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M50_HT600toInf_ext/treeProducerSusySingleLepton_tree",
+              "split":99
+            }
+          ]
         },
         {
           "tag":"DYJetsToLL_M5to50_HT100to200",
-          "xsec": 1.0,
-          "br": 1.0,
-          "split": 27,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT100to200/treeProducerSusySingleLepton_tree",
-          "hasExtension":true,
-          "extSplit":1,
-          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT100to200_ext/treeProducerSusySingleLepton_tree"
+          "xsec":1.0,
+          "br":1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT100to200/treeProducerSusySingleLepton_tree",
+              "split":27
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT100to200_ext/treeProducerSusySingleLepton_tree",
+              "split":1
+            }
+          ]
         },
         {
           "tag":"DYJetsToLL_M5to50_HT200to400",
-          "xsec": 1.0,
-          "br": 1.0,
-          "split": 31,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT200to400/treeProducerSusySingleLepton_tree",
-          "hasExtension":true,
-          "extSplit":55,
-          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT200to400_ext/treeProducerSusySingleLepton_tree"
+          "xsec":1.0,
+          "br":1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT200to400/treeProducerSusySingleLepton_tree",
+              "split":31
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT200to400_ext/treeProducerSusySingleLepton_tree",
+              "split":55
+            }
+          ]
         },
         {
           "tag":"DYJetsToLL_M5to50_HT400to600",
-          "xsec": 1.0,
-          "br": 1.0,
-          "split": 29,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT400to600/treeProducerSusySingleLepton_tree"
+          "xsec":1.0,
+          "br":1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT400to600/treeProducerSusySingleLepton_tree",
+              "split":29
+            }
+          ]
         },
         {
           "tag":"DYJetsToLL_M5to50_HT600toInf",
-          "xsec": 1.0,
-          "br": 1.0,
-          "split": 26,
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT600toInf/treeProducerSusySingleLepton_tree",
-          "hasExtension":true,
-          "extSplit":46,
-          "extPath":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT600toInf_ext/treeProducerSusySingleLepton_tree"
+          "xsec":1.0,
+          "br":1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT600toInf/treeProducerSusySingleLepton_tree",
+              "split":26
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/DY/DYJetsToLL_M5to50_HT600toInf_ext/treeProducerSusySingleLepton_tree",
+              "split":46
+            }
+          ]
         }
       ]
     }

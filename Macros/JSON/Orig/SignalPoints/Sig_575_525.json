@@ -18,9 +18,13 @@
           "tag":"T2DegStop_575_525",
           "xsec": 1.0,
           "br": 1.0,
-          "split":242,
           "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
-          "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80/treeProducerSusySingleLepton_tree"
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SignalStop/SMS_T2tt_dM_10to80_genHT_160_genMET_80/treeProducerSusySingleLepton_tree",
+              "split":242
+            }
+          ]
         }
       ]
     }

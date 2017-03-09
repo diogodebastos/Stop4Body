@@ -13,15 +13,17 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   crossSection_(0.0),
   branchingRatio_(1.0),
   tag_(""),
-  split_(1),
   filterEfficiencyFile_(""),
-  hasExtension_(false),
-  extSplit_(1),
-  extBaseDir_(""),
   recordedLumi_(0)
 {
-  if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("path") == 0)
+  if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("paths") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
+
+  for(auto &path: jsonInfo.count("paths"))
+  {
+    if(path.count("path") == 0 || path.count("split") == 0)
+      throw MissingJSONParam("Not all parameters are defined for the path of the sample");
+  }
 
   crossSection_ = jsonInfo["xsec"];
   tag_ = jsonInfo["tag"];
@@ -29,87 +31,41 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   if(jsonInfo.count("br") > 0)
     branchingRatio_ = jsonInfo["br"];
 
-  if(jsonInfo.count("split") > 0)
-    split_ = jsonInfo["split"];
-
   filterEfficiencyFile_ = "";
   if(jsonInfo.count("filterEfficiencyFile") > 0)
     filterEfficiencyFile_ = jsonInfo["filterEfficiencyFile"];
 
-  if(jsonInfo.count("hasExtension") > 0)
-  {
-    if(jsonInfo.count("extPath") == 0)
-      throw MissingJSONParam("Not all parameters are defined for the sample extension");
-
-    extBaseDir_ = jsonInfo["extPath"];
-    hasExtension_ = jsonInfo["hasExtension"];
-
-    if(hasExtension_)
-    {
-      if(jsonInfo.count("extSplit") > 0)
-        extSplit_ = jsonInfo["extSplit"];
-    }
-  }
-
   if(jsonInfo.count("recordedLumi") > 0)
     recordedLumi_ = jsonInfo["recordedLumi"];
 
-  std::string basePath = jsonInfo["path"];
   if(baseDir_ != "")
   {
-    split_ = 1;
-    basePath = baseDir_ + "/" + tag_;
-    hasExtension_ = false;
+    std::string file = baseDir_ + "/" + tag_;
     if(suffix_ != "")
-      basePath += "_" + suffix_;
-  }
-
-  std::string tmpStr = "";
-  if(split_ == 1)
-  {
-    tmpStr = basePath + ".root";
-    if(fileExists(tmpStr))
-      filePaths_.push_back(tmpStr);
+      file += "_" + suffix_;
+    file += ".root";
+    if(fileExists(file))
+      filePaths_.push_back(file);
     else
-      //throw FileNotFound("Unable to find file: " + tmpStr);
-      missingFiles_.push_back(tmpStr);
+      missingFiles_.push_back(file);
   }
   else
   {
-    for(int i = 0; i < split_; ++i)
+    for(auto &path: jsonInfo.count("paths"))
     {
-      std::stringstream converter;
-      converter << basePath << "_Chunk" << i+1 << "/treeProducerStop4Body/" << "tree.root";
-      //tmpStr = converter.str();
-      converter >> tmpStr;
-      if(fileExists(tmpStr))
-        filePaths_.push_back(tmpStr);
-      else
-        missingFiles_.push_back(tmpStr);
-    }
-  }
+      std::string basePath = path["path"];
+      int split = path["split"];
 
-  if(hasExtension_)
-  {
-    if(extSplit_ == 1)
-    {
-      tmpStr = extBaseDir_ + ".root";
-      if(fileExists(tmpStr))
-        filePaths_.push_back(tmpStr);
-      else
-        missingFiles_.push_back(tmpStr);
-    }
-    else
-    {
-      for(int i = 0; i < extSplit_; ++i)
+      for(int i = 1; i <= split; ++i)
       {
         std::stringstream converter;
-        converter << extBaseDir_ << "_" << i << ".root";
-        converter >> tmpStr;
-        if(fileExists(tmpStr))
-          filePaths_.push_back(tmpStr);
+        std::string file;
+        converter << basePath << "_Chunk" << i << "/treeProducerStop4Body/tree.root";
+        converter >> file;
+        if(fileExists(file))
+          filePaths_.push_back(file);
         else
-          missingFiles_.push_back(tmpStr);
+          missingFiles_.push_back(file);
       }
     }
   }
