@@ -896,7 +896,7 @@ int main(int argc, char** argv)
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; PDG ID: " << LepID << std::endl;
               SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2 << std::endl;
-              SyFile << "   weight: " << weight << "(without SFs: " << XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
+              SyFile << "   weight for 10 fb-1: " << weight*10000 << " (without SFs: " << 10000*XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
               SyFile << "   passed: ";
               if(HT > 200 && Met > 200 && Jet1Pt > 90) // TODO: Probably change these cuts to reflect newest selection
               {
@@ -904,7 +904,7 @@ int main(int argc, char** argv)
                 bool passCut1 = false;
                 if(validLeptons.size() == 1)
                   passCut1 = true;
-                if(validLeptons.size() > 1) // TODO: Probably change this threshold to "== 2"
+                if(validLeptons.size() == 2)
                 {
                   if(LepGood_pt[validLeptons[1]] < 20)
                     passCut1 = true;
