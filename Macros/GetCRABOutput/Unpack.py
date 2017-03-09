@@ -137,7 +137,7 @@ def unpackPath(path, basePath, prod, label, datasets = [], listOnly = False, ski
             if corrupted:
               print "    ERROR : chunk "+ds+' - Chunk'+num+'is corrupted'
 
-        nUnTar = len(ls(path+'/'+outLabel+'/'+ds))
+        nUnTar = len(listDir(path+'/'+outLabel+'/'+ds))
         if nUnTar == maxFiles:
           haveAllFiles = True
 
