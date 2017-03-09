@@ -19,7 +19,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("paths") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
 
-  for(auto &path: jsonInfo.count("paths"))
+  for(auto &path: jsonInfo["paths"])
   {
     if(path.count("path") == 0 || path.count("split") == 0)
       throw MissingJSONParam("Not all parameters are defined for the path of the sample");
@@ -51,7 +51,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   }
   else
   {
-    for(auto &path: jsonInfo.count("paths"))
+    for(auto &path: jsonInfo["paths"])
     {
       std::string basePath = path["path"];
       int split = path["split"];
