@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   std::string suffix = "";
   double luminosity = -1.0;
   bool isPseudoData = false;
-  bool verbose = false;
+  //bool verbose = false;
 
   std::string baseSelection = "(HT30 > 200) && (Jet1Pt > 100) && (MET > 300) && (nGoodEl + nGoodMu <= 2)";
   std::string wjetsControlRegion = "(BDT < -0.1) && (NbLoose30 == 0)";
@@ -80,10 +80,10 @@ int main(int argc, char** argv)
       isPseudoData = true;
     }
 
-    if(argument == "--verbose")
-    {
-      verbose = true;
-    }
+    //if(argument == "--verbose")
+    //{
+    //  verbose = true;
+    //}
   }
 
   gStyle->SetOptStat(000000);
@@ -277,7 +277,7 @@ void naiveDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC << "$ & $";
-  outputTable << otherMC << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n";
 
   return;
 }
