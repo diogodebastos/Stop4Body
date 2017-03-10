@@ -149,7 +149,7 @@ int main(int argc, char** argv)
     auto mcS   =             MC.getStack("BDT", "BDT;Evt.", mcWeight+"*("+baseSelection+")", 20, -1.0, 1.0);
 
     auto ratio = static_cast<TH1D*>(dataH->Clone("Ratio"));
-    ratio->SetTitle((";BDT;Data/#Sigma MC").c_str());
+    ratio->SetTitle(";BDT;Data/#Sigma MC");
     ratio->Divide(mcH);
 
     TCanvas c1("BDT_canv", "", 800, 800);
