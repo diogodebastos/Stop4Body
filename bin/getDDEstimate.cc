@@ -308,7 +308,7 @@ doubleUnc naiveDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleRea
 doubleUnc injectDD(std::ofstream &outputTable, ProcessInfo &toEstimate, ProcessInfo &toInject, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string injectRegion, std::string mcWeight)
 {
   outputTable << "inject ";
-  doubleUnc inject = naiveDD(outputTable, toEstimate, Data, MC, controlRegion, injectRegion, mcWeight);
+  doubleUnc inject = naiveDD(outputTable, toInject, Data, MC, controlRegion, injectRegion, mcWeight);
   doubleUnc NinSR = toEstimate.getYield(signalRegion, mcWeight);
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
   doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
