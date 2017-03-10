@@ -90,7 +90,6 @@ int main(int argc, char** argv)
   gStyle->SetOptTitle(0);
 
   std::cout << "Reading json files" << std::endl;
-  VariableJsonLoader variables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   auto MC = samples.getMCBkg();
