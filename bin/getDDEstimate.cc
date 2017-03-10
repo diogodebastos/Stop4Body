@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   std::string suffix = "";
   double luminosity = -1.0;
   bool isPseudoData = false;
-  //bool verbose = false;
+  bool verbose = false;
 
   std::string baseSelection = "(HT30 > 200) && (Jet1Pt > 100) && (MET > 300) && (nGoodEl + nGoodMu <= 2)";
   std::string wjetsControlRegion = "(BDT < -0.1) && (NbLoose30 == 0)";
@@ -80,10 +80,10 @@ int main(int argc, char** argv)
       isPseudoData = true;
     }
 
-    //if(argument == "--verbose")
-    //{
-    //  verbose = true;
-    //}
+    if(argument == "--verbose")
+    {
+      verbose = true;
+    }
   }
 
   gStyle->SetOptStat(000000);
@@ -92,10 +92,14 @@ int main(int argc, char** argv)
   std::cout << "Reading json files" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
+  if(verbose)
+    std::cout << "Splitting samples according to type" << std::endl;
   auto MC = samples.getMCBkg();
   auto Sig = samples.getMCSig();
   auto Data = samples.getData();
 
+  if(verbose)
+    std::cout << "Extracting ttbar and wjets from other backgrounds" << std::endl;
   size_t ttbarIndex = 0, wjetsIndex = 0;
   bool foundTTbar = false, foundWJets = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
@@ -125,9 +129,13 @@ int main(int argc, char** argv)
   auto wjets = MC.process(wjetsIndex);
   auto ttbar = MC.process(ttbarIndex);
 
+  if(verbose)
+    std::cout << "Retrieving luminosity" << std::endl;
   if(luminosity <= 0)
     luminosity = Data.getLumi();
 
+  if(verbose)
+    std::cout << "Computing correct MC weight" << std::endl;
   std::string mcWeight;
   {
     std::stringstream converter;
@@ -142,6 +150,8 @@ int main(int argc, char** argv)
 
 
   // Make a plot of the BDToutput, just for control reasons
+  if(verbose)
+    std::cout << "Building control plot of BDT output" << std::endl;
   {
     auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               baseSelection,     20, -1.0, 1.0);
     auto mcH   =        MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+baseSelection+")", 20, -1.0, 1.0);
@@ -248,6 +258,8 @@ int main(int argc, char** argv)
     delete bgUnc;
   }
 
+  if(verbose)
+    std::cout << "Filling table" << std::endl;
   std::ofstream outputTable(outputDirectory+"/table.tex");
   outputTable << "\\begin{tabular}{r|ccccc}\n";
   outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
