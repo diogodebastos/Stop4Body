@@ -22,7 +22,8 @@
 using json = nlohmann::json;
 
 void printHelp();
-void naiveDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
+doubleUnc naiveDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
+doubleUnc injectDD(std::ofstream &, ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -267,10 +268,20 @@ int main(int argc, char** argv)
   naiveDD(outputTable, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
   naiveDD(outputTable, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
+  outputTable << "\\hline\n";
+
+  injectDD(outputTable, ttbar, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+
+  outputTable << "\\hline\n";
+
+  injectDD(outputTable, wjets, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+  outputTable << "\\hline\n\\end{tabular}\n"
+
   return 0;
 }
 
-void naiveDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+doubleUnc naiveDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
   doubleUnc NinSR = toEstimate.getYield(signalRegion, mcWeight);
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
@@ -291,7 +302,33 @@ void naiveDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &
   outputTable << otherMC << "$ & $";
   outputTable << estimate << "$\\\\\n";
 
-  return;
+  return estimate;
+}
+
+doubleUnc injectDD(std::ofstream &outputTable, ProcessInfo &toEstimate, ProcessInfo &toInject, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string injectRegion, std::string mcWeight)
+{
+  outputTable << "inject ";
+  doubleUnc inject = naiveDD(outputTable, toEstimate, Data, MC, controlRegion, injectRegion, mcWeight);
+  doubleUnc NinSR = toEstimate.getYield(signalRegion, mcWeight);
+  doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
+  doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
+  doubleUnc otherMC (0,0);
+  for(auto &process: MC)
+  {
+    if(process.tag() != toEstimate.tag() && process.tag() != toInject.tag())
+      otherMC += process.getYield(controlRegion, mcWeight);
+  }
+
+  doubleUnc estimate = NinSR/NinCR * (DatainCR - inject - otherMC);
+
+  outputTable << "$" << toEstimate.label() << "$, $" << toInject.label() << "$ injected & $";
+  outputTable << NinSR << "$ & $";
+  outputTable << NinCR << "$ & $";
+  outputTable << DatainCR << "$ & $";
+  outputTable << otherMC << "$ & $";
+  outputTable << estimate << "$\\\\\n";
+
+  return estimate;
 }
 
 void printHelp()
