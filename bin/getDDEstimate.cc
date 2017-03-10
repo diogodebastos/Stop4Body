@@ -252,8 +252,8 @@ int main(int argc, char** argv)
   outputTable << "\\begin{tabular}{r|ccccc}\n";
   outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
 
-  naiveDD(outputTable, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion)
-  naiveDD(outputTable, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion)
+  naiveDD(outputTable, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  naiveDD(outputTable, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   return 0;
 }
