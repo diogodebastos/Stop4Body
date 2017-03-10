@@ -276,7 +276,7 @@ int main(int argc, char** argv)
 
   injectDD(outputTable, wjets, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
-  outputTable << "\\hline\n\\end{tabular}\n"
+  outputTable << "\\hline\n\\end{tabular}\n";
 
   return 0;
 }
