@@ -454,6 +454,21 @@
       "bins":7
     },
     {
+      "expression":"Njet30",
+      "label":"N_{J}",
+      "min":-0.5,
+      "max":6.5,
+      "bins":7
+    },
+    {
+      "name":"NjetCorr",
+      "expression":"Njet-Njet30",
+      "label":"N_{J}",
+      "min":-0.5,
+      "max":6.5,
+      "bins":7
+    },
+    {
       "name":"LepPt",
       "expression":"LepPt",
       "label":"p_{T}(l)",
