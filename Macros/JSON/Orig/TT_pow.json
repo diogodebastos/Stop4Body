@@ -8,13 +8,13 @@
       "label":"t#bar{t}",
       "files":[
         {
-          "tag":"TTJets",
+          "tag":"TT_pow",
           "xsec": 831.76,
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets",
-              "split":222
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TT_pow",
+              "split":246
             }
           ]
         }

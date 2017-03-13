@@ -1,0 +1,58 @@
+{
+  "lines":[
+    {
+      "tag":"ttbar",
+      "isdata":false,
+      "color":614,
+      "lcolor":1,
+      "label":"t#bar{t}",
+      "files":[
+        {
+          "tag":"TTJets_DiLepton",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_DiLepton",
+              "split":83
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_DiLepton_ext",
+              "split":171
+            }
+          ]
+        },
+        {
+          "tag":"TTJets_SingleLeptonFromT",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_SingleLeptonFromT",
+              "split":167
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_SingleLeptonFromT_ext",
+              "split":210
+            }
+          ]
+        },
+        {
+          "tag":"TTJets_SingleLeptonFromTbar",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_SingleLeptonFromTbar",
+              "split":196
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_SingleLeptonFromTbar_ext",
+              "split":187
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

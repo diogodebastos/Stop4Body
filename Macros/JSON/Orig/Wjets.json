@@ -8,13 +8,32 @@
       "label":"W + Jets",
       "files":[
         {
+          "tag":"Wjets_70to100",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT70to100",
+              "split":207
+            }
+          ]
+        },
+        {
           "tag":"Wjets_100to200",
           "xsec": 1629.87,
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT100to200_ext/treeProducerSusySingleLepton_tree",
-              "split":642
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT100to200",
+              "split":134
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT100to200_ext",
+              "split":151
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT100to200_ext2",
+              "split":175
             }
           ]
         },
@@ -24,12 +43,16 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT200to400/treeProducerSusySingleLepton_tree",
-              "split":119
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT200to400",
+              "split":89
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT200to400_ext/treeProducerSusySingleLepton_tree",
-              "split":343
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT200to400_ext",
+              "split":186
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT200to400_ext2",
+              "split":176
             }
           ]
         },
@@ -39,12 +62,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT400to600/treeProducerSusySingleLepton_tree",
-              "split":44
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT400to600",
+              "split":28
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT400to600_ext/treeProducerSusySingleLepton_tree",
-              "split":125
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT400to600_ext",
+              "split":79
             }
           ]
         },
@@ -54,8 +77,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT600to800/treeProducerSusySingleLepton_tree",
-              "split":90
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT600to800",
+              "split":49
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT600to800_ext",
+              "split":193
             }
           ]
         },
@@ -65,12 +92,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT800to1200/treeProducerSusySingleLepton_tree",
-              "split":35
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT800to1200",
+              "split":28
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT800to1200_ext/treeProducerSusySingleLepton_tree",
-              "split":150
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT800to1200_ext",
+              "split":115
             }
           ]
         },
@@ -80,8 +107,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT1200to2500/treeProducerSusySingleLepton_tree",
-              "split":6
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT1200to2500",
+              "split":7
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT1200to2500_ext",
+              "split":116
             }
           ]
         },
@@ -91,8 +122,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/QCDandWjets/WJetsToLNu_HT2500toInf/treeProducerSusySingleLepton_tree",
-              "split":8
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT2500toInf",
+              "split":7
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT2500toInf_ext",
+              "split":46
             }
           ]
         }
