@@ -39,3 +39,13 @@ Macros/*.sh.o*
 Macros/*.sh.e*
 Macros/Step*Scripts/*.sh.o*
 Macros/Step*Scripts/*.sh.e*
+Macros/SyncExercise/*.sh.o*
+Macros/SyncExercise/*.sh.e*
+Macros/SyncExercise/cutFlow.tex
+Macros/NJetScan/scanPlots/*
+Macros/weights/*
+Macros/TMVA.root
+Macros/pileup_latest.txt
+Macros/DataPileupHistogram.root
+Macros/GOLDEN_JSON.txt
+Macros/MCPileupHistogram.root
