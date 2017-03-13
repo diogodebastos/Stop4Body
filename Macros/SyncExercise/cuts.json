@@ -1,0 +1,66 @@
+{
+  "cuts":[
+    {
+      "name":"noCut",
+      "expression":"1",
+      "latex":"no cut"
+    },
+    {
+      "name":"MET300",
+      "expression":"(Met > 300)",
+      "latex":"$MET > 300$"
+    },
+    {
+      "name":"HT200",
+      "expression":"(HT > 200) && (Met > 300)",
+      "latex":"$H_T > 200$"
+    },
+    {
+      "name":"isrPt100",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100)",
+      "latex":"$p_T(j_1) > 100$"
+    },
+    {
+      "name":"antiQCD",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60)",
+      "latex":"antiQCD"
+    },
+    {
+      "name":"SingleLooseB",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (NbLoose >= 1)",
+      "latex":"1 Loose B Jet"
+    },
+    {
+      "name":"lepSel",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (NbLoose >= 1) && (nGoodEl+nGoodMu == 1 || (nGoodEl+nGoodMu == 2 && Lep2Pt < 20))",
+      "latex":"Lepton Selection"
+    },
+    {
+      "name":"LepPt30",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (NbLoose >= 1) && (nGoodEl+nGoodMu == 1 || (nGoodEl+nGoodMu == 2 && Lep2Pt < 20)) && (LepPt < 30)",
+      "latex":"$p_T(l) < 30$"
+    },
+    {
+      "name":"lepSelEl",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (NbLoose >= 1) && (nGoodEl+nGoodMu == 1 || (nGoodEl+nGoodMu == 2 && Lep2Pt < 20)) && (abs(LepID) == 11)",
+      "latex":"Lepton Selection - Electron Channel"
+    },
+    {
+      "name":"LepPt30El",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (NbLoose >= 1) && (nGoodEl+nGoodMu == 1 || (nGoodEl+nGoodMu == 2 && Lep2Pt < 20)) && (LepPt < 30) && (abs(LepID) == 11)",
+      "latex":"$p_T(l) < 30$ - Electron Channel"
+    },
+    {
+      "name":"lepSelMu",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (NbLoose >= 1) && (nGoodEl+nGoodMu == 1 || (nGoodEl+nGoodMu == 2 && Lep2Pt < 20)) && (abs(LepID) == 13)",
+      "latex":"Lepton Selection - Muon Channel"
+    },
+    {
+      "name":"LepPt30Mu",
+      "expression":"(HT > 200) && (Met > 300) && (Jet1Pt > 100) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (NbLoose >= 1) && (nGoodEl+nGoodMu == 1 || (nGoodEl+nGoodMu == 2 && Lep2Pt < 20)) && (LepPt < 30) && (abs(LepID) == 13)",
+      "latex":"$p_T(l) < 30$ - Muon Channel"
+    }
+  ],
+  "variables":[
+  ]
+}
