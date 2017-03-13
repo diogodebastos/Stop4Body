@@ -6,17 +6,18 @@ touch $JSON_PATH/tmp.json
 rm    $JSON_PATH/*.json
 
 # Make a JSON for all MC except signal
-mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
+mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
+mergeJSONs $JSON_PATH/altTTbar.json           $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/TT_pow.json $JSON_PATH/Orig/TT_pow_backup.json $JSON_PATH/Orig/TTLep.json
 #mergeJSONs $JSON_PATH/otherMC1.json           $JSON_PATH/Orig/QCD.json
 #mergeJSONs $JSON_PATH/otherMC2.json           $JSON_PATH/Orig/ZInv.json
 #mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json       $JSON_PATH/Orig/SingleTop.json
 #mergeJSONs $JSON_PATH/otherMC4.json           $JSON_PATH/Orig/DYJets.json
 cp         $JSON_PATH/Orig/QCD.json           $JSON_PATH/otherMC1.json
 cp         $JSON_PATH/Orig/ZInv.json          $JSON_PATH/otherMC2.json
-mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json       $JSON_PATH/Orig/SingleTop.json
+mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json      $JSON_PATH/Orig/SingleTop.json
 cp         $JSON_PATH/Orig/DYJets.json        $JSON_PATH/otherMC4.json
-mergeJSONs $JSON_PATH/otherMC.json            $JSON_PATH/otherMC1.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
-mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/backgroundMC.json  $JSON_PATH/otherMC1.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
+mergeJSONs $JSON_PATH/otherMC.json            $JSON_PATH/otherMC1.json     $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
+mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/backgroundMC.json $JSON_PATH/altTTbar.json $JSON_PATH/otherMC1.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
 
 # Copy the data JSON over, so that all locations are consistent
 cp         $JSON_PATH/Orig/Data.json          $JSON_PATH/
@@ -29,7 +30,7 @@ mergeJSONs $JSON_PATH/makePD.json             $JSON_PATH/Orig/TTbar_LO.json $JSO
 mergeJSONs $JSON_PATH/makePD_Inj_300_270.json $JSON_PATH/makePD.json        $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 
 # Make the JSON for synchronization
-mergeJSONs $JSON_PATH/synch.json              $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/synch.json              $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 
 # Make the JSONs for plotting
 mergeJSONs $JSON_PATH/plot2016B.json          $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json

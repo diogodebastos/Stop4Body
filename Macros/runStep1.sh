@@ -17,6 +17,7 @@ cd Step1Scripts
 
 # Submit job for all MC
 qsub Step1_ProcessSamples_backgroundMCJob.sh
+qsub Step1_ProcessSamples_altTTbarJob.sh
 qsub Step1_ProcessSamples_otherMCJob1.sh
 qsub Step1_ProcessSamples_otherMCJob2.sh
 qsub Step1_ProcessSamples_otherMCJob3.sh

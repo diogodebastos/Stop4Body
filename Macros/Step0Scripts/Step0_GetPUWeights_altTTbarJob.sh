@@ -13,7 +13,8 @@ eval `scramv1 runtime -sh`
 cd UserCode/Stop4Body/Macros/
 
 . setupPaths.sh
-MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --json $JSON_PATH/backgroundMC.json --outDir ${NTUPLE_DIR}"
-eval $MY_PROCESS_SAMPLES_CMD
 
-splitTrainingTest --json $JSON_PATH/backgroundMC.json --inDir ${NTUPLE_DIR} --testOutDir ${TEST_DIR} --trainOutDir ${TRAIN_DIR}
+if [[ -d ${NTUPLE_DIR} ]]; then
+  getPUWeight --json ${JSON_PATH}/altTTbar.json  --outDir ${NTUPLE_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
+fi
+
