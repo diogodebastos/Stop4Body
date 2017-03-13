@@ -111,7 +111,7 @@ int main(int argc, char** argv)
       foundWJets = true;
     }
 
-    if(MC.process(i).tag() == "ttbar" || MC.process(i).tag() == "ttbar_lo")
+    if(MC.process(i).tag().find("ttbar") != std::string::npos)
     {
       ttbarIndex = i;
       foundTTbar = true;
