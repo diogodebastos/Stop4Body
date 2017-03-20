@@ -332,7 +332,7 @@ int main(int argc, char** argv)
 
         Float_t thisGenWeight = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
-        Int_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
+        Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
         double smallCounter = 0;
         for(Int_t i = 0; i < thisNevt; ++i)
         {
@@ -441,7 +441,7 @@ int main(int argc, char** argv)
 
         //inputtree->SetBranchAddress("puWeight", &puWeight);
         inputtree->SetBranchAddress("genWeight", &genWeight);
-        Int_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
+        Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
         Float_t xsec = 1;
         Float_t nTrueInt = 1;
