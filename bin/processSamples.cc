@@ -880,7 +880,7 @@ int main(int argc, char** argv)
           else
             weight = 1;
 
-          if(doSync)
+          if(doSync && HT > 200 && Jet1Pt > 100 && Met > 200)
           {
             if(sync_count < max_sync_count)
             {
@@ -894,7 +894,7 @@ int main(int argc, char** argv)
                 SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_id[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
               }
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
-              SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; PDG ID: " << LepID << std::endl;
+              SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
               SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2 << std::endl;
               SyFile << "   weight for 10 fb-1: " << weight*10000 << " (without SFs: " << 10000*XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
               SyFile << "   passed: ";
@@ -938,7 +938,7 @@ int main(int argc, char** argv)
                 SyFile << std::endl << "nLepGood: " << nLepGood << std::endl;
                 SyFile << "LepGood:" << std::endl;
                 for(int i = 0; i < nLepGood; ++i)
-                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; relIso03: " << LepGood_relIso03[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << std::endl;
+                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; phi: " << LepGood_phi[i] << "; relIso03: " << LepGood_relIso03[i] << "; pdgID: " << LepGood_pdgId[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << std::endl;
                 SyFile << "nJetGood: " << nJetIn << std::endl;
                 for(int i = 0; i < nJetIn; ++i)
                   SyFile << "   jet " << i+1 << ": pt: " << Jet_pt[i] << "; eta: " << Jet_eta[i] << "; phi: " << Jet_phi[i] << "; mass: " << Jet_mass[i] << "; ID: " << Jet_id[i] << std::endl;
