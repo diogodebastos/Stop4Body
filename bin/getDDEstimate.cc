@@ -287,6 +287,8 @@ doubleUnc naiveDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleRea
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
   doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
   doubleUnc otherMC (0,0);
+  if(static_cast<double>(NinSR) == 0)
+    NinSR = doubleUnc(4,2);
   for(auto &process: MC)
   {
     if(process.tag() != toEstimate.tag())
@@ -313,6 +315,8 @@ doubleUnc injectDD(std::ofstream &outputTable, ProcessInfo &toEstimate, ProcessI
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
   doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
   doubleUnc otherMC (0,0);
+  if(static_cast<double>(NinSR) == 0)
+    NinSR = doubleUnc(4,2);
   for(auto &process: MC)
   {
     if(process.tag() != toEstimate.tag() && process.tag() != toInject.tag())
