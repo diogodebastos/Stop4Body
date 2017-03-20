@@ -13,12 +13,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT100to200/treeProducerSusySingleLepton_tree",
-              "split":1
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT100to200",
+              "split":51
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT100to200_ext/treeProducerSusySingleLepton_tree",
-              "split":435
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT100to200_ext",
+              "split":211
             }
           ]
         },
@@ -28,12 +28,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT200to400/treeProducerSusySingleLepton_tree",
-              "split":1
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT200to400",
+              "split":112
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT200to400_ext/treeProducerSusySingleLepton_tree",
-              "split":489
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT200to400_ext",
+              "split":201
             }
           ]
         },
@@ -43,8 +43,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT400to600/treeProducerSusySingleLepton_tree",
-              "split":26
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT400to600",
+              "split":22
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT400to600_ext",
+              "split":109
             }
           ]
         },
@@ -54,8 +58,8 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT600to800/treeProducerSusySingleLepton_tree",
-              "split":132
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT600to800",
+              "split":133
             }
           ]
         },
@@ -65,8 +69,8 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT800to1200/treeProducerSusySingleLepton_tree",
-              "split":47
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT800to1200",
+              "split":46
             }
           ]
         },
@@ -76,12 +80,12 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT1200to2500/treeProducerSusySingleLepton_tree",
-              "split":12
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT1200to2500",
+              "split":8
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT1200to2500_ext/treeProducerSusySingleLepton_tree",
-              "split":7
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT1200to2500_ext",
+              "split":3
             }
           ]
         },
@@ -91,8 +95,8 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/ZInv/ZJetsToNuNu_HT2500toInf/treeProducerSusySingleLepton_tree",
-              "split":9
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT2500toInf",
+              "split":12
             }
           ]
         }
