@@ -30,6 +30,7 @@ int main(int argc, char **argv)
   std::string drawMVA = "BDT";
   std::string suffix = "";
   double luminosity = 0;
+  bool isPseudoData = false;
 
   if(argc < 2)
   {
@@ -69,6 +70,11 @@ int main(int argc, char **argv)
 
     if(argument == "--draw")
       drawMVA = argv[++i];
+
+    if(argument == "--isPseudoData")
+    {
+      isPseudoData = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -100,7 +106,11 @@ int main(int argc, char **argv)
 
   std::stringstream converter;
   std::string mcWeight;
-  converter << "splitFactor*weight*" << luminosity;
+  if(isPseudoData)
+    converter << "splitFactor*XS*filterEfficiency*(genWeight/sumGenWeight)*"; // The scale factors are not considered here
+  else
+    converter << "splitFactor*weight*";
+  converter << luminosity;
   converter >> mcWeight;
 
   for(auto& region : regions)
