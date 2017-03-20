@@ -340,7 +340,8 @@ int main(int argc, char** argv)
 
           smallCounter += thisGenWeight;
 
-          switch(nIsr)
+          Int_t nIsr_switch = nIsr;
+          switch(nIsr_switch)
           {
             case 0:
               nIsrBin0++;
