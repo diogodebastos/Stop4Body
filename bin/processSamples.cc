@@ -880,6 +880,7 @@ int main(int argc, char** argv)
           else
             weight = 1;
 
+          //if(doSync)
           if(doSync && HT > 200 && Jet1Pt > 100 && Met > 200)
           {
             if(sync_count < max_sync_count)
