@@ -406,9 +406,9 @@ int main(int argc, char** argv)
           inputtree = static_cast<TTree*>(finput.Get("tree"));
 
         // Read Branches you are interested in from the input tree
-        Float_t mtw1;        inputtree->SetBranchAddress("mtw1"       , &mtw1);
-        Float_t mtw2;        inputtree->SetBranchAddress("mtw2"       , &mtw2);
-        Float_t mtw;         inputtree->SetBranchAddress("mtw"       , &mtw);
+        Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
+        Float_t mtw2;        inputtree->SetBranchAddress("event_mtw2"       , &mtw2);
+        Float_t mtw;         inputtree->SetBranchAddress("event_mtw"       , &mtw);
         Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
         Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
