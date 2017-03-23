@@ -483,7 +483,11 @@ int main(int argc, char** argv)
         size_t nentries = static_cast<size_t>(inputtree->GetEntries());
         std::cout << "\t    The file has " << nentries << " events." << std::endl;
         std::cout << "\t    Progress Bar: " << std::flush;
-        int statusPrint = nentries/20;
+        int statusPrint = 0;
+        if(nentries < 20)
+          statusPrint = 1;
+        else
+          statusPrint = nentries/20;
         for(size_t i = 0; i < nentries; i++)
         {
           // Uncomment this if you suspect the loop is not going through the events
@@ -491,7 +495,7 @@ int main(int argc, char** argv)
             std::cout << "$\b" << std::flush;
           else
             std::cout << " \b" << std::flush;// */
-          if(i%statusPrint == 0 && i != 0)
+          if((statusPrint == 1) || (i%statusPrint == 0 && i != 0))
             std::cout << "*" << std::flush;
 
           if(doSync && max_sync_count > 0 && sync_count >= max_sync_count)
