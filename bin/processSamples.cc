@@ -327,14 +327,14 @@ int main(int argc, char** argv)
         else
           inputtree = static_cast<TTree*>(finput.Get("tree"));
 
-        Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
+        size_t thisNevt = static_cast<size_t>(inputtree->GetEntries());
         Nevt += thisNevt;
 
         Float_t thisGenWeight = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
         double smallCounter = 0;
-        for(Int_t i = 0; i < thisNevt; ++i)
+        for(size_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
 
@@ -480,11 +480,11 @@ int main(int argc, char** argv)
         Int_t GenSusyMNeutralino; inputtree->SetBranchAddress("GenSusyMNeutralino", &GenSusyMNeutralino);
 
         // Read the number of entries in the inputtree
-        Int_t nentries = (Int_t)inputtree->GetEntries();
+        size_t nentries = static_cast<size_t>(inputtree->GetEntries());
         std::cout << "\t    The file has " << nentries << " events." << std::endl;
         std::cout << "\t    Progress Bar: " << std::flush;
         int statusPrint = nentries/20;
-        for(Int_t i = 0; i < nentries; i++)
+        for(size_t i = 0; i < nentries; i++)
         {
           // Uncomment this if you suspect the loop is not going through the events
           /*if(i%2 == 0)
