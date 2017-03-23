@@ -10,10 +10,18 @@ fi
 cd Step0Scripts
 
 # Submit job for all MC
-qsub Step0_GetPUWeights_backgroundMCJob.sh
+qsub Step0_GetPUWeights_TTbarJob.sh
 qsub Step0_GetPUWeights_TTbarLOJob.sh
 qsub Step0_GetPUWeights_TTLepJob.sh
 qsub Step0_GetPUWeights_TTpowJob.sh
+qsub Step0_GetPUWeights_Wjets_70to100Job.sh
+qsub Step0_GetPUWeights_Wjets_100to200Job.sh
+qsub Step0_GetPUWeights_Wjets_200to400Job.sh
+qsub Step0_GetPUWeights_Wjets_400to600Job.sh
+qsub Step0_GetPUWeights_Wjets_600to800Job.sh
+qsub Step0_GetPUWeights_Wjets_800to1200Job.sh
+qsub Step0_GetPUWeights_Wjets_1200to2500Job.sh
+qsub Step0_GetPUWeights_Wjets_2500toInfJob.sh
 qsub Step0_GetPUWeights_otherMCJob1.sh
 qsub Step0_GetPUWeights_otherMCJob2.sh
 qsub Step0_GetPUWeights_otherMCJob3.sh

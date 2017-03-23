@@ -1,0 +1,32 @@
+{
+  "lines":[
+    {
+      "tag":"WJets",
+      "isdata":false,
+      "color":811,
+      "lcolor":1,
+      "label":"W + Jets",
+      "files":[
+        {
+          "tag":"Wjets_200to400",
+          "xsec": 435.6,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT200to400",
+              "split":89
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT200to400_ext",
+              "split":186
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT200to400_ext2",
+              "split":176
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

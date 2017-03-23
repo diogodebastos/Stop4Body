@@ -1,0 +1,28 @@
+{
+  "lines":[
+    {
+      "tag":"WJets",
+      "isdata":false,
+      "color":811,
+      "lcolor":1,
+      "label":"W + Jets",
+      "files":[
+        {
+          "tag":"Wjets_800to1200",
+          "xsec": 6.65612,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT800to1200",
+              "split":28
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT800to1200_ext",
+              "split":115
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -7,6 +7,7 @@ rm    $JSON_PATH/*.json
 
 # Make a JSON for all MC except signal
 mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
+cp $JSON_PATH/Orig/Wjets.json $JSON_PATH/Wjets.json
 cp $JSON_PATH/Orig/TTbar.json $JSON_PATH/TTbar.json
 cp $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/TTbar_LO.json
 cp $JSON_PATH/Orig/TTLep.json $JSON_PATH/TTLep.json
@@ -29,7 +30,7 @@ cp         $JSON_PATH/Orig/Data.json          $JSON_PATH/
 mergeJSONs $JSON_PATH/allPD.json              $JSON_PATH/Orig/PD.json       $JSON_PATH/Orig/PDInj.json
 
 # Make a JSON for producing the PD
-mergeJSONs $JSON_PATH/makePD.json             $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Wjets.json
+mergeJSONs $JSON_PATH/makePD.json             $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Wjets.json $JSON_PATH/Orig/ZInv.json
 mergeJSONs $JSON_PATH/makePD_Inj_300_270.json $JSON_PATH/makePD.json        $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 
 # Make the JSON for synchronization
