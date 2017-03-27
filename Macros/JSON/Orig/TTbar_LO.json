@@ -8,7 +8,7 @@
       "label":"t#bar{t}",
       "files":[
         {
-          "tag":"TTJets_LO_HT600to600",
+          "tag":"TTJets_LO_HT600to800",
           "xsec": 1.0,
           "br": 1.0,
           "paths":[
