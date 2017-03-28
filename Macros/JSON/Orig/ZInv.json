@@ -69,7 +69,7 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT800to1200",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZJetsToNuNu_HT800t1200",
               "split":46
             }
           ]
