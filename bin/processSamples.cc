@@ -71,6 +71,7 @@ doubleUnc stopCrossSection(double stopM, double lspM);
 doubleUnc triggerEfficiencyFromMET(double met_pt);
 doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt, double met_phi);
 doubleUnc ISRweightFromNISRJet(int nISRJet);
+doubleUnc EWKISRweightFromISRpT(double ISRpT);
 
 int main(int argc, char** argv)
 {
@@ -196,7 +197,7 @@ int main(int argc, char** argv)
       Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
       Float_t splitFactor=1; bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
       Float_t triggerEfficiency=1; bdttree->Branch("triggerEfficiency", &triggerEfficiency, "triggerEfficiency/F");
-      Float_t WISRSF=1; bdttree->Branch("WISRSF", &WISRSF, "WISRSF/F");
+      Float_t EWKISRweight=1; bdttree->Branch("EWKISRweight", &EWKISRweight, "EWKISRweight/F");
       Float_t ISRweight=1; bdttree->Branch("ISRweight", &ISRweight, "ISRweight/F");
       Float_t puWeight; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
       Float_t weight; bdttree->Branch("weight", &weight, "weight/F");
@@ -315,7 +316,8 @@ int main(int argc, char** argv)
       Ncut4 = 0;
       Ncut5 = 0;
       Ncut6 = 0;
-      int nIsrBin0 = 0, nIsrBin1 = 0, nIsrBin2 = 0, nIsrBin3 = 0, nIsrBin4 = 0, nIsrBin5 = 0, nIsrBin6 = 0;
+      int nIsrBin[7]{0, 0, 0, 0, 0, 0, 0};
+      int EWKpTBin[8]{0, 0, 0, 0, 0, 0, 0, 0};
       std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
       for(auto &file : sample)
       {
@@ -333,6 +335,11 @@ int main(int argc, char** argv)
         Float_t thisGenWeight = 0;
         inputtree->SetBranchAddress("genWeight", &thisGenWeight);
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
+        Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
+        Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
+        Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+        Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
+        Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
         double smallCounter = 0;
         for(size_t i = 0; i < thisNevt; ++i)
         {
@@ -341,29 +348,36 @@ int main(int argc, char** argv)
           smallCounter += thisGenWeight;
 
           Int_t nIsr_switch = nIsr;
-          switch(nIsr_switch)
+          if(nIsr_switch > 6)
+            nIsr_switch = 6;
+          nIsrBin[nIsr_switch]++;
+
+          if(nLepGood > 0)
           {
-            case 0:
-              nIsrBin0++;
-              break;
-            case 1:
-              nIsrBin1++;
-              break;
-            case 2:
-              nIsrBin2++;
-              break;
-            case 3:
-              nIsrBin3++;
-              break;
-            case 4:
-              nIsrBin4++;
-              break;
-            case 5:
-              nIsrBin5++;
-              break;
-            default:
-              nIsrBin6++;
-              break;
+            double lep_x = LepGood_pt[0] * std::cos(LepGood_phi[0]);
+            double lep_y = LepGood_pt[0] * std::sin(LepGood_phi[0]);
+            double met_x = met_pt * std::cos(met_phi);
+            double met_y = met_pt * std::sin(met_phi);
+
+            double w_pt = std::sqrt((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y));
+
+            int EWKindex = 7;
+            if(w_pt < 600)
+              EWKindex = 6;
+            if(w_pt < 400)
+              EWKindex = 5;
+            if(w_pt < 300)
+              EWKindex = 4;
+            if(w_pt < 200)
+              EWKindex = 3;
+            if(w_pt < 150)
+              EWKindex = 2;
+            if(w_pt < 100)
+              EWKindex = 1;
+            if(w_pt < 50)
+              EWKindex = 0;
+
+            EWKpTBin[EWKindex]++;
           }
         }
         sumGenWeightCounting += smallCounter;
@@ -374,23 +388,41 @@ int main(int argc, char** argv)
       sumGenWeight = sumGenWeightCounting; // Consider implementing the streaming float summation: http://dl.acm.org/citation.cfm?id=1824815
       std::cout << Nevt << "; " << sumGenWeight << std::endl;
       double ISRCParam = 1;
+      double EWKISRCParam = 1;
       if(!process.isdata())
       {
-        ISRCParam = (                        nIsrBin0 +
-                                             nIsrBin1 +
-                                             nIsrBin2 +
-                                             nIsrBin3 +
-                                             nIsrBin4 +
-                                             nIsrBin5 +
-                                             nIsrBin6  ) /
- static_cast<double>(ISRweightFromNISRJet(0)*nIsrBin0 +
-                     ISRweightFromNISRJet(1)*nIsrBin1 +
-                     ISRweightFromNISRJet(2)*nIsrBin2 +
-                     ISRweightFromNISRJet(3)*nIsrBin3 +
-                     ISRweightFromNISRJet(4)*nIsrBin4 +
-                     ISRweightFromNISRJet(5)*nIsrBin5 +
-                     ISRweightFromNISRJet(6)*nIsrBin6  );
-        std::cout << "C value for ISR reweighting: " << ISRCParam << std::endl;
+        ISRCParam = (                        nIsrBin[0] +
+                                             nIsrBin[1] +
+                                             nIsrBin[2] +
+                                             nIsrBin[3] +
+                                             nIsrBin[4] +
+                                             nIsrBin[5] +
+                                             nIsrBin[6]  ) /
+ static_cast<double>(ISRweightFromNISRJet(0)*nIsrBin[0] +
+                     ISRweightFromNISRJet(1)*nIsrBin[1] +
+                     ISRweightFromNISRJet(2)*nIsrBin[2] +
+                     ISRweightFromNISRJet(3)*nIsrBin[3] +
+                     ISRweightFromNISRJet(4)*nIsrBin[4] +
+                     ISRweightFromNISRJet(5)*nIsrBin[5] +
+                     ISRweightFromNISRJet(6)*nIsrBin[6]  );
+        EWKISRCParam = (                          EWKpTBin[0] +
+                                                  EWKpTBin[1] +
+                                                  EWKpTBin[2] +
+                                                  EWKpTBin[3] +
+                                                  EWKpTBin[4] +
+                                                  EWKpTBin[5] +
+                                                  EWKpTBin[6] +
+                                                  EWKpTBin[7]  ) /
+ static_cast<double>(EWKISRweightFromISRpT( 25.0)*EWKpTBin[0] +
+                     EWKISRweightFromISRpT( 75.0)*EWKpTBin[1] +
+                     EWKISRweightFromISRpT(125.0)*EWKpTBin[2] +
+                     EWKISRweightFromISRpT(175.0)*EWKpTBin[3] +
+                     EWKISRweightFromISRpT(250.0)*EWKpTBin[4] +
+                     EWKISRweightFromISRpT(350.0)*EWKpTBin[5] +
+                     EWKISRweightFromISRpT(500.0)*EWKpTBin[6] +
+                     EWKISRweightFromISRpT(700.0)*EWKpTBin[7]  );
+        std::cout << "\t  C value for ISR reweighting: " << ISRCParam << std::endl;
+        std::cout << "\t  C value for EWK ISR reweighting: " << EWKISRCParam << std::endl;
       }
 
       for(auto &file : sample)
@@ -626,10 +658,13 @@ int main(int argc, char** argv)
           if(!process.isdata())
           {
             triggerEfficiency = static_cast<double>(triggerEfficiencyFromMET(met_pt));
+            // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets")
-              WISRSF = static_cast<double>(WISRScaleFactorFromLepMet(LepPt, lep_phi, met_pt, met_phi));
-            if(process.tag() == "ttbar" || process.tag() == "ttbar_lo" || process.issignal())
+              EWKISRweight = EWKISRCParam * static_cast<double>(EWKISRweightFromISRpT(LepPt, lep_phi, met_pt, met_phi));
+            // For ISR, assume syst 50%
+            if(process.tag() == "ttbar" || process.tag() == "ttbar_lep" || process.tag() == "ttbar_lo" || process.issignal())
               ISRweight = ISRCParam * static_cast<double>(ISRweightFromNISRJet(nIsr));
+            // TODO: missing tt_pow reweighting https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
           }
 
           if(validLeptons.size() > 0 && validJets.size() > 0)
@@ -881,7 +916,7 @@ int main(int argc, char** argv)
             filterEfficiency = 1.0;
 
           if(!process.isdata())
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*WISRSF*ISRweight;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight;
           else
             weight = 1;
 
@@ -1161,8 +1196,8 @@ doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt
   return retVal;
 }
 
-// Taken from: https://indico.cern.ch/event/557678/contributions/2247944/attachments/1311994/1963568/16-07-19_ana_manuelf_isr.pdf
-// TODO: Update to latest (probably https://indico.cern.ch/event/592621/contributions/2398559/attachments/1383909/2105089/16-12-05_ana_manuelf_isr.pdf)
+// https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
+// Taken from: https://indico.cern.ch/event/592621/contributions/2398559/attachments/1383909/2105089/16-12-05_ana_manuelf_isr.pdf
 doubleUnc ISRweightFromNISRJet(int nISRJet)
 {
   switch(nISRJet)
@@ -1171,23 +1206,59 @@ doubleUnc ISRweightFromNISRJet(int nISRJet)
       return doubleUnc(1.000, 0);
       break;
     case 1:
-      return doubleUnc(0.882, 0);
+      return doubleUnc(0.920, 0);
       break;
     case 2:
-      return doubleUnc(0.792, 0);
+      return doubleUnc(0.821, 0);
       break;
     case 3:
-      return doubleUnc(0.702, 0);
+      return doubleUnc(0.715, 0);
       break;
     case 4:
-      return doubleUnc(0.648, 0);
+      return doubleUnc(0.662, 0);
       break;
     case 5:
-      return doubleUnc(0.601, 0);
+      return doubleUnc(0.561, 0);
       break;
     default:
-      return doubleUnc(0.515, 0);
+      return doubleUnc(0.511, 0);
       break;
+  }
+  return doubleUnc(0, 0);
+}
+
+// Taken from: https://indico.cern.ch/event/616816/contributions/2489809/attachments/1418579/2174166/17-02-22_ana_isr_ewk.pdf
+doubleUnc EWKISRweightFromISRpT(double lep_pt, double lep_phi, double met_pt, double met_phi)
+{
+  double lep_x = lep_pt * std::cos(lep_phi);
+  double lep_y = lep_pt * std::sin(lep_phi);
+  double met_x = met_pt * std::cos(met_phi);
+  double met_y = met_pt * std::sin(met_phi);
+
+  double w_pt = std::sqrt((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y));
+
+  return EWKISRweightFromISRpT(w_pt);
+}
+doubleUnc EWKISRweightFromISRpT(double ISRpT)
+{
+  if(ISRpT >= 0)
+  {
+    if(ISRpT < 50)
+      return doubleUnc(1, 0);
+    if(ISRpT < 100)
+      return doubleUnc(1.052, 0);
+    if(ISRpT < 150)
+      return doubleUnc(1.179, 0);
+    if(ISRpT < 200)
+      return doubleUnc(1.150, 0);
+    if(ISRpT < 300)
+      return doubleUnc(1.057, 0);
+    if(ISRpT < 400)
+      return doubleUnc(1.000, 0);
+    if(ISRpT < 600)
+      return doubleUnc(0.912, 0);
+
+    return doubleUnc(0.783, 0);
   }
   return doubleUnc(0, 0);
 }
