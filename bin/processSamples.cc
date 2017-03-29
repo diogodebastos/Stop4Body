@@ -1132,19 +1132,26 @@ float DeltaPhi(float p1, float p2)
   return std::abs(x);
 }
 
-// Taken from Ivan's presentation, here: https://indico.cern.ch/event/613194/
+// Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
 doubleUnc triggerEfficiencyFromMET(double met_pt)
 {
   double val = 0, unc = 0;
 
-  double recenterMet = (met_pt - 127.2)/76.58;
+  double par0    = 0.9899;
+  double par1    = 109.8;
+  double par2    = 94.26;
+  double par0err = 0.0006464;
+  double par1err = 2.225;
+  double par2err = 2.443;
 
-  val = 0.9673 * 0.5 * (1.0 + TMath::Erf(recenterMet));
+  double recenterMet = (met_pt - par1)/par2;
 
-  double term1 = 0.0008709 * 0.5 * (1.0 + TMath::Erf(recenterMet));
+  val = par0 * 0.5 * (1.0 + TMath::Erf(recenterMet));
+
+  double term1 = par0err * 0.5 * (1.0 + TMath::Erf(recenterMet));
   term1 = term1 * term1;
-  double term2 = (0.9673/76.58)*(0.9673/76.58) * std::exp(2*recenterMet*recenterMet) / TMath::Pi();
-  term2 *= 1.811*1.811 + 2.091*2.091*recenterMet*recenterMet;
+  double term2 = (par0/par2)*(par0/par2) * std::exp(2*recenterMet*recenterMet) / TMath::Pi();
+  term2 *= par1err*par1err + par2err*par2err*recenterMet*recenterMet;
   unc = std::sqrt(term1 + term2);
 
   doubleUnc retVal(val, unc);
