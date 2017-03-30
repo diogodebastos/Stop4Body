@@ -13,7 +13,8 @@ eval `scramv1 runtime -sh`
 cd UserCode/Stop4Body/Macros/
 
 . setupPaths.sh
-MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --json $JSON_PATH/altTTbar.json --outDir ${NTUPLE_DIR}"
+JSONFILE=$JSON_PATH/TT_pow.json
+MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --json $JSONFILE --outDir ${NTUPLE_DIR}"
 eval $MY_PROCESS_SAMPLES_CMD
 
-splitTrainingTest --json $JSON_PATH/TT_pow.json --inDir ${NTUPLE_DIR} --testOutDir ${TEST_DIR} --trainOutDir ${TRAIN_DIR}
+splitTrainingTest --json $JSONFILE --inDir ${NTUPLE_DIR} --testOutDir ${TEST_DIR} --trainOutDir ${TRAIN_DIR}
