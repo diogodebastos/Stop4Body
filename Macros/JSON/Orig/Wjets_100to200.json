@@ -13,15 +13,15 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT100to200",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT100to200",
               "split":134
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT100to200_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT100to200_ext",
               "split":151
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT100to200_ext2",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT100to200_ext2",
               "split":175
             }
           ]

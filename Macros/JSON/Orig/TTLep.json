@@ -13,11 +13,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_DiLepton",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_DiLepton",
               "split":83
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_DiLepton_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_DiLepton_ext",
               "split":171
             }
           ]
@@ -28,11 +28,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_SingleLeptonFromT",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromT",
               "split":167
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_SingleLeptonFromT_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromT_ext",
               "split":210
             }
           ]
@@ -43,11 +43,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_SingleLeptonFromTbar",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromTbar",
               "split":196
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TTJets_SingleLeptonFromTbar_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromTbar_ext",
               "split":187
             }
           ]

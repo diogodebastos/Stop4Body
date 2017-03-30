@@ -13,11 +13,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT1200to2500",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT1200to2500",
               "split":7
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WJetsToLNu_HT1200to2500_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT1200to2500_ext",
               "split":116
             }
           ]

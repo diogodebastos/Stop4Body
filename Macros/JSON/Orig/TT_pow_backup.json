@@ -13,7 +13,7 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TT_pow_backup",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TT_pow_backup",
               "split":239
             }
           ]
