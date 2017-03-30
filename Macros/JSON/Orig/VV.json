@@ -13,7 +13,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/WW/treeProducerSusySingleLepton_tree",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WW",
+              "split":24
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WW_ext",
               "split":24
             }
           ]
@@ -24,7 +28,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/ZZ/treeProducerSusySingleLepton_tree",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZZ",
+              "split":25
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZZ_ext",
               "split":25
             }
           ]
@@ -35,7 +43,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/VV/WZ/treeProducerSusySingleLepton_tree",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WZ",
+              "split":24
+            },
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WZ_ext",
               "split":24
             }
           ]
