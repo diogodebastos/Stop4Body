@@ -9,46 +9,46 @@
       "files":[
         {
           "tag":"WW",
-          "xsec": 1,
+          "xsec": 115.0422,
           "br": 1.0,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WW",
-              "split":24
+              "split":11
             },
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WW_ext",
-              "split":24
+              "split":116
             }
           ]
         },
         {
           "tag":"ZZ",
-          "xsec": 96.38,
+          "xsec": 16.523,
           "br": 1.0,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZZ",
-              "split":25
+              "split":12
             },
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZZ_ext",
-              "split":25
+              "split":66
             }
           ]
         },
         {
           "tag":"WZ",
-          "xsec": 13.46,
+          "xsec": 47.13,
           "br": 1.0,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WZ",
-              "split":24
+              "split":30
             },
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WZ_ext",
-              "split":24
+              "split":128
             }
           ]
         }
