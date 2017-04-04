@@ -326,8 +326,8 @@ int main(int argc, char** argv)
       {
         TDirectory* cwd = gDirectory;
         TFile filterEfficiencyFile(sample.filterEfficiencyFile().c_str(), "READ");
-        filterEfficiencyH = static_cast<TH2F*>(filterEfficiencyFile.Get("filterEfficiency"));
         cwd->cd();
+        filterEfficiencyH = static_cast<TH2F*>(filterEfficiencyFile.Get("filterEfficiency")->Clone("filterEfficiencyH"));
       }
 
       // Get total number of entries and other important values
