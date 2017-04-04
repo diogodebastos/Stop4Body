@@ -72,6 +72,7 @@ doubleUnc triggerEfficiencyFromMET(double met_pt);
 doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt, double met_phi);
 doubleUnc ISRweightFromNISRJet(int nISRJet);
 doubleUnc EWKISRweightFromISRpT(double ISRpT);
+doubleUnc EWKISRweightFromISRpT(double lep_pt, double lep_phi, double met_pt, double met_phi);
 doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
 
@@ -326,6 +327,7 @@ int main(int argc, char** argv)
         TDirectory* cwd = gDirectory;
         TFile filterEfficiencyFile(sample.filterEfficiencyFile().c_str(), "READ");
         filterEfficiencyH = static_cast<TH2F*>(filterEfficiencyFile.Get("filterEfficiency"));
+        cwd->cd();
       }
 
       // Get total number of entries and other important values
@@ -642,8 +644,8 @@ int main(int argc, char** argv)
 
             if(!process.isdata())
             {
-              leptonIDSF = getLeptonIDSF(LepID, LepPt, LepEta);
-              leptonISOSF = getLeptonISOSF(LepID, LepPt, LepEta);
+              leptonIDSF = static_cast<double>(getLeptonIDSF(LepID, LepPt, LepEta));
+              leptonISOSF = static_cast<double>(getLeptonISOSF(LepID, LepPt, LepEta));
             }
           }
           else
