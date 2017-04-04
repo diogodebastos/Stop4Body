@@ -18,7 +18,7 @@
           "tag":"T2DegStop_275_195",
           "xsec": 1.0,
           "br": 1.0,
-          "filterEfficiencyFile":"../data/filterEffs_T2tt_dM-10to80_genHT_160_genMET_80.root",
+          "filterEfficiencyFile":"../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root",
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1",
