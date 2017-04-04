@@ -7,11 +7,11 @@ rm    $JSON_PATH/*.json
 
 # Make a JSON for all MC except signal
 mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
-cp $JSON_PATH/Orig/Wjets.json $JSON_PATH/Wjets.json
-cp $JSON_PATH/Orig/TTbar.json $JSON_PATH/TTbar.json
-cp $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/TTbar_LO.json
-cp $JSON_PATH/Orig/TTLep.json $JSON_PATH/TTLep.json
-mergeJSONs $JSON_PATH/TT_pow.json           $JSON_PATH/Orig/TT_pow.json $JSON_PATH/Orig/TT_pow_backup.json
+cp         $JSON_PATH/Orig/Wjets.json         $JSON_PATH/Wjets.json
+cp         $JSON_PATH/Orig/TTbar.json         $JSON_PATH/TTbar.json
+cp         $JSON_PATH/Orig/TTbar_LO.json      $JSON_PATH/TTbar_LO.json
+cp         $JSON_PATH/Orig/TTLep.json         $JSON_PATH/TTLep.json
+mergeJSONs $JSON_PATH/TT_pow.json             $JSON_PATH/Orig/TT_pow.json $JSON_PATH/Orig/TT_pow_backup.json
 #mergeJSONs $JSON_PATH/otherMC1.json           $JSON_PATH/Orig/QCD.json
 #mergeJSONs $JSON_PATH/otherMC2.json           $JSON_PATH/Orig/ZInv.json
 #mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json       $JSON_PATH/Orig/SingleTop.json
@@ -37,14 +37,14 @@ mergeJSONs $JSON_PATH/makePD_Inj_300_270.json $JSON_PATH/makePD.json        $JSO
 mergeJSONs $JSON_PATH/synch.json              $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 
 # Make the JSONs for plotting
-mergeJSONs $JSON_PATH/plot2016B.json          $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
-mergeJSONs $JSON_PATH/plot2016B_LO.json       $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016B.json          $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json   $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016B_LO.json       $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016B.json   $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016BCD.json        $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016BCD.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 mergeJSONs $JSON_PATH/plot2016BCD_LO.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data_2016BCD.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
-mergeJSONs $JSON_PATH/plot2016.json           $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
-mergeJSONs $JSON_PATH/plot2016_LO.json        $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
-mergeJSONs $JSON_PATH/plot2016_PD_LO.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/PD.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
-mergeJSONs $JSON_PATH/plot2016_PDInj_LO.json  $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/PDInj.json $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016.json           $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTbar.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016_LO.json        $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016_PD_LO.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/PD.json           $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+mergeJSONs $JSON_PATH/plot2016_PDInj_LO.json  $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TT_pow.json   $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/PDInj.json        $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
 
 # Make a JSON for the PU tests
 mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Data.json
