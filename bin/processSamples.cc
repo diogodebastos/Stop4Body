@@ -320,14 +320,12 @@ int main(int argc, char** argv)
       Float_t Ncut6;
 
 
-      TH1* filterEfficiencyH = nullptr;
+      TH2F* filterEfficiencyH = nullptr;
       if(sample.filterEfficiencyFile() != "")
       {
         TDirectory* cwd = gDirectory;
         TFile filterEfficiencyFile(sample.filterEfficiencyFile().c_str(), "READ");
-        TCanvas* canvas = static_cast<TCanvas*>(filterEfficiencyFile.Get("c1"));
-        cwd->cd();
-        filterEfficiencyH = static_cast<TH1*>(canvas->GetPrimitive("filterEfficiencies")->Clone("filterEfficiency"));
+        filterEfficiencyH = static_cast<TH2F*>(filterEfficiencyFile.Get("filterEfficiency"));
       }
 
       // Get total number of entries and other important values
