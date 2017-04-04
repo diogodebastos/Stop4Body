@@ -72,6 +72,17 @@ doubleUnc triggerEfficiencyFromMET(double met_pt);
 doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt, double met_phi);
 doubleUnc ISRweightFromNISRJet(int nISRJet);
 doubleUnc EWKISRweightFromISRpT(double ISRpT);
+doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta);
+doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
+
+TH2D* centralElectronSFHist = nullptr;
+TH2D* centralMuonSFHist = nullptr;
+TH1F* hephyElectronIDSFHistBarrel = nullptr;
+TH1F* hephyElectronIDSFHistEndcap = nullptr;
+TH1F* hephyMuonIDSFHist = nullptr;
+TH1F* hephyElectronISOSFHistBarrel = nullptr;
+TH1F* hephyElectronISOSFHistEndcap = nullptr;
+TH1F* hephyMuonISOSFHist = nullptr;
 
 int main(int argc, char** argv)
 {
@@ -146,6 +157,17 @@ int main(int argc, char** argv)
 
   TDirectory* cwd = gDirectory;
   TFile puWeightFile((outputDirectory + "/puWeights.root").c_str(), "READ");
+  TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
+  centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
+  TFile centralMuonSFFile("../data/TnP_NUM_LooseID_DENOM_generalTracks_VAR_map_pt_eta.root", "READ");
+  centralMuonSFHist = static_cast<TH2D*>(centralMuonSFFile.Get("SF"));
+  TFile hephySFFile("../data/hephy_scale_factors_10p0binning.root", "READ");
+  hephyElectronIDSFHistBarrel = static_cast<TH1F*>(hephySFFile.Get("ele_SF_IdSpec_barrel"));
+  hephyElectronIDSFHistEndcap = static_cast<TH1F*>(hephySFFile.Get("ele_SF_IdSpec_endcap"));
+  hephyMuonIDSFHist = static_cast<TH1F*>(hephySFFile.Get("muon_SF_Id_all"));
+  hephyElectronISOSFHistBarrel = static_cast<TH1F*>(hephySFFile.Get("ele_SF_IpIso_barrel"));
+  hephyElectronISOSFHistEndcap = static_cast<TH1F*>(hephySFFile.Get("ele_SF_IpIso_endcap"));
+  hephyMuonISOSFHist = static_cast<TH1F*>(hephySFFile.Get("muon_SF_IpIsoSpec_all"));
   cwd->cd();
 
   std::cout << "Reading JSON file" << std::endl;
@@ -192,15 +214,17 @@ int main(int argc, char** argv)
       Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
 
-      Float_t genWeight; bdttree->Branch("genWeight", &genWeight, "genWeight/F");
-      Float_t sumGenWeight; bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
+      Float_t genWeight=1; bdttree->Branch("genWeight", &genWeight, "genWeight/F");
+      Float_t sumGenWeight=1; bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
       Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
       Float_t splitFactor=1; bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
       Float_t triggerEfficiency=1; bdttree->Branch("triggerEfficiency", &triggerEfficiency, "triggerEfficiency/F");
       Float_t EWKISRweight=1; bdttree->Branch("EWKISRweight", &EWKISRweight, "EWKISRweight/F");
       Float_t ISRweight=1; bdttree->Branch("ISRweight", &ISRweight, "ISRweight/F");
-      Float_t puWeight; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
-      Float_t weight; bdttree->Branch("weight", &weight, "weight/F");
+      Float_t puWeight=1; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
+      Float_t leptonIDSF=1; bdttree->Branch("leptonIDSF", &leptonIDSF, "leptonIDSF/F");
+      Float_t leptonISOSF=1; bdttree->Branch("leptonISOSF", &leptonISOSF, "leptonISOSF/F");
+      Float_t weight=1; bdttree->Branch("weight", &weight, "weight/F");
 
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
       Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
@@ -617,6 +641,12 @@ int main(int argc, char** argv)
             LepDz       = LepGood_dz[leptonIndex];
             LepIso03    = LepGood_relIso03[leptonIndex];
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
+
+            if(!process.isdata())
+            {
+              leptonIDSF = getLeptonIDSF(LepID, LepPt, LepEta);
+              leptonISOSF = getLeptonISOSF(LepID, LepPt, LepEta);
+            }
           }
           else
           {
@@ -916,7 +946,7 @@ int main(int argc, char** argv)
             filterEfficiency = 1.0;
 
           if(!process.isdata())
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF;
           else
             weight = 1;
 
@@ -1130,6 +1160,129 @@ float DeltaPhi(float p1, float p2)
     x += (2.*TMath::Pi());
 
   return std::abs(x);
+}
+
+// Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
+doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta)
+{
+  LepEta = std::abs(LepEta);
+  double val = 1, unc = 0;
+  if(std::abs(LepID) == 11) // If electron
+  {
+    if(LepPt > 10)
+    {
+      if(centralElectronSFHist == nullptr)
+        return doubleUnc(1, 0);
+
+      if(LepPt >= 200)
+        LepPt = 199.999;
+      if(LepEta >= 2.5)
+        LepEta = 2.49999;
+
+      auto bin = centralElectronSFHist->FindBin(LepPt, LepEta);
+      val = centralElectronSFHist->GetBinContent(bin);
+      unc = centralElectronSFHist->GetBinError(bin);
+    }
+    else
+    {
+      if(LepEta > 1.48) // Endcap electron
+      {
+        if(hephyElectronIDSFHistEndcap == nullptr)
+          return doubleUnc(1, 0);
+
+        auto bin = hephyElectronIDSFHistEndcap->FindBin(LepPt);
+        val = hephyElectronIDSFHistEndcap->GetBinContent(bin);
+        unc = hephyElectronIDSFHistEndcap->GetBinError(bin);
+      }
+      else // Barrel electron
+      {
+        if(hephyElectronIDSFHistBarrel == nullptr)
+          return doubleUnc(1, 0);
+
+        auto bin = hephyElectronIDSFHistBarrel->FindBin(LepPt);
+        val = hephyElectronIDSFHistBarrel->GetBinContent(bin);
+        unc = hephyElectronIDSFHistBarrel->GetBinError(bin);
+      }
+    }
+  }
+  else
+  {
+    if(LepPt > 10)
+    {
+      if(centralMuonSFHist == nullptr)
+        return doubleUnc(1, 0);
+
+      if(LepPt >= 120)
+        LepPt = 119.999;
+      if(LepEta >= 2.4)
+        LepEta = 2.39999;
+
+      auto bin = centralMuonSFHist->FindBin(LepPt, LepEta);
+      val = centralMuonSFHist->GetBinContent(bin);
+      unc = centralMuonSFHist->GetBinError(bin);
+    }
+    else
+    {
+      if(hephyMuonIDSFHist == nullptr)
+        return doubleUnc(1, 0);
+
+      auto bin = hephyMuonIDSFHist->FindBin(LepPt);
+      val = hephyMuonIDSFHist->GetBinContent(bin);
+      unc = hephyMuonIDSFHist->GetBinError(bin);
+    }
+  }
+
+  doubleUnc retVal(val, unc);
+  return retVal;
+}
+
+// Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
+doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta)
+{
+  LepEta = std::abs(LepEta);
+  double val = 1, unc = 0;
+  if(std::abs(LepID) == 11) // If electron
+  {
+    if(LepEta > 1.48) // Endcap electron
+    {
+      if(hephyElectronISOSFHistEndcap == nullptr)
+        return doubleUnc(1, 0);
+
+      if(LepPt >= 60)
+        LepPt = 59.999;
+
+      auto bin = hephyElectronISOSFHistEndcap->FindBin(LepPt);
+      val = hephyElectronISOSFHistEndcap->GetBinContent(bin);
+      unc = hephyElectronISOSFHistEndcap->GetBinError(bin);
+    }
+    else // Barrel electron
+    {
+      if(hephyElectronISOSFHistBarrel == nullptr)
+        return doubleUnc(1, 0);
+
+      if(LepPt >= 60)
+        LepPt = 59.999;
+
+      auto bin = hephyElectronISOSFHistBarrel->FindBin(LepPt);
+      val = hephyElectronISOSFHistBarrel->GetBinContent(bin);
+      unc = hephyElectronISOSFHistBarrel->GetBinError(bin);
+    }
+  }
+  else
+  {
+    if(hephyMuonISOSFHist == nullptr)
+      return doubleUnc(1, 0);
+
+    if(LepPt >= 60)
+      LepPt = 59.999;
+
+    auto bin = hephyMuonISOSFHist->FindBin(LepPt);
+    val = hephyMuonISOSFHist->GetBinContent(bin);
+    unc = hephyMuonISOSFHist->GetBinError(bin);
+  }
+
+  doubleUnc retVal(val, unc);
+  return retVal;
 }
 
 // Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
