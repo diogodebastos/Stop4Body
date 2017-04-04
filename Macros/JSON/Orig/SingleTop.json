@@ -8,46 +8,46 @@
       "label":"Single Top",
       "files":[
         {
-          "tag":"TBar_tch",
+          "tag":"TBar_tch_powheg",
           "xsec": 1.0,
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SingleTop/TBar_tch/treeProducerSusySingleLepton_tree",
-              "split":520
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TBar_tch_powheg",
+              "split":203
             }
           ]
         },
         {
-          "tag":"TBar_tWch",
+          "tag":"TBar_tWch_ext",
           "xsec": 1.0,
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SingleTop/TBar_tWch/treeProducerSusySingleLepton_tree",
-              "split":26
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/TBar_tWch_ext",
+              "split":144
             }
           ]
         },
         {
-          "tag":"T_tch",
+          "tag":"T_tch_powheg",
           "xsec": 1.0,
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SingleTop/T_tch/treeProducerSusySingleLepton_tree",
-              "split":324
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/T_tch_powheg",
+              "split":241
             }
           ]
         },
         {
-          "tag":"T_tWch",
+          "tag":"T_tWch_ext",
           "xsec": 1.0,
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/SingleTop/T_tWch/treeProducerSusySingleLepton_tree",
-              "split":25
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/T_tWch_ext",
+              "split":161
             }
           ]
         }
