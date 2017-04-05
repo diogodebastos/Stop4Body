@@ -343,6 +343,7 @@ int main(int argc, char** argv)
       int nIsrBin[7]{0, 0, 0, 0, 0, 0, 0};
       int EWKpTBin[8]{0, 0, 0, 0, 0, 0, 0, 0};
       std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
+      if(!process.isdata()) // Only perform the below for MC
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
