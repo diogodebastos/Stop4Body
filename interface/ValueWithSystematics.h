@@ -262,6 +262,8 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     ValueWithSystematics(const ValueWithSystematics<double>& val): ValueWithSystematicsInternal<double>(val) {}; // Copy constructor
     ValueWithSystematics(const ValueWithSystematicsInternal<double>& val): ValueWithSystematicsInternal<double>(val) {}; // Copy constructor
 
+    operator ValueWithSystematics<float> () const; // Cast from double to float
+
     ValueWithSystematics<double> Cos() const;
     ValueWithSystematics<double> Sqrt() const;
     ValueWithSystematics<double> abs() const;
