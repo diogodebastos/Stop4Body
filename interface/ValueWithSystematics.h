@@ -162,13 +162,12 @@ class ValueWithSystematics<std::vector<T>>: public ValueWithSystematicsInternal<
     ValueWithSystematics(): ValueWithSystematicsInternal<std::vector<T>>(std::vector<T>(0)) {};
     ValueWithSystematics(std::vector<T> val): ValueWithSystematicsInternal<std::vector<T>>(val) {};
     ValueWithSystematics(const ValueWithSystematics<std::vector<T>>& val): ValueWithSystematicsInternal<std::vector<T>>(val) {}; // Copy constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<std::vector<T>>& val): ValueWithSystematicsInternal<std::vector<T>>(val) {}; // Copy constructor
+    // Ideally, this would be placed in the private, but for now it is needed here to initialize classes with the internal reference returned by the operators [idem for the other derived classes]
 
     ValueWithSystematics<int> size() const;
 
   private:
-    ValueWithSystematics(const ValueWithSystematicsInternal<std::vector<T>>& val): ValueWithSystematicsInternal<std::vector<T>>(val) {}; // Copy constructor
-    // If having issues, this should probably be moved to public, but try to understand why first [idem for the other derived classes]
-
   protected:
     using ValueWithSystematicsInternal<std::vector<T>>::systematics;
     using ValueWithSystematicsInternal<std::vector<T>>::value;
@@ -181,6 +180,7 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<TLorentzVe
   public:
     ValueWithSystematics(T val = T(0, 0, 0, 0)): ValueWithSystematicsInternal<T>(val) {};
     ValueWithSystematics(const ValueWithSystematics<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
 
     ValueWithSystematics<T>& operator*=(const double& val);
     ValueWithSystematics<T>& operator*=(const ValueWithSystematics<double>& val);
@@ -205,8 +205,6 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<TLorentzVe
     using ValueWithSystematicsInternal<T>::GetSystematicOrValue;
 
   private:
-    ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
-
   protected:
     using ValueWithSystematicsInternal<T>::systematics;
     using ValueWithSystematicsInternal<T>::value;
@@ -219,6 +217,7 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<LorentzVec
   public:
     ValueWithSystematics(T val = T()): ValueWithSystematicsInternal<T>(val) {};
     ValueWithSystematics(const ValueWithSystematics<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
 
     ValueWithSystematics<double> Pt() const;
     ValueWithSystematics<double> Phi() const;
@@ -227,8 +226,6 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<LorentzVec
     ValueWithSystematics<TLorentzVector> ToTLorentzVector() const;
 
   private:
-    ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
-
   protected:
     using ValueWithSystematicsInternal<T>::systematics;
     using ValueWithSystematicsInternal<T>::value;
@@ -241,6 +238,7 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<LorentzVec
   public:
     ValueWithSystematics(T val = T()): ValueWithSystematicsInternal<T>(val) {};
     ValueWithSystematics(const ValueWithSystematics<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
 
     ValueWithSystematics<double> Pt() const;
     ValueWithSystematics<double> Phi() const;
@@ -249,8 +247,6 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<LorentzVec
     ValueWithSystematics<TLorentzVector> ToTLorentzVector() const;
 
   private:
-    ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
-
   protected:
     using ValueWithSystematicsInternal<T>::systematics;
     using ValueWithSystematicsInternal<T>::value;
@@ -264,6 +260,7 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     //using ValueWithSystematicsInternal<T>::ValueWithSystematicsInternal; //Why doesn't this one work?
     ValueWithSystematics(double val = 0): ValueWithSystematicsInternal<double>(val) {};
     ValueWithSystematics(const ValueWithSystematics<double>& val): ValueWithSystematicsInternal<double>(val) {}; // Copy constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<double>& val): ValueWithSystematicsInternal<double>(val) {}; // Copy constructor
 
     ValueWithSystematics<double> Cos() const;
     ValueWithSystematics<double> Sqrt() const;
@@ -273,8 +270,6 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     friend ValueWithSystematics<U>& ValueWithSystematics<U, typename std::enable_if<std::is_base_of<TLorentzVector, U>::value>::type>::operator*=(const ValueWithSystematics<double>& val);
 
   private:
-    ValueWithSystematics(const ValueWithSystematicsInternal<double>& val): ValueWithSystematicsInternal<double>(val) {}; // Copy constructor
-
   protected:
     using ValueWithSystematicsInternal<double>::systematics;
     using ValueWithSystematicsInternal<double>::value;
