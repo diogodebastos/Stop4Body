@@ -164,7 +164,6 @@ class ValueWithSystematics<std::vector<T>>: public ValueWithSystematicsInternal<
     ValueWithSystematics(const ValueWithSystematics<std::vector<T>>& val): ValueWithSystematicsInternal<std::vector<T>>(val) {}; // Copy constructor
 
     ValueWithSystematics<int> size() const;
-    ValueWithSystematics<T> first() const;
 
   private:
     ValueWithSystematics(const ValueWithSystematicsInternal<std::vector<T>>& val): ValueWithSystematicsInternal<std::vector<T>>(val) {}; // Copy constructor
