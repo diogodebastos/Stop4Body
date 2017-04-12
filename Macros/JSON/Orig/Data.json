@@ -15,7 +15,7 @@
           "recordedLumi":5877,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016B_PromptReco_v2/treeProducerSusySingleLepton_tree",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016B_03Feb2017_v2",
               "split":518
             }
           ]
@@ -27,7 +27,7 @@
           "recordedLumi":2646,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016C_PromptReco_v2/treeProducerSusySingleLepton_tree",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016C_03Feb2017",
               "split":251
             }
           ]
@@ -39,7 +39,7 @@
           "recordedLumi":4353,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016D_PromptReco_v2/treeProducerSusySingleLepton_tree",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016D_03Feb2017",
               "split":252
             }
           ]
@@ -51,7 +51,7 @@
           "recordedLumi":4049,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016E_PromptReco_v2/treeProducerSusySingleLepton_tree",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016E_03Feb2017",
               "split":289
             }
           ]
@@ -63,7 +63,43 @@
           "recordedLumi":0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/HEPPY_OUT/Data2016/MET_Run2016F_PromptReco_v1/treeProducerSusySingleLepton_tree",
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016F_03Feb2017",
+              "split":211
+            }
+          ]
+        },
+        {
+          "tag":"Data_2016G",
+          "xsec":1.0,
+          "br":1.0,
+          "recordedLumi":0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016G_03Feb2017",
+              "split":211
+            }
+          ]
+        },
+        {
+          "tag":"Data_2016H_v2",
+          "xsec":1.0,
+          "br":1.0,
+          "recordedLumi":0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016H_03Feb2017_v2",
+              "split":211
+            }
+          ]
+        },
+        {
+          "tag":"Data_2016H_v3",
+          "xsec":1.0,
+          "br":1.0,
+          "recordedLumi":0,
+          "paths":[
+            {
+              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016H_03Feb2017_v3",
               "split":211
             }
           ]
