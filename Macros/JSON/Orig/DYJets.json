@@ -13,11 +13,11 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT100to200",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT100to200",
               "split":39
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT100to200_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT100to200_ext",
               "split":135
             }
           ]
@@ -28,11 +28,11 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT200to400",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT200to400",
               "split":40
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT200to400_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT200to400_ext",
               "split":130
             }
           ]
@@ -43,11 +43,11 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT400to600",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT400to600",
               "split":20
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT400to600_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT400to600_ext",
               "split":165
             }
           ]
@@ -58,7 +58,7 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT600to800",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT600to800",
               "split":176
             }
           ]
@@ -69,7 +69,7 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT800to1200",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT800to1200",
               "split":82
             }
           ]
@@ -80,7 +80,7 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT1200to2500",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT1200to2500",
               "split":33
             }
           ]
@@ -91,7 +91,7 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M50_HT2500toInf",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT2500toInf",
               "split":17
             }
           ]
@@ -102,11 +102,11 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M5to50_HT100to200",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT100to200",
               "split":13
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M5to50_HT100to200_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT100to200_ext",
               "split":91
             }
           ]
@@ -117,11 +117,11 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M5to50_HT200to400",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT200to400",
               "split":53
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M5to50_HT200to400_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT200to400_ext",
               "split":25
             }
           ]
@@ -132,11 +132,11 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M5to50_HT400to600",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT400to600",
               "split":19
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M5to50_HT400to600_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT400to600_ext",
               "split":35
             }
           ]
@@ -147,11 +147,11 @@
           "br":1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M5to50_HT600toInf",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT600toInf",
               "split":18
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/DYJetsToLL_M5to50_HT600toInf_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT600toInf_ext",
               "split":48
             }
           ]

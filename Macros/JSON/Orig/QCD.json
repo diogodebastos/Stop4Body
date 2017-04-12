@@ -13,7 +13,7 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT50to100",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT50to100",
               "split":43
             }
           ]
@@ -24,7 +24,7 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT100to200",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT100to200",
               "split":246
             }
           ]
@@ -35,11 +35,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT200to300",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT200to300",
               "split":179
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT200to300_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT200to300_ext",
               "split":182
             }
           ]
@@ -50,11 +50,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT300to500",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT300to500",
               "split":199
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT300to500_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT300to500_ext",
               "split":219
             }
           ]
@@ -65,11 +65,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT500to700",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT500to700",
               "split":210
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT500to700_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT500to700_ext",
               "split":203
             }
           ]
@@ -80,11 +80,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT700to1000",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT700to1000",
               "split":184
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT700to1000_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT700to1000_ext",
               "split":182
             }
           ]
@@ -95,11 +95,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT1000to1500",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1000to1500",
               "split":90
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT1000to1500_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1000to1500_ext",
               "split":170
             }
           ]
@@ -110,11 +110,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT1500to2000",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1500to2000",
               "split":80
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT1500to2000_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1500to2000_ext",
               "split":136
             }
           ]
@@ -125,11 +125,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT2000toInf",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT2000toInf",
               "split":36
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/QCD_HT2000toInf",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT2000toInf",
               "split":86
             }
           ]
