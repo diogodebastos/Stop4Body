@@ -13,11 +13,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WW",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WW",
               "split":11
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WW_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WW_ext",
               "split":116
             }
           ]
@@ -28,11 +28,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZZ",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZZ",
               "split":12
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/ZZ_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZZ_ext",
               "split":66
             }
           ]
@@ -43,11 +43,11 @@
           "br": 1.0,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WZ",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WZ",
               "split":30
             },
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/WZ_ext",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WZ_ext",
               "split":128
             }
           ]
