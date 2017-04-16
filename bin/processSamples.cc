@@ -295,9 +295,10 @@ int main(int argc, char** argv)
       Float_t JetLepMass;  bdttree->Branch("JetLepMass",&JetLepMass,"JetLepMass/F");
       Float_t J3Mass;  bdttree->Branch("J3Mass",&J3Mass,"J3Mass/F");
 
-      Float_t PFMET170JetIdCleaned; bdttree->Branch("PFMET170JetIdCleaned", &PFMET170JetIdCleaned,"PFMET170JetIdCleaned/F");
-      Float_t PFMET90_PFMHT90; bdttree->Branch("PFMET90_PFMHT90", &PFMET90_PFMHT90,"PFMET90_PFMHT90/F");
-      Float_t PFMETNoMu90_PFMHTNoMu90; bdttree->Branch("PFMETNoMu90_PFMHTNoMu90", &PFMETNoMu90_PFMHTNoMu90,"PFMETNoMu90_PFMHTNoMu90/F");
+      Float_t HLT_PFMET90_PFMHT90;   bdttree->Branch("HLT_PFMET90_PFMHT90",   &HLT_PFMET90_PFMHT90,   "HLT_PFMET90_PFMHT90/F"  );
+      Float_t HLT_PFMET100_PFMHT100; bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
+      Float_t HLT_PFMET110_PFMHT110; bdttree->Branch("HLT_PFMET110_PFMHT110", &HLT_PFMET110_PFMHT110, "HLT_PFMET110_PFMHT110/F");
+      Float_t HLT_PFMET120_PFMHT120; bdttree->Branch("HLT_PFMET120_PFMHT120", &HLT_PFMET120_PFMHT120, "HLT_PFMET120_PFMHT120/F");
 
       Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
@@ -515,9 +516,10 @@ int main(int argc, char** argv)
         Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);// */
 
         // 2016 HLT
-        Int_t HLT_PFMET170_JetIdCleaned = 0;//   inputtree->SetBranchAddress("HLT_PFMET170_JetIdCleaned", &HLT_PFMET170_JetIdCleaned);
-        Int_t HLT_PFMET90_PFMHT90;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90", &HLT_PFMET90_PFMHT90);
-        Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);
+        Int_t   HLT_PFMET90_PFMHT90_IDTight; inputtree->SetBranchAddress(  "HLT_PFMET90_PFMHT90_IDTight",   &HLT_PFMET90_PFMHT90_IDTight);
+        Int_t HLT_PFMET100_PFMHT100_IDTight; inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
+        Int_t HLT_PFMET110_PFMHT110_IDTight; inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
+        Int_t HLT_PFMET120_PFMHT120_IDTight; inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
 
         Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
         Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
@@ -922,9 +924,10 @@ int main(int argc, char** argv)
           if(process.issignal())
             XS = stopCrossSection(genStopM, genNeutralinoM).value();
 
-          PFMET170JetIdCleaned                = HLT_PFMET170_JetIdCleaned;
-          PFMET90_PFMHT90                     = HLT_PFMET90_PFMHT90;
-          PFMETNoMu90_PFMHTNoMu90             = HLT_PFMETNoMu90_PFMHTNoMu90;
+          HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
+          HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
+          HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
+          HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
           METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
@@ -1098,6 +1101,23 @@ int main(int argc, char** argv)
             if ( badMuonMoriond2017                 != 1 ) continue;
             if ( badCloneMuonMoriond2017            != 1 ) continue;
             if ( badChargedHadronFilter             != 1 ) continue;
+
+            if(process.isdata())
+            {
+              bool passHLT = false;
+
+              if(HLT_PFMET90_PFMHT90_IDTight != 0)
+                passHLT = true;
+              if(HLT_PFMET100_PFMHT100_IDTight != 0)
+                passHLT = true;
+              if(HLT_PFMET110_PFMHT110_IDTight != 0)
+                passHLT = true;
+              if(HLT_PFMET120_PFMHT120_IDTight != 0)
+                passHLT = true;
+
+              if(!passHLT)
+                continue;
+            }
           }
 
           bdttree->Fill();
