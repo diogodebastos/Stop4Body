@@ -343,8 +343,9 @@ int main(int argc, char** argv)
       Ncut6 = 0;
       int nIsrBin[7]{0, 0, 0, 0, 0, 0, 0};
       int EWKpTBin[8]{0, 0, 0, 0, 0, 0, 0, 0};
-      std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
       if(!process.isdata()) // Only perform the below for MC
+      {
+      std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
@@ -415,8 +416,6 @@ int main(int argc, char** argv)
       std::cout << Nevt << "; " << sumGenWeight << std::endl;
       double ISRCParam = 1;
       double EWKISRCParam = 1;
-      if(!process.isdata())
-      {
         ISRCParam = (                        nIsrBin[0] +
                                              nIsrBin[1] +
                                              nIsrBin[2] +
