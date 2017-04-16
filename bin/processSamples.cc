@@ -341,10 +341,12 @@ int main(int argc, char** argv)
       Ncut4 = 0;
       Ncut5 = 0;
       Ncut6 = 0;
-      int nIsrBin[7]{0, 0, 0, 0, 0, 0, 0};
-      int EWKpTBin[8]{0, 0, 0, 0, 0, 0, 0, 0};
+      double ISRCParam = 1;
+      double EWKISRCParam = 1;
       if(!process.isdata()) // Only perform the below for MC
       {
+        int nIsrBin[7]{0, 0, 0, 0, 0, 0, 0};
+        int EWKpTBin[8]{0, 0, 0, 0, 0, 0, 0, 0};
         std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
         for(auto &file : sample)
         {
@@ -414,8 +416,6 @@ int main(int argc, char** argv)
         }
         sumGenWeight = sumGenWeightCounting; // Consider implementing the streaming float summation: http://dl.acm.org/citation.cfm?id=1824815
         std::cout << Nevt << "; " << sumGenWeight << std::endl;
-        double ISRCParam = 1;
-        double EWKISRCParam = 1;
         ISRCParam = (                               nIsrBin[0] +
                                                     nIsrBin[1] +
                                                     nIsrBin[2] +
