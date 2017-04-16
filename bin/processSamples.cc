@@ -345,77 +345,77 @@ int main(int argc, char** argv)
       int EWKpTBin[8]{0, 0, 0, 0, 0, 0, 0, 0};
       if(!process.isdata()) // Only perform the below for MC
       {
-      std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
-      for(auto &file : sample)
-      {
-        TFile finput(file.c_str(), "READ");
-        foutput.cd();
-        TTree *inputtree;
-        if(process.selection() != "")
-          inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
-        else
-          inputtree = static_cast<TTree*>(finput.Get("tree"));
-
-        size_t thisNevt = static_cast<size_t>(inputtree->GetEntries());
-        Nevt += thisNevt;
-
-        Float_t thisGenWeight = 0;
-        inputtree->SetBranchAddress("genWeight", &thisGenWeight);
-        Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
-        Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
-        Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
-        Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
-        Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
-        Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
-        double smallCounter = 0;
-        for(size_t i = 0; i < thisNevt; ++i)
+        std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
+        for(auto &file : sample)
         {
-          inputtree->GetEntry(i);
+          TFile finput(file.c_str(), "READ");
+          foutput.cd();
+          TTree *inputtree;
+          if(process.selection() != "")
+            inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
+          else
+            inputtree = static_cast<TTree*>(finput.Get("tree"));
 
-          smallCounter += thisGenWeight;
+          size_t thisNevt = static_cast<size_t>(inputtree->GetEntries());
+          Nevt += thisNevt;
 
-          Int_t nIsr_switch = nIsr;
-          if(nIsr_switch > 6)
-            nIsr_switch = 6;
-          nIsrBin[nIsr_switch]++;
-
-          if(nLepGood > 0)
+          Float_t thisGenWeight = 0;
+          inputtree->SetBranchAddress("genWeight", &thisGenWeight);
+          Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
+          Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
+          Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
+          Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+          Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
+          Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
+          double smallCounter = 0;
+          for(size_t i = 0; i < thisNevt; ++i)
           {
-            double lep_x = LepGood_pt[0] * std::cos(LepGood_phi[0]);
-            double lep_y = LepGood_pt[0] * std::sin(LepGood_phi[0]);
-            double met_x = met_pt * std::cos(met_phi);
-            double met_y = met_pt * std::sin(met_phi);
+            inputtree->GetEntry(i);
 
-            double w_pt = std::sqrt((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y));
+            smallCounter += thisGenWeight;
 
-            int EWKindex = 7;
-            if(w_pt < 600)
-              EWKindex = 6;
-            if(w_pt < 400)
-              EWKindex = 5;
-            if(w_pt < 300)
-              EWKindex = 4;
-            if(w_pt < 200)
-              EWKindex = 3;
-            if(w_pt < 150)
-              EWKindex = 2;
-            if(w_pt < 100)
-              EWKindex = 1;
-            if(w_pt < 50)
-              EWKindex = 0;
+            Int_t nIsr_switch = nIsr;
+            if(nIsr_switch > 6)
+              nIsr_switch = 6;
+            nIsrBin[nIsr_switch]++;
 
-            EWKpTBin[EWKindex]++;
+            if(nLepGood > 0)
+            {
+              double lep_x = LepGood_pt[0] * std::cos(LepGood_phi[0]);
+              double lep_y = LepGood_pt[0] * std::sin(LepGood_phi[0]);
+              double met_x = met_pt * std::cos(met_phi);
+              double met_y = met_pt * std::sin(met_phi);
+
+              double w_pt = std::sqrt((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y));
+
+              int EWKindex = 7;
+              if(w_pt < 600)
+                EWKindex = 6;
+              if(w_pt < 400)
+                EWKindex = 5;
+              if(w_pt < 300)
+                EWKindex = 4;
+              if(w_pt < 200)
+                EWKindex = 3;
+              if(w_pt < 150)
+                EWKindex = 2;
+              if(w_pt < 100)
+                EWKindex = 1;
+              if(w_pt < 50)
+                EWKindex = 0;
+
+              EWKpTBin[EWKindex]++;
+            }
           }
-        }
-        sumGenWeightCounting += smallCounter;
+          sumGenWeightCounting += smallCounter;
 
-        if(process.selection() != "")
-          delete inputtree;
-      }
-      sumGenWeight = sumGenWeightCounting; // Consider implementing the streaming float summation: http://dl.acm.org/citation.cfm?id=1824815
-      std::cout << Nevt << "; " << sumGenWeight << std::endl;
-      double ISRCParam = 1;
-      double EWKISRCParam = 1;
+          if(process.selection() != "")
+            delete inputtree;
+        }
+        sumGenWeight = sumGenWeightCounting; // Consider implementing the streaming float summation: http://dl.acm.org/citation.cfm?id=1824815
+        std::cout << Nevt << "; " << sumGenWeight << std::endl;
+        double ISRCParam = 1;
+        double EWKISRCParam = 1;
         ISRCParam = (                        nIsrBin[0] +
                                              nIsrBin[1] +
                                              nIsrBin[2] +
