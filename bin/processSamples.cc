@@ -416,36 +416,36 @@ int main(int argc, char** argv)
         std::cout << Nevt << "; " << sumGenWeight << std::endl;
         double ISRCParam = 1;
         double EWKISRCParam = 1;
-        ISRCParam = (                        nIsrBin[0] +
-                                             nIsrBin[1] +
-                                             nIsrBin[2] +
-                                             nIsrBin[3] +
-                                             nIsrBin[4] +
-                                             nIsrBin[5] +
-                                             nIsrBin[6]  ) /
- static_cast<double>(ISRweightFromNISRJet(0)*nIsrBin[0] +
-                     ISRweightFromNISRJet(1)*nIsrBin[1] +
-                     ISRweightFromNISRJet(2)*nIsrBin[2] +
-                     ISRweightFromNISRJet(3)*nIsrBin[3] +
-                     ISRweightFromNISRJet(4)*nIsrBin[4] +
-                     ISRweightFromNISRJet(5)*nIsrBin[5] +
-                     ISRweightFromNISRJet(6)*nIsrBin[6]  );
-        EWKISRCParam = (                          EWKpTBin[0] +
-                                                  EWKpTBin[1] +
-                                                  EWKpTBin[2] +
-                                                  EWKpTBin[3] +
-                                                  EWKpTBin[4] +
-                                                  EWKpTBin[5] +
-                                                  EWKpTBin[6] +
-                                                  EWKpTBin[7]  ) /
- static_cast<double>(EWKISRweightFromISRpT( 25.0)*EWKpTBin[0] +
-                     EWKISRweightFromISRpT( 75.0)*EWKpTBin[1] +
-                     EWKISRweightFromISRpT(125.0)*EWKpTBin[2] +
-                     EWKISRweightFromISRpT(175.0)*EWKpTBin[3] +
-                     EWKISRweightFromISRpT(250.0)*EWKpTBin[4] +
-                     EWKISRweightFromISRpT(350.0)*EWKpTBin[5] +
-                     EWKISRweightFromISRpT(500.0)*EWKpTBin[6] +
-                     EWKISRweightFromISRpT(700.0)*EWKpTBin[7]  );
+        ISRCParam = (                               nIsrBin[0] +
+                                                    nIsrBin[1] +
+                                                    nIsrBin[2] +
+                                                    nIsrBin[3] +
+                                                    nIsrBin[4] +
+                                                    nIsrBin[5] +
+                                                    nIsrBin[6]  ) /
+        static_cast<double>(ISRweightFromNISRJet(0)*nIsrBin[0] +
+                            ISRweightFromNISRJet(1)*nIsrBin[1] +
+                            ISRweightFromNISRJet(2)*nIsrBin[2] +
+                            ISRweightFromNISRJet(3)*nIsrBin[3] +
+                            ISRweightFromNISRJet(4)*nIsrBin[4] +
+                            ISRweightFromNISRJet(5)*nIsrBin[5] +
+                            ISRweightFromNISRJet(6)*nIsrBin[6]  );
+        EWKISRCParam = (                                 EWKpTBin[0] +
+                                                         EWKpTBin[1] +
+                                                         EWKpTBin[2] +
+                                                         EWKpTBin[3] +
+                                                         EWKpTBin[4] +
+                                                         EWKpTBin[5] +
+                                                         EWKpTBin[6] +
+                                                         EWKpTBin[7]  ) /
+        static_cast<double>(EWKISRweightFromISRpT( 25.0)*EWKpTBin[0] +
+                            EWKISRweightFromISRpT( 75.0)*EWKpTBin[1] +
+                            EWKISRweightFromISRpT(125.0)*EWKpTBin[2] +
+                            EWKISRweightFromISRpT(175.0)*EWKpTBin[3] +
+                            EWKISRweightFromISRpT(250.0)*EWKpTBin[4] +
+                            EWKISRweightFromISRpT(350.0)*EWKpTBin[5] +
+                            EWKISRweightFromISRpT(500.0)*EWKpTBin[6] +
+                            EWKISRweightFromISRpT(700.0)*EWKpTBin[7]  );
         std::cout << "\t  C value for ISR reweighting: " << ISRCParam << std::endl;
         std::cout << "\t  C value for EWK ISR reweighting: " << EWKISRCParam << std::endl;
       }
