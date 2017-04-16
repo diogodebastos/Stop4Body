@@ -498,14 +498,13 @@ int main(int argc, char** argv)
         UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
         Int_t nVert_i; inputtree->SetBranchAddress("nVert", &nVert_i);
 
-        //inputtree->SetBranchAddress("puWeight", &puWeight);
-        inputtree->SetBranchAddress("genWeight", &genWeight);
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
         Float_t xsec = 1;
         Float_t nTrueInt = 1;
         if(!process.isdata())
         {
+          inputtree->SetBranchAddress("genWeight", &genWeight);
           inputtree->SetBranchAddress("xsec", &xsec);
           inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
         }
@@ -533,10 +532,17 @@ int main(int argc, char** argv)
         Float_t Flag_badMuonFilter; inputtree->SetBranchAddress("Flag_badMuonFilter", &Flag_badMuonFilter);
         Float_t Flag_badChargedHadronFilter; inputtree->SetBranchAddress("Flag_badChargedHadronFilter", &Flag_badChargedHadronFilter);
 
-        Int_t GenSusyMGravitino; inputtree->SetBranchAddress("GenSusyMGravitino", &GenSusyMGravitino);
-        Int_t GenSusyMStop; inputtree->SetBranchAddress("GenSusyMStop", &GenSusyMStop);
-        Int_t GenSusyMSbottom; inputtree->SetBranchAddress("GenSusyMSbottom", &GenSusyMSbottom);
-        Int_t GenSusyMNeutralino; inputtree->SetBranchAddress("GenSusyMNeutralino", &GenSusyMNeutralino);
+        Int_t GenSusyMGravitino=0;
+        Int_t GenSusyMStop=0;
+        Int_t GenSusyMSbottom=0;
+        Int_t GenSusyMNeutralino=0;
+        if(!process.isdata())
+        {
+          inputtree->SetBranchAddress("GenSusyMGravitino", &GenSusyMGravitino);
+          inputtree->SetBranchAddress("GenSusyMStop", &GenSusyMStop);
+          inputtree->SetBranchAddress("GenSusyMSbottom", &GenSusyMSbottom);
+          inputtree->SetBranchAddress("GenSusyMNeutralino", &GenSusyMNeutralino);
+        }
 
         // Read the number of entries in the inputtree
         size_t nentries = static_cast<size_t>(inputtree->GetEntries());
