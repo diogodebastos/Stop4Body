@@ -48,7 +48,6 @@ int main(int argc, char** argv)
   std::string variablesJson = "";
   std::string cutsJson = "";
   double luminosity = -1.0;
-  bool isSplit = false;
   bool noPUweight = false;
   bool puTest = false;
   bool verbose = false;
@@ -97,17 +96,12 @@ int main(int argc, char** argv)
       convert >> luminosity;
     }
 
-    if(argument == "--isSplit")
-    {
-      isSplit = true;
-    }
-
     if(argument == "--noPUweight")
     {
       noPUweight = true;
     }
 
-    if(argument == "--puTest")
+    if(argument == "--puTest") // This option normalizes data and MC so we compare shapes
     {
       puTest = true;
     }
@@ -122,7 +116,7 @@ int main(int argc, char** argv)
       cumulativeCuts = true;
     }
 
-    if(argument == "--rawEvents")
+    if(argument == "--rawEvents") // Change the MC weight to 1 to get the raw number of events (does not affect if puTest is set)
     {
       rawEvents = true;
     }
@@ -163,8 +157,6 @@ int main(int argc, char** argv)
   std::string mcWeight;
   {
     std::stringstream converter;
-    if(isSplit)
-      converter << "2*";
     converter << "weight"; // Full
     //converter << "weight/(triggerEfficiency*WISRSF*ISRweight)"; // Incrementally adding new tests
     //converter << "weight/puWeight"; // Full no PU
@@ -181,12 +173,12 @@ int main(int argc, char** argv)
   std::vector<CutInfo> cutFlow;
   if(cutsJson == "")
   {
-    cutFlow.push_back(CutInfo("Preselection", "HT30 > 200", "$H_T > 200$"));
+    cutFlow.push_back(CutInfo("Preselection", "HT > 200", "$H_T > 200$"));
     //cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
     //cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
     //cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
-    cutFlow.push_back(CutInfo("Selection", "(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)", "Selection"));
-    cutFlow.push_back(CutInfo("Test", "(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 3)", "$N(jet_{60}) < 3$"));
+    cutFlow.push_back(CutInfo("Selection", "(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)", "Selection"));
+    cutFlow.push_back(CutInfo("Test", "(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 3)", "$N(jet_{60}) < 3$"));
   }
   else
   {

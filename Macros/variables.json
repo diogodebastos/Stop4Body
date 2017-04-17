@@ -1,4 +1,16 @@
 {
+  "cuts":[
+    {
+      "name":"Preselection",
+      "expression":"HT30 > 200",
+      "latex":"$H_T > 200$"
+    },
+    {
+      "name":"Base",
+      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)",
+      "latex":"Base Selection"
+    }
+  ],
   "variables":[
     {
       "expression":"nVert",
