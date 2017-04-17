@@ -2,412 +2,412 @@
   "cuts":[
     {
       "name":"Preselection",
-      "expression":"HT30 > 200",
+      "expression":"HT > 200",
       "latex":"$H_T > 200$"
     },
     {
       "name":"Base",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)",
       "latex":"Base Selection"
     },
     {
       "name":"Njet30_1",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 1)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 1)",
       "latex":"$N(jet_{30}) < 1$"
     },
     {
       "name":"Njet30_2",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 2)",
       "latex":"$N(jet_{30}) < 2$"
     },
     {
       "name":"Njet30_3",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 3)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 3)",
       "latex":"$N(jet_{30}) < 3$"
     },
     {
       "name":"Njet30_4",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 4)",
       "latex":"$N(jet_{30}) < 4$"
     },
     {
       "name":"Njet30_5",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 5)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 5)",
       "latex":"$N(jet_{30}) < 5$"
     },
     {
       "name":"Njet30_6",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 6)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 6)",
       "latex":"$N(jet_{30}) < 6$"
     },
     {
       "name":"Njet30_7",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 7)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 7)",
       "latex":"$N(jet_{30}) < 7$"
     },
     {
       "name":"Njet30_8",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 8)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 8)",
       "latex":"$N(jet_{30}) < 8$"
     },
     {
       "name":"Njet30_9",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 9)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 9)",
       "latex":"$N(jet_{30}) < 9$"
     },
     {
       "name":"Njet30_10",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 10)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet30 < 10)",
       "latex":"$N(jet_{30}) < 10$"
     },
     {
       "name":"Njet40_1",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 1)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 1)",
       "latex":"$N(jet_{40}) < 1$"
     },
     {
       "name":"Njet40_2",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 2)",
       "latex":"$N(jet_{40}) < 2$"
     },
     {
       "name":"Njet40_3",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 3)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 3)",
       "latex":"$N(jet_{40}) < 3$"
     },
     {
       "name":"Njet40_4",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 4)",
       "latex":"$N(jet_{40}) < 4$"
     },
     {
       "name":"Njet40_5",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 5)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 5)",
       "latex":"$N(jet_{40}) < 5$"
     },
     {
       "name":"Njet40_6",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 6)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 6)",
       "latex":"$N(jet_{40}) < 6$"
     },
     {
       "name":"Njet40_7",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 7)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 7)",
       "latex":"$N(jet_{40}) < 7$"
     },
     {
       "name":"Njet40_8",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 8)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 8)",
       "latex":"$N(jet_{40}) < 8$"
     },
     {
       "name":"Njet40_9",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 9)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 9)",
       "latex":"$N(jet_{40}) < 9$"
     },
     {
       "name":"Njet40_10",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 10)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet40 < 10)",
       "latex":"$N(jet_{40}) < 10$"
     },
     {
       "name":"Njet50_1",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 1)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 1)",
       "latex":"$N(jet_{50}) < 1$"
     },
     {
       "name":"Njet50_2",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 2)",
       "latex":"$N(jet_{50}) < 2$"
     },
     {
       "name":"Njet50_3",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 3)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 3)",
       "latex":"$N(jet_{50}) < 3$"
     },
     {
       "name":"Njet50_4",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 4)",
       "latex":"$N(jet_{50}) < 4$"
     },
     {
       "name":"Njet50_5",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 5)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 5)",
       "latex":"$N(jet_{50}) < 5$"
     },
     {
       "name":"Njet50_6",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 6)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 6)",
       "latex":"$N(jet_{50}) < 6$"
     },
     {
       "name":"Njet50_7",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 7)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 7)",
       "latex":"$N(jet_{50}) < 7$"
     },
     {
       "name":"Njet50_8",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 8)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 8)",
       "latex":"$N(jet_{50}) < 8$"
     },
     {
       "name":"Njet50_9",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 9)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 9)",
       "latex":"$N(jet_{50}) < 9$"
     },
     {
       "name":"Njet50_10",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 10)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet50 < 10)",
       "latex":"$N(jet_{50}) < 10$"
     },
     {
       "name":"Njet60_1",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 1)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 1)",
       "latex":"$N(jet_{60}) < 1$"
     },
     {
       "name":"Njet60_2",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 2)",
       "latex":"$N(jet_{60}) < 2$"
     },
     {
       "name":"Njet60_3",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 3)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 3)",
       "latex":"$N(jet_{60}) < 3$"
     },
     {
       "name":"Njet60_4",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 4)",
       "latex":"$N(jet_{60}) < 4$"
     },
     {
       "name":"Njet60_5",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 5)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 5)",
       "latex":"$N(jet_{60}) < 5$"
     },
     {
       "name":"Njet60_6",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 6)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 6)",
       "latex":"$N(jet_{60}) < 6$"
     },
     {
       "name":"Njet60_7",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 7)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 7)",
       "latex":"$N(jet_{60}) < 7$"
     },
     {
       "name":"Njet60_8",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 8)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 8)",
       "latex":"$N(jet_{60}) < 8$"
     },
     {
       "name":"Njet60_9",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 9)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 9)",
       "latex":"$N(jet_{60}) < 9$"
     },
     {
       "name":"Njet60_10",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 10)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 10)",
       "latex":"$N(jet_{60}) < 10$"
     },
     {
       "name":"Njet70_1",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 1)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 1)",
       "latex":"$N(jet_{70}) < 1$"
     },
     {
       "name":"Njet70_2",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 2)",
       "latex":"$N(jet_{70}) < 2$"
     },
     {
       "name":"Njet70_3",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 3)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 3)",
       "latex":"$N(jet_{70}) < 3$"
     },
     {
       "name":"Njet70_4",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 4)",
       "latex":"$N(jet_{70}) < 4$"
     },
     {
       "name":"Njet70_5",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 5)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 5)",
       "latex":"$N(jet_{70}) < 5$"
     },
     {
       "name":"Njet70_6",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 6)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 6)",
       "latex":"$N(jet_{70}) < 6$"
     },
     {
       "name":"Njet70_7",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 7)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 7)",
       "latex":"$N(jet_{70}) < 7$"
     },
     {
       "name":"Njet70_8",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 8)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 8)",
       "latex":"$N(jet_{70}) < 8$"
     },
     {
       "name":"Njet70_9",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 9)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 9)",
       "latex":"$N(jet_{70}) < 9$"
     },
     {
       "name":"Njet70_10",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 10)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet70 < 10)",
       "latex":"$N(jet_{70}) < 10$"
     },
     {
       "name":"Njet80_1",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 1)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 1)",
       "latex":"$N(jet_{80}) < 1$"
     },
     {
       "name":"Njet80_2",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 2)",
       "latex":"$N(jet_{80}) < 2$"
     },
     {
       "name":"Njet80_3",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 3)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 3)",
       "latex":"$N(jet_{80}) < 3$"
     },
     {
       "name":"Njet80_4",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 4)",
       "latex":"$N(jet_{80}) < 4$"
     },
     {
       "name":"Njet80_5",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 5)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 5)",
       "latex":"$N(jet_{80}) < 5$"
     },
     {
       "name":"Njet80_6",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 6)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 6)",
       "latex":"$N(jet_{80}) < 6$"
     },
     {
       "name":"Njet80_7",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 7)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 7)",
       "latex":"$N(jet_{80}) < 7$"
     },
     {
       "name":"Njet80_8",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 8)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 8)",
       "latex":"$N(jet_{80}) < 8$"
     },
     {
       "name":"Njet80_9",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 9)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 9)",
       "latex":"$N(jet_{80}) < 9$"
     },
     {
       "name":"Njet80_10",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 10)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet80 < 10)",
       "latex":"$N(jet_{80}) < 10$"
     },
     {
       "name":"Njet90_1",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 1)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 1)",
       "latex":"$N(jet_{90}) < 1$"
     },
     {
       "name":"Njet90_2",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 2)",
       "latex":"$N(jet_{90}) < 2$"
     },
     {
       "name":"Njet90_3",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 3)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 3)",
       "latex":"$N(jet_{90}) < 3$"
     },
     {
       "name":"Njet90_4",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 4)",
       "latex":"$N(jet_{90}) < 4$"
     },
     {
       "name":"Njet90_5",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 5)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 5)",
       "latex":"$N(jet_{90}) < 5$"
     },
     {
       "name":"Njet90_6",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 6)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 6)",
       "latex":"$N(jet_{90}) < 6$"
     },
     {
       "name":"Njet90_7",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 7)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 7)",
       "latex":"$N(jet_{90}) < 7$"
     },
     {
       "name":"Njet90_8",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 8)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 8)",
       "latex":"$N(jet_{90}) < 8$"
     },
     {
       "name":"Njet90_9",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 9)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 9)",
       "latex":"$N(jet_{90}) < 9$"
     },
     {
       "name":"Njet90_10",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 10)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet90 < 10)",
       "latex":"$N(jet_{90}) < 10$"
     },
     {
       "name":"Njet100_1",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 1)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 1)",
       "latex":"$N(jet_{100}) < 1$"
     },
     {
       "name":"Njet100_2",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 2)",
       "latex":"$N(jet_{100}) < 2$"
     },
     {
       "name":"Njet100_3",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 3)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 3)",
       "latex":"$N(jet_{100}) < 3$"
     },
     {
       "name":"Njet100_4",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 4)",
       "latex":"$N(jet_{100}) < 4$"
     },
     {
       "name":"Njet100_5",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 5)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 5)",
       "latex":"$N(jet_{100}) < 5$"
     },
     {
       "name":"Njet100_6",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 6)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 6)",
       "latex":"$N(jet_{100}) < 6$"
     },
     {
       "name":"Njet100_7",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 7)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 7)",
       "latex":"$N(jet_{100}) < 7$"
     },
     {
       "name":"Njet100_8",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 8)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 8)",
       "latex":"$N(jet_{100}) < 8$"
     },
     {
       "name":"Njet100_9",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 9)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 9)",
       "latex":"$N(jet_{100}) < 9$"
     },
     {
       "name":"Njet100_10",
-      "expression":"(HT30 > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 10)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet100 < 10)",
       "latex":"$N(jet_{100}) < 10$"
     }
   ],
@@ -420,7 +420,7 @@
       "bins":40
     },
     {
-      "expression":"HT30",
+      "expression":"HT",
       "label":"H_{T}(p_{T}>30)",
       "min":100.0,
       "max":1000.0,
@@ -440,7 +440,7 @@
       "bins":20
     },
     {
-      "expression":"NbLoose30",
+      "expression":"NbLoose",
       "label":"N_{b}^{L}",
       "min":-0.5,
       "max":6.5,
