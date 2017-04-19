@@ -943,7 +943,7 @@ int main(int argc, char** argv)
           HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
           HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
           HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
-          HLT_Mu                              = HLT_IsoMu24
+          HLT_Mu                              = HLT_IsoMu24;
           METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
