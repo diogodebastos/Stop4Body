@@ -70,7 +70,7 @@ int main(int argc, char** argv)
         for(auto& outProcess: outJsonFile["lines"])
         {
           if(process["tag"] != outProcess["tag"])
-            continue
+            continue;
 
           for(auto& sample: process)
           {
