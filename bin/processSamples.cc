@@ -95,6 +95,7 @@ int main(int argc, char** argv)
   size_t max_sync_count = 0;
   double jetPtThreshold = 30;
   bool overrideXSec = false;
+  bool swap = false;
 
   if(argc < 2)
   {
@@ -142,6 +143,9 @@ int main(int argc, char** argv)
 
     if(argument == "--overrideXSec")
       overrideXSec = true;
+
+    if(argument == "--swap")
+      swap = true;
   }
 
   if(jsonFileName == "")
@@ -299,6 +303,8 @@ int main(int argc, char** argv)
       Float_t HLT_PFMET100_PFMHT100; bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
       Float_t HLT_PFMET110_PFMHT110; bdttree->Branch("HLT_PFMET110_PFMHT110", &HLT_PFMET110_PFMHT110, "HLT_PFMET110_PFMHT110/F");
       Float_t HLT_PFMET120_PFMHT120; bdttree->Branch("HLT_PFMET120_PFMHT120", &HLT_PFMET120_PFMHT120, "HLT_PFMET120_PFMHT120/F");
+      Float_t HLT_Ele;               bdttree->Branch("HLT_Ele",               &HLT_Ele,               "HLT_Ele/F"              );
+      Float_t HLT_Mu;                bdttree->Branch("HLT_Mu",                &HLT_Mu,                "HLT_Mu/F"               );
 
       Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
@@ -514,10 +520,12 @@ int main(int argc, char** argv)
         Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);// */
 
         // 2016 HLT
-        Int_t   HLT_PFMET90_PFMHT90_IDTight; inputtree->SetBranchAddress(  "HLT_PFMET90_PFMHT90_IDTight",   &HLT_PFMET90_PFMHT90_IDTight);
+        Int_t   HLT_PFMET90_PFMHT90_IDTight; inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
         Int_t HLT_PFMET100_PFMHT100_IDTight; inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
         Int_t HLT_PFMET110_PFMHT110_IDTight; inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
         Int_t HLT_PFMET120_PFMHT120_IDTight; inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
+        Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
+        Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
 
         Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
         Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
@@ -934,6 +942,8 @@ int main(int argc, char** argv)
           HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
           HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
           HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
+          HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
+          HLT_Mu                              = HLT_IsoMu24
           METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
@@ -954,6 +964,14 @@ int main(int argc, char** argv)
           }
           else
             filterEfficiency = 1.0;
+
+          if(swap)
+          {
+            auto tmp = Met;
+            Met = LepPt;
+            LepPt = tmp;
+            triggerEfficiency = 1;
+          }
 
           if(!process.isdata())
             weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF;
@@ -1112,14 +1130,24 @@ int main(int argc, char** argv)
             {
               bool passHLT = false;
 
-              if(HLT_PFMET90_PFMHT90_IDTight != 0)
-                passHLT = true;
-              if(HLT_PFMET100_PFMHT100_IDTight != 0)
-                passHLT = true;
-              if(HLT_PFMET110_PFMHT110_IDTight != 0)
-                passHLT = true;
-              if(HLT_PFMET120_PFMHT120_IDTight != 0)
-                passHLT = true;
+              if(!swap) // Normally use the MET triggers
+              {
+                if(HLT_PFMET90_PFMHT90_IDTight != 0)
+                  passHLT = true;
+                if(HLT_PFMET100_PFMHT100_IDTight != 0)
+                  passHLT = true;
+                if(HLT_PFMET110_PFMHT110_IDTight != 0)
+                  passHLT = true;
+                if(HLT_PFMET120_PFMHT120_IDTight != 0)
+                  passHLT = true;
+              }
+              else // If swapping the MET and LepPt, use the lepton triggers instead
+              {
+                if(HLT_IsoMu24 != 0)
+                  passHLT = true;
+                if(HLT_Ele24_eta2p1_WPLoose_Gsf != 0)
+                  passHLT = true;
+              }
 
               if(!passHLT)
                 continue;
