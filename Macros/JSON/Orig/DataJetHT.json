@@ -9,7 +9,7 @@
       "label":"Data",
       "files":[
         {
-          "tag":"Data_2016B",
+          "tag":"Data_2016B_JetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":5788,
@@ -21,7 +21,7 @@
           ]
         },
         {
-          "tag":"Data_2016C",
+          "tag":"Data_2016C_JetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":2573,
@@ -33,7 +33,7 @@
           ]
         },
         {
-          "tag":"Data_2016D",
+          "tag":"Data_2016D_JetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4248,
@@ -45,7 +45,7 @@
           ]
         },
         {
-          "tag":"Data_2016E",
+          "tag":"Data_2016E_JetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4009,
@@ -57,7 +57,7 @@
           ]
         },
         {
-          "tag":"Data_2016F",
+          "tag":"Data_2016F_JetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":3102,
@@ -69,7 +69,7 @@
           ]
         },
         {
-          "tag":"Data_2016G",
+          "tag":"Data_2016G_JetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":7539,
@@ -81,7 +81,7 @@
           ]
         },
         {
-          "tag":"Data_2016H_v2",
+          "tag":"Data_2016H_v2_JetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":8391,
@@ -93,7 +93,7 @@
           ]
         },
         {
-          "tag":"Data_2016H_v3",
+          "tag":"Data_2016H_v3_JetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":215,
