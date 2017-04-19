@@ -6,6 +6,7 @@ touch $JSON_PATH/tmp.json
 rm    $JSON_PATH/*.json
 
 # Make a JSON for all MC except signal
+mergeJSONs $JSON_PATH/Orig/Wjets.json         $JSON_PATH/Orig/Wjets_*.json
 mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
 cp         $JSON_PATH/Orig/Wjets.json         $JSON_PATH/Wjets.json
 cp         $JSON_PATH/Orig/TTbar.json         $JSON_PATH/TTbar.json
