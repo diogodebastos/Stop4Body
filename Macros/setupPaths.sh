@@ -9,6 +9,7 @@ export PU_TEST_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_PU_test
 
 export TRAIN_DIR=${NTUPLE_DIR}_train
 export TEST_DIR=${NTUPLE_DIR}_test
+export SWAP_DIR=${NTUPLE_DIR}_swap
 
 
 export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"
