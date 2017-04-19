@@ -72,10 +72,10 @@ int main(int argc, char** argv)
           if(process["tag"] != outProcess["tag"])
             continue;
 
-          for(auto& sample: process)
+          for(auto& sample: process["files"])
           {
             bool foundSample = false;
-            for(auto& outSample: outProcess)
+            for(auto& outSample: outProcess["files"])
             {
               if(sample["tag"] == outSample["tag"])
               {
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
               continue;
             }
 
-            outProcess.push_back(sample);
+            outProcess["files"].push_back(sample);
           }
 
           break;
