@@ -35,10 +35,10 @@ int main(int argc, char** argv)
   bool isPseudoData = false;
   bool verbose = false;
 
-  std::string baseSelection = "(HT30 > 200) && (Jet1Pt > 110) && (Met > 280) && (nGoodEl + nGoodMu <= 2) && (LepPt < 30.)";
+  std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (nGoodEl + nGoodMu <= 2) && (LepPt < 30.)";
   std::string wjetsControlRegion = "(BDT < -0.1) && (NbLoose30 == 0)";
   std::string ttbarControlRegion = "(BDT < -0.1) && (NbTight30 > 0)";
-  std::string signalRegion       = "(BDT > 0.38)";
+  std::string signalRegion       = "(BDT > 0.4)";
 
   if(argc < 2)
   {
