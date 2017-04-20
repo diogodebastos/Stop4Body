@@ -136,35 +136,47 @@ int main(int argc, char** argv)
 
   Float_t LepPt, LepEta, LepDxy, LepDz, Met, mt, Q80, CosDeltaPhi;
   Float_t Jet1Pt,Jet1Eta,Jet2Pt,Jet2Eta,JetHBpt,DrJet1Lep,DrJet2Lep,DrJetHBLep,DrJet1Jet2,JetLepMass;
-  Float_t J3Mass,HT20,XS,HT30;
-  Float_t Njet, NbLoose30, NbTight30, LepID, LepChg, Nevt, Event, Njet30;
+  Float_t J3Mass,XS,HT;
+  Float_t Njet, NbLoose, NbTight, LepID, LepChg, Nevt, Event;
   Float_t JetHBCSV;
   //Int_t nGoodMu, nGoodEl;
-  //Float_t LepSip3, LepIso03, LepIso04, HT25, HT30, DPhiJet1Jet2,
+  //Float_t LepSip3, LepIso03, LepIso04, DPhiJet1Jet2,
 
-  // Base BDT
+  // SET0
   reader->AddVariable("Jet1Pt", &Jet1Pt);
   reader->AddVariable("mt", &mt);
   reader->AddVariable("Met", &Met);
   reader->AddVariable("LepChg", &LepChg);
   reader->AddVariable("LepEta", &LepEta);
   reader->AddVariable("LepPt", &LepPt);
-  reader->AddVariable("JetHBpt", &JetHBpt);
-  reader->AddVariable("DrJetHBLep",&DrJetHBLep);
-  reader->AddVariable("Njet30", &Njet30);
-  reader->AddVariable("HT30", &HT30);
-  reader->AddVariable("NbLoose30", &NbLoose30);
-  //reader->AddVariable("Q80", &Q80);
-  //reader->AddVariable("CosDeltaPhi", &CosDeltaPhi);
-  //reader->AddVariable("Jet1Pt", &Jet1Pt);
-  //reader->AddVariable("Jet2Pt", &Jet2Pt);
+  reader->AddVariable("HT", &HT);
+  reader->AddVariable("NbLoose", &NbLoose);
+  // SET1
+  //reader->AddVariable("Njet", &Njet);
+  //reader->AddVariable("JetHBpt", &JetHBpt);
+  //reader->AddVariable("DrJetHBLep",&DrJetHBLep);
+  // SET2
+  //reader->AddVariable("JetHBCSV",&JetHBCSV);
+  // SET3
   //reader->AddVariable("JetLepMass",&JetLepMass);
   //reader->AddVariable("J3Mass",&J3Mass);
-  //reader->AddVariable("DrJet1Lep", &DrJet1Lep);
-  //reader->AddVariable("DrJet1Jet2",&DrJet1Jet2);
-  //reader->AddVariable("HT25",&HT25);
 
-  reader->AddVariable("JetHBCSV",&JetHBCSV);
+  //reader->AddVariable("NbLooseTo50",&NbLooseTo50);
+  //reader->AddVariable("NbLoose50",&NbLoose50);
+  //reader->AddVariable("NbMediumTo50",&NbMediumTo50);
+  //reader->AddVariable("NbMedium50",&NbMedium50);
+  //reader->AddVariable("NbTightTo50",&NbTightTo50);
+  //reader->AddVariable("NbTight50",&NbTight50);
+  //reader->AddVariable("nGoodTrack", &nGoodTrack);
+  //reader->AddVariable("Jet1Eta", &Jet1Eta);
+  //reader->AddVariable("Jet2Pt", &Jet2Pt);
+  //reader->AddVariable("DrJet1Lep", &DrJet1Lep);
+  //reader->AddVariable("Q80", &Q80);
+  //reader->AddVariable("CosDeltaPhi", &CosDeltaPhi);
+  //reader->AddVariable("DrJet1Jet2",&DrJet1Jet2);
+  //reader->AddVariable("Jet1CSV", &Jet1CSV);
+  //reader->AddVariable("Jet2CSV", &Jet2CSV);
+  //reader->AddVariable("Jet3CSV", &Jet3CSV);
 
   TString dir    = "weights/";
   TString prefix = "TMVAClassification";
@@ -208,10 +220,9 @@ int main(int argc, char** argv)
     OutputTree->SetBranchAddress("mt",  &mt);
     OutputTree->SetBranchAddress("Q80", &Q80);
     OutputTree->SetBranchAddress("CosDeltaPhi",&CosDeltaPhi);
-    OutputTree->SetBranchAddress("NbLoose30", &NbLoose30);
-    OutputTree->SetBranchAddress("NbTight30", &NbTight30);
+    OutputTree->SetBranchAddress("NbLoose", &NbLoose);
+    OutputTree->SetBranchAddress("NbTight", &NbTight);
     OutputTree->SetBranchAddress("Njet", &Njet);
-    OutputTree->SetBranchAddress("Njet30", &Njet30);
     OutputTree->SetBranchAddress("Jet1Pt", &Jet1Pt);
     OutputTree->SetBranchAddress("Jet1Eta", &Jet1Eta);
     OutputTree->SetBranchAddress("Jet2Pt", &Jet2Pt);
@@ -224,9 +235,7 @@ int main(int argc, char** argv)
     OutputTree->SetBranchAddress("DrJet1Jet2",&DrJet1Jet2);
     OutputTree->SetBranchAddress("JetLepMass",&JetLepMass);
     OutputTree->SetBranchAddress("J3Mass",&J3Mass);
-    OutputTree->SetBranchAddress("HT20",&HT20);
-    //OutputTree->SetBranchAddress("HT25",&HT25);
-    OutputTree->SetBranchAddress("HT30",&HT30);
+    OutputTree->SetBranchAddress("HT",&HT);
     OutputTree->SetBranchAddress("XS", &XS);
     OutputTree->SetBranchAddress("Event", &Event);
     OutputTree->SetBranchAddress("Nevt", &Nevt);
