@@ -31,6 +31,7 @@ int main(int argc, char **argv)
   std::string suffix = "";
   double luminosity = 0;
   bool isPseudoData = false;
+  bool unblind = false;
 
   if(argc < 2)
   {
@@ -74,7 +75,11 @@ int main(int argc, char **argv)
     if(argument == "--isPseudoData")
     {
       isPseudoData = true;
+      unblind = true;
     }
+
+    if(argument == "--unblind")
+      unblind = true;
   }
 
   if(jsonFileName == "")
@@ -125,6 +130,16 @@ int main(int argc, char **argv)
     auto mcH = samples.getMCBkg().getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+region.second+")", 26, -0.7, 0.6);
     auto sigH = samples.getMCSig().getHist("Signal", "BDT", "BDT;Evt.", mcWeight+"*("+region.second+")", 26, -0.7, 0.6);
     auto mcS = samples.getMCBkg().getStack("BDT", "BDT;Evt.", mcWeight+"*("+region.second+")", 26, -0.7, 0.6);
+
+    if(!unblind)
+    {
+      auto theBin = dataH->FindBin(0.4);
+      for(int i = theBin; i < 28; ++i)
+      {
+        dataH->SetBinContent(i, 0.1);
+        dataH->SetBinError(i, 0.1);
+      }
+    }
 
     TCanvas c1((region.first+"_BDTOut").c_str(), "", 800, 1200);
     gStyle->SetOptStat(0);
