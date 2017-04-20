@@ -4,9 +4,9 @@
 . setupPaths.sh
 
 INPUT=${TEST_DIR}_bdt
-OUTPUT="~cbeiraod/local-area/Stop4Body/DDEstimate"
-OUTPUT_POW="~cbeiraod/local-area/Stop4Body/DDEstimate_pow"
-OUTPUT_LEP="~cbeiraod/local-area/Stop4Body/DDEstimate_lep"
+OUTPUT=~cbeiraod/local-area/Stop4Body/DDEstimate
+OUTPUT_POW=~cbeiraod/local-area/Stop4Body/DDEstimate_pow
+OUTPUT_LEP=~cbeiraod/local-area/Stop4Body/DDEstimate_lep
 
 
 if [[ -d ${INPUT} ]] ; then
