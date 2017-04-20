@@ -4,9 +4,9 @@
 . setupPaths.sh
 
 INPUT=${NTUPLE_DIR}
-OUTPUT="~cbeiraod/local-area/Stop4Body/DataMC"
-OUTPUT_POW="~cbeiraod/local-area/Stop4Body/DataMC_pow"
-OUTPUT_LEP="~cbeiraod/local-area/Stop4Body/DataMC_lep"
+OUTPUT=~cbeiraod/local-area/Stop4Body/DataMC
+OUTPUT_POW=~cbeiraod/local-area/Stop4Body/DataMC_pow
+OUTPUT_LEP=~cbeiraod/local-area/Stop4Body/DataMC_lep
 
 
 if [[ -d ${INPUT} ]] ; then
