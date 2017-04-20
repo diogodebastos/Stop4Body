@@ -133,7 +133,7 @@ int main(int argc, char **argv)
 
     if(!unblind)
     {
-      auto theBin = dataH->FindBin(0.4);
+      auto theBin = dataH->FindBin(0.3);
       for(int i = theBin; i < 28; ++i)
       {
         dataH->SetBinContent(i, 0.1);
