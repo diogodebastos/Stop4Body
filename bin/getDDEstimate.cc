@@ -36,8 +36,8 @@ int main(int argc, char** argv)
   bool verbose = false;
 
   std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (nGoodEl + nGoodMu <= 2) && (LepPt < 30.)";
-  std::string wjetsControlRegion = "(BDT < -0.1) && (NbLoose30 == 0)";
-  std::string ttbarControlRegion = "(BDT < -0.1) && (NbTight30 > 0)";
+  std::string wjetsControlRegion = "(BDT < -0.1) && (NbLoose == 0)";
+  std::string ttbarControlRegion = "(BDT < -0.1) && (NbTight > 0)";
   std::string signalRegion       = "(BDT > 0.4)";
 
   if(argc < 2)
