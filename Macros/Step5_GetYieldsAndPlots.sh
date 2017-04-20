@@ -7,19 +7,22 @@
 #OUTPUT_Data=~cbeiraod/local-area/Stop4Body/DataMC/
 
 OUTPUT=./plots/
-OUTPUT_LO=./plots_lo/
+OUTPUT_POW=./plots_pow/
+OUTPUT_LEP=./plots_lep/
 
 if [[ -d ${TEST_DIR} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then
     mkdir -p ${OUTPUT}
   fi
-  if [[ ! -d ${OUTPUT_LO} ]] ; then
-    mkdir -p ${OUTPUT_LO}
+  if [[ ! -d ${OUTPUT_POW} ]] ; then
+    mkdir -p ${OUTPUT_POW}
+  fi
+  if [[ ! -d ${OUTPUT_LEP} ]] ; then
+    mkdir -p ${OUTPUT_LEP}
   fi
 
-  getYields --json ${JSON_PATH}/plot2016B.json    --inDir ${NTUPLE_DIR} --variables variables.json --outDir ${OUTPUT}    --lumi 5877
-  getYields --json ${JSON_PATH}/plot2016B_LO.json --inDir ${NTUPLE_DIR} --variables variables.json --outDir ${OUTPUT_LO} --lumi 5877
-  #getYields --json samples2Run.json --inDir ${INPUT} --variables variables.json --outDir ${OUTPUT_PD}
-  #getYields --json samples2RunData.json --inDir ${INPUT} --variables variables.json --outDir ${OUTPUT_Data} --lumi 1700
+  getYields --json ${JSON_PATH}/plot2016B.json     --inDir ${NTUPLE_DIR} --variables variables.json --outDir ${OUTPUT}     --lumi 35866
+  getYields --json ${JSON_PATH}/plot2016B_pow.json --inDir ${NTUPLE_DIR} --variables variables.json --outDir ${OUTPUT_POW} --lumi 35866
+  getYields --json ${JSON_PATH}/plot2016B_lep.json --inDir ${NTUPLE_DIR} --variables variables.json --outDir ${OUTPUT_LEP} --lumi 35866
 fi
 
