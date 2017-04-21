@@ -1151,7 +1151,7 @@ int main(int argc, char** argv)
                 passHLT = true;
 
               // Remove double counting by removing from the muon PD the events with the electron HLT
-              if(sample.tag.find("SingleMu") != std::string::npos && process.isdata())
+              if(sample.tag().find("SingleMu") != std::string::npos && process.isdata())
               {
                 if(HLT_Ele24_eta2p1_WPLoose_Gsf != 0)
                   passHLT = false;
@@ -1159,7 +1159,7 @@ int main(int argc, char** argv)
             }
 
             if(!passHLT)
-              continue
+              continue;
           }
 
           bdttree->Fill();
