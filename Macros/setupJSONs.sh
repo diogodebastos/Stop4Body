@@ -26,7 +26,8 @@ mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/backgroundMC.json $JSON
 
 # Copy the data JSON over, so that all locations are consistent
 cp         $JSON_PATH/Orig/Data.json          $JSON_PATH/
-mergeJSONs $JSON_PATH/DataLepton.json         $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
+#mergeJSONs $JSON_PATH/DataLepton.json         $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
+cp         $JSON_PATH/Orig/DataSingleLepton   $JSON_PATH/DataSingleLepton
 
 # Make a JSON for all PD
 mergeJSONs $JSON_PATH/allPD.json              $JSON_PATH/Orig/PD.json       $JSON_PATH/Orig/PDInj.json

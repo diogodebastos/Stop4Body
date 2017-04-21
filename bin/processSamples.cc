@@ -1126,11 +1126,10 @@ int main(int argc, char** argv)
             if ( badCloneMuonMoriond2017            != 1 ) continue;
             if ( badChargedHadronFilter             != 1 ) continue;
 
-            if(process.isdata())
+            bool passHLT = false;
+            if(!swap) // Normally use the MET triggers, but only for data
             {
-              bool passHLT = false;
-
-              if(!swap) // Normally use the MET triggers
+              if(process.isdata())
               {
                 if(HLT_PFMET90_PFMHT90_IDTight != 0)
                   passHLT = true;
@@ -1141,17 +1140,26 @@ int main(int argc, char** argv)
                 if(HLT_PFMET120_PFMHT120_IDTight != 0)
                   passHLT = true;
               }
-              else // If swapping the MET and LepPt, use the lepton triggers instead
-              {
-                if(HLT_IsoMu24 != 0)
-                  passHLT = true;
-                if(HLT_Ele24_eta2p1_WPLoose_Gsf != 0)
-                  passHLT = true;
-              }
-
-              if(!passHLT)
-                continue;
+              else
+                passHLT = true;
             }
+            else // If swapping MET and LepPt, apply single lepton triggers to data and MC, for data avoid double counting
+            {
+              if(HLT_IsoMu24 != 0)
+                passHLT = true;
+              if(HLT_Ele24_eta2p1_WPLoose_Gsf != 0)
+                passHLT = true;
+
+              // Remove double counting by removing from the muon PD the events with the electron HLT
+              if(sample.tag.find("SingleMu") != std::string::npos && process.isdata())
+              {
+                if(HLT_Ele24_eta2p1_WPLoose_Gsf != 0)
+                  passHLT = false;
+              }
+            }
+
+            if(!passHLT)
+              continue
           }
 
           bdttree->Fill();
