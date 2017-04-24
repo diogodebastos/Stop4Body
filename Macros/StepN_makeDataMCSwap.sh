@@ -20,7 +20,7 @@ if [[ -d ${INPUT} ]] ; then
     mkdir -p ${OUTPUT_LEP}
   fi
 
-  makePlots --json ${JSON_PATH}/plot2016.json     --outDir ${OUTPUT}     --inDir ${INPUT} --variables variables.json --cuts variables.json
-  makePlots --json ${JSON_PATH}/plot2016_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --variables variables.json --cuts variables.json
-  makePlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --variables variables.json --cuts variables.json
+  makePlots --json ${JSON_PATH}/plot2016swap.json     --outDir ${OUTPUT}     --inDir ${INPUT} --variables variables.json --cuts variables.json
+  makePlots --json ${JSON_PATH}/plot2016swap_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --variables variables.json --cuts variables.json
+  makePlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --variables variables.json --cuts variables.json
 fi
