@@ -13,5 +13,5 @@ eval `scramv1 runtime -sh`
 cd UserCode/Stop4Body/Macros/
 
 . setupPaths.sh
-MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --swap --json $JSON_PATH/DataSingleElectron.json --outDir ${SWAP_DIR}"
+MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --swap --json $JSON_PATH/Orig/DataSingleElectron.json --outDir ${SWAP_DIR}"
 eval $MY_PROCESS_SAMPLES_CMD
