@@ -53,6 +53,7 @@ int main(int argc, char** argv)
   bool verbose = false;
   bool cumulativeCuts = false;
   bool rawEvents = false;
+  bool noSF = false;
 
   if(argc < 2)
   {
@@ -120,6 +121,11 @@ int main(int argc, char** argv)
     {
       rawEvents = true;
     }
+
+    if(argument == "--noSF")
+    {
+      noSF = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -157,12 +163,19 @@ int main(int argc, char** argv)
   std::string mcWeight;
   {
     std::stringstream converter;
-    converter << "weight"; // Full
-    //converter << "weight/(triggerEfficiency*WISRSF*ISRweight)"; // Incrementally adding new tests
-    //converter << "weight/puWeight"; // Full no PU
-    //converter << "XS*filterEfficiency*puWeight*genWeight/sumGenWeight";
-    if(noPUweight)
-      converter << "/puWeight";
+    if(!noSF)
+    {
+      converter << "weight"; // Full
+      //converter << "weight/(triggerEfficiency*WISRSF*ISRweight)"; // Incrementally adding new tests
+      //converter << "weight/puWeight"; // Full no PU
+      //converter << "XS*filterEfficiency*puWeight*genWeight/sumGenWeight";
+      if(noPUweight)
+        converter << "/puWeight";
+    }
+    else
+    {
+      converter << "XS*filterEfficiency*(genWeight/sumGenWeight)";
+    }
     converter << "*" << luminosity;
     converter >> mcWeight;
   }
