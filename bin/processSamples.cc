@@ -526,6 +526,8 @@ int main(int argc, char** argv)
         Int_t HLT_PFMET120_PFMHT120_IDTight; inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
         Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
         Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
+        Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
+        Int_t HLT_IsoMu27;                   inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
 
         Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
         Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
@@ -942,8 +944,10 @@ int main(int argc, char** argv)
           HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
           HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
           HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
-          HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
-          HLT_Mu                              = HLT_IsoMu24;
+          //HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
+          //HLT_Mu                              = HLT_IsoMu24;
+          HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;
+          HLT_Mu                              = HLT_IsoMu27;
           METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
@@ -1145,15 +1149,15 @@ int main(int argc, char** argv)
             }
             else // If swapping MET and LepPt, apply single lepton triggers to data and MC, for data avoid double counting
             {
-              if(HLT_IsoMu24 != 0)
+              if(HLT_IsoMu27 != 0)
                 passHLT = true;
-              if(HLT_Ele24_eta2p1_WPLoose_Gsf != 0)
+              if(HLT_Ele25_eta2p1_WPLoose_Gsf != 0)
                 passHLT = true;
 
               // Remove double counting by removing from the muon PD the events with the electron HLT
               if(sample.tag().find("SingleMu") != std::string::npos && process.isdata())
               {
-                if(HLT_Ele24_eta2p1_WPLoose_Gsf != 0)
+                if(HLT_Ele25_eta2p1_WPLoose_Gsf != 0)
                   passHLT = false;
               }
             }
