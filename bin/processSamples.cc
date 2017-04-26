@@ -1097,6 +1097,10 @@ int main(int argc, char** argv)
 
           if(!noSkim)
           {
+            // Special check in case we are swapping MET and LepPt
+            if(swap && LepPt < 5)
+              continue;
+
             // No need to keep events without leptons or jets
             if(validLeptons.size() == 0 || validJets.size() == 0)
               continue;
