@@ -1,10 +1,19 @@
 
 #include "UserCode/Stop4Body/interface/commonFunctions.h"
-#define M_PIl          3.141592653589793238462643383279502884L /* pi */
+//#define M_PIl          3.141592653589793238462643383279502884L /* pi */
 
 #include <cmath>
 
 #include "TMath.h"
+
+TH2D* centralElectronSFHist = nullptr;
+TH2D* centralMuonSFHist = nullptr;
+TH1F* hephyElectronIDSFHistBarrel = nullptr;
+TH1F* hephyElectronIDSFHistEndcap = nullptr;
+TH1F* hephyMuonIDSFHist = nullptr;
+TH1F* hephyElectronISOSFHistBarrel = nullptr;
+TH1F* hephyElectronISOSFHistEndcap = nullptr;
+TH1F* hephyMuonISOSFHist = nullptr;
 
 
 bool fileExists(std::string fileName)

@@ -3,6 +3,15 @@
 
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
+extern TH2D* centralElectronSFHist;
+extern TH2D* centralMuonSFHist;
+extern TH1F* hephyElectronIDSFHistBarrel;
+extern TH1F* hephyElectronIDSFHistEndcap;
+extern TH1F* hephyMuonIDSFHist;
+extern TH1F* hephyElectronISOSFHistBarrel;
+extern TH1F* hephyElectronISOSFHistEndcap;
+extern TH1F* hephyMuonISOSFHist;
+
 bool fileExists(std::string);
 float DeltaPhi(double, double);
 

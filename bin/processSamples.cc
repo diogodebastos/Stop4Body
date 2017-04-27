@@ -66,14 +66,14 @@ const double CSV_Loose = 0.5426;
 const double CSV_Medium = 0.800; // TODO: Update
 const double CSV_Tight = 0.935;
 
-TH2D* centralElectronSFHist = nullptr;
-TH2D* centralMuonSFHist = nullptr;
-TH1F* hephyElectronIDSFHistBarrel = nullptr;
-TH1F* hephyElectronIDSFHistEndcap = nullptr;
-TH1F* hephyMuonIDSFHist = nullptr;
-TH1F* hephyElectronISOSFHistBarrel = nullptr;
-TH1F* hephyElectronISOSFHistEndcap = nullptr;
-TH1F* hephyMuonISOSFHist = nullptr;
+extern TH2D* centralElectronSFHist;
+extern TH2D* centralMuonSFHist;
+extern TH1F* hephyElectronIDSFHistBarrel;
+extern TH1F* hephyElectronIDSFHistEndcap;
+extern TH1F* hephyMuonIDSFHist;
+extern TH1F* hephyElectronISOSFHistBarrel;
+extern TH1F* hephyElectronISOSFHistEndcap;
+extern TH1F* hephyMuonISOSFHist;
 
 int main(int argc, char** argv)
 {
