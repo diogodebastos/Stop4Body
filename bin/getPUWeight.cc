@@ -39,6 +39,7 @@
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
+#include "UserCode/Stop4Body/interface/commonFunctions.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
 using json = nlohmann::json;
