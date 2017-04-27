@@ -140,6 +140,9 @@ int main(int argc, char** argv)
       TH1D sampleNTrue(("sample_"+sample.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", nBins, 0, nBins);
       sampleNTrue.Sumw2();
 
+      double sampleSumGenWeight = 0;
+      double Nevt = 0;
+
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
@@ -151,8 +154,10 @@ int main(int argc, char** argv)
           inputtree = static_cast<TTree*>(finput.Get("tree"));
 
         Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
+        Nevt += thisNevt;
 
         Float_t thisGenWeight = 0;
+        Float_t nIsr;
         Int_t nvtx = 0;
         Float_t nTrueInt = 0;
         Float_t xsec = 1;
@@ -167,19 +172,40 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("genWeight", &thisGenWeight);
           inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
           inputtree->SetBranchAddress("xsec", &xsec);
+          inputtree->SetBranchAddress("nIsr", &nIsr);
         }
+        Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
+        Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
+        Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+        Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
+        Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
+        double smallCounter = 0;
+
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
+
           sampleNVTX.Fill(nvtx, thisGenWeight*xsec);
           processNVTX.Fill(nvtx, thisGenWeight*xsec);
           sampleNTrue.Fill(nTrueInt, thisGenWeight*xsec);
           processNTrue.Fill(nTrueInt, thisGenWeight*xsec);
+
+          smallCounter += thisGenWeight;
         }
+
+        sampleSumGenWeight += smallCounter;
 
         if(process.selection() != "")
           delete inputtree;
       }
+
+      TVectorD sumGenWeight(1);
+      sumGenWeight[0] = sampleSumGenWeight;
+      sumGenWeight.Write(("sample_"+sample.tag()+"_sumGenWeight").c_str());
+
+      TVectorD sampleNevt(1);
+      sampleNevt[0] = Nevt;
+      sampleNevt.Write(("sample_"+sample.tag()+"_Nevt").c_str());
 
       sampleNVTX.Write();
       sampleNTrue.Write();
