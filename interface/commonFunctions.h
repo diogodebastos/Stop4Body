@@ -16,6 +16,7 @@ extern TH1F* hephyElectronISOSFHistEndcap;
 extern TH1F* hephyMuonISOSFHist;
 
 bool fileExists(std::string);
+std::string getBaseName(const std::string&);
 float DeltaPhi(double, double);
 
 doubleUnc triggerEfficiencyFromMET(double);

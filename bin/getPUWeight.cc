@@ -42,20 +42,9 @@
 #include "UserCode/Stop4Body/interface/commonFunctions.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
+#define LEPCOLL_LIMIT  40
+
 using json = nlohmann::json;
-
-std::string getBaseName(const std::string& s)
-{
-  char sep = '/';
-
-  size_t i = s.rfind(sep, s.length());
-  if (i != std::string::npos)
-  {
-    return s.substr(i+1, s.length() - i);
-  }
-
-  return "";
-}
 
 int main(int argc, char** argv)
 {

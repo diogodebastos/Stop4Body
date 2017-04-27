@@ -23,6 +23,19 @@ bool fileExists(std::string fileName)
   return infile.good();
 }
 
+std::string getBaseName(const std::string& s)
+{
+  char sep = '/';
+
+  size_t i = s.rfind(sep, s.length());
+  if (i != std::string::npos)
+  {
+    return s.substr(i+1, s.length() - i);
+  }
+
+  return "";
+}
+
 float DeltaPhi(double p1, double p2)
 {
   double x = p1 - p2;
