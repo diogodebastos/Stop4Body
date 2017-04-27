@@ -3,6 +3,9 @@
 
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
+#include "TH1.h"
+#include "TH2.h"
+
 extern TH2D* centralElectronSFHist;
 extern TH2D* centralMuonSFHist;
 extern TH1F* hephyElectronIDSFHistBarrel;
