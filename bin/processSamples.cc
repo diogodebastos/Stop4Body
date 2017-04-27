@@ -39,6 +39,7 @@
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
+#include "UserCode/Stop4Body/interface/commonFunctions.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
 #define GENPART_LIMIT  40
@@ -58,8 +59,6 @@ struct FileInfo
 };
 
 void printHelp();
-bool fileExists(std::string);
-float DeltaPhi(float, float);
 
 const double ECALGap_MinEta =  1.4442; // ECAL gap parameters
 const double ECALGap_MaxEta =  1.5660;
@@ -1216,25 +1215,6 @@ void printHelp()
   std::cout << "\t--suffix\t- Suffix to add at the end of the name of the output files." << std::endl;
 
   return;
-}
-
-bool fileExists(std::string fileName)
-{
-  std::ifstream infile(fileName);
-  return infile.good();
-}
-
-float DeltaPhi(float p1, float p2)
-{
-  float x = p1 - p2;
-
-  while(x >= TMath::Pi())
-    x -= (2.*TMath::Pi());
-
-  while(x < -TMath::Pi())
-    x += (2.*TMath::Pi());
-
-  return std::abs(x);
 }
 
 // Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
