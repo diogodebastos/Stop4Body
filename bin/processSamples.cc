@@ -609,11 +609,15 @@ int main(int argc, char** argv)
           nGoodEl = 0;
           for(int i = 0; i < nLepGood; ++i)
           {
-            bool lPTETA = LepGood_pt[i] > 5.0;
+            bool lPTETA = false;
             if(std::abs(LepGood_pdgId[i]) == 13) // If a muon
+            {
+              lPTETA = LepGood_pt[i] > 3.5;
               lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.4);
+            }
             else // If an electron
             {
+              lPTETA = LepGood_pt[i] > 5.0;
               lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.5);
               // Also veto the gap in the ECAL
               lPTETA = lPTETA && ( (std::abs(LepGood_eta[i]) > ECALGap_MaxEta)
