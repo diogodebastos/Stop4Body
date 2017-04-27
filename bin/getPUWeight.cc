@@ -131,6 +131,9 @@ int main(int argc, char** argv)
     processNVTX.Sumw2();
     TH1D processNTrue(("process_"+process.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", nBins, 0, nBins);
     processNTrue.Sumw2();
+    int nIsrBin_process[7]{0, 0, 0, 0, 0, 0, 0};
+    int EWKpTBin_process[8]{0, 0, 0, 0, 0, 0, 0, 0};
+
     for(auto &sample : process)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
@@ -142,6 +145,8 @@ int main(int argc, char** argv)
 
       double sampleSumGenWeight = 0;
       double Nevt = 0;
+      int nIsrBin_sample[7]{0, 0, 0, 0, 0, 0, 0};
+      int EWKpTBin_sample[8]{0, 0, 0, 0, 0, 0, 0, 0};
 
       for(auto &file : sample)
       {
@@ -191,6 +196,41 @@ int main(int argc, char** argv)
           processNTrue.Fill(nTrueInt, thisGenWeight*xsec);
 
           smallCounter += thisGenWeight;
+
+          Int_t nIsr_switch = nIsr;
+          if(nIsr_switch > 6)
+            nIsr_switch = 6;
+          nIsrBin_sample[nIsr_switch]++;
+          nIsrBin_process[nIsr_switch]++;
+
+          if(nLepGood > 0)
+          {
+            double lep_x = LepGood_pt[0] * std::cos(LepGood_phi[0]);
+            double lep_y = LepGood_pt[0] * std::sin(LepGood_phi[0]);
+            double met_x = met_pt * std::cos(met_phi);
+            double met_y = met_pt * std::sin(met_phi);
+
+            double w_pt = std::sqrt((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y));
+
+            int EWKindex = 7;
+            if(w_pt < 600)
+              EWKindex = 6;
+            if(w_pt < 400)
+              EWKindex = 5;
+            if(w_pt < 300)
+              EWKindex = 4;
+            if(w_pt < 200)
+              EWKindex = 3;
+            if(w_pt < 150)
+              EWKindex = 2;
+            if(w_pt < 100)
+              EWKindex = 1;
+            if(w_pt < 50)
+              EWKindex = 0;
+
+            EWKpTBin_sample[EWKindex]++;
+            EWKpTBin_process[EWKindex]++;
+          }
         }
 
         sampleSumGenWeight += smallCounter;
@@ -207,6 +247,41 @@ int main(int argc, char** argv)
       sampleNevt[0] = Nevt;
       sampleNevt.Write(("sample_"+sample.tag()+"_Nevt").c_str());
 
+      double ISRCParam_sample = (                 nIsrBin_sample[0] +
+                                                  nIsrBin_sample[1] +
+                                                  nIsrBin_sample[2] +
+                                                  nIsrBin_sample[3] +
+                                                  nIsrBin_sample[4] +
+                                                  nIsrBin_sample[5] +
+                                                  nIsrBin_sample[6]  ) /
+      static_cast<double>(ISRweightFromNISRJet(0)*nIsrBin_sample[0] +
+                          ISRweightFromNISRJet(1)*nIsrBin_sample[1] +
+                          ISRweightFromNISRJet(2)*nIsrBin_sample[2] +
+                          ISRweightFromNISRJet(3)*nIsrBin_sample[3] +
+                          ISRweightFromNISRJet(4)*nIsrBin_sample[4] +
+                          ISRweightFromNISRJet(5)*nIsrBin_sample[5] +
+                          ISRweightFromNISRJet(6)*nIsrBin_sample[6]  );
+      double EWKISRCParam_sample = (                   EWKpTBin_sample[0] +
+                                                       EWKpTBin_sample[1] +
+                                                       EWKpTBin_sample[2] +
+                                                       EWKpTBin_sample[3] +
+                                                       EWKpTBin_sample[4] +
+                                                       EWKpTBin_sample[5] +
+                                                       EWKpTBin_sample[6] +
+                                                       EWKpTBin_sample[7]  ) /
+      static_cast<double>(EWKISRweightFromISRpT( 25.0)*EWKpTBin_sample[0] +
+                          EWKISRweightFromISRpT( 75.0)*EWKpTBin_sample[1] +
+                          EWKISRweightFromISRpT(125.0)*EWKpTBin_sample[2] +
+                          EWKISRweightFromISRpT(175.0)*EWKpTBin_sample[3] +
+                          EWKISRweightFromISRpT(250.0)*EWKpTBin_sample[4] +
+                          EWKISRweightFromISRpT(350.0)*EWKpTBin_sample[5] +
+                          EWKISRweightFromISRpT(500.0)*EWKpTBin_sample[6] +
+                          EWKISRweightFromISRpT(700.0)*EWKpTBin_sample[7]  );
+      TVectorD ISRCParams(2);
+      ISRCParams[0] = ISRCParam_sample;
+      ISRCParams[1] = EWKISRCParam_sample;
+      ISRCParams.Write(("sample_"+sample.tag()+"_ISRCParams").c_str());
+
       sampleNVTX.Write();
       sampleNTrue.Write();
 
@@ -218,6 +293,41 @@ int main(int argc, char** argv)
       //samplePUweight->Divide(&sampleNVTX); // Trying this one instead
       samplePUweight->Write();
     }
+
+    double ISRCParam_process = (                nIsrBin_process[0] +
+                                                nIsrBin_process[1] +
+                                                nIsrBin_process[2] +
+                                                nIsrBin_process[3] +
+                                                nIsrBin_process[4] +
+                                                nIsrBin_process[5] +
+                                                nIsrBin_process[6]  ) /
+    static_cast<double>(ISRweightFromNISRJet(0)*nIsrBin_process[0] +
+                        ISRweightFromNISRJet(1)*nIsrBin_process[1] +
+                        ISRweightFromNISRJet(2)*nIsrBin_process[2] +
+                        ISRweightFromNISRJet(3)*nIsrBin_process[3] +
+                        ISRweightFromNISRJet(4)*nIsrBin_process[4] +
+                        ISRweightFromNISRJet(5)*nIsrBin_process[5] +
+                        ISRweightFromNISRJet(6)*nIsrBin_process[6]  );
+    double EWKISRCParam_process = (                  EWKpTBin_process[0] +
+                                                     EWKpTBin_process[1] +
+                                                     EWKpTBin_process[2] +
+                                                     EWKpTBin_process[3] +
+                                                     EWKpTBin_process[4] +
+                                                     EWKpTBin_process[5] +
+                                                     EWKpTBin_process[6] +
+                                                     EWKpTBin_process[7]  ) /
+    static_cast<double>(EWKISRweightFromISRpT( 25.0)*EWKpTBin_process[0] +
+                        EWKISRweightFromISRpT( 75.0)*EWKpTBin_process[1] +
+                        EWKISRweightFromISRpT(125.0)*EWKpTBin_process[2] +
+                        EWKISRweightFromISRpT(175.0)*EWKpTBin_process[3] +
+                        EWKISRweightFromISRpT(250.0)*EWKpTBin_process[4] +
+                        EWKISRweightFromISRpT(350.0)*EWKpTBin_process[5] +
+                        EWKISRweightFromISRpT(500.0)*EWKpTBin_process[6] +
+                        EWKISRweightFromISRpT(700.0)*EWKpTBin_process[7]  );
+    TVectorD ISRCParams(2);
+    ISRCParams[0] = ISRCParam_process;
+    ISRCParams[1] = EWKISRCParam_process;
+    ISRCParams.Write(("process_"+process.tag()+"_ISRCParams").c_str());
 
     processNVTX.Write();
     processNTrue.Write();
