@@ -348,7 +348,7 @@ int main(int argc, char** argv)
         Nevt = (*sampleNevt)[0];
         TVectorD* sampleSumGenWeight = static_cast<TVectorD*>(puWeightFile.Get(("sample_"+sample.tag()+"_sumGenWeight").c_str())->Clone("sampleSumGenWeight"));
         sumGenWeight = (*sampleSumGenWeight)[0];
-        TVectorD* processISRWeights = static_cast<TVectorD*>(puWeightFile.Get()->Clone("processISRWeights"));
+        TVectorD* processISRWeights = static_cast<TVectorD*>(puWeightFile.Get(("process_"+process.tag()+"_ISRCParams").c_str())->Clone("processISRWeights"));
         ISRCParam =    (*processISRWeights)[0];
         EWKISRCParam = (*processISRWeights)[1];
 
