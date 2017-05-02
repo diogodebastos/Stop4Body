@@ -228,7 +228,7 @@ int main(int argc, char** argv)
       Float_t LepDxy;    bdttree->Branch("LepDxy",    &LepDxy,    "LepDxy/F");
       Float_t LepDz;     bdttree->Branch("LepDz",     &LepDz,     "LepDz/F");
       Float_t LepIso03;  bdttree->Branch("LepIso03",  &LepIso03,  "LepIso03/F");
-      Float_t isPrompt;  bdttree->Branch("isPrompt",  &inPrompt,  "isPrompt/F");
+      Float_t isPrompt;  bdttree->Branch("isPrompt",  &isPrompt,  "isPrompt/F");
       Float_t Lep2ID;    bdttree->Branch("Lep2ID",    &Lep2ID,    "Lep2ID/F");
       Float_t Lep2Chg;   bdttree->Branch("Lep2Chg",   &Lep2Chg,   "Lep2Chg/F");
       Float_t Lep2Pt;    bdttree->Branch("Lep2Pt",    &Lep2Pt,    "Lep2Pt/F");
@@ -236,7 +236,7 @@ int main(int argc, char** argv)
       Float_t Lep2Dxy;   bdttree->Branch("Lep2Dxy",   &Lep2Dxy,   "Lep2Dxy/F");
       Float_t Lep2Dz;    bdttree->Branch("Lep2Dz",    &Lep2Dz,    "Lep2Dz/F");
       Float_t Lep2Iso03; bdttree->Branch("Lep2Iso03", &Lep2Iso03, "Lep2Iso03/F");
-      Float_t isPrompt2; bdttree->Branch("isPrompt2",  &inPrompt2,  "isPrompt2/F");
+      Float_t isPrompt2; bdttree->Branch("isPrompt2",  &isPrompt2,  "isPrompt2/F");
       Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
       Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
