@@ -39,6 +39,8 @@ int main(int argc, char** argv)
   std::string wjetsControlRegion = "(BDT < -0.1) && (NbLoose == 0)";
   std::string ttbarControlRegion = "(BDT < -0.1) && (NbTight > 0)";
   std::string signalRegion       = "(BDT > 0.4)";
+  std::string wjetsSignalRegionClosure = "(BDT > 0.4) && (NbLoose == 0)";
+  std::string ttbarSignalRegionClosure = "(BDT > 0.4) && (NbTight > 0)";
 
   if(argc < 2)
   {
@@ -275,6 +277,23 @@ int main(int argc, char** argv)
   outputTable << "\\hline\n";
 
   injectDD(outputTable, wjets, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+  outputTable << "\\hline\n\\end{tabular}\n";
+
+  if(verbose)
+    std::cout << "Filling closure table" << std::endl;
+  outputTable << "\n\nClosure for DD\n";
+
+  outputTable << "\\begin{tabular}{r|ccccc}\n";
+  outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
+
+  naiveDD(outputTable, wjets, Data, MC, baseSelection + " && " + wjetsSignalRegionClosure, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  naiveDD(outputTable, ttbar, Data, MC, baseSelection + " && " + wjetsSignalRegionClosure, baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+  outputTable << "\\hline\n";
+
+  naiveDD(outputTable, wjets, Data, MC, baseSelection + " && " + ttbarSignalRegionClosure, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  naiveDD(outputTable, ttbar, Data, MC, baseSelection + " && " + ttbarSignalRegionClosure, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   outputTable << "\\hline\n\\end{tabular}\n";
 
