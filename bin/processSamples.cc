@@ -411,6 +411,14 @@ int main(int argc, char** argv)
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
         Int_t   LepGood_mcMatchId[LEPCOLL_LIMIT];
+        Int_t nGenPart = 0;
+        Int_t GenPart_motherId[GENPART_LIMIT];
+        Int_t GenPart_grandmotherId[GENPART_LIMIT];
+        Int_t GenPart_sourceId[GENPART_LIMIT];
+        Int_t GenPart_pdgId[GENPART_LIMIT];
+        Float_t GenPart_pt[GENPART_LIMIT];
+        Float_t GenPart_eta[GENPART_LIMIT];
+        Float_t GenPart_phi[GENPART_LIMIT];
         Float_t xsec = 1;
         Float_t nTrueInt = 1;
         if(!process.isdata())
@@ -419,6 +427,16 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("xsec", &xsec);
           inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
           inputtree->SetBranchAddress("LepGood_mcMatchId", &LepGood_mcMatchId);
+
+          inputtree->SetBranchAddress("nGenPart", &nGenPart);
+          inputtree->SetBranchAddress("GenPart_motherId", &GenPart_motherId);
+          inputtree->SetBranchAddress("GenPart_grandmotherId", &GenPart_grandmotherId);
+          inputtree->SetBranchAddress("GenPart_sourceId", &GenPart_sourceId);
+          inputtree->SetBranchAddress("GenPart_status", &GenPart_status);
+          inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
+          inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
+          inputtree->SetBranchAddress("GenPart_eta", &GenPart_eta);
+          inputtree->SetBranchAddress("GenPart_phi", &GenPart_phi);
         }
 
         // 2015 HLT
@@ -576,6 +594,36 @@ int main(int argc, char** argv)
             {
               leptonIDSF = static_cast<double>(getLeptonIDSF(LepID, LepPt, LepEta));
               leptonISOSF = static_cast<double>(getLeptonISOSF(LepID, LepPt, LepEta));
+
+              auto mcMatchId = LepGood_mcMatchId[leptonIndex];
+              bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
+              if(!isPromptFlag)
+              {
+                for(size_t genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                {
+                  if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
+                  {
+                    if(std::abs(GenPart_motherId[genPartIndex]) == 24 || std::abs(GenPart_motherId[genPartIndex]) == 23 || (GenPart_motherId[genPartIndex] == -9999 && genPartIndex < 3 ))
+                    {
+                      double dphi = DeltaPhi(GenPart_phi[genPartIndex], lep_phi);
+                      double deta = GenPart_eta[genPartIndex] - lep_eta;
+                      double dr = std::sqrt(std::pow(dphi,2) + std::pow(deta,2));
+
+                      if(dr < 0.15)
+                      {
+                        isPromptFlag = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+
+              isPrompt    = isPromptFlag?1:0;
+            }
+            else
+            {
+              isPrompt = 1;
             }
           }
           else
@@ -592,6 +640,7 @@ int main(int argc, char** argv)
             LepDxy      = -9999;
             LepDz       = -9999;
             LepIso03    = -9999;
+            isPrompt    = -9999;
           }
           if(validLeptons.size() > 1)
           {
@@ -603,6 +652,40 @@ int main(int argc, char** argv)
             Lep2Dxy      = LepGood_dxy[leptonIndex];
             Lep2Dz       = LepGood_dz[leptonIndex];
             Lep2Iso03    = LepGood_relIso03[leptonIndex];
+
+            if(!process.isdata())
+            {
+              auto mcMatchId = LepGood_mcMatchId[leptonIndex];
+              bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
+              auto Lep2Phi = LepGood_phi[leptonIndex];
+              if(!isPromptFlag)
+              {
+                for(size_t genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                {
+                  if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
+                  {
+                    if(std::abs(GenPart_motherId[genPartIndex]) == 24 || std::abs(GenPart_motherId[genPartIndex]) == 23 || (GenPart_motherId[genPartIndex] == -9999 && genPartIndex < 3 ))
+                    {
+                      double dphi = DeltaPhi(GenPart_phi[genPartIndex], Lep2Phi);
+                      double deta = GenPart_eta[genPartIndex] - Lep2Eta;
+                      double dr = std::sqrt(std::pow(dphi,2) + std::pow(deta,2));
+
+                      if(dr < 0.15)
+                      {
+                        isPromptFlag = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+
+              isPrompt2   = isPromptFlag?1:0;
+            }
+            else
+            {
+              isPrompt2 = 1;
+            }
           }
           else
           {
@@ -613,6 +696,7 @@ int main(int argc, char** argv)
             Lep2Dxy      = -9999;
             Lep2Dz       = -9999;
             Lep2Iso03    = -9999;
+            isPrompt2    = -9999;
           }
 
           if(!process.isdata())
