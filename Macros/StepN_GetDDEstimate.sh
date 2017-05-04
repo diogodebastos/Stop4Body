@@ -45,4 +45,6 @@ if [[ -d ${INPUT_SWAP} ]] ; then
   getDDEstimate --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT_SWAP_LEP} --inDir ${INPUT_SWAP} --suffix bdt
 
   makePlots --json ${JSON_PATH}/plot2016swap.json --outDir ${OUTPUT_SWAP} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json
+  makePlots --json ${JSON_PATH}/plot2016swap_pow.json --outDir ${OUTPUT_SWAP_POW} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json
+  makePlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT_SWAP_LEP} --inDir ${INPUT_SWAP} --variables variablesClosure.json --cuts variablesClosure.json
 fi
