@@ -7,22 +7,22 @@
     },
     {
       "name":"PreselectionMVA_allLep",
-      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (HLT_Mu == 1)",
       "latex":"Preselection MVA"
     },
     {
       "name":"PreselectionMVA_lep30",
-      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (HLT_Mu == 1)",
       "latex":"Preselection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"SelectionMVA_allLep",
-      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (BDT > 0.4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (BDT > 0.4) && (HLT_Mu == 1)",
       "latex":"Selection MVA"
     },
     {
       "name":"SelectionMVA_lep30",
-      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.4)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.4) && (HLT_Mu == 1)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     }
   ],
