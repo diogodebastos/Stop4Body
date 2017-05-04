@@ -1,0 +1,43 @@
+{
+  "cuts":[
+    {
+      "name":"Preselection",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2)",
+      "latex":"Preselection"
+    },
+    {
+      "name":"PreselectionMVA_allLep",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)",
+      "latex":"Preselection MVA"
+    },
+    {
+      "name":"PreselectionMVA_lep30",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"SelectionMVA_allLep",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (BDT > 0.4)",
+      "latex":"Selection MVA"
+    },
+    {
+      "name":"SelectionMVA_lep30",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.4)",
+      "latex":"Selection MVA ($p_T(l) < 30$)"
+    }
+  ],
+  "variables":[
+    {
+      "expression":"nVert",
+      "min":0.0,
+      "max":50.0,
+      "bins":50
+    },
+    {
+      "expression":"BDT",
+      "min":-1.0,
+      "max":1.0,
+      "bins":20
+    }
+  ]
+}
