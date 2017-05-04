@@ -1069,10 +1069,10 @@ int main(int argc, char** argv)
               if(HLT_Ele25_eta2p1_WPLoose_Gsf != 0)
                 passHLT = true;
 
-              // Remove double counting by removing from the muon PD the events with the electron HLT
-              if(sample.tag().find("SingleMu") != std::string::npos && process.isdata())
+              // Remove double counting by removing from the electron PD the events with the muon HLT
+              if(sample.tag().find("SingleEl") != std::string::npos && process.isdata())
               {
-                if(HLT_Ele25_eta2p1_WPLoose_Gsf != 0)
+                if(HLT_IsoMu27 != 0)
                   passHLT = false;
               }
             }
