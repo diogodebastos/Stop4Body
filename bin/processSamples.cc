@@ -86,6 +86,7 @@ int main(int argc, char** argv)
   double jetPtThreshold = 30;
   bool overrideXSec = false;
   bool swap = false;
+  bool looseNotTight = false;
 
   if(argc < 2)
   {
@@ -136,6 +137,9 @@ int main(int argc, char** argv)
 
     if(argument == "--swap")
       swap = true;
+
+    if(argument == "--looseNotTight")
+      looseNotTight = true;
   }
 
   if(jsonFileName == "")
@@ -220,6 +224,7 @@ int main(int argc, char** argv)
       Float_t leptonIDSF=1; bdttree->Branch("leptonIDSF", &leptonIDSF, "leptonIDSF/F");
       Float_t leptonISOSF=1; bdttree->Branch("leptonISOSF", &leptonISOSF, "leptonISOSF/F");
       Float_t weight=1; bdttree->Branch("weight", &weight, "weight/F");
+      bool isLooseNotTight=false; bdttree->Branch("isLooseNotTight", &isLooseNotTight);
 
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
       Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
@@ -239,6 +244,8 @@ int main(int argc, char** argv)
       Float_t isPrompt2; bdttree->Branch("isPrompt2",  &isPrompt2,  "isPrompt2/F");
       Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
+      Float_t nGoodMu_loose;
+      Float_t nGoodEl_loose;
       Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
       Float_t mt; bdttree->Branch("mt",&mt,"mt/F");
       Float_t mt_old; bdttree->Branch("mt_old",&mt_old,"mt_old/F");
@@ -509,10 +516,12 @@ int main(int argc, char** argv)
           // Object ID
           std::vector<int> validJets;
           std::vector<int> validLeptons;
+          std::vector<int> looseLeptons;
           std::vector<int> bjetList; // Same as validJets, but sorted by CSV value
 
           validJets.clear();
           validLeptons.clear();
+          looseLeptons.clear();
           bjetList.clear();
 
           for(Int_t i = 0; i < nJetIn; ++i)
@@ -532,6 +541,8 @@ int main(int argc, char** argv)
 
           nGoodMu = 0;
           nGoodEl = 0;
+          nGoodMu_loose = 0;
+          nGoodEl_loose = 0;
           for(int i = 0; i < nLepGood; ++i)
           {
             bool lPTETA = false;
@@ -549,10 +560,13 @@ int main(int argc, char** argv)
                                 || (std::abs(LepGood_eta[i]) < ECALGap_MinEta) );
             }
 
-            bool lID = (LepGood_dxy[i] < 0.02)
-                    && (LepGood_dz[i] < 0.5);
+            bool lID       = (std::abs(LepGood_dxy[i]) < 0.02)
+                          && (std::abs(LepGood_dz[i]) < 0.1);
+            bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
+                          && (std::abs(LepGood_dz[i]) < 0.5);
 
-            bool lIS = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
+            bool lIS       = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
+            bool lIS_loose = LepGood_relIso03[i] < 0.8 || LepGood_absIso03[i] < 20.0;
 
             if(lPTETA && lID && lIS)
             {
@@ -562,10 +576,44 @@ int main(int argc, char** argv)
               else
                 nGoodEl++;
             }
+            if(lPTETA && lID_loose && lIS_loose)
+            {
+              looseLeptons.push_back(i);
+              if(std::abs(LepGood_pdgId[i]) == 13)
+                nGoodMu_loose++;
+              else
+                nGoodEl_loose++;
+            }
           }
           std::sort(validLeptons.begin(), validLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
             return LepGood_pt[left] > LepGood_pt[right];
             });
+          std::sort(looseLeptons.begin(), looseLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
+            return LepGood_pt[left] > LepGood_pt[right];
+            });
+
+          isLooseNotTight = false;
+          if(looseNotTight)
+          {
+            if(looseLeptons.size() > 0 && looseLeptons.size() < 3)
+            {
+              isLooseNotTight = true;
+
+              if(looseLeptons.size() == 2)
+                if(LepGood_pt[looseLeptons[1]] > 20)
+                  isLooseNotTight = false;
+
+              if(validLeptons.size() > 0)
+                isLooseNotTight = false;
+            }
+
+            if(isLooseNotTight)
+            {
+              validLeptons = looseLeptons;
+              nGoodMu = nGoodMu_loose;
+              nGoodEl = nGoodEl_loose;
+            }
+          }
 
           // Setting the values to be saved in the output tree
           mt_old = mtw;
@@ -1092,6 +1140,10 @@ int main(int argc, char** argv)
 
           if(!noSkim)
           {
+            // If we are doing the loose not tight category, reject events that do not fit the category
+            if(looseNotTight && !isLooseNotTight)
+              continue;
+
             // Special check in case we are swapping MET and LepPt
             if(swap && LepPt < 5)
               continue;
