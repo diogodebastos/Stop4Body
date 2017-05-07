@@ -648,7 +648,7 @@ int main(int argc, char** argv)
               bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
               if(!isPromptFlag)
               {
-                for(size_t genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                for(int genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
                 {
                   if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
                   {
@@ -709,7 +709,7 @@ int main(int argc, char** argv)
               auto Lep2Phi = LepGood_phi[leptonIndex];
               if(!isPromptFlag)
               {
-                for(size_t genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                for(int genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
                 {
                   if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
                   {
