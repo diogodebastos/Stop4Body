@@ -86,6 +86,7 @@ int main(int argc, char** argv)
   double jetPtThreshold = 30;
   bool overrideXSec = false;
   bool swap = false;
+  bool looseNotTight = false;
 
   if(argc < 2)
   {
@@ -136,6 +137,9 @@ int main(int argc, char** argv)
 
     if(argument == "--swap")
       swap = true;
+
+    if(argument == "--looseNotTight")
+      looseNotTight = true;
   }
 
   if(jsonFileName == "")
@@ -220,6 +224,7 @@ int main(int argc, char** argv)
       Float_t leptonIDSF=1; bdttree->Branch("leptonIDSF", &leptonIDSF, "leptonIDSF/F");
       Float_t leptonISOSF=1; bdttree->Branch("leptonISOSF", &leptonISOSF, "leptonISOSF/F");
       Float_t weight=1; bdttree->Branch("weight", &weight, "weight/F");
+      bool isLooseNotTight=false; bdttree->Branch("isLooseNotTight", &isLooseNotTight);
 
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
       Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
@@ -239,6 +244,8 @@ int main(int argc, char** argv)
       Float_t isPrompt2; bdttree->Branch("isPrompt2",  &isPrompt2,  "isPrompt2/F");
       Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
+      Float_t nGoodMu_loose;
+      Float_t nGoodEl_loose;
       Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
       Float_t mt; bdttree->Branch("mt",&mt,"mt/F");
       Float_t mt_old; bdttree->Branch("mt_old",&mt_old,"mt_old/F");
@@ -411,6 +418,14 @@ int main(int argc, char** argv)
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
         Int_t   LepGood_mcMatchId[LEPCOLL_LIMIT];
+        Int_t nGenPart = 0;
+        Int_t GenPart_motherId[GENPART_LIMIT];
+        Int_t GenPart_grandmotherId[GENPART_LIMIT];
+        Int_t GenPart_sourceId[GENPART_LIMIT];
+        Int_t GenPart_pdgId[GENPART_LIMIT];
+        Float_t GenPart_pt[GENPART_LIMIT];
+        Float_t GenPart_eta[GENPART_LIMIT];
+        Float_t GenPart_phi[GENPART_LIMIT];
         Float_t xsec = 1;
         Float_t nTrueInt = 1;
         if(!process.isdata())
@@ -419,6 +434,16 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("xsec", &xsec);
           inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
           inputtree->SetBranchAddress("LepGood_mcMatchId", &LepGood_mcMatchId);
+
+          inputtree->SetBranchAddress("nGenPart", &nGenPart);
+          inputtree->SetBranchAddress("GenPart_motherId", &GenPart_motherId);
+          inputtree->SetBranchAddress("GenPart_grandmotherId", &GenPart_grandmotherId);
+          inputtree->SetBranchAddress("GenPart_sourceId", &GenPart_sourceId);
+          inputtree->SetBranchAddress("GenPart_status", &GenPart_status);
+          inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
+          inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
+          inputtree->SetBranchAddress("GenPart_eta", &GenPart_eta);
+          inputtree->SetBranchAddress("GenPart_phi", &GenPart_phi);
         }
 
         // 2015 HLT
@@ -491,10 +516,12 @@ int main(int argc, char** argv)
           // Object ID
           std::vector<int> validJets;
           std::vector<int> validLeptons;
+          std::vector<int> looseLeptons;
           std::vector<int> bjetList; // Same as validJets, but sorted by CSV value
 
           validJets.clear();
           validLeptons.clear();
+          looseLeptons.clear();
           bjetList.clear();
 
           for(Int_t i = 0; i < nJetIn; ++i)
@@ -514,6 +541,8 @@ int main(int argc, char** argv)
 
           nGoodMu = 0;
           nGoodEl = 0;
+          nGoodMu_loose = 0;
+          nGoodEl_loose = 0;
           for(int i = 0; i < nLepGood; ++i)
           {
             bool lPTETA = false;
@@ -531,10 +560,13 @@ int main(int argc, char** argv)
                                 || (std::abs(LepGood_eta[i]) < ECALGap_MinEta) );
             }
 
-            bool lID = (LepGood_dxy[i] < 0.02)
-                    && (LepGood_dz[i] < 0.5);
+            bool lID       = (std::abs(LepGood_dxy[i]) < 0.02)
+                          && (std::abs(LepGood_dz[i]) < 0.1);
+            bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
+                          && (std::abs(LepGood_dz[i]) < 0.5);
 
-            bool lIS = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
+            bool lIS       = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
+            bool lIS_loose = LepGood_relIso03[i] < 0.8 || LepGood_absIso03[i] < 20.0;
 
             if(lPTETA && lID && lIS)
             {
@@ -544,10 +576,44 @@ int main(int argc, char** argv)
               else
                 nGoodEl++;
             }
+            if(lPTETA && lID_loose && lIS_loose)
+            {
+              looseLeptons.push_back(i);
+              if(std::abs(LepGood_pdgId[i]) == 13)
+                nGoodMu_loose++;
+              else
+                nGoodEl_loose++;
+            }
           }
           std::sort(validLeptons.begin(), validLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
             return LepGood_pt[left] > LepGood_pt[right];
             });
+          std::sort(looseLeptons.begin(), looseLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
+            return LepGood_pt[left] > LepGood_pt[right];
+            });
+
+          isLooseNotTight = false;
+          if(looseNotTight)
+          {
+            if(looseLeptons.size() > 0 && looseLeptons.size() < 3)
+            {
+              isLooseNotTight = true;
+
+              if(looseLeptons.size() == 2)
+                if(LepGood_pt[looseLeptons[1]] > 20)
+                  isLooseNotTight = false;
+
+              if(validLeptons.size() > 0)
+                isLooseNotTight = false;
+            }
+
+            if(isLooseNotTight)
+            {
+              validLeptons = looseLeptons;
+              nGoodMu = nGoodMu_loose;
+              nGoodEl = nGoodEl_loose;
+            }
+          }
 
           // Setting the values to be saved in the output tree
           mt_old = mtw;
@@ -576,6 +642,36 @@ int main(int argc, char** argv)
             {
               leptonIDSF = static_cast<double>(getLeptonIDSF(LepID, LepPt, LepEta));
               leptonISOSF = static_cast<double>(getLeptonISOSF(LepID, LepPt, LepEta));
+
+              auto mcMatchId = LepGood_mcMatchId[leptonIndex];
+              bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
+              if(!isPromptFlag)
+              {
+                for(size_t genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                {
+                  if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
+                  {
+                    if(std::abs(GenPart_motherId[genPartIndex]) == 24 || std::abs(GenPart_motherId[genPartIndex]) == 23 || (GenPart_motherId[genPartIndex] == -9999 && genPartIndex < 3 ))
+                    {
+                      double dphi = DeltaPhi(GenPart_phi[genPartIndex], lep_phi);
+                      double deta = GenPart_eta[genPartIndex] - lep_eta;
+                      double dr = std::sqrt(std::pow(dphi,2) + std::pow(deta,2));
+
+                      if(dr < 0.15)
+                      {
+                        isPromptFlag = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+
+              isPrompt    = isPromptFlag?1:0;
+            }
+            else
+            {
+              isPrompt = 1;
             }
           }
           else
@@ -592,6 +688,7 @@ int main(int argc, char** argv)
             LepDxy      = -9999;
             LepDz       = -9999;
             LepIso03    = -9999;
+            isPrompt    = -9999;
           }
           if(validLeptons.size() > 1)
           {
@@ -603,6 +700,40 @@ int main(int argc, char** argv)
             Lep2Dxy      = LepGood_dxy[leptonIndex];
             Lep2Dz       = LepGood_dz[leptonIndex];
             Lep2Iso03    = LepGood_relIso03[leptonIndex];
+
+            if(!process.isdata())
+            {
+              auto mcMatchId = LepGood_mcMatchId[leptonIndex];
+              bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
+              auto Lep2Phi = LepGood_phi[leptonIndex];
+              if(!isPromptFlag)
+              {
+                for(size_t genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                {
+                  if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
+                  {
+                    if(std::abs(GenPart_motherId[genPartIndex]) == 24 || std::abs(GenPart_motherId[genPartIndex]) == 23 || (GenPart_motherId[genPartIndex] == -9999 && genPartIndex < 3 ))
+                    {
+                      double dphi = DeltaPhi(GenPart_phi[genPartIndex], Lep2Phi);
+                      double deta = GenPart_eta[genPartIndex] - Lep2Eta;
+                      double dr = std::sqrt(std::pow(dphi,2) + std::pow(deta,2));
+
+                      if(dr < 0.15)
+                      {
+                        isPromptFlag = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+              }
+
+              isPrompt2   = isPromptFlag?1:0;
+            }
+            else
+            {
+              isPrompt2 = 1;
+            }
           }
           else
           {
@@ -613,6 +744,7 @@ int main(int argc, char** argv)
             Lep2Dxy      = -9999;
             Lep2Dz       = -9999;
             Lep2Iso03    = -9999;
+            isPrompt2    = -9999;
           }
 
           if(!process.isdata())
@@ -1008,6 +1140,10 @@ int main(int argc, char** argv)
 
           if(!noSkim)
           {
+            // If we are doing the loose not tight category, reject events that do not fit the category
+            if(looseNotTight && !isLooseNotTight)
+              continue;
+
             // Special check in case we are swapping MET and LepPt
             if(swap && LepPt < 5)
               continue;
@@ -1069,10 +1205,10 @@ int main(int argc, char** argv)
               if(HLT_Ele25_eta2p1_WPLoose_Gsf != 0)
                 passHLT = true;
 
-              // Remove double counting by removing from the muon PD the events with the electron HLT
-              if(sample.tag().find("SingleMu") != std::string::npos && process.isdata())
+              // Remove double counting by removing from the electron PD the events with the muon HLT
+              if(sample.tag().find("SingleEl") != std::string::npos && process.isdata())
               {
-                if(HLT_Ele25_eta2p1_WPLoose_Gsf != 0)
+                if(HLT_IsoMu27 != 0)
                   passHLT = false;
               }
             }
