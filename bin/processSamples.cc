@@ -422,7 +422,7 @@ int main(int argc, char** argv)
         Int_t GenPart_motherId[GENPART_LIMIT];
         Int_t GenPart_grandmotherId[GENPART_LIMIT];
         Int_t GenPart_sourceId[GENPART_LIMIT];
-        Int_t GenPart_status[GENPART_LIMIY];
+        Int_t GenPart_status[GENPART_LIMIT];
         Int_t GenPart_pdgId[GENPART_LIMIT];
         Float_t GenPart_pt[GENPART_LIMIT];
         Float_t GenPart_eta[GENPART_LIMIT];
