@@ -1038,7 +1038,7 @@ int main(int argc, char** argv)
 
           if(isLooseNotTight)
           {
-            double efficiency = getLeptonTightLooseRatio(LepID, LepPt, LepEta);
+            double efficiency = static_cast<double>(getLeptonTightLooseRatio(LepID, LepPt, LepEta));
             looseNotTightWeight = efficiency/(1-efficiency);
             weight *= looseNotTightWeight;
           }
