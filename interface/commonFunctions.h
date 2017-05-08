@@ -14,6 +14,10 @@ extern TH1F* hephyMuonIDSFHist;
 extern TH1F* hephyElectronISOSFHistBarrel;
 extern TH1F* hephyElectronISOSFHistEndcap;
 extern TH1F* hephyMuonISOSFHist;
+extern TH1F* electronTightToLooseLowEta;
+extern TH1F* electronTightToLooseHighEta;
+extern TH1F* muonTightToLooseLowEta;
+extern TH1F* muonTightToLooseHighEta;
 
 bool fileExists(std::string);
 std::string getBaseName(const std::string&);
@@ -26,6 +30,8 @@ doubleUnc EWKISRweightFromISRpT(double ISRpT);
 doubleUnc EWKISRweightFromISRpT(double lep_pt, double lep_phi, double met_pt, double met_phi);
 doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
+
+doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
 
 doubleUnc stopCrossSection(double stopM, double lspM);
 

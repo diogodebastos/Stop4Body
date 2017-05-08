@@ -15,6 +15,10 @@ TH1F* hephyMuonIDSFHist = nullptr;
 TH1F* hephyElectronISOSFHistBarrel = nullptr;
 TH1F* hephyElectronISOSFHistEndcap = nullptr;
 TH1F* hephyMuonISOSFHist = nullptr;
+TH1F* electronTightToLooseLowEta = nullptr;
+TH1F* electronTightToLooseHighEta = nullptr;
+TH1F* muonTightToLooseLowEta = nullptr;
+TH1F* muonTightToLooseHighEta = nullptr;
 
 
 bool fileExists(std::string fileName)
@@ -307,6 +311,47 @@ doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta)
     auto bin = hephyMuonISOSFHist->FindBin(LepPt);
     val = hephyMuonISOSFHist->GetBinContent(bin);
     unc = hephyMuonISOSFHist->GetBinError(bin);
+  }
+
+  doubleUnc retVal(val, unc);
+  return retVal;
+}
+
+doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta)
+{
+  double val = 1, unc = 0;
+  if(LepPt >= 220)
+    LepPt = 219.999;
+
+  if(std::abs(LepID) == 13)
+  {
+    if(std::abs(LepEta) < 1.5)
+    {
+      auto bin = muonTightToLooseLowEta->FindBin(LepPt);
+      val = muonTightToLooseLowEta->GetBinContent(bin);
+      unc = muonTightToLooseLowEta->GetBinError(bin);
+    }
+    else
+    {
+      auto bin = muonTightToLooseHighEta->FindBin(LepPt);
+      val = muonTightToLooseHighEta->GetBinContent(bin);
+      unc = muonTightToLooseHighEta->GetBinError(bin);
+    }
+  }
+  else
+  {
+    if(std::abs(LepEta) < 1.5)
+    {
+      auto bin = electronTightToLooseLowEta->FindBin(LepPt);
+      val = electronTightToLooseLowEta->GetBinContent(bin);
+      unc = electronTightToLooseLowEta->GetBinError(bin);
+    }
+    else
+    {
+      auto bin = electronTightToLooseHighEta->FindBin(LepPt);
+      val = electronTightToLooseHighEta->GetBinContent(bin);
+      unc = electronTightToLooseHighEta->GetBinError(bin);
+    }
   }
 
   doubleUnc retVal(val, unc);

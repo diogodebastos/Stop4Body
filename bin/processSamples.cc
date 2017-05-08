@@ -74,6 +74,10 @@ extern TH1F* hephyMuonIDSFHist;
 extern TH1F* hephyElectronISOSFHistBarrel;
 extern TH1F* hephyElectronISOSFHistEndcap;
 extern TH1F* hephyMuonISOSFHist;
+extern TH1F* electronTightToLooseLowEta;
+extern TH1F* electronTightToLooseHighEta;
+extern TH1F* muonTightToLooseLowEta;
+extern TH1F* muonTightToLooseHighEta;
 
 int main(int argc, char** argv)
 {
@@ -167,6 +171,11 @@ int main(int argc, char** argv)
   hephyElectronISOSFHistBarrel = static_cast<TH1F*>(hephySFFile.Get("ele_SF_IpIso_barrel"));
   hephyElectronISOSFHistEndcap = static_cast<TH1F*>(hephySFFile.Get("ele_SF_IpIso_endcap"));
   hephyMuonISOSFHist = static_cast<TH1F*>(hephySFFile.Get("muon_SF_IpIsoSpec_all"));
+  TFile tightToLooseRatios("../data/tightToLooseRatios.root", "READ");
+  electronTightToLooseLowEta = static_cast<TH1F*>(tightToLooseRatios.Get("electronEfficiencyLowEta"));
+  electronTightToLooseHighEta = static_cast<TH1F*>(tightToLooseRatios.Get("electronEfficiencyHighEta"));
+  muonTightToLooseLowEta = static_cast<TH1F*>(tightToLooseRatios.Get("muonEfficiencyLowEta"));
+  muonTightToLooseHighEta = static_cast<TH1F*>(tightToLooseRatios.Get("muonEfficiencyHighEta"));
   cwd->cd();
 
   std::cout << "Reading JSON file" << std::endl;
@@ -225,6 +234,7 @@ int main(int argc, char** argv)
       Float_t leptonISOSF=1; bdttree->Branch("leptonISOSF", &leptonISOSF, "leptonISOSF/F");
       Float_t weight=1; bdttree->Branch("weight", &weight, "weight/F");
       bool isLooseNotTight=false; bdttree->Branch("isLooseNotTight", &isLooseNotTight);
+      Float_t looseNotTightWeight=1; bdttree->Branch("looseNotTightWeight", &looseNotTightWeight, "looseNotTightWeight/F");
 
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
       Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
@@ -1025,6 +1035,17 @@ int main(int argc, char** argv)
             weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF;
           else
             weight = 1;
+
+          if(isLooseNotTight)
+          {
+            double efficiency = getLeptonTightLooseRatio(LepID, LepPt, LepEta);
+            looseNotTightWeight = efficiency/(1-efficiency);
+            weight *= looseNotTightWeight;
+          }
+          else
+          {
+            looseNotTightWeight = 1;
+          }
 
           //if(doSync)
           if(doSync && HT > 200 && Jet1Pt > 100 && Met > 200)
