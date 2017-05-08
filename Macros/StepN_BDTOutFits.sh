@@ -3,11 +3,12 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-INPUT=${TEST_DIR}_bdt/
-INPUTS=${SWAP_DIR}_bdt/
+INPUT=${BDT_DIR}/
 OUTPUT=~cbeiraod/local-area/Stop4Body/BDT_Fits/
 OUTPUT_POW=~cbeiraod/local-area/Stop4Body/BDT_Fits_pow/
 OUTPUT_LEP=~cbeiraod/local-area/Stop4Body/BDT_Fits_lep/
+
+INPUTS=${SWAPBDT_DIR}/
 OUTPUTS=~cbeiraod/local-area/Stop4Body/BDT_Fits_Swap/
 OUTPUTS_POW=~cbeiraod/local-area/Stop4Body/BDT_Fits_Swap_pow/
 OUTPUTS_LEP=~cbeiraod/local-area/Stop4Body/BDT_Fits_Swap_lep/

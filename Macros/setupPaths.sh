@@ -11,7 +11,9 @@ export TRAIN_DIR=${NTUPLE_DIR}_train
 export TEST_DIR=${NTUPLE_DIR}_test
 export BDT_DIR=${TEST_DIR}_bdt
 export SWAP_DIR=${NTUPLE_DIR}_swap
+export SWAPBDT_DIR=${SWAP_DIR}_bdt
 export LNT_DIR=${NTUPLE_DIR}_looseNotTight
+export LNTBDT_DIR=${LNT_DIR}_bdt
 
 
 export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"

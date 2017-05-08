@@ -4,7 +4,7 @@
 . setupPaths.sh
 
 INPUT=${SWAP_DIR}
-OUTPUT=${INPUT}_bdt
+OUTPUT=${SWAPBDT_DIR}
 
 if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then

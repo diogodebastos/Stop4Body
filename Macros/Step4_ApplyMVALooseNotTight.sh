@@ -3,8 +3,8 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-INPUT=${TEST_DIR}
-OUTPUT=${BDT_DIR}
+INPUT=${LNT_DIR}
+OUTPUT=${LNTBDT_DIR}
 
 if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then

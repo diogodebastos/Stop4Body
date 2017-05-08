@@ -3,15 +3,11 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-INPUT=${TEST_DIR}_bdt
+INPUT=${BDT_DIR}
 OUTPUT=~cbeiraod/local-area/Stop4Body/DDEstimate
 OUTPUT_POW=~cbeiraod/local-area/Stop4Body/DDEstimate_pow
 OUTPUT_LEP=~cbeiraod/local-area/Stop4Body/DDEstimate_lep
-INPUT_SWAP=${SWAP_DIR}_bdt
-OUTPUT_SWAP=~cbeiraod/local-area/Stop4Body/DDEstimate_swap
-OUTPUT_SWAP_POW=~cbeiraod/local-area/Stop4Body/DDEstimate_swap_pow
-OUTPUT_SWAP_LEP=~cbeiraod/local-area/Stop4Body/DDEstimate_swap_lep
-
+LNTDIR=${LNTBDT_DIR}
 
 if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then
@@ -24,10 +20,16 @@ if [[ -d ${INPUT} ]] ; then
     mkdir -p ${OUTPUT_LEP}
   fi
 
-  getDDEstimate --json ${JSON_PATH}/plot2016.json     --outDir ${OUTPUT}     --inDir ${INPUT} --suffix bdt
-  getDDEstimate --json ${JSON_PATH}/plot2016_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --suffix bdt
-  getDDEstimate --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt
+  getDDEstimate --json ${JSON_PATH}/plot2016.json     --outDir ${OUTPUT}     --inDir ${INPUT} --suffix bdt --looseNotTight ${LNTDIR}
+  getDDEstimate --json ${JSON_PATH}/plot2016_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --suffix bdt --looseNotTight ${LNTDIR}
+  getDDEstimate --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt --looseNotTight ${LNTDIR}
 fi
+
+
+INPUT_SWAP=${SWAPBDT_DIR}
+OUTPUT_SWAP=~cbeiraod/local-area/Stop4Body/DDEstimate_swap
+OUTPUT_SWAP_POW=~cbeiraod/local-area/Stop4Body/DDEstimate_swap_pow
+OUTPUT_SWAP_LEP=~cbeiraod/local-area/Stop4Body/DDEstimate_swap_lep
 
 if [[ -d ${INPUT_SWAP} ]] ; then
   if [[ ! -d ${OUTPUT_SWAP} ]] ; then
