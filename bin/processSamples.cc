@@ -355,7 +355,7 @@ int main(int argc, char** argv)
         Nevt = (*sampleNevt)[0];
         TVectorD* sampleSumGenWeight = static_cast<TVectorD*>(puWeightFile.Get(("sample_"+sample.tag()+"_sumGenWeight").c_str())->Clone("sampleSumGenWeight"));
         sumGenWeight = (*sampleSumGenWeight)[0];
-        TVectorD* processISRWeights = static_cast<TVectorD*>(puWeightFile.Get()->Clone("processISRWeights"));
+        TVectorD* processISRWeights = static_cast<TVectorD*>(puWeightFile.Get(("process_"+process.tag()+"_ISRCParams").c_str())->Clone("processISRWeights"));
         ISRCParam =    (*processISRWeights)[0];
         EWKISRCParam = (*processISRWeights)[1];
 
@@ -422,6 +422,7 @@ int main(int argc, char** argv)
         Int_t GenPart_motherId[GENPART_LIMIT];
         Int_t GenPart_grandmotherId[GENPART_LIMIT];
         Int_t GenPart_sourceId[GENPART_LIMIT];
+        Int_t GenPart_status[GENPART_LIMIT];
         Int_t GenPart_pdgId[GENPART_LIMIT];
         Float_t GenPart_pt[GENPART_LIMIT];
         Float_t GenPart_eta[GENPART_LIMIT];
@@ -647,7 +648,7 @@ int main(int argc, char** argv)
               bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
               if(!isPromptFlag)
               {
-                for(size_t genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                for(int genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
                 {
                   if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
                   {
@@ -708,7 +709,7 @@ int main(int argc, char** argv)
               auto Lep2Phi = LepGood_phi[leptonIndex];
               if(!isPromptFlag)
               {
-                for(size_t genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                for(int genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
                 {
                   if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
                   {

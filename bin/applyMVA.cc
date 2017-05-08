@@ -149,14 +149,14 @@ int main(int argc, char** argv)
   reader->AddVariable("LepChg", &LepChg);
   reader->AddVariable("LepEta", &LepEta);
   reader->AddVariable("LepPt", &LepPt);
+  reader->AddVariable("JetHBpt", &JetHBpt);
+  reader->AddVariable("DrJetHBLep",&DrJetHBLep);
+  reader->AddVariable("Njet", &Njet);
   reader->AddVariable("HT", &HT);
   reader->AddVariable("NbLoose", &NbLoose);
   // SET1
-  //reader->AddVariable("Njet", &Njet);
-  //reader->AddVariable("JetHBpt", &JetHBpt);
-  //reader->AddVariable("DrJetHBLep",&DrJetHBLep);
   // SET2
-  //reader->AddVariable("JetHBCSV",&JetHBCSV);
+  reader->AddVariable("JetHBCSV",&JetHBCSV);
   // SET3
   //reader->AddVariable("JetLepMass",&JetLepMass);
   //reader->AddVariable("J3Mass",&J3Mass);
