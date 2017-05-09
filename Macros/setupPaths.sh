@@ -17,5 +17,5 @@ export LNTBDT_DIR=${LNT_DIR}_bdt
 
 
 export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"
-export PROCESS_SAMPLES_CMD="processSamples"
+export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents"
 export PROCESS_SAMPLES_CMD_LNT="${PROCESS_SAMPLES_CMD} --looseNotTight"
