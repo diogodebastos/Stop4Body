@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
   for lep in ['mu', 'el']:
     if lep == 'el':
-      bins = array('d',[0,5,10,20,30,50,80,200,220])
+      bins = array('d',[0,5,12,20,30,50,80,200,220])
       histoLow = ROOT.TH1F("electronEfficiencyLowEta", "Electron Efficiency (eta < 1.5)", 8, bins)
       histoHigh = ROOT.TH1F("electronEfficiencyHighEta", "Electron Efficiency (eta > 1.5)", 8, bins)
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
       histoHigh.GetXaxis().SetBinLabel(7, str("80-200"))
       histoHigh.GetXaxis().SetBinLabel(8, str(">200"))
     else:
-      bins = array('d',[0,3.5,5,10,20,30,50,80,200,220])
+      bins = array('d',[0,3.5,5,12,20,30,50,80,200,220])
       histoLow = ROOT.TH1F("muonEfficiencyLowEta", "Muon Efficiency (eta < 1.5)", 9, bins)
       histoHigh = ROOT.TH1F("muonEfficiencyHighEta", "Muon Efficiency (eta > 1.5)", 9, bins)
 
