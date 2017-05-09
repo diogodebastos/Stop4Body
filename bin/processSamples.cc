@@ -559,7 +559,7 @@ int main(int argc, char** argv)
               });
 
           if(preemptiveDropEvents && validJets.size() > 0)
-            if(Jet_pt[jetIndex] < ISR_JET_PT) continue;
+            if(Jet_pt[validJets[0]] < ISR_JET_PT) continue;
           if(preemptiveDropEvents && validJets.size() == 0)
             continue;
 
@@ -654,6 +654,19 @@ int main(int argc, char** argv)
           mt_old = mtw;
           Met = met_pt;
 
+          float lep_phi, lep_eta;
+          if(validLeptons.size() > 0)
+          {
+            auto leptonIndex = validLeptons[0];
+            lep_phi     = LepGood_phi[leptonIndex];
+            lep_eta     = LepGood_eta[leptonIndex];
+          }
+          else
+          {
+            lep_phi     = -9999;
+            lep_eta     = -9999;
+          }
+
           if(validJets.size() > 1)
           {
             int jetIndex = validJets[1];
@@ -708,15 +721,12 @@ int main(int argc, char** argv)
           }
 
           TLorentzVector VLep;
-          float lep_phi, lep_eta;
           if(validLeptons.size() > 0)
           {
             auto leptonIndex = validLeptons[0];
             mt          = LepGood_mt[leptonIndex];
             Q80         = LepGood_Q80[leptonIndex];
             CosDeltaPhi = LepGood_cosPhiLepMet[leptonIndex];
-            lep_phi     = LepGood_phi[leptonIndex];
-            lep_eta     = LepGood_eta[leptonIndex];
             LepChg      = LepGood_charge[leptonIndex];
             LepID       = LepGood_pdgId[leptonIndex];
             LepPt       = LepGood_pt[leptonIndex];
@@ -767,8 +777,6 @@ int main(int argc, char** argv)
             mt          = -9999;
             Q80         =  9999; // Q80 has a range of [-Inf, 1], so it does not make sense to give it a negative value when not defined
             CosDeltaPhi = -9999;
-            lep_phi     = -9999;
-            lep_eta     = -9999;
             LepChg      = -9999;
             LepID       = -9999;
             LepPt       = -9999;
