@@ -301,7 +301,7 @@ int main(int argc, char** argv)
 
     outputTable << "\\hline\n";
 
-    fakeDD(outputTable, LNTData, LNTMC, baseSelection + " && " + signalRegion);
+    fakeDD(outputTable, LNTData, LNTMC, baseSelection + " && " + signalRegion, mcWeight);
 
     outputTable << "\\hline\n";
 
