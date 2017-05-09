@@ -48,6 +48,10 @@
 #define TAUCOLL_LIMIT  40
 #define TRACOLL_LIMIT 200
 
+#define ISR_JET_PT 90
+#define SECOND_LEPTON_PT 20
+#define MIN_MET 100
+
 using json = nlohmann::json;
 
 struct FileInfo
@@ -91,6 +95,7 @@ int main(int argc, char** argv)
   bool overrideXSec = false;
   bool swap = false;
   bool looseNotTight = false;
+  bool preemptiveDropEvents = false;
 
   if(argc < 2)
   {
@@ -144,6 +149,9 @@ int main(int argc, char** argv)
 
     if(argument == "--looseNotTight")
       looseNotTight = true;
+
+    if(argument == "--preemptiveDropEvents")
+      preemptiveDropEvents = true;
   }
 
   if(jsonFileName == "")
@@ -550,6 +558,11 @@ int main(int argc, char** argv)
               return Jet_btagCSV[left] > Jet_btagCSV[right];
               });
 
+          if(preemptiveDropEvents && validJets.size() > 0)
+            if(Jet_pt[jetIndex] < ISR_JET_PT) continue;
+          if(preemptiveDropEvents && validJets.size() == 0)
+            continue;
+
           nGoodMu = 0;
           nGoodEl = 0;
           nGoodMu_loose = 0;
@@ -611,7 +624,7 @@ int main(int argc, char** argv)
               isLooseNotTight = true;
 
               if(looseLeptons.size() == 2)
-                if(LepGood_pt[looseLeptons[1]] > 20)
+                if(LepGood_pt[looseLeptons[1]] > SECOND_LEPTON_PT)
                   isLooseNotTight = false;
 
               if(validLeptons.size() > 0)
@@ -624,11 +637,75 @@ int main(int argc, char** argv)
               nGoodMu = nGoodMu_loose;
               nGoodEl = nGoodEl_loose;
             }
+            else
+            {
+              if(preemptiveDropEvents)
+                continue;
+            }
           }
+
+          // TODO: Skim leptons
+          if(preemptiveDropEvents && (validLeptons.size() == 0 || validLeptons.size() > 2))
+            continue;
+          if(preemptiveDropEvents && validLeptons.size() == 2)
+            if(LepGood_pt[validLeptons[1]] > SECOND_LEPTON_PT) continue;
 
           // Setting the values to be saved in the output tree
           mt_old = mtw;
           Met = met_pt;
+
+          if(validJets.size() > 1)
+          {
+            int jetIndex = validJets[1];
+            Jet2Pt = Jet_pt[jetIndex];
+            Jet2Eta = Jet_eta[jetIndex];
+            Jet2CSV = Jet_btagCSV[jetIndex];
+
+            double dphijj, detajj;
+            dphijj = DeltaPhi(Jet_phi[validJets[0]], Jet_phi[jetIndex]);
+            detajj = Jet_eta[validJets[0]] - Jet_eta[jetIndex];
+            DPhiJet1Jet2 = dphijj;
+            DrJet1Jet2 = std::sqrt( std::pow(dphijj,2) + std::pow(detajj,2) );
+
+            if(validLeptons.size() > 0)
+            {
+              float dphi = DeltaPhi(Jet_phi[jetIndex], lep_phi);
+              float deta = Jet_eta[jetIndex] - lep_eta;
+              DrJet2Lep = std::sqrt( std::pow(dphi,2) + std::pow(deta,2) );
+            }
+            else
+            {
+              DrJet2Lep = -9999;
+            }
+
+            int bJetIndex = bjetList[1];
+            JetB2pt = Jet_pt[bJetIndex];
+            JetB2eta = Jet_eta[bJetIndex];
+            JetB2CSV = Jet_btagCSV[bJetIndex];
+            JetB2index = bJetIndex;
+          }
+          else
+          {
+            Jet2Pt = -9999;
+            Jet2Eta = -9999;
+            Jet2CSV = -9999;
+            DPhiJet1Jet2 = -9999;
+            DrJet1Jet2 = -9999;
+            DrJet2Lep = -9999;
+
+            JetB2pt = -9999;
+            JetB2eta = -9999;
+            JetB2CSV = -9999;
+            JetB2index = -9999;
+          }
+          if(preemptiveDropEvents && !(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
+            continue;
+
+          if(preemptiveDropEvents)
+          {
+            if(!swap && Met < MIN_MET)
+              continue;
+          }
 
           TLorentzVector VLep;
           float lep_phi, lep_eta;
@@ -846,51 +923,6 @@ int main(int argc, char** argv)
             JetHBindex = -9999;
           }
 
-          if(validJets.size() > 1)
-          {
-            int jetIndex = validJets[1];
-            Jet2Pt = Jet_pt[jetIndex];
-            Jet2Eta = Jet_eta[jetIndex];
-            Jet2CSV = Jet_btagCSV[jetIndex];
-
-            double dphijj, detajj;
-            dphijj = DeltaPhi(Jet_phi[validJets[0]], Jet_phi[jetIndex]);
-            detajj = Jet_eta[validJets[0]] - Jet_eta[jetIndex];
-            DPhiJet1Jet2 = dphijj;
-            DrJet1Jet2 = std::sqrt( std::pow(dphijj,2) + std::pow(detajj,2) );
-
-            if(validLeptons.size() > 0)
-            {
-              float dphi = DeltaPhi(Jet_phi[jetIndex], lep_phi);
-              float deta = Jet_eta[jetIndex] - lep_eta;
-              DrJet2Lep = std::sqrt( std::pow(dphi,2) + std::pow(deta,2) );
-            }
-            else
-            {
-              DrJet2Lep = -9999;
-            }
-
-            int bJetIndex = bjetList[1];
-            JetB2pt = Jet_pt[bJetIndex];
-            JetB2eta = Jet_eta[bJetIndex];
-            JetB2CSV = Jet_btagCSV[bJetIndex];
-            JetB2index = bJetIndex;
-          }
-          else
-          {
-            Jet2Pt = -9999;
-            Jet2Eta = -9999;
-            Jet2CSV = -9999;
-            DPhiJet1Jet2 = -9999;
-            DrJet1Jet2 = -9999;
-            DrJet2Lep = -9999;
-
-            JetB2pt = -9999;
-            JetB2eta = -9999;
-            JetB2CSV = -9999;
-            JetB2index = -9999;
-          }
-
           if(validJets.size() > 2)
           {
             int jetIndex = validJets[2];
@@ -1074,7 +1106,7 @@ int main(int argc, char** argv)
                   passCut1 = true;
                 if(validLeptons.size() == 2)
                 {
-                  if(LepGood_pt[validLeptons[1]] < 20)
+                  if(LepGood_pt[validLeptons[1]] < SECOND_LEPTON_PT)
                     passCut1 = true;
                 }
 
@@ -1082,7 +1114,7 @@ int main(int argc, char** argv)
                 {
                   SyFile << ";Cut1";
 
-                  if(Jet1Pt > 100)
+                  if(Jet1Pt > ISR_JET_PT)
                   {
                     SyFile << ";Cut2";
 
@@ -1121,14 +1153,14 @@ int main(int argc, char** argv)
           // Compute selection cuts
           bool metRequirement = Met > 300;
           bool htRequirement = HT > 200;
-          bool jetRequirement = Jet1Pt > 100;
+          bool jetRequirement = Jet1Pt > ISR_JET_PT;
           bool antiQCDRequirement = DPhiJet1Jet2 < 2.5 || Jet2Pt < 60;
           bool leptonRequirement = false;
           if(validLeptons.size() == 1)
             leptonRequirement = true;
           if(validLeptons.size() == 2)
           {
-            if(LepGood_pt[validLeptons[1]] < 20)
+            if(LepGood_pt[validLeptons[1]] < SECOND_LEPTON_PT)
               leptonRequirement = true;
           }
           bool deltaMRequirement = LepPt < 30;
@@ -1175,11 +1207,11 @@ int main(int argc, char** argv)
               continue;
 
             // If the pT of the second lepton is above 20, we do not want to keep it TODO: Reevaluate if we want these events skimmed or not
-            if(validLeptons.size() > 1 && Lep2Pt > 20)
+            if(validLeptons.size() > 1 && Lep2Pt > SECOND_LEPTON_PT)
               continue;
 
             // So-called ISR jet requirement (even though it's on the pT of the leading jet)
-            if(Jet1Pt < 90)
+            if(Jet1Pt < ISR_JET_PT)
               continue;
 
             // Cut to help reduce the QCD background
@@ -1187,7 +1219,7 @@ int main(int argc, char** argv)
               continue;
 
             // Minimal requirement on MET
-            if(Met < 100)
+            if(Met < MIN_MET)
               continue;
 
             // MET filters
