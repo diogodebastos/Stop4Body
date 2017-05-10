@@ -67,12 +67,38 @@ int main(int argc, char** argv)
 
       if(found)
       {
-        std::cout << "The process " << process["tag"] << " was already found in the output json." << std::endl;
-        std::cout << "I do not know how to handle it, so ignoring for now" << std::endl;
-        continue;
-      }
+        for(auto& outProcess: outJsonFile["lines"])
+        {
+          if(process["tag"] != outProcess["tag"])
+            continue;
 
-      outJsonFile["lines"].push_back(process);
+          for(auto& sample: process["files"])
+          {
+            bool foundSample = false;
+            for(auto& outSample: outProcess["files"])
+            {
+              if(sample["tag"] == outSample["tag"])
+              {
+                foundSample = true;
+                break;
+              }
+            }
+
+            if(foundSample)
+            {
+              std::cout << "The sample \"" << sample["tag"] << "\" from process \"" << process["tag"] << "\" was already in the output json." << std::endl;
+              std::cout << "I do not know how to handle it, so ignoring for now" << std::endl;
+              continue;
+            }
+
+            outProcess["files"].push_back(sample);
+          }
+
+          break;
+        }
+      }
+      else
+        outJsonFile["lines"].push_back(process);
     }
   }
 

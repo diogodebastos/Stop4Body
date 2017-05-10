@@ -3,10 +3,8 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-#INPUT=${NTUPLE_DIR}
-#INPUT=${TRAIN_DIR}
 INPUT=${TEST_DIR}
-OUTPUT=${INPUT}_bdt
+OUTPUT=${BDT_DIR}
 
 if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then

@@ -1,4 +1,53 @@
 {
+  "cuts":[
+    {
+      "name":"Preselection",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 100)",
+      "latex":"Preselection"
+    },
+    {
+      "name":"PreselectionMVA_allLep",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110)",
+      "latex":"Preselection MVA"
+    },
+    {
+      "name":"PreselectionMVA_lep30",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    }
+  ],
+  "optionalCuts":[
+    {
+      "name":"PreselectionMu",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (HLT_Mu == 1)",
+      "latex":"Preselection ($#mu$ channel)"
+    },
+    {
+      "name":"PreselectionEl",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (HLT_Ele == 1)",
+      "latex":"Preselection ($e$ channel)"
+    },
+    {
+      "name":"PreselectionMVA_allLep_Mu",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (HLT_Mu == 1)",
+      "latex":"Preselection MVA ($#mu$ channel)"
+    },
+    {
+      "name":"PreselectionMVA_allLep_El",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (HLT_Ele == 1)",
+      "latex":"Preselection MVA ($e$ channel)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_Mu",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (HLT_Mu == 1)",
+      "latex":"Preselection MVA ($#mu$ channel)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_El",
+      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (HLT_Ele == 1)",
+      "latex":"Preselection MVA ($e$ channel)"
+    }
+  ],
   "variables":[
     {
       "expression":"nVert",
@@ -16,25 +65,18 @@
       "name":"Met_ext",
       "expression":"Met",
       "min":0.0,
-      "max":600.0,
-      "bins":35
-    },
-    {
-      "expression":"HT20",
-      "label":"H_{T}(p_{T}>20)",
-      "min":100.0,
       "max":1000.0,
-      "bins":25
+      "bins":50
     },
     {
-      "expression":"HT30",
-      "label":"H_{T}(p_{T}>30)",
-      "min":100.0,
+      "expression":"HT",
+      "label":"H_{T}",
+      "min":200.0,
       "max":1000.0,
-      "bins":25
+      "bins":40
     },
     {
-      "expression":"NbLoose30",
+      "expression":"NbLoose",
       "label":"N_{b}^{L}",
       "min":-0.5,
       "max":6.5,
@@ -52,6 +94,13 @@
       "label":"p_{T}(l)",
       "max":35.0,
       "bins":20
+    },
+    {
+      "name":"LepPt_ext",
+      "expression":"LepPt",
+      "label":"p_{T}(l)",
+      "max":105.0,
+      "bins":30
     }
   ]
 }

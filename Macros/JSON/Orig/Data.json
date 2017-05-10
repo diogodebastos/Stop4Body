@@ -12,11 +12,11 @@
           "tag":"Data_2016B",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":5877,
+          "recordedLumi":5788,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016B_03Feb2017_v2",
-              "split":518
+              "split":250
             }
           ]
         },
@@ -24,11 +24,11 @@
           "tag":"Data_2016C",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":2646,
+          "recordedLumi":2573,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016C_03Feb2017",
-              "split":251
+              "split":144
             }
           ]
         },
@@ -36,11 +36,11 @@
           "tag":"Data_2016D",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":4353,
+          "recordedLumi":4248,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016D_03Feb2017",
-              "split":252
+              "split":184
             }
           ]
         },
@@ -48,11 +48,11 @@
           "tag":"Data_2016E",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":4049,
+          "recordedLumi":4009,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016E_03Feb2017",
-              "split":289
+              "split":178
             }
           ]
         },
@@ -60,11 +60,11 @@
           "tag":"Data_2016F",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":3102,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016F_03Feb2017",
-              "split":211
+              "split":108
             }
           ]
         },
@@ -72,11 +72,11 @@
           "tag":"Data_2016G",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":7540,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016G_03Feb2017",
-              "split":211
+              "split":231
             }
           ]
         },
@@ -84,11 +84,11 @@
           "tag":"Data_2016H_v2",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":8391,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016H_03Feb2017_v2",
-              "split":211
+              "split":340
             }
           ]
         },
@@ -96,11 +96,11 @@
           "tag":"Data_2016H_v3",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":215,
           "paths":[
             {
               "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016H_03Feb2017_v3",
-              "split":211
+              "split":9
             }
           ]
         }
