@@ -308,11 +308,13 @@ int main(int argc, char** argv)
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
       ratio->Divide(mcH);
 
-      TCanvas c1((cut.name()+"_"+variable.name()).c_str(), "", 800, 800);
+      TCanvas c1((cut.name()+"_"+variable.name()).c_str(), "", 1200, 1350); // 800x900 in original, then scaled by 1.5
       gStyle->SetOptStat(0);
 
-      TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
-      TPad* t2 = new TPad("t2","t2", 0.0, 0.0, 1.0, 0.2);
+      double ratioPadFraction = 0.20;
+
+      TPad* t1 = new TPad("t1","t1", 0.0, ratioPadFraction, 1.0, 1.0);
+      TPad* t2 = new TPad("t2","t2", 0.0, 0.0, 1.0, ratioPadFraction);
 
       t1->Draw();
       t1->cd();
@@ -330,15 +332,19 @@ int main(int argc, char** argv)
         data2->Draw("same");
       }
 
-      TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
-      //TLegend *legA = gPad->BuildLegend(0.155,0.69,0.35,0.89, "NDC");
+      TLegend *legA;
+      if(variable.legLeft())
+        legA = gPad->BuildLegend(0.155,0.39,0.35,0.89,"", "NDC");
+      else
+        legA = gPad->BuildLegend(0.845,0.39,0.65,0.89,"", "NDC");
+
       legA->SetFillColor(0);
       legA->SetFillStyle(0);
       legA->SetLineColor(0);
       legA->SetHeader("");
       legA->SetTextFont(42);
 
-      TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
+      TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "", "NDC");
       T->SetFillColor(0);
       T->SetFillStyle(0);
       T->SetLineColor(0);
@@ -353,9 +359,9 @@ int main(int argc, char** argv)
       t2->Draw();
       t2->cd();
       t2->SetGridy(true);
-      t2->SetPad(0,0.0,1.0,0.2);
+      t2->SetPad(0,0.0,1.0,ratioPadFraction);
       t2->SetTopMargin(0);
-      t2->SetBottomMargin(0.5);
+      t2->SetBottomMargin(0.25);
 
       TH1D *bgUncH = static_cast<TH1D*>(mcH->Clone((cut.name()+"_"+variable.name()+"_bgUncH").c_str()));
       for(int xbin=1; xbin <= bgUncH->GetXaxis()->GetNbins(); xbin++)
@@ -383,10 +389,12 @@ int main(int argc, char** argv)
       bgUncH->Reset("ICE");
       bgUncH->Draw();
       bgUnc->Draw("3");
+      double minErr = -0.1;
+      double maxErr = 2.1;
       double yscale = (1.0-0.2)/(0.18-0);
       bgUncH->GetYaxis()->SetTitle("Data/#Sigma MC");
-      bgUncH->SetMinimum(0.4);
-      bgUncH->SetMaximum(1.6);
+      bgUncH->SetMinimum(minErr);
+      bgUncH->SetMaximum(maxErr);
       bgUncH->GetXaxis()->SetTitle("");
       bgUncH->GetXaxis()->SetTitleOffset(1.3);
       bgUncH->GetXaxis()->SetLabelSize(0.033*yscale);
