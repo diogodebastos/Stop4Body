@@ -9,13 +9,14 @@
 class VariableInfo
 {
 public:
-  VariableInfo(std::string exp, std::string name, std::string label, double min, double max, int bins):
+  VariableInfo(std::string exp, std::string name, std::string label, double min, double max, int bins, bool legLeft):
   expression_(exp),
   name_(name),
   label_(label),
   min_(min),
   max_(max),
-  bins_(bins)
+  bins_(bins),
+  legLeft_(legLeft)
   {}
   VariableInfo(nlohmann::json jsonInfo);
 
@@ -25,6 +26,7 @@ public:
   double min() const {return min_;}
   double max() const {return max_;}
   int bins() const {return bins_;}
+  bool legLeft() const {return legLeft_;}
 
 private:
 protected:
@@ -34,6 +36,7 @@ protected:
   double min_;
   double max_;
   int bins_;
+  bool legLeft_;
 
 };
 
