@@ -16,7 +16,8 @@ public:
   min_(min),
   max_(max),
   bins_(bins),
-  legLeft_(legLeft)
+  legLeft_(legLeft),
+  legTop_(legTop)
   {}
   VariableInfo(nlohmann::json jsonInfo);
 
@@ -27,6 +28,7 @@ public:
   double max() const {return max_;}
   int bins() const {return bins_;}
   bool legLeft() const {return legLeft_;}
+  bool legTop() const {return legTop_;}
 
 private:
 protected:
@@ -37,6 +39,7 @@ protected:
   double max_;
   int bins_;
   bool legLeft_;
+  bool legTop_;
 
 };
 

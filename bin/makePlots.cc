@@ -312,13 +312,14 @@ int main(int argc, char** argv)
       gStyle->SetOptStat(0);
 
       double ratioPadFraction = 0.20;
+      double legPadFraction = 0.2;
 
       TPad* t1 = new TPad("t1","t1", 0.0, ratioPadFraction, 1.0, 1.0);
       TPad* t2 = new TPad("t2","t2", 0.0, 0.0, 1.0, ratioPadFraction);
 
       t1->Draw();
       t1->cd();
-      t1->SetLogy(true);
+      t1->SetLogy(1);
       mcS->Draw("hist");
       if(!puTest)
       {
@@ -333,12 +334,36 @@ int main(int argc, char** argv)
       }
 
       TLegend *legA;
-      if(variable.legLeft())
-        //legA = gPad->BuildLegend(0.155,0.39,0.35,0.89,"", "NDC"); // The current version does not allow options... what?
-        legA = gPad->BuildLegend(0.155,0.39,0.35,0.89,"");
+      if(variable.legTop())
+      {
+        double maxVal = mcS->GetYaxis()->GetXmax();
+        double minVal = mcS->GetYaxis()->GetXmin();
+
+        if(t1->GetLogy() == 1)
+        {
+          maxVal = std::pow(maxVal/std::pow(minVal, legPadFraction), 1/(1 - legPadFraction));
+        }
+        else
+        {
+          maxVal = maxVal + legPadFraction*(maxVal - minVal) / (1 - legPadFraction);
+        }
+
+        mcS->SetMinimum(minVal);
+        mcS->SetMaximum(maxVal);
+
+        //legA = gPad->BuildLegend(0, 0, 1, 0.2, "", "NDC"); // The current version does not allow options... what?
+        legA = gPad->BuildLegend(0, 0, 1, legPadFraction, "");
+        legA->SetNColumns(3);
+      }
       else
-        //legA = gPad->BuildLegend(0.845,0.39,0.65,0.89,"", "NDC"); // The current version does not allow options... what?
-        legA = gPad->BuildLegend(0.845,0.39,0.65,0.89,"");
+      {
+        if(variable.legLeft())
+          //legA = gPad->BuildLegend(0.155,0.39,0.35,0.89,"", "NDC"); // The current version does not allow options... what?
+          legA = gPad->BuildLegend(0.155,0.39,0.35,0.89,"");
+        else
+          //legA = gPad->BuildLegend(0.845,0.39,0.65,0.89,"", "NDC"); // The current version does not allow options... what?
+          legA = gPad->BuildLegend(0.845,0.39,0.65,0.89,"");
+      }
 
       legA->SetFillColor(0);
       legA->SetFillStyle(0);
