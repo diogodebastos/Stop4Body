@@ -9,7 +9,7 @@
 class VariableInfo
 {
 public:
-  VariableInfo(std::string exp, std::string name, std::string label, double min, double max, int bins, bool legLeft):
+  VariableInfo(std::string exp, std::string name, std::string label, double min, double max, int bins, bool legLeft, bool legTop):
   expression_(exp),
   name_(name),
   label_(label),
