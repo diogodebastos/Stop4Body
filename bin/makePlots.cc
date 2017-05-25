@@ -165,7 +165,7 @@ int main(int argc, char** argv)
     std::stringstream converter;
     if(!noSF)
     {
-      converter << "weight"; // Full
+      converter << "splitFactor*weight"; // Full
       //converter << "weight/(triggerEfficiency*WISRSF*ISRweight)"; // Incrementally adding new tests
       //converter << "weight/puWeight"; // Full no PU
       //converter << "XS*filterEfficiency*puWeight*genWeight/sumGenWeight";
@@ -334,9 +334,11 @@ int main(int argc, char** argv)
 
       TLegend *legA;
       if(variable.legLeft())
-        legA = gPad->BuildLegend(0.155,0.39,0.35,0.89,"", "NDC");
+        //legA = gPad->BuildLegend(0.155,0.39,0.35,0.89,"", "NDC"); // The current version does not allow options... what?
+        legA = gPad->BuildLegend(0.155,0.39,0.35,0.89,"");
       else
-        legA = gPad->BuildLegend(0.845,0.39,0.65,0.89,"", "NDC");
+        //legA = gPad->BuildLegend(0.845,0.39,0.65,0.89,"", "NDC"); // The current version does not allow options... what?
+        legA = gPad->BuildLegend(0.845,0.39,0.65,0.89,"");
 
       legA->SetFillColor(0);
       legA->SetFillStyle(0);
@@ -344,7 +346,7 @@ int main(int argc, char** argv)
       legA->SetHeader("");
       legA->SetTextFont(42);
 
-      TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "", "NDC");
+      TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
       T->SetFillColor(0);
       T->SetFillStyle(0);
       T->SetLineColor(0);
