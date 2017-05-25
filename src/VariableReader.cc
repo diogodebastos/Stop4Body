@@ -30,6 +30,10 @@ VariableInfo::VariableInfo(json jsonInfo)
   bins_ = 20;
   if(jsonInfo.count("bins") != 0)
     bins_ = jsonInfo["bins"];
+
+  legLeft_ = false;
+  if(jsonInfo.count("legLeft") != 0)
+    legLeft_ = jsonInfo["legLeft"];
 }
 
 VariableJsonLoader::VariableJsonLoader(std::string file): inputFile_(file)
