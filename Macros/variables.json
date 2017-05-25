@@ -14,6 +14,16 @@
       "name":"PreselectionMVA_lep30",
       "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30)",
       "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_wjets",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (NbLoose == 0)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"PreselectionMVA_lep30_ttbar",
+      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (NbTight > 0)",
+      "latex":"Preselection MVA ($p_T(l) < 30$)"
     }
   ],
   "optionalCuts":[
