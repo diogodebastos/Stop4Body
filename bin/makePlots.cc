@@ -321,6 +321,24 @@ int main(int argc, char** argv)
       t1->cd();
       t1->SetLogy(1);
       mcS->Draw("hist");
+      if(variable.legTop())
+      {
+        double maxVal = mcS->GetYaxis()->GetXmax();
+        double minVal = mcS->GetYaxis()->GetXmin();
+
+        if(t1->GetLogy() == 1)
+        {
+          maxVal = std::pow(maxVal/std::pow(minVal, legPadFraction), 1/(1 - legPadFraction));
+        }
+        else
+        {
+          maxVal = maxVal + legPadFraction*(maxVal - minVal) / (1 - legPadFraction);
+        }
+
+        mcS->SetMinimum(minVal);
+        mcS->SetMaximum(maxVal);
+        mcS->Draw("hist");
+      }
       if(!puTest)
       {
         dataH->Draw("same");
@@ -338,23 +356,8 @@ int main(int argc, char** argv)
       std::cout << "  The legLeft value is: " << variable.legLeft() << " (" << (variable.legLeft()?"true":"false") << ")" << std::endl;
       if(variable.legTop())
       {
-        double maxVal = mcS->GetYaxis()->GetXmax();
-        double minVal = mcS->GetYaxis()->GetXmin();
-
-        if(t1->GetLogy() == 1)
-        {
-          maxVal = std::pow(maxVal/std::pow(minVal, legPadFraction), 1/(1 - legPadFraction));
-        }
-        else
-        {
-          maxVal = maxVal + legPadFraction*(maxVal - minVal) / (1 - legPadFraction);
-        }
-
-        mcS->SetMinimum(minVal);
-        mcS->SetMaximum(maxVal);
-
         //legA = gPad->BuildLegend(0.155, 1, 0.845, 1-legPadFraction, "NDC"); // The current version does not allow options... what?
-        legA = gPad->BuildLegend(0.155, 1, 0.845, 1-legPadFraction, "");
+        legA = gPad->BuildLegend(0.155, 0.90, 0.845, 0.9*(1-legPadFraction), "");
         legA->SetNColumns(3);
       }
       else
