@@ -37,7 +37,7 @@ VariableInfo::VariableInfo(json jsonInfo)
 
   legTop_ = false;
   if(jsonInfo.count("legTop") != 0)
-    legLeft_ = jsonInfo["legTop"];
+    legTop_ = jsonInfo["legTop"];
 }
 
 VariableJsonLoader::VariableJsonLoader(std::string file): inputFile_(file)
