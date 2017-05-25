@@ -117,8 +117,8 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix)
   spimpose_(false),
   color_(1),
   lcolor_(1),
-  lwidth_(3),
-  lstyle_(3),
+  lwidth_(1),
+  lstyle_(1),
   fill_(0),
   marker_(1),
   mcolor_(1)
