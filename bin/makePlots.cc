@@ -334,6 +334,8 @@ int main(int argc, char** argv)
       }
 
       TLegend *legA;
+      std::cout << "  The legTop value is: " << variable.legTop() << " (" << (variable.legTop()?"true":"false") << ")" << std::endl;
+      std::cout << "  The legLeft value is: " << variable.legLeft() << " (" << (variable.legLeft()?"true":"false") << ")" << std::endl;
       if(variable.legTop())
       {
         double maxVal = mcS->GetYaxis()->GetXmax();
