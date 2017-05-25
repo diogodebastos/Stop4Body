@@ -51,12 +51,14 @@
   "variables":[
     {
       "expression":"nVert",
+      "legTop":true,
       "min":0.0,
       "max":50.0,
       "bins":50
     },
     {
       "expression":"Met",
+      "legTop":true,
       "min":250.0,
       "max":600.0,
       "bins":35
@@ -64,6 +66,7 @@
     {
       "name":"Met_ext",
       "expression":"Met",
+      "legTop":true,
       "min":0.0,
       "max":1000.0,
       "bins":50
@@ -71,6 +74,7 @@
     {
       "expression":"HT",
       "label":"H_{T}",
+      "legTop":true,
       "min":200.0,
       "max":1000.0,
       "bins":40
@@ -78,6 +82,7 @@
     {
       "expression":"NbLoose",
       "label":"N_{b}^{L}",
+      "legTop":true,
       "min":-0.5,
       "max":6.5,
       "bins":7
@@ -85,6 +90,7 @@
     {
       "expression":"Njet",
       "label":"N_{J}",
+      "legTop":true,
       "min":-0.5,
       "max":6.5,
       "bins":7
@@ -92,6 +98,7 @@
     {
       "expression":"LepPt",
       "label":"p_{T}(l)",
+      "legTop":true,
       "max":35.0,
       "bins":20
     },
@@ -99,6 +106,7 @@
       "name":"LepPt_ext",
       "expression":"LepPt",
       "label":"p_{T}(l)",
+      "legTop":true,
       "max":105.0,
       "bins":30
     }
