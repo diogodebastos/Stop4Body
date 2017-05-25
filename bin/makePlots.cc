@@ -350,11 +350,11 @@ int main(int argc, char** argv)
           maxVal = maxVal + legPadFraction*(maxVal - minVal) / (1 - legPadFraction);
         }
 
-        mcS->SetMinimum(minVal);
-        mcS->SetMaximum(maxVal);
+        mcS->GetYaxis()->SetMinimum(minVal);
+        mcS->GetYaxis()->SetMaximum(maxVal);
 
-        //legA = gPad->BuildLegend(0, 0, 1, 0.2, "", "NDC"); // The current version does not allow options... what?
-        legA = gPad->BuildLegend(0, 0, 1, legPadFraction, "");
+        //legA = gPad->BuildLegend(0.155, 1, 0.845, 1-legPadFraction, "NDC"); // The current version does not allow options... what?
+        legA = gPad->BuildLegend(0.155, 1, 0.845, 1-legPadFraction, "");
         legA->SetNColumns(3);
       }
       else
