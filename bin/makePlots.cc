@@ -562,7 +562,107 @@ int main(int argc, char** argv)
         thisPad->SetTopMargin(0.0);
         thisPad->SetBottomMargin(0.10);
         thisPad->SetRightMargin(0.10);
+
+        auto hist = process.get2DHist(twoDvariable.X().expression(),
+                                      twoDvariable.Y().expression(),
+                                      twoDvariable.X().label()+";"+twoDvariable.Y().label()+";Evt.",
+                                      dataSel,
+                                      twoDvariable.X().bins(),
+                                      twoDvariable.X().min(),
+                                      twoDvariable.X().max(),
+                                      twoDvariable.Y().bins(),
+                                      twoDvariable.Y().min(),
+                                      twoDvariable.Y().max());
+        ObjectToDelete.push_back(hist);
+        hist->SetTitle("");
+        hist->SetStats(kFALSE);
+        hist->Draw("COLZ");
+
+        TPaveText* leg = new TPaveText(0.10,0.995,0.30,0.90, "NDC");
+        leg->SetFillColor(0);
+        leg->SetFillStyle(0);
+        leg->SetLineColor(0);
+        leg->SetTextAlign(12);
+        leg->AddText(process.label());
+        leg->Draw("same");
+        ObjectToDelete.push_back(leg);
       }
+      for(auto & process : MC)
+      {
+        pad++;
+        TVirtualPad* thisPad = c1.cd(pad);
+
+        thisPad->SetLogz(true);
+        thisPad->SetTopMargin(0.0);
+        thisPad->SetBottomMargin(0.10);
+        thisPad->SetRightMargin(0.10);
+
+        auto hist = process.get2DHist(twoDvariable.X().expression(),
+                                      twoDvariable.Y().expression(),
+                                      twoDvariable.X().label()+";"+twoDvariable.Y().label()+";Evt.",
+                                      (rawEvents)?(selection):(mcWeight+"*("+selection+")"),
+                                      twoDvariable.X().bins(),
+                                      twoDvariable.X().min(),
+                                      twoDvariable.X().max(),
+                                      twoDvariable.Y().bins(),
+                                      twoDvariable.Y().min(),
+                                      twoDvariable.Y().max());
+        ObjectToDelete.push_back(hist);
+        hist->SetTitle("");
+        hist->SetStats(kFALSE);
+        hist->Draw("COLZ");
+
+        TPaveText* leg = new TPaveText(0.10,0.995,0.30,0.90, "NDC");
+        leg->SetFillColor(0);
+        leg->SetFillStyle(0);
+        leg->SetLineColor(0);
+        leg->SetTextAlign(12);
+        leg->AddText(process.label());
+        leg->Draw("same");
+        ObjectToDelete.push_back(leg);
+      }
+      for(auto & process : Sig)
+      {
+        pad++;
+        TVirtualPad* thisPad = c1.cd(pad);
+
+        thisPad->SetLogz(true);
+        thisPad->SetTopMargin(0.0);
+        thisPad->SetBottomMargin(0.10);
+        thisPad->SetRightMargin(0.10);
+
+        auto hist = process.get2DHist(twoDvariable.X().expression(),
+                                      twoDvariable.Y().expression(),
+                                      twoDvariable.X().label()+";"+twoDvariable.Y().label()+";Evt.",
+                                      (rawEvents)?(selection):(mcWeight+"*("+selection+")"),
+                                      twoDvariable.X().bins(),
+                                      twoDvariable.X().min(),
+                                      twoDvariable.X().max(),
+                                      twoDvariable.Y().bins(),
+                                      twoDvariable.Y().min(),
+                                      twoDvariable.Y().max());
+        ObjectToDelete.push_back(hist);
+        hist->SetTitle("");
+        hist->SetStats(kFALSE);
+        hist->Draw("COLZ");
+
+        TPaveText* leg = new TPaveText(0.10,0.995,0.30,0.90, "NDC");
+        leg->SetFillColor(0);
+        leg->SetFillStyle(0);
+        leg->SetLineColor(0);
+        leg->SetTextAlign(12);
+        leg->AddText(process.label());
+        leg->Draw("same");
+        ObjectToDelete.push_back(leg);
+      }
+      c1.cd(0);
+
+      c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+twoDvariable.name()+".png").c_str());
+      c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+twoDvariable.name()+".C").c_str());
+
+      for(unsigned int d = 0; d < ObjectToDelete.size(); d++)
+        delete ObjectToDelete[d];
+      ObjectToDelete.clear();
     }
 
     cutFlowTable << cut.name();
