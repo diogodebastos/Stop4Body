@@ -157,7 +157,7 @@ int main(int argc, char** argv)
 
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
-  TwoDVariableJsonLoader TwoDvariables(variablesJson);
+  TwoDVariableJsonLoader twoDvariables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   auto MC = samples.getMCBkg();
@@ -468,6 +468,101 @@ int main(int argc, char** argv)
       delete T;
       delete bgUncH;
       delete bgUnc;
+    }
+
+    for(auto & twoDvariable : twoDvariables)
+    {
+      std::string dataSel;
+      if(twoDvariable.X().expression() == "BDT" || twoDvariable.Y().expression() == "BDT")
+        dataSel = blindSel+selection;
+      else
+        dataSel = selection;
+
+      int nPlots = 0;
+      nPlots += Data.nProcesses();
+      nPlots += MC.nProcesses();
+      nPlots += Sig.nProcesses();
+
+      int plotX = 400;
+      int plotY = 400;
+      int canvasX = 0;
+      int canvasY = 0;
+      int nPadsX = 0;
+      int nPadsY = 0;
+      switch(nPlots)
+      {
+        case 1:
+          canvasY = plotY;
+          canvasX = plotX;
+          nPadsX = 1;
+          nPadsY = 1;
+          break;
+        case 2:
+          canvasY = plotY;
+          canvasX = 2*plotX;
+          nPadsX = 2;
+          nPadsY = 1;
+          break;
+        case 3:
+          canvasY = plotY;
+          canvasX = 3*plotX;
+          nPadsX = 3;
+          nPadsY = 1;
+          break;
+        case 4:
+          canvasY = 2*plotY;
+          canvasX = 2*plotX;
+          nPadsX = 2;
+          nPadsY = 2;
+          break;
+        case 5:
+        case 6:
+          canvasY = 2*plotY;
+          canvasX = 3*plotX;
+          nPadsX = 3;
+          nPadsY = 2;
+          break;
+        case 7:
+        case 8:
+          canvasY = 2*plotY;
+          canvasX = 4*plotX;
+          nPadsX = 4;
+          nPadsY = 2;
+          break;
+        case 9:
+          canvasY = 3*plotY;
+          canvasX = 3*plotX;
+          nPadsX = 3;
+          nPadsY = 3;
+          break;
+        case 10:
+        case 11:
+        case 12:
+          canvasY = 3*plotY;
+          canvasX = 4*plotX;
+          nPadsX = 4;
+          nPadsY = 3;
+          break;
+        default:
+          throw std::exception("Calm down speedy, check the number of processes");
+      }
+
+      std::vector<TObject*> ObjectToDelete;
+      TCanvas c1((cut.name()+"_"+variable.name()).c_str(), "", canvasX, canvasY);
+      c1.SetLogz();
+      c1.Divide(nPadsX,nPadsY,0,0);
+
+      int pad = 0;
+      for(auto & process : Data)
+      {
+        pad++;
+        TVirtualPad* thisPad = c1.cd(pad);
+
+        thisPad->SetLogz(true);
+        thisPad->SetTopMargin(0.0);
+        thisPad->SetBottomMargin(0.10);
+        thisPad->SetRightMargin(0.10);
+      }
     }
 
     cutFlowTable << cut.name();
