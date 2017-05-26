@@ -152,6 +152,8 @@ public:
   const_iterator end() const {return filePaths_.end();}
   const_iterator cend() const {return filePaths_.cend();}
 
+  bool hasBDT() const;
+
 private:
   bool fileExists(std::string fileName);
 
@@ -194,6 +196,8 @@ public:
   int fill() const {return fill_;}
   int mcolor() const {return mcolor_;}
   int marker() const {return marker_;}
+
+  bool hasBDT() const;
 
   // Iteration
   typedef typename std::vector<SampleInfo>::iterator iterator;
@@ -251,6 +255,8 @@ public:
 
   size_t nProcesses() const {return processes_.size();}
   ProcessInfo process(size_t i) const {return processes_[i];}
+
+  bool hasBDT() const;
 
   // Iteration
   typedef typename std::vector<ProcessInfo>::iterator iterator;

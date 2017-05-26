@@ -106,6 +106,28 @@ doubleUnc SampleInfo::getYield(std::string cut, std::string weight)
   return retVal;
 }
 
+bool SampleInfo::hasBDT() const
+{
+  if(filePaths_.size() == 0)
+    return false;
+
+  TFile file(filePaths_[0].c_str(), "READ");
+  TTree* tree = static_cast<TTree*>(file.Get("bdttree"));
+
+  bool hasBDT = false;
+
+  if(tree != nullptr)
+  {
+    auto branch = tree->FindBranch("BDT");
+    if(branch != nullptr)
+      hasBDT = true;
+    delete branch;
+  }
+  delete tree;
+
+  return hasBDT;
+}
+
 ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix):
   baseDir_(baseDir),
   suffix_(suffix),
@@ -271,6 +293,14 @@ double ProcessInfo::getLumi() const
     lumi += sample.recordedLumi();
 
   return lumi;
+}
+
+bool ProcessInfo::hasBDT() const
+{
+  if(samples_.size() == 0)
+    return false;
+
+  return samples_[0].hasBDT();
 }
 
 SampleReader::SampleReader(std::string fileName, std::string baseDir, std::string suffix):
@@ -462,4 +492,12 @@ double SampleReader::getLumi() const
       lumi += process.getLumi();
 
   return lumi;
+}
+
+bool SampleReader::hasBDT() const
+{
+  if(processes_.size() == 0)
+    return false;
+
+  return processes_[0].hasBDT();
 }

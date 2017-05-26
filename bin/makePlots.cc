@@ -54,6 +54,7 @@ int main(int argc, char** argv)
   bool cumulativeCuts = false;
   bool rawEvents = false;
   bool noSF = false;
+  bool unblind = false;
 
   if(argc < 2)
   {
@@ -126,6 +127,11 @@ int main(int argc, char** argv)
     {
       noSF = true;
     }
+
+    if(argument == "--unblind")
+    {
+      unblind = false;
+    }
   }
 
   if(jsonFileName == "")
@@ -151,6 +157,7 @@ int main(int argc, char** argv)
 
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
+  TwoDVariableJsonLoader TwoDvariables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   auto MC = samples.getMCBkg();
@@ -275,6 +282,9 @@ int main(int argc, char** argv)
   cutFlowTable << "\\\\\n";
 
   std::string selection = "";
+  std::string blindSel = "";
+  if(!unblind && Data.hasBDT())
+    blindSel = "(BDT < 0.3) && ";
   for(auto& cut : cutFlow)
   {
     if(cut.cut() != "")
@@ -296,8 +306,13 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
-      //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.",               selection    , variable.bins(), variable.min(), variable.max());
-      auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.",               selection    , variable.bins(), variable.min(), variable.max());
+      std::string dataSel;
+      if(variable.expression() == "BDT")
+        dataSel = blindSel+selection;
+      else
+        dataSel = selection;
+      //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
+      auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
       //auto sigH  =  Sig.getHist(cut.name()+"_"+variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
       auto sigH  =  Sig.process(0).getHist(variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
@@ -470,8 +485,10 @@ int main(int argc, char** argv)
     cutFlowTable << " & " << MC.getYield(selection, mcWeight);
     for(auto& process : Data)
     {
-      auto yield = process.getYield(selection, "1");
+      auto yield = process.getYield(blindSel+selection, "1");
       cutFlowTable << " & " << yield;
+      if(blindSel != "")
+        cutFlowTable << " (SR blinded)";
       if(verbose)
         std::cout << process.label() << ": " << yield << std::endl;
     }
