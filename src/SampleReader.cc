@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "TDirectory.h"
+#include "TFile.h"
 
 using json = nlohmann::json;
 

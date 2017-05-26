@@ -14,6 +14,7 @@
 #include <sstream>
 #include <map>
 #include <fstream>
+#include <stdexcept>
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
@@ -550,11 +551,11 @@ int main(int argc, char** argv)
           nPadsY = 3;
           break;
         default:
-          throw std::exception("Calm down speedy, check the number of processes");
+          throw std::out_of_range("Calm down speedy, check the number of processes");
       }
 
       std::vector<TObject*> ObjectToDelete;
-      TCanvas c1((cut.name()+"_"+variable.name()).c_str(), "", canvasX, canvasY);
+      TCanvas c1((cut.name()+"_"+twoDvariable.name()).c_str(), "", canvasX, canvasY);
       c1.SetLogz();
       c1.Divide(nPadsX,nPadsY,0,0);
 
@@ -589,7 +590,7 @@ int main(int argc, char** argv)
         leg->SetFillStyle(0);
         leg->SetLineColor(0);
         leg->SetTextAlign(12);
-        leg->AddText(process.label());
+        leg->AddText(process.label().c_str());
         leg->Draw("same");
         ObjectToDelete.push_back(leg);
       }
@@ -623,7 +624,7 @@ int main(int argc, char** argv)
         leg->SetFillStyle(0);
         leg->SetLineColor(0);
         leg->SetTextAlign(12);
-        leg->AddText(process.label());
+        leg->AddText(process.label().c_str());
         leg->Draw("same");
         ObjectToDelete.push_back(leg);
       }
@@ -657,7 +658,7 @@ int main(int argc, char** argv)
         leg->SetFillStyle(0);
         leg->SetLineColor(0);
         leg->SetTextAlign(12);
-        leg->AddText(process.label());
+        leg->AddText(process.label().c_str());
         leg->Draw("same");
         ObjectToDelete.push_back(leg);
       }

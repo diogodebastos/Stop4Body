@@ -9,6 +9,7 @@
 #include "TChain.h"
 #include "THStack.h"
 #include "TH1D.h"
+#include "TH2D.h"
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"

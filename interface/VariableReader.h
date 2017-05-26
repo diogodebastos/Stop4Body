@@ -84,7 +84,8 @@ class TwoDVariableInfo
     std::string name_;
     VariableInfo X_;
     VariableInfo Y_;
-}
+
+};
 
 class TwoDVariableJsonLoader
 {
