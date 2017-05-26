@@ -258,6 +258,31 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
   return retVal;
 }
 
+TH2D* ProcessInfo::get2DHist(std::string variableX, std::string variableY, std::string axis, std::string weight, int binsX, double minX, double maxX, int binsY, double minY, double maxY)
+{
+  std::string histName = variableY+"vs"+variableX+"_"+tag_;
+
+  TH2D* retVal = new TH2D(histName.c_str(), (label_+";"+axis).c_str(), binsX, minX, maxX, binsY, minY, maxY);
+  retVal->Sumw2();
+
+  auto cwd = gDirectory;
+
+  TChain* chain = new TChain("bdttree");
+  auto files = getAllFiles();
+  for(auto& file : files)
+  {
+    //std::cout << "Adding file '" << file << "' to the chain" << std::endl;
+    chain->Add(file.c_str());
+  }
+
+  chain->Draw((variableY+":"+variableX+">>"+histName).c_str(), weight.c_str(), "goff");
+
+  cwd->cd();
+  delete chain;
+
+  return retVal;
+}
+
 doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
 {
   TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);

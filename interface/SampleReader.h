@@ -179,6 +179,7 @@ class ProcessInfo
 
     std::vector<std::string> getAllFiles();
     TH1D* getHist(std::string, std::string, std::string, int, double, double);
+    TH2D* get2DHist(std::string, std::string, std::string, std::string, int, double, double, int, double, double);
     doubleUnc getYield(std::string, std::string);
     double getLumi() const;
 
