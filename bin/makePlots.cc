@@ -54,6 +54,7 @@ int main(int argc, char** argv)
   bool cumulativeCuts = false;
   bool rawEvents = false;
   bool noSF = false;
+  bool unblind = false;
 
   if(argc < 2)
   {
@@ -126,6 +127,11 @@ int main(int argc, char** argv)
     {
       noSF = true;
     }
+
+    if(argument == "--unblind")
+    {
+      unblind = false;
+    }
   }
 
   if(jsonFileName == "")
@@ -151,6 +157,7 @@ int main(int argc, char** argv)
 
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
+  TwoDVariableJsonLoader twoDvariables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   auto MC = samples.getMCBkg();
@@ -275,6 +282,9 @@ int main(int argc, char** argv)
   cutFlowTable << "\\\\\n";
 
   std::string selection = "";
+  std::string blindSel = "";
+  if(!unblind && Data.hasBDT())
+    blindSel = "(BDT < 0.3) && ";
   for(auto& cut : cutFlow)
   {
     if(cut.cut() != "")
@@ -296,8 +306,13 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
-      //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.",               selection    , variable.bins(), variable.min(), variable.max());
-      auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.",               selection    , variable.bins(), variable.min(), variable.max());
+      std::string dataSel;
+      if(variable.expression() == "BDT")
+        dataSel = blindSel+selection;
+      else
+        dataSel = selection;
+      //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
+      auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
       //auto sigH  =  Sig.getHist(cut.name()+"_"+variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
       auto sigH  =  Sig.process(0).getHist(variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
@@ -461,6 +476,201 @@ int main(int argc, char** argv)
       delete bgUnc;
     }
 
+    for(auto & twoDvariable : twoDvariables)
+    {
+      std::string dataSel;
+      if(twoDvariable.X().expression() == "BDT" || twoDvariable.Y().expression() == "BDT")
+        dataSel = blindSel+selection;
+      else
+        dataSel = selection;
+
+      int nPlots = 0;
+      nPlots += Data.nProcesses();
+      nPlots += MC.nProcesses();
+      nPlots += Sig.nProcesses();
+
+      int plotX = 400;
+      int plotY = 400;
+      int canvasX = 0;
+      int canvasY = 0;
+      int nPadsX = 0;
+      int nPadsY = 0;
+      switch(nPlots)
+      {
+        case 1:
+          canvasY = plotY;
+          canvasX = plotX;
+          nPadsX = 1;
+          nPadsY = 1;
+          break;
+        case 2:
+          canvasY = plotY;
+          canvasX = 2*plotX;
+          nPadsX = 2;
+          nPadsY = 1;
+          break;
+        case 3:
+          canvasY = plotY;
+          canvasX = 3*plotX;
+          nPadsX = 3;
+          nPadsY = 1;
+          break;
+        case 4:
+          canvasY = 2*plotY;
+          canvasX = 2*plotX;
+          nPadsX = 2;
+          nPadsY = 2;
+          break;
+        case 5:
+        case 6:
+          canvasY = 2*plotY;
+          canvasX = 3*plotX;
+          nPadsX = 3;
+          nPadsY = 2;
+          break;
+        case 7:
+        case 8:
+          canvasY = 2*plotY;
+          canvasX = 4*plotX;
+          nPadsX = 4;
+          nPadsY = 2;
+          break;
+        case 9:
+          canvasY = 3*plotY;
+          canvasX = 3*plotX;
+          nPadsX = 3;
+          nPadsY = 3;
+          break;
+        case 10:
+        case 11:
+        case 12:
+          canvasY = 3*plotY;
+          canvasX = 4*plotX;
+          nPadsX = 4;
+          nPadsY = 3;
+          break;
+        default:
+          throw std::exception("Calm down speedy, check the number of processes");
+      }
+
+      std::vector<TObject*> ObjectToDelete;
+      TCanvas c1((cut.name()+"_"+variable.name()).c_str(), "", canvasX, canvasY);
+      c1.SetLogz();
+      c1.Divide(nPadsX,nPadsY,0,0);
+
+      int pad = 0;
+      for(auto & process : Data)
+      {
+        pad++;
+        TVirtualPad* thisPad = c1.cd(pad);
+
+        thisPad->SetLogz(true);
+        thisPad->SetTopMargin(0.0);
+        thisPad->SetBottomMargin(0.10);
+        thisPad->SetRightMargin(0.10);
+
+        auto hist = process.get2DHist(twoDvariable.X().expression(),
+                                      twoDvariable.Y().expression(),
+                                      twoDvariable.X().label()+";"+twoDvariable.Y().label()+";Evt.",
+                                      dataSel,
+                                      twoDvariable.X().bins(),
+                                      twoDvariable.X().min(),
+                                      twoDvariable.X().max(),
+                                      twoDvariable.Y().bins(),
+                                      twoDvariable.Y().min(),
+                                      twoDvariable.Y().max());
+        ObjectToDelete.push_back(hist);
+        hist->SetTitle("");
+        hist->SetStats(kFALSE);
+        hist->Draw("COLZ");
+
+        TPaveText* leg = new TPaveText(0.10,0.995,0.30,0.90, "NDC");
+        leg->SetFillColor(0);
+        leg->SetFillStyle(0);
+        leg->SetLineColor(0);
+        leg->SetTextAlign(12);
+        leg->AddText(process.label());
+        leg->Draw("same");
+        ObjectToDelete.push_back(leg);
+      }
+      for(auto & process : MC)
+      {
+        pad++;
+        TVirtualPad* thisPad = c1.cd(pad);
+
+        thisPad->SetLogz(true);
+        thisPad->SetTopMargin(0.0);
+        thisPad->SetBottomMargin(0.10);
+        thisPad->SetRightMargin(0.10);
+
+        auto hist = process.get2DHist(twoDvariable.X().expression(),
+                                      twoDvariable.Y().expression(),
+                                      twoDvariable.X().label()+";"+twoDvariable.Y().label()+";Evt.",
+                                      (rawEvents)?(selection):(mcWeight+"*("+selection+")"),
+                                      twoDvariable.X().bins(),
+                                      twoDvariable.X().min(),
+                                      twoDvariable.X().max(),
+                                      twoDvariable.Y().bins(),
+                                      twoDvariable.Y().min(),
+                                      twoDvariable.Y().max());
+        ObjectToDelete.push_back(hist);
+        hist->SetTitle("");
+        hist->SetStats(kFALSE);
+        hist->Draw("COLZ");
+
+        TPaveText* leg = new TPaveText(0.10,0.995,0.30,0.90, "NDC");
+        leg->SetFillColor(0);
+        leg->SetFillStyle(0);
+        leg->SetLineColor(0);
+        leg->SetTextAlign(12);
+        leg->AddText(process.label());
+        leg->Draw("same");
+        ObjectToDelete.push_back(leg);
+      }
+      for(auto & process : Sig)
+      {
+        pad++;
+        TVirtualPad* thisPad = c1.cd(pad);
+
+        thisPad->SetLogz(true);
+        thisPad->SetTopMargin(0.0);
+        thisPad->SetBottomMargin(0.10);
+        thisPad->SetRightMargin(0.10);
+
+        auto hist = process.get2DHist(twoDvariable.X().expression(),
+                                      twoDvariable.Y().expression(),
+                                      twoDvariable.X().label()+";"+twoDvariable.Y().label()+";Evt.",
+                                      (rawEvents)?(selection):(mcWeight+"*("+selection+")"),
+                                      twoDvariable.X().bins(),
+                                      twoDvariable.X().min(),
+                                      twoDvariable.X().max(),
+                                      twoDvariable.Y().bins(),
+                                      twoDvariable.Y().min(),
+                                      twoDvariable.Y().max());
+        ObjectToDelete.push_back(hist);
+        hist->SetTitle("");
+        hist->SetStats(kFALSE);
+        hist->Draw("COLZ");
+
+        TPaveText* leg = new TPaveText(0.10,0.995,0.30,0.90, "NDC");
+        leg->SetFillColor(0);
+        leg->SetFillStyle(0);
+        leg->SetLineColor(0);
+        leg->SetTextAlign(12);
+        leg->AddText(process.label());
+        leg->Draw("same");
+        ObjectToDelete.push_back(leg);
+      }
+      c1.cd(0);
+
+      c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+twoDvariable.name()+".png").c_str());
+      c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+twoDvariable.name()+".C").c_str());
+
+      for(unsigned int d = 0; d < ObjectToDelete.size(); d++)
+        delete ObjectToDelete[d];
+      ObjectToDelete.clear();
+    }
+
     cutFlowTable << cut.name();
     for(auto& process : MC)
     {
@@ -476,8 +686,10 @@ int main(int argc, char** argv)
     cutFlowTable << " & " << MC.getYield(selection, mcWeight);
     for(auto& process : Data)
     {
-      auto yield = process.getYield(selection, "1");
+      auto yield = process.getYield(blindSel+selection, "1");
       cutFlowTable << " & " << yield;
+      if(blindSel != "")
+        cutFlowTable << " (SR blinded)";
       if(verbose)
         std::cout << process.label() << ": " << yield << std::endl;
     }

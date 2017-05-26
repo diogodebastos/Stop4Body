@@ -106,6 +106,28 @@ doubleUnc SampleInfo::getYield(std::string cut, std::string weight)
   return retVal;
 }
 
+bool SampleInfo::hasBDT() const
+{
+  if(filePaths_.size() == 0)
+    return false;
+
+  TFile file(filePaths_[0].c_str(), "READ");
+  TTree* tree = static_cast<TTree*>(file.Get("bdttree"));
+
+  bool hasBDT = false;
+
+  if(tree != nullptr)
+  {
+    auto branch = tree->FindBranch("BDT");
+    if(branch != nullptr)
+      hasBDT = true;
+    delete branch;
+  }
+  delete tree;
+
+  return hasBDT;
+}
+
 ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix):
   baseDir_(baseDir),
   suffix_(suffix),
@@ -236,6 +258,31 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
   return retVal;
 }
 
+TH2D* ProcessInfo::get2DHist(std::string variableX, std::string variableY, std::string axis, std::string weight, int binsX, double minX, double maxX, int binsY, double minY, double maxY)
+{
+  std::string histName = variableY+"vs"+variableX+"_"+tag_;
+
+  TH2D* retVal = new TH2D(histName.c_str(), (label_+";"+axis).c_str(), binsX, minX, maxX, binsY, minY, maxY);
+  retVal->Sumw2();
+
+  auto cwd = gDirectory;
+
+  TChain* chain = new TChain("bdttree");
+  auto files = getAllFiles();
+  for(auto& file : files)
+  {
+    //std::cout << "Adding file '" << file << "' to the chain" << std::endl;
+    chain->Add(file.c_str());
+  }
+
+  chain->Draw((variableY+":"+variableX+">>"+histName).c_str(), weight.c_str(), "goff");
+
+  cwd->cd();
+  delete chain;
+
+  return retVal;
+}
+
 doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
 {
   TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
@@ -271,6 +318,14 @@ double ProcessInfo::getLumi() const
     lumi += sample.recordedLumi();
 
   return lumi;
+}
+
+bool ProcessInfo::hasBDT() const
+{
+  if(samples_.size() == 0)
+    return false;
+
+  return samples_[0].hasBDT();
 }
 
 SampleReader::SampleReader(std::string fileName, std::string baseDir, std::string suffix):
@@ -462,4 +517,12 @@ double SampleReader::getLumi() const
       lumi += process.getLumi();
 
   return lumi;
+}
+
+bool SampleReader::hasBDT() const
+{
+  if(processes_.size() == 0)
+    return false;
+
+  return processes_[0].hasBDT();
 }

@@ -61,14 +61,14 @@
   "variables":[
     {
       "expression":"nVert",
-      "legTop":true,
+      "legPos":"top",
       "min":0.0,
       "max":50.0,
       "bins":50
     },
     {
       "expression":"Met",
-      "legTop":true,
+      "legPos":"top",
       "min":250.0,
       "max":600.0,
       "bins":35
@@ -76,7 +76,7 @@
     {
       "name":"Met_ext",
       "expression":"Met",
-      "legTop":true,
+      "legPos":"top",
       "min":0.0,
       "max":1000.0,
       "bins":50
@@ -84,7 +84,7 @@
     {
       "expression":"HT",
       "label":"H_{T}",
-      "legTop":true,
+      "legPos":"top",
       "min":200.0,
       "max":1000.0,
       "bins":40
@@ -92,7 +92,7 @@
     {
       "expression":"NbLoose",
       "label":"N_{b}^{L}",
-      "legTop":true,
+      "legPos":"top",
       "min":-0.5,
       "max":6.5,
       "bins":7
@@ -100,7 +100,7 @@
     {
       "expression":"Njet",
       "label":"N_{J}",
-      "legTop":true,
+      "legPos":"top",
       "min":-0.5,
       "max":6.5,
       "bins":7
@@ -108,7 +108,7 @@
     {
       "expression":"LepPt",
       "label":"p_{T}(l)",
-      "legTop":true,
+      "legPos":"top",
       "max":35.0,
       "bins":20
     },
@@ -116,9 +116,26 @@
       "name":"LepPt_ext",
       "expression":"LepPt",
       "label":"p_{T}(l)",
-      "legTop":true,
+      "legPos":"top",
       "max":105.0,
       "bins":30
+    }
+  ],
+  "2Dplots":[
+    {
+      "name":"IsoVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "expression":"HybIso",
+        "min": 0,
+        "max": 20,
+        "bins": 20
+      }
     }
   ]
 }
