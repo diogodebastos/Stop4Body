@@ -326,8 +326,14 @@ int main(int argc, char** argv)
         double maxVal = mcS->GetYaxis()->GetXmax();
         double minVal = mcS->GetYaxis()->GetXmin();
 
+        maxVal = std::max(mcS->GetMaximum(), dataH->GetMaximum());
+        minVal = std::min(mcS->GetMinimum(), dataH->GetMinimum());
+
         if(t1->GetLogy() == 1)
         {
+          if(minVal == 0)
+            minVal = 0.5;
+
           maxVal = std::pow(maxVal/std::pow(minVal, legPadFraction), 1/(1 - legPadFraction));
         }
         else
@@ -337,7 +343,7 @@ int main(int argc, char** argv)
 
         mcS->SetMinimum(minVal);
         mcS->SetMaximum(maxVal);
-        mcS->Draw("hist");
+        //mcS->Draw("hist");
       }
       if(!puTest)
       {
@@ -357,7 +363,7 @@ int main(int argc, char** argv)
       if(variable.legTop())
       {
         //legA = gPad->BuildLegend(0.155, 1, 0.845, 1-legPadFraction, "NDC"); // The current version does not allow options... what?
-        legA = gPad->BuildLegend(0.155, 0.90, 0.845, 0.9*(1-legPadFraction), "");
+        legA = gPad->BuildLegend(0.155, 0.95, 0.845, 0.95*(1-legPadFraction), "");
         legA->SetNColumns(3);
       }
       else
