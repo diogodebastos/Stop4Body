@@ -2,11 +2,28 @@
 
 #include <fstream>
 #include <sstream>
+#include <regex>
 
 #include "TDirectory.h"
 #include "TFile.h"
 
 using json = nlohmann::json;
+
+std::string cleanString(std::string inputStr)
+{
+  std::regex nonASCII("[^a-zA-Z0-9 _]");
+  std::regex multipleSpace(" +");
+  std::regex multipleUnderscore("_+");
+
+  std::string replaced = std::regex_replace(inputStr, nonASCII, "_");
+  replaced = std::regex_replace(replaced, multipleSpace, "_");
+  replaced = std::regex_replace(replaced, multipleUnderscore, "_");
+
+  std::cout << "Original string: " << inputStr << std::endl;
+  std::cout << "New string: " << replaced << std::endl;
+
+  return replaced;
+}
 
 SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   baseDir_(baseDir),
@@ -261,7 +278,7 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
 
 TH2D* ProcessInfo::get2DHist(std::string variableX, std::string variableY, std::string axis, std::string weight, int binsX, double minX, double maxX, int binsY, double minY, double maxY)
 {
-  std::string histName = variableY+"vs"+variableX+"_"+tag_;
+  std::string histName = cleanString(variableY+"vs"+variableX+"_"+tag_);
 
   TH2D* retVal = new TH2D(histName.c_str(), (label_+";"+axis).c_str(), binsX, minX, maxX, binsY, minY, maxY);
   retVal->Sumw2();
