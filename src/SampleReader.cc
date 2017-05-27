@@ -247,7 +247,8 @@ std::vector<std::string> ProcessInfo::getAllFiles()
 
 TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax)
 {
-  TH1D* retVal = new TH1D((variable+"_"+tag_).c_str(), (label_+";"+axis).c_str(), bins, xmin, xmax);
+  std::string histName = cleanString(variable+"_"+tag_);
+  TH1D* retVal = new TH1D(histName.c_str(), (label_+";"+axis).c_str(), bins, xmin, xmax);
   retVal->Sumw2();
 
   auto cwd = gDirectory;
@@ -260,7 +261,7 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
     chain->Add(file.c_str());
   }
 
-  chain->Draw((variable+">>"+variable+"_"+tag_).c_str(), (weight).c_str(), "goff");
+  chain->Draw((variable+">>"+histName).c_str(), (weight).c_str(), "goff");
 
   retVal->SetLineColor(color_);
   retVal->SetFillColor(fill_);
