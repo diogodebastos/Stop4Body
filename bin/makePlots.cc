@@ -566,8 +566,8 @@ int main(int argc, char** argv)
         TVirtualPad* thisPad = c1.cd(pad);
 
         thisPad->SetLogz(true);
-        thisPad->SetTopMargin(0.20);
-        thisPad->SetBottomMargin(0.00);
+        thisPad->SetTopMargin(0.10);
+        thisPad->SetBottomMargin(0.10);
         thisPad->SetRightMargin(0.20);
 
         auto hist = process.get2DHist(twoDvariable.X().expression(),
@@ -585,7 +585,7 @@ int main(int argc, char** argv)
         hist->SetStats(kFALSE);
         hist->Draw("COLZ");
 
-        TPaveText* leg = new TPaveText(0.10,0.995,0.30,0.90, "NDC");
+        TPaveText* leg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
         leg->SetFillColor(0);
         leg->SetFillStyle(0);
         leg->SetLineColor(0);
