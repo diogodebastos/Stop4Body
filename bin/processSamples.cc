@@ -797,7 +797,7 @@ int main(int argc, char** argv)
             Lep2Dz       = LepGood_dz[leptonIndex];
             Lep2Iso03    = LepGood_relIso03[leptonIndex];
 
-            if(!process.isdata())
+            /*if(!process.isdata())
             {
               auto mcMatchId = LepGood_mcMatchId[leptonIndex];
               bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
@@ -829,7 +829,8 @@ int main(int argc, char** argv)
             else
             {
               isPrompt2 = 1;
-            }
+            }// */
+            isPrompt2 = 1;
           }
           else
           {
