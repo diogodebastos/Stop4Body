@@ -653,11 +653,10 @@ int main(int argc, char** argv)
             nGoodEl = nGoodEl_loose;
           }
 
-          // TODO: Missing checks for preemptive drop events
-          if(looseNotTight && !isLooseNotTight)
+          if(preemptiveDropEvents && looseNotTight && !isLooseNotTight)
             continue;
 
-          if(!doLooseLeptons && isLooseNotTight)
+          if(preemptiveDropEvents && !doLooseLeptons && isLooseNotTight)
             continue;
 
           if(preemptiveDropEvents && !(isLoose || isTight))
@@ -750,11 +749,14 @@ int main(int argc, char** argv)
             LepHybIso03 = LepIso03*std::min(LepPt, 25);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
-            if(!process.isdata() && doPromptTagging)
+            if(!process.isdata())
             {
               leptonIDSF = static_cast<double>(getLeptonIDSF(LepID, LepPt, LepEta));
               leptonISOSF = static_cast<double>(getLeptonISOSF(LepID, LepPt, LepEta));
+            }
 
+            if(!process.isdata() && doPromptTagging)
+            {
               auto mcMatchId = LepGood_mcMatchId[leptonIndex];
               bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
               if(!isPromptFlag)
@@ -1179,14 +1181,7 @@ int main(int argc, char** argv)
           bool htRequirement = HT > 200;
           bool jetRequirement = Jet1Pt > ISR_JET_PT;
           bool antiQCDRequirement = DPhiJet1Jet2 < 2.5 || Jet2Pt < 60;
-          bool leptonRequirement = false;
-          if(validLeptons.size() == 1)
-            leptonRequirement = true;
-          if(validLeptons.size() == 2)
-          {
-            if(LepGood_pt[validLeptons[1]] < SECOND_LEPTON_PT)
-              leptonRequirement = true;
-          }
+          bool leptonRequirement = isTight;
           bool deltaMRequirement = LepPt < 30;
 
           // Fill counters for parallel selection computation
@@ -1226,12 +1221,18 @@ int main(int argc, char** argv)
             if(swap && LepPt < 5)
               continue;
 
-            // No need to keep events without leptons or jets
-            if(validLeptons.size() == 0 || validJets.size() == 0)
+            // Only keep events whose leptons pass our requirements
+            if(looseNotTight && !isLooseNotTight)
               continue;
 
-            // If the pT of the second lepton is above 20, we do not want to keep it TODO: Reevaluate if we want these events skimmed or not
-            if(validLeptons.size() > 1 && Lep2Pt > SECOND_LEPTON_PT)
+            if(!doLooseLeptons && isLooseNotTight)
+              continue;
+
+            if(!(isLoose || isTight))
+              continue;
+
+            // No need to keep events without jets
+            if(validJets.size() == 0)
               continue;
 
             // So-called ISR jet requirement (even though it's on the pT of the leading jet)
