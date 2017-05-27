@@ -643,7 +643,7 @@ int main(int argc, char** argv)
 
           isTight = lepSel(validLeptons);
 
-          isLoose = lepSep(looseLeptons);
+          isLoose = lepSel(looseLeptons);
 
           isLooseNotTight = isLoose && !isTight;
           if(isLooseNotTight)
