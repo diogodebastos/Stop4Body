@@ -566,9 +566,9 @@ int main(int argc, char** argv)
         TVirtualPad* thisPad = c1.cd(pad);
 
         thisPad->SetLogz(true);
-        thisPad->SetTopMargin(0.0);
-        thisPad->SetBottomMargin(0.10);
-        thisPad->SetRightMargin(0.10);
+        thisPad->SetTopMargin(0.20);
+        thisPad->SetBottomMargin(0.00);
+        thisPad->SetRightMargin(0.20);
 
         auto hist = process.get2DHist(twoDvariable.X().expression(),
                                       twoDvariable.Y().expression(),
@@ -600,9 +600,9 @@ int main(int argc, char** argv)
         TVirtualPad* thisPad = c1.cd(pad);
 
         thisPad->SetLogz(true);
-        thisPad->SetTopMargin(0.0);
-        thisPad->SetBottomMargin(0.10);
-        thisPad->SetRightMargin(0.10);
+        thisPad->SetTopMargin(0.20);
+        thisPad->SetBottomMargin(0.0);
+        thisPad->SetRightMargin(0.20);
 
         auto hist = process.get2DHist(twoDvariable.X().expression(),
                                       twoDvariable.Y().expression(),
@@ -634,9 +634,9 @@ int main(int argc, char** argv)
         TVirtualPad* thisPad = c1.cd(pad);
 
         thisPad->SetLogz(true);
-        thisPad->SetTopMargin(0.0);
-        thisPad->SetBottomMargin(0.10);
-        thisPad->SetRightMargin(0.10);
+        thisPad->SetTopMargin(0.20);
+        thisPad->SetBottomMargin(0.0);
+        thisPad->SetRightMargin(0.20);
 
         auto hist = process.get2DHist(twoDvariable.X().expression(),
                                       twoDvariable.Y().expression(),
