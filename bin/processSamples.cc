@@ -252,6 +252,8 @@ int main(int argc, char** argv)
       bool isLooseNotTight=false; bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       Float_t looseNotTightWeight=1; bdttree->Branch("looseNotTightWeight", &looseNotTightWeight, "looseNotTightWeight/F");
 
+      bool isTight;      bdttree->Branch("isTight",   &isTight,   "isTight/F");
+      bool isLoose;      bdttree->Branch("isLoose",   &isLoose,   "isLoose/F");
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
       Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
       Float_t LepPt;     bdttree->Branch("LepPt",     &LepPt,     "LepPt/F");
@@ -618,54 +620,54 @@ int main(int argc, char** argv)
                 nGoodEl_loose++;
             }
           }
-          std::sort(validLeptons.begin(), validLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
+          std::sort(validLeptons.begin(), validLeptons.end(), [&LepGood_pt] (const int &left, const int &right) {
             return LepGood_pt[left] > LepGood_pt[right];
             });
-          std::sort(looseLeptons.begin(), looseLeptons.end(), [LepGood_pt] (const int &left, const int &right) {
+          std::sort(looseLeptons.begin(), looseLeptons.end(), [&LepGood_pt] (const int &left, const int &right) {
             return LepGood_pt[left] > LepGood_pt[right];
             });
 
-          isLooseNotTight = false;
-          if(looseNotTight)
+          auto lepSel = [&LepGood_pt] (std::vector<int> &leptons) -> bool
           {
-            if(looseLeptons.size() > 0 && looseLeptons.size() < 3)
+            if(leptons.size() > 0)
             {
-              isLooseNotTight = true;
-
-              if(looseLeptons.size() == 2)
-                if(LepGood_pt[looseLeptons[1]] > SECOND_LEPTON_PT)
-                  isLooseNotTight = false;
-
-              if(validLeptons.size() > 0)
-                isLooseNotTight = false;
+              if(leptons.size() > 1)
+              {
+                if(LepGood_pt[leptons[1]] > SECOND_LEPTON_PT)
+                  return false;
+              }
+              return true;
             }
+            return false;
+          };
 
-            if(isLooseNotTight)
-            {
-              validLeptons = looseLeptons;
-              nGoodMu = nGoodMu_loose;
-              nGoodEl = nGoodEl_loose;
-            }
-            else
-            {
-              if(preemptiveDropEvents)
-                continue;
-            }
-          }
-          else
+          isTight = lepSel(validLeptons);
+
+          isLoose = lepSep(looseLeptons);
+
+          isLooseNotTight = isLoose && !isTight;
+          if(isLooseNotTight)
           {
-            if(doLooseLeptons)
-            {
-              validLeptons = looseLeptons;
-              nGoodMu = nGoodMu_loose;
-              nGoodEl = nGoodEl_loose;
-            }
+            validLeptons = looseLeptons;
+            nGoodMu = nGoodMu_loose;
+            nGoodEl = nGoodEl_loose;
           }
 
-          // TODO: Skim leptons
-          if(preemptiveDropEvents && (validLeptons.size() == 0 || validLeptons.size() > 2))
+          // TODO: Missing checks for preemptive drop events
+          if(looseNotTight && !isLooseNotTight)
             continue;
-          if(preemptiveDropEvents && validLeptons.size() == 2)
+
+          if(!doLooseLeptons && isLooseNotTight)
+            continue;
+
+          if(preemptiveDropEvents && !(isLoose || isTight))
+            continue;
+
+
+
+          if(preemptiveDropEvents && (validLeptons.size() == 0))
+            continue;
+          if(preemptiveDropEvents && validLeptons.size() >= 2)
             if(LepGood_pt[validLeptons[1]] > SECOND_LEPTON_PT) continue;
 
           // Setting the values to be saved in the output tree
