@@ -663,13 +663,6 @@ int main(int argc, char** argv)
           if(preemptiveDropEvents && !(isLoose || isTight))
             continue;
 
-
-
-          if(preemptiveDropEvents && (validLeptons.size() == 0))
-            continue;
-          if(preemptiveDropEvents && validLeptons.size() >= 2)
-            if(LepGood_pt[validLeptons[1]] > SECOND_LEPTON_PT) continue;
-
           // Setting the values to be saved in the output tree
           mt_old = mtw;
           Met = met_pt;
