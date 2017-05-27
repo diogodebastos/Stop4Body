@@ -19,9 +19,6 @@ std::string cleanString(std::string inputStr)
   replaced = std::regex_replace(replaced, multipleSpace, "_");
   replaced = std::regex_replace(replaced, multipleUnderscore, "_");
 
-  std::cout << "Original string: " << inputStr << std::endl;
-  std::cout << "New string: " << replaced << std::endl;
-
   return replaced;
 }
 
