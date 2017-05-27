@@ -131,7 +131,7 @@ int main(int argc, char** argv)
 
     if(argument == "--unblind")
     {
-      unblind = false;
+      unblind = true;
     }
   }
 
