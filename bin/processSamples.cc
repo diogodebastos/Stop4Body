@@ -96,6 +96,8 @@ int main(int argc, char** argv)
   bool swap = false;
   bool looseNotTight = false;
   bool preemptiveDropEvents = false;
+  bool doLooseLeptons = false;
+  bool doPromptTagging = false;
 
   if(argc < 2)
   {
@@ -152,6 +154,12 @@ int main(int argc, char** argv)
 
     if(argument == "--preemptiveDropEvents")
       preemptiveDropEvents = true;
+
+    if(argument == "--doLooseLeptons")
+      doLooseLeptons = true;
+
+    if(argument == "--doPromptTagging")
+      doPromptTagging = true;
   }
 
   if(jsonFileName == "")
@@ -251,6 +259,7 @@ int main(int argc, char** argv)
       Float_t LepDxy;    bdttree->Branch("LepDxy",    &LepDxy,    "LepDxy/F");
       Float_t LepDz;     bdttree->Branch("LepDz",     &LepDz,     "LepDz/F");
       Float_t LepIso03;  bdttree->Branch("LepIso03",  &LepIso03,  "LepIso03/F");
+      Float_t LepHybIso03; bdttree->Branch("LepHybIso03",  &LepHybIso03,  "LepHybIso03/F");
       Float_t isPrompt;  bdttree->Branch("isPrompt",  &isPrompt,  "isPrompt/F");
       Float_t Lep2ID;    bdttree->Branch("Lep2ID",    &Lep2ID,    "Lep2ID/F");
       Float_t Lep2Chg;   bdttree->Branch("Lep2Chg",   &Lep2Chg,   "Lep2Chg/F");
@@ -643,6 +652,15 @@ int main(int argc, char** argv)
                 continue;
             }
           }
+          else
+          {
+            if(doLooseLeptons)
+            {
+              validLeptons = looseLeptons;
+              nGoodMu = nGoodMu_loose;
+              nGoodEl = nGoodEl_loose;
+            }
+          }
 
           // TODO: Skim leptons
           if(preemptiveDropEvents && (validLeptons.size() == 0 || validLeptons.size() > 2))
@@ -734,9 +752,10 @@ int main(int argc, char** argv)
             LepDxy      = LepGood_dxy[leptonIndex];
             LepDz       = LepGood_dz[leptonIndex];
             LepIso03    = LepGood_relIso03[leptonIndex];
+            LepHybIso03 = LepIso03*std::min(LepPt, 25);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
-            if(!process.isdata())
+            if(!process.isdata() && doPromptTagging)
             {
               leptonIDSF = static_cast<double>(getLeptonIDSF(LepID, LepPt, LepEta));
               leptonISOSF = static_cast<double>(getLeptonISOSF(LepID, LepPt, LepEta));
@@ -784,6 +803,7 @@ int main(int argc, char** argv)
             LepDxy      = -9999;
             LepDz       = -9999;
             LepIso03    = -9999;
+            LepHybIso03 = -9999;
             isPrompt    = -9999;
           }
           if(validLeptons.size() > 1)
