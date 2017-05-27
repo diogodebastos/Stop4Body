@@ -746,7 +746,8 @@ int main(int argc, char** argv)
             LepDxy      = LepGood_dxy[leptonIndex];
             LepDz       = LepGood_dz[leptonIndex];
             LepIso03    = LepGood_relIso03[leptonIndex];
-            LepHybIso03 = LepIso03*std::min(LepPt, 25);
+            Float_t minPt = 25.;
+            LepHybIso03 = LepIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
             if(!process.isdata())
