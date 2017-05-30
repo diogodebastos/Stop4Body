@@ -147,7 +147,7 @@ class ValueWithSystematicsInternal
     iterator& begin() {return systematics.begin();}
     const_iterator begin() const {return systematics.begin();}
     const_iterator cbegin() const {return systematics.cbegin();}
-    iterator& end() {return filePaths_.end();}
+    iterator& end() {return systematics.end();}
     const_iterator end() const {return systematics.end();}
     const_iterator cend() const {return systematics.cend();}
 
