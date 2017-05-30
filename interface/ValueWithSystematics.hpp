@@ -139,6 +139,32 @@ const T& ValueWithSystematicsInternal<T>::Systematic(const std::string& name) co
 }
 
 template<class T>
+T& ValueWithSystematicsInternal<T>::Systematic(const std::string&& name) noexcept
+{
+  if(systematics.count(name) == 0)
+  {
+    if(isLocked)
+      throw ValueException("Unable to add systematic \""+name+"\" after locking.");
+    systematics[name] = value;
+  }
+
+  return systematics[name];
+}
+
+template<class T>
+const T& ValueWithSystematicsInternal<T>::Systematic(const std::string&& name) const noexcept
+{
+  if(systematics.count(name) == 0)
+  {
+    if(isLocked)
+      throw ValueException("Unable to add systematic \""+name+"\" after locking.");
+    systematics[name] = value;
+  }
+
+  return systematics[name];
+}
+
+template<class T>
 T& ValueWithSystematicsInternal<T>::operator()(const std::string& name)
 {
   return Systematic(name);
@@ -167,7 +193,20 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator=(cons
 
   for(auto& kv: systematics)
   {
-    kv.second = val;
+    kv.second = value;
+  }
+
+  return *this;
+}
+
+template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator=(const T&& val) noexcept
+{
+  value = std::move(val);
+
+  for(auto& kv: systematics)
+  {
+    kv.second = value;
   }
 
   return *this;
@@ -197,6 +236,29 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator=(cons
 }
 
 template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator=(const ValueWithSystematicsInternal<T>&& val) noexcept
+{
+  if(this == &val) // Check for self assignment (This check is probably not needed, but better safe than sorry)
+    return *this;
+
+  value = std::move(val.value);
+
+  if(isLocked)
+  {
+    for(auto& kv: systematics)
+      if(val.systematics.count(kv.first) == 0)
+        kv.second = value;
+  }
+  else
+    systematics.clear();
+
+  for(auto& kv: val.systematics)
+    Systematic(std::move(kv.first)) = std::move(kv.second);
+
+  return *this;
+}
+
+template<class T>
 ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator+=(const T& val)
 {
   static_assert(!(std::is_same<T, bool>::value), "You can not use addition operators with booleans");
@@ -207,6 +269,21 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator+=(con
   }
 
   value += val;
+
+  return *this;
+}
+
+template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator+=(const T&& val) noexcept
+{
+  static_assert(!(std::is_same<T, bool>::value), "You can not use addition operators with booleans");
+
+  for(auto& kv: systematics)
+  {
+    kv.second += val;
+  }
+
+  value += std::move(val);
 
   return *this;
 }
@@ -229,6 +306,23 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator+=(con
 }
 
 template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator+=(const ValueWithSystematicsInternal<T>&& val) noexcept
+{
+  static_assert(!(std::is_same<T, bool>::value), "You can not use addition operators with booleans");
+
+  for(auto& kv: systematics)
+    if(val.systematics.count(kv.first) == 0)
+      kv.second += val.value;
+
+  for(auto& kv: val.systematics)
+    Systematic(std::move(kv.first)) += std::move(kv.second);
+
+  value += std::move(val.value);
+
+  return *this;
+}
+
+template<class T>
 ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator-=(const T& val)
 {
   static_assert(!(std::is_same<T, bool>::value), "You can not use subtraction operators with booleans");
@@ -239,6 +333,21 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator-=(con
   }
 
   value -= val;
+
+  return *this;
+}
+
+template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator-=(const T&& val) noexcept
+{
+  static_assert(!(std::is_same<T, bool>::value), "You can not use subtraction operators with booleans");
+
+  for(auto& kv: systematics)
+  {
+    kv.second -= val;
+  }
+
+  value -= std::move(val);
 
   return *this;
 }
@@ -261,6 +370,23 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator-=(con
 }
 
 template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator-=(const ValueWithSystematicsInternal<T>&& val) noexcept
+{
+  static_assert(!(std::is_same<T, bool>::value), "You can not use subtraction operators with booleans");
+
+  for(auto& kv: systematics)
+    if(val.systematics.count(kv.first) == 0)
+      kv.second -= val.value;
+
+  for(auto& kv: val.systematics)
+    Systematic(std::move(kv.first)) -= std::move(kv.second);
+
+  value -= std::move(val.value);
+
+  return *this;
+}
+
+template<class T>
 ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator*=(const T& val)
 {
   static_assert(!(std::is_same<T, bool>::value), "You can not use multiplication operators with booleans");
@@ -271,6 +397,21 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator*=(con
   }
 
   value *= val;
+
+  return *this;
+}
+
+template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator*=(const T&& val) noexcept
+{
+  static_assert(!(std::is_same<T, bool>::value), "You can not use multiplication operators with booleans");
+
+  for(auto& kv: systematics)
+  {
+    kv.second *= val;
+  }
+
+  value *= std::move(val);
 
   return *this;
 }
@@ -293,6 +434,23 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator*=(con
 }
 
 template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator*=(const ValueWithSystematicsInternal<T>&& val) noexcept
+{
+  static_assert(!(std::is_same<T, bool>::value), "You can not use multiplication operators with booleans");
+
+  for(auto& kv: systematics)
+    if(val.systematics.count(kv.first) == 0)
+      kv.second *= val.value;
+
+  for(auto& kv: val.systematics)
+    Systematic(std::move(kv.first)) *= std::move(kv.second);
+
+  value *= std::move(val.value);
+
+  return *this;
+}
+
+template<class T>
 ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator/=(const T& val)
 {
   static_assert(!(std::is_same<T, bool>::value), "You can not use division operators with booleans");
@@ -303,6 +461,21 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator/=(con
   }
 
   value /= val;
+
+  return *this;
+}
+
+template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator/=(const T&& val) noexcept
+{
+  static_assert(!(std::is_same<T, bool>::value), "You can not use division operators with booleans");
+
+  for(auto& kv: systematics)
+  {
+    kv.second /= val;
+  }
+
+  value /= std::move(val);
 
   return *this;
 }
@@ -320,6 +493,23 @@ ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator/=(con
     Systematic(kv.first) /= kv.second;
 
   value /= val.value;
+
+  return *this;
+}
+
+template<class T>
+ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator/=(const ValueWithSystematicsInternal<T>&& val) noexcept
+{
+  static_assert(!(std::is_same<T, bool>::value), "You can not use division operators with booleans");
+
+  for(auto& kv: systematics)
+    if(val.systematics.count(kv.first) == 0)
+      kv.second /= val.value;
+
+  for(auto& kv: val.systematics)
+    Systematic(std::move(kv.first)) /= std::move(kv.second);
+
+  value /= std::move(val.value);
 
   return *this;
 }
