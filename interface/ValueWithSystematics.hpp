@@ -22,7 +22,22 @@ ValueWithSystematicsInternal<T>::ValueWithSystematicsInternal(T val): isLocked(f
 }
 
 template<class T>
-ValueWithSystematicsInternal<T>::ValueWithSystematicsInternal(const ValueWithSystematicsInternal<T>& val): isLocked(false), defaultValue(val.defaultValue), value(val.value), systematics(val.systematics), metadata(val.metadata)
+ValueWithSystematicsInternal<T>::ValueWithSystematicsInternal(const ValueWithSystematicsInternal<T>& val):
+            isLocked(false),
+            defaultValue(val.defaultValue),
+            value(val.value),
+            systematics(val.systematics),
+            metadata(val.metadata)
+{
+}
+
+template<class T>
+ValueWithSystematicsInternal<T>::ValueWithSystematicsInternal(const ValueWithSystematicsInternal<T>&& val) noexcept:
+            isLocked(std::move(val.isLocked)),
+            defaultValue(std::move(val.defaultValue)),
+            value(std::move(val.value)),
+            systematics(std::move(val.systematics)),
+            metadata(std::move(val.metadata))
 {
 }
 
