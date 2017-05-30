@@ -15,6 +15,9 @@
 #include <vector>
 #include <string>
 #include <exception>
+#include <fsteam>
+
+#include "TTree.h"
 
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
