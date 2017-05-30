@@ -8,7 +8,7 @@
 //  The base analyser from which other analyses can be derived from is defined within.
 // </description>
 
-#include "UserCode/Stop4Body/interface/analyser.h"
+#include "UserCode/Stop4Body/interface/EventAnalyser.h"
 
 EventInfo::EventInfo(): isLocked(false)
 {
