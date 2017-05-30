@@ -45,6 +45,8 @@ void ValueWithSystematicsInternal<T>::Reset()
 template<class T>
 bool ValueWithSystematicsInternal<T>::AddMetadata(const std::string& key, const std::string& value)
 {
+  std::cout << "Deprecated AddMetadata used" << std::endl;
+
   if(metadata.count(key) != 0)
     std::cout << "Metadata already exists with that key, it will be overwritten. Old value: \"" << metadata[key] << "\"" << std::endl;
   else
@@ -69,6 +71,30 @@ std::string ValueWithSystematicsInternal<T>::GetMetadata(const std::string& key)
   if(metadata.count(key) == 0)
     return "";
   return metadata.at(key);
+}
+
+template<class T>
+std::string& ValueWithSystematicsInternal<T>::Metadata(const std::string& key)
+{
+  if(metadata.count(key) == 0)
+  {
+    if(isLocked)
+      throw ValueException("Unable to add metadata \""+key+"\" after locking.");
+    metadata[key] = "";
+  }
+  return metadata[key];
+}
+
+template<class T>
+const std::string& ValueWithSystematicsInternal<T>::Metadata(const std::string& key) const
+{
+  if(metadata.count(key) == 0)
+  {
+    if(isLocked)
+      throw ValueException("Unable to add metadata \""+key+"\" after locking.");
+    metadata[key] = "";
+  }
+  return metadata[key];
 }
 
 template<class T>

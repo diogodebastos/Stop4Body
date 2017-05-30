@@ -62,6 +62,8 @@ class ValueWithSystematicsInternal
     bool AddMetadata(const std::string& key, const std::string& value);
     std::string GetMetadata(std::string& key);
     std::string GetMetadata(const std::string& key) const;
+    std::string& Metadata(const std::string& key);
+    const std::string& Metadata(const std::string& key) const;
 
     inline T& Value() { return value; };
     inline const T& Value() const { return value; };
