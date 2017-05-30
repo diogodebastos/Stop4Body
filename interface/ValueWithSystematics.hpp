@@ -101,7 +101,7 @@ std::string& ValueWithSystematicsInternal<T>::Metadata(const std::string& key)
 }
 
 template<class T>
-const std::string& ValueWithSystematicsInternal<T>::Metadata(const std::string& key) const
+const std::string ValueWithSystematicsInternal<T>::Metadata(const std::string& key) const
 {
   if(metadata.count(key) == 0)
   {

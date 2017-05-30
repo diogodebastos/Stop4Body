@@ -65,7 +65,7 @@ class ValueWithSystematicsInternal
     std::string GetMetadata(std::string& key);
     std::string GetMetadata(const std::string& key) const;
     std::string& Metadata(const std::string& key);
-    const std::string& Metadata(const std::string& key) const;
+    const std::string Metadata(const std::string& key) const;
 
     inline T& Value() { return value; };
     inline const T& Value() const { return value; };
@@ -147,7 +147,7 @@ class ValueWithSystematicsInternal
     T defaultValue;
     T value;
     mutable std::map<std::string, T> systematics;
-    std::map<std::string,std::string> metadata;
+    mutable std::map<std::string,std::string> metadata;
 };
 
 
