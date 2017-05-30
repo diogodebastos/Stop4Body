@@ -13,7 +13,7 @@
 #define DEFAULT_WIDTH 15
 
 template<class T>
-void EventInfo::OutputValueListHeader(ofstream& file, const ValueWithSystematics<T>& val, const std::string& name) const
+void EventInfo::OutputValueListHeader(std::ofstream& file, const ValueWithSystematics<T>& val, const std::string& name) const
 {
   std::string metadata = val.GetMetadata("eventlist");
   if(metadata == "true")
@@ -36,7 +36,7 @@ void EventInfo::OutputValueListHeader(ofstream& file, const ValueWithSystematics
 }
 
 template<class T>
-void EventInfo::OutputValueList(ofstream& file, const ValueWithSystematics<T>& val) const
+void EventInfo::OutputValueList(std::ofstream& file, const ValueWithSystematics<T>& val) const
 {
   std::string metadata = val.GetMetadata("eventlist");
   if(metadata == "true")
@@ -59,7 +59,7 @@ void EventInfo::OutputValueList(ofstream& file, const ValueWithSystematics<T>& v
 }
 
 template<>
-void EventInfo::OutputValueList(ofstream& file, const ValueWithSystematics<bool>& val) const
+void EventInfo::OutputValueList(std::ofstream& file, const ValueWithSystematics<bool>& val) const
 {
   std::string metadata = val.GetMetadata("eventlist");
   if(metadata == "true")

@@ -139,7 +139,7 @@ void EventInfo::SetSummaryTreeBranches(TTree* const tree)
 }
 
 // TODO: make an option for the event list to be outputted as a tsv
-void EventInfo::OutputEventListHeader(ofstream& file, const std::vector<std::string>& priority) const
+void EventInfo::OutputEventListHeader(std::ofstream& file, const std::vector<std::string>& priority) const
 {
   for(auto& entry: priority)
   {
@@ -170,7 +170,7 @@ void EventInfo::OutputEventListHeader(ofstream& file, const std::vector<std::str
   return;
 }
 
-void EventInfo::OutputEventList(ofstream& file, const std::vector<std::string>& priority) const
+void EventInfo::OutputEventList(std::ofstream& file, const std::vector<std::string>& priority) const
 {
   for(auto& entry: priority)
   {

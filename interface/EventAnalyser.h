@@ -15,7 +15,7 @@
 #include <vector>
 #include <string>
 #include <exception>
-#include <fsteam>
+#include <fstream>
 
 #include "TTree.h"
 
@@ -82,8 +82,8 @@ class EventInfo
     ValueWithSystematics<bool>&   AddBool  (std::string name, bool defaultVal);
     ValueWithSystematics<bool>&   GetBool  (std::string name);
 
-    void OutputEventListHeader(ofstream& file, const std::vector<std::string>& priority = std::vector<std::string>(0)) const;
-    void OutputEventList(ofstream& file, const std::vector<std::string>& priority = std::vector<std::string>(0)) const;
+    void OutputEventListHeader(std::ofstream& file, const std::vector<std::string>& priority = std::vector<std::string>(0)) const;
+    void OutputEventList(std::ofstream& file, const std::vector<std::string>& priority = std::vector<std::string>(0)) const;
     void SetSummaryTreeBranches(TTree* const tree);
 
   private:
@@ -95,10 +95,10 @@ class EventInfo
     std::map<std::string,ValueWithSystematics<bool>>   eventBools;
 
     template<class T>
-    void OutputValueListHeader(ofstream& file, const ValueWithSystematics<T>& val, const std::string& name) const;
+    void OutputValueListHeader(std::ofstream& file, const ValueWithSystematics<T>& val, const std::string& name) const;
 
     template<class T>
-    void OutputValueList(ofstream& file, const ValueWithSystematics<T>& val) const;
+    void OutputValueList(std::ofstream& file, const ValueWithSystematics<T>& val) const;
 
     template<class T>
     void AddBranch(TTree* const tree, ValueWithSystematics<T>& val, std::string name);
