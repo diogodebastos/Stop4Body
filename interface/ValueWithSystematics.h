@@ -137,9 +137,19 @@ class ValueWithSystematicsInternal
     ValueWithSystematicsInternal<T>& operator--();
     ValueWithSystematicsInternal<T> operator--(int);
 
-    inline typename std::map<std::string, T>::iterator& begin() { return systematics.begin(); };
-    inline typename std::map<std::string, T>::iterator& end() { return systematics.end(); };
+
     std::vector<std::string> Systematics() const;
+
+    // Iteration
+    typedef typename std::map<std::string, T>::iterator iterator;
+    typedef typename std::map<std::string, T>::const_iterator const_iterator;
+
+    iterator& begin() {return systematics.begin();}
+    const_iterator begin() const {return systematics.begin();}
+    const_iterator cbegin() const {return systematics.cbegin();}
+    iterator& end() {return filePaths_.end();}
+    const_iterator end() const {return systematics.end();}
+    const_iterator cend() const {return systematics.cend();}
 
   private:
   protected:
