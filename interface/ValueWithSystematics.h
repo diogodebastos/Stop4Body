@@ -160,8 +160,8 @@ class ValueWithSystematics: public ValueWithSystematicsInternal<T>
     ValueWithSystematics(T val = T(0)): ValueWithSystematicsInternal<T>(val) {};
     ValueWithSystematics(const ValueWithSystematics<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
     ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
-    ValueWithSystematics(const ValueWithSystematics<T>&& val): ValueWithSystematicsInternal<T>(std::move(val)) noexcept {}; // Move constructor
-    ValueWithSystematics(const ValueWithSystematicsInternal<T>&& val): ValueWithSystematicsInternal<T>(std::move(val)) noexcept {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematics<T>&& val) noexcept: ValueWithSystematicsInternal<T>(std::move(val)) {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<T>&& val) noexcept: ValueWithSystematicsInternal<T>(std::move(val)) {}; // Move constructor
 
   private:
   protected:
@@ -182,8 +182,8 @@ class ValueWithSystematics<std::vector<T>>: public ValueWithSystematicsInternal<
     ValueWithSystematics(std::vector<T> val): ValueWithSystematicsInternal<std::vector<T>>(val) {};
     ValueWithSystematics(const ValueWithSystematics<std::vector<T>>& val): ValueWithSystematicsInternal<std::vector<T>>(val) {}; // Copy constructor
     ValueWithSystematics(const ValueWithSystematicsInternal<std::vector<T>>& val): ValueWithSystematicsInternal<std::vector<T>>(val) {}; // Copy constructor
-    ValueWithSystematics(const ValueWithSystematics<std::vector<T>>&& val): ValueWithSystematicsInternal<std::vector<T>>(std::move(val)) noexcept {}; // Move constructor
-    ValueWithSystematics(const ValueWithSystematicsInternal<std::vector<T>>&& val): ValueWithSystematicsInternal<std::vector<T>>(std::move(val)) noexcept {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematics<std::vector<T>>&& val) noexcept: ValueWithSystematicsInternal<std::vector<T>>(std::move(val)) {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<std::vector<T>>&& val) noexcept: ValueWithSystematicsInternal<std::vector<T>>(std::move(val)) {}; // Move constructor
     // The second copy/move contructor should be removed (idem for all the derived user classes) [actually it should probably be moved to private]
 
     ValueWithSystematics<int> size() const;
@@ -204,8 +204,8 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<TLorentzVe
     ValueWithSystematics(T val = T(0, 0, 0, 0)): ValueWithSystematicsInternal<T>(val) {};
     ValueWithSystematics(const ValueWithSystematics<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
     ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
-    ValueWithSystematics(const ValueWithSystematics<T>&& val): ValueWithSystematicsInternal<T>(std::move(val)) noexcept {}; // Move constructor
-    ValueWithSystematics(const ValueWithSystematicsInternal<T>&& val): ValueWithSystematicsInternal<T>(std::move(val)) noexcept {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematics<T>&& val) noexcept: ValueWithSystematicsInternal<T>(std::move(val)) {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<T>&& val) noexcept: ValueWithSystematicsInternal<T>(std::move(val)) {}; // Move constructor
 
     ValueWithSystematics<T>& operator*=(const double& val);
     ValueWithSystematics<T>& operator*=(const ValueWithSystematics<double>& val);
@@ -244,8 +244,8 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<LorentzVec
     ValueWithSystematics(T val = T()): ValueWithSystematicsInternal<T>(val) {};
     ValueWithSystematics(const ValueWithSystematics<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
     ValueWithSystematics(const ValueWithSystematicsInternal<T>& val): ValueWithSystematicsInternal<T>(val) {}; // Copy constructor
-    ValueWithSystematics(const ValueWithSystematics<T>&& val): ValueWithSystematicsInternal<T>(std::move(val)) noexcept {}; // Move constructor
-    ValueWithSystematics(const ValueWithSystematicsInternal<T>&& val): ValueWithSystematicsInternal<T>(std::move(val)) noexcept {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematics<T>&& val) noexcept: ValueWithSystematicsInternal<T>(std::move(val)) {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<T>&& val) noexcept: ValueWithSystematicsInternal<T>(std::move(val)) {}; // Move constructor
 
     ValueWithSystematics<double> Pt() const;
     ValueWithSystematics<double> Phi() const;
@@ -268,8 +268,8 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     ValueWithSystematics(double val = 0): ValueWithSystematicsInternal<double>(val) {};
     ValueWithSystematics(const ValueWithSystematics<double>& val): ValueWithSystematicsInternal<double>(val) {}; // Copy constructor
     ValueWithSystematics(const ValueWithSystematicsInternal<double>& val): ValueWithSystematicsInternal<double>(val) {}; // Copy constructor
-    ValueWithSystematics(const ValueWithSystematics<double>&& val): ValueWithSystematicsInternal<double>(std::move(val)) noexcept {}; // Move constructor
-    ValueWithSystematics(const ValueWithSystematicsInternal<double>&& val): ValueWithSystematicsInternal<double>(std::move(val)) noexcept {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematics<double>&& val) noexcept: ValueWithSystematicsInternal<double>(std::move(val)) {}; // Move constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<double>&& val) noexcept: ValueWithSystematicsInternal<double>(std::move(val)) {}; // Move constructor
 
     ValueWithSystematics<double> Cos() const;
     ValueWithSystematics<double> Sqrt() const;
