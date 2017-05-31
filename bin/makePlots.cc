@@ -344,6 +344,7 @@ int main(int argc, char** argv)
 
         maxVal = std::max(mcS->GetMaximum(), dataH->GetMaximum());
         minVal = std::min(mcS->GetMinimum(), dataH->GetMinimum());
+        minVal = 0.2;
 
         if(t1->GetLogy() == 1)
         {
