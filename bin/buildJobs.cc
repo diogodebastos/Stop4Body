@@ -116,7 +116,7 @@ int main(int argc, char** argv)
         for(auto &tag : processTags)
         {
           if(process.jsonObj().count(tag) > 0)
-            thisPartProcess[tag] = process.jsonObj()["tag"];
+            thisPartProcess[tag] = process.jsonObj()[tag];
         }
         thisPartProcess["files"][0] = sample.jsonObj();
 
