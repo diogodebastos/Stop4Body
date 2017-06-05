@@ -98,6 +98,7 @@ int main(int argc, char** argv)
   bool preemptiveDropEvents = false;
   bool doLooseLeptons = false;
   bool doPromptTagging = false;
+  int part = -1;
 
   if(argc < 2)
   {
@@ -160,6 +161,13 @@ int main(int argc, char** argv)
 
     if(argument == "--doPromptTagging")
       doPromptTagging = true;
+
+    if(argument == "--part")
+    {
+      std::stringstream converter;
+      converter << argv[++i];
+      converter >> part;
+    }
   }
 
   if(jsonFileName == "")
@@ -209,6 +217,13 @@ int main(int argc, char** argv)
       std::string outputFile = outputDirectory + "/" + sample.tag();
       if(suffix != "")
         outputFile += "_" + suffix;
+      if(part >= 0)
+      {
+        outputFile += "_Part";
+        std::stringstream converter;
+        converter << part;
+        outputFile += converter.str();
+      }
       outputFile += ".root";
       std::cout << "\t  Putting output in: " << outputFile << std::endl;
 
