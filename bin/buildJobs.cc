@@ -122,7 +122,7 @@ int main(int argc, char** argv)
 
         thisPartProcess["files"][0]["runPart"] = thisPart;
 
-        std::ofstream thisPartJsonFile((sampleDirectory + "/" + sample.tag() + "_Part" + thisPartStr), std::ios_base::binary | std::ios_base::trunc);
+        std::ofstream thisPartJsonFile((sampleDirectory + "/" + sample.tag() + "_Part" + thisPartStr + ".json"), std::ios_base::binary | std::ios_base::trunc);
         thisPartJsonFile << thisPartJson;
       }
     }
