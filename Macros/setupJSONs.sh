@@ -23,6 +23,8 @@ mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json      $JSON
 cp         $JSON_PATH/Orig/DYJets.json        $JSON_PATH/otherMC4.json
 mergeJSONs $JSON_PATH/otherMC.json            $JSON_PATH/otherMC1.json     $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
 mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/backgroundMC.json $JSON_PATH/TT_pow.json $JSON_PATH/TTbar_LO.json $JSON_PATH/TTLep.json $JSON_PATH/otherMC1.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC3.json $JSON_PATH/otherMC4.json
+mergeJSONs $JSON_PATH/allMCQuick.json         $JSON_PATH/Orig/Wjets.json $JSON_PATH/otherMC1.json $JSON_PATH/otherMC3.json
+#$JSON_PATH/TTLep.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC4.json
 
 # Copy the data JSON over, so that all locations are consistent
 cp         $JSON_PATH/Orig/Data.json          $JSON_PATH/
@@ -98,3 +100,7 @@ mergeJSONs $JSON_PATH/stop800.json            $JSON_PATH/Orig/SignalPoints/Sig_8
 # Make a json with all samples
 mergeJSONs $JSON_PATH/allSamples.json         $JSON_PATH/allMC.json $JSON_PATH/Orig/Data.json $JSON_PATH/allPD.json $JSON_PATH/Orig/DeltaM.json $JSON_PATH/stop250.json $JSON_PATH/stop275.json $JSON_PATH/stop300.json $JSON_PATH/stop325.json $JSON_PATH/stop350.json $JSON_PATH/stop375.json $JSON_PATH/stop400.json $JSON_PATH/stop425.json $JSON_PATH/stop450.json $JSON_PATH/stop475.json $JSON_PATH/stop500.json $JSON_PATH/stop525.json $JSON_PATH/stop550.json $JSON_PATH/stop575.json $JSON_PATH/stop600.json $JSON_PATH/stop625.json $JSON_PATH/stop650.json $JSON_PATH/stop675.json $JSON_PATH/stop700.json $JSON_PATH/stop725.json $JSON_PATH/stop750.json $JSON_PATH/stop775.json $JSON_PATH/stop800.json
 mergeJSONs $JSON_PATH/allSamplesSwap.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataSingleLepton.json  $JSON_PATH/Orig/DeltaM.json $JSON_PATH/stop250.json $JSON_PATH/stop275.json $JSON_PATH/stop300.json $JSON_PATH/stop325.json $JSON_PATH/stop350.json $JSON_PATH/stop375.json $JSON_PATH/stop400.json $JSON_PATH/stop425.json $JSON_PATH/stop450.json $JSON_PATH/stop475.json $JSON_PATH/stop500.json $JSON_PATH/stop525.json $JSON_PATH/stop550.json $JSON_PATH/stop575.json $JSON_PATH/stop600.json $JSON_PATH/stop625.json $JSON_PATH/stop650.json $JSON_PATH/stop675.json $JSON_PATH/stop700.json $JSON_PATH/stop725.json $JSON_PATH/stop750.json $JSON_PATH/stop775.json $JSON_PATH/stop800.json
+
+mergeJSONs $JSON_PATH/allSamplesQuick.json    $JSON_PATH/allMCQuick.json $JSON_PATH/Orig/Data.json
+#$JSON_PATH/stop250.json $JSON_PATH/stop275.json $JSON_PATH/stop300.json $JSON_PATH/stop325.json $JSON_PATH/stop350.json $JSON_PATH/stop375.json $JSON_PATH/stop400.json $JSON_PATH/stop425.json $JSON_PATH/stop450.json $JSON_PATH/stop475.json $JSON_PATH/stop500.json $JSON_PATH/stop525.json $JSON_PATH/stop550.json $JSON_PATH/stop575.json $JSON_PATH/stop600.json $JSON_PATH/stop625.json $JSON_PATH/stop650.json $JSON_PATH/stop675.json $JSON_PATH/stop700.json $JSON_PATH/stop725.json $JSON_PATH/stop750.json $JSON_PATH/stop775.json $JSON_PATH/stop800.json
+# $JSON_PATH/Orig/DeltaM.json
