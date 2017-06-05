@@ -142,6 +142,8 @@ class SampleInfo
     std::string filterEfficiencyFile() const {return filterEfficiencyFile_;}
     double recordedLumi() const {return recordedLumi_;}
 
+    int nParts() const {return nParts_;};
+
     // Iteration
     typedef typename std::vector<std::string>::iterator iterator;
     typedef typename std::vector<std::string>::const_iterator const_iterator;
@@ -168,6 +170,8 @@ class SampleInfo
     double recordedLumi_;
     int filesPerPart_;
     int runPart_;
+
+    int nParts_;
 
     std::vector<std::string> filePaths_;
     std::vector<std::string> missingFiles_;

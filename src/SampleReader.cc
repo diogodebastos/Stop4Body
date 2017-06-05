@@ -63,6 +63,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   if(jsonInfo.count("runPart") > 0)
     runPart_ = jsonInfo["runPart"];
 
+  nParts_ = 1;
   if(baseDir_ != "")
   {
     std::string file = baseDir_ + "/" + tag_;
@@ -93,6 +94,8 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
         allPaths.push_back(file);
       }
     }
+
+    nParts_ = (allPaths.size() / filesPerPart_) + ((allPaths.size() % filesPerPart_ != 0)?(1):(0));
 
     if(runPart_ == -999)
     {
