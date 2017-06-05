@@ -110,7 +110,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
 
     if(runPart_ >= 0)
     {
-      for(size_t i = runPart_ * filesPerPart_; (i < (runPart_ + 1) * filesPerPart_) && (i < allPaths.size()); ++i)
+      for(int i = runPart_ * filesPerPart_; (i < (runPart_ + 1) * filesPerPart_) && (i < allPaths.size()); ++i)
       {
         if(fileExists(allPaths[i]))
           filePaths_.push_back(allPaths[i]);
