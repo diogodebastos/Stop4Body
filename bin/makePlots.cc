@@ -8,6 +8,9 @@
 #include <TLegend.h>
 #include <TPaveText.h>
 #include <TGraphErrors.h>
+#include <TList.h>
+#include <TCollection.h>
+#include <TObject.h>
 
 #include <iostream>
 #include <vector>
@@ -425,10 +428,38 @@ int main(int argc, char** argv)
           continue;
 
         double unc = bgUncH->GetBinError(xbin) / bgUncH->GetBinContent(xbin);
+        double binContent = bgUncH->GetBinContent(xbin);
 
         // Add systematic uncertainties
         unc = unc*unc;
-        unc += 0.026*0.026; // Luminosity uncertainty
+        unc += 0.025*0.025; // Luminosity uncertainty
+        unc += 0.01*0.01; // Efficiency
+        unc += 0.01*0.01; // Pile Up
+        unc += 0.04*0.04; // JES
+        unc += 0.04*0.04; // Lep ID
+
+        TList* hists = mcS->GetHists();
+        TIter next(hists);
+        TObject* obj = nullptr;
+        while ((obj = next()))
+        {
+          TH1* thisHist = static_cast<TH1*>(obj);
+          std::string histName = thisHist->GetName();
+          double thisUnc = 0;
+          double thisBinContent=thisHist->GetBinContent(xbin);
+          if(histName.find("WJets") != std::string::npos || histName.find("ttbar") != std::string::npos) // ttbar and WJets
+          {
+            thisUnc = thisBinContent*0.2;
+          }
+          else
+          {
+            thisUnc = thisBinContent*0.2;
+          }
+
+          thisUnc = thisUnc/binContent;
+          unc += thisUnc*thisUnc;
+        }
+
         unc = std::sqrt(unc);
 
         bgUncH->SetBinContent(xbin,1);
