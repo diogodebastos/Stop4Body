@@ -7,8 +7,6 @@
 #include "TDirectory.h"
 #include "TFile.h"
 
-using json = nlohmann::json;
-
 std::string cleanString(std::string inputStr)
 {
   std::regex nonASCII("[^a-zA-Z0-9 _]");
@@ -31,6 +29,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   filterEfficiencyFile_(""),
   recordedLumi_(0)
 {
+  jsonBack_ = jsonInfo;
   if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("paths") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
 
@@ -195,6 +194,7 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix)
   marker_(1),
   mcolor_(1)
 {
+  jsonBack_ = jsonInfo;
   if(jsonInfo.count("tag") == 0 || jsonInfo.count("color") == 0 || jsonInfo.count("label") == 0 || jsonInfo.count("files") == 0)
     throw MissingJSONParam("Not all parameters are defined for the sample");
 
@@ -387,6 +387,7 @@ SampleReader::SampleReader(std::string fileName, std::string baseDir, std::strin
   json jsonFile;
   std::ifstream inputFile(inputFile_);
   inputFile >> jsonFile;
+  jsonBack_ = jsonFile;
 
   if(jsonFile.count("lines") == 0)
     throw MissingJSONParam("The JSON file does not contain the 'lines' entry. It is not a valid file.");

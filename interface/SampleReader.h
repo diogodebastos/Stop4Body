@@ -14,6 +14,8 @@
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
+using json = nlohmann::json;
+
 class SampleReaderException: public std::runtime_error
 {
   public:
@@ -156,6 +158,7 @@ class SampleInfo
     const_iterator cend() const {return filePaths_.cend();}
 
     bool hasBDT() const;
+    json json() const {return jsonBack_;}
 
   private:
     bool fileExists(std::string fileName);
@@ -172,6 +175,8 @@ class SampleInfo
     int runPart_;
 
     int nParts_;
+
+    json jsonBack_;
 
     std::vector<std::string> filePaths_;
     std::vector<std::string> missingFiles_;
@@ -204,6 +209,7 @@ class ProcessInfo
     int fill() const {return fill_;}
     int mcolor() const {return mcolor_;}
     int marker() const {return marker_;}
+    json json() const {return jsonBack_;}
 
     bool hasBDT() const;
 
@@ -236,6 +242,7 @@ class ProcessInfo
     int fill_;
     int marker_;
     int mcolor_;
+    json jsonBack_;
 
     std::vector<SampleInfo> samples_;
     std::vector<std::string> missingFiles_;
@@ -265,6 +272,7 @@ class SampleReader
     ProcessInfo process(size_t i) const {return processes_[i];}
 
     bool hasBDT() const;
+    json json() const {return jsonBack_;}
 
     // Iteration
     typedef typename std::vector<ProcessInfo>::iterator iterator;
@@ -286,6 +294,7 @@ class SampleReader
     std::string suffix_;
     std::vector<ProcessInfo> processes_;
     std::vector<std::string> missingFiles_;
+    json jsonBack_;
 };
 
 #endif
