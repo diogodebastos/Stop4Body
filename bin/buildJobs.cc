@@ -66,7 +66,7 @@ int main(int argc, char** argv)
   }
 
   std::cout << "Reading JSON file" << std::endl;
-  SampleReader samples(jsonFileName);
+  SampleReader samples(jsonSampleFileName);
 
   for(auto &process : samples)
   {
