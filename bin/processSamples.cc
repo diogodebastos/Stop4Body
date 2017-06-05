@@ -270,7 +270,6 @@ int main(int argc, char** argv)
       Float_t Lep2Dxy;   bdttree->Branch("Lep2Dxy",   &Lep2Dxy,   "Lep2Dxy/F");
       Float_t Lep2Dz;    bdttree->Branch("Lep2Dz",    &Lep2Dz,    "Lep2Dz/F");
       Float_t Lep2Iso03; bdttree->Branch("Lep2Iso03", &Lep2Iso03, "Lep2Iso03/F");
-      Float_t isPrompt2; bdttree->Branch("isPrompt2",  &isPrompt2,  "isPrompt2/F");
       Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
       Float_t nGoodMu_loose;
@@ -762,7 +761,7 @@ int main(int argc, char** argv)
               bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
               if(!isPromptFlag)
               {
-                for(int genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
+                for(int genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
                 {
                   if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
                   {
@@ -814,41 +813,6 @@ int main(int argc, char** argv)
             Lep2Dxy      = LepGood_dxy[leptonIndex];
             Lep2Dz       = LepGood_dz[leptonIndex];
             Lep2Iso03    = LepGood_relIso03[leptonIndex];
-
-            /*if(!process.isdata())
-            {
-              auto mcMatchId = LepGood_mcMatchId[leptonIndex];
-              bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
-              auto Lep2Phi = LepGood_phi[leptonIndex];
-              if(!isPromptFlag)
-              {
-                for(int genPartIndex = 0; genPartIndex < nGenPart; ++nGenPart)
-                {
-                  if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
-                  {
-                    if(std::abs(GenPart_motherId[genPartIndex]) == 24 || std::abs(GenPart_motherId[genPartIndex]) == 23 || (GenPart_motherId[genPartIndex] == -9999 && genPartIndex < 3 ))
-                    {
-                      double dphi = DeltaPhi(GenPart_phi[genPartIndex], Lep2Phi);
-                      double deta = GenPart_eta[genPartIndex] - Lep2Eta;
-                      double dr = std::sqrt(std::pow(dphi,2) + std::pow(deta,2));
-
-                      if(dr < 0.15)
-                      {
-                        isPromptFlag = true;
-                        break;
-                      }
-                    }
-                  }
-                }
-              }
-
-              isPrompt2   = isPromptFlag?1:0;
-            }
-            else
-            {
-              isPrompt2 = 1;
-            }// */
-            isPrompt2 = 1;
           }
           else
           {
@@ -859,7 +823,6 @@ int main(int argc, char** argv)
             Lep2Dxy      = -9999;
             Lep2Dz       = -9999;
             Lep2Iso03    = -9999;
-            isPrompt2    = -9999;
           }
 
           if(!process.isdata())
