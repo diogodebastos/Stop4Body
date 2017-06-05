@@ -158,7 +158,7 @@ class SampleInfo
     const_iterator cend() const {return filePaths_.cend();}
 
     bool hasBDT() const;
-    json json() const {return jsonBack_;}
+    json jsonObj() const {return jsonBack_;}
 
   private:
     bool fileExists(std::string fileName);
@@ -209,9 +209,9 @@ class ProcessInfo
     int fill() const {return fill_;}
     int mcolor() const {return mcolor_;}
     int marker() const {return marker_;}
-    json json() const {return jsonBack_;}
 
     bool hasBDT() const;
+    json jsonObj() const {return jsonBack_;}
 
     // Iteration
     typedef typename std::vector<SampleInfo>::iterator iterator;
@@ -272,7 +272,7 @@ class SampleReader
     ProcessInfo process(size_t i) const {return processes_[i];}
 
     bool hasBDT() const;
-    json json() const {return jsonBack_;}
+    json jsonObj() const {return jsonBack_;}
 
     // Iteration
     typedef typename std::vector<ProcessInfo>::iterator iterator;

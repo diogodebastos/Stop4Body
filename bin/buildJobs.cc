@@ -98,9 +98,9 @@ int main(int argc, char** argv)
 
         auto &thisPartProcess = thisPartJson["lines"][0];
 
-        thisPartProcess["tag"] = process.json()["tag"];
-        thisPartProcess["label"] = process.json()["label"];
-        thisPartProcess["color"] = process.json()["color"];
+        thisPartProcess["tag"] = process.jsonObj()["tag"];
+        thisPartProcess["label"] = process.jsonObj()["label"];
+        thisPartProcess["color"] = process.jsonObj()["color"];
 
         std::vector<std::string> processTags = {"isdata",
                                                 "issignal",
@@ -115,10 +115,10 @@ int main(int argc, char** argv)
                                                 "selection"};
         for(auto &tag : processTags)
         {
-          if(process.json().count(tag) > 0)
-            thisPartProcess[tag] = process.json()["tag"];
+          if(process.jsonObj().count(tag) > 0)
+            thisPartProcess[tag] = process.jsonObj()["tag"];
         }
-        thisPartProcess["files"][0] = sample.json();
+        thisPartProcess["files"][0] = sample.jsonObj();
 
         thisPartProcess["files"][0]["runPart"] = thisPart;
 
