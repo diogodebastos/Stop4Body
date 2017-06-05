@@ -77,7 +77,7 @@ int main(int argc, char** argv)
       std::cout << "\tBuilding jobs for sample: " << sample.tag() << std::endl;
 
       std::string sampleDirectory = outputDirectory + "/" + sample.tag();
-      int retVal = system(("mkdir -p \"" + sampleDirectory + "\""));
+      int retVal = system(("mkdir -p \"" + sampleDirectory + "\"").c_str());
       if(retVal != 0)
       {
         std::cout << "Unable to create the driectory: " << sampleDirectory << std::endl;
