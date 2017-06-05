@@ -26,6 +26,9 @@ mergeJSONs $JSON_PATH/allMC.json              $JSON_PATH/backgroundMC.json $JSON
 mergeJSONs $JSON_PATH/allMCQuick.json         $JSON_PATH/Orig/Wjets.json $JSON_PATH/otherMC1.json $JSON_PATH/otherMC3.json
 #$JSON_PATH/TTLep.json $JSON_PATH/otherMC2.json $JSON_PATH/otherMC4.json
 
+#Make a JSON with the samples that are to be processed:
+mergeJSONs $JSON_PATH/MC2Process.json         $JSON_PATH/Orig/Wjets.json $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/TTLep.json $JSON_PATH/TT_pow.json $JSON_PATH/Orig/QCD.json $JSON_PATH/Orig/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json
+
 # Copy the data JSON over, so that all locations are consistent
 cp         $JSON_PATH/Orig/Data.json          $JSON_PATH/
 #mergeJSONs $JSON_PATH/DataLepton.json         $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
