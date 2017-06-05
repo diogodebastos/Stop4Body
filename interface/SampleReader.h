@@ -166,6 +166,8 @@ class SampleInfo
     std::string tag_;
     std::string filterEfficiencyFile_;
     double recordedLumi_;
+    int filesPerPart_;
+    int runPart_;
 
     std::vector<std::string> filePaths_;
     std::vector<std::string> missingFiles_;

@@ -53,6 +53,16 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   if(jsonInfo.count("recordedLumi") > 0)
     recordedLumi_ = jsonInfo["recordedLumi"];
 
+  filesPerPart_ = 10;
+  if(jsonInfo.count("filesPerPart") > 0)
+    filesPerPart_ = jsonInfo["filesPerPart"];
+  if(filesPerPart_ <= 0)
+    filesPerPart_ = 10;
+
+  runPart_ = -999;
+  if(jsonInfo.count("runPart") > 0)
+    runPart_ = jsonInfo["runPart"];
+
   if(baseDir_ != "")
   {
     std::string file = baseDir_ + "/" + tag_;
@@ -66,6 +76,8 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   }
   else
   {
+    std::vector<std::string> allPaths;
+
     for(auto &path: jsonInfo["paths"])
     {
       std::string basePath = path["path"];
@@ -77,10 +89,30 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
         std::string file;
         converter << basePath << "/Chunk" << i << "/treeProducerStop4Body/tree.root";
         converter >> file;
+
+        allPaths.push_back(file);
+      }
+    }
+
+    if(runPart_ == -999)
+    {
+      for(auto &file: allPaths)
+      {
         if(fileExists(file))
           filePaths_.push_back(file);
         else
           missingFiles_.push_back(file);
+      }
+    }
+
+    if(runPart_ >= 0)
+    {
+      for(size_t i = runPart_ * filesPerPart_; (i < (runPart_ + 1) * filesPerPart_) && (i < allPaths.size()); ++i)
+      {
+        if(fileExists(allPaths[i]))
+          filePaths_.push_back(allPaths[i]);
+        else
+          missingFiles_.push_back(allPaths[i]);
       }
     }
   }
