@@ -123,7 +123,8 @@ int main(int argc, char** argv)
 
         thisPartProcess["files"][0]["runPart"] = thisPart;
 
-        std::string thisPartJsonFileName = (sampleDirectory + "/" + sample.tag() + "_Part" + thisPartStr + ".json");
+        std::string thisPartJsonFileNameBase = sample.tag() + "_Part" + thisPartStr + ".json";
+        std::string thisPartJsonFileName = sampleDirectory + "/" + thisPartJsonFileNameBase;
         std::ofstream thisPartJsonFile(thisPartJsonFileName, std::ios_base::binary | std::ios_base::trunc);
         thisPartJsonFile << thisPartJson;
 
@@ -135,7 +136,7 @@ int main(int argc, char** argv)
         while(std::getline(templateFile, line))
         {
           std::regex jsonFileRE("!!JSON_FILE!!");
-          line = std::regex_replace(line, jsonFileRE, thisPartJsonFileName);
+          line = std::regex_replace(line, jsonFileRE, thisPartJsonFileNameBase);
 
           std::regex outputDirectoryRE("!!OUTPUT_DIRECTORY!!");
           line = std::regex_replace(line, outputDirectoryRE, sampleDirectory);
