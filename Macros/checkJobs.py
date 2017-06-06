@@ -72,7 +72,15 @@ if __name__ == "__main__":
     print "  ", sample, ": ", summary[sample]*100, "%"
   for sample in summary:
     if summary[sample] == 1:
-      cmd = "hadd" # TODO: add the code to hadd the results
+      cmd = "hadd " + args.outDirectory + "/" + sample + ".root"
+      for job in jobInfo:
+        jobName = os.path.splitext(job)[0]
+        cmd = cmd + " " + args.outDirectory + "/" + sample + "/" + jobName + ".root"
+      if args.dryRun:
+        print "Hadd command:", cmd
+      else:
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
 
 
 
