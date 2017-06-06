@@ -59,6 +59,7 @@ int main(int argc, char** argv)
   bool rawEvents = false;
   bool noSF = false;
   bool unblind = false;
+  bool ddfake = false;
 
   if(argc < 2)
   {
@@ -135,6 +136,12 @@ int main(int argc, char** argv)
     if(argument == "--unblind")
     {
       unblind = true;
+    }
+
+    if(argument == "--doDDFake")
+    {
+      unblind = true;
+      ddfake = true;
     }
   }
 
@@ -315,6 +322,8 @@ int main(int argc, char** argv)
         dataSel = blindSel+selection;
       else
         dataSel = selection;
+      if(ddfake)
+        dataSel = "weight * (" + dataSel + ")";
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
