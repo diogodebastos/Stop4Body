@@ -734,7 +734,7 @@ int main(int argc, char** argv)
     for(auto& process : Data)
     {
       std::string weight = "1";
-      if(doDDFake)
+      if(ddfake)
         weight = "weight";
       auto yield = process.getYield(blindSel+selection, weight);
       cutFlowTable << " & " << yield;
