@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
   cmd = "buildJobs --template " + args.jobTemplate + " --jsonTemplate " + args.jsonTemplate + " --outDir " + args.outDirectory
 
-  for json in jsonFile:
+  for json in jsonFiles:
     thisCMD = cmd + " --samples JSON/" + json
     if args.dryRun:
       print "Going to run command:", thisCMD
