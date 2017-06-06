@@ -78,6 +78,9 @@ int main(int argc, char** argv)
       std::cout << "\tBuilding jobs for sample: " << sample.tag() << std::endl;
 
       std::string sampleDirectory = outputDirectory + "/" + sample.tag();
+
+      system(("cp " + outputDirectory + "/puWeights.root " + sampleDirectory).c_str());
+
       int retVal = system(("mkdir -p \"" + sampleDirectory + "\"").c_str());
       if(retVal != 0)
       {
