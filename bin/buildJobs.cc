@@ -134,14 +134,14 @@ int main(int argc, char** argv)
         std::string line;
         while(std::getline(templateFile, line))
         {
-          std::regex regularExpression = "!!JSON_FILE!!";
-          line = std::regex_replace(line, regularExpression, thisPartJsonFileName);
+          std::regex jsonFileRE("!!JSON_FILE!!");
+          line = std::regex_replace(line, jsonFileRE, thisPartJsonFileName);
 
-          regularExpression = "!!OUTPUT_DIRECTORY!!";
-          line = std::regex_replace(line, regularExpression, sampleDirectory;
+          std::regex outputDirectoryRE("!!OUTPUT_DIRECTORY!!");
+          line = std::regex_replace(line, outputDirectoryRE, sampleDirectory);
 
-          regularExpression = "!!PART!!";
-          line = std::regex_replace(line, regularExpression, thisPartStr;
+          std::regex partRE("!!PART!!");
+          line = std::regex_replace(line, partRE, thisPartStr);
 
           thisPartJobFile << line << std::endl;
         }
