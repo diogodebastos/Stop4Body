@@ -17,6 +17,10 @@ if __name__ == "__main__":
   if not args.dryRun:
     print "You did not enable dry run. You are on your own!"
 
+  cmd = "./setupJSONs.sh"
+  p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  out, err = p.communicate()
+
   jsonFiles = ["MC2Process.json", "Data.json"]
 
   cmd = "buildJobs --template " + args.jobTemplate + " --jsonTemplate " + args.jsonTemplate + " --outDir " + args.outDirectory
