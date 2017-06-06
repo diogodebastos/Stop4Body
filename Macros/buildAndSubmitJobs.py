@@ -56,9 +56,7 @@ if __name__ == "__main__":
         p = re.compile("Your job (\d+) .+")
         jobNumber = p.search(out).group(1)
 
-        print job
-        print os.path.basename(job)
-        jobInfo[job] = jobNumber
+        jobInfo[os.path.basename(job)] = jobNumber
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
