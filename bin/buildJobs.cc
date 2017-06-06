@@ -24,6 +24,7 @@ int main(int argc, char** argv)
   std::string jsonTemplateFileName = "";
   std::string templateFileName = "";
   std::string outputDirectory = "./OUT/";
+  bool doSwap = false;
 
   if(argc < 2)
   {
@@ -46,6 +47,9 @@ int main(int argc, char** argv)
 
     if(argument == "--jsonTemplate")
       jsonTemplateFileName = argv[++i];
+
+    if(argument == "--swap")
+      doSwap = true;
   }
 
   if(jsonSampleFileName == "")
@@ -146,6 +150,9 @@ int main(int argc, char** argv)
 
           std::regex partRE("!!PART!!");
           line = std::regex_replace(line, partRE, thisPartStr);
+
+          std::regex swapRE("!!DO_SWAP!!");
+          line = std::regex_replace(line, swapRE, ((doSwap)?("--swap"):("")));
 
           thisPartJobFile << line << std::endl;
         }

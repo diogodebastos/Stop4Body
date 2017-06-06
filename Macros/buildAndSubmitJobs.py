@@ -22,6 +22,8 @@ if __name__ == "__main__":
   out, err = p.communicate()
 
   jsonFiles = ["MC2Process.json", "Data.json"]
+  if args.doSwap:
+    jsonFiles = ["MC2Process.json", "DataSingleLepton.json"]
 
   cmd = "buildJobs --template " + args.jobTemplate + " --jsonTemplate " + args.jsonTemplate + " --outDir " + args.outDirectory
 
