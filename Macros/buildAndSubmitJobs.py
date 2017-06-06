@@ -39,14 +39,14 @@ if __name__ == "__main__":
   samples = out.split()
 
   for sample in samples:
-    cmd = "ls " + args.outDirectory + "/*.sh"
+    cmd = "ls " + sample + "/*.sh"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
     jobs = out.split()
 
     jobInfo = {}
     for job in jobs:
-      cmd = "qsub " + args.outDirectory + "/" + job
+      cmd = "qsub " + sample + "/" + job
       if args.dryRun:
         print "Going to run command:", cmd
       if not args.dryRun:
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
         jobInfo[job] = jobNumber
 
-    with open(args.outDirectory + '/jobs.pickle', 'wb') as handle:
+    with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
