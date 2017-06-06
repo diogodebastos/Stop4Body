@@ -26,6 +26,8 @@ if __name__ == "__main__":
     jsonFiles = ["MC2Process.json", "DataSingleLepton.json"]
 
   cmd = "buildJobs --template " + args.jobTemplate + " --jsonTemplate " + args.jsonTemplate + " --outDir " + args.outDirectory
+  if args.doSwap:
+    cmd = cmd + " --swap"
 
   for json in jsonFiles:
     thisCMD = cmd + " --samples JSON/" + json
