@@ -11,6 +11,7 @@
 #include <memory>
 #include <cmath>
 #include <cstdlib>
+#include <regex>
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
@@ -122,8 +123,26 @@ int main(int argc, char** argv)
 
         thisPartProcess["files"][0]["runPart"] = thisPart;
 
-        std::ofstream thisPartJsonFile((sampleDirectory + "/" + sample.tag() + "_Part" + thisPartStr + ".json"), std::ios_base::binary | std::ios_base::trunc);
+        std::string thisPartJsonFileName = (sampleDirectory + "/" + sample.tag() + "_Part" + thisPartStr + ".json");
+        std::ofstream thisPartJsonFile(thisPartJsonFileName, std::ios_base::binary | std::ios_base::trunc);
         thisPartJsonFile << thisPartJson;
+
+        std::string thisPartJobFileName = (sampleDirectory + "/" + sample.tag() + "_Part" + thisPartStr + ".sh");
+        std::ifstream templateFile(templateFileName);
+        std::ofstream thisPartJobFile(thisPartJobFileName, std::ios_base::binary | std::ios_base::trunc);
+
+        std::string line;
+        while(std::getline(templateFile, line))
+        {
+          line = std::regex_replace(line, "!!JSON_FILE!!", thisPartJsonFileName);
+          line = std::regex_replace(line, "!!OUTPUT_DIRECTORY!!", sampleDirectory);
+          line = std::regex_replace(line, "!!PART!!", thisPartStr);
+
+          thisPartJobFile << line << std::endl;
+        }
+        thisPartJobFile.close();
+
+        system(("chmod +x " + thisPartJobFileName).c_str());
       }
     }
   }
