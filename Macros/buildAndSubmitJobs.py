@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     jobInfo = {}
     for job in jobs:
-      cmd = "qsub " + sample + "/" + job
+      cmd = "qsub " + job
       if args.dryRun:
         print "Going to run command:", cmd
       if not args.dryRun:
@@ -56,6 +56,8 @@ if __name__ == "__main__":
         p = re.compile("Your job (\d+) .+")
         jobNumber = p.search(out).group(1)
 
+        print job
+        print os.path.basename(job)
         jobInfo[job] = jobNumber
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
