@@ -241,9 +241,9 @@ int main(int argc, char** argv)
       TTree *bdttree= new TTree("bdttree","bdttree");
 
       // New branch in bdt tree
-      Float_t Run;  bdttree->Branch("Run",&Run,"Run/F");
-      Float_t Event;  bdttree->Branch("Event",&Event,"Event/F");
-      Float_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
+      UInt_t Run;  bdttree->Branch("Run",&Run,"Run/F");
+      ULong64_t Event;  bdttree->Branch("Event",&Event,"Event/F");
+      UInt_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec,"LumiSec/F");
       Float_t Nevt;  bdttree->Branch("Nevt",&Nevt,"Nevt/F");
       Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
       Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
