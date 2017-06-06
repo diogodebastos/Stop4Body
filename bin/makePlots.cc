@@ -513,7 +513,8 @@ int main(int argc, char** argv)
       delete sigH;
       // Delete individual hists in the stack
       TList* histList = mcS->GetHists();
-      histList->Delete();
+      if(histList != nullptr)
+        histList->Delete();
       delete mcS;
       delete ratio;
       delete legA;
