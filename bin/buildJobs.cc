@@ -134,9 +134,9 @@ int main(int argc, char** argv)
         std::string line;
         while(std::getline(templateFile, line))
         {
-          line = std::regex_replace(line, "!!JSON_FILE!!", thisPartJsonFileName);
-          line = std::regex_replace(line, "!!OUTPUT_DIRECTORY!!", sampleDirectory);
-          line = std::regex_replace(line, "!!PART!!", thisPartStr);
+          line = std::regex_replace(line, "!!JSON_FILE!!", thisPartJsonFileName.c_str());
+          line = std::regex_replace(line, "!!OUTPUT_DIRECTORY!!", sampleDirectory.c_str());
+          line = std::regex_replace(line, "!!PART!!", thisPartStr.c_str());
 
           thisPartJobFile << line << std::endl;
         }
