@@ -733,7 +733,10 @@ int main(int argc, char** argv)
     cutFlowTable << " & " << MC.getYield(selection, mcWeight);
     for(auto& process : Data)
     {
-      auto yield = process.getYield(blindSel+selection, "1");
+      std::string weight = "1";
+      if(doDDFake)
+        weight = "weight";
+      auto yield = process.getYield(blindSel+selection, weight);
       cutFlowTable << " & " << yield;
       if(blindSel != "")
         cutFlowTable << " (SR blinded)";
