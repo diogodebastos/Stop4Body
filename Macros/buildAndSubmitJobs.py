@@ -31,8 +31,7 @@ if __name__ == "__main__":
 
   for json in jsonFiles:
     thisCMD = cmd + " --samples JSON/" + json
-    if args.dryRun:
-      print "Running the command:", thisCMD
+    print "Running the command:", thisCMD
     p = subprocess.Popen(thisCMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
 
@@ -42,6 +41,8 @@ if __name__ == "__main__":
   samples = out.split()
 
   for sample in samples:
+    sampleName = os.path.basename(os.path.normpath(sample))
+    print "Processing sample:", sampleName
     cmd = "ls " + sample + "/*.sh"
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
