@@ -21,7 +21,8 @@ if __name__ == "__main__":
   summary = {}
 
   for sample in samples:
-    print "Sample:", os.path.basename(os.path.normpath(sample))
+    sampleName = os.path.basename(os.path.normpath(sample))
+    print "Sample:", sampleName
 
     jobInfo = {}
     with open(sample + '/jobs.pickle', 'rb') as handle:
@@ -73,7 +74,7 @@ if __name__ == "__main__":
           jobInfo[job] = jobNumber
 
     print "  Complete jobs:", complete
-    summary[os.path.basename(sample)] = complete/len(jobInfo)
+    summary[sampleName] = complete/len(jobInfo)
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
