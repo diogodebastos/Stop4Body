@@ -47,6 +47,9 @@ if __name__ == "__main__":
     out, err = p.communicate()
     jobs = out.split()
 
+    cwd = os.getcwd() # for now, we need to change the dorectory so that the out and err files are in the right place
+    os.chdir(sample)
+
     jobInfo = {}
     for job in jobs:
       jobName = os.path.basename(job)
@@ -61,6 +64,8 @@ if __name__ == "__main__":
         jobNumber = p.search(out).group(1)
 
         jobInfo[jobName] = jobNumber
+
+    os.chdir(cwd)
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
