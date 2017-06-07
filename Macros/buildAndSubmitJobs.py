@@ -49,7 +49,8 @@ if __name__ == "__main__":
 
     jobInfo = {}
     for job in jobs:
-      cmd = "qsub " + job
+      jobName = os.path.basename(job)
+      cmd = "qsub " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
       if args.dryRun:
         print "Going to run command:", cmd
       if not args.dryRun:
@@ -59,7 +60,7 @@ if __name__ == "__main__":
         p = re.compile("Your job (\d+) .+")
         jobNumber = p.search(out).group(1)
 
-        jobInfo[os.path.basename(job)] = jobNumber
+        jobInfo[jobName] = jobNumber
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
