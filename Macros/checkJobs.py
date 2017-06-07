@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
   parser = argparse.ArgumentParser(description='Process the command line options')
   parser.add_argument('-o', '--outDirectory', required=True, help='Name of the output directory')
-  parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the commands to remove the corrupt files from the output and the correctly copied files from the input)')
+  parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
 
   args = parser.parse_args()
 

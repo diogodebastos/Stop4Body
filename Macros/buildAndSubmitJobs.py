@@ -10,7 +10,7 @@ if __name__ == "__main__":
   parser.add_argument('-j', '--jsonTemplate', default="./Templates/jsonTemplate.json", help='Template for the json file for each job')
   parser.add_argument('-t', '--jobTemplate', default="./Templates/Step1_JobTemplate.sh", help='Template for the script for each job')
   parser.add_argument('-s', '--doSwap', action='store_true', help='Whether to process with the swapping of MET and LepPt variables') #TODO: Finish implementing
-  parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the commands to remove the corrupt files from the output and the correctly copied files from the input)')
+  parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
 
   args = parser.parse_args()
 
