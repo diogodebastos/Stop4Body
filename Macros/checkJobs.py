@@ -48,7 +48,13 @@ if __name__ == "__main__":
         else:
           resubmitJob = True
       else:
-        resubmitJob = False #TODO: here we need to add a check if the job is actually running
+        cmd = "qstat -j " + job
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if p.returncode != 0: #If the job was not found, which means it somehow stopped running and didn't produce an output file which would have been catched above
+          resubmitJob = True
+        else:
+          resubmitJob = False
 
       if resubmitJob:
         if args.dryRun:
