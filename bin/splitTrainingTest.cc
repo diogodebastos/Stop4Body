@@ -109,10 +109,10 @@ int main(int argc, char** argv)
       if(usePredefinedSplitting)
       {
         std::cout << "Using the predefined splitting as defined in:" << std::endl;
-        std::cout << "  - Train events: " << trainTreeDirectory << std::endl;
-        std::cout << "  - Test events: " << testTreeDirectory << std::endl;
-        TFile trainEventsFile(trainTreeDirectory.c_str(), "READ");
-        TFile testEventsFile(testTreeDirectory.c_str(), "READ");
+        std::cout << "  - Train events: " << trainTreeDirectory+"/"+sample.tag()+".root" << std::endl;
+        std::cout << "  - Test events: " << testTreeDirectory+"/"+sample.tag()+".root" << std::endl;
+        TFile trainEventsFile((trainTreeDirectory+"/"+sample.tag()+".root").c_str(), "READ");
+        TFile testEventsFile((testTreeDirectory+"/"+sample.tag()+".root").c_str(), "READ");
 
         TTree* inTrainTree = static_cast<TTree*>(trainEventsFile.Get("bdttree"));
         TTree* inTestTree = static_cast<TTree*>(testEventsFile.Get("bdttree"));
