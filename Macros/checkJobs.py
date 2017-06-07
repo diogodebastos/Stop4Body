@@ -40,8 +40,11 @@ if __name__ == "__main__":
 
       if os.path.isfile(outFile) and os.path.isfile(errFile):
         if 'Done' in open(outFile).read():
-          resubmitJob = False
-          complete = complete + 1 #TODO: add check for whether there were any errors in the output itself
+          if os.stat(errFile).st_size == 0: # if the job completed successfully, the error file will be empty
+            resubmitJob = False
+            complete = complete + 1
+          else:
+            resubmitJob = True
         else:
           resubmitJob = True
       else:
