@@ -80,7 +80,7 @@ if __name__ == "__main__":
     os.chdir(cwd)
 
     print "  Complete jobs:", complete
-    summary[sampleName] = complete/len(jobInfo)
+    summary[sampleName] = float(complete)/len(jobInfo)
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
