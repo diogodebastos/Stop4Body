@@ -267,8 +267,8 @@ int main(int argc, char** argv)
       bool isLooseNotTight=false; bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       Float_t looseNotTightWeight=1; bdttree->Branch("looseNotTightWeight", &looseNotTightWeight, "looseNotTightWeight/F");
 
-      bool isTight;      bdttree->Branch("isTight",   &isTight,   "isTight/F");
-      bool isLoose;      bdttree->Branch("isLoose",   &isLoose,   "isLoose/F");
+      bool isTight;      bdttree->Branch("isTight",   &isTight);
+      bool isLoose;      bdttree->Branch("isLoose",   &isLoose);
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
       Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
       Float_t LepPt;     bdttree->Branch("LepPt",     &LepPt,     "LepPt/F");
