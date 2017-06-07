@@ -15,6 +15,8 @@ int main(int argc, char** argv)
   std::string trainOutputDirectory = "";
   std::string testOutputDirectory = "";
   std::string suffix = "";
+  std::string trainTreeDirectory = "";
+  std::string testTreeDirectory = "";
 
   if(argc < 2)
   {
@@ -47,6 +49,12 @@ int main(int argc, char** argv)
 
     if(argument == "--suffix")
       suffix = argv[++i];
+
+    if(argument == "--trainTreeDir")
+      trainTreeDirectory = argv[++i];
+
+    if(argument == "--testTreeDir")
+      testTreeDirectory = argv[++i];
   }
 
   if(jsonFileName == "")
