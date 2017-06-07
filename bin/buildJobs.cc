@@ -83,15 +83,15 @@ int main(int argc, char** argv)
 
       std::string sampleDirectory = outputDirectory + "/" + sample.tag();
 
-      system(("cp " + outputDirectory + "/puWeights.root " + sampleDirectory).c_str());
-
       int retVal = system(("mkdir -p \"" + sampleDirectory + "\"").c_str());
       if(retVal != 0)
       {
-        std::cout << "Unable to create the driectory: " << sampleDirectory << std::endl;
+        std::cout << "Unable to create the directory: " << sampleDirectory << std::endl;
         std::cout << "Continuing to next sample..." << std::endl;
         continue;
       }
+
+      system(("cp " + outputDirectory + "/puWeights.root " + sampleDirectory).c_str());
 
       for(int thisPart = 0; thisPart < sample.nParts(); ++thisPart)
       {

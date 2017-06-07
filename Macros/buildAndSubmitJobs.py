@@ -32,10 +32,9 @@ if __name__ == "__main__":
   for json in jsonFiles:
     thisCMD = cmd + " --samples JSON/" + json
     if args.dryRun:
-      print "Going to run command:", thisCMD
-    if not args.dryRun:
-      p = subprocess.Popen(thisCMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-      out, err = p.communicate()
+      print "Running the command:", thisCMD
+    p = subprocess.Popen(thisCMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = p.communicate()
 
   cmd = "ls -d " + args.outDirectory + "/*/"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
