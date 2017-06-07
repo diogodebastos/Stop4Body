@@ -142,7 +142,7 @@ int main(int argc, char** argv)
           eventInfo.push_back(std::move(tmp));
         }
 
-        Long64_t nentries = inTestTree->GetEntries();
+        nentries = inTestTree->GetEntries();
         for(Long64_t i = 0; i < nentries; ++i)
         {
           inTestTree->GetEntry(i);
