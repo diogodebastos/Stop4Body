@@ -30,36 +30,47 @@ if __name__ == "__main__":
 
     complete = 0
     for job in jobInfo:
+      resubmitJob = False
       outFile = sample + "/" + job + ".o" + jobInfo[job];
       errFile = sample + "/" + job + ".e" + jobInfo[job];
+
       if os.path.isfile(outFile) and os.path.isfile(errFile):
         if 'Done' in open(outFile).read():
-          complete = complete + 1
+          resubmitJob = False
+          complete = complete + 1 #TODO: add check for whether there were any errors in the output itself
         else:
-          if args.dryRun:
-            print "Going to run the following sequence of commands:"
-          cmd = "rm " + outFile
-          if args.dryRun:
-            print "\t", cmd
-          else:
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            out, err = p.communicate()
-          cmd = "rm " + errFile
-          if args.dryRun:
-            print "\t", cmd
-          else:
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            out, err = p.communicate()
-          cmd = "qsub " + sample + "/" + job
-          if args.dryRun:
-            print "\t", cmd
-          else:
-            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            out, err = p.communicate()
-            p = re.compile("Your job (\d+) .+")
-            jobNumber = p.search(out).group(1)
+          resubmitJob = True
+      else:
+        resubmitJob = False #TODO: here we need to add a check if the job is actually running
 
-            jobInfo[job] = jobNumber
+      if resubmitJob:
+        if args.dryRun:
+          print "Going to run the following sequence of commands:"
+
+        cmd = "rm " + outFile
+        if args.dryRun:
+          print "\t", cmd
+        else:
+          p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+          out, err = p.communicate()
+
+        cmd = "rm " + errFile
+        if args.dryRun:
+          print "\t", cmd
+        else:
+          p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+          out, err = p.communicate()
+
+        cmd = "qsub " + sample + "/" + job
+        if args.dryRun:
+          print "\t", cmd
+        else:
+          p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+          out, err = p.communicate()
+          p = re.compile("Your job (\d+) .+")
+          jobNumber = p.search(out).group(1)
+
+          jobInfo[job] = jobNumber
 
     print "Complete jobs:", complete
     summary[os.path.basename(sample)] = complete/len(jobInfo)
