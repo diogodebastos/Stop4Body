@@ -21,7 +21,7 @@ if __name__ == "__main__":
   summary = {}
 
   for sample in samples:
-    print "  Sample:", os.path.basename(sample)
+    print "Sample:", os.path.basename(os.path.normpath(sample))
 
     jobInfo = {}
     with open(sample + '/jobs.pickle', 'rb') as handle:
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
           jobInfo[job] = jobNumber
 
-    print "Complete jobs:", complete
+    print "  Complete jobs:", complete
     summary[os.path.basename(sample)] = complete/len(jobInfo)
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
