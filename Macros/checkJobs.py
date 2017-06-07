@@ -29,6 +29,9 @@ if __name__ == "__main__":
       jobInfo = pickle.load(handle)
     print "  Found", len(jobInfo), "jobs"
 
+    cwd = os.getcwd() # for now, we need to change the dorectory so that the out and err files are in the right place
+    os.chdir(sample)
+
     complete = 0
     for job in jobInfo:
       resubmitJob = False
@@ -62,7 +65,8 @@ if __name__ == "__main__":
           p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
           out, err = p.communicate()
 
-        cmd = "qsub " + sample + "/" + job
+        fullJob = sample + "/" + job
+        cmd = "qsub " + fullJob + " -e " + fullJob + ".e$JOB_ID -o " + fullJob + ".o$JOB_ID"
         if args.dryRun:
           print "\t", cmd
         else:
@@ -72,6 +76,8 @@ if __name__ == "__main__":
           jobNumber = p.search(out).group(1)
 
           jobInfo[job] = jobNumber
+
+    os.chdir(cwd)
 
     print "  Complete jobs:", complete
     summary[sampleName] = complete/len(jobInfo)
