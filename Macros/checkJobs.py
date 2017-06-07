@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
       if resubmitJob:
         if args.dryRun:
-          print "Going to run the following sequence of commands:"
+          print "  Going to run the following sequence of commands:"
 
         cmd = "rm " + outFile
         if args.dryRun:
