@@ -18,6 +18,7 @@ mergeJSONs $JSON_PATH/TT_pow.json             $JSON_PATH/Orig/TT_pow.json $JSON_
 #mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json       $JSON_PATH/Orig/SingleTop.json
 #mergeJSONs $JSON_PATH/otherMC4.json           $JSON_PATH/Orig/DYJets.json
 mergeJSONs $JSON_PATH/otherMC1.json           $JSON_PATH/Orig/QCD.json $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTZ_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTWToQQ.json $JSON_PATH/Orig/TTZToQQ.json $JSON_PATH/Orig/TTZToLLNuNu.json
+mergeJSONs $JSON_PATH/ttx.json                $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTZ_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTWToQQ.json $JSON_PATH/Orig/TTZToQQ.json $JSON_PATH/Orig/TTZToLLNuNu.json
 cp         $JSON_PATH/Orig/ZInv.json          $JSON_PATH/otherMC2.json
 mergeJSONs $JSON_PATH/otherMC3.json           $JSON_PATH/Orig/VV.json      $JSON_PATH/Orig/SingleTop.json
 cp         $JSON_PATH/Orig/DYJets.json        $JSON_PATH/otherMC4.json
