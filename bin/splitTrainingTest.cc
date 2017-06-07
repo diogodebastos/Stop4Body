@@ -120,6 +120,14 @@ int main(int argc, char** argv)
       TTree* inTree = static_cast<TTree*>(finput.Get("bdttree"));
       inTree->SetBranchStatus("*", 1);
 
+      // Event ID variables:
+      UInt_t Run;
+      ULong64_t Event;
+      UInt_t LumiSec;
+      inTree->SetBranchAddress("Run", &Run);
+      inTree->SetBranchAddress("Event", &Event);
+      inTree->SetBranchAddress("LumiSec", &LumiSec);
+
       TFile testFile(testOutputFile.c_str(), "RECREATE");
       TTree* testTree = static_cast<TTree*>(inTree->CloneTree(0));
       Float_t testSplitFactor = 2;
@@ -138,7 +146,7 @@ int main(int argc, char** argv)
       for(Long64_t i = 0; i < nentries; ++i)
       {
         inTree->GetEntry(i);
-        if(i%2 == 0)
+        if(Event%2 == 0)
           testTree->Fill();
         else
           trainTree->Fill();
