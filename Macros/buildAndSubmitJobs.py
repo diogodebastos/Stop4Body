@@ -1,6 +1,14 @@
 import os,subprocess,ROOT
 import pickle
 import re
+import time
+
+def getNJobs():
+  cmd = "qstat | wc -l"
+  p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  out, err = p.communicate()
+
+  return int(out)
 
 if __name__ == "__main__":
   import argparse
@@ -73,7 +81,7 @@ if __name__ == "__main__":
     out, err = p.communicate()
     jobs = out.split()
 
-    cwd = os.getcwd() # for now, we need to change the dorectory so that the out and err files are in the right place
+    cwd = os.getcwd() # for now, we need to change the directory so that the out and err files are in the right place
     os.chdir(sample)
 
     jobInfo = {}
@@ -85,7 +93,6 @@ if __name__ == "__main__":
       if not args.dryRun:
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
-        #out = 'Your job 1989082 ("Wjets_100to200_Part1.sh") has been submitted'
         p = re.compile("Your job (\d+) .+")
         jobNumber = p.search(out).group(1)
 
@@ -95,6 +102,12 @@ if __name__ == "__main__":
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    if getNJobs() > 1700:
+      print "Waiting for some jobs to complete..."
+      while getNJobs() > 1000:
+        time.wait()
+      print "Done waiting"
 
 
 
