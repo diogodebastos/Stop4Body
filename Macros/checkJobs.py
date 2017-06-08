@@ -117,8 +117,8 @@ if __name__ == "__main__":
       with open(args.outDirectory + "/" + sample + '/jobs.pickle', 'rb') as handle:
         jobInfo = pickle.load(handle)
       cmd = "hadd " + args.outDirectory + "/" + sample + ".root"
-      for job in jobInfo:
-        jobName = os.path.splitext(job)[0]
+      for jobNum in range(0, len(jobInfo)):
+        jobName = sample + "_Path" + str(jobNum)
         cmd = cmd + " " + args.outDirectory + "/" + sample + "/" + jobName + ".root"
       if args.dryRun:
         print "Hadd command:", cmd
