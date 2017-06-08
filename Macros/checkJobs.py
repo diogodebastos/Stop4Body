@@ -99,6 +99,9 @@ if __name__ == "__main__":
     print "  ", sample, ": ", summary[sample]*100, "%"
   for sample in summary:
     if summary[sample] == 1:
+      jobInfo = {}
+      with open(sample + '/jobs.pickle', 'rb') as handle:
+        jobInfo = pickle.load(handle)
       cmd = "hadd " + args.outDirectory + "/" + sample + ".root"
       for job in jobInfo:
         jobName = os.path.splitext(job)[0]
