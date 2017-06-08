@@ -21,9 +21,34 @@ if __name__ == "__main__":
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
 
-  jsonFiles = ["MC2Process.json", "Data.json"]
+  jsonFiles = ["MC2Process.json",
+               "stop250.json",
+               "stop275.json",
+               "stop300.json",
+               "stop325.json",
+               "stop350.json",
+               "stop375.json",
+               "stop400.json",
+               "stop425.json",
+               "stop450.json",
+               "stop475.json",
+               "stop500.json",
+               "stop525.json",
+               "stop550.json",
+               "stop575.json",
+               "stop600.json",
+               "stop625.json",
+               "stop650.json",
+               "stop675.json",
+               "stop700.json",
+               "stop725.json",
+               "stop750.json",
+               "stop775.json",
+               "stop800.json"]
   if args.doSwap:
-    jsonFiles = ["MC2Process.json", "DataSingleLepton.json"]
+    jsonFiles.append("DataSingleLepton.json")
+  else:
+    jsonFiles.append("Data.json")
 
   cmd = "buildJobs --template " + args.jobTemplate + " --jsonTemplate " + args.jsonTemplate + " --outDir " + args.outDirectory
   if args.doSwap:
