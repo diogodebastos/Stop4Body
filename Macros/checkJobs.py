@@ -1,6 +1,14 @@
 import os,subprocess,ROOT
 import pickle
 import re
+import time
+
+def getNJobs():
+  cmd = "qstat | wc -l"
+  p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  out, err = p.communicate()
+
+  return int(out)
 
 if __name__ == "__main__":
   import argparse
@@ -93,6 +101,12 @@ if __name__ == "__main__":
 
     with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    if getNJobs() > 1700:
+      print "Waiting for some jobs to complete..."
+      while getNJobs() > 1000:
+        time.sleep(5*60)
+      print "Done waiting"
 
   print "Summary:"
   for sample in summary:
