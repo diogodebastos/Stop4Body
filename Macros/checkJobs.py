@@ -20,6 +20,9 @@ if __name__ == "__main__":
 
   args = parser.parse_args()
 
+  if not args.dryRun:
+    print "You did not enable dry run. You are on your own!"
+
   cmd = "ls -d " + args.outDirectory + "/" + args.filterCheck + "/"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
