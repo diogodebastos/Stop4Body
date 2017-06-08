@@ -23,6 +23,6 @@ export LNTBDT_DIR=${LNT_DIR}_${CURRENT_BDT}
 
 
 #export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"
-export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents --doPromptTagging"
+export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents --doPromptTagging --doLooseLeptons"
 export PROCESS_SAMPLES_CMD_LNT="${PROCESS_SAMPLES_CMD} --looseNotTight"
 export PROCESS_SAMPLES_CMD_LOOSE="processSamples --preemptiveDropEvents --doLooseLeptons"
