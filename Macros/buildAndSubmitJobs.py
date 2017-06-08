@@ -17,6 +17,7 @@ if __name__ == "__main__":
   parser.add_argument('-o', '--outDirectory', required=True, help='Name of the output directory')
   parser.add_argument('-j', '--jsonTemplate', default="./Templates/jsonTemplate.json", help='Template for the json file for each job')
   parser.add_argument('-t', '--jobTemplate', default="./Templates/Step1_JobTemplate.sh", help='Template for the script for each job')
+  parser.add_argument(      '--filterSubmit', default="*", help='Glob to be used when searching which samples have to be submitted')
   parser.add_argument('-s', '--doSwap', action='store_true', help='Whether to process with the swapping of MET and LepPt variables') #TODO: Finish implementing
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
 
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     p = subprocess.Popen(thisCMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
 
-  cmd = "ls -d " + args.outDirectory + "/*/"
+  cmd = "ls -d " + args.outDirectory + "/" + args.filterSubmit + "/"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
   samples = out.split()

@@ -16,10 +16,11 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='Process the command line options')
   parser.add_argument('-o', '--outDirectory', required=True, help='Name of the output directory')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
+  parser.add_argument(      '--filterCheck', default="*", help='Glob to be used when searching which samples have to be checked')
 
   args = parser.parse_args()
 
-  cmd = "ls -d " + args.outDirectory + "/*/"
+  cmd = "ls -d " + args.outDirectory + "/" + args.filterCheck + "/"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
   samples = out.split()
