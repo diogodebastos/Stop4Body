@@ -218,6 +218,7 @@ int main(int argc, char** argv)
       cwd->cd();
 
       Long64_t nentries = inTree->GetEntries();
+      Long64_t extraEvt = 0;
       for(Long64_t i = 0; i < nentries; ++i)
       {
         inTree->GetEntry(i);
@@ -233,13 +234,14 @@ int main(int argc, char** argv)
         else
         {
           if(usePredefinedSplitting && isTight)
-            std::cout << "There are some new events that there shouldn't" << std::endl;
+            ++extraEvt;
           if(Event%2 == 0)
             testTree->Fill();
           else
             trainTree->Fill();
         }
       }
+      std::cout << "There were " << extraEvt << " extra events" << std::endl;
 
       testFile.cd();
       testTree->Write();
