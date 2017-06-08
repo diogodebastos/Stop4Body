@@ -106,7 +106,7 @@ if __name__ == "__main__":
     if getNJobs() > 1700:
       print "Waiting for some jobs to complete..."
       while getNJobs() > 1000:
-        time.wait()
+        time.sleep(5*60)
       print "Done waiting"
 
 
