@@ -47,10 +47,10 @@ if __name__ == "__main__":
                "stop750.json",
                "stop775.json",
                "stop800.json"]
-  if args.doSwap:
-    jsonFiles.append("DataSingleLepton.json")
-  else:
-    jsonFiles.append("Data.json")
+  #if args.doSwap:
+  #  jsonFiles.append("DataSingleLepton.json")
+  #else:
+  #  jsonFiles.append("Data.json")
 
 
   testOut = args.inDirectory + "_test"
