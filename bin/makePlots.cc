@@ -294,8 +294,12 @@ int main(int argc, char** argv)
 
   std::string selection = "";
   std::string blindSel = "";
+  std::cout << "Data has BDT: " << ((Data.hasBDT())?("True"):("False")) << std::endl;
   if(!unblind && Data.hasBDT())
+  {
+    std::cout << "Blinding!!!!!!!!!!!!!!" << std::endl;
     blindSel = "(BDT < 0.3) && ";
+  }
   for(auto& cut : cutFlow)
   {
     if(cut.cut() != "")
