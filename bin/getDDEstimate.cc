@@ -37,17 +37,9 @@ int main(int argc, char** argv)
   double luminosity = -1.0;
   bool isPseudoData = false;
   bool verbose = false;
-  std::string looseNotTightDirectory = "";
-
-  //std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (LepPt < 30.) && (HLT_Mu == 1)";
-  std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (LepPt < 30.)";
-  //std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280) && (LepPt < 280.) && (HLT_Mu == 1)";
-  //std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280)";
-  std::string wjetsControlRegion = "(BDT < 0.2) && (NbLoose == 0)";
-  std::string ttbarControlRegion = "(BDT < 0.2) && (NbTight > 0)";
-  std::string signalRegion       = "(BDT > 0.44)";
-  std::string wjetsSignalRegionClosure = "(BDT > 0.44) && (NbLoose == 0)";
-  std::string ttbarSignalRegionClosure = "(BDT > 0.44) && (NbTight > 0)";
+  bool isValidation = false;
+  bool isHighDM = false;
+  double SRCut = 0.4;
 
   if(argc < 2)
   {
@@ -85,20 +77,39 @@ int main(int argc, char** argv)
       convert >> luminosity;
     }
 
+    if(argument == "--signalRegionCut")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> SRCut;
+    }
+
     if(argument == "--isPseudoData")
     {
       isPseudoData = true;
+    }
+
+    if(argument == "--isValidation")
+    {
+      isValidation = true;
+    }
+
+    if(argument == "--isHighDeltaM")
+    {
+      isHighDM = true;
     }
 
     if(argument == "--verbose")
     {
       verbose = true;
     }
+  }
 
-    if(argument == "--looseNotTight")
-    {
-      looseNotTightDirectory = argv[++i];
-    }
+  if(SRCut < 0.2)
+  {
+    std::cout << "You have defined an invalid signal region cut." << std::endl;
+    std::cout << "Using \"BDT > 0.2\" instead" << std::endl;
+    SRCut = 0.2;
   }
 
   gStyle->SetOptStat(000000);
@@ -106,6 +117,42 @@ int main(int argc, char** argv)
 
   std::cout << "Reading json files" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
+
+  std::string tightSelection = "(isTight == 1)";
+  std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
+  std::string promptSelection = "(isPrompt == 1)";
+  std::string fakeSelection = "!(isPrompt == 1)";
+  std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280)";
+  std::string wjetsEnrich = "(NbLoose == 0)";
+  std::string ttbarEnrich = "(NbTight > 0)";
+  std::string controlRegion = "(BDT < 0.2)";
+  std::string signalRegion = "";
+  {
+    std::stringstream converter;
+    converter << "(BDT > " << SRCut << ")";
+    signalRegion = converter.str();
+  }
+  if(isHighDM)
+  {
+  }
+  else
+  {
+    baseSelection += " && (LepPt < 30.)";
+  }
+  if(isValidation)
+  {
+    if(isHighDM)
+      baseSelection += " && (LepPt < 280.)";
+    baseSelection += " && (HLT_Mu == 1)";
+  }
+  else
+  {
+  }
+
+  std::string wjetsControlRegion = controlRegion + " && " + wjetsEnrich;
+  std::string ttbarControlRegion = controlRegion + " && " + ttbarEnrich;
+  std::string wjetsSignalRegionClosure = signalRegion + " && " + wjetsEnrich;
+  std::string ttbarSignalRegionClosure = signalRegion + " && " + ttbarEnrich;
 
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
@@ -168,10 +215,10 @@ int main(int argc, char** argv)
   if(verbose)
     std::cout << "Building control plot of BDT output" << std::endl;
   {
-    auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               baseSelection,     20, -1.0, 1.0);
-    auto mcH   =        MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+baseSelection+")", 20, -1.0, 1.0);
-    auto sigH  =  Sig.process(0).getHist("BDT", "BDT;Evt.", mcWeight+"*("+baseSelection+")", 20, -1.0, 1.0);
-    auto mcS   =             MC.getStack("BDT", "BDT;Evt.", mcWeight+"*("+baseSelection+")", 20, -1.0, 1.0);
+    auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
+    auto mcH   =        MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
+    auto sigH  =  Sig.process(0).getHist("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
+    auto mcS   =             MC.getStack("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
 
     auto ratio = static_cast<TH1D*>(dataH->Clone("Ratio"));
     ratio->SetTitle(";BDT;Data/#Sigma MC");
@@ -279,19 +326,16 @@ int main(int argc, char** argv)
   outputTable << "\\begin{tabular}{r|ccccc}\n";
   outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
 
-  naiveDD(outputTable, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
-  naiveDD(outputTable, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
-
-  outputTable << "\\hline\n";
-
-  injectDD(outputTable, ttbar, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
-
-  outputTable << "\\hline\n";
-
-  injectDD(outputTable, wjets, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
+  naiveDD(outputTable, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
+  naiveDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   //outputTable << "\\hline\n";
+  //injectDD(outputTable, ttbar, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
 
+  //outputTable << "\\hline\n";
+  //injectDD(outputTable, wjets, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+  //outputTable << "\\hline\n";
   //promptDD(outputTable, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
   //promptDD(outputTable, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
@@ -324,13 +368,24 @@ int main(int argc, char** argv)
   outputTable << "\\begin{tabular}{r|ccccc}\n";
   outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
 
-  naiveDD(outputTable, wjets, Data, MC, baseSelection + " && " + wjetsSignalRegionClosure, baseSelection + " && " + wjetsControlRegion, mcWeight);
-  naiveDD(outputTable, ttbar, Data, MC, baseSelection + " && " + wjetsSignalRegionClosure, baseSelection + " && " + ttbarControlRegion, mcWeight);
+  naiveDD(outputTable, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + wjetsSignalRegionClosure, tightSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
+  naiveDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + ttbarSignalRegionClosure, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+  outputTable << "\\hline\n\\end{tabular}\n";
+
+  if(verbose)
+    std::cout << "Filling loose table" << std::endl;
+  outputTable << "\n\nClosure for DD in Loose\n";
+  outputTable << "\\begin{tabular}{r|ccccc}\n";
+  outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
+
+  naiveDD(outputTable, wjets, Data, MC, looseSelection + " && " + baseSelection + " && " + signalRegion, looseSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
+  naiveDD(outputTable, ttbar, Data, MC, looseSelection + " && " + baseSelection + " && " + signalRegion, looseSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   outputTable << "\\hline\n";
 
-  naiveDD(outputTable, wjets, Data, MC, baseSelection + " && " + ttbarSignalRegionClosure, baseSelection + " && " + wjetsControlRegion, mcWeight);
-  naiveDD(outputTable, ttbar, Data, MC, baseSelection + " && " + ttbarSignalRegionClosure, baseSelection + " && " + ttbarControlRegion, mcWeight);
+  naiveDD(outputTable, wjets, Data, MC, looseSelection + " && " + baseSelection + " && " + wjetsSignalRegionClosure, looseSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
+  naiveDD(outputTable, ttbar, Data, MC, looseSelection + " && " + baseSelection + " && " + ttbarSignalRegionClosure, looseSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   outputTable << "\\hline\n\\end{tabular}\n";
 
