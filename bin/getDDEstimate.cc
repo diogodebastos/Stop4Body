@@ -21,12 +21,27 @@
 
 using json = nlohmann::json;
 
+class NullBuffer : public std::streambuf
+{
+  public:
+    int overflow(int c) { return c; }
+};
+
+class NullStream : public std::ostream
+{
+  public:
+    NullStream():std::ostream(&m_sb) {}
+  private:
+    NullBuffer m_sb;
+};
+
 void printHelp();
 doubleUnc naiveDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
 doubleUnc promptDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
 doubleUnc injectDD(std::ofstream &, ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
 doubleUnc fakeDD(std::ofstream &, SampleReader &, SampleReader &, std::string, std::string);
-doubleUnc fullDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, SampleReader &, SampleReader &, std::string, std::string, std::string);
+doubleUnc fullDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
+doubleUnc fullDD_alt(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -120,8 +135,8 @@ int main(int argc, char** argv)
 
   std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
-  std::string promptSelection = "(isPrompt == 1)";
-  std::string fakeSelection = "!(isPrompt == 1)";
+  //std::string promptSelection = "(isPrompt == 1)";
+  //std::string fakeSelection = "!(isPrompt == 1)";
   std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280)";
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
@@ -330,34 +345,29 @@ int main(int argc, char** argv)
   naiveDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   //outputTable << "\\hline\n";
-  //injectDD(outputTable, ttbar, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  //injectDD(outputTable, ttbar, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
 
   //outputTable << "\\hline\n";
-  //injectDD(outputTable, wjets, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
+  //injectDD(outputTable, wjets, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + wjetsControlRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   //outputTable << "\\hline\n";
-  //promptDD(outputTable, wjets, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
-  //promptDD(outputTable, ttbar, Data, MC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
+  //promptDD(outputTable, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
+  //promptDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
 
-  if(looseNotTightDirectory != "")
-  {
-    SampleReader LNTSamples(jsonFileName, looseNotTightDirectory, suffix);
-    auto LNTMC   = LNTSamples.getMCBkg();
-    //auto LNTSig  = LNTSamples.getMCSig();
-    auto LNTData = LNTSamples.getData();
+  outputTable << "\\hline\n";
+  fakeDD(outputTable, Data, MC, looseSelection + " && " + baseSelection + " && " + signalRegion, mcWeight);
 
-    outputTable << "\\hline\n";
+  outputTable << "\\hline\n";
+  outputTable << "\\hline\n";
+  fullDD(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  outputTable << "\\hline\n";
+  fullDD(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
-    fakeDD(outputTable, LNTData, LNTMC, baseSelection + " && " + signalRegion, mcWeight);
-
-    outputTable << "\\hline\n";
-
-    fullDD(outputTable, wjets, Data, MC, LNTData, LNTMC, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
-
-    outputTable << "\\hline\n";
-
-    fullDD(outputTable, ttbar, Data, MC, LNTData, LNTMC, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
-  }
+  outputTable << "\\hline\n";
+  outputTable << "\\hline\n";
+  fullDD_alt(outputTable, wjets, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  outputTable << "\\hline\n";
+  fullDD_alt(outputTable, ttbar, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   outputTable << "\\hline\n\\end{tabular}\n";
 
@@ -490,20 +500,21 @@ doubleUnc fakeDD(std::ofstream &outputTable, SampleReader &LNTData, SampleReader
   return estimate;
 }
 
-doubleUnc fullDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+doubleUnc fullDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
-  doubleUnc NinSR = toEstimate.getYield(signalRegion + " && isPrompt == 1", mcWeight);
-  doubleUnc NinCR = toEstimate.getYield(controlRegion + " && isPrompt == 1", mcWeight);
-  doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
+  doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
+  doubleUnc NinCR = toEstimate.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
+  doubleUnc DatainCR = Data.getYield(tightSelection + " && " + controlRegion, "1.0");
   doubleUnc otherMC (0,0);
   if(static_cast<double>(NinSR) == 0)
     NinSR = doubleUnc(4,2);
   for(auto &process: MC)
   {
     if(process.tag() != toEstimate.tag())
-      otherMC += process.getYield(controlRegion + " && isPrompt == 1", mcWeight);
+      otherMC += process.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
   }
-  doubleUnc fakes = fakeDD(outputTable, LNTData, LNTMC, controlRegion, mcWeight);
+  //NullStream null_stream; //Substitute outputTable below so that output is suppressed
+  doubleUnc fakes = fakeDD(outputTable, Data, MC, looseSelection + " && " + controlRegion, mcWeight);
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
 
@@ -512,6 +523,33 @@ doubleUnc fullDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleRead
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC << " + " << fakes << "$(fake) & $";
+  outputTable << estimate << "$\\\\\n";
+
+  return estimate;
+}
+
+doubleUnc fullDD_alt(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+{
+  doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
+  doubleUnc NinCR = toEstimate.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
+  doubleUnc DatainCR = Data.getYield(tightSelection + " && " + controlRegion, "1.0");
+  doubleUnc otherMC (0,0);
+  if(static_cast<double>(NinSR) == 0)
+    NinSR = doubleUnc(4,2);
+  for(auto &process: MC)
+  {
+    if(process.tag() != toEstimate.tag())
+      otherMC += process.getYield(tightSelection + " && " + controlRegion, mcWeight);
+  }
+  doubleUnc fakes = toEstimate.getYield(tightSelection + " && " + controlRegion + " && !(isPrompt == 1)", mcWeight);
+
+  doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
+
+  outputTable << "$" << toEstimate.label() << "$ & $";
+  outputTable << NinSR << "$ & $";
+  outputTable << NinCR << "$ & $";
+  outputTable << DatainCR << "$ & $";
+  outputTable << otherMC + fakes << "$ & $";
   outputTable << estimate << "$\\\\\n";
 
   return estimate;
