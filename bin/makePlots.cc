@@ -279,25 +279,27 @@ int main(int argc, char** argv)
   //cutFlowTable << " & ";
   for(auto& process : MC)
   {
-    cutFlowTable << " & " << process.label();
+    cutFlowTable << " & $" << process.label() << "$";
   }
   cutFlowTable << " & Sum";
   for(auto& process : Data)
   {
-    cutFlowTable << " & " << process.label();
+    cutFlowTable << " & $" << process.label() << "$";
   }
   for(auto& process : Sig)
   {
-    cutFlowTable << " & " << process.label();
+    cutFlowTable << "$ & " << process.label() << "$";
   }
   cutFlowTable << "\\\\\n";
 
   std::string selection = "";
   std::string blindSel = "";
-  std::cout << "Data has BDT: " << ((Data.hasBDT())?("True"):("False")) << std::endl;
+  if(verbose)
+    std::cout << "Data has BDT: " << ((Data.hasBDT())?("True"):("False")) << std::endl;
   if(!unblind && Data.hasBDT())
   {
-    std::cout << "Blinding!!!!!!!!!!!!!!" << std::endl;
+    if(verbose)
+      std::cout << "Blinding!!!!!!!!!!!!!!" << std::endl;
     blindSel = "(BDT < 0.3) && ";
   }
   for(auto& cut : cutFlow)
@@ -726,7 +728,7 @@ int main(int argc, char** argv)
     for(auto& process : MC)
     {
       auto yield = process.getYield(selection, mcWeight);
-      cutFlowTable << " & " << yield;
+      cutFlowTable << " & $" << yield << "$";
       if(verbose)
       {
         std::cout << process.label() << ": " << yield << std::endl;
@@ -734,14 +736,14 @@ int main(int argc, char** argv)
           std::cout << sample.tag() << ": " << sample.getYield(selection, mcWeight) << std::endl;
       }
     }
-    cutFlowTable << " & " << MC.getYield(selection, mcWeight);
+    cutFlowTable << " & $" << MC.getYield(selection, mcWeight) << "$";
     for(auto& process : Data)
     {
       std::string weight = "1";
       if(ddfake)
         weight = "weight";
       auto yield = process.getYield(blindSel+selection, weight);
-      cutFlowTable << " & " << yield;
+      cutFlowTable << " & $" << yield << "$";
       if(blindSel != "")
         cutFlowTable << " (SR blinded)";
       if(verbose)
@@ -750,7 +752,7 @@ int main(int argc, char** argv)
     for(auto& process : Sig)
     {
       auto yield = process.getYield(selection, mcWeight);
-      cutFlowTable << " & " << yield;
+      cutFlowTable << " & $" << yield << "$";
       if(verbose)
         std::cout << process.label() << ": " << yield << std::endl;
     }
