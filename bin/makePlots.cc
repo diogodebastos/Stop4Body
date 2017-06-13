@@ -288,7 +288,7 @@ int main(int argc, char** argv)
   }
   for(auto& process : Sig)
   {
-    cutFlowTable << "$ & " << process.label() << "$";
+    cutFlowTable << " & $" << process.label() << "$";
   }
   cutFlowTable << "\\\\\n";
 
