@@ -358,7 +358,7 @@ int main(int argc, char** argv)
       t1->Draw();
       t1->cd();
       t1->SetLogy(1);
-      t1->SetTopMargin(0.05);
+      t1->SetTopMargin(0.07);
       //t1->SetBottomMargin(0.10);
       //t1->SetRightMargin(0.20);
       mcS->Draw("hist");
