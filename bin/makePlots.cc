@@ -475,7 +475,7 @@ int main(int argc, char** argv)
           }
           else
           {
-            thisUnc = thisBinContent*0.2;
+            thisUnc = thisBinContent*0.5;
           }
 
           thisUnc = thisUnc/binContent;
