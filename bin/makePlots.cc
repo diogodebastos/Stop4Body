@@ -397,8 +397,8 @@ int main(int argc, char** argv)
       }
 
       TLegend *legA;
-      std::cout << "  The legTop value is: " << variable.legTop() << " (" << (variable.legTop()?"true":"false") << ")" << std::endl;
-      std::cout << "  The legLeft value is: " << variable.legLeft() << " (" << (variable.legLeft()?"true":"false") << ")" << std::endl;
+      //std::cout << "  The legTop value is: " << variable.legTop() << " (" << (variable.legTop()?"true":"false") << ")" << std::endl;
+      //std::cout << "  The legLeft value is: " << variable.legLeft() << " (" << (variable.legLeft()?"true":"false") << ")" << std::endl;
       if(variable.legTop())
       {
         //legA = gPad->BuildLegend(0.155, 1, 0.845, 1-legPadFraction, "NDC"); // The current version does not allow options... what?
