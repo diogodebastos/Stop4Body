@@ -250,6 +250,24 @@ class ValueWithSystematics<T, typename std::enable_if<std::is_base_of<LorentzVec
     using ValueWithSystematicsInternal<T>::value;
 };
 
+// float specialization
+template<>
+class ValueWithSystematics<float>: public ValueWithSystematicsInternal<float>
+{
+  public:
+  //  using ValueWithSystematicsInternal<T>::ValueWithSystematicsInternal; //Why doesn't this one work?
+    ValueWithSystematics(float val = 0): ValueWithSystematicsInternal<float>(val) {};
+    ValueWithSystematics(const ValueWithSystematics<float>& val): ValueWithSystematicsInternal<float>(val) {}; // Copy constructor
+    ValueWithSystematics(const ValueWithSystematicsInternal<float>& val): ValueWithSystematicsInternal<float>(val) {}; // Copy constructor
+
+    ValueWithSystematics<float>& operator=(const ValueWithSystematics<double>& val);
+
+  private:
+  protected:
+    using ValueWithSystematicsInternal<float>::systematics;
+    using ValueWithSystematicsInternal<float>::value;
+};
+
 // double specialization
 template<>
 class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>

@@ -1275,6 +1275,21 @@ ValueWithSystematics<TLorentzVector> ValueWithSystematics<T, typename std::enabl
   return retVal;
 }
 
+//****************** float ************************************************************************
+ValueWithSystematics<float>& ValueWithSystematics<float>::operator*=(const ValueWithSystematics<double>& val)
+{
+  for(auto& kv: systematics)
+    if(val.systematics.count(kv.first) == 0)
+      kv.second *= val.value;
+
+  for(auto& kv: val.systematics)
+    Systematic(kv.first) *= kv.second;
+
+  value *= val.value;
+
+  return *this;
+}
+
 //****************** double ************************************************************************
 ValueWithSystematics<double> ValueWithSystematics<double>::Cos() const
 {
