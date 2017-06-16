@@ -293,6 +293,5 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
 
 // Templated classes must have their code in the header :(
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.hpp"
-#endif
 
 #endif
