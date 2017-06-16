@@ -1377,6 +1377,11 @@ int main(int argc, char** argv)
     }
 
     delete puWeightDistrib;
+    if(puWeightDistribUp != nullptr)
+    {
+      delete puWeightDistribUp;
+      delete puWeightDistribDown;
+    }
   }
 
   std::cout << "Done!" << std::endl << std::endl;
