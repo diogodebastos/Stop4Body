@@ -16,6 +16,12 @@
 #ifndef VALUE_WITH_SYSTEMATICS_HPP
 #define VALUE_WITH_SYSTEMATICS_HPP
 
+template<class T, class U>
+ValueWithSystematics<T> operator* (U& builtin, ValueWithSystematics<T>& myClass)
+{
+  return myClass*builtin;
+}
+
 template<class T>
 ValueWithSystematicsInternal<T>::ValueWithSystematicsInternal(T val): isLocked(false), defaultValue(val), value(val)
 {
