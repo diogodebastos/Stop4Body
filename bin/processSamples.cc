@@ -278,11 +278,11 @@ int main(int argc, char** argv)
         triggerEfficiency = triggerEfficiencyFromMETSys(200.0);
         EWKISRweight = EWKISRweightFromISRpTSys(20, 1.0, 40, 0.7);
         ISRweight = ISRweightFromNISRJetSys(2);
-        puWeight = 1;
+        puWeight = 1.0f;
         puWeight.Systematic("PU_Up");
         puWeight.Systematic("PU_Down");
-        leptonIDSF = getLeptonIDSF(11, 20, 1.1);
-        leptonISOSF = getLeptonISOSF(11, 20, 1,1);
+        leptonIDSF = getLeptonIDSFSys(11, 20, 1.1);
+        leptonISOSF = getLeptonISOSFSys(11, 20, 1.1);
 
         weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF;
 
@@ -320,19 +320,19 @@ int main(int argc, char** argv)
       if(!process.isdata())
       {
         for(auto& systematic: triggerEfficiency.Systematics())
-          bdttree->Branch("triggerEfficiency_"+systematic, &(triggerEfficiency.Systematic(systematic)));
+          bdttree->Branch(("triggerEfficiency_"+systematic).c_str(), &(triggerEfficiency.Systematic(systematic)));
         for(auto& systematic: EWKISRweight.Systematics())
-          bdttree->Branch("EWKISRweight_"+systematic, &(EWKISRweight.Systematic(systematic)));
+          bdttree->Branch(("EWKISRweight_"+systematic).c_str(), &(EWKISRweight.Systematic(systematic)));
         for(auto& systematic: ISRweight.Systematics())
-          bdttree->Branch("ISRweight_"+systematic, &(ISRweight.Systematic(systematic)));
+          bdttree->Branch(("ISRweight_"+systematic).c_str(), &(ISRweight.Systematic(systematic)));
         for(auto& systematic: puWeight.Systematics())
-          bdttree->Branch("puWeight_"+systematic, &(puWeight.Systematic(systematic)));
+          bdttree->Branch(("puWeight_"+systematic).c_str(), &(puWeight.Systematic(systematic)));
         for(auto& systematic: leptonIDSF.Systematics())
-          bdttree->Branch("leptonIDSF_"+systematic, &(leptonIDSF.Systematic(systematic)));
+          bdttree->Branch(("leptonIDSF_"+systematic).c_str(), &(leptonIDSF.Systematic(systematic)));
         for(auto& systematic: leptonISOSF.Systematics())
-          bdttree->Branch("leptonISOSF_"+systematic, &(leptonISOSF.Systematic(systematic)));
+          bdttree->Branch(("leptonISOSF_"+systematic).c_str(), &(leptonISOSF.Systematic(systematic)));
         for(auto& systematic: weight.Systematics())
-          bdttree->Branch("weight_"+systematic, &(weight.Systematic(systematic)));
+          bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       }
 
       bool isTight;      bdttree->Branch("isTight",   &isTight);
@@ -624,7 +624,7 @@ int main(int argc, char** argv)
           nIsr_out = nIsr;
           if(!process.isdata())
           {
-            puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt));
+            puWeight = static_cast<float>(puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt)));
             if(puWeightDistribUp != nullptr)
             {
               puWeight.Systematic("PU_Up")   = puWeightDistribUp->GetBinContent(puWeightDistribUp->FindBin(nTrueInt));
@@ -632,7 +632,7 @@ int main(int argc, char** argv)
             }
           }
           else
-            puWeight = 1;
+            puWeight = 1.0f;
 
           // Object ID
           std::vector<int> validJets;
@@ -1142,13 +1142,13 @@ int main(int argc, char** argv)
             auto tmp = Met;
             Met = LepPt;
             LepPt = tmp;
-            triggerEfficiency = 1;
+            triggerEfficiency = 1.0f;
           }
 
           if(!process.isdata())
             weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF;
           else
-            weight = 1;
+            weight = 1.0f;
 
           if(isLooseNotTight)
           {
