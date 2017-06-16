@@ -104,17 +104,17 @@ int main(int argc, char** argv)
   dataPU->Scale(1/dataPU->Integral());
   TH1D* dataPUUp = nullptr;
   TH1D* dataPUDown = nullptr;
-  {
+  //{
     std::string fileUp = dataPUFileName;
     replace(fileUp, ".root", "Up.root");
     TFile finputUp(fileUp.c_str(), "READ");
-    dataPUUp = static_cast<TH1D*>(finputUp.Get("pileup")->Clone("pileupUp"));
+    dataPUUp = static_cast<TH1D*>(finputUp.Get("pileup"));
 
     std::string fileDown = dataPUFileName;
     replace(fileDown, ".root", "Down.root");
     TFile finputDown(fileDown.c_str(), "READ");
-    dataPUDown = static_cast<TH1D*>(finputDown.Get("pileup")->Clone("pileupDown"));
-  }
+    dataPUDown = static_cast<TH1D*>(finputDown.Get("pileup"));
+  //}
 
   TH1D* mcPU = nullptr;
   if(mcPUFileName != "")
