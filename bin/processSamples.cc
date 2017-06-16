@@ -209,7 +209,18 @@ int main(int argc, char** argv)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
 
-    TH1D* puWeightDistrib = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+    TH1D* puWeightDistrib     = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+    TH1D* puWeightDistribUp   = nullptr;
+    TH1D* puWeightDistribDown = nullptr;
+    {
+      auto tmp = puWeightFile.Get( ("process_"+process.tag()+"_puWeight_Up").c_str());
+      if(tmp != nullptr)
+      {
+        puWeightDistribUp   = static_cast<TH1D*>(tmp->Clone("puWeightDistribUp"));
+        tmp = puWeightFile.Get( ("process_"+process.tag()+"_puWeight_Down").c_str());
+        puWeightDistribDown = static_cast<TH1D*>(tmp->Clone("puWeightDistribDown"));
+      }
+    }
 
     for(auto &sample : process)
     {
@@ -253,19 +264,76 @@ int main(int argc, char** argv)
       Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
 
-      Float_t genWeight=1; bdttree->Branch("genWeight", &genWeight, "genWeight/F");
-      Float_t sumGenWeight=1; bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
-      Float_t filterEfficiency=1; bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
-      Float_t splitFactor=1; bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
-      Float_t triggerEfficiency=1; bdttree->Branch("triggerEfficiency", &triggerEfficiency, "triggerEfficiency/F");
-      Float_t EWKISRweight=1; bdttree->Branch("EWKISRweight", &EWKISRweight, "EWKISRweight/F");
-      Float_t ISRweight=1; bdttree->Branch("ISRweight", &ISRweight, "ISRweight/F");
-      Float_t puWeight=1; bdttree->Branch("puWeight", &puWeight, "puWeight/F");
-      Float_t leptonIDSF=1; bdttree->Branch("leptonIDSF", &leptonIDSF, "leptonIDSF/F");
-      Float_t leptonISOSF=1; bdttree->Branch("leptonISOSF", &leptonISOSF, "leptonISOSF/F");
-      Float_t weight=1; bdttree->Branch("weight", &weight, "weight/F");
-      bool isLooseNotTight=false; bdttree->Branch("isLooseNotTight", &isLooseNotTight);
-      Float_t looseNotTightWeight=1; bdttree->Branch("looseNotTightWeight", &looseNotTightWeight, "looseNotTightWeight/F");
+      ValueWithSystematics<float> triggerEfficiency;
+      ValueWithSystematics<float> EWKISRweight;
+      ValueWithSystematics<float> ISRweight;
+      ValueWithSystematics<float> puWeight;
+      ValueWithSystematics<float> leptonIDSF;
+      ValueWithSystematics<float> leptonISOSF;
+      ValueWithSystematics<float> weight;
+
+      if(!process.isdata())
+      {
+        // Performing dummy computations just so that the placeholders for all the uncertainties are created
+        triggerEfficiency = triggerEfficiencyFromMETSys(200.0);
+        EWKISRweight = EWKISRweightFromISRpTSys(20, 1.0, 40, 0.7);
+        ISRweight = ISRweightFromNISRJetSys(2);
+        puWeight = 1;
+        puWeight.Systematic("PU_Up");
+        puWeight.Systematic("PU_Down");
+        leptonIDSF = getLeptonIDSF(11, 20, 1.1);
+        leptonISOSF = getLeptonISOSF(11, 20, 1,1);
+
+        weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF;
+
+        // Then lock the variables so that the placeholders are not removed or new ones are created
+        triggerEfficiency.Lock();
+        EWKISRweight.Lock();
+        ISRweight.Lock();
+        puWeight.Lock();
+        leptonIDSF.Lock();
+        leptonISOSF.Lock();
+        weight.Lock();
+      }
+
+      Float_t genWeight=1;
+      Float_t sumGenWeight=1;
+      Float_t filterEfficiency=1;
+      Float_t splitFactor=1;
+      bool isLooseNotTight=false;
+      Float_t looseNotTightWeight=1;
+
+      bdttree->Branch("genWeight", &genWeight, "genWeight/F");
+      bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
+      bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
+      bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
+      bdttree->Branch("triggerEfficiency", &(triggerEfficiency.Value()), "triggerEfficiency/F");
+      bdttree->Branch("EWKISRweight", &(EWKISRweight.Value()), "EWKISRweight/F");
+      bdttree->Branch("ISRweight", &(ISRweight.Value()), "ISRweight/F");
+      bdttree->Branch("puWeight", &(puWeight.Value()), "puWeight/F");
+      bdttree->Branch("leptonIDSF", &(leptonIDSF.Value()), "leptonIDSF/F");
+      bdttree->Branch("leptonISOSF", &(leptonISOSF.Value()), "leptonISOSF/F");
+      bdttree->Branch("weight", &(weight.Value()), "weight/F");
+      bdttree->Branch("isLooseNotTight", &isLooseNotTight);
+      bdttree->Branch("looseNotTightWeight", &looseNotTightWeight, "looseNotTightWeight/F");
+
+      if(!process.isdata())
+      {
+        for(auto& systematic: triggerEfficiency.Systematics())
+          bdttree->Branch("triggerEfficiency_"+systematic, &(triggerEfficiency.Systematic(systematic)));
+        for(auto& systematic: EWKISRweight.Systematics())
+          bdttree->Branch("EWKISRweight_"+systematic, &(EWKISRweight.Systematic(systematic)));
+        for(auto& systematic: ISRweight.Systematics())
+          bdttree->Branch("ISRweight_"+systematic, &(ISRweight.Systematic(systematic)));
+        for(auto& systematic: puWeight.Systematics())
+          bdttree->Branch("puWeight_"+systematic, &(puWeight.Systematic(systematic)));
+        for(auto& systematic: leptonIDSF.Systematics())
+          bdttree->Branch("leptonIDSF_"+systematic, &(leptonIDSF.Systematic(systematic)));
+        for(auto& systematic: leptonISOSF.Systematics())
+          bdttree->Branch("leptonISOSF_"+systematic, &(leptonISOSF.Systematic(systematic)));
+        for(auto& systematic: weight.Systematics())
+          bdttree->Branch("weight_"+systematic, &(weight.Systematic(systematic)));
+      }
 
       bool isTight;      bdttree->Branch("isTight",   &isTight);
       bool isLoose;      bdttree->Branch("isLoose",   &isLoose);
@@ -555,7 +623,14 @@ int main(int argc, char** argv)
           nVert = nVert_i;
           nIsr_out = nIsr;
           if(!process.isdata())
+          {
             puWeight = puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt));
+            if(puWeightDistribUp != nullptr)
+            {
+              puWeight.Systematic("PU_Up")   = puWeightDistribUp->GetBinContent(puWeightDistribUp->FindBin(nTrueInt));
+              puWeight.Systematic("PU_Down") = puWeightDistribDown->GetBinContent(puWeightDistribDown->FindBin(nTrueInt));
+            }
+          }
 
           // Object ID
           std::vector<int> validJets;
