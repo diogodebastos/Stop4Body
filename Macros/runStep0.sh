@@ -15,10 +15,16 @@ qsub Step0_GetPUWeights_TTbarLOJob.sh
 qsub Step0_GetPUWeights_TTLepJob.sh
 qsub Step0_GetPUWeights_TTpowJob.sh
 qsub Step0_GetPUWeights_WjetsJob.sh
-qsub Step0_GetPUWeights_otherMCJob1.sh
-qsub Step0_GetPUWeights_otherMCJob2.sh
-qsub Step0_GetPUWeights_otherMCJob3.sh
-qsub Step0_GetPUWeights_otherMCJob4.sh
+#qsub Step0_GetPUWeights_otherMCJob1.sh
+#qsub Step0_GetPUWeights_otherMCJob2.sh
+#qsub Step0_GetPUWeights_otherMCJob3.sh
+#qsub Step0_GetPUWeights_otherMCJob4.sh
+qsub Step0_GetPUWeights_QCD.sh
+qsub Step0_GetPUWeights_ttX.sh
+qsub Step0_GetPUWeights_ZInv.sh
+qsub Step0_GetPUWeights_VV.sh
+qsub Step0_GetPUWeights_SingleTop.sh
+qsub Step0_GetPUWeights_DY.sh
 
 # Submit job for all Data
 qsub Step0_GetPUWeights_DataJob.sh
