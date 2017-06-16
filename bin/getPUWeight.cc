@@ -46,6 +46,8 @@
 
 using json = nlohmann::json;
 
+bool replace(std::string&, const std::string&, const std::string&);
+
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
@@ -100,6 +102,19 @@ int main(int argc, char** argv)
   TFile finput(dataPUFileName.c_str(), "READ");
   TH1D* dataPU = static_cast<TH1D*>(finput.Get("pileup"));
   dataPU->Scale(1/dataPU->Integral());
+  TH1D* dataPUUp = nullptr;
+  TH1D* dataPUDown = nullptr;
+  {
+    std::string fileUp = dataPUFileName;
+    replace(fileUp, ".root", "Up.root")
+    TFile finputUp(fileUp.c_str(), "READ");
+    dataPUUp = static_cast<TH1D*>(finputUp.Get("pileup"));
+
+    std::string fileDown = dataPUFileName;
+    replace(fileDown, ".root", "Down.root")
+    TFile finputUp(fileDown.c_str(), "READ");
+    dataPUDown = static_cast<TH1D*>(finputDown.Get("pileup"));
+  }
 
   TH1D* mcPU = nullptr;
   if(mcPUFileName != "")
@@ -329,9 +344,29 @@ int main(int argc, char** argv)
     processPUweight->Divide(&processNTrue);
     //processPUweight->Divide(&processNVTX);
     processPUweight->Write();
+    if(dataPUUp != nullptr)
+    {
+      TH1D* processPUweightUp = static_cast<TH1D*>(dataPUUp->Clone(("process_"+process.tag()+"_puWeight_Up").c_str()));
+      TH1D* processPUweightDown = static_cast<TH1D*>(dataPUDown->Clone(("process_"+process.tag()+"_puWeight_Down").c_str()));
+
+      processPUweightUp->Divide(&processNTrue);
+      processPUweightDown->Divide(&processNTrue);
+
+      processPUweightUp->Write();
+      processPUweightDown->Write();
+    }
   }
 
   std::cout << "Done!" << std::endl << std::endl;
 
   return 0;
+}
+
+bool replace(std::string& str, const std::string& from, const std::string& to)
+{
+    size_t start_pos = str.find(from);
+    if(start_pos == std::string::npos)
+        return false;
+    str.replace(start_pos, from.length(), to);
+    return true;
 }
