@@ -260,6 +260,8 @@ class ValueWithSystematics<float>: public ValueWithSystematicsInternal<float>
     ValueWithSystematics(const ValueWithSystematics<float>& val): ValueWithSystematicsInternal<float>(val) {}; // Copy constructor
     ValueWithSystematics(const ValueWithSystematicsInternal<float>& val): ValueWithSystematicsInternal<float>(val) {}; // Copy constructor
 
+    ValueWithSystematics<float>& operator=(const float& val);
+    ValueWithSystematics<float>& operator=(const ValueWithSystematics<float>& val);
     ValueWithSystematics<float>& operator=(const ValueWithSystematics<double>& val);
 
   private:

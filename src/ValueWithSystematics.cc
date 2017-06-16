@@ -13,6 +13,45 @@ ValueWithSystematicsInternal<bool>::operator bool () const
 }
 
 //****************** float ************************************************************************
+ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(const float& val)
+{
+  value = val;
+
+  if(isLocked)
+  {
+    for(auto& kv: systematics)
+    {
+      kv.second = val;
+    }
+  }
+  else
+    systematics.clear();
+
+  return *this;
+}
+
+ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(const ValueWithSystematics<float>& val)
+{
+  value = val.Value();
+
+  if(isLocked)
+  {
+    auto tmp = val.Systematics();
+    for(auto& kv: systematics)
+    {
+      if(std::count(tmp.begin(), tmp.end(), kv.first) == 0)
+        kv.second = val.Value();
+    }
+  }
+  else
+    systematics.clear();
+
+  for(auto& kv: val.Systematics())
+    Systematic(kv) = val.Systematic(kv);
+
+  return *this;
+}
+
 ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(const ValueWithSystematics<double>& val)
 {
   value = val.Value();
