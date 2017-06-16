@@ -1278,19 +1278,19 @@ ValueWithSystematics<TLorentzVector> ValueWithSystematics<T, typename std::enabl
 //****************** float ************************************************************************
 ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(const ValueWithSystematics<double>& val)
 {
-  value = val.value;
+  value = val.Value();
 
   if(isLocked)
   {
     for(auto& kv: systematics)
-      if(val.systematics.count(kv.first) == 0)
-        kv.second = val.value;
+      if(val.Systematics().count(kv.first) == 0)
+        kv.second = val.Value();
   }
   else
     systematics.clear();
 
-  for(auto& kv: val.systematics)
-    Systematic(kv.first) = kv.second;
+  for(auto& kv: val.Systematics())
+    Systematic(kv) = val.Systematic(kv);
 
   return *this;
 }
