@@ -2,6 +2,7 @@
 #define MY_COMMON_FUNCTION
 
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 #include "TH1.h"
 #include "TH2.h"
@@ -34,5 +35,19 @@ doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
 
 doubleUnc stopCrossSection(double stopM, double lspM);
+
+
+
+ValueWithSystematics<double> triggerEfficiencyFromMETSys(double);
+ValueWithSystematics<double> WISRScaleFactorFromLepMetSys(double lep_pt, double lep_phi, double met_pt, double met_phi);
+ValueWithSystematics<double> ISRweightFromNISRJetSys(int nISRJet);
+ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT);
+ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, double met_pt, double met_phi);
+ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);
+ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
+
+ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double LepPt, double LepEta);
+
+//ValueWithSystematics<double> stopCrossSectionSys(double stopM, double lspM);
 
 #endif
