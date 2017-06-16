@@ -17,7 +17,7 @@
 #define VALUE_WITH_SYSTEMATICS_HPP
 
 template<class T, class U>
-ValueWithSystematics<T> operator* (U& builtin, ValueWithSystematics<T>& myClass)
+ValueWithSystematics<T> operator* (const U& builtin, const ValueWithSystematics<T>& myClass)
 {
   return myClass*builtin;
 }
