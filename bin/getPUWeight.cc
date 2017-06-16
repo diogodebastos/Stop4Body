@@ -108,12 +108,12 @@ int main(int argc, char** argv)
     std::string fileUp = dataPUFileName;
     replace(fileUp, ".root", "Up.root");
     TFile finputUp(fileUp.c_str(), "READ");
-    dataPUUp = static_cast<TH1D*>(finputUp.Get("pileup"));
+    dataPUUp = static_cast<TH1D*>(finputUp.Get("pileup")->Clone("pileupUp"));
 
     std::string fileDown = dataPUFileName;
     replace(fileDown, ".root", "Down.root");
-    TFile finputUp(fileDown.c_str(), "READ");
-    dataPUDown = static_cast<TH1D*>(finputDown.Get("pileup"));
+    TFile finputDown(fileDown.c_str(), "READ");
+    dataPUDown = static_cast<TH1D*>(finputDown.Get("pileup")->Clone("pileupDown"));
   }
 
   TH1D* mcPU = nullptr;
