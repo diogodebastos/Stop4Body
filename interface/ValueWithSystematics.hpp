@@ -1282,9 +1282,12 @@ ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(const ValueW
 
   if(isLocked)
   {
+    auto tmp = val.Systematics();
     for(auto& kv: systematics)
-      if(val.Systematics().count(kv.first) == 0)
+    {
+      if(std::count(tmp.begin(), tmp.end(), kv.first) == 0)
         kv.second = val.Value();
+    }
   }
   else
     systematics.clear();

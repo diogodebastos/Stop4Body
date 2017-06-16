@@ -21,6 +21,7 @@
 #include <string>
 #include <exception>
 #include <utility>
+#include <algorithm>
 
 #include "TLorentzVector.h"
 #include "Math/LorentzVector.h"
