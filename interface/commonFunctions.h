@@ -1,7 +1,6 @@
 #ifndef MY_COMMON_FUNCTION
 #define MY_COMMON_FUNCTION
 
-#define VALUE_WITH_SYSTEMATICS_HEADER_ONLY
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 

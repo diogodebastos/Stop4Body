@@ -178,13 +178,8 @@ ValueWithSystematicsInternal<T>::operator T () const
 
 // Specialized method for the bool type, where the return value is the logical or of all systematics
 template<>
-ValueWithSystematicsInternal<bool>::operator bool () const
-{
-  bool retVal = value;
-  for(auto& kv: systematics)
-    retVal = retVal || kv.second;
-  return retVal;
-}
+ValueWithSystematicsInternal<bool>::operator bool () const;
+// Defined in cpp file
 
 template<class T>
 ValueWithSystematicsInternal<T>& ValueWithSystematicsInternal<T>::operator=(const T& val)
@@ -1271,60 +1266,6 @@ ValueWithSystematics<TLorentzVector> ValueWithSystematics<T, typename std::enabl
 
   for(auto& kv: systematics)
     retVal(kv.first) = TLorentzVector(kv.second.Px(), kv.second.Py(), kv.second.Pz(), kv.second.E());
-
-  return retVal;
-}
-
-//****************** float ************************************************************************
-ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(const ValueWithSystematics<double>& val)
-{
-  value = val.Value();
-
-  if(isLocked)
-  {
-    auto tmp = val.Systematics();
-    for(auto& kv: systematics)
-    {
-      if(std::count(tmp.begin(), tmp.end(), kv.first) == 0)
-        kv.second = val.Value();
-    }
-  }
-  else
-    systematics.clear();
-
-  for(auto& kv: val.Systematics())
-    Systematic(kv) = val.Systematic(kv);
-
-  return *this;
-}
-
-//****************** double ************************************************************************
-ValueWithSystematics<double> ValueWithSystematics<double>::Cos() const
-{
-  ValueWithSystematics<double> retVal = cos(value);
-
-  for(auto& kv: systematics)
-    retVal(kv.first) = cos(kv.second);
-
-  return retVal;
-}
-
-ValueWithSystematics<double> ValueWithSystematics<double>::Sqrt() const
-{
-  ValueWithSystematics<double> retVal = sqrt(value);
-
-  for(auto& kv: systematics)
-    retVal(kv.first) = sqrt(kv.second);
-
-  return retVal;
-}
-
-ValueWithSystematics<double> ValueWithSystematics<double>::abs() const
-{
-  ValueWithSystematics<double> retVal = std::abs(value);
-
-  for(auto& kv: systematics)
-    retVal(kv.first) = std::abs(kv.second);
 
   return retVal;
 }
