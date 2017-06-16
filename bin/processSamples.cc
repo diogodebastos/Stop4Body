@@ -631,6 +631,8 @@ int main(int argc, char** argv)
               puWeight.Systematic("PU_Down") = puWeightDistribDown->GetBinContent(puWeightDistribDown->FindBin(nTrueInt));
             }
           }
+          else
+            puWeight = 1;
 
           // Object ID
           std::vector<int> validJets;
@@ -841,8 +843,8 @@ int main(int argc, char** argv)
 
             if(!process.isdata())
             {
-              leptonIDSF = static_cast<double>(getLeptonIDSF(LepID, LepPt, LepEta));
-              leptonISOSF = static_cast<double>(getLeptonISOSF(LepID, LepPt, LepEta));
+              leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta);
+              leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
             }
 
             if(!process.isdata() && doPromptTagging)
@@ -917,13 +919,13 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
-            triggerEfficiency = static_cast<double>(triggerEfficiencyFromMET(met_pt));
+            triggerEfficiency = triggerEfficiencyFromMETSys(met_pt);
             // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets")
-              EWKISRweight = EWKISRCParam * static_cast<double>(EWKISRweightFromISRpT(LepPt, lep_phi, met_pt, met_phi));
+              EWKISRweight = EWKISRCParam * EWKISRweightFromISRpTSys(LepPt, lep_phi, met_pt, met_phi);
             // For ISR, assume syst 50%
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lep" || process.tag() == "ttbar_lo" || process.issignal())
-              ISRweight = ISRCParam * static_cast<double>(ISRweightFromNISRJet(nIsr));
+              ISRweight = ISRCParam * ISRweightFromNISRJetSys(nIsr);
             // TODO: missing tt_pow reweighting https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
           }
 
@@ -1176,7 +1178,7 @@ int main(int argc, char** argv)
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
               SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2 << std::endl;
-              SyFile << "   weight for 10 fb-1: " << weight*10000 << " (without SFs: " << 10000*XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
+              SyFile << "   weight for 10 fb-1: " << weight.Value()*10000 << " (without SFs: " << 10000*XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
               SyFile << "   passed: ";
               if(HT > 200 && Met > 200 && Jet1Pt > 90) // TODO: Probably change these cuts to reflect newest selection
               {
