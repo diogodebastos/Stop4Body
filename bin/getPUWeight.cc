@@ -106,12 +106,12 @@ int main(int argc, char** argv)
   TH1D* dataPUDown = nullptr;
   {
     std::string fileUp = dataPUFileName;
-    replace(fileUp, ".root", "Up.root")
+    replace(fileUp, ".root", "Up.root");
     TFile finputUp(fileUp.c_str(), "READ");
     dataPUUp = static_cast<TH1D*>(finputUp.Get("pileup"));
 
     std::string fileDown = dataPUFileName;
-    replace(fileDown, ".root", "Down.root")
+    replace(fileDown, ".root", "Down.root");
     TFile finputUp(fileDown.c_str(), "READ");
     dataPUDown = static_cast<TH1D*>(finputDown.Get("pileup"));
   }
