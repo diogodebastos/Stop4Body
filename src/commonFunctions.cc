@@ -350,7 +350,6 @@ ValueWithSystematics<double> ISRweightFromNISRJetSys(int nISRJet)
       retVal.Systematic("ISRweight_AltCorr_Down") = 0.561-0.2195;
       break;
     default:
-      return doubleUnc(0.511, 0);
       retVal = 0.511;
       retVal.Systematic("ISRweight_Bin6_Up") = 0.511+0.2445;
       retVal.Systematic("ISRweight_Bin6_Down") = 0.511-0.2445;
@@ -773,9 +772,6 @@ ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, doubl
   {
     if(LepEta > 1.48) // Endcap electron
     {
-      if(hephyElectronISOSFHistEndcap == nullptr)
-        return doubleUnc(1, 0);
-
       if(LepPt >= 60)
         LepPt = 59.999;
 
@@ -786,9 +782,6 @@ ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, doubl
     }
     else // Barrel electron
     {
-      if(hephyElectronISOSFHistBarrel == nullptr)
-        return doubleUnc(1, 0);
-
       if(LepPt >= 60)
         LepPt = 59.999;
 
@@ -808,9 +801,6 @@ ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, doubl
   }
   else
   {
-    if(hephyMuonISOSFHist == nullptr)
-      return doubleUnc(1, 0);
-
     if(LepPt >= 60)
       LepPt = 59.999;
 
