@@ -60,6 +60,7 @@ int main(int argc, char** argv)
   bool noSF = false;
   bool unblind = false;
   bool ddfake = false;
+  bool dofakeclosure = false;
 
   if(argc < 2)
   {
@@ -143,6 +144,9 @@ int main(int argc, char** argv)
       unblind = true;
       ddfake = true;
     }
+
+    if(argument == "--dofakeclosure")
+      dofakeclosure = true;
   }
 
   if(jsonFileName == "")
@@ -324,23 +328,38 @@ int main(int argc, char** argv)
     for(auto & variable : variables)
     {
       std::string dataSel;
-      if(variable.expression() == "BDT")
-        dataSel = blindSel+selection;
+      std::string mcSel;
+
+      if(dofakeclosure)
+      {
+        mcSel = mcWeight+"*( (isTight == 1) && "+selection+")";
+        dataSel = "weight * ( ((isLoose == 1) && (isTight == 0)) && " + selection + ")";
+      }
       else
-        dataSel = selection;
-      if(ddfake)
-        dataSel = "weight * (" + dataSel + ")";
+      {
+        mcSel = mcWeight+"*("+selection+")";
+        if(variable.expression() == "BDT")
+          dataSel = blindSel+selection;
+        else
+          dataSel = selection;
+      }
+
+      if(rawEvents)
+      {
+        mcSel = selection;
+      }
+
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
-      auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
+      auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
       //auto sigH  =  Sig.getHist(cut.name()+"_"+variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
       TH1D* sigH = nullptr;
       if(Sig.nProcesses() > 0)
-        sigH  =  Sig.process(0).getHist(variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
+        sigH  =  Sig.process(0).getHist(variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
       else
-        sigH = Sig.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
+        sigH = Sig.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
 
-      auto mcS   =   MC.getStack(variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
+      auto mcS   =   MC.getStack(variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
 
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
@@ -535,10 +554,26 @@ int main(int argc, char** argv)
     for(auto & twoDvariable : twoDvariables)
     {
       std::string dataSel;
-      if(twoDvariable.X().expression() == "BDT" || twoDvariable.Y().expression() == "BDT")
-        dataSel = blindSel+selection;
+      std::string mcSel;
+
+      if(dofakeclosure)
+      {
+        mcSel = mcWeight+"*( (isTight == 1) && "+selection+")";
+        dataSel = "weight * ( ((isLoose == 1) && (isTight == 0)) && " + selection + ")";
+      }
       else
-        dataSel = selection;
+      {
+        mcSel = mcWeight+"*("+selection+")";
+        if(twoDvariable.X().expression() == "BDT" || twoDvariable.Y().expression() == "BDT")
+          dataSel = blindSel+selection;
+        else
+          dataSel = selection;
+      }
+
+      if(rawEvents)
+      {
+        mcSel = selection;
+      }
 
       int nPlots = 0;
       nPlots += Data.nProcesses();
@@ -662,7 +697,7 @@ int main(int argc, char** argv)
         auto hist = process.get2DHist(twoDvariable.X().expression(),
                                       twoDvariable.Y().expression(),
                                       twoDvariable.X().label()+";"+twoDvariable.Y().label()+";Evt.",
-                                      (rawEvents)?(selection):(mcWeight+"*("+selection+")"),
+                                      mcSel,
                                       twoDvariable.X().bins(),
                                       twoDvariable.X().min(),
                                       twoDvariable.X().max(),
@@ -696,7 +731,7 @@ int main(int argc, char** argv)
         auto hist = process.get2DHist(twoDvariable.X().expression(),
                                       twoDvariable.Y().expression(),
                                       twoDvariable.X().label()+";"+twoDvariable.Y().label()+";Evt.",
-                                      (rawEvents)?(selection):(mcWeight+"*("+selection+")"),
+                                      mcSel,
                                       twoDvariable.X().bins(),
                                       twoDvariable.X().min(),
                                       twoDvariable.X().max(),
@@ -727,25 +762,49 @@ int main(int argc, char** argv)
       ObjectToDelete.clear();
     }
 
+
+    std::string dataSelToUse;
+    std::string mcSelToUse;
+    std::string dataWeightToUse;
+    std::string mcWeightToUse;
+
+    if(dofakeclosure)
+    {
+      mcSelToUse = "((isTight == 1) && "+selection+")";
+      mcWeightToUse = mcWeight;
+      dataSelToUse = "(((isLoose == 1) && (isTight == 0)) && " + selection + ")";
+      dataWeightToUse = "weight";
+    }
+    else
+    {
+      mcSelToUse = selection;
+      mcWeightToUse = mcWeight;
+      dataWeightToUse = "1";
+      dataSelToUse = blindSel+selection;
+    }
+
+    if(rawEvents)
+    {
+      mcSelToUse = selection;
+      mcWeightToUse = "1";
+    }
+
     cutFlowTable << cut.name();
     for(auto& process : MC)
     {
-      auto yield = process.getYield(selection, mcWeight);
+      auto yield = process.getYield(mcSelToUse, mcWeightToUse);
       cutFlowTable << " & $" << yield << "$";
       if(verbose)
       {
         std::cout << process.label() << ": " << yield << std::endl;
         for(auto& sample: process)
-          std::cout << sample.tag() << ": " << sample.getYield(selection, mcWeight) << std::endl;
+          std::cout << sample.tag() << ": " << sample.getYield(mcSelToUse, mcWeightToUse) << std::endl;
       }
     }
-    cutFlowTable << " & $" << MC.getYield(selection, mcWeight) << "$";
+    cutFlowTable << " & $" << MC.getYield(mcSelToUse, mcWeightToUse) << "$";
     for(auto& process : Data)
     {
-      std::string weight = "1";
-      if(ddfake)
-        weight = "weight";
-      auto yield = process.getYield(blindSel+selection, weight);
+      auto yield = process.getYield(dataSelToUse, dataWeightToUse);
       cutFlowTable << " & $" << yield << "$";
       if(blindSel != "")
         cutFlowTable << " (SR blinded)";
@@ -754,7 +813,7 @@ int main(int argc, char** argv)
     }
     for(auto& process : Sig)
     {
-      auto yield = process.getYield(selection, mcWeight);
+      auto yield = process.getYield(mcSelToUse, mcWeightToUse);
       cutFlowTable << " & $" << yield << "$";
       if(verbose)
         std::cout << process.label() << ": " << yield << std::endl;
