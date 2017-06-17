@@ -1,0 +1,766 @@
+{
+  "lines":[
+    {
+      "tag":"FakeMC",
+      "isdata":true,
+      "color":1,
+      "fill":0,
+      "marker":20,
+      "label":"MCSum",
+      "files":[
+        {
+          "tag":"DYJetsToLL_M50_HT100to200",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT100to200",
+              "split":39
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT100to200_ext",
+              "split":135
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT200to400",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT200to400",
+              "split":40
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT200to400_ext",
+              "split":130
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT400to600",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT400to600",
+              "split":20
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT400to600_ext",
+              "split":165
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT600to800",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT600to800",
+              "split":176
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT800to1200",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT800to1200",
+              "split":82
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT1200to2500",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT1200to2500",
+              "split":33
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M50_HT2500toInf",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M50_HT2500toInf",
+              "split":17
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M5to50_HT100to200",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT100to200",
+              "split":13
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT100to200_ext",
+              "split":91
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M5to50_HT200to400",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT200to400",
+              "split":53
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT200to400_ext",
+              "split":25
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M5to50_HT400to600",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT400to600",
+              "split":19
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT400to600_ext",
+              "split":35
+            }
+          ]
+        },
+        {
+          "tag":"DYJetsToLL_M5to50_HT600toInf",
+          "xsec":1.0,
+          "br":1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT600toInf",
+              "split":18
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/DYJetsToLL_M5to50_HT600toInf_ext",
+              "split":48
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT50to100",
+          "xsec": 27500000.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT50to100",
+              "split":43
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT100to200",
+          "xsec": 27500000.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT100to200",
+              "split":246
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT200to300",
+          "xsec": 1735000.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT200to300",
+              "split":179
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT200to300_ext",
+              "split":182
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT300to500",
+          "xsec": 1,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT300to500",
+              "split":199
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT300to500_ext",
+              "split":219
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT500to700",
+          "xsec": 29400.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT500to700",
+              "split":210
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT500to700_ext",
+              "split":203
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT700to1000",
+          "xsec": 6524.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT700to1000",
+              "split":184
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT700to1000_ext",
+              "split":182
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT1000to1500",
+          "xsec": 1064.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1000to1500",
+              "split":90
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1000to1500_ext",
+              "split":170
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT1500to2000",
+          "xsec": 121.5,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1500to2000",
+              "split":80
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT1500to2000_ext",
+              "split":136
+            }
+          ]
+        },
+        {
+          "tag":"QCD_HT2000toInf",
+          "xsec": 25.42,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT2000toInf",
+              "split":36
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/QCD_HT2000toInf",
+              "split":86
+            }
+          ]
+        },
+        {
+          "tag":"TBar_tch_powheg",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TBar_tch_powheg",
+              "split":203
+            }
+          ]
+        },
+        {
+          "tag":"TBar_tWch_ext",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TBar_tWch_ext",
+              "split":144
+            }
+          ]
+        },
+        {
+          "tag":"T_tch_powheg",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/T_tch_powheg",
+              "split":241
+            }
+          ]
+        },
+        {
+          "tag":"T_tWch_ext",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/T_tWch_ext",
+              "split":161
+            }
+          ]
+        },
+        {
+          "tag":"TTJets_DiLepton",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_DiLepton",
+              "split":83
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_DiLepton_ext",
+              "split":171
+            }
+          ]
+        },
+        {
+          "tag":"TTJets_SingleLeptonFromT",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromT",
+              "split":167
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromT_ext",
+              "split":210
+            }
+          ]
+        },
+        {
+          "tag":"TTJets_SingleLeptonFromTbar",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromTbar",
+              "split":196
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTJets_SingleLeptonFromTbar_ext",
+              "split":187
+            }
+          ]
+        },
+        {
+          "tag":"TTGJets",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTGJets",
+              "split":80
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTGJets_ext",
+              "split":239
+            }
+          ]
+        },
+        {
+          "tag":"TTWToLNu",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTWToLNu_ext",
+              "split":33
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTWToLNu_ext2",
+              "split":49
+            }
+          ]
+        },
+        {
+          "tag":"TTWToQQ",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTWToQQ",
+              "split":15
+            }
+          ]
+        },
+        {
+          "tag":"TTZToLLNuNu",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTZToLLNuNu",
+              "split":36
+            }
+          ]
+        },
+        {
+          "tag":"TTZToLLNuNu_m1to10",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTZToLLNuNu_m1to10",
+              "split":19
+            }
+          ]
+        },
+        {
+          "tag":"TTZToQQ",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/TTZToQQ",
+              "split":19
+            }
+          ]
+        },
+        {
+          "tag":"WW",
+          "xsec": 115.0422,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WW",
+              "split":11
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WW_ext",
+              "split":116
+            }
+          ]
+        },
+        {
+          "tag":"ZZ",
+          "xsec": 16.523,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZZ",
+              "split":12
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZZ_ext",
+              "split":66
+            }
+          ]
+        },
+        {
+          "tag":"WZ",
+          "xsec": 47.13,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WZ",
+              "split":30
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WZ_ext",
+              "split":128
+            }
+          ]
+        },
+        {
+          "tag":"ZJetsToNuNu_HT100to200",
+          "xsec": 1,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT100to200",
+              "split":51
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT100to200_ext",
+              "split":211
+            }
+          ]
+        },
+        {
+          "tag":"ZJetsToNuNu_HT200to400",
+          "xsec": 96.38,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT200to400",
+              "split":112
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT200to400_ext",
+              "split":201
+            }
+          ]
+        },
+        {
+          "tag":"ZJetsToNuNu_HT400to600",
+          "xsec": 13.46,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT400to600",
+              "split":22
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT400to600_ext",
+              "split":109
+            }
+          ]
+        },
+        {
+          "tag":"ZJetsToNuNu_HT600to800",
+          "xsec": 13.46,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT600to800",
+              "split":133
+            }
+          ]
+        },
+        {
+          "tag":"ZJetsToNuNu_HT800to1200",
+          "xsec": 13.46,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT800t1200",
+              "split":46
+            }
+          ]
+        },
+        {
+          "tag":"ZJetsToNuNu_HT1200to2500",
+          "xsec": 13.46,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT1200to2500",
+              "split":8
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT1200to2500_ext",
+              "split":3
+            }
+          ]
+        },
+        {
+          "tag":"ZJetsToNuNu_HT2500toInf",
+          "xsec": 5.17,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/ZJetsToNuNu_HT2500toInf",
+              "split":12
+            }
+          ]
+        },
+        {
+          "tag":"Wjets_70to100",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT70to100",
+              "split":207
+            }
+          ]
+        },
+        {
+          "tag":"Wjets_100to200",
+          "xsec": 1629.87,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT100to200",
+              "split":134
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT100to200_ext",
+              "split":151
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT100to200_ext2",
+              "split":175
+            }
+          ]
+        },
+        {
+          "tag":"Wjets_200to400",
+          "xsec": 435.6,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT200to400",
+              "split":89
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT200to400_ext",
+              "split":186
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT200to400_ext2",
+              "split":176
+            }
+          ]
+        },
+        {
+          "tag":"Wjets_400to600",
+          "xsec": 59.169,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT400to600",
+              "split":28
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT400to600_ext",
+              "split":79
+            }
+          ]
+        },
+        {
+          "tag":"Wjets_600to800",
+          "xsec": 14.5805,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT600to800",
+              "split":49
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT600to800_ext",
+              "split":193
+            }
+          ]
+        },
+        {
+          "tag":"Wjets_800to1200",
+          "xsec": 6.65612,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT800to1200",
+              "split":28
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT800to1200_ext",
+              "split":115
+            }
+          ]
+        },
+        {
+          "tag":"Wjets_1200to2500",
+          "xsec": 1.60809,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT1200to2500",
+              "split":7
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT1200to2500_ext",
+              "split":116
+            }
+          ]
+        },
+        {
+          "tag":"Wjets_2500toInf",
+          "xsec": 0.0389136,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT2500toInf",
+              "split":7
+            },
+            {
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/WJetsToLNu_HT2500toInf_ext",
+              "split":46
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

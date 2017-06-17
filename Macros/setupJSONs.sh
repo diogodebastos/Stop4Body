@@ -70,6 +70,8 @@ mergeJSONs $JSON_PATH/plot2016swap_DM70RP.json $JSON_PATH/otherMC.json       $JS
 mergeJSONs $JSON_PATH/plot2016_DM80RP.json     $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/Data.json         $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
 mergeJSONs $JSON_PATH/plot2016swap_DM80RP.json $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/DataSingleLepton.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
 
+mergeJSONs $JSON_PATH/plot2016_closure.json    $JSON_PATH/otherMC.json       $JSON_PATH/Orig/TTLep.json    $JSON_PATH/Orig/Wjets.json  $JSON_PATH/Orig/AllMCAsData.json  $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+
 # Make a JSON for the PU tests
 mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar_LO.json $JSON_PATH/Orig/Data.json
 
