@@ -59,7 +59,6 @@ int main(int argc, char** argv)
   bool rawEvents = false;
   bool noSF = false;
   bool unblind = false;
-  bool ddfake = false;
   bool dofakeclosure = false;
 
   if(argc < 2)
@@ -137,12 +136,6 @@ int main(int argc, char** argv)
     if(argument == "--unblind")
     {
       unblind = true;
-    }
-
-    if(argument == "--doDDFake")
-    {
-      unblind = true;
-      ddfake = true;
     }
 
     if(argument == "--dofakeclosure")
