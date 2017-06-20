@@ -626,7 +626,11 @@ ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double
       auto bin = centralElectronSFHist->FindBin(LepPt, LepEta);
       val = centralElectronSFHist->GetBinContent(bin);
       unc = centralElectronSFHist->GetBinError(bin);
-      theBin = bin;
+
+      int x_coord, y_coord, z_coord;
+      centralElectronSFHist->GetBinXYZ(bin, x_coord, y_coord, z_coord);
+      int x_size = centralElectronSFHist->GetNbinsX();
+      theBin = x_coord + (y_coord-1)*x_size;
     }
     else
     {
@@ -666,7 +670,11 @@ ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double
       auto bin = centralMuonSFHist->FindBin(LepPt, LepEta);
       val = centralMuonSFHist->GetBinContent(bin);
       unc = centralMuonSFHist->GetBinError(bin);
-      theBin = bin;
+
+      int x_coord, y_coord, z_coord;
+      centralMuonSFHist->GetBinXYZ(bin, x_coord, y_coord, z_coord);
+      int x_size = centralMuonSFHist->GetNbinsX();
+      theBin = x_coord + (y_coord-1)*x_size;
     }
     else
     {
