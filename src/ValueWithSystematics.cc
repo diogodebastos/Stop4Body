@@ -16,6 +16,7 @@
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 #include <cmath>
+#include <algorithm>
 
 
 // Specialized method for the bool type, where the return value is the logical or of all systematics

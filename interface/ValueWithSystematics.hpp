@@ -18,9 +18,19 @@
 
 //#define DO_TRACE
 
-#ifdef DO_TRACE
 #include <iostream>
-#endif
+
+template<class T>
+ValueWithSystematics<T> operator* (const double& builtin, const ValueWithSystematics<T>& myClass)
+{
+  return myClass*builtin;
+}
+
+template<class T>
+ValueWithSystematics<T> operator- (const int& builtin, const ValueWithSystematics<T>& myClass)
+{
+  return (-myClass) + builtin;
+}
 
 template<class T>
 ValueWithSystematicsInternal<T>::ValueWithSystematicsInternal(T val): isLocked(false), defaultValue(val), value(val)
