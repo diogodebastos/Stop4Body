@@ -248,10 +248,14 @@ int main(int argc, char** argv)
 
       size_t sync_count = 0;
 
+      std::cout << "\t  Opening output file and creating tree" << std::endl;
       TFile foutput(outputFile.c_str(), "RECREATE");
       TTree *bdttree= new TTree("bdttree","bdttree");
+      std::cout << "\t    The tree pointer: " << bdttree << std::endl;
 
       // New branch in bdt tree
+      std::cout << "\t  Creating branches in output tree" << std::endl;
+      std::cout << "\t    Creating event metadata branches" << std::endl;
       UInt_t Run;  bdttree->Branch("Run",&Run);
       ULong64_t Event;  bdttree->Branch("Event",&Event);
       UInt_t LumiSec;  bdttree->Branch("LumiSec",&LumiSec);
@@ -259,11 +263,14 @@ int main(int argc, char** argv)
       Float_t XS; bdttree->Branch("XS",&XS,"XS/F");
       Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
 
+      std::cout << "\t    Creating signal gen info" << std::endl;
       Float_t genGravitinoM; bdttree->Branch("genGravitinoM", &genGravitinoM, "genGravitinoM/F");
       Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
       Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
 
+      std::cout << "\t    Creating branches for systematic variations:" << std::endl;
+      std::cout << "\t      Creating systematic variation variables" << std::endl;
       ValueWithSystematics<float> triggerEfficiency;
       ValueWithSystematics<float> EWKISRweight;
       ValueWithSystematics<float> ISRweight;
@@ -272,21 +279,35 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> leptonISOSF;
       ValueWithSystematics<float> weight;
 
+      std::cout << "\t      Creating the variations if needed" << std::endl;
       if(!process.isdata())
       {
         // Performing dummy computations just so that the placeholders for all the uncertainties are created
+        std::cout << "\t        trigger" << std::endl;
         triggerEfficiency = triggerEfficiencyFromMETSys(200.0);
+        std::cout << "\t        EWK" << std::endl;
         EWKISRweight = EWKISRweightFromISRpTSys(20, 1.0, 40, 0.7);
+        std::cout << "\t        ISR" << std::endl;
         ISRweight = ISRweightFromNISRJetSys(2);
+        std::cout << "\t        pu" << std::endl;
         puWeight = 1.0f;
         puWeight.Systematic("PU_Up");
         puWeight.Systematic("PU_Down");
+        std::cout << "\t        lID" << std::endl;
         leptonIDSF = getLeptonIDSFSys(11, 20, 1.1);
+        std::cout << "\t        lISO" << std::endl;
         leptonISOSF = getLeptonISOSFSys(11, 20, 1.1);
 
+        std::cout << "\t        weight" << std::endl;
+        puWeight * triggerEfficiency;
+        std::cout << "\t          multiplication" << std::endl;
+        puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF;
+        std::cout << "\t          multiple multiplication" << std::endl;
         weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF;
+        std::cout << "\t          assignment" << std::endl;
 
         // Then lock the variables so that the placeholders are not removed or new ones are created
+        std::cout << "\t        locking" << std::endl;
         triggerEfficiency.Lock();
         EWKISRweight.Lock();
         ISRweight.Lock();
@@ -303,6 +324,7 @@ int main(int argc, char** argv)
       bool isLooseNotTight=false;
       Float_t looseNotTightWeight=1;
 
+      std::cout << "\t      Creating the base branches" << std::endl;
       bdttree->Branch("genWeight", &genWeight, "genWeight/F");
       bdttree->Branch("sumGenWeight", &sumGenWeight, "sumGenWeight/F");
       bdttree->Branch("filterEfficiency", &filterEfficiency, "filterEfficiency/F");
@@ -334,6 +356,7 @@ int main(int argc, char** argv)
         for(auto& systematic: weight.Systematics())
           bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       }
+      std::cout << "\t      Finished." << std::endl;
 
       bool isTight;      bdttree->Branch("isTight",   &isTight);
       bool isLoose;      bdttree->Branch("isLoose",   &isLoose);
@@ -428,6 +451,8 @@ int main(int argc, char** argv)
       Float_t badMuonFilter; bdttree->Branch("badMuonFilter", &badMuonFilter, "badMuonFilter/F");
       Float_t badChargedHadronFilter; bdttree->Branch("badChargedHadronFilter", &badChargedHadronFilter, "badChargedHadronFilter/F");
 
+      std::cout << "\t  Finished creating branches in output tree" << std::endl;
+
 
       Float_t Ncut0;  //bdttree->Branch("Ncut0",&Ncut0,"Ncut0/F");
       Float_t Ncut1;
@@ -438,6 +463,7 @@ int main(int argc, char** argv)
       Float_t Ncut6;
 
 
+      std::cout << "\t  Getting filter efficiency" << std::endl;
       TH2F* filterEfficiencyH = nullptr;
       if(sample.filterEfficiencyFile() != "")
       {
