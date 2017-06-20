@@ -109,11 +109,13 @@ int main(int argc, char** argv)
     replace(fileUp, ".root", "Up.root");
     TFile finputUp(fileUp.c_str(), "READ");
     dataPUUp = static_cast<TH1D*>(finputUp.Get("pileup"));
+    dataPUUp->Scale(1/dataPUUp->Integral());
 
     std::string fileDown = dataPUFileName;
     replace(fileDown, ".root", "Down.root");
     TFile finputDown(fileDown.c_str(), "READ");
     dataPUDown = static_cast<TH1D*>(finputDown.Get("pileup"));
+    dataPUDown->Scale(1/dataPUDown->Integral());
   //}
 
   TH1D* mcPU = nullptr;
