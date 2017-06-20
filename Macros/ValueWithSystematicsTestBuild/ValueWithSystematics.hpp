@@ -16,7 +16,7 @@
 #ifndef VALUE_WITH_SYSTEMATICS_HPP
 #define VALUE_WITH_SYSTEMATICS_HPP
 
-//#define DO_TRACE
+#define DO_TRACE
 
 #ifdef DO_TRACE
 #include <iostream>
