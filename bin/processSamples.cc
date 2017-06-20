@@ -315,6 +315,15 @@ int main(int argc, char** argv)
         leptonIDSF.Lock();
         leptonISOSF.Lock();
         weight.Lock();
+
+        triggerEfficiency = 1.0;
+        EWKISRweight = 1.0;
+        ISRweight = 1.0;
+        puWeight = 1.0;
+        leptonIDSF = 1.0;
+        leptonISOSF = 1.0;
+        looseNotTightWeight = 1.0;
+        weight = 1.0;
       }
 
       Float_t genWeight=1;
