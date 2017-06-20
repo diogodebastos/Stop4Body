@@ -13,7 +13,7 @@
 // methods have been implemented to allow functionality that is normally available to specific types or builtin functions.
 // </description>
 
-#include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
+#include "ValueWithSystematics.h"
 
 #include <cmath>
 
