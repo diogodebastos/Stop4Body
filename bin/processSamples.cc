@@ -299,38 +299,35 @@ int main(int argc, char** argv)
         leptonIDSF = getLeptonIDSFSys(11, 20, 1.1);
         std::cout << "\t        lISO" << std::endl;
         leptonISOSF = getLeptonISOSFSys(11, 20, 1.1);
-        std::cout << "\t        looseNotTight" << std::endl;
-        looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
+      }
 
-        std::cout << "\t        weight" << std::endl;
-        weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
+      std::cout << "\t        looseNotTight" << std::endl;
+      looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
 
+      std::cout << "\t        weight" << std::endl;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
+
+      std::cout << "\t        locking" << std::endl;
+      if(!process.isdata())
+      {
         // Then lock the variables so that the placeholders are not removed or new ones are created
-        std::cout << "\t        locking" << std::endl;
         triggerEfficiency.Lock();
         EWKISRweight.Lock();
         ISRweight.Lock();
         puWeight.Lock();
         leptonIDSF.Lock();
         leptonISOSF.Lock();
-
-        triggerEfficiency = 1.0;
-        EWKISRweight = 1.0;
-        ISRweight = 1.0;
-        puWeight = 1.0;
-        leptonIDSF = 1.0;
-        leptonISOSF = 1.0;
-      }
-      else
-      {
-        std::cout << "\t        looseNotTight" << std::endl;
-        looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
-
-        std::cout << "\t        weight" << std::endl;
-        weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
       }
       looseNotTightWeight.Lock();
       weight.Lock();
+
+
+      triggerEfficiency = 1.0;
+      EWKISRweight = 1.0;
+      ISRweight = 1.0;
+      puWeight = 1.0;
+      leptonIDSF = 1.0;
+      leptonISOSF = 1.0;
       looseNotTightWeight = 1.0;
       weight = 1.0;
 
