@@ -41,6 +41,7 @@
 #include "UserCode/Stop4Body/interface/SampleReader.h"
 #include "UserCode/Stop4Body/interface/commonFunctions.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 #define GENPART_LIMIT  40
 #define JETCOLL_LIMIT  40
@@ -277,6 +278,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> puWeight;
       ValueWithSystematics<float> leptonIDSF;
       ValueWithSystematics<float> leptonISOSF;
+      ValueWithSystematics<float> looseNotTightWeight;
       ValueWithSystematics<float> weight;
 
       std::cout << "\t      Creating the variations if needed" << std::endl;
@@ -297,14 +299,11 @@ int main(int argc, char** argv)
         leptonIDSF = getLeptonIDSFSys(11, 20, 1.1);
         std::cout << "\t        lISO" << std::endl;
         leptonISOSF = getLeptonISOSFSys(11, 20, 1.1);
+        std::cout << "\t        looseNotTight" << std::endl;
+        looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
 
         std::cout << "\t        weight" << std::endl;
-        puWeight * triggerEfficiency;
-        std::cout << "\t          multiplication" << std::endl;
-        puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF;
-        std::cout << "\t          multiple multiplication" << std::endl;
-        weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF;
-        std::cout << "\t          assignment" << std::endl;
+        weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
 
         // Then lock the variables so that the placeholders are not removed or new ones are created
         std::cout << "\t        locking" << std::endl;
@@ -314,15 +313,23 @@ int main(int argc, char** argv)
         puWeight.Lock();
         leptonIDSF.Lock();
         leptonISOSF.Lock();
-        weight.Lock();
       }
+      else
+      {
+        std::cout << "\t        looseNotTight" << std::endl;
+        looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
+
+        std::cout << "\t        weight" << std::endl;
+        weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
+      }
+      looseNotTightWeight.Lock();
+      weight.Lock();
 
       Float_t genWeight=1;
       Float_t sumGenWeight=1;
       Float_t filterEfficiency=1;
       Float_t splitFactor=1;
       bool isLooseNotTight=false;
-      Float_t looseNotTightWeight=1;
 
       std::cout << "\t      Creating the base branches" << std::endl;
       bdttree->Branch("genWeight", &genWeight, "genWeight/F");
@@ -337,7 +344,7 @@ int main(int argc, char** argv)
       bdttree->Branch("leptonISOSF", &(leptonISOSF.Value()), "leptonISOSF/F");
       bdttree->Branch("weight", &(weight.Value()), "weight/F");
       bdttree->Branch("isLooseNotTight", &isLooseNotTight);
-      bdttree->Branch("looseNotTightWeight", &looseNotTightWeight, "looseNotTightWeight/F");
+      bdttree->Branch("looseNotTightWeight", &looseNotTightWeight.Value(), "looseNotTightWeight/F");
 
       if(!process.isdata())
       {
@@ -353,6 +360,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("leptonIDSF_"+systematic).c_str(), &(leptonIDSF.Systematic(systematic)));
         for(auto& systematic: leptonISOSF.Systematics())
           bdttree->Branch(("leptonISOSF_"+systematic).c_str(), &(leptonISOSF.Systematic(systematic)));
+        for(auto& systematic: looseNotTightWeight.Systematics())
+          bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
         for(auto& systematic: weight.Systematics())
           bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       }
@@ -1178,7 +1187,7 @@ int main(int argc, char** argv)
 
           if(isLooseNotTight)
           {
-            double efficiency = static_cast<double>(getLeptonTightLooseRatio(LepID, LepPt, LepEta));
+            auto efficiency = getLeptonTightLooseRatioSys(LepID, LepPt, LepEta);
             looseNotTightWeight = efficiency/(1-efficiency);
             weight *= looseNotTightWeight;
           }
