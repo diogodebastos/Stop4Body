@@ -36,6 +36,13 @@
       "legPos":"top",
       "max":105.0,
       "bins":30
+    },
+    {
+      "name":"LepPt_var",
+      "expression":"LepPt",
+      "label":"p_{T}(l)",
+      "legPos":"top",
+      "varBins":[3.5,5,12,20,30,50,80,200]
     }
   ],
   "2Dplots":[
