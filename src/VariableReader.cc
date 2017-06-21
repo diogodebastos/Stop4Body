@@ -43,7 +43,7 @@ VariableInfo::VariableInfo(json jsonInfo)
   if(jsonInfo.count("logx") != 0)
     logx_ = jsonInfo["logx"];
 
-  logy_ = false;
+  logy_ = true;
   if(jsonInfo.count("logy") != 0)
     logy_ = jsonInfo["logy"];
 
