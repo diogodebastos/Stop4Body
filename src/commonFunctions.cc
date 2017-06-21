@@ -74,7 +74,7 @@ doubleUnc triggerEfficiencyFromMET(double met_pt)
 
   double term1 = par0err * 0.5 * (1.0 + TMath::Erf(recenterMet));
   term1 = term1 * term1;
-  double term2 = (par0/par2)*(par0/par2) * std::exp(2*recenterMet*recenterMet) / TMath::Pi();
+  double term2 = (par0/par2)*(par0/par2) * std::exp(-2*recenterMet*recenterMet) / TMath::Pi();
   term2 *= par1err*par1err + par2err*par2err*recenterMet*recenterMet;
   unc = std::sqrt(term1 + term2);
 
@@ -98,7 +98,7 @@ ValueWithSystematics<double> triggerEfficiencyFromMETSys(double met_pt)
 
   double term1 = par0err * 0.5 * (1.0 + TMath::Erf(recenterMet));
   term1 = term1 * term1;
-  double term2 = (par0/par2)*(par0/par2) * std::exp(2*recenterMet*recenterMet) / TMath::Pi();
+  double term2 = (par0/par2)*(par0/par2) * std::exp(-2*recenterMet*recenterMet) / TMath::Pi();
   term2 *= par1err*par1err + par2err*par2err*recenterMet*recenterMet;
   unc = std::sqrt(term1 + term2);
 
