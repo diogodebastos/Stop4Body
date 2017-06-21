@@ -31,6 +31,8 @@ class VariableInfo
     bool legRight() const {return legPos_ == "right";}
     bool legTop() const {return legPos_ == "top";}
     bool legBottom() const {return legPos_ == "bottom";}
+    std::vector<double> varBins() const {return varBins_;}
+    bool hasVarBins() const {return varBins_.size() > 0;}
 
   private:
   protected:
@@ -41,6 +43,7 @@ class VariableInfo
     double max_;
     int bins_;
     std::string legPos_;
+    std::vector<double> varBins_;
 
 };
 
