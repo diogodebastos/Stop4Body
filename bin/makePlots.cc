@@ -352,7 +352,7 @@ int main(int argc, char** argv)
       auto mcS   =   MC.getStack(cut.name(), variable, mcSel);
 
       if(dofakeclosure)
-        dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str();
+        dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str());
 
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
