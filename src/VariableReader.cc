@@ -39,6 +39,14 @@ VariableInfo::VariableInfo(json jsonInfo)
   if(jsonInfo.count("bins") != 0)
     bins_ = jsonInfo["bins"];
 
+  logx_ = false;
+  if(jsonInfo.count("logx") != 0)
+    logx_ = jsonInfo["logx"];
+
+  logy_ = false;
+  if(jsonInfo.count("logy") != 0)
+    logy_ = jsonInfo["logy"];
+
   legPos_ = "top";
   if(jsonInfo.count("legPos") != 0)
   {

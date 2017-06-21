@@ -139,7 +139,10 @@ int main(int argc, char** argv)
     }
 
     if(argument == "--dofakeclosure")
+    {
       dofakeclosure = true;
+      unblind = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -348,6 +351,9 @@ int main(int argc, char** argv)
       auto sigH  =  Sig.process(0).getHist(cut.name(), variable, mcSel); // TODO: stack different signal points
       auto mcS   =   MC.getStack(cut.name(), variable, mcSel);
 
+      if(dofakeclosure)
+        dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str();
+
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
       ratio->Divide(mcH);
@@ -363,7 +369,10 @@ int main(int argc, char** argv)
 
       t1->Draw();
       t1->cd();
-      t1->SetLogy(1);
+      if(variable.logx())
+        t1->SetLogx();
+      if(variable.logy())
+        t1->SetLogy();
       t1->SetTopMargin(0.07);
       //t1->SetBottomMargin(0.10);
       //t1->SetRightMargin(0.20);
