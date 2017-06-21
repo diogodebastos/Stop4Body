@@ -453,6 +453,8 @@ int main(int argc, char** argv)
       c1.cd();
       t2->Draw();
       t2->cd();
+      if(variable.logx())
+        t2->SetLogx();
       t2->SetGridy(true);
       t2->SetPad(0,0.0,1.0,ratioPadFraction);
       t2->SetTopMargin(0);
