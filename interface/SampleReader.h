@@ -13,6 +13,7 @@
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body/interface/VariableReader.h"
 
 using json = nlohmann::json;
 
