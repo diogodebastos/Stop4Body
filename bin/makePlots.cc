@@ -343,9 +343,9 @@ int main(int argc, char** argv)
       }
 
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
-      auto dataH = Data.getHist(cut.name(), variable, dataSel);
+      auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel);
       auto mcH   =   MC.getHist(cut.name(), variable, mcSel);
-      auto sigH  =  Sig.getHist(cut.name(), variable, mcSel);
+      auto sigH  =  Sig.process(0).getHist(cut.name(), variable, mcSel); // TODO: stack different signal points
       auto mcS   =   MC.getStack(cut.name(), variable, mcSel);
 
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
@@ -375,7 +375,7 @@ int main(int argc, char** argv)
 
         maxVal = std::max(mcS->GetMaximum(), dataH->GetMaximum());
         minVal = std::min(mcS->GetMinimum(), dataH->GetMinimum());
-        minVal = 0.2;
+        minVal = std::min(0.2, maxVal/1000);
 
         if(t1->GetLogy() == 1)
         {
