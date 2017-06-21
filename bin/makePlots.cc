@@ -343,16 +343,10 @@ int main(int argc, char** argv)
       }
 
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
-      auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
-      auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
-      //auto sigH  =  Sig.getHist(cut.name()+"_"+variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
-      TH1D* sigH = nullptr;
-      if(Sig.nProcesses() > 0)
-        sigH  =  Sig.process(0).getHist(variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
-      else
-        sigH = Sig.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
-
-      auto mcS   =   MC.getStack(variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
+      auto dataH = Data.getHist(cut.name(), variable, dataSel);
+      auto mcH   =   MC.getHist(cut.name(), variable, mcSel);
+      auto sigH  =  Sig.getHist(cut.name(), variable, mcSel);
+      auto mcS   =   MC.getStack(cut.name(), variable, mcSel);
 
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
