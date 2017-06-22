@@ -448,6 +448,242 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> JetLepMass;
       ValueWithSystematics<float> J3Mass;
 
+      if(!process.isdata())
+      {
+        Met.Systematic("JES_Up");
+        Met.Systematic("JES_Down");
+        Met.Systematic("JER_Up");
+        Met.Systematic("JER_Down");
+        mt.Systematic("JES_Up");
+        mt.Systematic("JES_Down");
+        mt.Systematic("JER_Up");
+        mt.Systematic("JER_Down");
+        Q80.Systematic("JES_Up");
+        Q80.Systematic("JES_Down");
+        Q80.Systematic("JER_Up");
+        Q80.Systematic("JER_Down");
+        CosDeltaPhi.Systematic("JES_Up");
+        CosDeltaPhi.Systematic("JES_Down");
+        CosDeltaPhi.Systematic("JER_Up");
+        CosDeltaPhi.Systematic("JER_Down");
+        Njet.Systematic("JES_Up");
+        Njet.Systematic("JES_Down");
+        Njet.Systematic("JER_Up");
+        Njet.Systematic("JER_Down");
+        Njet30.Systematic("JES_Up");
+        Njet30.Systematic("JES_Down");
+        Njet30.Systematic("JER_Up");
+        Njet30.Systematic("JER_Down");
+        Njet40.Systematic("JES_Up");
+        Njet40.Systematic("JES_Down");
+        Njet40.Systematic("JER_Up");
+        Njet40.Systematic("JER_Down");
+        Njet50.Systematic("JES_Up");
+        Njet50.Systematic("JES_Down");
+        Njet50.Systematic("JER_Up");
+        Njet50.Systematic("JER_Down");
+        Njet60.Systematic("JES_Up");
+        Njet60.Systematic("JES_Down");
+        Njet60.Systematic("JER_Up");
+        Njet60.Systematic("JER_Down");
+        Njet70.Systematic("JES_Up");
+        Njet70.Systematic("JES_Down");
+        Njet70.Systematic("JER_Up");
+        Njet70.Systematic("JER_Down");
+        Njet80.Systematic("JES_Up");
+        Njet80.Systematic("JES_Down");
+        Njet80.Systematic("JER_Up");
+        Njet80.Systematic("JER_Down");
+        Njet90.Systematic("JES_Up");
+        Njet90.Systematic("JES_Down");
+        Njet90.Systematic("JER_Up");
+        Njet90.Systematic("JER_Down");
+        Njet100.Systematic("JES_Up");
+        Njet100.Systematic("JES_Down");
+        Njet100.Systematic("JER_Up");
+        Njet100.Systematic("JER_Down");
+        Jet1Pt.Systematic("JES_Up");
+        Jet1Pt.Systematic("JES_Down");
+        Jet1Pt.Systematic("JER_Up");
+        Jet1Pt.Systematic("JER_Down");
+        Jet1Eta.Systematic("JES_Up");
+        Jet1Eta.Systematic("JES_Down");
+        Jet1Eta.Systematic("JER_Up");
+        Jet1Eta.Systematic("JER_Down");
+        Jet1CSV.Systematic("JES_Up");
+        Jet1CSV.Systematic("JES_Down");
+        Jet1CSV.Systematic("JER_Up");
+        Jet1CSV.Systematic("JER_Down");
+        Jet2Pt.Systematic("JES_Up");
+        Jet2Pt.Systematic("JES_Down");
+        Jet2Pt.Systematic("JER_Up");
+        Jet2Pt.Systematic("JER_Down");
+        Jet2Eta.Systematic("JES_Up");
+        Jet2Eta.Systematic("JES_Down");
+        Jet2Eta.Systematic("JER_Up");
+        Jet2Eta.Systematic("JER_Down");
+        Jet2CSV.Systematic("JES_Up");
+        Jet2CSV.Systematic("JES_Down");
+        Jet2CSV.Systematic("JER_Up");
+        Jet2CSV.Systematic("JER_Down");
+        Jet3Pt.Systematic("JES_Up");
+        Jet3Pt.Systematic("JES_Down");
+        Jet3Pt.Systematic("JER_Up");
+        Jet3Pt.Systematic("JER_Down");
+        Jet3Eta.Systematic("JES_Up");
+        Jet3Eta.Systematic("JES_Down");
+        Jet3Eta.Systematic("JER_Up");
+        Jet3Eta.Systematic("JER_Down");
+        Jet3CSV.Systematic("JES_Up");
+        Jet3CSV.Systematic("JES_Down");
+        Jet3CSV.Systematic("JER_Up");
+        Jet3CSV.Systematic("JER_Down");
+        DPhiJet1Jet2.Systematic("JES_Up");
+        DPhiJet1Jet2.Systematic("JES_Down");
+        DPhiJet1Jet2.Systematic("JER_Up");
+        DPhiJet1Jet2.Systematic("JER_Down");
+        HT.Systematic("JES_Up");
+        HT.Systematic("JES_Down");
+        HT.Systematic("JER_Up");
+        HT.Systematic("JER_Down");
+        NbLoose.Systematic("JES_Up");
+        NbLoose.Systematic("JES_Down");
+        NbLoose.Systematic("JER_Up");
+        NbLoose.Systematic("JER_Down");
+        NbTight.Systematic("JES_Up");
+        NbTight.Systematic("JES_Down");
+        NbTight.Systematic("JER_Up");
+        NbTight.Systematic("JER_Down");
+        NbLooseTo50.Systematic("JES_Up");
+        NbLooseTo50.Systematic("JES_Down");
+        NbLooseTo50.Systematic("JER_Up");
+        NbLooseTo50.Systematic("JER_Down");
+        NbLoose50.Systematic("JES_Up");
+        NbLoose50.Systematic("JES_Down");
+        NbLoose50.Systematic("JER_Up");
+        NbLoose50.Systematic("JER_Down");
+        NbMediumTo50.Systematic("JES_Up");
+        NbMediumTo50.Systematic("JES_Down");
+        NbMediumTo50.Systematic("JER_Up");
+        NbMediumTo50.Systematic("JER_Down");
+        NbMedium50.Systematic("JES_Up");
+        NbMedium50.Systematic("JES_Down");
+        NbMedium50.Systematic("JER_Up");
+        NbMedium50.Systematic("JER_Down");
+        NbTightTo50.Systematic("JES_Up");
+        NbTightTo50.Systematic("JES_Down");
+        NbTightTo50.Systematic("JER_Up");
+        NbTightTo50.Systematic("JER_Down");
+        NbTight50.Systematic("JES_Up");
+        NbTight50.Systematic("JES_Down");
+        NbTight50.Systematic("JER_Up");
+        NbTight50.Systematic("JER_Down");
+        JetHBpt.Systematic("JES_Up");
+        JetHBpt.Systematic("JES_Down");
+        JetHBpt.Systematic("JER_Up");
+        JetHBpt.Systematic("JER_Down");
+        JetHBeta.Systematic("JES_Up");
+        JetHBeta.Systematic("JES_Down");
+        JetHBeta.Systematic("JER_Up");
+        JetHBeta.Systematic("JER_Down");
+        JetHBindex.Systematic("JES_Up");
+        JetHBindex.Systematic("JES_Down");
+        JetHBindex.Systematic("JER_Up");
+        JetHBindex.Systematic("JER_Down");
+        JetHBCSV.Systematic("JES_Up");
+        JetHBCSV.Systematic("JES_Down");
+        JetHBCSV.Systematic("JER_Up");
+        JetHBCSV.Systematic("JER_Down");
+        JetB2pt.Systematic("JES_Up");
+        JetB2pt.Systematic("JES_Down");
+        JetB2pt.Systematic("JER_Up");
+        JetB2pt.Systematic("JER_Down");
+        JetB2eta.Systematic("JES_Up");
+        JetB2eta.Systematic("JES_Down");
+        JetB2eta.Systematic("JER_Up");
+        JetB2eta.Systematic("JER_Down");
+        JetB2index.Systematic("JES_Up");
+        JetB2index.Systematic("JES_Down");
+        JetB2index.Systematic("JER_Up");
+        JetB2index.Systematic("JER_Down");
+        JetB2CSV.Systematic("JES_Up");
+        JetB2CSV.Systematic("JES_Down");
+        JetB2CSV.Systematic("JER_Up");
+        JetB2CSV.Systematic("JER_Down");
+        DrJet1Lep.Systematic("JES_Up");
+        DrJet1Lep.Systematic("JES_Down");
+        DrJet1Lep.Systematic("JER_Up");
+        DrJet1Lep.Systematic("JER_Down");
+        DrJet2Lep.Systematic("JES_Up");
+        DrJet2Lep.Systematic("JES_Down");
+        DrJet2Lep.Systematic("JER_Up");
+        DrJet2Lep.Systematic("JER_Down");
+        DrJetHBLep.Systematic("JES_Up");
+        DrJetHBLep.Systematic("JES_Down");
+        DrJetHBLep.Systematic("JER_Up");
+        DrJetHBLep.Systematic("JER_Down");
+        DrJet1Jet2.Systematic("JES_Up");
+        DrJet1Jet2.Systematic("JES_Down");
+        DrJet1Jet2.Systematic("JER_Up");
+        DrJet1Jet2.Systematic("JER_Down");
+        JetLepMass.Systematic("JES_Up");
+        JetLepMass.Systematic("JES_Down");
+        JetLepMass.Systematic("JER_Up");
+        JetLepMass.Systematic("JER_Down");
+        J3Mass.Systematic("JES_Up");
+        J3Mass.Systematic("JES_Down");
+        J3Mass.Systematic("JER_Up");
+        J3Mass.Systematic("JER_Down");
+
+        Met.Lock();
+        mt.Lock();
+        Q80.Lock();
+        CosDeltaPhi.Lock();
+        nIsr_out.Lock();
+        Njet.Lock();
+        Njet30.Lock();
+        Njet40.Lock();
+        Njet50.Lock();
+        Njet60.Lock();
+        Njet70.Lock();
+        Njet80.Lock();
+        Njet90.Lock();
+        Njet100.Lock();
+        Jet1Pt.Lock();
+        Jet1Eta.Lock();
+        Jet1CSV.Lock();
+        Jet2Pt.Lock();
+        Jet2Eta.Lock();
+        Jet2CSV.Lock();
+        Jet3Pt.Lock();
+        Jet3Eta.Lock();
+        Jet3CSV.Lock();
+        DPhiJet1Jet2.Lock();
+        HT.Lock();
+        NbLoose.Lock();
+        NbTight.Lock();
+        NbLooseTo50.Lock();
+        NbLoose50.Lock();
+        NbMediumTo50.Lock();
+        NbMedium50.Lock();
+        NbTightTo50.Lock();
+        NbTight50.Lock();
+        JetHBpt.Lock();
+        JetHBeta.Lock();
+        JetHBindex.Lock();
+        JetHBCSV.Lock();
+        JetB2pt.Lock();
+        JetB2eta.Lock();
+        JetB2index.Lock();
+        JetB2CSV.Lock();
+        DrJet1Lep.Lock();
+        DrJet2Lep.Lock();
+        DrJetHBLep.Lock();
+        DrJet1Jet2.Lock();
+        JetLepMass.Lock();
+        J3Mass.Lock();
+      }
+
 
       bdttree->Branch("Met",&Met.Value(),"Met/F");
       bdttree->Branch("mt",&mt.Value(),"mt/F");
@@ -499,6 +735,104 @@ int main(int argc, char** argv)
       bdttree->Branch("DrJet1Jet2",&DrJet1Jet2.Value(),"DrJet1Jet2/F");
       bdttree->Branch("JetLepMass",&JetLepMass.Value(),"JetLepMass/F");
       bdttree->Branch("J3Mass",&J3Mass.Value(),"J3Mass/F");
+
+      if(!process.isdata())
+      {
+        for(auto& systematic: Met.Systematics())
+          bdttree->Branch(("Met_"+systematic).c_str(), &(Met.Systematic(systematic)));
+        for(auto& systematic: mt.Systematics())
+          bdttree->Branch(("mt_"+systematic).c_str(), &(mt.Systematic(systematic)));
+        for(auto& systematic: Q80.Systematics())
+          bdttree->Branch(("Q80_"+systematic).c_str(), &(Q80.Systematic(systematic)));
+        for(auto& systematic: CosDeltaPhi.Systematics())
+          bdttree->Branch(("CosDeltaPhi_"+systematic).c_str(), &(CosDeltaPhi.Systematic(systematic)));
+        for(auto& systematic: nIsr_out.Systematics())
+          bdttree->Branch(("nIsr_"+systematic).c_str(), &(nIsr_out.Systematic(systematic)));
+        for(auto& systematic: Njet.Systematics())
+          bdttree->Branch(("Njet_"+systematic).c_str(), &(Njet.Systematic(systematic)));
+        for(auto& systematic: Njet30.Systematics())
+          bdttree->Branch(("Njet30_"+systematic).c_str(), &(Njet30.Systematic(systematic)));
+        for(auto& systematic: Njet40.Systematics())
+          bdttree->Branch(("Njet40_"+systematic).c_str(), &(Njet40.Systematic(systematic)));
+        for(auto& systematic: Njet50.Systematics())
+          bdttree->Branch(("Njet50_"+systematic).c_str(), &(Njet50.Systematic(systematic)));
+        for(auto& systematic: Njet60.Systematics())
+          bdttree->Branch(("Njet60_"+systematic).c_str(), &(Njet60.Systematic(systematic)));
+        for(auto& systematic: Njet70.Systematics())
+          bdttree->Branch(("Njet70_"+systematic).c_str(), &(Njet70.Systematic(systematic)));
+        for(auto& systematic: Njet80.Systematics())
+          bdttree->Branch(("Njet80_"+systematic).c_str(), &(Njet80.Systematic(systematic)));
+        for(auto& systematic: Njet90.Systematics())
+          bdttree->Branch(("Njet90_"+systematic).c_str(), &(Njet90.Systematic(systematic)));
+        for(auto& systematic: Njet100.Systematics())
+          bdttree->Branch(("Njet100_"+systematic).c_str(), &(Njet100.Systematic(systematic)));
+        for(auto& systematic: Jet1Pt.Systematics())
+          bdttree->Branch(("Jet1Pt_"+systematic).c_str(), &(Jet1Pt.Systematic(systematic)));
+        for(auto& systematic: Jet1Eta.Systematics())
+          bdttree->Branch(("Jet1Eta_"+systematic).c_str(), &(Jet1Eta.Systematic(systematic)));
+        for(auto& systematic: Jet1CSV.Systematics())
+          bdttree->Branch(("Jet1CSV_"+systematic).c_str(), &(Jet1CSV.Systematic(systematic)));
+        for(auto& systematic: Jet2Pt.Systematics())
+          bdttree->Branch(("Jet2Pt_"+systematic).c_str(), &(Jet2Pt.Systematic(systematic)));
+        for(auto& systematic: Jet2Eta.Systematics())
+          bdttree->Branch(("Jet2Eta_"+systematic).c_str(), &(Jet2Eta.Systematic(systematic)));
+        for(auto& systematic: Jet2CSV.Systematics())
+          bdttree->Branch(("Jet2CSV_"+systematic).c_str(), &(Jet2CSV.Systematic(systematic)));
+        for(auto& systematic: Jet3Pt.Systematics())
+          bdttree->Branch(("Jet3Pt_"+systematic).c_str(), &(Jet3Pt.Systematic(systematic)));
+        for(auto& systematic: Jet3Eta.Systematics())
+          bdttree->Branch(("Jet3Eta_"+systematic).c_str(), &(Jet3Eta.Systematic(systematic)));
+        for(auto& systematic: Jet3CSV.Systematics())
+          bdttree->Branch(("Jet3CSV_"+systematic).c_str(), &(Jet3CSV.Systematic(systematic)));
+        for(auto& systematic: DPhiJet1Jet2.Systematics())
+          bdttree->Branch(("DPhiJet1Jet2_"+systematic).c_str(), &(DPhiJet1Jet2.Systematic(systematic)));
+        for(auto& systematic: HT.Systematics())
+          bdttree->Branch(("HT_"+systematic).c_str(), &(HT.Systematic(systematic)));
+        for(auto& systematic: NbLoose.Systematics())
+          bdttree->Branch(("NbLoose_"+systematic).c_str(), &(NbLoose.Systematic(systematic)));
+        for(auto& systematic: NbTight.Systematics())
+          bdttree->Branch(("NbTight_"+systematic).c_str(), &(NbTight.Systematic(systematic)));
+        for(auto& systematic: NbLooseTo50.Systematics())
+          bdttree->Branch(("NbLooseTo50_"+systematic).c_str(), &(NbLooseTo50.Systematic(systematic)));
+        for(auto& systematic: NbLoose50.Systematics())
+          bdttree->Branch(("NbLoose50_"+systematic).c_str(), &(NbLoose50.Systematic(systematic)));
+        for(auto& systematic: NbMediumTo50.Systematics())
+          bdttree->Branch(("NbMediumTo50_"+systematic).c_str(), &(NbMediumTo50.Systematic(systematic)));
+        for(auto& systematic: NbMedium50.Systematics())
+          bdttree->Branch(("NbMedium50_"+systematic).c_str(), &(NbMedium50.Systematic(systematic)));
+        for(auto& systematic: NbTightTo50.Systematics())
+          bdttree->Branch(("NbTightTo50_"+systematic).c_str(), &(NbTightTo50.Systematic(systematic)));
+        for(auto& systematic: NbTight50.Systematics())
+          bdttree->Branch(("NbTight50_"+systematic).c_str(), &(NbTight50.Systematic(systematic)));
+        for(auto& systematic: JetHBpt.Systematics())
+          bdttree->Branch(("JetHBpt_"+systematic).c_str(), &(JetHBpt.Systematic(systematic)));
+        for(auto& systematic: JetHBeta.Systematics())
+          bdttree->Branch(("JetHBeta_"+systematic).c_str(), &(JetHBeta.Systematic(systematic)));
+        for(auto& systematic: JetHBindex.Systematics())
+          bdttree->Branch(("JetHBindex_"+systematic).c_str(), &(JetHBindex.Systematic(systematic)));
+        for(auto& systematic: JetHBCSV.Systematics())
+          bdttree->Branch(("JetHBCSV_"+systematic).c_str(), &(JetHBCSV.Systematic(systematic)));
+        for(auto& systematic: JetB2pt.Systematics())
+          bdttree->Branch(("JetB2pt_"+systematic).c_str(), &(JetB2pt.Systematic(systematic)));
+        for(auto& systematic: JetB2eta.Systematics())
+          bdttree->Branch(("JetB2eta_"+systematic).c_str(), &(JetB2eta.Systematic(systematic)));
+        for(auto& systematic: JetB2index.Systematics())
+          bdttree->Branch(("JetB2index_"+systematic).c_str(), &(JetB2index.Systematic(systematic)));
+        for(auto& systematic: JetB2CSV.Systematics())
+          bdttree->Branch(("JetB2CSV_"+systematic).c_str(), &(JetB2CSV.Systematic(systematic)));
+        for(auto& systematic: DrJet1Lep.Systematics())
+          bdttree->Branch(("DrJet1Lep_"+systematic).c_str(), &(DrJet1Lep.Systematic(systematic)));
+        for(auto& systematic: DrJet2Lep.Systematics())
+          bdttree->Branch(("DrJet2Lep_"+systematic).c_str(), &(DrJet2Lep.Systematic(systematic)));
+        for(auto& systematic: DrJetHBLep.Systematics())
+          bdttree->Branch(("DrJetHBLep_"+systematic).c_str(), &(DrJetHBLep.Systematic(systematic)));
+        for(auto& systematic: DrJet1Jet2.Systematics())
+          bdttree->Branch(("DrJet1Jet2_"+systematic).c_str(), &(DrJet1Jet2.Systematic(systematic)));
+        for(auto& systematic: JetLepMass.Systematics())
+          bdttree->Branch(("JetLepMass_"+systematic).c_str(), &(JetLepMass.Systematic(systematic)));
+        for(auto& systematic: J3Mass.Systematics())
+          bdttree->Branch(("J3Mass_"+systematic).c_str(), &(J3Mass.Systematic(systematic)));
+      }
 
       Float_t HLT_PFMET90_PFMHT90;   bdttree->Branch("HLT_PFMET90_PFMHT90",   &HLT_PFMET90_PFMHT90,   "HLT_PFMET90_PFMHT90/F"  );
       Float_t HLT_PFMET100_PFMHT100; bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
@@ -622,6 +956,32 @@ int main(int argc, char** argv)
 
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
+        Float_t met_JetEnUp_Pt;      inputtree->SetBranchAddress("met_JetEnUp_Pt"    , &met_JetEnUp_Pt);
+        Float_t met_JetEnUp_Phi;     inputtree->SetBranchAddress("met_JetEnUp_Phi",   &met_JetEnUp_Phi);
+        Float_t met_JetEnDown_Pt;      inputtree->SetBranchAddress("met_JetEnDown_Pt"    , &met_JetEnDown_Pt);
+        Float_t met_JetEnDown_Phi;     inputtree->SetBranchAddress("met_JetEnDown_Phi",   &met_JetEnDown_Phi);
+        Float_t met_JetResUp_Pt;
+        Float_t met_JetResUp_Phi;
+        Float_t met_JetResDown_Pt;
+        Float_t met_JetResDown_Phi;
+        Float_t Jet_corr[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr", &Jet_corr);
+        Float_t Jet_corr_JECUp[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr_JECUp", &Jet_corr_JECUp);
+        Float_t Jet_corr_JECDown[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr_JECDown", &Jet_corr_JECDown);
+        Float_t Jet_corr_JER[JETCOLL_LIMIT];
+        Float_t Jet_corr_JERUp[JETCOLL_LIMIT];
+        Float_t Jet_corr_JERDown[JETCOLL_LIMIT];
+
+        if(!process.isdata())
+        {
+          inputtree->SetBranchAddress("met_JetResUp_Pt"    , &met_JetResUp_Pt);
+          inputtree->SetBranchAddress("met_JetResUp_Phi",   &met_JetResUp_Phi);
+          inputtree->SetBranchAddress("met_JetResDown_Pt"    , &met_JetResDown_Pt);
+          inputtree->SetBranchAddress("met_JetResDown_Phi",   &met_JetResDown_Phi);
+          inputtree->SetBranchAddress("Jet_corr_JER", &Jet_corr_JER);
+          inputtree->SetBranchAddress("Jet_corr_JERUp", &Jet_corr_JERUp);
+          inputtree->SetBranchAddress("Jet_corr_JERDown", &Jet_corr_JERDown);
+        }
+
         Int_t   LepGood_mcMatchId[LEPCOLL_LIMIT];
         Int_t nGenPart = 0;
         Int_t GenPart_motherId[GENPART_LIMIT];
@@ -729,22 +1089,46 @@ int main(int argc, char** argv)
             puWeight = 1.0f;
 
           // Object ID
-          std::vector<int> validJets;
           std::vector<int> validLeptons;
           std::vector<int> looseLeptons;
-          std::vector<int> bjetList; // Same as validJets, but sorted by CSV value
+          ValueWithSystematics<std::vector<double>> jetPt;
+          ValueWithSystematics<std::vector<int>> validJets;
+          ValueWithSystematics<std::vector<int>> bjetList; // Same as validJets, but sorted by CSV value
 
-          validJets.clear();
           validLeptons.clear();
           looseLeptons.clear();
-          bjetList.clear();
 
           for(Int_t i = 0; i < nJetIn; ++i)
           {
-            if(std::abs(Jet_eta[i]) < 2.4 && Jet_pt[i] > jetPtThreshold)
+            jetPt.Value().push_back(Jet_pt[i]);
+            if(!process.isdata())
             {
-              validJets.push_back(i);
-              bjetList.push_back(i);
+              jetPt.Systematic("JES_Up").push_back(Jet_pt[i]/Jet_corr[i]*Jet_corr_JECUp[i]);
+              jetPt.Systematic("JES_Down").push_back(Jet_pt[i]/Jet_corr[i]*Jet_corr_JECDown[i]);
+
+              if(Jet_corr_JER[i] < 0)
+              {
+                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]);
+                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]);
+              }
+              else
+              {
+                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
+                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
+              }
+            }
+          }
+          std::vector<std::string> list;
+
+          for(auto & syst : list)
+          {
+            for(Int_t i = 0; i < nJetIn; ++i)
+            {
+              if(std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
+              {
+                validJets.GetSystematicOrValue(syst).push_back(i);
+                bjetList.GetSystematicOrValue(syst).push_back(i);
+              }
             }
           }
           std::sort(validJets.begin(), validJets.end(), [Jet_pt] (const int &left, const int &right) {
