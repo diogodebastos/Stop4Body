@@ -60,6 +60,23 @@
         "max": 20,
         "bins": 20
       }
+    },
+    {
+      "name":"TightVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "name":"Tight",
+        "expression":"isTight",
+        "label":"Tight",
+        "min": -0.5,
+        "max": 1.5,
+        "bins": 2
+      }
     }
   ]
 }
