@@ -203,6 +203,10 @@ int main(int argc, char** argv)
   muonTightToLooseHighEta = static_cast<TH1F*>(tightToLooseRatios.Get("muonEfficiencyHighEta"));
   cwd->cd();
 
+  Float_t identity[100];
+  for(int i = 0; i < 100; ++i)
+    identity[i] = i;
+
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName);
 
@@ -1262,12 +1266,17 @@ int main(int argc, char** argv)
 
           // Setting the values to be saved in the output tree
           Met = met_pt;
+          ValueWithSystematics<double> MetPhi = met_phi;
           if(!process.isdata())
           {
             Met.Systematic("JES_Up") = met_JetEnUp_Pt;
             Met.Systematic("JES_Down") = met_JetEnDown_Pt;
             Met.Systematic("JER_Up") = met_JetResUp_Pt;
             Met.Systematic("JER_Down") = met_JetResDown_Pt;
+            MetPhi.Systematic("JES_Up") = met_JetEnUp_Phi;
+            MetPhi.Systematic("JES_Down") = met_JetEnDown_Phi;
+            MetPhi.Systematic("JER_Up") = met_JetResUp_Phi;
+            MetPhi.Systematic("JER_Down") = met_JetResDown_Phi;
           }
 
           float lep_phi, lep_eta;
@@ -1283,50 +1292,132 @@ int main(int argc, char** argv)
             lep_eta     = -9999;
           }
 
-          if(validJets.size() > 1)
+          auto loadQuantity = [] (Float_t* vector, ValueWithSystematics<std::vector<int>> indexer, int index, double defaultValue = -9999) -> ValueWithSystematics<double>
           {
-            int jetIndex = validJets[1];
-            Jet2Pt = Jet_pt[jetIndex];
-            Jet2Eta = Jet_eta[jetIndex];
-            Jet2CSV = Jet_btagCSV[jetIndex];
+            ValueWithSystematics<double> retVal = defaultValue;
 
-            double dphijj, detajj;
-            dphijj = DeltaPhi(Jet_phi[validJets[0]], Jet_phi[jetIndex]);
-            detajj = Jet_eta[validJets[0]] - Jet_eta[jetIndex];
-            DPhiJet1Jet2 = dphijj;
-            DrJet1Jet2 = std::sqrt( std::pow(dphijj,2) + std::pow(detajj,2) );
+            std::vector<std::string> list;
+            loadSystematics(list, indexer);
+            for(auto& syst: list)
+              retVal.Systematic(syst);
+            list.push_back("Value");
 
-            if(validLeptons.size() > 0)
+            for(auto& syst: list)
             {
-              float dphi = DeltaPhi(Jet_phi[jetIndex], lep_phi);
-              float deta = Jet_eta[jetIndex] - lep_eta;
-              DrJet2Lep = std::sqrt( std::pow(dphi,2) + std::pow(deta,2) );
-            }
-            else
-            {
-              DrJet2Lep = -9999;
+              if(indexer.GetSystematicOrValue(syst).size() > index)
+              {
+                retVal.GetSystematicOrValue(syst) = vector[indexer.GetSystematicOrValue(syst)[index]];
+              }
             }
 
-            int bJetIndex = bjetList[1];
-            JetB2pt = Jet_pt[bJetIndex];
-            JetB2eta = Jet_eta[bJetIndex];
-            JetB2CSV = Jet_btagCSV[bJetIndex];
-            JetB2index = bJetIndex;
-          }
-          else
+            return retVal;
+          };
+          auto loadSysQuantity = [] (ValueWithSystematics<std::vector<double>> vector, ValueWithSystematics<std::vector<int>> indexer, int index, double defaultValue = -9999) -> ValueWithSystematics<double>
           {
-            Jet2Pt = -9999;
-            Jet2Eta = -9999;
-            Jet2CSV = -9999;
-            DPhiJet1Jet2 = -9999;
-            DrJet1Jet2 = -9999;
-            DrJet2Lep = -9999;
+            ValueWithSystematics<double> retVal = defaultValue;
 
-            JetB2pt = -9999;
-            JetB2eta = -9999;
-            JetB2CSV = -9999;
-            JetB2index = -9999;
-          }
+            std::vector<std::string> list;
+            loadSystematics(list, indexer);
+            loadSystematics(list, vector);
+            for(auto& syst: list)
+              retVal.Systematic(syst);
+            list.push_back("Value");
+
+            for(auto& syst: list)
+            {
+              if(indexer.GetSystematicOrValue(syst).size() > index)
+              {
+                retVal.GetSystematicOrValue(syst) = vector.GetSystematicOrValue(syst)[indexer.GetSystematicOrValue(syst)[index]];
+              }
+            }
+
+            return retVal;
+          };
+
+          ValueWithSystematics<double> Jet2EtaDou, Jet1EtaDou;
+          Jet2Pt     = loadSysQuantity(jetPt,    validJets, 1);
+          JetB2pt    = loadSysQuantity(jetPt,    bjetList,  1);
+          Jet2EtaDou = loadQuantity(Jet_eta,     validJets, 1);
+          Jet2CSV    = loadQuantity(Jet_btagCSV, validJets, 1);
+          JetB2eta   = loadQuantity(Jet_eta,     bjetList,  1);
+          JetB2CSV   = loadQuantity(Jet_btagCSV, bjetList,  1);
+          JetB2index = loadQuantity(identity,    bjetList,  1);
+          Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
+
+          Jet2Eta = Jet2EtaDou;
+          Jet1Eta = Jet1EtaDou;
+
+          ValueWithSystematics<double> Jet1Phi = loadQuantity(Jet_phi, validJets, 0);
+          ValueWithSystematics<double> Jet2Phi = loadQuantity(Jet_phi, validJets, 1);
+
+          auto DeltaPhiSys = [] (const ValueWithSystematics<double>& phi1, const ValueWithSystematics<double>& phi2, double defaultValue = -9999) -> ValueWithSystematics<double>
+          {
+            ValueWithSystematics<double> retVal = phi1 - phi2;
+
+            std::vector<std::string> list;
+            list.push_back("Value");
+            loadSystematics(list, retVal);
+
+            for(auto& syst: list)
+            {
+              if(phi1.GetSystematicOrValue(syst) == defaultValue || phi2.GetSystematicOrValue(syst) == defaultValue)
+                retVal.GetSystematicOrValue(syst) = defaultValue;
+              else
+              {
+                while(retVal.GetSystematicOrValue(syst) >= M_PIl)
+                  retVal.GetSystematicOrValue(syst) -= (2*M_PIl);
+                while(retVal.GetSystematicOrValue(syst) < M_PIl)
+                  retVal.GetSystematicOrValue(syst) += (2*M_PIl);
+
+                if(retVal.GetSystematicOrValue(syst) < 0)
+                  retVal.GetSystematicOrValue(syst) = -retVal.GetSystematicOrValue(syst);
+              }
+            }
+
+            return retVal;
+          };
+          auto DeltaEtaSys = [] (const ValueWithSystematics<double>& eta1, const ValueWithSystematics<double>& eta2, double defaultValue = -9999) -> ValueWithSystematics<double>
+          {
+            ValueWithSystematics<double> retVal = eta1 - eta2;
+
+            std::vector<std::string> list;
+            list.push_back("Value");
+            loadSystematics(list, retVal);
+
+            for(auto& syst: list)
+            {
+              if(phi1.GetSystematicOrValue(syst) == defaultValue || phi2.GetSystematicOrValue(syst) == defaultValue)
+                retVal.GetSystematicOrValue(syst) = defaultValue;
+            }
+
+            return retVal;
+          };
+          auto QuadSumSys = []  (const ValueWithSystematics<double>& par1, const ValueWithSystematics<double>& par2, double defaultValue = -9999) -> ValueWithSystematics<double>
+          {
+            ValueWithSystematics<double> retVal = (par1.pow(2) + par2.pow(2)).Sqrt();
+
+            std::vector<std::string> list;
+            list.push_back("Value");
+            loadSystematics(list, retVal);
+
+            for(auto& syst: list)
+            {
+              if(par1.GetSystematicOrValue(syst) == defaultValue || par2.GetSystematicOrValue(syst) == defaultValue)
+                retVal.GetSystematicOrValue(syst) = defaultValue;
+            }
+
+            return retVal;
+          };
+
+          ValueWithSystematics<double> dphijj = DeltaPhiSys(Jet1Phi, Jet2Phi);
+          ValueWithSystematics<double> detajj = DeltaEtaSys(Jet1EtaDou, Jet2EtaDou);
+          DPhiJet1Jet2 = dphijj;
+          DrJet1Jet2 = QuadSumSys(dphijj, detajj);
+
+          ValueWithSystematics<double> dphi = DeltaPhiSys(Jet2Phi, ValueWithSystematics<double>(lep_phi));
+          ValueWithSystematics<double> deta = DeltaEtaSys(Jet2EtaDou, ValueWithSystematics<double>(lep_eta));
+          DrJet2Lep = QuadSumSys(dphi, deta);
+
           if(preemptiveDropEvents && !static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
             continue;
 
