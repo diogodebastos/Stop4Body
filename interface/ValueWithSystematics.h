@@ -266,6 +266,7 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     ValueWithSystematics<double>& operator= (ValueWithSystematicsInternal<double>&& val) noexcept;
 
     ValueWithSystematics<double> Cos() const;
+    ValueWithSystematics<double> Sin() const;
     ValueWithSystematics<double> Sqrt() const;
     ValueWithSystematics<double> abs() const;
     ValueWithSystematics<double> pow(double exp) const;

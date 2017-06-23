@@ -165,6 +165,16 @@ ValueWithSystematics<double> ValueWithSystematics<double>::Cos() const
   return retVal;
 }
 
+ValueWithSystematics<double> ValueWithSystematics<double>::Sin() const
+{
+  ValueWithSystematics<double> retVal = std::sin(value);
+
+  for(auto& kv: systematics)
+    retVal(kv.first) = std::sin(kv.second);
+
+  return retVal;
+}
+
 ValueWithSystematics<double> ValueWithSystematics<double>::Sqrt() const
 {
   ValueWithSystematics<double> retVal = std::sqrt(value);
