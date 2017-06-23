@@ -281,6 +281,9 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     using ValueWithSystematicsInternal<double>::metadata;
 };
 
+template<class T>
+void loadSystematics(std::vector<std::string>& list, const ValueWithSystematics<T>& variable);
+
 // Templated classes must have their code in the header :(
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.hpp"
 

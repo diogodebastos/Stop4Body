@@ -938,4 +938,18 @@ ValueWithSystematics<T> ValueWithSystematics<std::vector<T>>::first(T defaultVal
   return retVal;
 }
 
+template<class T>
+void loadSystematics(std::vector<std::string>& list, const ValueWithSystematics<T>& variable)
+{
+  for(auto& syst: variable.Systematics())
+  {
+    if(std::find(list.begin(), list.end(), syst) == list.end())
+    {
+      list.push_back(syst);
+    }
+  }
+
+  return;
+}
+
 #endif
