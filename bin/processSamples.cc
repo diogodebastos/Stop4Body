@@ -1130,18 +1130,38 @@ int main(int argc, char** argv)
                 bjetList.GetSystematicOrValue(syst).push_back(i);
               }
             }
-          }
-          std::sort(validJets.begin(), validJets.end(), [Jet_pt] (const int &left, const int &right) {
-            return Jet_pt[left] > Jet_pt[right];
-            });
-          std::sort(bjetList.begin(), bjetList.end(), [Jet_btagCSV] (const int &left, const int &right) {
-              return Jet_btagCSV[left] > Jet_btagCSV[right];
-              });
 
-          if(preemptiveDropEvents && validJets.size() > 0)
-            if(Jet_pt[validJets[0]] < ISR_JET_PT) continue;
-          if(preemptiveDropEvents && validJets.size() == 0)
-            continue;
+            std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
+              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
+            });
+            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).begin(), [Jet_btagCSV] (const int &left, const int &right) {
+              return Jet_btagCSV[left] > Jet_btagCSV[right];
+            });
+          }
+
+          auto jetThreshold = [&jetPt, &validJets] (const std::string& syst) -> bool
+          {
+            if(validJets.GetSystematicOrValue(syst).size() == 0)
+              return false;
+            return (jetPt.GetSystematicOrValue(syst))[validJets.GetSystematicOrValue(syst)[0]] > ISR_JET_PT;
+          };
+
+          if(preemptiveDropEvents)
+          {
+            if(static_cast<bool>(validJets.size() > 0))
+            {
+              ValueWithSystematics<bool> jetPass = jetThreshold("Value");
+              for(auto& syst: validJets.Systematics())
+              {
+                jetPass.Systematic(syst) = jetThreshold(syst);
+              }
+
+              if(!static_cast<bool>(jetPass))
+                continue;
+            }
+            else
+              continue;
+          }
 
           nGoodMu = 0;
           nGoodEl = 0;
