@@ -268,6 +268,7 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     ValueWithSystematics<double> Cos() const;
     ValueWithSystematics<double> Sqrt() const;
     ValueWithSystematics<double> abs() const;
+    ValueWithSystematics<double> pow(double exp) const;
 
     //template<class U>
     //friend ValueWithSystematics<U>& ValueWithSystematics<U, typename std::enable_if<std::is_base_of<TLorentzVector, U>::value>::type>::operator*=(const ValueWithSystematics<double>& val);

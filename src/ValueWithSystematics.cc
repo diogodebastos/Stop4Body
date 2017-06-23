@@ -185,6 +185,16 @@ ValueWithSystematics<double> ValueWithSystematics<double>::abs() const
   return retVal;
 }
 
+ValueWithSystematics<double> ValueWithSystematics<double>::pow(double exp) const
+{
+  ValueWithSystematics<double> retVal = std::pow(value, exp);
+
+  for(auto& kv: systematics)
+    retVal(kv.first) = std::pow(kv.second, exp);
+
+  return retVal;
+}
+
 ValueWithSystematics<double>& ValueWithSystematics<double>::operator=(const double& val)
 {
   ValueWithSystematicsInternal<double>::operator=(val);
