@@ -1119,9 +1119,18 @@ int main(int argc, char** argv)
             }
           }
           std::vector<std::string> list;
+          list.push_back("Value");
+          loadSystematics(list, jetPt);
 
           for(auto & syst : list)
           {
+            if(syst != "Value")
+            {
+              std::vector<int> empty;
+              validJets.Systematic(syst) = empty;
+              bjetList.Systematic(syst) = empty;
+            }
+
             for(Int_t i = 0; i < nJetIn; ++i)
             {
               if(std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
@@ -1139,7 +1148,7 @@ int main(int argc, char** argv)
             });
           }
 
-          auto jetThreshold = [&jetPt, &validJets] (const std::string& syst) -> bool
+          auto jetThreshold = [&jetPt, &validJets] (const std::string& syst = "Value") -> bool
           {
             if(validJets.GetSystematicOrValue(syst).size() == 0)
               return false;
@@ -1150,7 +1159,7 @@ int main(int argc, char** argv)
           {
             if(static_cast<bool>(validJets.size() > 0))
             {
-              ValueWithSystematics<bool> jetPass = jetThreshold("Value");
+              ValueWithSystematics<bool> jetPass = jetThreshold();
               for(auto& syst: validJets.Systematics())
               {
                 jetPass.Systematic(syst) = jetThreshold(syst);
@@ -1252,8 +1261,14 @@ int main(int argc, char** argv)
             continue;
 
           // Setting the values to be saved in the output tree
-          mt_old = mtw;
           Met = met_pt;
+          if(!process.isdata())
+          {
+            Met.Systematic("JES_Up") = met_JetEnUp_Pt;
+            Met.Systematic("JES_Down") = met_JetEnDown_Pt;
+            Met.Systematic("JER_Up") = met_JetResUp_Pt;
+            Met.Systematic("JER_Down") = met_JetResDown_Pt;
+          }
 
           float lep_phi, lep_eta;
           if(validLeptons.size() > 0)
@@ -1312,12 +1327,12 @@ int main(int argc, char** argv)
             JetB2CSV = -9999;
             JetB2index = -9999;
           }
-          if(preemptiveDropEvents && !(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
+          if(preemptiveDropEvents && !static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
             continue;
 
           if(preemptiveDropEvents)
           {
-            if(!swap && Met < MIN_MET)
+            if(!swap && !static_cast<bool>(Met > MIN_MET))
               continue;
           }
 
