@@ -27,6 +27,12 @@ ValueWithSystematics<T> operator* (const double& builtin, const ValueWithSystema
 }
 
 template<class T>
+ValueWithSystematics<T> operator+ (const double& builtin, const ValueWithSystematics<T>& myClass)
+{
+  return myClass+builtin;
+}
+
+template<class T>
 ValueWithSystematics<T> operator- (const int& builtin, const ValueWithSystematics<T>& myClass)
 {
   return (-myClass) + builtin;
