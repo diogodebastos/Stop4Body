@@ -1279,6 +1279,12 @@ int main(int argc, char** argv)
             MetPhi.Systematic("JER_Down") = met_JetResDown_Phi;
           }
 
+          if(preemptiveDropEvents)
+          {
+            if(!swap && !static_cast<bool>(Met > MIN_MET))
+              continue;
+          }
+
           float lep_phi, lep_eta;
           if(validLeptons.size() > 0)
           {
@@ -1420,12 +1426,6 @@ int main(int argc, char** argv)
 
           if(preemptiveDropEvents && !static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
             continue;
-
-          if(preemptiveDropEvents)
-          {
-            if(!swap && !static_cast<bool>(Met > MIN_MET))
-              continue;
-          }
 
           TLorentzVector VLep;
           if(validLeptons.size() > 0)
