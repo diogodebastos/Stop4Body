@@ -291,8 +291,16 @@ int main(int argc, char** argv)
         // Performing dummy computations just so that the placeholders for all the uncertainties are created
         std::cout << "\t        trigger" << std::endl;
         triggerEfficiency = triggerEfficiencyFromMETSys(200.0);
+        triggerEfficiency.Systematic("JES_Up");
+        triggerEfficiency.Systematic("JES_Down");
+        triggerEfficiency.Systematic("JER_Up");
+        triggerEfficiency.Systematic("JER_Down");
         std::cout << "\t        EWK" << std::endl;
         EWKISRweight = EWKISRweightFromISRpTSys(20, 1.0, 40, 0.7);
+        EWKISRweight.Systematic("JES_Up");
+        EWKISRweight.Systematic("JES_Down");
+        EWKISRweight.Systematic("JER_Up");
+        EWKISRweight.Systematic("JER_Down");
         std::cout << "\t        ISR" << std::endl;
         ISRweight = ISRweightFromNISRJetSys(2);
         std::cout << "\t        pu" << std::endl;
@@ -1265,19 +1273,20 @@ int main(int argc, char** argv)
             continue;
 
           // Setting the values to be saved in the output tree
-          Met = met_pt;
+          ValueWithSystematics<double> MetDou = met_pt;
           ValueWithSystematics<double> MetPhi = met_phi;
           if(!process.isdata())
           {
-            Met.Systematic("JES_Up") = met_JetEnUp_Pt;
-            Met.Systematic("JES_Down") = met_JetEnDown_Pt;
-            Met.Systematic("JER_Up") = met_JetResUp_Pt;
-            Met.Systematic("JER_Down") = met_JetResDown_Pt;
+            MetDou.Systematic("JES_Up") = met_JetEnUp_Pt;
+            MetDou.Systematic("JES_Down") = met_JetEnDown_Pt;
+            MetDou.Systematic("JER_Up") = met_JetResUp_Pt;
+            MetDou.Systematic("JER_Down") = met_JetResDown_Pt;
             MetPhi.Systematic("JES_Up") = met_JetEnUp_Phi;
             MetPhi.Systematic("JES_Down") = met_JetEnDown_Phi;
             MetPhi.Systematic("JER_Up") = met_JetResUp_Phi;
             MetPhi.Systematic("JER_Down") = met_JetResDown_Phi;
           }
+          Met = MetDou;
 
           if(preemptiveDropEvents)
           {
@@ -1431,9 +1440,6 @@ int main(int argc, char** argv)
           if(validLeptons.size() > 0)
           {
             auto leptonIndex = validLeptons[0];
-            mt          = LepGood_mt[leptonIndex];
-            Q80         = LepGood_Q80[leptonIndex];
-            CosDeltaPhi = LepGood_cosPhiLepMet[leptonIndex];
             LepChg      = LepGood_charge[leptonIndex];
             LepID       = LepGood_pdgId[leptonIndex];
             LepPt       = LepGood_pt[leptonIndex];
@@ -1444,6 +1450,10 @@ int main(int argc, char** argv)
             Float_t minPt = 25.;
             LepHybIso03 = LepIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
+
+            CosDeltaPhi = DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
+            mt = (2.0 * LepPt * Met * (1 - CosDeltaPhi)).Sqrt();
+            Q80 = 1.0 - 80.*80./(2.0 * LepPt * Met);
 
             if(!process.isdata())
             {
@@ -1523,10 +1533,10 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
-            triggerEfficiency = triggerEfficiencyFromMETSys(met_pt);
+            triggerEfficiency = triggerEfficiencyFromMETSys(MetDou);
             // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets")
-              EWKISRweight = EWKISRCParam * EWKISRweightFromISRpTSys(LepPt, lep_phi, met_pt, met_phi);
+              EWKISRweight = EWKISRCParam * EWKISRweightFromISRpTSys(LepPt, lep_phi, MetDou, MetPhi);
             // For ISR, assume syst 50%
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lep" || process.tag() == "ttbar_lo" || process.issignal())
               ISRweight = ISRCParam * ISRweightFromNISRJetSys(nIsr);
