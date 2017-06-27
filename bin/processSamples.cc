@@ -1543,6 +1543,25 @@ int main(int argc, char** argv)
             // TODO: missing tt_pow reweighting https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
           }
 
+          ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
+          Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
+          JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
+          Jet1CSV    = loadQuantity(Jet_btagCSV, validJets, 0);
+          JetB1EtaDou= loadQuantity(Jet_eta,     bjetList,  0);
+          JetHBCSV   = loadQuantity(Jet_btagCSV, bjetList,  0);
+          JetHBindex = loadQuantity(identity,    bjetList,  0);
+          JetB1Phi   = loadQuantity(Jet_phi,     bjetList,  0);
+
+          JetHBeta = JetB1EtaDou;
+
+          dphi = DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
+          deta = DeltaEtaSys(Jet1EtaDou, ValueWithSystematics<double>(lep_eta));
+          DrJet1Lep = QuadSumSys(dphi, deta);
+
+          dphi = DeltaPhiSys(JetB1Phi, ValueWithSystematics<double>(lep_phi));
+          deta = DeltaEtaSys(JetB1EtaDou, ValueWithSystematics<double>(lep_eta));
+          DrJetHBLep = QuadSumSys(dphi, deta);
+
           if(validLeptons.size() > 0 && validJets.size() > 0)
           {
             double smallestDeltaR = 999999999.;
@@ -1575,63 +1594,16 @@ int main(int argc, char** argv)
               VJ3 += VJi;
             }
             J3Mass = VJ3.M();
-
-            double dphi = DeltaPhi(Jet_phi[validJets[0]], lep_phi);
-            double deta = Jet_eta[validJets[0]] - lep_eta;
-            DrJet1Lep = std::sqrt( std::pow(dphi, 2) + std::pow(deta, 2) );
-
-            double dphib, detab;
-            int bJetIndex = bjetList[0];
-            dphib = DeltaPhi(Jet_phi[bJetIndex], lep_phi);
-            detab = Jet_eta[bJetIndex] - lep_eta;
-            DrJetHBLep = std::sqrt( std::pow(dphib, 2) + std::pow(detab, 2) );
           }
           else
           {
             JetLepMass = -9999;
             J3Mass = -9999;
-            DrJet1Lep = -9999;
-            DrJetHBLep = -9999.;
           }
 
-          if(validJets.size() > 0)
-          {
-            int jetIndex = validJets[0];
-            Jet1Pt = Jet_pt[jetIndex];
-            Jet1Eta = Jet_eta[jetIndex];
-            Jet1CSV = Jet_btagCSV[jetIndex];
-
-            int bJetIndex = bjetList[0];
-            JetHBpt = Jet_pt[bJetIndex];
-            JetHBeta = Jet_eta[bJetIndex];
-            JetHBCSV = Jet_btagCSV[bJetIndex];
-            JetHBindex = bJetIndex;
-          }
-          else
-          {
-            Jet1Pt = -9999;
-            Jet1Eta = -9999;
-            Jet1CSV = -9999;
-
-            JetHBpt = -9999;
-            JetHBeta = -9999;
-            JetHBCSV = -9999;
-            JetHBindex = -9999;
-          }
-
-          if(validJets.size() > 2)
-          {
-            int jetIndex = validJets[2];
-            Jet3Pt = Jet_pt[jetIndex];
-            Jet3Eta = Jet_eta[jetIndex];
-            Jet3CSV = Jet_btagCSV[jetIndex];
-          }
-          else
-          {
-            Jet3Pt = -9999;
-            Jet3Eta = -9999;
-            Jet3CSV = -9999;
-          }
+          Jet3Pt     = loadSysQuantity(jetPt,    validJets, 2);
+          Jet3Eta    = loadQuantity(Jet_eta,     validJets, 2);
+          Jet3CSV    = loadQuantity(Jet_btagCSV, validJets, 2);
 
           NbLoose = 0;
           NbTight = 0;
