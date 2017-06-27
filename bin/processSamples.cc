@@ -1671,6 +1671,10 @@ int main(int argc, char** argv)
             }
           }
 
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, jetList);
+
           HT = 0;
           Njet = validJets.size();
           Njet30 = 0;
@@ -1681,26 +1685,31 @@ int main(int argc, char** argv)
           Njet80 = 0;
           Njet90 = 0;
           Njet100 = 0;
-          for(auto &jet : validJets)
+          for(auto& syst: list)
           {
-            HT += Jet_pt[jet];
+            for(auto &jet : validJets.GetSystematicOrValue(syst))
+            {
+              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
 
-            if(Jet_pt[jet] > 30)
-              ++Njet30;
-            if(Jet_pt[jet] > 40)
-              ++Njet40;
-            if(Jet_pt[jet] > 50)
-              ++Njet50;
-            if(Jet_pt[jet] > 60)
-              ++Njet60;
-            if(Jet_pt[jet] > 70)
-              ++Njet70;
-            if(Jet_pt[jet] > 80)
-              ++Njet80;
-            if(Jet_pt[jet] > 90)
-              ++Njet90;
-            if(Jet_pt[jet] > 100)
-              ++Njet100;
+              HT.GetSystematicOrValue(syst) += pt;
+
+              if(pt > 30)
+                ++(Njet30.GetSystematicOrValue(syst));
+              if(pt > 40)
+                ++(Njet40.GetSystematicOrValue(syst));
+              if(pt > 50)
+                ++(Njet50.GetSystematicOrValue(syst));
+              if(pt > 60)
+                ++(Njet60.GetSystematicOrValue(syst));
+              if(pt > 70)
+                ++(Njet70.GetSystematicOrValue(syst));
+              if(pt > 80)
+                ++(Njet80.GetSystematicOrValue(syst));
+              if(pt > 90)
+                ++(Njet90.GetSystematicOrValue(syst));
+              if(pt > 100)
+                ++(Njet100.GetSystematicOrValue(syst));
+            }
           }
 
           genGravitinoM  = GenSusyMGravitino;
