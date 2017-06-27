@@ -1562,38 +1562,55 @@ int main(int argc, char** argv)
           deta = DeltaEtaSys(JetB1EtaDou, ValueWithSystematics<double>(lep_eta));
           DrJetHBLep = QuadSumSys(dphi, deta);
 
-          if(validLeptons.size() > 0 && validJets.size() > 0)
-          {
-            double smallestDeltaR = 999999999.;
-            int closestJet = -1;
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, jetPt);
+          loadSystematics(list, validJets);
 
-            for(auto &jet : validJets)
+          if(validLeptons.size() > 0)
+          {
+            for(auto& syst: list)
             {
-              double dphi = DeltaPhi(Jet_phi[jet], lep_phi);
-              double deta = Jet_eta[jet] - lep_eta;
-              double dr = std::pow(dphi,2) + std::pow(deta,2); // The square of the dr is used since it is injective
-              if(dr < smallestDeltaR)
+              auto& jetList = validJets.GetSystematicOrValue(syst);
+              if(jetList.size() > 0)
               {
-                smallestDeltaR = dr;
-                closestJet = jet;
+                double smallestDeltaR = 999999999.;
+                int closestJet = -1;
+
+                for(auto& jet: jetList)
+                {
+                  double dphi = DeltaPhi(Jet_phi[jet], lep_phi);
+                  double deta = Jet_eta[jet] - lep_eta;
+                  double dr = std::pow(dphi,2) + std::pow(deta,2); // The square of the dr is used since it is injective
+                  if(dr < smallestDeltaR)
+                  {
+                    smallestDeltaR = dr;
+                    closestJet = jet;
+                  }
+                }
+
+                TLorentzVector VJ, JLep;
+                VJ.SetPtEtaPhiM(Jet_pt[closestJet], Jet_eta[closestJet], Jet_phi[closestJet], Jet_mass[closestJet]);
+                JLep = VJ + VLep;
+                JetLepMass.GetSystematicOrValue(syst) = JLep.M();
+
+                TLorentzVector VJ3;
+                for(auto& jet: jetList)
+                {
+                  if(jet == closestJet)
+                    continue;
+                  TLorentzVector VJi;
+                  VJi.SetPtEtaPhiM(Jet_pt[jet], Jet_eta[jet], Jet_phi[jet], Jet_mass[jet]);
+                  VJ3 += VJi;
+                }
+                J3Mass.GetSystematicOrValue(syst) = VJ3.M();
+              }
+              else
+              {
+                JetLepMass.GetSystematicOrValue(syst) = -9999;
+                J3Mass.GetSystematicOrValue(syst) = -9999;
               }
             }
-
-            TLorentzVector VJ, JLep;
-            VJ.SetPtEtaPhiM(Jet_pt[closestJet], Jet_eta[closestJet], Jet_phi[closestJet], Jet_mass[closestJet]);
-            JLep = VJ + VLep;
-            JetLepMass = JLep.M();
-
-            TLorentzVector VJ3;
-            for(auto &jet : validJets)
-            {
-              if(jet == closestJet)
-                continue;
-              TLorentzVector VJi;
-              VJi.SetPtEtaPhiM(Jet_pt[jet], Jet_eta[jet], Jet_phi[jet], Jet_mass[jet]);
-              VJ3 += VJi;
-            }
-            J3Mass = VJ3.M();
           }
           else
           {
@@ -1605,6 +1622,10 @@ int main(int argc, char** argv)
           Jet3Eta    = loadQuantity(Jet_eta,     validJets, 2);
           Jet3CSV    = loadQuantity(Jet_btagCSV, validJets, 2);
 
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, bjetList);
+
           NbLoose = 0;
           NbTight = 0;
           NbLooseTo50 = 0;
@@ -1613,38 +1634,41 @@ int main(int argc, char** argv)
           NbMedium50 = 0;
           NbTightTo50 = 0;
           NbTight50 = 0;
-          for(auto &bjet : bjetList)
+          for(auto& syst: list)
           {
-            const auto &csv = Jet_btagCSV[bjet];
-            const auto &pt = Jet_pt[bjet];
-
-            if(csv > CSV_Loose)
-              ++NbLoose;
-            if(csv > CSV_Tight)
-              ++NbTight;
-
-            if(pt > 50)
+            for(auto& bjet: bjetList.GetSystematicOrValue(syst))
             {
-              if(csv > CSV_Loose)
-                ++NbLoose50;
-              if(csv > CSV_Medium)
-                ++NbMedium50;
-              if(csv > CSV_Tight)
-                ++NbTight50;
-            }
-            else
-            {
-              if(csv > CSV_Loose)
-                ++NbLooseTo50;
-              if(csv > CSV_Medium)
-                ++NbMediumTo50;
-              if(csv > CSV_Tight)
-                ++NbTightTo50;
-            }
+              const auto &csv = Jet_btagCSV[bjet];
+              const auto &pt = jetPt.GetSystematicOrValue(syst)[bjet];
 
-            // Since the bjetList is sorted by CSV, as soon as it goes below the loose definition, there are no further bjets
-            if(csv < CSV_Loose)
-              break;
+              if(csv > CSV_Loose)
+                ++(NbLoose.GetSystematicOrValue(syst));
+              if(csv > CSV_Tight)
+                ++(NbTight.GetSystematicOrValue(syst));
+
+              if(pt > 50)
+              {
+                if(csv > CSV_Loose)
+                  ++(NbLoose50.GetSystematicOrValue(syst));
+                if(csv > CSV_Medium)
+                  ++(NbMedium50.GetSystematicOrValue(syst));
+                if(csv > CSV_Tight)
+                  ++(NbTight50.GetSystematicOrValue(syst));
+              }
+              else
+              {
+                if(csv > CSV_Loose)
+                  ++(NbLooseTo50.GetSystematicOrValue(syst));
+                if(csv > CSV_Medium)
+                  ++(NbMediumTo50.GetSystematicOrValue(syst));
+                if(csv > CSV_Tight)
+                  ++(NbTightTo50.GetSystematicOrValue(syst));
+              }
+
+              // Since the bjetList is sorted by CSV, as soon as it goes below the loose definition, there are no further bjets
+              if(csv < CSV_Loose)
+                break;
+            }
           }
 
           HT = 0;
@@ -1725,7 +1749,7 @@ int main(int argc, char** argv)
 
           if(swap)
           {
-            auto tmp = Met;
+            auto tmp = Met.Value();
             Met = LepPt;
             LepPt = tmp;
             triggerEfficiency = 1.0f;
