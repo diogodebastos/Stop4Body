@@ -1781,25 +1781,25 @@ int main(int argc, char** argv)
           }
 
           //if(doSync)
-          if(doSync && HT > 200 && Jet1Pt > 100 && Met > 200)
+          if(doSync && HT.Value() > 200 && Jet1Pt.Value() > 100 && Met.Value() > 200)
           {
             if(sync_count < max_sync_count)
             {
               SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
               SyFile << "   Mstop: " << genStopM << "; Mlsp: " << genNeutralinoM << std::endl;
-              SyFile << "   HT: " << HT << "; MET: " << Met << std::endl;
-              SyFile << "   Njet: " << Njet << std::endl;
-              for(size_t i = 0; i < validJets.size(); ++i)
+              SyFile << "   HT: " << HT.Value() << "; MET: " << Met.Value() << std::endl;
+              SyFile << "   Njet: " << Njet.Value() << std::endl;
+              for(size_t i = 0; i < validJets.Value().size(); ++i)
               {
-                auto jet = validJets[i];
+                auto jet = validJets.Value()[i];
                 SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_id[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
               }
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
-              SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2 << std::endl;
+              SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2.Value() << std::endl;
               SyFile << "   weight for 10 fb-1: " << weight.Value()*10000 << " (without SFs: " << 10000*XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
               SyFile << "   passed: ";
-              if(HT > 200 && Met > 200 && Jet1Pt > 90) // TODO: Probably change these cuts to reflect newest selection
+              if(HT.Value() > 200 && Met.Value() > 200 && Jet1Pt.Value() > 90) // TODO: Probably change these cuts to reflect newest selection
               {
                 SyFile << "Cut0";
                 bool passCut1 = false;
@@ -1815,15 +1815,15 @@ int main(int argc, char** argv)
                 {
                   SyFile << ";Cut1";
 
-                  if(Jet1Pt > ISR_JET_PT)
+                  if(Jet1Pt.Value() > ISR_JET_PT)
                   {
                     SyFile << ";Cut2";
 
-                    if(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60)
+                    if(DPhiJet1Jet2.Value() < 2.5 || Jet2Pt.Value() < 60)
                     {
                       SyFile << ";Cut3";
 
-                      if(Met > 280)
+                      if(Met.Value() > 280)
                         SyFile << ";Cut4";
                     }
                   }
@@ -1852,10 +1852,10 @@ int main(int argc, char** argv)
           }
 
           // Compute selection cuts
-          bool metRequirement = Met > 300;
-          bool htRequirement = HT > 200;
-          bool jetRequirement = Jet1Pt > ISR_JET_PT;
-          bool antiQCDRequirement = DPhiJet1Jet2 < 2.5 || Jet2Pt < 60;
+          bool metRequirement = Met.Value() > 300;
+          bool htRequirement = HT.Value() > 200;
+          bool jetRequirement = Jet1Pt.Value() > ISR_JET_PT;
+          bool antiQCDRequirement = DPhiJet1Jet2.Value() < 2.5 || Jet2Pt.Value() < 60;
           bool leptonRequirement = isTight;
           bool deltaMRequirement = LepPt < 30;
 
@@ -1907,19 +1907,19 @@ int main(int argc, char** argv)
               continue;
 
             // No need to keep events without jets
-            if(validJets.size() == 0)
+            if(!static_cast<bool>(validJets.size() != 0))
               continue;
 
             // So-called ISR jet requirement (even though it's on the pT of the leading jet)
-            if(Jet1Pt < ISR_JET_PT)
+            if(!static_cast<bool>(Jet1Pt >= ISR_JET_PT))
               continue;
 
             // Cut to help reduce the QCD background
-            if(!(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
+            if(!static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
               continue;
 
             // Minimal requirement on MET
-            if(Met < MIN_MET)
+            if(!static_cast<bool>(Met >= MIN_MET))
               continue;
 
             // MET filters
