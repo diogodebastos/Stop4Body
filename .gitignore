@@ -46,6 +46,6 @@ Macros/NJetScan/scanPlots/*
 Macros/weights/*
 Macros/TMVA.root
 Macros/pileup_latest.txt
-Macros/DataPileupHistogram.root
+Macros/DataPileupHistogram*.root
 Macros/GOLDEN_JSON.txt
 Macros/MCPileupHistogram.root
