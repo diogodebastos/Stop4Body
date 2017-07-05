@@ -37,14 +37,14 @@ class NullStream : public std::ostream
 };
 
 void printHelp();
-doubleUnc naiveDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
-doubleUnc promptDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
-doubleUnc injectDD(std::ofstream &, ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
-doubleUnc fakeDD(std::ofstream &, SampleReader &, SampleReader &, std::string, std::string);
-doubleUnc fullDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
-doubleUnc fullDD_alt(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
-ValueWithSystematics<doubleUnc> fullDDSys(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
-ValueWithSystematics<doubleUnc> fullDDSys_alt(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
+doubleUnc naiveDD(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
+doubleUnc promptDD(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
+doubleUnc injectDD(std::ostream &, ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
+doubleUnc fakeDD(std::ostream &, SampleReader &, SampleReader &, std::string, std::string);
+doubleUnc fullDD(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
+doubleUnc fullDD_alt(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
+ValueWithSystematics<doubleUnc> fullDDSys(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
+ValueWithSystematics<doubleUnc> fullDDSys_alt(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
 int main(int argc, char** argv)
 {
@@ -467,7 +467,7 @@ int main(int argc, char** argv)
   return 0;
 }
 
-doubleUnc naiveDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+doubleUnc naiveDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
   doubleUnc NinSR = toEstimate.getYield(signalRegion, mcWeight);
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
@@ -493,7 +493,7 @@ doubleUnc naiveDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleRea
   return estimate;
 }
 
-doubleUnc injectDD(std::ofstream &outputTable, ProcessInfo &toEstimate, ProcessInfo &toInject, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string injectRegion, std::string mcWeight)
+doubleUnc injectDD(std::ostream &outputTable, ProcessInfo &toEstimate, ProcessInfo &toInject, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string injectRegion, std::string mcWeight)
 {
   outputTable << "inject ";
   doubleUnc inject = naiveDD(outputTable, toInject, Data, MC, controlRegion, injectRegion, mcWeight);
@@ -521,7 +521,7 @@ doubleUnc injectDD(std::ofstream &outputTable, ProcessInfo &toEstimate, ProcessI
   return estimate;
 }
 
-doubleUnc promptDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+doubleUnc promptDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
   doubleUnc NinSR = toEstimate.getYield(signalRegion + " && isPrompt == 1", mcWeight);
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
@@ -547,7 +547,7 @@ doubleUnc promptDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleRe
   return estimate;
 }
 
-doubleUnc fakeDD(std::ofstream &outputTable, SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string mcWeight)
+doubleUnc fakeDD(std::ostream &outputTable, SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string mcWeight)
 {
   doubleUnc LNTinSR = LNTData.getYield(signalRegion, "weight");
   doubleUnc LNTMCinSR = LNTMC.getYield(signalRegion + " && isPrompt == 1", mcWeight);
@@ -565,7 +565,7 @@ doubleUnc fakeDD(std::ofstream &outputTable, SampleReader &LNTData, SampleReader
   return estimate;
 }
 
-doubleUnc fullDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+doubleUnc fullDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
   doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
   doubleUnc NinCR = toEstimate.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
@@ -594,7 +594,7 @@ doubleUnc fullDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleRead
   return estimate;
 }
 
-ValueWithSystematics<doubleUnc> fullDDSys(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight)
+ValueWithSystematics<doubleUnc> fullDDSys(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight)
 {
   doubleUnc tmp_centralValue = fullDD(outputTable, toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Value());
   ValueWithSystematics<doubleUnc> retVal(tmp_centralValue);
@@ -608,7 +608,7 @@ ValueWithSystematics<doubleUnc> fullDDSys(std::ofstream &outputTable, ProcessInf
   return retVal;
 }
 
-doubleUnc fullDD_alt(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+doubleUnc fullDD_alt(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
   doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
   doubleUnc NinCR = toEstimate.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
@@ -635,7 +635,7 @@ doubleUnc fullDD_alt(std::ofstream &outputTable, ProcessInfo &toEstimate, Sample
   return estimate;
 }
 
-ValueWithSystematics<doubleUnc> fullDDSys_alt(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight)
+ValueWithSystematics<doubleUnc> fullDDSys_alt(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight)
 {
   doubleUnc tmp_centralValue = fullDD_alt(outputTable, toEstimate, Data, MC, tightSelection, signalRegion, controlRegion, mcWeight.Value());
   ValueWithSystematics<doubleUnc> retVal(tmp_centralValue);
