@@ -235,6 +235,10 @@ class ValueWithSystematics<float>: public ValueWithSystematicsInternal<float>
     ValueWithSystematics<float>& operator= (ValueWithSystematics<double>&& val) noexcept;
     ValueWithSystematics<float>& operator= (const ValueWithSystematicsInternal<double>& val);
     ValueWithSystematics<float>& operator= (ValueWithSystematicsInternal<double>&& val) noexcept;
+    ValueWithSystematics<float>& operator= (const ValueWithSystematics<int>& val);
+    ValueWithSystematics<float>& operator= (ValueWithSystematics<int>&& val) noexcept;
+    ValueWithSystematics<float>& operator= (const ValueWithSystematicsInternal<int>& val);
+    ValueWithSystematics<float>& operator= (ValueWithSystematicsInternal<int>&& val) noexcept;
 
   private:
   protected:

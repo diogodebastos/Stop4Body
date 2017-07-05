@@ -154,6 +154,94 @@ ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(ValueWithSys
   return *this;
 }
 
+ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(const ValueWithSystematics<int>& val)
+{
+  value = val.Value();
+
+  if(isLocked)
+  {
+    auto tmp = val.Systematics();
+    for(auto& kv: systematics)
+    {
+      if(std::count(tmp.begin(), tmp.end(), kv.first) == 0)
+        kv.second = value;
+    }
+  }
+  else
+    systematics.clear();
+
+  for(auto& kv: val.Systematics())
+    Systematic(kv) = val.Systematic(kv);
+
+  return *this;
+}
+
+ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(ValueWithSystematics<int>&& val) noexcept
+{
+  value = std::move(val.Value());
+
+  if(isLocked)
+  {
+    auto tmp = val.Systematics();
+    for(auto& kv: systematics)
+    {
+      if(std::count(tmp.begin(), tmp.end(), kv.first) == 0)
+        kv.second = value;
+    }
+  }
+  else
+    systematics.clear();
+
+  for(auto& kv: val.Systematics())
+    Systematic(kv) = std::move(val.Systematic(kv));
+
+  return *this;
+}
+
+ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(const ValueWithSystematicsInternal<int>& val)
+{
+  value = val.Value();
+
+  if(isLocked)
+  {
+    auto tmp = val.Systematics();
+    for(auto& kv: systematics)
+    {
+      if(std::count(tmp.begin(), tmp.end(), kv.first) == 0)
+        kv.second = value;
+    }
+  }
+  else
+    systematics.clear();
+
+  for(auto& kv: val.Systematics())
+    Systematic(kv) = val.Systematic(kv);
+
+  return *this;
+}
+
+ValueWithSystematics<float>& ValueWithSystematics<float>::operator=(ValueWithSystematicsInternal<int>&& val) noexcept
+{
+  value = std::move(val.Value());
+
+  if(isLocked)
+  {
+    auto tmp = val.Systematics();
+    for(auto& kv: systematics)
+    {
+      if(std::count(tmp.begin(), tmp.end(), kv.first) == 0)
+        kv.second = value;
+    }
+  }
+  else
+    systematics.clear();
+
+  for(auto& kv: val.Systematics())
+    Systematic(kv) = std::move(val.Systematic(kv));
+
+  return *this;
+}
+
 //****************** double ************************************************************************
 ValueWithSystematics<double> ValueWithSystematics<double>::Cos() const
 {
