@@ -386,7 +386,7 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_
   ValueWithSystematics<double> met_x = met_pt * met_phi.Cos();
   ValueWithSystematics<double> met_y = met_pt * met_phi.Sin();
 
-  ValueWithSystematics<double> w_pt = ((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y)).Sqrt();
+  ValueWithSystematics<double> w_pt = ValueWithSystematics<double>((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y)).Sqrt();
 
   return EWKISRweightFromISRpTSys(w_pt);
 }
