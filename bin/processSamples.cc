@@ -1452,7 +1452,7 @@ int main(int argc, char** argv)
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
             CosDeltaPhi = DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
-            mt = ValueWithSystematics<double>(2.0 * LepPt * Met * (1 - CosDeltaPhi)).Sqrt();
+            mt = ValueWithSystematics<float>(2.0 * LepPt * Met * (1 - CosDeltaPhi)).Sqrt();
             Q80 = 1.0 - 80.*80./(2.0 * LepPt * Met);
 
             if(!process.isdata())
