@@ -18,6 +18,7 @@
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
 
@@ -42,6 +43,8 @@ doubleUnc injectDD(std::ofstream &, ProcessInfo &, ProcessInfo &, SampleReader &
 doubleUnc fakeDD(std::ofstream &, SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 doubleUnc fullDD_alt(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
+ValueWithSystematics<doubleUnc> fullDDSys(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
+ValueWithSystematics<doubleUnc> fullDDSys_alt(std::ofstream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
 int main(int argc, char** argv)
 {
@@ -223,7 +226,52 @@ int main(int argc, char** argv)
     converter << "*" << luminosity;
     converter >> mcWeight;
   }
+  ValueWithSystematics<std::string> mcWeightSys(mcWeight);
+  if(!isPseudoData)
+  {
+    std::vector<std::string> systVars;
+    systVars.push_back("ISRweight_Bin1_Up");
+    systVars.push_back("ISRweight_Bin1_Down");
+    systVars.push_back("ISRweight_Bin2_Up");
+    systVars.push_back("ISRweight_Bin2_Down");
+    systVars.push_back("ISRweight_Bin3_Up");
+    systVars.push_back("ISRweight_Bin3_Down");
+    systVars.push_back("ISRweight_Bin4_Up");
+    systVars.push_back("ISRweight_Bin4_Down");
+    systVars.push_back("ISRweight_Bin5_Up");
+    systVars.push_back("ISRweight_Bin5_Down");
+    systVars.push_back("ISRweight_Bin6_Up");
+    systVars.push_back("ISRweight_Bin6_Down");
+    systVars.push_back("EWKISRweight_Bin1_Up");
+    systVars.push_back("EWKISRweight_Bin1_Down");
+    systVars.push_back("EWKISRweight_Bin2_Up");
+    systVars.push_back("EWKISRweight_Bin2_Down");
+    systVars.push_back("EWKISRweight_Bin3_Up");
+    systVars.push_back("EWKISRweight_Bin3_Down");
+    systVars.push_back("EWKISRweight_Bin4_Up");
+    systVars.push_back("EWKISRweight_Bin4_Down");
+    systVars.push_back("EWKISRweight_Bin5_Up");
+    systVars.push_back("EWKISRweight_Bin5_Down");
+    systVars.push_back("EWKISRweight_Bin6_Up");
+    systVars.push_back("EWKISRweight_Bin6_Down");
+    systVars.push_back("EWKISRweight_Bin7_Up");
+    systVars.push_back("EWKISRweight_Bin7_Down");
+
+    for(auto& syst: systVars)
+    {
+      std::stringstream converter;
+      converter << "splitFactor*weight_" << syst << "*" << luminosity;
+      mcWeightSys.Systematic(syst) = converter.str();
+    }
+  }
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
+  if(mcWeightSys.Systematics().size() > 0)
+  {
+    std::cout << "And variations:" << std::endl;
+    for(auto& syst: mcWeightSys)
+      std::cout << "  " << syst << ": " << mcWeightSys.Systematic(syst) << std::endl;
+  }
+  std::cout << std::endl;
 
 
   // Make a plot of the BDToutput, just for control reasons
@@ -372,6 +420,23 @@ int main(int argc, char** argv)
   outputTable << "\\hline\n\\end{tabular}\n";
 
   if(verbose)
+    std::cout << "Filling systematic variations table" << std::endl;
+  outputTable << "\n\nSystematic variations for full DD\n";
+  outputTable << "\\begin{tabular}{r|ccccc}\n";
+  outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
+
+  fullDDSys(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  fullDDSys(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  outputTable << "\\hline\n";
+  fullDDSys_alt(outputTable, wjets, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  fullDDSys_alt(outputTable, ttbar, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
+
+  outputTable << "\\hline\n\\end{tabular}\n";
+
+  if(verbose)
     std::cout << "Filling closure table" << std::endl;
   outputTable << "\n\nClosure for DD\n";
 
@@ -513,8 +578,9 @@ doubleUnc fullDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleRead
     if(process.tag() != toEstimate.tag())
       otherMC += process.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
   }
-  //NullStream null_stream; //Substitute outputTable below so that output is suppressed
-  doubleUnc fakes = fakeDD(outputTable, Data, MC, looseSelection + " && " + controlRegion, mcWeight);
+  NullStream null_stream; //Substitute outputTable below so that output is suppressed
+  //doubleUnc fakes = fakeDD(outputTable, Data, MC, looseSelection + " && " + controlRegion, mcWeight);
+  doubleUnc fakes = fakeDD(null_stream, Data, MC, looseSelection + " && " + controlRegion, mcWeight);
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
 
@@ -526,6 +592,20 @@ doubleUnc fullDD(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleRead
   outputTable << estimate << "$\\\\\n";
 
   return estimate;
+}
+
+ValueWithSystematics<doubleUnc> fullDDSys(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight)
+{
+  doubleUnc tmp_centralValue = fullDD(outputTable, toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Value());
+  ValueWithSystematics<doubleUnc> retVal(tmp_centralValue);
+
+  for(auto& syst: mcWeight.Systematics())
+  {
+    outputTable << syst << " ";
+    retVal.Systematic(syst) = fullDD(outputTable, toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Systematic(syst));
+  }
+
+  return retVal;
 }
 
 doubleUnc fullDD_alt(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
@@ -553,6 +633,20 @@ doubleUnc fullDD_alt(std::ofstream &outputTable, ProcessInfo &toEstimate, Sample
   outputTable << estimate << "$\\\\\n";
 
   return estimate;
+}
+
+ValueWithSystematics<doubleUnc> fullDDSys_alt(std::ofstream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight)
+{
+  doubleUnc tmp_centralValue = fullDD_alt(outputTable, toEstimate, Data, MC, tightSelection, signalRegion, controlRegion, mcWeight.Value());
+  ValueWithSystematics<doubleUnc> retVal(tmp_centralValue);
+
+  for(auto& syst: mcWeight.Systematics())
+  {
+    outputTable << syst << " ";
+    retVal.Systematic(syst) = fullDD_alt(outputTable, toEstimate, Data, MC, tightSelection, signalRegion, controlRegion, mcWeight.Systematic(syst));
+  }
+
+  return retVal;
 }
 
 void printHelp()
