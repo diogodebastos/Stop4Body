@@ -268,7 +268,7 @@ int main(int argc, char** argv)
   if(mcWeightSys.Systematics().size() > 0)
   {
     std::cout << "And variations:" << std::endl;
-    for(auto& syst: mcWeightSys)
+    for(auto& syst: mcWeightSys.Systematics())
       std::cout << "  " << syst << ": " << mcWeightSys.Systematic(syst) << std::endl;
   }
   std::cout << std::endl;
