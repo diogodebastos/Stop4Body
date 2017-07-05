@@ -1307,7 +1307,7 @@ int main(int argc, char** argv)
             lep_eta     = -9999;
           }
 
-          auto loadQuantity = [] (Float_t* vector, ValueWithSystematics<std::vector<int>> indexer, int index, double defaultValue = -9999) -> ValueWithSystematics<double>
+          auto loadQuantity = [] (Float_t* vector, ValueWithSystematics<std::vector<int>> indexer, size_t index, double defaultValue = -9999) -> ValueWithSystematics<double>
           {
             ValueWithSystematics<double> retVal = defaultValue;
 
@@ -1327,7 +1327,7 @@ int main(int argc, char** argv)
 
             return retVal;
           };
-          auto loadSysQuantity = [] (ValueWithSystematics<std::vector<double>> vector, ValueWithSystematics<std::vector<int>> indexer, int index, double defaultValue = -9999) -> ValueWithSystematics<double>
+          auto loadSysQuantity = [] (ValueWithSystematics<std::vector<double>> vector, ValueWithSystematics<std::vector<int>> indexer, size_t index, double defaultValue = -9999) -> ValueWithSystematics<double>
           {
             ValueWithSystematics<double> retVal = defaultValue;
 
@@ -1401,7 +1401,7 @@ int main(int argc, char** argv)
 
             for(auto& syst: list)
             {
-              if(phi1.GetSystematicOrValue(syst) == defaultValue || phi2.GetSystematicOrValue(syst) == defaultValue)
+              if(eta1.GetSystematicOrValue(syst) == defaultValue || eta2.GetSystematicOrValue(syst) == defaultValue)
                 retVal.GetSystematicOrValue(syst) = defaultValue;
             }
 
@@ -1409,7 +1409,7 @@ int main(int argc, char** argv)
           };
           auto QuadSumSys = []  (const ValueWithSystematics<double>& par1, const ValueWithSystematics<double>& par2, double defaultValue = -9999) -> ValueWithSystematics<double>
           {
-            ValueWithSystematics<double> retVal = (par1.pow(2) + par2.pow(2)).Sqrt();
+            ValueWithSystematics<double> retVal = ValueWithSystematics<double>(par1.pow(2) + par2.pow(2)).Sqrt();
 
             std::vector<std::string> list;
             list.push_back("Value");
@@ -1452,7 +1452,7 @@ int main(int argc, char** argv)
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
             CosDeltaPhi = DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
-            mt = (2.0 * LepPt * Met * (1 - CosDeltaPhi)).Sqrt();
+            mt = ValueWithSystematics<double>(2.0 * LepPt * Met * (1 - CosDeltaPhi)).Sqrt();
             Q80 = 1.0 - 80.*80./(2.0 * LepPt * Met);
 
             if(!process.isdata())
@@ -1673,7 +1673,7 @@ int main(int argc, char** argv)
 
           list.clear();
           list.push_back("Value");
-          loadSystematics(list, jetList);
+          loadSystematics(list, validJets);
 
           HT = 0;
           Njet = validJets.size();
