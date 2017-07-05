@@ -13,6 +13,7 @@
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body/interface/VariableReader.h"
 
 using json = nlohmann::json;
 
@@ -192,6 +193,7 @@ class ProcessInfo
     std::vector<std::string> getAllFiles();
     TH1D* getHist(std::string, std::string, std::string, int, double, double);
     TH2D* get2DHist(std::string, std::string, std::string, std::string, int, double, double, int, double, double);
+    TH1D* getHist(std::string, VariableInfo&, std::string);
     doubleUnc getYield(std::string, std::string);
     double getLumi() const;
 
@@ -259,6 +261,8 @@ class SampleReader
     TChain* getChain();
     THStack* getStack(std::string, std::string, std::string, int, double, double);
     TH1D* getHist(std::string, std::string, std::string, std::string, int, double, double);
+    THStack* getStack(std::string, VariableInfo&, std::string);
+    TH1D* getHist(std::string, VariableInfo&, std::string);
     //void draw(std::string, std::string, std::string);
     doubleUnc getYield(std::string, std::string);
     double getLumi() const;

@@ -16,7 +16,9 @@ class VariableInfo
     min_(min),
     max_(max),
     bins_(bins),
-    legPos_(legPos)
+    legPos_(legPos),
+    logx_(false),
+    logy_(true)
     {}
     VariableInfo(nlohmann::json jsonInfo);
 
@@ -31,6 +33,10 @@ class VariableInfo
     bool legRight() const {return legPos_ == "right";}
     bool legTop() const {return legPos_ == "top";}
     bool legBottom() const {return legPos_ == "bottom";}
+    bool logx() const {return logx_;}
+    bool logy() const {return logy_;}
+    std::vector<double> varBins() const {return varBins_;}
+    bool hasVarBins() const {return varBins_.size() > 0;}
 
   private:
   protected:
@@ -41,6 +47,8 @@ class VariableInfo
     double max_;
     int bins_;
     std::string legPos_;
+    bool logx_, logy_;
+    std::vector<double> varBins_;
 
 };
 

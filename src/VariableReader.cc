@@ -20,9 +20,16 @@ VariableInfo::VariableInfo(json jsonInfo)
   if(jsonInfo.count("label") != 0)
     label_ = jsonInfo["label"];
 
-  if(jsonInfo.count("max") == 0)
-    throw MissingJSONParam("The variable '" + name_ + "' does not have a maximum value. It is not possible to draw without a maximum value.");
-  max_ = jsonInfo["max"];
+  if(jsonInfo.count("max") == 0 && jsonInfo.count("varBins") == 0)
+    throw MissingJSONParam("The variable '" + name_ + "' does not have a maximum value or a variable number of bins. It is not possible to draw without one of the two.");
+
+  if(jsonInfo.count("max") != 0)
+    max_ = jsonInfo["max"];
+  if(jsonInfo.count("varBins") != 0)
+  {
+    for(double theBin : jsonInfo["varBins"])
+      varBins_.push_back(theBin);
+  }
 
   min_ = 0;
   if(jsonInfo.count("min") != 0)
@@ -31,6 +38,14 @@ VariableInfo::VariableInfo(json jsonInfo)
   bins_ = 20;
   if(jsonInfo.count("bins") != 0)
     bins_ = jsonInfo["bins"];
+
+  logx_ = false;
+  if(jsonInfo.count("logx") != 0)
+    logx_ = jsonInfo["logx"];
+
+  logy_ = true;
+  if(jsonInfo.count("logy") != 0)
+    logy_ = jsonInfo["logy"];
 
   legPos_ = "top";
   if(jsonInfo.count("legPos") != 0)

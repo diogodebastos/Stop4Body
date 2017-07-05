@@ -6,19 +6,9 @@
       "latex":"Preselection MVA"
     },
     {
-      "name":"PreselectionMVA_lep30",
-      "expression":"(isPrompt == 0) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (LepPt < 30)",
-      "latex":"Preselection MVA (p_{T}(l) < 30)"
-    },
-    {
       "name":"SelectionMVA",
       "expression":"(BDT > 0.46) && (isPrompt == 0) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
       "latex":"Selection MVA"
-    },
-    {
-      "name":"SelectionMVA_lep30",
-      "expression":"(BDT > 0.46) && (isPrompt == 0) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (LepPt < 30)",
-      "latex":"Selection MVA (p_{T}(l) < 30)"
     }
   ],
   "variables":[
@@ -36,8 +26,57 @@
       "legPos":"top",
       "max":105.0,
       "bins":30
+    },
+    {
+      "name":"LepPt_var",
+      "expression":"LepPt",
+      "label":"p_{T}(l)",
+      "legPos":"top",
+      "varBins":[3.5,5,12,20,30,50,80,200]
+    },
+    {
+      "name":"LepPt_var_log",
+      "expression":"LepPt",
+      "label":"p_{T}(l)",
+      "legPos":"top",
+      "logx":true,
+      "varBins":[3.5,5,12,20,30,50,80,200]
     }
   ],
   "2Dplots":[
+    {
+      "name":"IsoVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "name":"HybIso",
+        "expression":"LepIso03*min(LepPt,25)",
+        "label":"HybIso",
+        "min": 0,
+        "max": 20,
+        "bins": 20
+      }
+    },
+    {
+      "name":"TightVSBDT",
+      "X":{
+        "expression":"BDT",
+        "min": -0.6,
+        "max": 0.6,
+        "bins": 48
+      },
+      "Y":{
+        "name":"Tight",
+        "expression":"isTight",
+        "label":"Tight",
+        "min": -0.5,
+        "max": 1.5,
+        "bins": 2
+      }
+    }
   ]
 }

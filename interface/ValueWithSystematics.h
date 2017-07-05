@@ -266,8 +266,10 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     ValueWithSystematics<double>& operator= (ValueWithSystematicsInternal<double>&& val) noexcept;
 
     ValueWithSystematics<double> Cos() const;
+    ValueWithSystematics<double> Sin() const;
     ValueWithSystematics<double> Sqrt() const;
     ValueWithSystematics<double> abs() const;
+    ValueWithSystematics<double> pow(double exp) const;
 
     //template<class U>
     //friend ValueWithSystematics<U>& ValueWithSystematics<U, typename std::enable_if<std::is_base_of<TLorentzVector, U>::value>::type>::operator*=(const ValueWithSystematics<double>& val);
@@ -280,6 +282,9 @@ class ValueWithSystematics<double>: public ValueWithSystematicsInternal<double>
     using ValueWithSystematicsInternal<double>::systematics;
     using ValueWithSystematicsInternal<double>::metadata;
 };
+
+template<class T>
+void loadSystematics(std::vector<std::string>& list, const ValueWithSystematics<T>& variable);
 
 // Templated classes must have their code in the header :(
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.hpp"

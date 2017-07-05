@@ -203,6 +203,10 @@ int main(int argc, char** argv)
   muonTightToLooseHighEta = static_cast<TH1F*>(tightToLooseRatios.Get("muonEfficiencyHighEta"));
   cwd->cd();
 
+  Float_t identity[100];
+  for(int i = 0; i < 100; ++i)
+    identity[i] = i;
+
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName);
 
@@ -287,8 +291,16 @@ int main(int argc, char** argv)
         // Performing dummy computations just so that the placeholders for all the uncertainties are created
         std::cout << "\t        trigger" << std::endl;
         triggerEfficiency = triggerEfficiencyFromMETSys(200.0);
+        triggerEfficiency.Systematic("JES_Up");
+        triggerEfficiency.Systematic("JES_Down");
+        triggerEfficiency.Systematic("JER_Up");
+        triggerEfficiency.Systematic("JER_Down");
         std::cout << "\t        EWK" << std::endl;
         EWKISRweight = EWKISRweightFromISRpTSys(20, 1.0, 40, 0.7);
+        EWKISRweight.Systematic("JES_Up");
+        EWKISRweight.Systematic("JES_Down");
+        EWKISRweight.Systematic("JER_Up");
+        EWKISRweight.Systematic("JER_Down");
         std::cout << "\t        ISR" << std::endl;
         ISRweight = ISRweightFromNISRJetSys(2);
         std::cout << "\t        pu" << std::endl;
@@ -299,38 +311,35 @@ int main(int argc, char** argv)
         leptonIDSF = getLeptonIDSFSys(11, 20, 1.1);
         std::cout << "\t        lISO" << std::endl;
         leptonISOSF = getLeptonISOSFSys(11, 20, 1.1);
-        std::cout << "\t        looseNotTight" << std::endl;
-        looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
+      }
 
-        std::cout << "\t        weight" << std::endl;
-        weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
+      std::cout << "\t        looseNotTight" << std::endl;
+      looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
 
+      std::cout << "\t        weight" << std::endl;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
+
+      std::cout << "\t        locking" << std::endl;
+      if(!process.isdata())
+      {
         // Then lock the variables so that the placeholders are not removed or new ones are created
-        std::cout << "\t        locking" << std::endl;
         triggerEfficiency.Lock();
         EWKISRweight.Lock();
         ISRweight.Lock();
         puWeight.Lock();
         leptonIDSF.Lock();
         leptonISOSF.Lock();
-
-        triggerEfficiency = 1.0;
-        EWKISRweight = 1.0;
-        ISRweight = 1.0;
-        puWeight = 1.0;
-        leptonIDSF = 1.0;
-        leptonISOSF = 1.0;
-      }
-      else
-      {
-        std::cout << "\t        looseNotTight" << std::endl;
-        looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
-
-        std::cout << "\t        weight" << std::endl;
-        weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
       }
       looseNotTightWeight.Lock();
       weight.Lock();
+
+
+      triggerEfficiency = 1.0;
+      EWKISRweight = 1.0;
+      ISRweight = 1.0;
+      puWeight = 1.0;
+      leptonIDSF = 1.0;
+      leptonISOSF = 1.0;
       looseNotTightWeight = 1.0;
       weight = 1.0;
 
@@ -398,57 +407,444 @@ int main(int argc, char** argv)
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
       Float_t nGoodMu_loose;
       Float_t nGoodEl_loose;
-      Float_t Met; bdttree->Branch("Met",&Met,"Met/F");
-      Float_t mt; bdttree->Branch("mt",&mt,"mt/F");
-      Float_t mt_old; bdttree->Branch("mt_old",&mt_old,"mt_old/F");
-      Float_t Q80; bdttree-> Branch("Q80",&Q80,"Q80/F");
-      Float_t CosDeltaPhi; bdttree->Branch("CosDeltaPhi",&CosDeltaPhi,"CosDeltaPhi/F");
 
-      Float_t nIsr_out; bdttree->Branch("nIsr", &nIsr_out, "nIsr/F");
-      Float_t Njet;  bdttree->Branch("Njet",&Njet,"Njet/F");
-      Float_t Njet30;  bdttree->Branch("Njet30",&Njet30,"Njet30/F");
-      Float_t Njet40;  bdttree->Branch("Njet40",&Njet40,"Njet40/F");
-      Float_t Njet50;  bdttree->Branch("Njet50",&Njet50,"Njet50/F");
-      Float_t Njet60;  bdttree->Branch("Njet60",&Njet60,"Njet60/F");
-      Float_t Njet70;  bdttree->Branch("Njet70",&Njet70,"Njet70/F");
-      Float_t Njet80;  bdttree->Branch("Njet80",&Njet80,"Njet80/F");
-      Float_t Njet90;  bdttree->Branch("Njet90",&Njet90,"Njet90/F");
-      Float_t Njet100;  bdttree->Branch("Njet100",&Njet100,"Njet100/F");
-      Float_t Jet1Pt;  bdttree->Branch("Jet1Pt",&Jet1Pt,"Jet1Pt/F");
-      Float_t Jet1Eta;  bdttree->Branch("Jet1Eta",&Jet1Eta,"Jet1Eta/F");
-      Float_t Jet1CSV;  bdttree->Branch("Jet1CSV",&Jet1CSV,"Jet1CSV/F");
-      Float_t Jet2Pt;  bdttree->Branch("Jet2Pt",&Jet2Pt,"Jet2Pt/F");
-      Float_t Jet2Eta;  bdttree->Branch("Jet2Eta",&Jet2Eta,"Jet2Eta/F");
-      Float_t Jet2CSV;  bdttree->Branch("Jet2CSV",&Jet2CSV,"Jet2CSV/F");
-      Float_t Jet3Pt;  bdttree->Branch("Jet3Pt",&Jet3Pt,"Jet3Pt/F");
-      Float_t Jet3Eta;  bdttree->Branch("Jet3Eta",&Jet3Eta,"Jet3Eta/F");
-      Float_t Jet3CSV;  bdttree->Branch("Jet3CSV",&Jet3CSV,"Jet3CSV/F");
-      Float_t DPhiJet1Jet2;  bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2,"DPhiJet1Jet2/F");
-      Float_t HT;  bdttree->Branch("HT",&HT,"HT/F");
 
-      Float_t NbLoose; bdttree->Branch("NbLoose",&NbLoose,"NbLoose/F");
-      Float_t NbTight;  bdttree->Branch("NbTight",&NbTight,"NbTight/F");
-      Float_t NbLooseTo50; bdttree->Branch("NbLooseTo50",&NbLooseTo50,"NbLooseTo50/F");
-      Float_t NbLoose50;     bdttree->Branch("NbLoose50",&NbLoose50,"NbLoose50/F");
-      Float_t NbMediumTo50; bdttree->Branch("NbMediumTo50",&NbMediumTo50,"NbMediumTo50/F");
-      Float_t NbMedium50;     bdttree->Branch("NbMedium50",&NbMedium50,"NbMedium50/F");
-      Float_t NbTightTo50; bdttree->Branch("NbTightTo50",&NbTightTo50,"NbTightTo50/F");
-      Float_t NbTight50;     bdttree->Branch("NbTight50",&NbTight50,"NbTight50/F");
-      Float_t JetHBpt;  bdttree->Branch("JetHBpt",&JetHBpt,"JetHBpt/F");
-      Float_t JetHBeta;  bdttree->Branch("JetHBeta",&JetHBeta,"JetHBeta/F");
-      Float_t JetHBindex; bdttree->Branch("JetHBindex", &JetHBindex, "JetHBindex/F");
-      Float_t JetHBCSV; bdttree->Branch("JetHBCSV", &JetHBCSV, "JetHBCSV/F");
-      Float_t JetB2pt;  bdttree->Branch("JetB2pt",&JetB2pt,"JetB2pt/F");
-      Float_t JetB2eta;  bdttree->Branch("JetB2eta",&JetB2eta,"JetB2eta/F");
-      Float_t JetB2index; bdttree->Branch("JetB2index", &JetB2index, "JetB2index/F");
-      Float_t JetB2CSV; bdttree->Branch("JetB2CSV", &JetB2CSV, "JetB2CSV/F");
+      ValueWithSystematics<float> Met;
+      ValueWithSystematics<float> mt;
+      ValueWithSystematics<float> Q80;
+      ValueWithSystematics<float> CosDeltaPhi;
 
-      Float_t DrJet1Lep;  bdttree->Branch("DrJet1Lep",&DrJet1Lep,"DrJet1Lep/F");
-      Float_t DrJet2Lep;  bdttree->Branch("DrJet2Lep",&DrJet2Lep,"DrJet2Lep/F");
-      Float_t DrJetHBLep;  bdttree->Branch("DrJetHBLep",&DrJetHBLep,"DrJetHBLep/F");
-      Float_t DrJet1Jet2;  bdttree->Branch("DrJet1Jet2",&DrJet1Jet2,"DrJet1Jet2/F");
-      Float_t JetLepMass;  bdttree->Branch("JetLepMass",&JetLepMass,"JetLepMass/F");
-      Float_t J3Mass;  bdttree->Branch("J3Mass",&J3Mass,"J3Mass/F");
+      ValueWithSystematics<float> nIsr_out;
+      ValueWithSystematics<float> Njet;
+      ValueWithSystematics<float> Njet30;
+      ValueWithSystematics<float> Njet40;
+      ValueWithSystematics<float> Njet50;
+      ValueWithSystematics<float> Njet60;
+      ValueWithSystematics<float> Njet70;
+      ValueWithSystematics<float> Njet80;
+      ValueWithSystematics<float> Njet90;
+      ValueWithSystematics<float> Njet100;
+      ValueWithSystematics<float> Jet1Pt;
+      ValueWithSystematics<float> Jet1Eta;
+      ValueWithSystematics<float> Jet1CSV;
+      ValueWithSystematics<float> Jet2Pt;
+      ValueWithSystematics<float> Jet2Eta;
+      ValueWithSystematics<float> Jet2CSV;
+      ValueWithSystematics<float> Jet3Pt;
+      ValueWithSystematics<float> Jet3Eta;
+      ValueWithSystematics<float> Jet3CSV;
+      ValueWithSystematics<float> DPhiJet1Jet2;
+      ValueWithSystematics<float> HT;
+
+      ValueWithSystematics<float> NbLoose;
+      ValueWithSystematics<float> NbTight;
+      ValueWithSystematics<float> NbLooseTo50;
+      ValueWithSystematics<float> NbLoose50;
+      ValueWithSystematics<float> NbMediumTo50;
+      ValueWithSystematics<float> NbMedium50;
+      ValueWithSystematics<float> NbTightTo50;
+      ValueWithSystematics<float> NbTight50;
+      ValueWithSystematics<float> JetHBpt;
+      ValueWithSystematics<float> JetHBeta;
+      ValueWithSystematics<float> JetHBindex;
+      ValueWithSystematics<float> JetHBCSV;
+      ValueWithSystematics<float> JetB2pt;
+      ValueWithSystematics<float> JetB2eta;
+      ValueWithSystematics<float> JetB2index;
+      ValueWithSystematics<float> JetB2CSV;
+
+      ValueWithSystematics<float> DrJet1Lep;
+      ValueWithSystematics<float> DrJet2Lep;
+      ValueWithSystematics<float> DrJetHBLep;
+      ValueWithSystematics<float> DrJet1Jet2;
+      ValueWithSystematics<float> JetLepMass;
+      ValueWithSystematics<float> J3Mass;
+
+      if(!process.isdata())
+      {
+        Met.Systematic("JES_Up");
+        Met.Systematic("JES_Down");
+        Met.Systematic("JER_Up");
+        Met.Systematic("JER_Down");
+        mt.Systematic("JES_Up");
+        mt.Systematic("JES_Down");
+        mt.Systematic("JER_Up");
+        mt.Systematic("JER_Down");
+        Q80.Systematic("JES_Up");
+        Q80.Systematic("JES_Down");
+        Q80.Systematic("JER_Up");
+        Q80.Systematic("JER_Down");
+        CosDeltaPhi.Systematic("JES_Up");
+        CosDeltaPhi.Systematic("JES_Down");
+        CosDeltaPhi.Systematic("JER_Up");
+        CosDeltaPhi.Systematic("JER_Down");
+        Njet.Systematic("JES_Up");
+        Njet.Systematic("JES_Down");
+        Njet.Systematic("JER_Up");
+        Njet.Systematic("JER_Down");
+        Njet30.Systematic("JES_Up");
+        Njet30.Systematic("JES_Down");
+        Njet30.Systematic("JER_Up");
+        Njet30.Systematic("JER_Down");
+        Njet40.Systematic("JES_Up");
+        Njet40.Systematic("JES_Down");
+        Njet40.Systematic("JER_Up");
+        Njet40.Systematic("JER_Down");
+        Njet50.Systematic("JES_Up");
+        Njet50.Systematic("JES_Down");
+        Njet50.Systematic("JER_Up");
+        Njet50.Systematic("JER_Down");
+        Njet60.Systematic("JES_Up");
+        Njet60.Systematic("JES_Down");
+        Njet60.Systematic("JER_Up");
+        Njet60.Systematic("JER_Down");
+        Njet70.Systematic("JES_Up");
+        Njet70.Systematic("JES_Down");
+        Njet70.Systematic("JER_Up");
+        Njet70.Systematic("JER_Down");
+        Njet80.Systematic("JES_Up");
+        Njet80.Systematic("JES_Down");
+        Njet80.Systematic("JER_Up");
+        Njet80.Systematic("JER_Down");
+        Njet90.Systematic("JES_Up");
+        Njet90.Systematic("JES_Down");
+        Njet90.Systematic("JER_Up");
+        Njet90.Systematic("JER_Down");
+        Njet100.Systematic("JES_Up");
+        Njet100.Systematic("JES_Down");
+        Njet100.Systematic("JER_Up");
+        Njet100.Systematic("JER_Down");
+        Jet1Pt.Systematic("JES_Up");
+        Jet1Pt.Systematic("JES_Down");
+        Jet1Pt.Systematic("JER_Up");
+        Jet1Pt.Systematic("JER_Down");
+        Jet1Eta.Systematic("JES_Up");
+        Jet1Eta.Systematic("JES_Down");
+        Jet1Eta.Systematic("JER_Up");
+        Jet1Eta.Systematic("JER_Down");
+        Jet1CSV.Systematic("JES_Up");
+        Jet1CSV.Systematic("JES_Down");
+        Jet1CSV.Systematic("JER_Up");
+        Jet1CSV.Systematic("JER_Down");
+        Jet2Pt.Systematic("JES_Up");
+        Jet2Pt.Systematic("JES_Down");
+        Jet2Pt.Systematic("JER_Up");
+        Jet2Pt.Systematic("JER_Down");
+        Jet2Eta.Systematic("JES_Up");
+        Jet2Eta.Systematic("JES_Down");
+        Jet2Eta.Systematic("JER_Up");
+        Jet2Eta.Systematic("JER_Down");
+        Jet2CSV.Systematic("JES_Up");
+        Jet2CSV.Systematic("JES_Down");
+        Jet2CSV.Systematic("JER_Up");
+        Jet2CSV.Systematic("JER_Down");
+        Jet3Pt.Systematic("JES_Up");
+        Jet3Pt.Systematic("JES_Down");
+        Jet3Pt.Systematic("JER_Up");
+        Jet3Pt.Systematic("JER_Down");
+        Jet3Eta.Systematic("JES_Up");
+        Jet3Eta.Systematic("JES_Down");
+        Jet3Eta.Systematic("JER_Up");
+        Jet3Eta.Systematic("JER_Down");
+        Jet3CSV.Systematic("JES_Up");
+        Jet3CSV.Systematic("JES_Down");
+        Jet3CSV.Systematic("JER_Up");
+        Jet3CSV.Systematic("JER_Down");
+        DPhiJet1Jet2.Systematic("JES_Up");
+        DPhiJet1Jet2.Systematic("JES_Down");
+        DPhiJet1Jet2.Systematic("JER_Up");
+        DPhiJet1Jet2.Systematic("JER_Down");
+        HT.Systematic("JES_Up");
+        HT.Systematic("JES_Down");
+        HT.Systematic("JER_Up");
+        HT.Systematic("JER_Down");
+        NbLoose.Systematic("JES_Up");
+        NbLoose.Systematic("JES_Down");
+        NbLoose.Systematic("JER_Up");
+        NbLoose.Systematic("JER_Down");
+        NbTight.Systematic("JES_Up");
+        NbTight.Systematic("JES_Down");
+        NbTight.Systematic("JER_Up");
+        NbTight.Systematic("JER_Down");
+        NbLooseTo50.Systematic("JES_Up");
+        NbLooseTo50.Systematic("JES_Down");
+        NbLooseTo50.Systematic("JER_Up");
+        NbLooseTo50.Systematic("JER_Down");
+        NbLoose50.Systematic("JES_Up");
+        NbLoose50.Systematic("JES_Down");
+        NbLoose50.Systematic("JER_Up");
+        NbLoose50.Systematic("JER_Down");
+        NbMediumTo50.Systematic("JES_Up");
+        NbMediumTo50.Systematic("JES_Down");
+        NbMediumTo50.Systematic("JER_Up");
+        NbMediumTo50.Systematic("JER_Down");
+        NbMedium50.Systematic("JES_Up");
+        NbMedium50.Systematic("JES_Down");
+        NbMedium50.Systematic("JER_Up");
+        NbMedium50.Systematic("JER_Down");
+        NbTightTo50.Systematic("JES_Up");
+        NbTightTo50.Systematic("JES_Down");
+        NbTightTo50.Systematic("JER_Up");
+        NbTightTo50.Systematic("JER_Down");
+        NbTight50.Systematic("JES_Up");
+        NbTight50.Systematic("JES_Down");
+        NbTight50.Systematic("JER_Up");
+        NbTight50.Systematic("JER_Down");
+        JetHBpt.Systematic("JES_Up");
+        JetHBpt.Systematic("JES_Down");
+        JetHBpt.Systematic("JER_Up");
+        JetHBpt.Systematic("JER_Down");
+        JetHBeta.Systematic("JES_Up");
+        JetHBeta.Systematic("JES_Down");
+        JetHBeta.Systematic("JER_Up");
+        JetHBeta.Systematic("JER_Down");
+        JetHBindex.Systematic("JES_Up");
+        JetHBindex.Systematic("JES_Down");
+        JetHBindex.Systematic("JER_Up");
+        JetHBindex.Systematic("JER_Down");
+        JetHBCSV.Systematic("JES_Up");
+        JetHBCSV.Systematic("JES_Down");
+        JetHBCSV.Systematic("JER_Up");
+        JetHBCSV.Systematic("JER_Down");
+        JetB2pt.Systematic("JES_Up");
+        JetB2pt.Systematic("JES_Down");
+        JetB2pt.Systematic("JER_Up");
+        JetB2pt.Systematic("JER_Down");
+        JetB2eta.Systematic("JES_Up");
+        JetB2eta.Systematic("JES_Down");
+        JetB2eta.Systematic("JER_Up");
+        JetB2eta.Systematic("JER_Down");
+        JetB2index.Systematic("JES_Up");
+        JetB2index.Systematic("JES_Down");
+        JetB2index.Systematic("JER_Up");
+        JetB2index.Systematic("JER_Down");
+        JetB2CSV.Systematic("JES_Up");
+        JetB2CSV.Systematic("JES_Down");
+        JetB2CSV.Systematic("JER_Up");
+        JetB2CSV.Systematic("JER_Down");
+        DrJet1Lep.Systematic("JES_Up");
+        DrJet1Lep.Systematic("JES_Down");
+        DrJet1Lep.Systematic("JER_Up");
+        DrJet1Lep.Systematic("JER_Down");
+        DrJet2Lep.Systematic("JES_Up");
+        DrJet2Lep.Systematic("JES_Down");
+        DrJet2Lep.Systematic("JER_Up");
+        DrJet2Lep.Systematic("JER_Down");
+        DrJetHBLep.Systematic("JES_Up");
+        DrJetHBLep.Systematic("JES_Down");
+        DrJetHBLep.Systematic("JER_Up");
+        DrJetHBLep.Systematic("JER_Down");
+        DrJet1Jet2.Systematic("JES_Up");
+        DrJet1Jet2.Systematic("JES_Down");
+        DrJet1Jet2.Systematic("JER_Up");
+        DrJet1Jet2.Systematic("JER_Down");
+        JetLepMass.Systematic("JES_Up");
+        JetLepMass.Systematic("JES_Down");
+        JetLepMass.Systematic("JER_Up");
+        JetLepMass.Systematic("JER_Down");
+        J3Mass.Systematic("JES_Up");
+        J3Mass.Systematic("JES_Down");
+        J3Mass.Systematic("JER_Up");
+        J3Mass.Systematic("JER_Down");
+
+        Met.Lock();
+        mt.Lock();
+        Q80.Lock();
+        CosDeltaPhi.Lock();
+        nIsr_out.Lock();
+        Njet.Lock();
+        Njet30.Lock();
+        Njet40.Lock();
+        Njet50.Lock();
+        Njet60.Lock();
+        Njet70.Lock();
+        Njet80.Lock();
+        Njet90.Lock();
+        Njet100.Lock();
+        Jet1Pt.Lock();
+        Jet1Eta.Lock();
+        Jet1CSV.Lock();
+        Jet2Pt.Lock();
+        Jet2Eta.Lock();
+        Jet2CSV.Lock();
+        Jet3Pt.Lock();
+        Jet3Eta.Lock();
+        Jet3CSV.Lock();
+        DPhiJet1Jet2.Lock();
+        HT.Lock();
+        NbLoose.Lock();
+        NbTight.Lock();
+        NbLooseTo50.Lock();
+        NbLoose50.Lock();
+        NbMediumTo50.Lock();
+        NbMedium50.Lock();
+        NbTightTo50.Lock();
+        NbTight50.Lock();
+        JetHBpt.Lock();
+        JetHBeta.Lock();
+        JetHBindex.Lock();
+        JetHBCSV.Lock();
+        JetB2pt.Lock();
+        JetB2eta.Lock();
+        JetB2index.Lock();
+        JetB2CSV.Lock();
+        DrJet1Lep.Lock();
+        DrJet2Lep.Lock();
+        DrJetHBLep.Lock();
+        DrJet1Jet2.Lock();
+        JetLepMass.Lock();
+        J3Mass.Lock();
+      }
+
+
+      bdttree->Branch("Met",&Met.Value(),"Met/F");
+      bdttree->Branch("mt",&mt.Value(),"mt/F");
+      bdttree-> Branch("Q80",&Q80.Value(),"Q80/F");
+      bdttree->Branch("CosDeltaPhi",&CosDeltaPhi.Value(),"CosDeltaPhi/F");
+
+      bdttree->Branch("nIsr", &nIsr_out.Value(), "nIsr/F");
+      bdttree->Branch("Njet",&Njet.Value(),"Njet/F");
+      bdttree->Branch("Njet30",&Njet30.Value(),"Njet30/F");
+      bdttree->Branch("Njet40",&Njet40.Value(),"Njet40/F");
+      bdttree->Branch("Njet50",&Njet50.Value(),"Njet50/F");
+      bdttree->Branch("Njet60",&Njet60.Value(),"Njet60/F");
+      bdttree->Branch("Njet70",&Njet70.Value(),"Njet70/F");
+      bdttree->Branch("Njet80",&Njet80.Value(),"Njet80/F");
+      bdttree->Branch("Njet90",&Njet90.Value(),"Njet90/F");
+      bdttree->Branch("Njet100",&Njet100.Value(),"Njet100/F");
+      bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
+      bdttree->Branch("Jet1Eta",&Jet1Eta.Value(),"Jet1Eta/F");
+      bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
+      bdttree->Branch("Jet2Pt",&Jet2Pt.Value(),"Jet2Pt/F");
+      bdttree->Branch("Jet2Eta",&Jet2Eta.Value(),"Jet2Eta/F");
+      bdttree->Branch("Jet2CSV",&Jet2CSV.Value(),"Jet2CSV/F");
+      bdttree->Branch("Jet3Pt",&Jet3Pt.Value(),"Jet3Pt/F");
+      bdttree->Branch("Jet3Eta",&Jet3Eta.Value(),"Jet3Eta/F");
+      bdttree->Branch("Jet3CSV",&Jet3CSV.Value(),"Jet3CSV/F");
+      bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
+      bdttree->Branch("HT",&HT.Value(),"HT/F");
+
+      bdttree->Branch("NbLoose",&NbLoose.Value(),"NbLoose/F");
+      bdttree->Branch("NbTight",&NbTight.Value(),"NbTight/F");
+      bdttree->Branch("NbLooseTo50",&NbLooseTo50.Value(),"NbLooseTo50/F");
+      bdttree->Branch("NbLoose50",&NbLoose50.Value(),"NbLoose50/F");
+      bdttree->Branch("NbMediumTo50",&NbMediumTo50.Value(),"NbMediumTo50/F");
+      bdttree->Branch("NbMedium50",&NbMedium50.Value(),"NbMedium50/F");
+      bdttree->Branch("NbTightTo50",&NbTightTo50.Value(),"NbTightTo50/F");
+      bdttree->Branch("NbTight50",&NbTight50.Value(),"NbTight50/F");
+      bdttree->Branch("JetHBpt",&JetHBpt.Value(),"JetHBpt/F");
+      bdttree->Branch("JetHBeta",&JetHBeta.Value(),"JetHBeta/F");
+      bdttree->Branch("JetHBindex", &JetHBindex.Value(), "JetHBindex/F");
+      bdttree->Branch("JetHBCSV", &JetHBCSV.Value(), "JetHBCSV/F");
+      bdttree->Branch("JetB2pt",&JetB2pt.Value(),"JetB2pt/F");
+      bdttree->Branch("JetB2eta",&JetB2eta.Value(),"JetB2eta/F");
+      bdttree->Branch("JetB2index", &JetB2index.Value(), "JetB2index/F");
+      bdttree->Branch("JetB2CSV", &JetB2CSV.Value(), "JetB2CSV/F");
+
+      bdttree->Branch("DrJet1Lep",&DrJet1Lep.Value(),"DrJet1Lep/F");
+      bdttree->Branch("DrJet2Lep",&DrJet2Lep.Value(),"DrJet2Lep/F");
+      bdttree->Branch("DrJetHBLep",&DrJetHBLep.Value(),"DrJetHBLep/F");
+      bdttree->Branch("DrJet1Jet2",&DrJet1Jet2.Value(),"DrJet1Jet2/F");
+      bdttree->Branch("JetLepMass",&JetLepMass.Value(),"JetLepMass/F");
+      bdttree->Branch("J3Mass",&J3Mass.Value(),"J3Mass/F");
+
+      if(!process.isdata())
+      {
+        for(auto& systematic: Met.Systematics())
+          bdttree->Branch(("Met_"+systematic).c_str(), &(Met.Systematic(systematic)));
+        for(auto& systematic: mt.Systematics())
+          bdttree->Branch(("mt_"+systematic).c_str(), &(mt.Systematic(systematic)));
+        for(auto& systematic: Q80.Systematics())
+          bdttree->Branch(("Q80_"+systematic).c_str(), &(Q80.Systematic(systematic)));
+        for(auto& systematic: CosDeltaPhi.Systematics())
+          bdttree->Branch(("CosDeltaPhi_"+systematic).c_str(), &(CosDeltaPhi.Systematic(systematic)));
+        for(auto& systematic: nIsr_out.Systematics())
+          bdttree->Branch(("nIsr_"+systematic).c_str(), &(nIsr_out.Systematic(systematic)));
+        for(auto& systematic: Njet.Systematics())
+          bdttree->Branch(("Njet_"+systematic).c_str(), &(Njet.Systematic(systematic)));
+        for(auto& systematic: Njet30.Systematics())
+          bdttree->Branch(("Njet30_"+systematic).c_str(), &(Njet30.Systematic(systematic)));
+        for(auto& systematic: Njet40.Systematics())
+          bdttree->Branch(("Njet40_"+systematic).c_str(), &(Njet40.Systematic(systematic)));
+        for(auto& systematic: Njet50.Systematics())
+          bdttree->Branch(("Njet50_"+systematic).c_str(), &(Njet50.Systematic(systematic)));
+        for(auto& systematic: Njet60.Systematics())
+          bdttree->Branch(("Njet60_"+systematic).c_str(), &(Njet60.Systematic(systematic)));
+        for(auto& systematic: Njet70.Systematics())
+          bdttree->Branch(("Njet70_"+systematic).c_str(), &(Njet70.Systematic(systematic)));
+        for(auto& systematic: Njet80.Systematics())
+          bdttree->Branch(("Njet80_"+systematic).c_str(), &(Njet80.Systematic(systematic)));
+        for(auto& systematic: Njet90.Systematics())
+          bdttree->Branch(("Njet90_"+systematic).c_str(), &(Njet90.Systematic(systematic)));
+        for(auto& systematic: Njet100.Systematics())
+          bdttree->Branch(("Njet100_"+systematic).c_str(), &(Njet100.Systematic(systematic)));
+        for(auto& systematic: Jet1Pt.Systematics())
+          bdttree->Branch(("Jet1Pt_"+systematic).c_str(), &(Jet1Pt.Systematic(systematic)));
+        for(auto& systematic: Jet1Eta.Systematics())
+          bdttree->Branch(("Jet1Eta_"+systematic).c_str(), &(Jet1Eta.Systematic(systematic)));
+        for(auto& systematic: Jet1CSV.Systematics())
+          bdttree->Branch(("Jet1CSV_"+systematic).c_str(), &(Jet1CSV.Systematic(systematic)));
+        for(auto& systematic: Jet2Pt.Systematics())
+          bdttree->Branch(("Jet2Pt_"+systematic).c_str(), &(Jet2Pt.Systematic(systematic)));
+        for(auto& systematic: Jet2Eta.Systematics())
+          bdttree->Branch(("Jet2Eta_"+systematic).c_str(), &(Jet2Eta.Systematic(systematic)));
+        for(auto& systematic: Jet2CSV.Systematics())
+          bdttree->Branch(("Jet2CSV_"+systematic).c_str(), &(Jet2CSV.Systematic(systematic)));
+        for(auto& systematic: Jet3Pt.Systematics())
+          bdttree->Branch(("Jet3Pt_"+systematic).c_str(), &(Jet3Pt.Systematic(systematic)));
+        for(auto& systematic: Jet3Eta.Systematics())
+          bdttree->Branch(("Jet3Eta_"+systematic).c_str(), &(Jet3Eta.Systematic(systematic)));
+        for(auto& systematic: Jet3CSV.Systematics())
+          bdttree->Branch(("Jet3CSV_"+systematic).c_str(), &(Jet3CSV.Systematic(systematic)));
+        for(auto& systematic: DPhiJet1Jet2.Systematics())
+          bdttree->Branch(("DPhiJet1Jet2_"+systematic).c_str(), &(DPhiJet1Jet2.Systematic(systematic)));
+        for(auto& systematic: HT.Systematics())
+          bdttree->Branch(("HT_"+systematic).c_str(), &(HT.Systematic(systematic)));
+        for(auto& systematic: NbLoose.Systematics())
+          bdttree->Branch(("NbLoose_"+systematic).c_str(), &(NbLoose.Systematic(systematic)));
+        for(auto& systematic: NbTight.Systematics())
+          bdttree->Branch(("NbTight_"+systematic).c_str(), &(NbTight.Systematic(systematic)));
+        for(auto& systematic: NbLooseTo50.Systematics())
+          bdttree->Branch(("NbLooseTo50_"+systematic).c_str(), &(NbLooseTo50.Systematic(systematic)));
+        for(auto& systematic: NbLoose50.Systematics())
+          bdttree->Branch(("NbLoose50_"+systematic).c_str(), &(NbLoose50.Systematic(systematic)));
+        for(auto& systematic: NbMediumTo50.Systematics())
+          bdttree->Branch(("NbMediumTo50_"+systematic).c_str(), &(NbMediumTo50.Systematic(systematic)));
+        for(auto& systematic: NbMedium50.Systematics())
+          bdttree->Branch(("NbMedium50_"+systematic).c_str(), &(NbMedium50.Systematic(systematic)));
+        for(auto& systematic: NbTightTo50.Systematics())
+          bdttree->Branch(("NbTightTo50_"+systematic).c_str(), &(NbTightTo50.Systematic(systematic)));
+        for(auto& systematic: NbTight50.Systematics())
+          bdttree->Branch(("NbTight50_"+systematic).c_str(), &(NbTight50.Systematic(systematic)));
+        for(auto& systematic: JetHBpt.Systematics())
+          bdttree->Branch(("JetHBpt_"+systematic).c_str(), &(JetHBpt.Systematic(systematic)));
+        for(auto& systematic: JetHBeta.Systematics())
+          bdttree->Branch(("JetHBeta_"+systematic).c_str(), &(JetHBeta.Systematic(systematic)));
+        for(auto& systematic: JetHBindex.Systematics())
+          bdttree->Branch(("JetHBindex_"+systematic).c_str(), &(JetHBindex.Systematic(systematic)));
+        for(auto& systematic: JetHBCSV.Systematics())
+          bdttree->Branch(("JetHBCSV_"+systematic).c_str(), &(JetHBCSV.Systematic(systematic)));
+        for(auto& systematic: JetB2pt.Systematics())
+          bdttree->Branch(("JetB2pt_"+systematic).c_str(), &(JetB2pt.Systematic(systematic)));
+        for(auto& systematic: JetB2eta.Systematics())
+          bdttree->Branch(("JetB2eta_"+systematic).c_str(), &(JetB2eta.Systematic(systematic)));
+        for(auto& systematic: JetB2index.Systematics())
+          bdttree->Branch(("JetB2index_"+systematic).c_str(), &(JetB2index.Systematic(systematic)));
+        for(auto& systematic: JetB2CSV.Systematics())
+          bdttree->Branch(("JetB2CSV_"+systematic).c_str(), &(JetB2CSV.Systematic(systematic)));
+        for(auto& systematic: DrJet1Lep.Systematics())
+          bdttree->Branch(("DrJet1Lep_"+systematic).c_str(), &(DrJet1Lep.Systematic(systematic)));
+        for(auto& systematic: DrJet2Lep.Systematics())
+          bdttree->Branch(("DrJet2Lep_"+systematic).c_str(), &(DrJet2Lep.Systematic(systematic)));
+        for(auto& systematic: DrJetHBLep.Systematics())
+          bdttree->Branch(("DrJetHBLep_"+systematic).c_str(), &(DrJetHBLep.Systematic(systematic)));
+        for(auto& systematic: DrJet1Jet2.Systematics())
+          bdttree->Branch(("DrJet1Jet2_"+systematic).c_str(), &(DrJet1Jet2.Systematic(systematic)));
+        for(auto& systematic: JetLepMass.Systematics())
+          bdttree->Branch(("JetLepMass_"+systematic).c_str(), &(JetLepMass.Systematic(systematic)));
+        for(auto& systematic: J3Mass.Systematics())
+          bdttree->Branch(("J3Mass_"+systematic).c_str(), &(J3Mass.Systematic(systematic)));
+      }
 
       Float_t HLT_PFMET90_PFMHT90;   bdttree->Branch("HLT_PFMET90_PFMHT90",   &HLT_PFMET90_PFMHT90,   "HLT_PFMET90_PFMHT90/F"  );
       Float_t HLT_PFMET100_PFMHT100; bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
@@ -572,6 +968,32 @@ int main(int argc, char** argv)
 
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
+        Float_t met_JetEnUp_Pt;      inputtree->SetBranchAddress("met_JetEnUp_Pt"    , &met_JetEnUp_Pt);
+        Float_t met_JetEnUp_Phi;     inputtree->SetBranchAddress("met_JetEnUp_Phi",   &met_JetEnUp_Phi);
+        Float_t met_JetEnDown_Pt;      inputtree->SetBranchAddress("met_JetEnDown_Pt"    , &met_JetEnDown_Pt);
+        Float_t met_JetEnDown_Phi;     inputtree->SetBranchAddress("met_JetEnDown_Phi",   &met_JetEnDown_Phi);
+        Float_t met_JetResUp_Pt;
+        Float_t met_JetResUp_Phi;
+        Float_t met_JetResDown_Pt;
+        Float_t met_JetResDown_Phi;
+        Float_t Jet_corr[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr", &Jet_corr);
+        Float_t Jet_corr_JECUp[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr_JECUp", &Jet_corr_JECUp);
+        Float_t Jet_corr_JECDown[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr_JECDown", &Jet_corr_JECDown);
+        Float_t Jet_corr_JER[JETCOLL_LIMIT];
+        Float_t Jet_corr_JERUp[JETCOLL_LIMIT];
+        Float_t Jet_corr_JERDown[JETCOLL_LIMIT];
+
+        if(!process.isdata())
+        {
+          inputtree->SetBranchAddress("met_JetResUp_Pt"    , &met_JetResUp_Pt);
+          inputtree->SetBranchAddress("met_JetResUp_Phi",   &met_JetResUp_Phi);
+          inputtree->SetBranchAddress("met_JetResDown_Pt"    , &met_JetResDown_Pt);
+          inputtree->SetBranchAddress("met_JetResDown_Phi",   &met_JetResDown_Phi);
+          inputtree->SetBranchAddress("Jet_corr_JER", &Jet_corr_JER);
+          inputtree->SetBranchAddress("Jet_corr_JERUp", &Jet_corr_JERUp);
+          inputtree->SetBranchAddress("Jet_corr_JERDown", &Jet_corr_JERDown);
+        }
+
         Int_t   LepGood_mcMatchId[LEPCOLL_LIMIT];
         Int_t nGenPart = 0;
         Int_t GenPart_motherId[GENPART_LIMIT];
@@ -679,35 +1101,88 @@ int main(int argc, char** argv)
             puWeight = 1.0f;
 
           // Object ID
-          std::vector<int> validJets;
           std::vector<int> validLeptons;
           std::vector<int> looseLeptons;
-          std::vector<int> bjetList; // Same as validJets, but sorted by CSV value
+          ValueWithSystematics<std::vector<double>> jetPt;
+          ValueWithSystematics<std::vector<int>> validJets;
+          ValueWithSystematics<std::vector<int>> bjetList; // Same as validJets, but sorted by CSV value
 
-          validJets.clear();
           validLeptons.clear();
           looseLeptons.clear();
-          bjetList.clear();
 
           for(Int_t i = 0; i < nJetIn; ++i)
           {
-            if(std::abs(Jet_eta[i]) < 2.4 && Jet_pt[i] > jetPtThreshold)
+            jetPt.Value().push_back(Jet_pt[i]);
+            if(!process.isdata())
             {
-              validJets.push_back(i);
-              bjetList.push_back(i);
+              jetPt.Systematic("JES_Up").push_back(Jet_pt[i]/Jet_corr[i]*Jet_corr_JECUp[i]);
+              jetPt.Systematic("JES_Down").push_back(Jet_pt[i]/Jet_corr[i]*Jet_corr_JECDown[i]);
+
+              if(Jet_corr_JER[i] < 0)
+              {
+                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]);
+                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]);
+              }
+              else
+              {
+                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
+                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
+              }
             }
           }
-          std::sort(validJets.begin(), validJets.end(), [Jet_pt] (const int &left, const int &right) {
-            return Jet_pt[left] > Jet_pt[right];
-            });
-          std::sort(bjetList.begin(), bjetList.end(), [Jet_btagCSV] (const int &left, const int &right) {
-              return Jet_btagCSV[left] > Jet_btagCSV[right];
-              });
+          std::vector<std::string> list;
+          list.push_back("Value");
+          loadSystematics(list, jetPt);
 
-          if(preemptiveDropEvents && validJets.size() > 0)
-            if(Jet_pt[validJets[0]] < ISR_JET_PT) continue;
-          if(preemptiveDropEvents && validJets.size() == 0)
-            continue;
+          for(auto & syst : list)
+          {
+            if(syst != "Value")
+            {
+              std::vector<int> empty;
+              validJets.Systematic(syst) = empty;
+              bjetList.Systematic(syst) = empty;
+            }
+
+            for(Int_t i = 0; i < nJetIn; ++i)
+            {
+              if(std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
+              {
+                validJets.GetSystematicOrValue(syst).push_back(i);
+                bjetList.GetSystematicOrValue(syst).push_back(i);
+              }
+            }
+
+            std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
+              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
+            });
+            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).begin(), [Jet_btagCSV] (const int &left, const int &right) {
+              return Jet_btagCSV[left] > Jet_btagCSV[right];
+            });
+          }
+
+          auto jetThreshold = [&jetPt, &validJets] (const std::string& syst = "Value") -> bool
+          {
+            if(validJets.GetSystematicOrValue(syst).size() == 0)
+              return false;
+            return (jetPt.GetSystematicOrValue(syst))[validJets.GetSystematicOrValue(syst)[0]] > ISR_JET_PT;
+          };
+
+          if(preemptiveDropEvents)
+          {
+            if(static_cast<bool>(validJets.size() > 0))
+            {
+              ValueWithSystematics<bool> jetPass = jetThreshold();
+              for(auto& syst: validJets.Systematics())
+              {
+                jetPass.Systematic(syst) = jetThreshold(syst);
+              }
+
+              if(!static_cast<bool>(jetPass))
+                continue;
+            }
+            else
+              continue;
+          }
 
           nGoodMu = 0;
           nGoodEl = 0;
@@ -798,8 +1273,26 @@ int main(int argc, char** argv)
             continue;
 
           // Setting the values to be saved in the output tree
-          mt_old = mtw;
-          Met = met_pt;
+          ValueWithSystematics<double> MetDou = met_pt;
+          ValueWithSystematics<double> MetPhi = met_phi;
+          if(!process.isdata())
+          {
+            MetDou.Systematic("JES_Up") = met_JetEnUp_Pt;
+            MetDou.Systematic("JES_Down") = met_JetEnDown_Pt;
+            MetDou.Systematic("JER_Up") = met_JetResUp_Pt;
+            MetDou.Systematic("JER_Down") = met_JetResDown_Pt;
+            MetPhi.Systematic("JES_Up") = met_JetEnUp_Phi;
+            MetPhi.Systematic("JES_Down") = met_JetEnDown_Phi;
+            MetPhi.Systematic("JER_Up") = met_JetResUp_Phi;
+            MetPhi.Systematic("JER_Down") = met_JetResDown_Phi;
+          }
+          Met = MetDou;
+
+          if(preemptiveDropEvents)
+          {
+            if(!swap && !static_cast<bool>(Met > MIN_MET))
+              continue;
+          }
 
           float lep_phi, lep_eta;
           if(validLeptons.size() > 0)
@@ -814,66 +1307,139 @@ int main(int argc, char** argv)
             lep_eta     = -9999;
           }
 
-          if(validJets.size() > 1)
+          auto loadQuantity = [] (Float_t* vector, ValueWithSystematics<std::vector<int>> indexer, int index, double defaultValue = -9999) -> ValueWithSystematics<double>
           {
-            int jetIndex = validJets[1];
-            Jet2Pt = Jet_pt[jetIndex];
-            Jet2Eta = Jet_eta[jetIndex];
-            Jet2CSV = Jet_btagCSV[jetIndex];
+            ValueWithSystematics<double> retVal = defaultValue;
 
-            double dphijj, detajj;
-            dphijj = DeltaPhi(Jet_phi[validJets[0]], Jet_phi[jetIndex]);
-            detajj = Jet_eta[validJets[0]] - Jet_eta[jetIndex];
-            DPhiJet1Jet2 = dphijj;
-            DrJet1Jet2 = std::sqrt( std::pow(dphijj,2) + std::pow(detajj,2) );
+            std::vector<std::string> list;
+            loadSystematics(list, indexer);
+            for(auto& syst: list)
+              retVal.Systematic(syst);
+            list.push_back("Value");
 
-            if(validLeptons.size() > 0)
+            for(auto& syst: list)
             {
-              float dphi = DeltaPhi(Jet_phi[jetIndex], lep_phi);
-              float deta = Jet_eta[jetIndex] - lep_eta;
-              DrJet2Lep = std::sqrt( std::pow(dphi,2) + std::pow(deta,2) );
-            }
-            else
-            {
-              DrJet2Lep = -9999;
+              if(indexer.GetSystematicOrValue(syst).size() > index)
+              {
+                retVal.GetSystematicOrValue(syst) = vector[indexer.GetSystematicOrValue(syst)[index]];
+              }
             }
 
-            int bJetIndex = bjetList[1];
-            JetB2pt = Jet_pt[bJetIndex];
-            JetB2eta = Jet_eta[bJetIndex];
-            JetB2CSV = Jet_btagCSV[bJetIndex];
-            JetB2index = bJetIndex;
-          }
-          else
+            return retVal;
+          };
+          auto loadSysQuantity = [] (ValueWithSystematics<std::vector<double>> vector, ValueWithSystematics<std::vector<int>> indexer, int index, double defaultValue = -9999) -> ValueWithSystematics<double>
           {
-            Jet2Pt = -9999;
-            Jet2Eta = -9999;
-            Jet2CSV = -9999;
-            DPhiJet1Jet2 = -9999;
-            DrJet1Jet2 = -9999;
-            DrJet2Lep = -9999;
+            ValueWithSystematics<double> retVal = defaultValue;
 
-            JetB2pt = -9999;
-            JetB2eta = -9999;
-            JetB2CSV = -9999;
-            JetB2index = -9999;
-          }
-          if(preemptiveDropEvents && !(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
+            std::vector<std::string> list;
+            loadSystematics(list, indexer);
+            loadSystematics(list, vector);
+            for(auto& syst: list)
+              retVal.Systematic(syst);
+            list.push_back("Value");
+
+            for(auto& syst: list)
+            {
+              if(indexer.GetSystematicOrValue(syst).size() > index)
+              {
+                retVal.GetSystematicOrValue(syst) = vector.GetSystematicOrValue(syst)[indexer.GetSystematicOrValue(syst)[index]];
+              }
+            }
+
+            return retVal;
+          };
+
+          ValueWithSystematics<double> Jet2EtaDou, Jet1EtaDou;
+          Jet2Pt     = loadSysQuantity(jetPt,    validJets, 1);
+          JetB2pt    = loadSysQuantity(jetPt,    bjetList,  1);
+          Jet2EtaDou = loadQuantity(Jet_eta,     validJets, 1);
+          Jet2CSV    = loadQuantity(Jet_btagCSV, validJets, 1);
+          JetB2eta   = loadQuantity(Jet_eta,     bjetList,  1);
+          JetB2CSV   = loadQuantity(Jet_btagCSV, bjetList,  1);
+          JetB2index = loadQuantity(identity,    bjetList,  1);
+          Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
+
+          Jet2Eta = Jet2EtaDou;
+          Jet1Eta = Jet1EtaDou;
+
+          ValueWithSystematics<double> Jet1Phi = loadQuantity(Jet_phi, validJets, 0);
+          ValueWithSystematics<double> Jet2Phi = loadQuantity(Jet_phi, validJets, 1);
+
+          auto DeltaPhiSys = [] (const ValueWithSystematics<double>& phi1, const ValueWithSystematics<double>& phi2, double defaultValue = -9999) -> ValueWithSystematics<double>
+          {
+            ValueWithSystematics<double> retVal = phi1 - phi2;
+
+            std::vector<std::string> list;
+            list.push_back("Value");
+            loadSystematics(list, retVal);
+
+            for(auto& syst: list)
+            {
+              if(phi1.GetSystematicOrValue(syst) == defaultValue || phi2.GetSystematicOrValue(syst) == defaultValue)
+                retVal.GetSystematicOrValue(syst) = defaultValue;
+              else
+              {
+                while(retVal.GetSystematicOrValue(syst) >= M_PIl)
+                  retVal.GetSystematicOrValue(syst) -= (2*M_PIl);
+                while(retVal.GetSystematicOrValue(syst) < M_PIl)
+                  retVal.GetSystematicOrValue(syst) += (2*M_PIl);
+
+                if(retVal.GetSystematicOrValue(syst) < 0)
+                  retVal.GetSystematicOrValue(syst) = -retVal.GetSystematicOrValue(syst);
+              }
+            }
+
+            return retVal;
+          };
+          auto DeltaEtaSys = [] (const ValueWithSystematics<double>& eta1, const ValueWithSystematics<double>& eta2, double defaultValue = -9999) -> ValueWithSystematics<double>
+          {
+            ValueWithSystematics<double> retVal = eta1 - eta2;
+
+            std::vector<std::string> list;
+            list.push_back("Value");
+            loadSystematics(list, retVal);
+
+            for(auto& syst: list)
+            {
+              if(phi1.GetSystematicOrValue(syst) == defaultValue || phi2.GetSystematicOrValue(syst) == defaultValue)
+                retVal.GetSystematicOrValue(syst) = defaultValue;
+            }
+
+            return retVal;
+          };
+          auto QuadSumSys = []  (const ValueWithSystematics<double>& par1, const ValueWithSystematics<double>& par2, double defaultValue = -9999) -> ValueWithSystematics<double>
+          {
+            ValueWithSystematics<double> retVal = (par1.pow(2) + par2.pow(2)).Sqrt();
+
+            std::vector<std::string> list;
+            list.push_back("Value");
+            loadSystematics(list, retVal);
+
+            for(auto& syst: list)
+            {
+              if(par1.GetSystematicOrValue(syst) == defaultValue || par2.GetSystematicOrValue(syst) == defaultValue)
+                retVal.GetSystematicOrValue(syst) = defaultValue;
+            }
+
+            return retVal;
+          };
+
+          ValueWithSystematics<double> dphijj = DeltaPhiSys(Jet1Phi, Jet2Phi);
+          ValueWithSystematics<double> detajj = DeltaEtaSys(Jet1EtaDou, Jet2EtaDou);
+          DPhiJet1Jet2 = dphijj;
+          DrJet1Jet2 = QuadSumSys(dphijj, detajj);
+
+          ValueWithSystematics<double> dphi = DeltaPhiSys(Jet2Phi, ValueWithSystematics<double>(lep_phi));
+          ValueWithSystematics<double> deta = DeltaEtaSys(Jet2EtaDou, ValueWithSystematics<double>(lep_eta));
+          DrJet2Lep = QuadSumSys(dphi, deta);
+
+          if(preemptiveDropEvents && !static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
             continue;
-
-          if(preemptiveDropEvents)
-          {
-            if(!swap && Met < MIN_MET)
-              continue;
-          }
 
           TLorentzVector VLep;
           if(validLeptons.size() > 0)
           {
             auto leptonIndex = validLeptons[0];
-            mt          = LepGood_mt[leptonIndex];
-            Q80         = LepGood_Q80[leptonIndex];
-            CosDeltaPhi = LepGood_cosPhiLepMet[leptonIndex];
             LepChg      = LepGood_charge[leptonIndex];
             LepID       = LepGood_pdgId[leptonIndex];
             LepPt       = LepGood_pt[leptonIndex];
@@ -884,6 +1450,10 @@ int main(int argc, char** argv)
             Float_t minPt = 25.;
             LepHybIso03 = LepIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
+
+            CosDeltaPhi = DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
+            mt = (2.0 * LepPt * Met * (1 - CosDeltaPhi)).Sqrt();
+            Q80 = 1.0 - 80.*80./(2.0 * LepPt * Met);
 
             if(!process.isdata())
             {
@@ -963,105 +1533,98 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
-            triggerEfficiency = triggerEfficiencyFromMETSys(met_pt);
+            triggerEfficiency = triggerEfficiencyFromMETSys(MetDou);
             // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets")
-              EWKISRweight = EWKISRCParam * EWKISRweightFromISRpTSys(LepPt, lep_phi, met_pt, met_phi);
+              EWKISRweight = EWKISRCParam * EWKISRweightFromISRpTSys(LepPt, lep_phi, MetDou, MetPhi);
             // For ISR, assume syst 50%
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lep" || process.tag() == "ttbar_lo" || process.issignal())
               ISRweight = ISRCParam * ISRweightFromNISRJetSys(nIsr);
             // TODO: missing tt_pow reweighting https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
           }
 
-          if(validLeptons.size() > 0 && validJets.size() > 0)
-          {
-            double smallestDeltaR = 999999999.;
-            int closestJet = -1;
+          ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
+          Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
+          JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
+          Jet1CSV    = loadQuantity(Jet_btagCSV, validJets, 0);
+          JetB1EtaDou= loadQuantity(Jet_eta,     bjetList,  0);
+          JetHBCSV   = loadQuantity(Jet_btagCSV, bjetList,  0);
+          JetHBindex = loadQuantity(identity,    bjetList,  0);
+          JetB1Phi   = loadQuantity(Jet_phi,     bjetList,  0);
 
-            for(auto &jet : validJets)
+          JetHBeta = JetB1EtaDou;
+
+          dphi = DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
+          deta = DeltaEtaSys(Jet1EtaDou, ValueWithSystematics<double>(lep_eta));
+          DrJet1Lep = QuadSumSys(dphi, deta);
+
+          dphi = DeltaPhiSys(JetB1Phi, ValueWithSystematics<double>(lep_phi));
+          deta = DeltaEtaSys(JetB1EtaDou, ValueWithSystematics<double>(lep_eta));
+          DrJetHBLep = QuadSumSys(dphi, deta);
+
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, jetPt);
+          loadSystematics(list, validJets);
+
+          if(validLeptons.size() > 0)
+          {
+            for(auto& syst: list)
             {
-              double dphi = DeltaPhi(Jet_phi[jet], lep_phi);
-              double deta = Jet_eta[jet] - lep_eta;
-              double dr = std::pow(dphi,2) + std::pow(deta,2); // The square of the dr is used since it is injective
-              if(dr < smallestDeltaR)
+              auto& jetList = validJets.GetSystematicOrValue(syst);
+              if(jetList.size() > 0)
               {
-                smallestDeltaR = dr;
-                closestJet = jet;
+                double smallestDeltaR = 999999999.;
+                int closestJet = -1;
+
+                for(auto& jet: jetList)
+                {
+                  double dphi = DeltaPhi(Jet_phi[jet], lep_phi);
+                  double deta = Jet_eta[jet] - lep_eta;
+                  double dr = std::pow(dphi,2) + std::pow(deta,2); // The square of the dr is used since it is injective
+                  if(dr < smallestDeltaR)
+                  {
+                    smallestDeltaR = dr;
+                    closestJet = jet;
+                  }
+                }
+
+                TLorentzVector VJ, JLep;
+                VJ.SetPtEtaPhiM(Jet_pt[closestJet], Jet_eta[closestJet], Jet_phi[closestJet], Jet_mass[closestJet]);
+                JLep = VJ + VLep;
+                JetLepMass.GetSystematicOrValue(syst) = JLep.M();
+
+                TLorentzVector VJ3;
+                for(auto& jet: jetList)
+                {
+                  if(jet == closestJet)
+                    continue;
+                  TLorentzVector VJi;
+                  VJi.SetPtEtaPhiM(Jet_pt[jet], Jet_eta[jet], Jet_phi[jet], Jet_mass[jet]);
+                  VJ3 += VJi;
+                }
+                J3Mass.GetSystematicOrValue(syst) = VJ3.M();
+              }
+              else
+              {
+                JetLepMass.GetSystematicOrValue(syst) = -9999;
+                J3Mass.GetSystematicOrValue(syst) = -9999;
               }
             }
-
-            TLorentzVector VJ, JLep;
-            VJ.SetPtEtaPhiM(Jet_pt[closestJet], Jet_eta[closestJet], Jet_phi[closestJet], Jet_mass[closestJet]);
-            JLep = VJ + VLep;
-            JetLepMass = JLep.M();
-
-            TLorentzVector VJ3;
-            for(auto &jet : validJets)
-            {
-              if(jet == closestJet)
-                continue;
-              TLorentzVector VJi;
-              VJi.SetPtEtaPhiM(Jet_pt[jet], Jet_eta[jet], Jet_phi[jet], Jet_mass[jet]);
-              VJ3 += VJi;
-            }
-            J3Mass = VJ3.M();
-
-            double dphi = DeltaPhi(Jet_phi[validJets[0]], lep_phi);
-            double deta = Jet_eta[validJets[0]] - lep_eta;
-            DrJet1Lep = std::sqrt( std::pow(dphi, 2) + std::pow(deta, 2) );
-
-            double dphib, detab;
-            int bJetIndex = bjetList[0];
-            dphib = DeltaPhi(Jet_phi[bJetIndex], lep_phi);
-            detab = Jet_eta[bJetIndex] - lep_eta;
-            DrJetHBLep = std::sqrt( std::pow(dphib, 2) + std::pow(detab, 2) );
           }
           else
           {
             JetLepMass = -9999;
             J3Mass = -9999;
-            DrJet1Lep = -9999;
-            DrJetHBLep = -9999.;
           }
 
-          if(validJets.size() > 0)
-          {
-            int jetIndex = validJets[0];
-            Jet1Pt = Jet_pt[jetIndex];
-            Jet1Eta = Jet_eta[jetIndex];
-            Jet1CSV = Jet_btagCSV[jetIndex];
+          Jet3Pt     = loadSysQuantity(jetPt,    validJets, 2);
+          Jet3Eta    = loadQuantity(Jet_eta,     validJets, 2);
+          Jet3CSV    = loadQuantity(Jet_btagCSV, validJets, 2);
 
-            int bJetIndex = bjetList[0];
-            JetHBpt = Jet_pt[bJetIndex];
-            JetHBeta = Jet_eta[bJetIndex];
-            JetHBCSV = Jet_btagCSV[bJetIndex];
-            JetHBindex = bJetIndex;
-          }
-          else
-          {
-            Jet1Pt = -9999;
-            Jet1Eta = -9999;
-            Jet1CSV = -9999;
-
-            JetHBpt = -9999;
-            JetHBeta = -9999;
-            JetHBCSV = -9999;
-            JetHBindex = -9999;
-          }
-
-          if(validJets.size() > 2)
-          {
-            int jetIndex = validJets[2];
-            Jet3Pt = Jet_pt[jetIndex];
-            Jet3Eta = Jet_eta[jetIndex];
-            Jet3CSV = Jet_btagCSV[jetIndex];
-          }
-          else
-          {
-            Jet3Pt = -9999;
-            Jet3Eta = -9999;
-            Jet3CSV = -9999;
-          }
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, bjetList);
 
           NbLoose = 0;
           NbTight = 0;
@@ -1071,39 +1634,46 @@ int main(int argc, char** argv)
           NbMedium50 = 0;
           NbTightTo50 = 0;
           NbTight50 = 0;
-          for(auto &bjet : bjetList)
+          for(auto& syst: list)
           {
-            const auto &csv = Jet_btagCSV[bjet];
-            const auto &pt = Jet_pt[bjet];
-
-            if(csv > CSV_Loose)
-              ++NbLoose;
-            if(csv > CSV_Tight)
-              ++NbTight;
-
-            if(pt > 50)
+            for(auto& bjet: bjetList.GetSystematicOrValue(syst))
             {
-              if(csv > CSV_Loose)
-                ++NbLoose50;
-              if(csv > CSV_Medium)
-                ++NbMedium50;
-              if(csv > CSV_Tight)
-                ++NbTight50;
-            }
-            else
-            {
-              if(csv > CSV_Loose)
-                ++NbLooseTo50;
-              if(csv > CSV_Medium)
-                ++NbMediumTo50;
-              if(csv > CSV_Tight)
-                ++NbTightTo50;
-            }
+              const auto &csv = Jet_btagCSV[bjet];
+              const auto &pt = jetPt.GetSystematicOrValue(syst)[bjet];
 
-            // Since the bjetList is sorted by CSV, as soon as it goes below the loose definition, there are no further bjets
-            if(csv < CSV_Loose)
-              break;
+              if(csv > CSV_Loose)
+                ++(NbLoose.GetSystematicOrValue(syst));
+              if(csv > CSV_Tight)
+                ++(NbTight.GetSystematicOrValue(syst));
+
+              if(pt > 50)
+              {
+                if(csv > CSV_Loose)
+                  ++(NbLoose50.GetSystematicOrValue(syst));
+                if(csv > CSV_Medium)
+                  ++(NbMedium50.GetSystematicOrValue(syst));
+                if(csv > CSV_Tight)
+                  ++(NbTight50.GetSystematicOrValue(syst));
+              }
+              else
+              {
+                if(csv > CSV_Loose)
+                  ++(NbLooseTo50.GetSystematicOrValue(syst));
+                if(csv > CSV_Medium)
+                  ++(NbMediumTo50.GetSystematicOrValue(syst));
+                if(csv > CSV_Tight)
+                  ++(NbTightTo50.GetSystematicOrValue(syst));
+              }
+
+              // Since the bjetList is sorted by CSV, as soon as it goes below the loose definition, there are no further bjets
+              if(csv < CSV_Loose)
+                break;
+            }
           }
+
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, jetList);
 
           HT = 0;
           Njet = validJets.size();
@@ -1115,26 +1685,31 @@ int main(int argc, char** argv)
           Njet80 = 0;
           Njet90 = 0;
           Njet100 = 0;
-          for(auto &jet : validJets)
+          for(auto& syst: list)
           {
-            HT += Jet_pt[jet];
+            for(auto &jet : validJets.GetSystematicOrValue(syst))
+            {
+              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
 
-            if(Jet_pt[jet] > 30)
-              ++Njet30;
-            if(Jet_pt[jet] > 40)
-              ++Njet40;
-            if(Jet_pt[jet] > 50)
-              ++Njet50;
-            if(Jet_pt[jet] > 60)
-              ++Njet60;
-            if(Jet_pt[jet] > 70)
-              ++Njet70;
-            if(Jet_pt[jet] > 80)
-              ++Njet80;
-            if(Jet_pt[jet] > 90)
-              ++Njet90;
-            if(Jet_pt[jet] > 100)
-              ++Njet100;
+              HT.GetSystematicOrValue(syst) += pt;
+
+              if(pt > 30)
+                ++(Njet30.GetSystematicOrValue(syst));
+              if(pt > 40)
+                ++(Njet40.GetSystematicOrValue(syst));
+              if(pt > 50)
+                ++(Njet50.GetSystematicOrValue(syst));
+              if(pt > 60)
+                ++(Njet60.GetSystematicOrValue(syst));
+              if(pt > 70)
+                ++(Njet70.GetSystematicOrValue(syst));
+              if(pt > 80)
+                ++(Njet80.GetSystematicOrValue(syst));
+              if(pt > 90)
+                ++(Njet90.GetSystematicOrValue(syst));
+              if(pt > 100)
+                ++(Njet100.GetSystematicOrValue(syst));
+            }
           }
 
           genGravitinoM  = GenSusyMGravitino;
@@ -1183,7 +1758,7 @@ int main(int argc, char** argv)
 
           if(swap)
           {
-            auto tmp = Met;
+            auto tmp = Met.Value();
             Met = LepPt;
             LepPt = tmp;
             triggerEfficiency = 1.0f;
@@ -1206,25 +1781,25 @@ int main(int argc, char** argv)
           }
 
           //if(doSync)
-          if(doSync && HT > 200 && Jet1Pt > 100 && Met > 200)
+          if(doSync && HT.Value() > 200 && Jet1Pt.Value() > 100 && Met.Value() > 200)
           {
             if(sync_count < max_sync_count)
             {
               SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
               SyFile << "   Mstop: " << genStopM << "; Mlsp: " << genNeutralinoM << std::endl;
-              SyFile << "   HT: " << HT << "; MET: " << Met << std::endl;
-              SyFile << "   Njet: " << Njet << std::endl;
-              for(size_t i = 0; i < validJets.size(); ++i)
+              SyFile << "   HT: " << HT.Value() << "; MET: " << Met.Value() << std::endl;
+              SyFile << "   Njet: " << Njet.Value() << std::endl;
+              for(size_t i = 0; i < validJets.Value().size(); ++i)
               {
-                auto jet = validJets[i];
+                auto jet = validJets.Value()[i];
                 SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_id[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
               }
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
-              SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2 << std::endl;
+              SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2.Value() << std::endl;
               SyFile << "   weight for 10 fb-1: " << weight.Value()*10000 << " (without SFs: " << 10000*XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
               SyFile << "   passed: ";
-              if(HT > 200 && Met > 200 && Jet1Pt > 90) // TODO: Probably change these cuts to reflect newest selection
+              if(HT.Value() > 200 && Met.Value() > 200 && Jet1Pt.Value() > 90) // TODO: Probably change these cuts to reflect newest selection
               {
                 SyFile << "Cut0";
                 bool passCut1 = false;
@@ -1240,15 +1815,15 @@ int main(int argc, char** argv)
                 {
                   SyFile << ";Cut1";
 
-                  if(Jet1Pt > ISR_JET_PT)
+                  if(Jet1Pt.Value() > ISR_JET_PT)
                   {
                     SyFile << ";Cut2";
 
-                    if(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60)
+                    if(DPhiJet1Jet2.Value() < 2.5 || Jet2Pt.Value() < 60)
                     {
                       SyFile << ";Cut3";
 
-                      if(Met > 280)
+                      if(Met.Value() > 280)
                         SyFile << ";Cut4";
                     }
                   }
@@ -1277,10 +1852,10 @@ int main(int argc, char** argv)
           }
 
           // Compute selection cuts
-          bool metRequirement = Met > 300;
-          bool htRequirement = HT > 200;
-          bool jetRequirement = Jet1Pt > ISR_JET_PT;
-          bool antiQCDRequirement = DPhiJet1Jet2 < 2.5 || Jet2Pt < 60;
+          bool metRequirement = Met.Value() > 300;
+          bool htRequirement = HT.Value() > 200;
+          bool jetRequirement = Jet1Pt.Value() > ISR_JET_PT;
+          bool antiQCDRequirement = DPhiJet1Jet2.Value() < 2.5 || Jet2Pt.Value() < 60;
           bool leptonRequirement = isTight;
           bool deltaMRequirement = LepPt < 30;
 
@@ -1332,19 +1907,19 @@ int main(int argc, char** argv)
               continue;
 
             // No need to keep events without jets
-            if(validJets.size() == 0)
+            if(!static_cast<bool>(validJets.size() != 0))
               continue;
 
             // So-called ISR jet requirement (even though it's on the pT of the leading jet)
-            if(Jet1Pt < ISR_JET_PT)
+            if(!static_cast<bool>(Jet1Pt >= ISR_JET_PT))
               continue;
 
             // Cut to help reduce the QCD background
-            if(!(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
+            if(!static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
               continue;
 
             // Minimal requirement on MET
-            if(Met < MIN_MET)
+            if(!static_cast<bool>(Met >= MIN_MET))
               continue;
 
             // MET filters

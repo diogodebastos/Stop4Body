@@ -74,7 +74,7 @@ doubleUnc triggerEfficiencyFromMET(double met_pt)
 
   double term1 = par0err * 0.5 * (1.0 + TMath::Erf(recenterMet));
   term1 = term1 * term1;
-  double term2 = (par0/par2)*(par0/par2) * std::exp(2*recenterMet*recenterMet) / TMath::Pi();
+  double term2 = (par0/par2)*(par0/par2) * std::exp(-2*recenterMet*recenterMet) / TMath::Pi();
   term2 *= par1err*par1err + par2err*par2err*recenterMet*recenterMet;
   unc = std::sqrt(term1 + term2);
 
@@ -83,30 +83,26 @@ doubleUnc triggerEfficiencyFromMET(double met_pt)
 }
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(double met_pt)
 {
-  double val = 0, unc = 0;
-
-  double par0    = 0.9899;
-  double par1    = 109.8;
-  double par2    = 94.26;
-  double par0err = 0.0006464;
-  double par1err = 2.225;
-  double par2err = 2.443;
-
-  double recenterMet = (met_pt - par1)/par2;
-
-  val = par0 * 0.5 * (1.0 + TMath::Erf(recenterMet));
-
-  double term1 = par0err * 0.5 * (1.0 + TMath::Erf(recenterMet));
-  term1 = term1 * term1;
-  double term2 = (par0/par2)*(par0/par2) * std::exp(2*recenterMet*recenterMet) / TMath::Pi();
-  term2 *= par1err*par1err + par2err*par2err*recenterMet*recenterMet;
-  unc = std::sqrt(term1 + term2);
+  doubleUnc trigEff = triggerEfficiencyFromMET(met_pt);
+  double val = trigEff.value();
+  double unc = trigEff.uncertainty();
 
   ValueWithSystematics<double> retVal(val);
-  retVal.Systematic("triggerEfficiency_statUP") = val+unc;
-  retVal.Systematic("triggerEfficiency_statDOWN") = val-unc;
-  retVal.Systematic("triggerEfficiency_UP") = val+0.01;
-  retVal.Systematic("triggerEfficiency_DOWN") = val-0.01;
+  retVal.Systematic("triggerEfficiency_statUp") = val+unc;
+  retVal.Systematic("triggerEfficiency_statDown") = val-unc;
+  retVal.Systematic("triggerEfficiency_Up") = val*1.01;
+  retVal.Systematic("triggerEfficiency_Down") = val*0.99;
+  return retVal;
+}
+ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double> met_pt)
+{
+  ValueWithSystematics<double> retVal = triggerEfficiencyFromMETSys(met_pt.Value());
+
+  for(auto& syst: met_pt.Systematics())
+  {
+    retVal.Systematic(syst) = triggerEfficiencyFromMET(met_pt.Systematic(syst)).value();
+  }
+
   return retVal;
 }
 
@@ -383,6 +379,17 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_
 
   return EWKISRweightFromISRpTSys(w_pt);
 }
+ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, ValueWithSystematics<double> met_pt, ValueWithSystematics<double> met_phi)
+{
+  double                       lep_x = lep_pt * std::cos(lep_phi);
+  double                       lep_y = lep_pt * std::sin(lep_phi);
+  ValueWithSystematics<double> met_x = met_pt * met_phi.Cos();
+  ValueWithSystematics<double> met_y = met_pt * met_phi.Sin();
+
+  ValueWithSystematics<double> w_pt = ((lep_x + met_x)*(lep_x + met_x) + (lep_y + met_y)*(lep_y + met_y)).Sqrt();
+
+  return EWKISRweightFromISRpTSys(w_pt);
+}
 doubleUnc EWKISRweightFromISRpT(double ISRpT)
 {
   if(ISRpT >= 0)
@@ -501,6 +508,17 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
       }
     }
   }
+  return retVal;
+}
+ValueWithSystematics<double> EWKISRweightFromISRpTSys(ValueWithSystematics<double> ISRpT)
+{
+  ValueWithSystematics<double> retVal = EWKISRweightFromISRpTSys(ISRpT.Value());
+
+  for(auto& syst: ISRpT.Systematics())
+  {
+    retVal.Systematic(syst) = EWKISRweightFromISRpTSys(ISRpT.Systematic(syst)).Value();
+  }
+
   return retVal;
 }
 

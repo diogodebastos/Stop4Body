@@ -334,6 +334,42 @@ TH2D* ProcessInfo::get2DHist(std::string variableX, std::string variableY, std::
   return retVal;
 }
 
+TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string weight)
+{
+  std::string histName = cleanString(baseName+"_"+var.expression()+"_"+tag_);
+  TH1D* retVal = nullptr;
+  if(var.hasVarBins())
+    retVal = new TH1D(histName.c_str(), (label_ + ";" + var.label() + ";Evt.").c_str(), var.varBins().size() - 1, var.varBins().data());
+  else
+    retVal = new TH1D(histName.c_str(), (label_ + ";" + var.label() + ";Evt.").c_str(), var.bins(), var.min(), var.max());
+  retVal->Sumw2();
+
+  auto cwd = gDirectory;
+
+  TChain* chain = new TChain("bdttree");
+  auto files = getAllFiles();
+  for(auto& file : files)
+  {
+    //std::cout << "Adding file '" << file << "' to the chain" << std::endl;
+    chain->Add(file.c_str());
+  }
+
+  chain->Draw((var.expression()+">>"+histName).c_str(), (weight).c_str(), "goff");
+
+  retVal->SetLineColor(color_);
+  retVal->SetFillColor(fill_);
+  retVal->SetMarkerColor(mcolor_);
+  retVal->SetLineColor(lcolor_);
+  retVal->SetLineWidth(lwidth_);
+  retVal->SetLineStyle(lstyle_);
+  retVal->SetMarkerStyle(marker_);
+
+  cwd->cd();
+  delete chain;
+
+  return retVal;
+}
+
 doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
 {
   TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
@@ -439,6 +475,7 @@ std::vector<std::string> SampleReader::getAllFiles()
 void SampleReader::printErrors(std::ostream& stream)
 {
   stream << "The following errors were encountered when reading the \"" << inputFile_ << "\":" <<std::endl;
+  return;
 }
 
 SampleReader SampleReader::getData()
@@ -538,6 +575,45 @@ TH1D* SampleReader::getHist(std::string name, std::string variable, std::string 
   for(auto& process : processes_)
   {
     TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax);
+    if(retVal == nullptr)
+      retVal = tmp;
+    else
+    {
+      retVal->Add(tmp);
+      delete tmp;
+    }
+  }
+
+  return retVal;
+}
+
+THStack* SampleReader::getStack(std::string baseName, VariableInfo& var, std::string weight)
+{
+  THStack* retVal = new THStack((baseName + "_" + var.name()).c_str(), (var.expression() + ";" + var.label() + ";Evt.").c_str());
+
+  for(auto& process : processes_)
+  {
+    TH1D* tmp = process.getHist(baseName, var, weight);
+    retVal->Add(tmp);
+    //delete tmp;
+  }
+
+  return retVal;
+}
+
+TH1D* SampleReader::getHist(std::string baseName, VariableInfo& var, std::string weight)
+{
+  std::string histName = cleanString(baseName+"_"+var.expression());
+  TH1D* retVal = nullptr;
+  if(var.hasVarBins())
+    retVal = new TH1D(histName.c_str(), (var.expression() + ";" + var.label() + ";Evt.").c_str(), var.varBins().size() - 1, var.varBins().data());
+  else
+    retVal = new TH1D(histName.c_str(), (var.expression() + ";" + var.label() + ";Evt.").c_str(), var.bins(), var.min(), var.max());
+  retVal->Sumw2();
+
+  for(auto& process : processes_)
+  {
+    TH1D* tmp = process.getHist(baseName, var, weight);
     if(retVal == nullptr)
       retVal = tmp;
     else

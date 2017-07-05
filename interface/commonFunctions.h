@@ -39,10 +39,13 @@ doubleUnc stopCrossSection(double stopM, double lspM);
 
 
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(double);
+ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double>);
 ValueWithSystematics<double> WISRScaleFactorFromLepMetSys(double lep_pt, double lep_phi, double met_pt, double met_phi);
 ValueWithSystematics<double> ISRweightFromNISRJetSys(int nISRJet);
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT);
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, double met_pt, double met_phi);
+ValueWithSystematics<double> EWKISRweightFromISRpTSys(ValueWithSystematics<double> ISRpT);
+ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, ValueWithSystematics<double> met_pt, ValueWithSystematics<double> met_phi);
 ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
 

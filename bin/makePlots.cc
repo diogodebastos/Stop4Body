@@ -139,7 +139,10 @@ int main(int argc, char** argv)
     }
 
     if(argument == "--dofakeclosure")
+    {
       dofakeclosure = true;
+      unblind = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -343,16 +346,13 @@ int main(int argc, char** argv)
       }
 
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
-      auto dataH = Data.process(0).getHist(variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
-      auto mcH   =   MC.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
-      //auto sigH  =  Sig.getHist(cut.name()+"_"+variable.name()+"_Signal", variable.expression(), variable.label()+";Evt.", (rawEvents)?(selection):(mcWeight+"*("+selection+")"), variable.bins(), variable.min(), variable.max());
-      TH1D* sigH = nullptr;
-      if(Sig.nProcesses() > 0)
-        sigH  =  Sig.process(0).getHist(variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
-      else
-        sigH = Sig.getHist(cut.name()+"_"+variable.name()+"_MC",     variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
+      auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel);
+      auto mcH   =   MC.getHist(cut.name(), variable, mcSel);
+      auto sigH  =  Sig.process(0).getHist(cut.name(), variable, mcSel); // TODO: stack different signal points
+      auto mcS   =   MC.getStack(cut.name(), variable, mcSel);
 
-      auto mcS   =   MC.getStack(variable.expression(), variable.label()+";Evt.", mcSel, variable.bins(), variable.min(), variable.max());
+      if(dofakeclosure)
+        dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str());
 
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
@@ -369,7 +369,10 @@ int main(int argc, char** argv)
 
       t1->Draw();
       t1->cd();
-      t1->SetLogy(1);
+      if(variable.logx())
+        t1->SetLogx();
+      if(variable.logy())
+        t1->SetLogy();
       t1->SetTopMargin(0.07);
       //t1->SetBottomMargin(0.10);
       //t1->SetRightMargin(0.20);
@@ -381,7 +384,7 @@ int main(int argc, char** argv)
 
         maxVal = std::max(mcS->GetMaximum(), dataH->GetMaximum());
         minVal = std::min(mcS->GetMinimum(), dataH->GetMinimum());
-        minVal = 0.2;
+        minVal = std::min(0.2, maxVal/1000);
 
         if(t1->GetLogy() == 1)
         {
@@ -450,6 +453,8 @@ int main(int argc, char** argv)
       c1.cd();
       t2->Draw();
       t2->cd();
+      if(variable.logx())
+        t2->SetLogx();
       t2->SetGridy(true);
       t2->SetPad(0,0.0,1.0,ratioPadFraction);
       t2->SetTopMargin(0);

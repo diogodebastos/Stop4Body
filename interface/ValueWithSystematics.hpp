@@ -27,6 +27,12 @@ ValueWithSystematics<T> operator* (const double& builtin, const ValueWithSystema
 }
 
 template<class T>
+ValueWithSystematics<T> operator+ (const double& builtin, const ValueWithSystematics<T>& myClass)
+{
+  return myClass+builtin;
+}
+
+template<class T>
 ValueWithSystematics<T> operator- (const int& builtin, const ValueWithSystematics<T>& myClass)
 {
   return (-myClass) + builtin;
@@ -936,6 +942,20 @@ ValueWithSystematics<T> ValueWithSystematics<std::vector<T>>::first(T defaultVal
     retVal.Value() = value.at(0);
 
   return retVal;
+}
+
+template<class T>
+void loadSystematics(std::vector<std::string>& list, const ValueWithSystematics<T>& variable)
+{
+  for(auto& syst: variable.Systematics())
+  {
+    if(std::find(list.begin(), list.end(), syst) == list.end())
+    {
+      list.push_back(syst);
+    }
+  }
+
+  return;
 }
 
 #endif
