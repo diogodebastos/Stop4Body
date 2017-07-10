@@ -432,7 +432,6 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
   retVal.Systematic("EWKISRweight_Bin7_Down");
   retVal.Systematic("EWKISRweight_AltCorr_Up");
   retVal.Systematic("EWKISRweight_AltCorr_Down");
-  retVal.Lock();
 
   if(ISRpT < 50)
   {
