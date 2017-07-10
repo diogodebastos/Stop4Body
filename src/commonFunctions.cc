@@ -56,6 +56,15 @@ float DeltaPhi(double p1, double p2)
   //return std::abs(x);
 }
 
+bool replace(std::string& str, const std::string& from, const std::string& to)
+{
+    size_t start_pos = str.find(from);
+    if(start_pos == std::string::npos)
+        return false;
+    str.replace(start_pos, from.length(), to);
+    return true;
+}
+
 // Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
 doubleUnc triggerEfficiencyFromMET(double met_pt)
 {
