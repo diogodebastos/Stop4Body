@@ -56,5 +56,15 @@ int main(int argc, char** argv)
   liveTest3 = liveTest2 * liveTest;
 
 
+  std::cout << std::endl << "Testing assignment" << std::endl;
+  ValueWithSystematics<float> assignmentVariable = 0.8;
+  assignmentVariable.Systematic("Whatever_Up") = 0.9;
+  assignmentVariable.Systematic("Whatever_Down") = 0.7;
+  assignmentVariable.Lock();
+  print(assignmentVariable, "assignmentVariable");
+  assignmentVariable = 1;
+  print(assignmentVariable, "assignmentVariable");
+
+
   return 0;
 }
