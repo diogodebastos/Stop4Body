@@ -6,6 +6,7 @@
 
 #include "TH1.h"
 #include "TH2.h"
+#include <string>
 
 extern TH2D* centralElectronSFHist;
 extern TH2D* centralMuonSFHist;
@@ -23,6 +24,7 @@ extern TH1F* muonTightToLooseHighEta;
 bool fileExists(std::string);
 std::string getBaseName(const std::string&);
 float DeltaPhi(double, double);
+bool replace(std::string&, const std::string&, const std::string&);
 
 doubleUnc triggerEfficiencyFromMET(double);
 doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt, double met_phi);
