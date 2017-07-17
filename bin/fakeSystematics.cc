@@ -154,7 +154,7 @@ int main(int argc, char** argv)
   auto valueLoop = systematics;
   valueLoop.push_back("CentralValue");
 
-  ValueWithSystematics<std::string> mcWeight = "splitFactor*weight";
+  ValueWithSystematics<std::string> mcWeight = std::string("splitFactor*weight");
   for(auto& syst: systematics)
     mcWeight.Systematic(syst) = mcWeight.Value() + "_" + syst;
   {
@@ -252,10 +252,10 @@ int main(int argc, char** argv)
         gStyle->SetOptStat(0);
 
         if(variable.logx())
-          c1->SetLogx();
+          c1.SetLogx();
         if(variable.logy())
-          c1->SetLogy();
-        c1->SetTopMargin(0.07);
+          c1.SetLogy();
+        c1.SetTopMargin(0.07);
         //t1->SetBottomMargin(0.10);
         //t1->SetRightMargin(0.20);
         fakeEstimate->Draw("hist");
@@ -288,7 +288,7 @@ int main(int argc, char** argv)
         TCanvas c1((cut.name()+"_"+variable.name()+"_"+syst+"_Var").c_str(), "", 1200, 1350); // 800x900 in original, then scaled by 1.5
         gStyle->SetOptStat(0);
 
-        c1->SetTopMargin(0.07);
+        c1.SetTopMargin(0.07);
         //t1->SetBottomMargin(0.10);
         //t1->SetRightMargin(0.20);
         variationHistograms[syst]->Draw("hist");
@@ -343,10 +343,10 @@ int main(int argc, char** argv)
       TCanvas c1((cut.name()+"_"+variable.name()+"_Var").c_str(), "", 1200, 1350); // 800x900 in original, then scaled by 1.5
       gStyle->SetOptStat(0);
 
-      c1->SetTopMargin(0.07);
+      c1.SetTopMargin(0.07);
       //t1->SetBottomMargin(0.10);
       //t1->SetRightMargin(0.20);
-      c1->SetGridy(true);
+      c1.SetGridy(true);
 
       TGraphErrors *totalSystArea = new TGraphErrors(totalSyst);
       totalSystArea->SetLineColor(1);
