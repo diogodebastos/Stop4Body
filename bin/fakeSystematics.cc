@@ -230,6 +230,8 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
+      if(verbose)
+        std::cout << "  Doing variable: " << variable.name() << std::endl;
       std::map<std::string, TH1D*> variationHistograms;
       std::string dataSel;
       ValueWithSystematics<std::string> mcSel;
@@ -393,6 +395,8 @@ int main(int argc, char** argv)
       delete T;
     }
   }
+
+  std::cout << "Done" << std::endl;
 
   return 0;
 }
