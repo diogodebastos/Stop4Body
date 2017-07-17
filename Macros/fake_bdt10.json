@@ -1,14 +1,14 @@
 {
   "cuts":[
     {
-      "name":"PreselectionMVA",
-      "expression":"(isPrompt == 0) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
-      "latex":"Preselection MVA"
+      "name":"PreselectionMVA_lep30",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (LepPt < 30)",
+      "latex":"Preselection MVA (p_{T}(l) < 30)"
     },
     {
-      "name":"SelectionMVA",
-      "expression":"(BDT > 0.46) && (isPrompt == 0) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
-      "latex":"Selection MVA"
+      "name":"SelectionMVA_lep30",
+      "expression":"(BDT > 0.31) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (LepPt < 30)",
+      "latex":"Selection MVA (p_{T}(l) < 30)"
     }
   ],
   "variables":[

@@ -2,12 +2,12 @@
   "cuts":[
     {
       "name":"PreselectionMVA",
-      "expression":"(isPrompt == 0) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
+      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110)",
       "latex":"Preselection MVA"
     },
     {
       "name":"SelectionMVA",
-      "expression":"(BDT > 0.44) && (isPrompt == 0) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
+      "expression":"(BDT > 0.44) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
       "latex":"Selection MVA"
     }
   ],
