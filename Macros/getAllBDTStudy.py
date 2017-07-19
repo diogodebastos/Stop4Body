@@ -69,7 +69,7 @@ if __name__ == "__main__":
     thisScript.write(". setupPaths.sh\n\n")
 
     thisScript.write("BDTStudy ")
-    thisScript.write("--json ${JSON_PATH}/plot2016_DM"+str(bdt['deltaM'])+"RP.json")
+    thisScript.write("--json ${JSON_PATH}/plot2016_DM"+str(bdt['deltaM'])+"RP.json ")
     thisScript.write("--outDir " + outputDirectory + " ")
     thisScript.write("--inDir " + thisInputDirectory + " ")
     thisScript.write("--suffix bdt ")
