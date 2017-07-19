@@ -2,32 +2,32 @@
   "cuts":[
     {
       "name":"PreselectionMVA",
-      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
       "latex":"Preselection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"PreselectionMVA_prompt",
-      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 1)$(highDeltaM)",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 1)$(highDeltaM)",
       "latex":"Preselection MVA ($p_T(l) < 30$) [prompt]"
     },
     {
       "name":"PreselectionMVA_fake",
-      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 0)$(highDeltaM)",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 0)$(highDeltaM)",
       "latex":"Preselection MVA ($p_T(l) < 30$) [fake]"
     },
     {
       "name":"SelectionMVA",
-      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"SelectionMVA_prompt",
-      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 1)$(highDeltaM)",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 1)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [prompt]"
     },
     {
       "name":"SelectionMVA_fake",
-      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 0)$(highDeltaM)",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 0)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [fake]"
     }
   ],
