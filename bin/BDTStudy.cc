@@ -32,6 +32,7 @@ int main(int argc, char **argv)
   double luminosity = 0;
   bool isPseudoData = false;
   bool unblind = false;
+  bool isHighDeltaM = false;
 
   if(argc < 2)
   {
@@ -80,6 +81,9 @@ int main(int argc, char **argv)
 
     if(argument == "--unblind")
       unblind = true;
+
+    if(argument == "--isHighDeltaM")
+      isHighDeltaM = true;
   }
 
   if(jsonFileName == "")
@@ -99,15 +103,20 @@ int main(int argc, char **argv)
   if(luminosity <= 0)
     luminosity = samples.getData().getLumi();
 
+  std::string lepBase = "(LepPt < 30) &&";
+  if(isHighDeltaM)
+    lepBase = "";
+
   std::map<std::string, std::string> regions;
   //regions["test1"] = "(LepPt < 30)";
   //regions["test2"] = "(LepPt < 30) && (Met > 300)";
   //regions["test3"] = "(LepPt < 30) && (Met > 300) && (Jet1Pt > 110)";
-  regions["SR"]       = ("(LepPt < 30) && (Met > 280) && (Jet1Pt > 110) && (HT > 200)");
-  regions["CR_ttbar"] = ("(LepPt < 30) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
-  regions["CR_wjets"] = ("(LepPt < 30) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");
-  regions["VR1_ttbar"] = ("(LepPt < 30) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 1)");
-  regions["VR1_wjets"] = ("(LepPt < 30) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");// */
+  regions["SR"]        = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (HT > 200)");
+  regions["CR_ttbar"]  = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
+  regions["CR_wjets"]  = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");
+  regions["VR1"]       = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200)");
+  regions["VR1_ttbar"] = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
+  regions["VR1_wjets"] = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");// */
   /*regions["SR"]       = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200)");
   regions["CR_ttbar"] = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
   regions["CR_wjets"] = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");
@@ -124,7 +133,7 @@ int main(int argc, char **argv)
   if(isPseudoData)
     converter << "splitFactor*XS*filterEfficiency*(genWeight/sumGenWeight)*"; // The scale factors are not considered here
   else
-    converter << "splitFactor*weight*";
+    converter << "splitFactor*weight/(ISRweight*EWKISRweight)*";
   converter << luminosity;
   converter >> mcWeight;
 
