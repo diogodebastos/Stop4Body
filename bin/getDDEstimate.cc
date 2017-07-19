@@ -55,9 +55,10 @@ int main(int argc, char** argv)
   double luminosity = -1.0;
   bool isPseudoData = false;
   bool verbose = false;
-  bool isValidation = false;
+  bool isSwap = false;
   bool isHighDM = false;
   double SRCut = 0.4;
+  bool invertMet = false;
 
   if(argc < 2)
   {
@@ -107,9 +108,9 @@ int main(int argc, char** argv)
       isPseudoData = true;
     }
 
-    if(argument == "--isValidation")
+    if(argument == "--isSwap")
     {
-      isValidation = true;
+      isSwap = true;
     }
 
     if(argument == "--isHighDeltaM")
@@ -120,6 +121,11 @@ int main(int argc, char** argv)
     if(argument == "--verbose")
     {
       verbose = true;
+    }
+
+    if(argument == "--invertMet")
+    {
+      invertMet = true;
     }
   }
 
@@ -140,7 +146,10 @@ int main(int argc, char** argv)
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
   //std::string promptSelection = "(isPrompt == 1)";
   //std::string fakeSelection = "!(isPrompt == 1)";
-  std::string baseSelection = "(HT > 200) && (Jet1Pt > 110) && (Met > 280)";
+  std::string metSelection = " && (Met > 280)";
+  if(invertMet)
+    metSelection = " && (Met > 200 && Met < 280)";
+  std::string baseSelection = "(HT > 200) && (Jet1Pt > 110)" + metSelection;
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
@@ -157,7 +166,7 @@ int main(int argc, char** argv)
   {
     baseSelection += " && (LepPt < 30.)";
   }
-  if(isValidation)
+  if(isSwap)
   {
     if(isHighDM)
       baseSelection += " && (LepPt < 280.)";
