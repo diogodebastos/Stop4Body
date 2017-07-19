@@ -49,7 +49,12 @@ if __name__ == "__main__":
   ]
 
   for bdt in BDTs:
-    outputDirectory = args.outputDirectory + "_bdt" + bdt['name'] + "/"
+    outputDirectory = args.outputDirectory + "_bdt" + bdt['name']
+    if args.VRAlt:
+      outputDirectory = outputDirectory + "_VRAlt"
+    if args.isSwap:
+      outputDirectory = outputDirectory + "_Swap"
+    outputDirectory = outputDirectory + "/"
     print "Creating output directory for '" + bdt['name'] + "'"
     assure_path_exists(outputDirectory)
     outputDirectory = os.path.realpath(outputDirectory)
@@ -70,7 +75,7 @@ if __name__ == "__main__":
 
     thisScript.write("cd " + baseDirectory + "\n\n")
 
-    thisScript.write(". setupJSONs.sh\n")
+    #thisScript.write(". setupJSONs.sh\n")
     thisScript.write(". setupPaths.sh\n\n")
 
     thisScript.write("getDDEstimate ")
