@@ -1381,7 +1381,7 @@ int main(int argc, char** argv)
               {
                 while(retVal.GetSystematicOrValue(syst) >= M_PIl)
                   retVal.GetSystematicOrValue(syst) -= (2*M_PIl);
-                while(retVal.GetSystematicOrValue(syst) < M_PIl)
+                while(retVal.GetSystematicOrValue(syst) < -M_PIl)
                   retVal.GetSystematicOrValue(syst) += (2*M_PIl);
 
                 if(retVal.GetSystematicOrValue(syst) < 0)
