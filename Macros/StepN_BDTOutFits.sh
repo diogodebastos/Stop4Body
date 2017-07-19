@@ -4,6 +4,7 @@
 . setupPaths.sh
 
 INPUT=${BDT_DIR}/
+INPUT=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-06-05_SysVar_bdt30
 OUTPUT=~cbeiraod/local-area/Stop4Body/BDT_Fits/
 OUTPUT_POW=~cbeiraod/local-area/Stop4Body/BDT_Fits_pow/
 OUTPUT_LEP=~cbeiraod/local-area/Stop4Body/BDT_Fits_lep/
@@ -35,9 +36,9 @@ fi
 BDTStudy --json ${JSON_PATH}/plot2016.json     --outDir ${OUTPUT}     --inDir ${INPUT} --suffix bdt
 BDTStudy --json ${JSON_PATH}/plot2016_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --suffix bdt
 #BDTStudy --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt
-BDTStudy --json ${JSON_PATH}/plot2016_DM80RP.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt
+BDTStudy --json ${JSON_PATH}/plot2016_DM30RP.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --suffix bdt
 
-BDTStudy --json ${JSON_PATH}/plot2016swap.json     --outDir ${OUTPUTS}     --inDir ${INPUTS} --suffix bdt --unblind
-BDTStudy --json ${JSON_PATH}/plot2016swap_pow.json --outDir ${OUTPUTS_POW} --inDir ${INPUTS} --suffix bdt --unblind
-#BDTStudy --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUTS_LEP} --inDir ${INPUTS} --suffix bdt --unblind
-BDTStudy --json ${JSON_PATH}/plot2016swap_DM80RP.json --outDir ${OUTPUTS_LEP} --inDir ${INPUTS} --suffix bdt --unblind
+#BDTStudy --json ${JSON_PATH}/plot2016swap.json     --outDir ${OUTPUTS}     --inDir ${INPUTS} --suffix bdt --unblind
+#BDTStudy --json ${JSON_PATH}/plot2016swap_pow.json --outDir ${OUTPUTS_POW} --inDir ${INPUTS} --suffix bdt --unblind
+##BDTStudy --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUTS_LEP} --inDir ${INPUTS} --suffix bdt --unblind
+#BDTStudy --json ${JSON_PATH}/plot2016swap_DM80RP.json --outDir ${OUTPUTS_LEP} --inDir ${INPUTS} --suffix bdt --unblind

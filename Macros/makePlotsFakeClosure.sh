@@ -12,6 +12,6 @@ if [[ -d ${INPUT} ]] ; then
     mkdir -p ${OUTPUT}/DeltaM${deltaM}/
 
     JSONFILE=fake_bdt${deltaM}.json
-    makePlots --json ${JSON_PATH}/plot2016_closure.json --outDir ${OUTPUT}/DeltaM${deltaM} --inDir ${INPUT}_bdt${deltaM}/ --dofakeclosure --variables ${JSONFILE} --cuts ${JSONFILE} --suffix bdt
+    makePlots --lumi 1 --json ${JSON_PATH}/plot2016_closure.json --outDir ${OUTPUT}/DeltaM${deltaM} --inDir ${INPUT}_bdt${deltaM}/ --dofakeclosure --variables ${JSONFILE} --cuts ${JSONFILE} --suffix bdt
   done
 fi
