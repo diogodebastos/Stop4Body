@@ -234,8 +234,12 @@ int main(int argc, char** argv)
         std::cout << "  Doing variable: " << variable.name() << std::endl;
       std::map<std::string, TH1D*> variationHistograms;
       std::string dataSel;
-      ValueWithSystematics<std::string> mcSel;
+      ValueWithSystematics<std::string> mcSel = std::string("");
 
+      /*{
+        std::string tmp = mcWeight.Value()+"*( ((isLoose == 1) && (isTight == 0) && (isPrompt == 1)) && "+selection+")";
+        mcSel = tmp;
+      }*/
       mcSel = mcWeight.Value()+"*( ((isLoose == 1) && (isTight == 0) && (isPrompt == 1)) && "+selection+")";
       for(auto& syst: mcWeight.Systematics())
         mcSel.Systematic(syst) = mcWeight.Systematic(syst)+"*( ((isLoose == 1) && (isTight == 0) && (isPrompt == 1)) && "+selection+")";
@@ -361,21 +365,21 @@ int main(int argc, char** argv)
       totalSyst->Reset("ICE");
       totalSyst->Draw();
       totalSystArea->Draw("3");
-      double minErr = -1.1;
-      double maxErr = 1.1;
-      double yscale = (1.0-0.2)/(0.18-0);
+      double minErr = -0.3;//-1.1;
+      double maxErr = 0.3;//1.1;
+      //double yscale = (1.0-0.2)/(0.18-0);
       totalSyst->GetYaxis()->SetTitle("Total Uncertainty");
       totalSyst->SetMinimum(minErr);
       totalSyst->SetMaximum(maxErr);
       totalSyst->GetXaxis()->SetTitle("");
       totalSyst->GetXaxis()->SetTitleOffset(1.3);
-      totalSyst->GetXaxis()->SetLabelSize(0.033*yscale);
-      totalSyst->GetXaxis()->SetTitleSize(0.036*yscale);
-      totalSyst->GetXaxis()->SetTickLength(0.03*yscale);
+      //totalSyst->GetXaxis()->SetLabelSize(0.033*yscale);
+      //totalSyst->GetXaxis()->SetTitleSize(0.036*yscale);
+      //totalSyst->GetXaxis()->SetTickLength(0.03*yscale);
       totalSyst->GetYaxis()->SetTitleOffset(0.3);
-      totalSyst->GetYaxis()->SetNdivisions(5);
-      totalSyst->GetYaxis()->SetLabelSize(0.033*yscale);
-      totalSyst->GetYaxis()->SetTitleSize(0.036*yscale);
+      totalSyst->GetYaxis()->SetNdivisions(25);
+      //totalSyst->GetYaxis()->SetLabelSize(0.033*yscale);
+      //totalSyst->GetYaxis()->SetTitleSize(0.036*yscale);
 
       TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
       T->SetFillColor(0);
