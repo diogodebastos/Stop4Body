@@ -16,6 +16,16 @@
       "latex":"Preselection MVA ($p_T(l) < 30$) [fake]"
     },
     {
+      "name":"PreselectionMVA_wjets",
+      "expression":"(NbLoose == 0) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
+      "latex":"Preselection MVA ($p_T(l) < 30$) [wjets]"
+    },
+    {
+      "name":"PreselectionMVA_ttbar",
+      "expression":"(NbTight > 0) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
+      "latex":"Preselection MVA ($p_T(l) < 30$) [ttbar]"
+    },
+    {
       "name":"SelectionMVA",
       "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
