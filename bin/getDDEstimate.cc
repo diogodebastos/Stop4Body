@@ -429,23 +429,6 @@ int main(int argc, char** argv)
   outputTable << "\\hline\n\\end{tabular}\n";
 
   if(verbose)
-    std::cout << "Filling systematic variations table" << std::endl;
-  outputTable << "\n\nSystematic variations for full DD\n";
-  outputTable << "\\begin{tabular}{r|ccccc}\n";
-  outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
-
-  fullDDSys(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
-  outputTable << "\\hline\n";
-  fullDDSys(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
-  outputTable << "\\hline\n";
-  outputTable << "\\hline\n";
-  fullDDSys_alt(outputTable, wjets, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
-  outputTable << "\\hline\n";
-  fullDDSys_alt(outputTable, ttbar, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
-
-  outputTable << "\\hline\n\\end{tabular}\n";
-
-  if(verbose)
     std::cout << "Filling closure table" << std::endl;
   outputTable << "\n\nClosure for DD\n";
 
@@ -470,6 +453,23 @@ int main(int argc, char** argv)
 
   naiveDD(outputTable, wjets, Data, MC, looseSelection + " && " + baseSelection + " && " + wjetsSignalRegionClosure, looseSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
   naiveDD(outputTable, ttbar, Data, MC, looseSelection + " && " + baseSelection + " && " + ttbarSignalRegionClosure, looseSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+  outputTable << "\\hline\n\\end{tabular}\n";
+
+  if(verbose)
+    std::cout << "Filling systematic variations table" << std::endl;
+  outputTable << "\n\nSystematic variations for full DD\n";
+  outputTable << "\\begin{tabular}{r|ccccc}\n";
+  outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
+
+  fullDDSys(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  fullDDSys(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  outputTable << "\\hline\n";
+  fullDDSys_alt(outputTable, wjets, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  fullDDSys_alt(outputTable, ttbar, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
 
   outputTable << "\\hline\n\\end{tabular}\n";
 
