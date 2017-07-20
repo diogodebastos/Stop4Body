@@ -525,7 +525,7 @@ doubleUnc injectDD(std::ostream &outputTable, ProcessInfo &toEstimate, ProcessIn
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC << "$ & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
@@ -551,7 +551,7 @@ doubleUnc promptDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleRea
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC << "$ & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
@@ -569,7 +569,7 @@ doubleUnc fakeDD(std::ostream &outputTable, SampleReader &LNTData, SampleReader 
   outputTable << "Fakes & - & $";
   outputTable << NinCR << "$ ($" << LNTMCinSR << "$) & $";
   outputTable << DatainCR << "$ ($" << LNTinSR << "$) & - & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
@@ -598,7 +598,7 @@ doubleUnc fullDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReade
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC << " + " << fakes << "$(fake) & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
@@ -639,7 +639,7 @@ doubleUnc fullDD_alt(std::ostream &outputTable, ProcessInfo &toEstimate, SampleR
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC + fakes << "$ & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
