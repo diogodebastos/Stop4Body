@@ -86,7 +86,7 @@ if __name__ == "__main__":
     thisScript.write("--signalRegionCut ")
     if args.VRAlt:
       thisScript.write("0.2 --invertMet ")
-    else
+    else:
       thisScript.write(str(bdt['cut']) + " ")
     if args.isSwap:
       thisScript.write("--isSwap ")
