@@ -31,6 +31,16 @@
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
+      "name":"SelectionMVA_ttbar",
+      "expression":"(NbTight > 0) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
+      "latex":"Selection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"SelectionMVA_wjets",
+      "expression":"(NbLoose == 0) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
+      "latex":"Selection MVA ($p_T(l) < 30$)"
+    },
+    {
       "name":"SelectionMVA_prompt",
       "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 1)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [prompt]"
