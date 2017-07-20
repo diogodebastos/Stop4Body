@@ -119,6 +119,8 @@ if __name__ == "__main__":
     thisScript.write("--suffix bdt ")
     thisScript.write("--variables " + outputDirectory + "/cutsJson.json ")
     thisScript.write("--cuts " + outputDirectory + "/cutsJson.json ")
+    if args.isSwap or args.VRAlt:
+      thisScript.write("--unblind")
     thisScript.write(" 1> " + outputDirectory + "/makePlotsLog.log 2> " + outputDirectory + "/makePlotsLog.err")
     thisScript.write("\n\n")
 
