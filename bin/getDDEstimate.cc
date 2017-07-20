@@ -429,23 +429,6 @@ int main(int argc, char** argv)
   outputTable << "\\hline\n\\end{tabular}\n";
 
   if(verbose)
-    std::cout << "Filling systematic variations table" << std::endl;
-  outputTable << "\n\nSystematic variations for full DD\n";
-  outputTable << "\\begin{tabular}{r|ccccc}\n";
-  outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
-
-  fullDDSys(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
-  outputTable << "\\hline\n";
-  fullDDSys(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
-  outputTable << "\\hline\n";
-  outputTable << "\\hline\n";
-  fullDDSys_alt(outputTable, wjets, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
-  outputTable << "\\hline\n";
-  fullDDSys_alt(outputTable, ttbar, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
-
-  outputTable << "\\hline\n\\end{tabular}\n";
-
-  if(verbose)
     std::cout << "Filling closure table" << std::endl;
   outputTable << "\n\nClosure for DD\n";
 
@@ -470,6 +453,23 @@ int main(int argc, char** argv)
 
   naiveDD(outputTable, wjets, Data, MC, looseSelection + " && " + baseSelection + " && " + wjetsSignalRegionClosure, looseSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
   naiveDD(outputTable, ttbar, Data, MC, looseSelection + " && " + baseSelection + " && " + ttbarSignalRegionClosure, looseSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+  outputTable << "\\hline\n\\end{tabular}\n";
+
+  if(verbose)
+    std::cout << "Filling systematic variations table" << std::endl;
+  outputTable << "\n\nSystematic variations for full DD\n";
+  outputTable << "\\begin{tabular}{r|ccccc}\n";
+  outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
+
+  fullDDSys(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  fullDDSys(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  outputTable << "\\hline\n";
+  fullDDSys_alt(outputTable, wjets, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  fullDDSys_alt(outputTable, ttbar, Data, MC, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
 
   outputTable << "\\hline\n\\end{tabular}\n";
 
@@ -525,7 +525,7 @@ doubleUnc injectDD(std::ostream &outputTable, ProcessInfo &toEstimate, ProcessIn
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC << "$ & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
@@ -551,7 +551,7 @@ doubleUnc promptDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleRea
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC << "$ & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
@@ -569,7 +569,7 @@ doubleUnc fakeDD(std::ostream &outputTable, SampleReader &LNTData, SampleReader 
   outputTable << "Fakes & - & $";
   outputTable << NinCR << "$ ($" << LNTMCinSR << "$) & $";
   outputTable << DatainCR << "$ ($" << LNTinSR << "$) & - & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
@@ -598,7 +598,7 @@ doubleUnc fullDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReade
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC << " + " << fakes << "$(fake) & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
@@ -639,7 +639,7 @@ doubleUnc fullDD_alt(std::ostream &outputTable, ProcessInfo &toEstimate, SampleR
   outputTable << NinCR << "$ & $";
   outputTable << DatainCR << "$ & $";
   outputTable << otherMC + fakes << "$ & $";
-  outputTable << estimate << "$\\\\\n";
+  outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
 }
