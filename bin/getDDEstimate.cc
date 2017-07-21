@@ -45,6 +45,7 @@ doubleUnc fullDD(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, 
 doubleUnc fullDD_alt(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
 ValueWithSystematics<doubleUnc> fullDDSys(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 ValueWithSystematics<doubleUnc> fullDDSys_alt(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
+ValueWithSystematics<doubleUnc> fakeDDSys(std::ostream &, SampleReader &, SampleReader &, std::string, const ValueWithSystematics<std::string>&);
 
 int main(int argc, char** argv)
 {
@@ -462,6 +463,9 @@ int main(int argc, char** argv)
   outputTable << "\\begin{tabular}{r|ccccc}\n";
   outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
 
+  fakeDDSys(outputTable, Data, MC, looseSelection + " && " + baseSelection + " && " + signalRegion, mcWeightSys);
+  outputTable << "\\hline\n";
+  outputTable << "\\hline\n";
   fullDDSys(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeightSys);
   outputTable << "\\hline\n";
   fullDDSys(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeightSys);
@@ -572,6 +576,20 @@ doubleUnc fakeDD(std::ostream &outputTable, SampleReader &LNTData, SampleReader 
   outputTable << estimate << "$\\\\\n" << std::flush;
 
   return estimate;
+}
+
+ValueWithSystematics<doubleUnc> fakeDDSys(std::ostream &outputTable, SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, const ValueWithSystematics<std::string>& mcWeight)
+{
+  doubleUnc tmp_centralValue = fakeDD(outputTable, LNTData, LNTMC, signalRegion, mcWeight.Value());
+  ValueWithSystematics<doubleUnc> retVal(tmp_centralValue);
+
+  for(auto& syst: mcWeight.Systematics())
+  {
+    outputTable << syst << " ";
+    retVal.Systematic(syst) = fakeDD(outputTable, LNTData, LNTMC, signalRegion, mcWeight.Systematic(syst));
+  }
+
+  return retVal;
 }
 
 doubleUnc fullDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
