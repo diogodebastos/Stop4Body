@@ -250,6 +250,7 @@ int main(int argc, char** argv)
   }
 
   std::string selection = "";
+  std::ofstream outSummary(outputDirectory+"/summary.txt", std::ios_base::binary | std::ios_base::trunc);
   for(auto& cut : cutFlow)
   {
     selection = cut.cut();
@@ -258,6 +259,9 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
+      outSummary << "Cut: " << cut.name() << std::endl;
+      outSummary << "Variable: " << variable.name() << std::endl;
+
       if(verbose)
         std::cout << "  Doing variable: " << variable.name() << std::endl;
       std::map<std::string, TH1D*> variationHistograms;
@@ -349,7 +353,6 @@ int main(int argc, char** argv)
         delete tmpHist;
       }
 
-      std::ofstream outSummary(outputDirectory+"/summary.txt", std::ios_base::binary | std::ios_base::trunc);
       outSummary << "Bins:" << std::endl;
       TH1D* totalSyst = static_cast<TH1D*>(variationHistograms["CentralValue"]->Clone((cut.name()+"_"+variable.name()+"_Var").c_str()));
       for(int xbin=1; xbin <= totalSyst->GetXaxis()->GetNbins(); xbin++)
@@ -453,6 +456,8 @@ int main(int argc, char** argv)
       delete totalSyst;
       delete totalSystArea;
       delete T;
+
+      outSummary << std::endl << std::endl;
     }
   }
 

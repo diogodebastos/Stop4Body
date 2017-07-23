@@ -4,7 +4,7 @@
 . setupPaths.sh
 
 INPUT=~/local-area/Stop4Body/nTuples_v2017-06-05_SysVar
-OUTPUT=~/local-area/Stop4Body/FakeSystematics/
+OUTPUT=~/local-area/Stop4Body/FakeSystematics
 #OUTPUT=./test/
 
 if [[ -d ${INPUT} ]] ; then
