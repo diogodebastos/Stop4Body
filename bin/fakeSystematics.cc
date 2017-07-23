@@ -319,7 +319,8 @@ int main(int argc, char** argv)
       for(auto& syst: systematics)
       {
         variationHistograms[syst]->Add(variationHistograms["CentralValue"], -1);
-        variationHistograms[syst]->Divide(variationHistograms["CentralValue"]);
+        TH1D* tmpHist = variationHistograms[syst]->Clone(("tmp_"+cut.name()+"_"+variable.name()+"_"+syst).c_str());
+        tmpHist->Divide(variationHistograms["CentralValue"]);
 
         TCanvas c1((cut.name()+"_"+variable.name()+"_"+syst+"_Var").c_str(), "", 1200, 1350); // 800x900 in original, then scaled by 1.5
         gStyle->SetOptStat(0);
@@ -327,7 +328,7 @@ int main(int argc, char** argv)
         c1.SetTopMargin(0.07);
         //t1->SetBottomMargin(0.10);
         //t1->SetRightMargin(0.20);
-        variationHistograms[syst]->Draw("hist");
+        tmpHist->Draw("hist");
 
         TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
         T->SetFillColor(0);
@@ -345,8 +346,11 @@ int main(int argc, char** argv)
         c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+"_"+syst+"_Var.root").c_str());
 
         delete T;
+        delete tmpHist;
       }
 
+      ofstream outSummary(outputDirectory+"/summary.txt", std::ios_base::binary | std::ios_base::trunc);
+      outSummary << "Bins:" << std::endl;
       TH1D* totalSyst = static_cast<TH1D*>(variationHistograms["CentralValue"]->Clone((cut.name()+"_"+variable.name()+"_Var").c_str()));
       for(int xbin=1; xbin <= totalSyst->GetXaxis()->GetNbins(); xbin++)
       {
@@ -371,10 +375,14 @@ int main(int argc, char** argv)
         }
 
         unc = std::sqrt(unc);
+        unc = unc / variationHistograms["CentralValue"]->GetBinContent(xbin);
 
         totalSyst->SetBinContent(xbin,0);
         totalSyst->SetBinError(xbin,unc);
+
+        outSummary << "  " << xbin << ": " << unc << std::endl;
       }
+      outSummary << std::endl;
 
       TCanvas c1((cut.name()+"_"+variable.name()+"_Var").c_str(), "", 1200, 1350); // 800x900 in original, then scaled by 1.5
       gStyle->SetOptStat(0);
@@ -423,6 +431,24 @@ int main(int argc, char** argv)
       c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+"_Var.png").c_str());
       c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+"_Var.C").c_str());
       c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+"_Var.root").c_str());
+
+      double integral = variationHistograms["CentralValue"]->GetIntegral();
+      double quadSum = 0;
+      for(auto& base: systBase)
+      {
+        outSummary << systBase;
+        double down = variationHistograms[base + "_Down"]->GetIntegral();
+        double up = variationHistograms[base + "_Up"]->GetIntegral();
+
+        outSummary << " -  Up: " << up/integral << " (" << up << "); Down: " << down/integral << " (" << down << ")";
+
+        double max = std::max(std::abs(down), std::abs(up));
+        outSummary << "; Max: " << max/integral << " (" << max << ")";
+
+        quadSum += max*max;
+        outSummary << std::endl;
+      }
+      outSummary << "Total - " << std::sqrt(quadSum)/integral << " (" << std::sqrt(quadSum) << ")" << std::endl;
 
       delete totalSyst;
       delete totalSystArea;
