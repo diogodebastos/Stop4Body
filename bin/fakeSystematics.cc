@@ -319,7 +319,7 @@ int main(int argc, char** argv)
       for(auto& syst: systematics)
       {
         variationHistograms[syst]->Add(variationHistograms["CentralValue"], -1);
-        TH1D* tmpHist = variationHistograms[syst]->Clone(("tmp_"+cut.name()+"_"+variable.name()+"_"+syst).c_str());
+        TH1D* tmpHist = static_cast<TH1D*>(variationHistograms[syst]->Clone(("tmp_"+cut.name()+"_"+variable.name()+"_"+syst).c_str()));
         tmpHist->Divide(variationHistograms["CentralValue"]);
 
         TCanvas c1((cut.name()+"_"+variable.name()+"_"+syst+"_Var").c_str(), "", 1200, 1350); // 800x900 in original, then scaled by 1.5
@@ -349,7 +349,7 @@ int main(int argc, char** argv)
         delete tmpHist;
       }
 
-      ofstream outSummary(outputDirectory+"/summary.txt", std::ios_base::binary | std::ios_base::trunc);
+      std::ofstream outSummary(outputDirectory+"/summary.txt", std::ios_base::binary | std::ios_base::trunc);
       outSummary << "Bins:" << std::endl;
       TH1D* totalSyst = static_cast<TH1D*>(variationHistograms["CentralValue"]->Clone((cut.name()+"_"+variable.name()+"_Var").c_str()));
       for(int xbin=1; xbin <= totalSyst->GetXaxis()->GetNbins(); xbin++)
@@ -432,13 +432,13 @@ int main(int argc, char** argv)
       c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+"_Var.C").c_str());
       c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+"_Var.root").c_str());
 
-      double integral = variationHistograms["CentralValue"]->GetIntegral();
+      double integral = variationHistograms["CentralValue"]->Integral();
       double quadSum = 0;
       for(auto& base: systBase)
       {
         outSummary << systBase;
-        double down = variationHistograms[base + "_Down"]->GetIntegral();
-        double up = variationHistograms[base + "_Up"]->GetIntegral();
+        double down = variationHistograms[base + "_Down"]->Integral();
+        double up = variationHistograms[base + "_Up"]->Integral();
 
         outSummary << " -  Up: " << up/integral << " (" << up << "); Down: " << down/integral << " (" << down << ")";
 
