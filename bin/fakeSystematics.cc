@@ -48,6 +48,7 @@ int main(int argc, char** argv)
   std::string cutsJson = "";
   double luminosity = -1.0;
   bool verbose = false;
+  bool doNonUniversality = false;
 
   if(argc < 2)
   {
@@ -95,6 +96,11 @@ int main(int argc, char** argv)
     {
       verbose = true;
     }
+
+    if(argument == "--doNonUniversality")
+    {
+      doNonUniversality = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -130,19 +136,41 @@ int main(int argc, char** argv)
     luminosity = Data.getLumi();
 
   std::vector<std::string> systBase;
-  systBase.push_back("ISRweight_Bin1");
-  systBase.push_back("ISRweight_Bin2");
-  systBase.push_back("ISRweight_Bin3");
-  systBase.push_back("ISRweight_Bin4");
-  systBase.push_back("ISRweight_Bin5");
-  systBase.push_back("ISRweight_Bin6");
-  systBase.push_back("EWKISRweight_Bin1");
-  systBase.push_back("EWKISRweight_Bin2");
-  systBase.push_back("EWKISRweight_Bin3");
-  systBase.push_back("EWKISRweight_Bin4");
-  systBase.push_back("EWKISRweight_Bin5");
-  systBase.push_back("EWKISRweight_Bin6");
-  systBase.push_back("EWKISRweight_Bin7");
+  if(doNonUniversality)
+  {
+    for(int i = 1; i <= 18; ++i)
+    {
+      std::stringstream converter;
+      std::string tmp;
+      converter << "TightLoose_Muon_NU_Bin" << i;
+      converter >> tmp;
+      systBase.push_back(tmp);
+    }
+    for(int i = 1; i <= 16; ++i)
+    {
+      std::stringstream converter;
+      std::string tmp;
+      converter << "TightLoose_Electron_NU_Bin" << i;
+      converter >> tmp;
+      systBase.push_back(tmp);
+    }
+  }
+  else
+  {
+    systBase.push_back("ISRweight_Bin1");
+    systBase.push_back("ISRweight_Bin2");
+    systBase.push_back("ISRweight_Bin3");
+    systBase.push_back("ISRweight_Bin4");
+    systBase.push_back("ISRweight_Bin5");
+    systBase.push_back("ISRweight_Bin6");
+    systBase.push_back("EWKISRweight_Bin1");
+    systBase.push_back("EWKISRweight_Bin2");
+    systBase.push_back("EWKISRweight_Bin3");
+    systBase.push_back("EWKISRweight_Bin4");
+    systBase.push_back("EWKISRweight_Bin5");
+    systBase.push_back("EWKISRweight_Bin6");
+    systBase.push_back("EWKISRweight_Bin7");
+  }
 
   std::vector<std::string> systematics;
   for(auto& base: systBase)
