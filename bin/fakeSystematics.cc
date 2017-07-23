@@ -432,7 +432,7 @@ int main(int argc, char** argv)
       double quadSum = 0;
       for(auto& base: systBase)
       {
-        outSummary << systBase;
+        outSummary << base;
         double down = variationHistograms[base + "_Down"]->Integral();
         double up = variationHistograms[base + "_Up"]->Integral();
 
