@@ -302,6 +302,7 @@ int main(int argc, char** argv)
       std::cout << "Blinding!!!!!!!!!!!!!!" << std::endl;
     blindSel = "(BDT < 0.3) && ";
   }
+  std::ofstream outSummary(outputDirectory+"/summary.txt", std::ios_base::binary | std::ios_base::trunc);
   for(auto& cut : cutFlow)
   {
     if(cut.cut() != "")
@@ -323,6 +324,10 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
+      outSummary << "Cut: " << cut.name() << std::endl;
+      outSummary << "Variable: " << variable.name() << std::endl;
+      outSummary << "Bins:" << std::endl;
+
       std::string dataSel;
       std::string mcSel;
 
@@ -357,6 +362,17 @@ int main(int argc, char** argv)
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
       ratio->Divide(mcH);
+
+      for(int xbin=1; xbin <= dataH->GetXaxis()->GetNbins(); xbin++)
+      {
+        doubleUnc data  (dataH->GetBinContent(xbin), dataH->GetBinError(xbin));
+        doubleUnc mcSum (  mcH->GetBinContent(xbin),   mcH->GetBinError(xbin));
+        outSummary << "  " << xbin << ": Data = " << data;
+        outSummary << "; MC = " << mcSum;
+        outSummary << "; Diff = " << ((dofakeclosure)?(-1.0):(1.0))*(mcSum-data);
+        outSummary << "; Relative = " << (mcSum-data)/((dofakeclosure)?(-1.0*data):(mcSum)) << std::endl;
+      }
+      outSummary << std::endl;
 
       TCanvas c1((cut.name()+"_"+variable.name()).c_str(), "", 1200, 1350); // 800x900 in original, then scaled by 1.5
       gStyle->SetOptStat(0);
@@ -547,6 +563,8 @@ int main(int argc, char** argv)
       delete T;
       delete bgUncH;
       delete bgUnc;
+
+      outSummary << std::endl;
     }
 
     for(auto & twoDvariable : twoDvariables)
