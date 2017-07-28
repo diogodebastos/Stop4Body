@@ -16,7 +16,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016B_03Feb2017_v2",
+              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/MET_Run2016B_03Feb2017_v2",
               "split":250
             }
           ]
@@ -29,7 +29,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016C_03Feb2017",
+              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/MET_Run2016C_03Feb2017",
               "split":144
             }
           ]
@@ -42,7 +42,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/MET_Run2016D_03Feb2017",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/MET_Run2016D_03Feb2017",
               "split":184
             }
           ]

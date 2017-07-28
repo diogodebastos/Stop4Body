@@ -16,7 +16,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleMuon_Run2016B_03Feb2017_v2",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleMuon_Run2016B_03Feb2017_v2",
               "split":972
             }
           ]
@@ -29,7 +29,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleMuon_Run2016C_03Feb2017",
+              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016C_03Feb2017",
               "split":425
             }
           ]
@@ -42,7 +42,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleMuon_Run2016D_03Feb2017",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleMuon_Run2016D_03Feb2017",
               "split":684
             }
           ]
@@ -55,7 +55,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleMuon_Run2016E_03Feb2017",
+              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleMuon_Run2016E_03Feb2017",
               "split":637
             }
           ]
@@ -68,7 +68,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleMuon_Run2016F_03Feb2017",
+              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016F_03Feb2017",
               "split":456
             }
           ]
@@ -81,7 +81,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleMuon_Run2016G_03Feb2017",
+              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016G_03Feb2017",
               "split":542
             }
           ]
@@ -94,7 +94,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleMuon_Run2016H_03Feb2017_v2",
+              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016H_03Feb2017_v2",
               "split":601
             }
           ]
@@ -107,7 +107,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleMuon_Run2016H_03Feb2017_v3",
+              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016H_03Feb2017_v3",
               "split":30
             }
           ]
