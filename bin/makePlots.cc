@@ -369,8 +369,8 @@ int main(int argc, char** argv)
         doubleUnc mcSum (  mcH->GetBinContent(xbin),   mcH->GetBinError(xbin));
         outSummary << "  " << xbin << ": Data = " << data;
         outSummary << "; MC = " << mcSum;
-        outSummary << "; Diff = " << ((dofakeclosure)?(-1.0):(1.0))*(mcSum-data);
-        outSummary << "; Relative = " << (mcSum-data)/((dofakeclosure)?(-1.0*data):(mcSum)) << std::endl;
+        outSummary << "; Diff = " << (mcSum-data)*((dofakeclosure)?(-1.0):(1.0));
+        outSummary << "; Relative = " << (mcSum-data)/((dofakeclosure)?(data*(-1.0)):(mcSum)) << std::endl;
       }
       outSummary << std::endl;
 
