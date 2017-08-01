@@ -12,7 +12,7 @@ fi
 CURRENT_BDT=$1
 
 INPUT=${SWAP_DIR}
-OUTPUT=${INPUT)_bdt${CURRENT_BDT}
+OUTPUT=${INPUT}_bdt${CURRENT_BDT}
 
 if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then
