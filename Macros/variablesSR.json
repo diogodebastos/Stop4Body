@@ -49,6 +49,31 @@
       "name":"SelectionMVA_fake",
       "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 0)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [fake]"
+    },
+    {
+      "name":"CRMVA",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
+      "latex":"Selection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"CRMVA_ttbar",
+      "expression":"(NbTight > 0) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
+      "latex":"Selection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"CRMVA_wjets",
+      "expression":"(NbLoose == 0) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
+      "latex":"Selection MVA ($p_T(l) < 30$)"
+    },
+    {
+      "name":"CRMVA_prompt",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2) && (isPrompt == 1)$(highDeltaM)",
+      "latex":"Selection MVA ($p_T(l) < 30$) [prompt]"
+    },
+    {
+      "name":"CRMVA_fake",
+      "expression":"(HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2) && (isPrompt == 0)$(highDeltaM)",
+      "latex":"Selection MVA ($p_T(l) < 30$) [fake]"
     }
   ],
   "variables":[
