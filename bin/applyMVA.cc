@@ -49,6 +49,7 @@ int main(int argc, char** argv)
   methods.clear();
   std::string suffix = "";
   std::string MVAsuffix = "";
+  std::string altDir = "";
 
   // Default MVA methods to be trained + tested
   std::map<std::string,int> Use;
@@ -95,6 +96,9 @@ int main(int argc, char** argv)
 
     if(argument == "--mvaSuffix")
       MVAsuffix = argv[++i];
+
+    if(argument == "--altDir")
+      altDir = argv[++i];
   }
 
   if(jsonFileName == "")
@@ -182,6 +186,10 @@ int main(int argc, char** argv)
   //reader->AddVariable("Jet3CSV", &Jet3CSV);
 
   TString dir    = "weights/";
+  if(altDir != "")
+  {
+    dir = (altDir+"/").c_str();
+  }
   TString prefix = "TMVAClassification";
 
   for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++)
