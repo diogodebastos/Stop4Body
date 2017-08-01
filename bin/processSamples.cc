@@ -1391,6 +1391,23 @@ int main(int argc, char** argv)
 
             return retVal;
           };
+          auto CosDeltaPhiSys = [] (const ValueWithSystematics<double>& phi1, const ValueWithSystematics<double>& phi2, double defaultValue = -9999) -> ValueWithSystematics<double>
+          {
+            ValueWithSystematics<double> retVal = phi1 - phi2;
+            retVal = retVal.Cos();
+
+            std::vector<std::string> list;
+            list.push_back("Value");
+            loadSystematics(list, retVal);
+
+            for(auto& syst: list)
+            {
+              if(phi1.GetSystematicOrValue(syst) == defaultValue || phi2.GetSystematicOrValue(syst) == defaultValue)
+                retVal.GetSystematicOrValue(syst) = defaultValue;
+            }
+
+            return retVal;
+          };
           auto DeltaEtaSys = [] (const ValueWithSystematics<double>& eta1, const ValueWithSystematics<double>& eta2, double defaultValue = -9999) -> ValueWithSystematics<double>
           {
             ValueWithSystematics<double> retVal = eta1 - eta2;
@@ -1451,7 +1468,7 @@ int main(int argc, char** argv)
             LepHybIso03 = LepIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
-            ValueWithSystematics<double> CosDeltaPhiDou = (DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi))).Cos();
+            ValueWithSystematics<double> CosDeltaPhiDou = CosDeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
             CosDeltaPhi = CosDeltaPhiDou;
             mt = ValueWithSystematics<double>(2.0 * LepPt * MetDou * (1 - CosDeltaPhiDou)).Sqrt();
             Q80 = 1.0 - 80.*80./(2.0 * LepPt * Met);
