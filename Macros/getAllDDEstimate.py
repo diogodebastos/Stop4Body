@@ -100,10 +100,12 @@ if __name__ == "__main__":
 
     #shutil.copy2("./variablesSR.json", outputDirectory + "/cutsJson.json")
     repldict = {'$(BDTCUT)':str(bdt['cut']), '$(highDeltaM)':' && (LepPt < 30)', '$(METCUT)':'Met > 280'}
+    if args.isSwap:
+      repldict['$(highDeltaM)'] = " && (LepPt < 30) && (HLT_Mu == 1)"
     if bdt['highDeltaM']:
       repldict['$(highDeltaM)'] = ""
       if args.isSwap:
-        repldict['$(highDeltaM)'] = " && (LepPt < 280)"
+        repldict['$(highDeltaM)'] = " && (LepPt < 280) && (HLT_Mu == 1)"
     if args.VRAlt:
       repldict['$(BDTCUT)'] = str(0.2)
       repldict['$(METCUT)'] = "Met > 200 && Met < 280"
