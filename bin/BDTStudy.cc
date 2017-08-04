@@ -111,12 +111,12 @@ int main(int argc, char **argv)
   //regions["test1"] = "(LepPt < 30)";
   //regions["test2"] = "(LepPt < 30) && (Met > 300)";
   //regions["test3"] = "(LepPt < 30) && (Met > 300) && (Jet1Pt > 110)";
-  regions["SR"]        = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (HT > 200)");
-  regions["CR_ttbar"]  = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
-  regions["CR_wjets"]  = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");
-  regions["VR1"]       = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200)");
-  regions["VR1_ttbar"] = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
-  regions["VR1_wjets"] = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");// */
+  regions["SR"]        = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200)");
+  regions["CR_ttbar"]  = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (NbTight > 0)");
+  regions["CR_wjets"]  = (lepBase + "(isTight == 1) && (Met > 280) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (NbLoose == 0)");
+  regions["VR1"]       = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200)");
+  regions["VR1_ttbar"] = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (NbTight > 0)");
+  regions["VR1_wjets"] = (lepBase + "(isTight == 1) && (Met > 200) && (Met < 280) && (Jet1Pt > 110) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (NbLoose == 0)");// */
   /*regions["SR"]       = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200)");
   regions["CR_ttbar"] = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbTight > 0)");
   regions["CR_wjets"] = ("(Met > 280) && (Jet1Pt > 110) && (HT > 200) && (NbLoose == 0)");

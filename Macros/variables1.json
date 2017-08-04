@@ -2,7 +2,7 @@
   "cuts":[
     {
       "name":"Preselection",
-      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 100)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 100)",
       "latex":"Preselection"
     }
   ],

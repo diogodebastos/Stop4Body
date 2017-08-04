@@ -2,31 +2,31 @@
   "cuts":[
     {
       "name":"Preselection",
-      "expression":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2)",
       "expressionnew":"(HT > 200) && (Met > 200) && (nGoodEl+nGoodMu <= 2) && (LepPt < 280)",
       "latex":"Preselection"
     },
     {
       "name":"PreselectionMVA",
-      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (HLT_Mu == 1)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (HLT_Mu == 1)",
       "expressionnew":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 280) && (HLT_Mu == 1)",
       "latex":"Preselection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"SelectionMVA",
-      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.44) && (HLT_Mu == 1)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.44) && (HLT_Mu == 1)",
       "expressionnew":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 280) && (BDT > 0.46) && (HLT_Mu == 1)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"SelectionMVA_wjets",
-      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.44) && (HLT_Mu == 1) && (NbLoose == 0)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.44) && (HLT_Mu == 1) && (NbLoose == 0)",
       "expressionnew":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 280) && (BDT > 0.46) && (HLT_Mu == 1) && (NbLoose == 0)",
       "latex":"Selection MVA ($p_T(l) < 30$, wjets)"
     },
     {
       "name":"SelectionMVA_ttbar",
-      "expression":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.44) && (HLT_Mu == 1) && (NbTight > 0)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 30) && (BDT > 0.44) && (HLT_Mu == 1) && (NbTight > 0)",
       "expressionnew":"(HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (LepPt < 280) && (BDT > 0.46) && (HLT_Mu == 1) && (NbTight > 0)",
       "latex":"Selection MVA ($p_T(l) < 30$, ttbar)"
     }
