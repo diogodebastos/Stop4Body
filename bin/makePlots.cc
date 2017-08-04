@@ -60,6 +60,7 @@ int main(int argc, char** argv)
   bool noSF = false;
   bool unblind = false;
   bool dofakeclosure = false;
+  bool doSummary = false;
 
   if(argc < 2)
   {
@@ -143,6 +144,9 @@ int main(int argc, char** argv)
       dofakeclosure = true;
       unblind = true;
     }
+
+    if(argument == "--doSummary")
+      doSummary = true;
   }
 
   if(jsonFileName == "")
@@ -324,9 +328,12 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
-      outSummary << "Cut: " << cut.name() << std::endl;
-      outSummary << "Variable: " << variable.name() << std::endl;
-      outSummary << "Bins:" << std::endl;
+      if(doSummary)
+      {
+        outSummary << "Cut: " << cut.name() << std::endl;
+        outSummary << "Variable: " << variable.name() << std::endl;
+        outSummary << "Bins:" << std::endl;
+      }
 
       std::string dataSel;
       std::string mcSel;
@@ -367,12 +374,16 @@ int main(int argc, char** argv)
       {
         doubleUnc data  (dataH->GetBinContent(xbin), dataH->GetBinError(xbin));
         doubleUnc mcSum (  mcH->GetBinContent(xbin),   mcH->GetBinError(xbin));
-        outSummary << "  " << xbin << ": Data = " << data;
-        outSummary << "; MC = " << mcSum;
-        outSummary << "; Diff = " << (mcSum-data)*((dofakeclosure)?(-1.0):(1.0));
-        outSummary << "; Relative = " << (mcSum-data)/((dofakeclosure)?(data*(-1.0)):(mcSum)) << std::endl;
+        if(doSummary)
+        {
+          outSummary << "  " << xbin << ": Data = " << data;
+          outSummary << "; MC = " << mcSum;
+          outSummary << "; Diff = " << (mcSum-data)*((dofakeclosure)?(-1.0):(1.0));
+          outSummary << "; Relative = " << (mcSum-data)/((dofakeclosure)?(data*(-1.0)):(mcSum)) << std::endl;
+        }
       }
-      outSummary << std::endl;
+      if(doSummary)
+        outSummary << std::endl;
 
       TCanvas c1((cut.name()+"_"+variable.name()).c_str(), "", 1200, 1350); // 800x900 in original, then scaled by 1.5
       gStyle->SetOptStat(0);
@@ -564,7 +575,8 @@ int main(int argc, char** argv)
       delete bgUncH;
       delete bgUnc;
 
-      outSummary << std::endl;
+      if(doSummary)
+        outSummary << std::endl;
     }
 
     for(auto & twoDvariable : twoDvariables)
