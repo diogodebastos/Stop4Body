@@ -128,7 +128,8 @@ if __name__ == "__main__":
     mode |= 0o111
     os.fchmod(thisScript.fileno(), mode & 0o7777)
 
-    cmd = "qsub " + outputDirectory + "/theJob.sh"
+    job = outputDirectory + "/theJob.sh"
+    cmd = "qsub " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
     print cmd
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
