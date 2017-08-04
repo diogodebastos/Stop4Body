@@ -79,7 +79,10 @@ if __name__ == "__main__":
     thisScript.write(". setupPaths.sh\n\n")
 
     thisScript.write("getDDEstimate ")
-    thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
+    if args.isSwap:
+      thisScript.write("--json ${JSON_PATH}/plot2016swap_lep.json ")
+    else:
+      thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
     thisScript.write("--outDir " + outputDirectory + " ")
     thisScript.write("--inDir " + thisInputDirectory + " ")
     thisScript.write("--suffix bdt ")
@@ -113,7 +116,10 @@ if __name__ == "__main__":
         fout.write(regex.sub(replfunc,line))
 
     thisScript.write("makePlots ")
-    thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
+    if args.isSwap:
+      thisScript.write("--json ${JSON_PATH}/plot2016swap_lep.json ")
+    else:
+      thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
     thisScript.write("--outDir " + outputDirectory + " ")
     thisScript.write("--inDir " + thisInputDirectory + " ")
     thisScript.write("--suffix bdt ")
