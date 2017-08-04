@@ -574,8 +574,8 @@ int main(int argc, char** argv)
 
       if(dofakeclosure)
       {
-        mcSel = mcWeight+"*( (isTight == 1) && "+selection+")";
-        dataSel = "weight * ( ((isLoose == 1) && (isTight == 0)) && " + selection + ")";
+        mcSel = mcWeight+"*( (isPrompt == 0) && (isTight == 1) && "+selection+")";
+        dataSel = "weight * ( ((isPrompt == 0) && (isLoose == 1) && (isTight == 0)) && " + selection + ")";
       }
       else
       {
@@ -786,9 +786,9 @@ int main(int argc, char** argv)
 
     if(dofakeclosure)
     {
-      mcSelToUse = "((isTight == 1) && "+selection+")";
+      mcSelToUse = "((isPrompt == 0) && (isTight == 1) && "+selection+")";
       mcWeightToUse = mcWeight;
-      dataSelToUse = "(((isLoose == 1) && (isTight == 0)) && " + selection + ")";
+      dataSelToUse = "(((isPrompt == 0) && (isLoose == 1) && (isTight == 0)) && " + selection + ")";
       dataWeightToUse = "weight";
     }
     else
