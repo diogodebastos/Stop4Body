@@ -2,17 +2,17 @@
   "cuts":[
     {
       "name":"PreselectionMVA_allLep",
-      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 280) && (HLT_Mu == 1)",
+      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt < 280) && (HLT_Mu == 1)",
       "latex":"Preselection MVA"
     },
     {
       "name":"PreselectionMVA_lep30",
-      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (LepPt < 30) && (HLT_Mu == 1)",
+      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt < 30) && (HLT_Mu == 1)",
       "latex":"Preselection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"PreselectionMVA_allLep_and_J3MassSelection",
-      "expression":"(HT > 200) && (Met > 280) && (nGoodEl+nGoodMu <= 2) && (Jet1Pt > 110) && (Njet > 3) && (HLT_Mu == 1)",
+      "expression":"(HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (Njet > 3) && (HLT_Mu == 1)",
       "latex":"Preselection MVA ($p_T(l) < 30$)"
     }
   ],
