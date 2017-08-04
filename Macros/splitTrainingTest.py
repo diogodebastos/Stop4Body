@@ -23,7 +23,13 @@ if __name__ == "__main__":
   if not args.dryRun:
     print "You did not enable dry run. You are on your own!"
 
-  jsonFiles = ["MC2Process.json",
+  jsonFiles = [#"MC2Process.json",
+               "Wjets.json",
+               "TTbar.json",
+               "TTbar_LO.json",
+               "TTLep.json",
+               "TT_pow.json",
+               "otherMC2.json",
                "stop250.json",
                "stop275.json",
                "stop300.json",
@@ -47,6 +53,7 @@ if __name__ == "__main__":
                "stop750.json",
                "stop775.json",
                "stop800.json"]
+  #jsonFiles = ["otherMC2.json"] # AKA: ZInv.json
   #if args.doSwap:
   #  jsonFiles.append("DataSingleLepton.json")
   #else:
