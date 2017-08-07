@@ -133,7 +133,7 @@ int main(int argc, char **argv)
   if(isPseudoData)
     converter << "splitFactor*XS*filterEfficiency*(genWeight/sumGenWeight)*"; // The scale factors are not considered here
   else
-    converter << "splitFactor*weight/(ISRweight*EWKISRweight)*";
+    converter << "splitFactor*weight*";
   converter << luminosity;
   converter >> mcWeight;
 
