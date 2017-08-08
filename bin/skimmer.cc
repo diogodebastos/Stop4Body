@@ -162,9 +162,6 @@ int main(int argc, char** argv)
     cwd->cd();
     outputFile->Close();
     inputFile->Close();
-
-    delete outTree;
-    delete inTree;
   }
 
   return 0;
