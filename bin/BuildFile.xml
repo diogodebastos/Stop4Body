@@ -18,6 +18,7 @@
   <bin name="getDDEstimate"     file="getDDEstimate.cc"> </bin>
   <bin name="buildJobs"         file="buildJobs.cc"> </bin>
   <bin name="fakeSystematics"   file="fakeSystematics.cc"> </bin>
+  <bin name="skimmer"           file="skimmer.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
