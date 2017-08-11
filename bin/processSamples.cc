@@ -1471,7 +1471,6 @@ int main(int argc, char** argv)
             ValueWithSystematics<double> CosDeltaPhiDou = CosDeltaPhiSys(MetPhi, ValueWithSystematics<double>(lep_phi));
             CosDeltaPhi = CosDeltaPhiDou;
             mt = ValueWithSystematics<double>(2.0 * LepPt * MetDou * (1 - CosDeltaPhiDou)).Sqrt();
-            std::cout << mt.Value() << " vs " << mtw << std::endl;
             Q80 = 1.0 - 80.*80./(2.0 * LepPt * Met);
 
             if(!process.isdata())

@@ -19,6 +19,7 @@ if __name__ == "__main__":
   #parser.add_argument('-s', '--doSwap', action='store_true', help='Whether to process with the swapping of MET and LepPt variables')
   parser.add_argument( '--VRAlt', action='store_true', help='Whether to run for the alternative validation region, defined with 200 < Met < 280')
   parser.add_argument( '--isSwap', action='store_true', help='Set this flag if the samples being run on are the ones with the MET and LepPt variables swapped')
+  parser.add_argument( '--isSpecial', action='store_true', help='Set this flag if the samples are being run with the special run where the CR is tightened so the SR can be even more loosened')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
 
   args = parser.parse_args()
@@ -87,10 +88,15 @@ if __name__ == "__main__":
     thisScript.write("--inDir " + thisInputDirectory + " ")
     thisScript.write("--suffix bdt ")
     thisScript.write("--signalRegionCut ")
-    if args.VRAlt:
-      thisScript.write("0.2 --invertMet ")
+    if args.isSpecial:
+      thisScript.write("0.1 --isSpecial ")
+      if args.VRAlt:
+        thisScript.write("--invertMet")
     else:
-      thisScript.write(str(bdt['cut']) + " ")
+      if args.VRAlt:
+        thisScript.write("0.2 --invertMet ")
+      else:
+        thisScript.write(str(bdt['cut']) + " ")
     if args.isSwap:
       thisScript.write("--isSwap ")
     if bdt['highDeltaM']:
