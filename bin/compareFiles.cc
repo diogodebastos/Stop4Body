@@ -3,12 +3,15 @@
 
 #include "TROOT.h"
 #include "TFile.h"
-#include "TH1.h"
+#include "TH1D.h"
+
+#include "UserCode/Stop4Body/interface/commonFunctions.h"
 
 int main(int argc, char** argv)
 {
-  std::string file1;
-  std::string file2;
+  std::string fileName1;
+  std::string fileName2;
+  std::string selection = "";
 
   if(argc != 3)
   {
@@ -16,11 +19,60 @@ int main(int argc, char** argv)
     return 0;
   }
 
-  file1 = argv[1];
-  file2 = argv[2];
+  fileName1 = argv[1];
+  fileName2 = argv[2];
 
-  std::cout << "File1: " << file1 << std::endl;
-  std::cout << "File2: " << file2 << std::endl;
+  std::cout << "File1: " << fileName1 << std::endl;
+  std::cout << "File2: " << fileName2 << std::endl;
+
+  if(!fileExists(fileName1))
+  {
+    std::cout << "File1 does not exist" << std::endl;
+    return 1;
+  }
+  if(!fileExists(fileName2))
+  {
+    std::cout << "File2 does not exist" << std::endl;
+    return 1;
+  }
+
+  TFile file1(fileName1.c_str(), "READ");
+  TFile file2(fileName2.c_str(), "READ");
+
+  TTree* tree1 = static_cast<TTree*>(file1->Get("bdttree"));
+  TTree* tree2 = static_cast<TTree*>(file2->Get("bdttree"));
+
+  if(tree1 == nullptr)
+  {
+    std::cout << "Unable to find the tree for File1" << std::endl;
+    return 1;
+  }
+  if(tree2 == nullptr)
+  {
+    std::cout << "Unable to find the tree for File2" << std::endl;
+    return 1;
+  }
+
+  TTree* tree1Filtered = tree1->CopyTree(selection.c_str());
+  TTree* tree2Filtered = tree2->CopyTree(selection.c_str());
+
+  std::vector<std::string> branches = {
+    "Jet1Pt",
+    "Jet2Pt"
+  };
+
+  for(auto& branch : branches)
+  {
+    TH1D tmp1("tmp1", "tmp1", 40, 0, 100);
+    TH1D tmp2("tmp2", "tmp2", 40, 0, 100);
+
+    tree1Filtered->Draw((branch+">>tmp1").c_str(), "weight", "goff");
+    tree2Filtered->Draw((branch+">>tmp2").c_str(), "weight", "goff");
+
+    std::cout << branch << ": ";
+    std::cout << tmp1.GetMean() << "+-" << tmp1.GetRMS() << " (" << tmp1.GetEntries() << ") vs ";
+    std::cout << tmp2.GetMean() << "+-" << tmp2.GetRMS() << " (" << tmp2.GetEntries() << ")" << std::endl;
+  }
 
   return 0;
 }
