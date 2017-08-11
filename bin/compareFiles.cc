@@ -71,7 +71,7 @@ int main(int argc, char** argv)
     tree1Filtered->Draw((branch+">>tmp1").c_str(), "weight", "goff");
     tree2Filtered->Draw((branch+">>tmp2").c_str(), "weight", "goff");
 
-    std::cout << branch << ": ";
+    std::cout << " " << branch << ": ";
     std::cout << tmp1.GetMean() << "+-" << tmp1.GetRMS() << " (" << tmp1.GetEntries() << ") vs ";
     std::cout << tmp2.GetMean() << "+-" << tmp2.GetRMS() << " (" << tmp2.GetEntries() << ")" << std::endl;
   }
