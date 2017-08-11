@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 {
   std::string fileName1;
   std::string fileName2;
-  std::string selection = "";
+  std::string selection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110)";
 
   if(argc != 3)
   {
