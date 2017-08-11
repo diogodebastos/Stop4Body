@@ -59,8 +59,19 @@ int main(int argc, char** argv)
   TTree* tree2Filtered = tree2->CopyTree(selection.c_str());
 
   std::vector<std::string> branches = {
+    "Jet2Pt",
     "Jet1Pt",
-    "Jet2Pt"
+    "mt",
+    "Met",
+    "LepChg",
+    "LepEta",
+    "LepPt",
+    "HT",
+    "NbLoose",
+    "Njet",
+    "JetHBpt",
+    "DrJetHBLep",
+    "JetHBCSV"
   };
 
   for(auto& branch : branches)
