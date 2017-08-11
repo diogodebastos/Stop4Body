@@ -60,6 +60,7 @@ int main(int argc, char** argv)
   bool isHighDM = false;
   double SRCut = 0.4;
   bool invertMet = false;
+  bool special = false;
 
   if(argc < 2)
   {
@@ -128,9 +129,14 @@ int main(int argc, char** argv)
     {
       invertMet = true;
     }
+
+    if(argument == "--isSpecial")
+    {
+      special = true;
+    }
   }
 
-  if(SRCut < 0.2)
+  if(SRCut < 0.2 && !special)
   {
     std::cout << "You have defined an invalid signal region cut." << std::endl;
     std::cout << "Using \"BDT > 0.2\" instead" << std::endl;
@@ -154,6 +160,12 @@ int main(int argc, char** argv)
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
+  if(special)
+  {
+    std::stringstream converter;
+    converter << "(BDT < " << SRCut << ")";
+    controlRegion = converter.str();
+  }
   std::string signalRegion = "";
   {
     std::stringstream converter;
