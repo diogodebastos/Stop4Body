@@ -72,7 +72,9 @@ int main(int argc, char** argv)
     "Njet",
     "JetHBpt",
     "DrJetHBLep",
-    "JetHBCSV"
+    "JetHBCSV",
+    "CosDeltaPhi",
+    "Q80"
   };
 
   for(auto& branch : branches)
