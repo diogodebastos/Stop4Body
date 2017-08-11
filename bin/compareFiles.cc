@@ -13,7 +13,6 @@ int main(int argc, char** argv)
   if(argc != 3)
   {
     std::cout << "You did not pass the right number of parameters" << std::endl;
-    printHelp();
     return 0;
   }
 
