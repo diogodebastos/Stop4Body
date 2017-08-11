@@ -19,6 +19,7 @@
   <bin name="buildJobs"         file="buildJobs.cc"> </bin>
   <bin name="fakeSystematics"   file="fakeSystematics.cc"> </bin>
   <bin name="skimmer"           file="skimmer.cc"> </bin>
+  <bin name="compareFiles"      file="compareFiles.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
