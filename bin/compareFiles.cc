@@ -3,6 +3,7 @@
 
 #include "TROOT.h"
 #include "TFile.h"
+#include "TTree.h"
 #include "TH1D.h"
 
 #include "UserCode/Stop4Body/interface/commonFunctions.h"
