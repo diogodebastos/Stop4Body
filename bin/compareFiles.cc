@@ -40,8 +40,8 @@ int main(int argc, char** argv)
   TFile file1(fileName1.c_str(), "READ");
   TFile file2(fileName2.c_str(), "READ");
 
-  TTree* tree1 = static_cast<TTree*>(file1->Get("bdttree"));
-  TTree* tree2 = static_cast<TTree*>(file2->Get("bdttree"));
+  TTree* tree1 = static_cast<TTree*>(file1.Get("bdttree"));
+  TTree* tree2 = static_cast<TTree*>(file2.Get("bdttree"));
 
   if(tree1 == nullptr)
   {
