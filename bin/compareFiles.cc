@@ -39,6 +39,7 @@ int main(int argc, char** argv)
 
   TFile file1(fileName1.c_str(), "READ");
   TFile file2(fileName2.c_str(), "READ");
+  TFile tmpErr("tmp.root", "RECREATE"); // Because root does not like memory resident trees
 
   TTree* tree1 = static_cast<TTree*>(file1.Get("bdttree"));
   TTree* tree2 = static_cast<TTree*>(file2.Get("bdttree"));
@@ -70,7 +71,7 @@ int main(int argc, char** argv)
     tree1Filtered->Draw((branch+">>tmp1").c_str(), "weight", "goff");
     tree2Filtered->Draw((branch+">>tmp2").c_str(), "weight", "goff");
 
-    std::cout << branch << ": ";
+    std::cout << " " << branch << ": ";
     std::cout << tmp1.GetMean() << "+-" << tmp1.GetRMS() << " (" << tmp1.GetEntries() << ") vs ";
     std::cout << tmp2.GetMean() << "+-" << tmp2.GetRMS() << " (" << tmp2.GetEntries() << ")" << std::endl;
   }
