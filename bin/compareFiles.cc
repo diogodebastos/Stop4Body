@@ -76,8 +76,8 @@ int main(int argc, char** argv)
 
   for(auto& branch : branches)
   {
-    TH1D tmp1("tmp1", "tmp1", 40, 0, 100);
-    TH1D tmp2("tmp2", "tmp2", 40, 0, 100);
+    TH1D tmp1("tmp1", "tmp1", 40, -100000, 100000);
+    TH1D tmp2("tmp2", "tmp2", 40, -100000, 100000);
 
     tree1Filtered->Draw((branch+">>tmp1").c_str(), "weight", "goff");
     tree2Filtered->Draw((branch+">>tmp2").c_str(), "weight", "goff");
