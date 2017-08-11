@@ -1468,7 +1468,7 @@ int main(int argc, char** argv)
             LepHybIso03 = LepIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
-            ValueWithSystematics<double> CosDeltaPhiDou = CosDeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
+            ValueWithSystematics<double> CosDeltaPhiDou = CosDeltaPhiSys(MetPhi, ValueWithSystematics<double>(lep_phi));
             CosDeltaPhi = CosDeltaPhiDou;
             mt = ValueWithSystematics<double>(2.0 * LepPt * MetDou * (1 - CosDeltaPhiDou)).Sqrt();
             std::cout << mt.Value() << " vs " << mtw << std::endl;
