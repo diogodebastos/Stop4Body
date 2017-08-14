@@ -27,7 +27,8 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
   branchingRatio_(1.0),
   tag_(""),
   filterEfficiencyFile_(""),
-  recordedLumi_(0)
+  recordedLumi_(0),
+  isFastsim_(false)
 {
   jsonBack_ = jsonInfo;
   if(jsonInfo.count("xsec") == 0 || jsonInfo.count("tag") == 0 || jsonInfo.count("paths") == 0)
@@ -51,6 +52,9 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
 
   if(jsonInfo.count("recordedLumi") > 0)
     recordedLumi_ = jsonInfo["recordedLumi"];
+
+  if(jsonInfo.count("isFastsim") > 0)
+    isFastsim_ = jsonInfo["isFastsim"];
 
   filesPerPart_ = 10;
   if(jsonInfo.count("filesPerPart") > 0)
