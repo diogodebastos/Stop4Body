@@ -1155,7 +1155,7 @@ int main(int argc, char** argv)
             std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
               return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
             });
-            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).begin(), [Jet_btagCSV] (const int &left, const int &right) {
+            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagCSV] (const int &left, const int &right) {
               return Jet_btagCSV[left] > Jet_btagCSV[right];
             });
           }
