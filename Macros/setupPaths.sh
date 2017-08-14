@@ -3,11 +3,11 @@
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body/
 export JSON_PATH=$BASE_PATH/Macros/JSON/
 
-export NTUPLE_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-06-28
+export NTUPLE_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-08-13
 export SYNC_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_sync
 export PU_TEST_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_PU_test
 
-export CURRENT_BDT=bdt70
+export CURRENT_BDT=bdt10
 
 export TRAIN_DIR=${NTUPLE_DIR}_train
 export TEST_DIR=${NTUPLE_DIR}_test
