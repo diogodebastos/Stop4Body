@@ -201,6 +201,16 @@ int main(int argc, char** argv)
   electronTightToLooseHighEta = static_cast<TH1F*>(tightToLooseRatios.Get("electronEfficiencyHighEta"));
   muonTightToLooseLowEta = static_cast<TH1F*>(tightToLooseRatios.Get("muonEfficiencyLowEta"));
   muonTightToLooseHighEta = static_cast<TH1F*>(tightToLooseRatios.Get("muonEfficiencyHighEta"));
+  TFile FullFastElVeto("../data/sf_el_vetoCB.root", "READ");
+  electronFullFastSFIDHist = static_cast<TH2D*>(FullFastElVeto.Get("histo2D"));
+  TFile FullFastMuLoose("../data/sf_mu_looseID.root", "READ");
+  muonFullFastSFIDHist = static_cast<TH2D*>(FullFastMuLoose.Get("histo2D"));
+  TFile FullFastElHIIP("../data/Full-FastSimSFs_2D_el_HI+IP.root", "READ");
+  TCanvas* elc5 = static_cast<TCanvas*>(FullFastElHIIP.Get("c5"));
+  electronFullFastSFHIIPHist = static_cast<TH2D*>(elc5->GetPrimitive("Full-Fast_ratios_2D"));
+  TFile FullFastMuHIIP("../data/Full-FastSimSFs_2D_mu_HI+IP.root", "READ");
+  TCanvas* muc5 = static_cast<TCanvas*>(FullFastMuHIIP.Get("c5"));
+  muonFullFastSFHIIPHist = static_cast<TH2D*>(muc5->GetPrimitive("Full-Fast_ratios_2D"));
   cwd->cd();
 
   Float_t identity[100];
@@ -282,6 +292,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> puWeight;
       ValueWithSystematics<float> leptonIDSF;
       ValueWithSystematics<float> leptonISOSF;
+      ValueWithSystematics<float> leptonFullFastSF;
       ValueWithSystematics<float> looseNotTightWeight;
       ValueWithSystematics<float> weight;
 
@@ -311,13 +322,15 @@ int main(int argc, char** argv)
         leptonIDSF = getLeptonIDSFSys(11, 20, 1.1);
         std::cout << "\t        lISO" << std::endl;
         leptonISOSF = getLeptonISOSFSys(11, 20, 1.1);
+        std::cout << "\t        FullFastSim" << std::endl;
+        leptonFullFastSF = getFullFastSFSys(11, 20, 1.1);
       }
 
       std::cout << "\t        looseNotTight" << std::endl;
       looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * looseNotTightWeight;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -329,6 +342,7 @@ int main(int argc, char** argv)
         puWeight.Lock();
         leptonIDSF.Lock();
         leptonISOSF.Lock();
+        leptonFullFastSF.Lock();
       }
       looseNotTightWeight.Lock();
       weight.Lock();
@@ -340,6 +354,7 @@ int main(int argc, char** argv)
       puWeight = 1.0;
       leptonIDSF = 1.0;
       leptonISOSF = 1.0;
+      leptonFullFastSF = 1.0;
       looseNotTightWeight = 1.0;
       weight = 1.0;
 
@@ -360,6 +375,7 @@ int main(int argc, char** argv)
       bdttree->Branch("puWeight", &(puWeight.Value()), "puWeight/F");
       bdttree->Branch("leptonIDSF", &(leptonIDSF.Value()), "leptonIDSF/F");
       bdttree->Branch("leptonISOSF", &(leptonISOSF.Value()), "leptonISOSF/F");
+      bdttree->Branch("leptonFullFastSF", &(leptonFullFastSF.Value()), "leptonFullFastSF/F")
       bdttree->Branch("weight", &(weight.Value()), "weight/F");
       bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       bdttree->Branch("looseNotTightWeight", &looseNotTightWeight.Value(), "looseNotTightWeight/F");
@@ -378,6 +394,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("leptonIDSF_"+systematic).c_str(), &(leptonIDSF.Systematic(systematic)));
         for(auto& systematic: leptonISOSF.Systematics())
           bdttree->Branch(("leptonISOSF_"+systematic).c_str(), &(leptonISOSF.Systematic(systematic)));
+        for(auto& systematic: leptonFullFastSF.Systematics())
+          bdttree->Branch(("leptonFullFastSF_"+systematic).c_str(), &(leptonFullFastSF.Systematic(systematic)));
         for(auto& systematic: looseNotTightWeight.Systematics())
           bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
         for(auto& systematic: weight.Systematics())
@@ -1477,6 +1495,10 @@ int main(int argc, char** argv)
             {
               leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta);
               leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
+              if(sample.isFastsim() || process.isfastsim()) // Maybe need to add some more conditions here
+                leptonFullFastSF = getFullFastSFSys(LepID, LepPt, LepEta);
+              else
+                leptonFullFastSF = 1.0;
             }
 
             if(!process.isdata() && doPromptTagging)
