@@ -4,6 +4,7 @@
       "tag":"signal_point_250_230",
       "isdata":false,
       "issignal":true,
+      "isfastsim":true,
       "spimpose":true,
       "color":807,
       "lwidth":3,

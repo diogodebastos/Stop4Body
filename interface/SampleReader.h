@@ -144,6 +144,7 @@ class SampleInfo
     int split() const {return filePaths_.size();}
     std::string filterEfficiencyFile() const {return filterEfficiencyFile_;}
     double recordedLumi() const {return recordedLumi_;}
+    bool isFastsim() const {return isFastsim_;}
 
     int nParts() const {return nParts_;};
 
@@ -172,6 +173,7 @@ class SampleInfo
     std::string tag_;
     std::string filterEfficiencyFile_;
     double recordedLumi_;
+    bool isFastsim_;
     int filesPerPart_;
     int runPart_;
 

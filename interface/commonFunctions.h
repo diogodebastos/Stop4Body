@@ -20,6 +20,10 @@ extern TH1F* electronTightToLooseLowEta;
 extern TH1F* electronTightToLooseHighEta;
 extern TH1F* muonTightToLooseLowEta;
 extern TH1F* muonTightToLooseHighEta;
+extern TH2D* electronFullFastSFIDHist;
+extern TH2D* electronFullFastSFHIIPHist;
+extern TH2D* muonFullFastSFIDHist;
+extern TH2D* muonFullFastSFHIIPHist;
 
 bool fileExists(std::string);
 std::string getBaseName(const std::string&);
@@ -50,6 +54,7 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(ValueWithSystematics<doubl
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, ValueWithSystematics<double> met_pt, ValueWithSystematics<double> met_phi);
 ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
+ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double LepEta);
 
 ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double LepPt, double LepEta);
 

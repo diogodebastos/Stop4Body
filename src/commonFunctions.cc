@@ -19,6 +19,10 @@ TH1F* electronTightToLooseLowEta = nullptr;
 TH1F* electronTightToLooseHighEta = nullptr;
 TH1F* muonTightToLooseLowEta = nullptr;
 TH1F* muonTightToLooseHighEta = nullptr;
+TH2D* electronFullFastSFIDHist = nullptr;
+TH2D* electronFullFastSFHIIPHist = nullptr;
+TH2D* muonFullFastSFIDHist = nullptr;
+TH2D* muonFullFastSFHIIPHist = nullptr;
 
 
 bool fileExists(std::string fileName)
@@ -612,7 +616,7 @@ ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double
   if(centralMuonSFHist == nullptr || hephyMuonIDSFHist == nullptr)
     return retVal=1.0;
 
-  int electronBins1 = centralElectronSFHist->GetNbinsX() * centralElectronSFHist->GetNbinsY();
+  int electronBins1 = centralElectronSFHist->GetSize(); //centralElectronSFHist->GetNbinsX() * centralElectronSFHist->GetNbinsY();
   //int electronBins2 = hephyElectronIDSFHistEndcap->GetNbinsX();
   int electronBins2 = 1;
   //int electronBins3 = hephyElectronIDSFHistBarrel->GetNbinsX();
@@ -624,7 +628,7 @@ ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double
     retVal.Systematic(converter.str() + "_Up");
     retVal.Systematic(converter.str() + "_Down");
   }
-  int muonBins1 = centralMuonSFHist->GetNbinsX() * centralMuonSFHist->GetNbinsY();
+  int muonBins1 = centralMuonSFHist->GetSize(); //centralMuonSFHist->GetNbinsX() * centralMuonSFHist->GetNbinsY();
   //int muonBins2 = hephyMuonIDSFHist->GetNbinsX();
   int muonBins2 = 2;
   for(int i = 1; i <= muonBins1 + muonBins2; ++i)
@@ -912,17 +916,29 @@ ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double Le
   for(int i = 1; i <= electronBins1 + electronBins2; ++i)
   {
     std::stringstream converter;
-    converter << "TightLoose_Electron_NU_Bin" << i;
+    converter << "TightLoose_Electron_Bin" << i;
     retVal.Systematic(converter.str() + "_Up");
     retVal.Systematic(converter.str() + "_Down");
   }
   for(int i = 1; i <= muonBins1 + muonBins2; ++i)
   {
     std::stringstream converter;
-    converter << "TightLoose_Muon_NU_Bin" << i;
+    converter << "TightLoose_Muon_Bin" << i;
     retVal.Systematic(converter.str() + "_Up");
     retVal.Systematic(converter.str() + "_Down");
   }
+  retVal.Systematic("TightLoose_AltCorr_Up");
+  retVal.Systematic("TightLoose_AltCorr_Down");
+  retVal.Systematic("TightLoose_NU_Bin1_Up");
+  retVal.Systematic("TightLoose_NU_Bin1_Down");
+  retVal.Systematic("TightLoose_NU_Bin2_Up");
+  retVal.Systematic("TightLoose_NU_Bin2_Down");
+  retVal.Systematic("TightLoose_NU_Bin3_Up");
+  retVal.Systematic("TightLoose_NU_Bin3_Down");
+  retVal.Systematic("TightLoose_NU_Bin4_Up");
+  retVal.Systematic("TightLoose_NU_Bin4_Down");
+  retVal.Systematic("TightLoose_NU_Bin5_Up");
+  retVal.Systematic("TightLoose_NU_Bin5_Down");
   retVal.Systematic("TightLoose_NU_AltCorr_Up");
   retVal.Systematic("TightLoose_NU_AltCorr_Down");
   retVal.Lock();
@@ -947,12 +963,12 @@ ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double Le
     }
 
     std::stringstream converter;
-    converter << "TightLoose_Muon_NU_Bin" << theBin;
+    converter << "TightLoose_Muon_Bin" << theBin;
     retVal = val;
     retVal.Systematic(converter.str() + "_Up") = val + unc;
     retVal.Systematic(converter.str() + "_Down") = val - unc;
-    retVal.Systematic("TightLoose_NU_AltCorr_Up") = val + unc;
-    retVal.Systematic("TightLoose_NU_AltCorr_Down") = val - unc;
+    retVal.Systematic("TightLoose_AltCorr_Up") = val + unc;
+    retVal.Systematic("TightLoose_AltCorr_Down") = val - unc;
   }
   else
   {
@@ -972,17 +988,218 @@ ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double Le
     }
 
     std::stringstream converter;
-    converter << "TightLoose_Electron_NU_Bin" << theBin;
+    converter << "TightLoose_Electron_Bin" << theBin;
     retVal = val;
     retVal.Systematic(converter.str() + "_Up") = val + unc;
     retVal.Systematic(converter.str() + "_Down") = val - unc;
-    retVal.Systematic("TightLoose_NU_AltCorr_Up") = val + unc;
-    retVal.Systematic("TightLoose_NU_AltCorr_Down") = val - unc;
+    retVal.Systematic("TightLoose_AltCorr_Up") = val + unc;
+    retVal.Systematic("TightLoose_AltCorr_Down") = val - unc;
+  }
+
+  if(LepPt < 5)
+  {
+    retVal.Systematic("TightLoose_NU_Bin1_Up") = retVal.Value() * (1 + 0.2);
+    retVal.Systematic("TightLoose_NU_Bin1_Down") = retVal.Value() * (1 - 0.2);
+    retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.2);
+    retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.2);
+  }
+  else
+  {
+    if(LepPt < 12)
+    {
+      retVal.Systematic("TightLoose_NU_Bin2_Up") = retVal.Value() * (1 + 0.2);
+      retVal.Systematic("TightLoose_NU_Bin2_Down") = retVal.Value() * (1 - 0.2);
+      retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.2);
+      retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.2);
+    }
+    else
+    {
+      if(LepPt < 20)
+      {
+        retVal.Systematic("TightLoose_NU_Bin3_Up") = retVal.Value() * (1 + 0.3);
+        retVal.Systematic("TightLoose_NU_Bin3_Down") = retVal.Value() * (1 - 0.3);
+        retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.3);
+        retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.3);
+      }
+      else
+      {
+        if(LepPt < 30)
+        {
+          retVal.Systematic("TightLoose_NU_Bin4_Up") = retVal.Value() * (1 + 0.3);
+          retVal.Systematic("TightLoose_NU_Bin4_Down") = retVal.Value() * (1 - 0.3);
+          retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.3);
+          retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.3);
+        }
+        else
+        {
+          retVal.Systematic("TightLoose_NU_Bin5_Up") = retVal.Value() * (1 + 0.5);
+          retVal.Systematic("TightLoose_NU_Bin5_Down") = retVal.Value() * (1 - 0.5);
+          retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.5);
+          retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.5);
+        }
+      }
+    }
   }
 
   return retVal;
 }
 
+ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, double LepEta)
+{
+  LepID = std::abs(LepID);
+  LepEta = std::abs(LepEta);
+  ValueWithSystematics<double> retVal(1.0);
+  if(electronFullFastSFIDHist == nullptr || muonFullFastSFIDHist == nullptr)
+    return retVal = 1.0;
+
+  int electronBins = electronFullFastSFIDHist->GetSize();
+  int muonBins = muonFullFastSFIDHist->GetSize();
+  for(int i = 1; i <= electronBins; ++i)
+  {
+    std::stringstream converter;
+    converter << "FullFast_ID_Electron_Bin" << i;
+    retVal.Systematic(converter.str() + "_Up");
+    retVal.Systematic(converter.str() + "_Down");
+  }
+  for(int i = 1; i <= muonBins; ++i)
+  {
+    std::stringstream converter;
+    converter << "FullFast_ID_Muon_Bin" << i;
+    retVal.Systematic(converter.str() + "_Up");
+    retVal.Systematic(converter.str() + "_Down");
+  }
+  retVal.Systematic("FullFast_ID_AltCorr_Up");
+  retVal.Systematic("FullFast_ID_AltCorr_Down");
+  retVal.Lock();
+
+  if(LepPt >= 200)
+    LepPt = 200-0.0000001;
+  if(LepPt <= 10)
+    LepPt = 10;
+  LepEta = std::abs(LepEta);
+  LepID = std::abs(LepID);
+
+  double val = 1.0;
+  double unc = 0.0;
+  int theBin = 0;
+
+  if(LepID == 11)
+  {
+    auto bin = electronFullFastSFHIIPHist->FindBin(LepPt, LepEta);
+    val = electronFullFastSFHIIPHist->GetBinContent(bin);
+    unc = electronFullFastSFHIIPHist->GetBinError(bin);
+    theBin = bin;
+
+    std::stringstream converter;
+    converter << "FullFast_ID_Electron_Bin" << theBin;
+    retVal = val;
+    retVal.Systematic(converter.str() + "_Up") = val + unc;
+    retVal.Systematic(converter.str() + "_Down") = val - unc;
+    retVal.Systematic("FullFast_ID_AltCorr_Up") = val + unc;
+    retVal.Systematic("FullFast_ID_AltCorr_Down") = val - unc;
+  }
+  else
+  {
+    auto bin = muonFullFastSFHIIPHist->FindBin(LepPt, LepEta);
+    val = muonFullFastSFHIIPHist->GetBinContent(bin);
+    unc = muonFullFastSFHIIPHist->GetBinError(bin);
+    theBin = bin;
+
+    std::stringstream converter;
+    converter << "FullFast_ID_Muon_Bin" << theBin;
+    retVal = val;
+    retVal.Systematic(converter.str() + "_Up") = val + unc;
+    retVal.Systematic(converter.str() + "_Down") = val - unc;
+    retVal.Systematic("FullFast_ID_AltCorr_Up") = val + unc;
+    retVal.Systematic("FullFast_ID_AltCorr_Down") = val - unc;
+  }
+
+  return retVal;
+}
+ValueWithSystematics<double> getFullFastHIIPSFSys(double LepID, double LepPt, double LepEta)
+{
+  LepID = std::abs(LepID);
+  LepEta = std::abs(LepEta);
+  ValueWithSystematics<double> retVal(1.0);
+  if(electronFullFastSFHIIPHist == nullptr || muonFullFastSFHIIPHist == nullptr)
+    return retVal = 1.0;
+
+  int electronBins = electronFullFastSFHIIPHist->GetSize();
+  int muonBins = muonFullFastSFHIIPHist->GetSize();
+  for(int i = 1; i <= electronBins; ++i)
+  {
+    std::stringstream converter;
+    converter << "FullFast_HIIP_Electron_Bin" << i;
+    retVal.Systematic(converter.str() + "_Up");
+    retVal.Systematic(converter.str() + "_Down");
+  }
+  for(int i = 1; i <= muonBins; ++i)
+  {
+    std::stringstream converter;
+    converter << "FullFast_HIIP_Muon_Bin" << i;
+    retVal.Systematic(converter.str() + "_Up");
+    retVal.Systematic(converter.str() + "_Down");
+  }
+  retVal.Systematic("FullFast_HIIP_AltCorr_Up");
+  retVal.Systematic("FullFast_HIIP_AltCorr_Down");
+  retVal.Lock();
+
+  LepEta = std::abs(LepEta);
+  LepID = std::abs(LepID);
+  if(LepPt >= 200)
+    LepPt = 200;
+  if(LepPt <= 10 && LepID == 11)
+    LepPt = 10;
+
+  double val = 1.0;
+  double unc = 0.0;
+  int theBin = 0;
+
+  if(LepID == 11)
+  {
+    auto bin = electronFullFastSFHIIPHist->FindBin(LepPt, LepEta);
+    val = electronFullFastSFHIIPHist->GetBinContent(bin);
+    unc = electronFullFastSFHIIPHist->GetBinError(bin);
+    theBin = bin;
+
+    std::stringstream converter;
+    converter << "FullFast_HIIP_Electron_Bin" << theBin;
+    retVal = val;
+    retVal.Systematic(converter.str() + "_Up") = val + unc;
+    retVal.Systematic(converter.str() + "_Down") = val - unc;
+    retVal.Systematic("FullFast_HIIP_AltCorr_Up") = val + unc;
+    retVal.Systematic("FullFast_HIIP_AltCorr_Down") = val - unc;
+  }
+  else
+  {
+    auto bin = muonFullFastSFHIIPHist->FindBin(LepPt, LepEta);
+    val = muonFullFastSFHIIPHist->GetBinContent(bin);
+    unc = muonFullFastSFHIIPHist->GetBinError(bin);
+    theBin = bin;
+
+    std::stringstream converter;
+    converter << "FullFast_HIIP_Muon_Bin" << theBin;
+    retVal = val;
+    retVal.Systematic(converter.str() + "_Up") = val + unc;
+    retVal.Systematic(converter.str() + "_Down") = val - unc;
+    retVal.Systematic("FullFast_HIIP_AltCorr_Up") = val + unc;
+    retVal.Systematic("FullFast_HIIP_AltCorr_Down") = val - unc;
+  }
+
+  return retVal;
+}
+ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double LepEta)
+{
+  ValueWithSystematics<double> retVal(1.0);
+
+  retVal  = getFullFastIDSFSys(LepID, LepPt, LepEta);
+  retVal *= getFullFastHIIPSFSys(LepID, LepPt, LepEta);
+
+  retVal.Systematic("FullFast_Up")   = retVal.Value() * (1 + 0.02);
+  retVal.Systematic("FullFast_Down") = retVal.Value() * (1 - 0.02);
+
+  return retVal;
+}
 
 
 doubleUnc stopCrossSection(double stopM, double lspM)
