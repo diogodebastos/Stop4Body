@@ -12,7 +12,7 @@
           "tag":"Data_2016B_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":5788,
+          "recordedLumi":0,
           "filesPerPart":25,
           "paths":[
             {
@@ -25,7 +25,7 @@
           "tag":"Data_2016B_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":5788,
           "lumiComment":"The integrated luminosity is already accounted for in the one above (electron)",
           "filesPerPart":25,
           "paths":[
@@ -39,7 +39,7 @@
           "tag":"Data_2016C_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":2573,
+          "recordedLumi":0,
           "filesPerPart":25,
           "paths":[
             {
@@ -52,7 +52,7 @@
           "tag":"Data_2016C_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":2573,
           "lumiComment":"The integrated luminosity is already accounted for in the one above (electron)",
           "filesPerPart":25,
           "paths":[
@@ -66,7 +66,7 @@
           "tag":"Data_2016D_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":4248,
+          "recordedLumi":0,
           "filesPerPart":25,
           "paths":[
             {
@@ -79,7 +79,7 @@
           "tag":"Data_2016D_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":4248,
           "lumiComment":"The integrated luminosity is already accounted for in the one above (electron)",
           "filesPerPart":25,
           "paths":[
@@ -93,7 +93,7 @@
           "tag":"Data_2016E_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":4009,
+          "recordedLumi":0,
           "filesPerPart":25,
           "paths":[
             {
@@ -106,7 +106,7 @@
           "tag":"Data_2016E_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":4009,
           "lumiComment":"The integrated luminosity is already accounted for in the one above (electron)",
           "filesPerPart":25,
           "paths":[
@@ -120,7 +120,7 @@
           "tag":"Data_2016F_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":3102,
+          "recordedLumi":0,
           "filesPerPart":25,
           "paths":[
             {
@@ -133,7 +133,7 @@
           "tag":"Data_2016F_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":3102,
           "lumiComment":"The integrated luminosity is already accounted for in the one above (electron)",
           "filesPerPart":25,
           "paths":[
@@ -147,7 +147,7 @@
           "tag":"Data_2016G_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":7540,
+          "recordedLumi":0,
           "filesPerPart":25,
           "paths":[
             {
@@ -160,7 +160,7 @@
           "tag":"Data_2016G_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":7540,
           "lumiComment":"The integrated luminosity is already accounted for in the one above (electron)",
           "filesPerPart":25,
           "paths":[
@@ -174,7 +174,7 @@
           "tag":"Data_2016H_v2_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":8391,
+          "recordedLumi":0,
           "filesPerPart":25,
           "paths":[
             {
@@ -187,7 +187,7 @@
           "tag":"Data_2016H_v2_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":8391,
           "lumiComment":"The integrated luminosity is already accounted for in the one above (electron)",
           "filesPerPart":25,
           "paths":[
@@ -201,7 +201,7 @@
           "tag":"Data_2016H_v3_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":215,
+          "recordedLumi":0,
           "filesPerPart":25,
           "paths":[
             {
@@ -214,7 +214,7 @@
           "tag":"Data_2016H_v3_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":0,
+          "recordedLumi":215,
           "lumiComment":"The integrated luminosity is already accounted for in the one above (electron)",
           "filesPerPart":25,
           "paths":[
