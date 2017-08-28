@@ -68,6 +68,8 @@ int main(int argc, char** argv)
     "LepPt",
     "HT",
     "NbLoose",
+    "NbLoose50",
+    "NbLooseTo50",
     "Njet",
     "JetHBpt",
     "DrJetHBLep",
