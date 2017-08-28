@@ -1,3 +1,0 @@
-{
-  gROOT->ProcessLine(".x SingleLept_CutFlow.C+");
-}
