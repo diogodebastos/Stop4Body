@@ -10,6 +10,11 @@ def getNJobs():
 
   return int(out)
 
+def listDir(path):
+  p = subprocess.Popen(['ls',path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  out, err = p.communicate()
+  return out.split()
+
 if __name__ == "__main__":
   import argparse
 
@@ -162,6 +167,8 @@ if __name__ == "__main__":
 
             os.chdir(cwd)
 
+            processedFiles.append(sample+".root")
+
             with open(trainOut + "/" + sample + '/jobs.pickle', 'wb') as handle:
               pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -170,6 +177,14 @@ if __name__ == "__main__":
               while getNJobs() > 1000:
                 time.sleep(5*60)
               print "Done waiting"
+    inputFiles = listDir(args.inDirectory)
+    for file in inputFiles:
+      if file not in processedFiles:
+        cmd = "ln -s " + file
+        print cmd
+        if not args.dryRun:
+          p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+          out, err = p.communicate()
 
 
 
