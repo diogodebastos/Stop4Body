@@ -375,7 +375,7 @@ int main(int argc, char** argv)
       bdttree->Branch("puWeight", &(puWeight.Value()), "puWeight/F");
       bdttree->Branch("leptonIDSF", &(leptonIDSF.Value()), "leptonIDSF/F");
       bdttree->Branch("leptonISOSF", &(leptonISOSF.Value()), "leptonISOSF/F");
-      bdttree->Branch("leptonFullFastSF", &(leptonFullFastSF.Value()), "leptonFullFastSF/F")
+      bdttree->Branch("leptonFullFastSF", &(leptonFullFastSF.Value()), "leptonFullFastSF/F");
       bdttree->Branch("weight", &(weight.Value()), "weight/F");
       bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       bdttree->Branch("looseNotTightWeight", &looseNotTightWeight.Value(), "looseNotTightWeight/F");
