@@ -84,7 +84,7 @@ int main(int argc, char** argv)
   }
 
   std::vector<std::string> filesToProcess;
-  filesToProcess.append(fileName);
+  filesToProcess.push_back(fileName);
 
   std::cout << "Processing " << filesToProcess.size() << " files." << std::endl;
 
