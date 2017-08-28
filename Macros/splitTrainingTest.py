@@ -79,21 +79,22 @@ if __name__ == "__main__":
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
 
-
-  for json in jsonFiles:
-    print "Splitting the samples"
-    cmd = "splitTrainingTest"
-    cmd += " --json JSON/" + json
-    cmd += " --inDir " + args.inDirectory
-    cmd += " --testOutDir " + testOut
-    cmd += " --trainOutDir " + trainOut
-    if len([x for x in (args.previousTestEvents,args.previousTrainEvents) if x is not None]) == 2:
-      cmd += " --trainTreeDir " + args.previousTrainEvents
-      cmd += " --testTreeDir " + args.previousTestEvents
-    print "  ", cmd
-    if not args.dryRun:
-      p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-      out, err = p.communicate()
+  if not args.submit:
+    for json in jsonFiles:
+      print "Splitting the samples"
+      cmd = "splitTrainingTest"
+      cmd += " --json JSON/" + json
+      cmd += " --inDir " + args.inDirectory
+      cmd += " --testOutDir " + testOut
+      cmd += " --trainOutDir " + trainOut
+      if len([x for x in (args.previousTestEvents,args.previousTrainEvents) if x is not None]) == 2:
+        cmd += " --trainTreeDir " + args.previousTrainEvents
+        cmd += " --testTreeDir " + args.previousTestEvents
+      print "  ", cmd
+      if not args.dryRun:
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+  else:
 
 
 
