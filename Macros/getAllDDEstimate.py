@@ -62,85 +62,84 @@ if __name__ == "__main__":
 
     thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"])
 
-    thisScript = open(outputDirectory + "/theJob.sh", 'w')
+    with open(outputDirectory + "/theJob.sh", 'w') as thisScript:
+      thisScript.write("#!/bin/bash\n\n")
 
-    thisScript.write("#!/bin/bash\n\n")
+      thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
 
-    thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
+      thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
+      thisScript.write(". setup.sh\n\n")
 
-    thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
-    thisScript.write(". setup.sh\n\n")
+      thisScript.write("cd $CMSSW_BASE/src/\n")
+      thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
-    thisScript.write("cd $CMSSW_BASE/src/\n")
-    thisScript.write("eval `scramv1 runtime -sh`\n\n")
+      thisScript.write("cd " + baseDirectory + "\n\n")
 
-    thisScript.write("cd " + baseDirectory + "\n\n")
+      thisScript.write("#. setupJSONs.sh\n")
+      thisScript.write(". setupPaths.sh\n\n")
 
-    #thisScript.write(". setupJSONs.sh\n")
-    thisScript.write(". setupPaths.sh\n\n")
-
-    thisScript.write("getDDEstimate ")
-    if args.isSwap:
-      thisScript.write("--json ${JSON_PATH}/plot2016swap_lep.json ")
-    else:
-      thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
-    thisScript.write("--outDir " + outputDirectory + " ")
-    thisScript.write("--inDir " + thisInputDirectory + " ")
-    thisScript.write("--suffix bdt ")
-    thisScript.write("--signalRegionCut ")
-    if args.isSpecial:
-      thisScript.write("0.1 --isSpecial ")
-      if args.VRAlt:
-        thisScript.write("--invertMet")
-    else:
-      if args.VRAlt:
-        thisScript.write("0.2 --invertMet ")
-      else:
-        thisScript.write(str(bdt['cut']) + " ")
-    if args.isSwap:
-      thisScript.write("--isSwap ")
-    if bdt['highDeltaM']:
-      thisScript.write("--isHighDeltaM ")
-    thisScript.write(" 1> " + outputDirectory + "/DDEstimateLog.log 2> " + outputDirectory + "/DDEstimateLog.err")
-    thisScript.write("\n\n")
-
-    #shutil.copy2("./variablesSR.json", outputDirectory + "/cutsJson.json")
-    repldict = {'$(BDTCUT)':str(bdt['cut']), '$(highDeltaM)':' && (LepPt < 30)', '$(METCUT)':'Met > 280'}
-    if args.isSwap:
-      repldict['$(highDeltaM)'] = " && (LepPt < 30) && (HLT_Mu == 1)"
-    if bdt['highDeltaM']:
-      repldict['$(highDeltaM)'] = ""
+      thisScript.write("getDDEstimate ")
       if args.isSwap:
-        repldict['$(highDeltaM)'] = " && (LepPt < 280) && (HLT_Mu == 1)"
-    if args.VRAlt:
-      repldict['$(BDTCUT)'] = str(0.2)
-      repldict['$(METCUT)'] = "Met > 200 && Met < 280"
-    def replfunc(match):
-      return repldict[match.group(0)]
+        thisScript.write("--json ${JSON_PATH}/plot2016swap_lep.json ")
+      else:
+        thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
+      thisScript.write("--outDir " + outputDirectory + " ")
+      thisScript.write("--inDir " + thisInputDirectory + " ")
+      thisScript.write("--suffix bdt ")
+      thisScript.write("--signalRegionCut ")
+      if args.isSpecial:
+        thisScript.write("0.1 --isSpecial ")
+        if args.VRAlt:
+          thisScript.write("--invertMet")
+      else:
+        if args.VRAlt:
+          thisScript.write("0.2 --invertMet ")
+        else:
+          thisScript.write(str(bdt['cut']) + " ")
+      if args.isSwap:
+        thisScript.write("--isSwap ")
+      if bdt['highDeltaM']:
+        thisScript.write("--isHighDeltaM ")
+      thisScript.write(" 1> " + outputDirectory + "/DDEstimateLog.log 2> " + outputDirectory + "/DDEstimateLog.err")
+      thisScript.write("\n\n")
 
-    regex = re.compile('|'.join(re.escape(x) for x in repldict))
-    with open("./variablesSR.json") as fin, open(outputDirectory + "/cutsJson.json",'w') as fout:
-      for line in fin:
-        fout.write(regex.sub(replfunc,line))
+      #shutil.copy2("./variablesSR.json", outputDirectory + "/cutsJson.json")
+      repldict = {'$(BDTCUT)':str(bdt['cut']), '$(highDeltaM)':' && (LepPt < 30)', '$(METCUT)':'Met > 280'}
+      if args.isSwap:
+        repldict['$(highDeltaM)'] = " && (LepPt < 30) && (HLT_Mu == 1)"
+      if bdt['highDeltaM']:
+        repldict['$(highDeltaM)'] = ""
+        if args.isSwap:
+          repldict['$(highDeltaM)'] = " && (LepPt < 280) && (HLT_Mu == 1)"
+      if args.VRAlt:
+        repldict['$(BDTCUT)'] = str(0.2)
+        repldict['$(METCUT)'] = "Met > 200 && Met < 280"
+      def replfunc(match):
+        return repldict[match.group(0)]
 
-    thisScript.write("makePlots ")
-    if args.isSwap:
-      thisScript.write("--json ${JSON_PATH}/plot2016swap_lep.json ")
-    else:
-      thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
-    thisScript.write("--outDir " + outputDirectory + " ")
-    thisScript.write("--inDir " + thisInputDirectory + " ")
-    thisScript.write("--suffix bdt ")
-    thisScript.write("--variables " + outputDirectory + "/cutsJson.json ")
-    thisScript.write("--cuts " + outputDirectory + "/cutsJson.json ")
-    if args.isSwap or args.VRAlt:
-      thisScript.write("--unblind")
-    thisScript.write(" 1> " + outputDirectory + "/makePlotsLog.log 2> " + outputDirectory + "/makePlotsLog.err")
-    thisScript.write("\n\n")
+      regex = re.compile('|'.join(re.escape(x) for x in repldict))
+      with open("./variablesSR.json") as fin, open(outputDirectory + "/cutsJson.json",'w') as fout:
+        for line in fin:
+          fout.write(regex.sub(replfunc,line))
 
-    mode = os.fstat(thisScript.fileno()).st_mode
-    mode |= 0o111
-    os.fchmod(thisScript.fileno(), mode & 0o7777)
+      thisScript.write("makePlots ")
+      if args.isSwap:
+        thisScript.write("--json ${JSON_PATH}/plot2016swap_lep.json ")
+      else:
+        thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
+      thisScript.write("--outDir " + outputDirectory + " ")
+      thisScript.write("--inDir " + thisInputDirectory + " ")
+      thisScript.write("--suffix bdt ")
+      thisScript.write("--variables " + outputDirectory + "/cutsJson.json ")
+      thisScript.write("--cuts " + outputDirectory + "/cutsJson.json ")
+      if args.isSwap or args.VRAlt:
+        thisScript.write("--unblind")
+      thisScript.write(" 1> " + outputDirectory + "/makePlotsLog.log 2> " + outputDirectory + "/makePlotsLog.err")
+      thisScript.write("\n\n")
+
+      mode = os.fstat(thisScript.fileno()).st_mode
+      mode |= 0o111
+      os.fchmod(thisScript.fileno(), mode & 0o7777)
 
     job = outputDirectory + "/theJob.sh"
     cmd = "qsub " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
