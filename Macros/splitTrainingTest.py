@@ -102,7 +102,8 @@ if __name__ == "__main__":
       with open(fileName) as data_file:
         data = json.load(data_file)
         for i in range(len(data["lines"])):
-          print data["lines"][i]["files"]["tag"]
+          for j in range(len(data["lines"][i]["files"])):
+            print data["lines"][i]["files"][j]["tag"]
 
 
 
