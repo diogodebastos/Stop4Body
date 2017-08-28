@@ -9,6 +9,7 @@
   <bin name="makePseudoData"    file="makePseudoData.cc"></bin>
   <bin name="trainMVA"          file="trainMVA.cc">      </bin>
   <bin name="applyMVA"          file="applyMVA.cc">      </bin>
+  <bin name="applyMVAFile"      file="applyMVAFile.cc">      </bin>
   <bin name="getYields"         file="getYields.cc">     </bin>
   <bin name="BDTStudy"          file="BDTStudy.cc">      </bin>
   <bin name="mergeJSONs"        file="mergeJSONs.cc">    </bin>
