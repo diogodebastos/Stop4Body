@@ -7,13 +7,13 @@ if __name__ == "__main__":
   import argparse
 
   parser = argparse.ArgumentParser(description='Process the command line options')
-  parser.add_argument('-o', '--inDirectory', required=True, help='Name of the input directory')
+  parser.add_argument('-i', '--inDirectory', required=True, help='Name of the input directory')
   parser.add_argument(      '--overloadTestOut', default="", help='Use to define an alternative output directory for the test events')
   parser.add_argument(      '--overloadTrainOut', default="", help='Use to define an alternative output directory for the train events')
   parser.add_argument(      '--previousTestEvents', help='Use to define where the test nTuples from a previous split are located, to be used for this splitting as well')
   parser.add_argument(      '--previousTrainEvents', help='Use to define where the train nTuples from a previous split are located, to be used for this splitting as well')
-  parser.add_argument('-s', '--doSwap', action='store_true', help='Whether to process with the swapping of MET and LepPt variables')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
+  parser.add_argument(      '--submit', action='store_true', help='Whether to submit individual jobs to the batch system to parallelize the processing')
 
   args = parser.parse_args()
 
