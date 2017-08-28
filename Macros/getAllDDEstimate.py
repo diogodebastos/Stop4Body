@@ -111,9 +111,14 @@ if __name__ == "__main__":
         repldict['$(highDeltaM)'] = ""
         if args.isSwap:
           repldict['$(highDeltaM)'] = " && (LepPt < 280) && (HLT_Mu == 1)"
-      if args.VRAlt:
-        repldict['$(BDTCUT)'] = str(0.2)
-        repldict['$(METCUT)'] = "Met > 200 && Met < 280"
+      if args.isSpecial:
+        repldict['$(BDTCUT)'] = str(0.1)
+        if args.VRAlt:
+          repldict['$(METCUT)'] = "Met > 200 && Met < 280"
+      else:
+        if args.VRAlt:
+          repldict['$(BDTCUT)'] = str(0.2)
+          repldict['$(METCUT)'] = "Met > 200 && Met < 280"
       def replfunc(match):
         return repldict[match.group(0)]
 
