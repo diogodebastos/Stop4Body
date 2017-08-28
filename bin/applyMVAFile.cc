@@ -84,7 +84,7 @@ int main(int argc, char** argv)
   }
 
   std::vector<std::string> filesToProcess;
-  filesToProcess.append(fileName);
+  filesToProcess.push_back(fileName);
 
   std::cout << "Processing " << filesToProcess.size() << " files." << std::endl;
 
@@ -99,7 +99,8 @@ int main(int argc, char** argv)
   Float_t LepPt, LepEta, LepDxy, LepDz, Met, mt, Q80, CosDeltaPhi;
   Float_t Jet1Pt,Jet1Eta,Jet2Pt,Jet2Eta,JetHBpt,DrJet1Lep,DrJet2Lep,DrJetHBLep,DrJet1Jet2,JetLepMass;
   Float_t J3Mass,XS,HT;
-  Float_t Njet, NbLoose, NbTight, LepID, LepChg, Nevt, Event;
+  Float_t Njet, NbLoose, NbTight, LepID, LepChg, Nevt;
+  ULong64_t Event;
   Float_t JetHBCSV;
   //Int_t nGoodMu, nGoodEl;
   //Float_t LepSip3, LepIso03, LepIso04, DPhiJet1Jet2,
