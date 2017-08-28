@@ -240,6 +240,8 @@ int main(int argc, char** argv)
     inputFile->Close();
   }
 
+  std::cout << "Done!" << std::endl << std::endl;
+
   return 0;
 }
 
