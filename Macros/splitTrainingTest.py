@@ -95,6 +95,13 @@ if __name__ == "__main__":
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
   else:
+    import json
+    processedFiles = []
+    for file in jsonFiles:
+      with open(file) as data_file:
+        data = json.load(data_file)
+        for i in range(len(data["lines"])):
+          print data["lines"][i]["files"]["tag"]
 
 
 
