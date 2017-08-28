@@ -25,8 +25,8 @@ if __name__ == "__main__":
 
   jsonFiles = [#"MC2Process.json",
                "Wjets.json",
-               "TTbar.json",
-               "TTbar_LO.json",
+               #"TTbar.json",
+               #"TTbar_LO.json",
                "TTLep.json",
                "TT_pow.json",
                "otherMC2.json",
@@ -97,13 +97,53 @@ if __name__ == "__main__":
   else:
     import json
     processedFiles = []
+    baseDirectory = os.path.realpath(os.getcwd())
     for file in jsonFiles:
-      fileName = "JSON/" + file
-      with open(fileName) as data_file:
+      jsonFileName = "JSON/" + file
+      with open(jsonFileName) as data_file:
         data = json.load(data_file)
         for i in range(len(data["lines"])):
           for j in range(len(data["lines"][i]["files"])):
-            print data["lines"][i]["files"][j]["tag"]
+            sample = data["lines"][i]["files"][j]["tag"]
+            cmd = "mkdir -p " + trainOut + "/" + sample
+            print cmd
+            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = p.communicate()
+
+            with open(trainOut + "/" + sample + "/theJob.sh", 'w') as thisScript:
+              thisScript.write("#!/bin/bash\n\n")
+
+              thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
+
+              thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
+              thisScript.write(". setup.sh\n\n")
+
+              thisScript.write("cd $CMSSW_BASE/src/\n")
+              thisScript.write("eval `scramv1 runtime -sh`\n\n")
+
+              thisScript.write("cd " + baseDirectory + "\n\n")
+
+              thisScript.write("#. setupJSONs.sh\n")
+              thisScript.write(". setupPaths.sh\n\n")
+
+              thisScript.write("splitFileTrainingTest ")
+              thisScript.write("--inFile " + args.inDirectory + "/" + sample + ".root ")
+              thisScript.write("--testOutFile " + testOut + "/" + sample + ".root ")
+              thisScript.write("--trainOutFile " + trainOut + "/" + sample + ".root ")
+              if len([x for x in (args.previousTestEvents,args.previousTrainEvents) if x is not None]) == 2:
+                thisScript.write("--testTreeFile " + args.previousTestEvents + "/" + sample + ".root ")
+                thisScript.write("--trainTreeFile " + args.previousTrainEvents + "/" + sample + ".root ")
+              thisScript.write("\n\n")
+
+              mode = os.fstat(thisScript.fileno()).st_mode
+              mode |= 0o111
+              os.fchmod(thisScript.fileno(), mode & 0o7777)
+
+            cmd = "qsub " + trainOut + "/" + sample + "/theJob.sh"
+            print cmd
+            if not args.dryRun:
+              p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+              out, err = p.communicate()
 
 
 
