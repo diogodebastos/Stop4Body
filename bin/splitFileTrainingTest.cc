@@ -198,5 +198,7 @@ int main(int argc, char** argv)
   trainTree->Write();
   cwd->cd();
 
+  std::cout << "Done!" << std::endl << std::endl;
+
   return 0;
 }
