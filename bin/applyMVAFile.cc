@@ -161,6 +161,7 @@ int main(int argc, char** argv)
     auto cwd = gDirectory;
 
     std::string outFile = file.substr(0, file.find_last_of("."))+"_bdt.root";
+    std::string inputDirectory = file.substr(0, file.find_last_of("/"));
     replace(outFile, inputDirectory, outputDirectory);
     std::cout << "Processing file " << file << " and saving output in " << outFile << std::endl;
 
@@ -201,9 +202,7 @@ int main(int argc, char** argv)
     OutputTree->SetBranchAddress("Nevt", &Nevt);
 
     std::map<std::string, Float_t> MVAs;
-    for(auto & mva : Use)
-      if(mva.second)
-        MVAs[mva.first] = 0;
+    MVAs["BDT"] = 0;
 
     std::map<std::string, TBranch* > MVABranches;
     for(auto & mva : MVAs)
@@ -239,33 +238,6 @@ int main(int argc, char** argv)
     outputFile->Close();
     inputFile->Close();
   }
-
-
-
-
-  /*if(emptyLines.size() != 0)
-  {
-    std::cout << "The following lines did not have any files associated to them: ";
-    for(auto &process : emptyLines)
-      std::cout << process << "; ";
-    std::cout << std::endl;
-  }
-
-  if(emptyPath.size() != 0)
-  {
-    std::cout << "The following files did not have any path defined, or the defined path was empty: ";
-    for(auto &file : emptyPath)
-      std::cout << file << "; ";
-    std::cout << std::endl;
-  }
-
-  if(invalidPath.size() != 0)
-  {
-    std::cout << "The following files could not be found: " << std::endl;
-    for(auto &file : invalidPath)
-      std::cout << "\t" << file << std::endl;
-    std::cout << std::endl;
-  }*/
 
   return 0;
 }
