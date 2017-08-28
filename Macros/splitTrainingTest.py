@@ -98,7 +98,8 @@ if __name__ == "__main__":
     import json
     processedFiles = []
     for file in jsonFiles:
-      with open(file) as data_file:
+      fileName = "JSON/" + file
+      with open(fileName) as data_file:
         data = json.load(data_file)
         for i in range(len(data["lines"])):
           print data["lines"][i]["files"]["tag"]
