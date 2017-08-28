@@ -17,7 +17,6 @@ int main(int argc, char** argv)
   if(argc != 3)
   {
     std::cout << "You did not pass the right number of parameters" << std::endl;
-    printHelp();
     return 0;
   }
 
@@ -42,8 +41,8 @@ int main(int argc, char** argv)
   TFile file2(fileName2.c_str(), "READ");
   TFile tmpErr("tmp.root", "RECREATE"); // Because root does not like memory resident trees
 
-  TTree* tree1 = static_cast<TTree*>(file1->Get("bdttree"));
-  TTree* tree2 = static_cast<TTree*>(file2->Get("bdttree"));
+  TTree* tree1 = static_cast<TTree*>(file1.Get("bdttree"));
+  TTree* tree2 = static_cast<TTree*>(file2.Get("bdttree"));
 
   if(tree1 == nullptr)
   {
@@ -69,6 +68,8 @@ int main(int argc, char** argv)
     "LepPt",
     "HT",
     "NbLoose",
+    "NbLoose50",
+    "NbLooseTo50",
     "Njet",
     "JetHBpt",
     "DrJetHBLep",

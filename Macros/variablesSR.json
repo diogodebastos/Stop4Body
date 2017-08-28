@@ -79,9 +79,9 @@
   "variables":[
     {
       "expression":"BDT",
-      "min":-1.0,
-      "max":1.0,
-      "bins":20
+      "min":-0.6,
+      "max":0.6,
+      "bins":48
     }
   ],
   "2Dplots":[

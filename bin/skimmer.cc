@@ -81,7 +81,7 @@ int main(int argc, char** argv)
     if(argument == "--limit")
     {
       limitEvents = true;
-      std::sringstream converter;
+      std::stringstream converter;
       converter << argv[++i];
       converter >> eventLimit;
 
@@ -120,7 +120,7 @@ int main(int argc, char** argv)
     TFile *inputFile = new TFile(file.c_str(), "READ");
     TFile *outputFile = new TFile(outFile.c_str(), "RECREATE");
 
-    TTree* inTree = static_cast<TTree*>(inputFile.Get("bdttree"));
+    TTree* inTree = static_cast<TTree*>(inputFile->Get("bdttree"));
     inTree->SetBranchStatus("*",1);
     inTree->SetBranchStatus("*_Up",0);
     inTree->SetBranchStatus("*_Down",0);

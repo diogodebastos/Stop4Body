@@ -3,7 +3,7 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-INPUT=~/local-area/Stop4Body/nTuples_v2017-06-05
+INPUT=~/local-area/Stop4Body/nTuples_v2017-06-05_SysVar
 OUTPUT=~/local-area/Stop4Body/FakeClosure/
 #OUTPUT=./test/
 
@@ -12,6 +12,6 @@ if [[ -d ${INPUT} ]] ; then
     mkdir -p ${OUTPUT}/DeltaM${deltaM}/
 
     JSONFILE=fake_bdt${deltaM}.json
-    makePlots --lumi 1 --json ${JSON_PATH}/plot2016_closure.json --outDir ${OUTPUT}/DeltaM${deltaM} --inDir ${INPUT}_bdt${deltaM}/ --dofakeclosure --variables ${JSONFILE} --cuts ${JSONFILE} --suffix bdt
+    makePlots --doSummary --lumi 1 --json ${JSON_PATH}/plot2016_closure.json --outDir ${OUTPUT}/DeltaM${deltaM} --inDir ${INPUT}_bdt${deltaM}/ --dofakeclosure --variables ${JSONFILE} --cuts ${JSONFILE} --suffix bdt
   done
 fi
