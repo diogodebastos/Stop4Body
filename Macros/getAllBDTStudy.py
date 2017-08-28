@@ -51,36 +51,35 @@ if __name__ == "__main__":
 
     thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"])
 
-    thisScript = open(outputDirectory + "/theJob.sh", 'w')
+    with open(outputDirectory + "/theJob.sh", 'w') as thisScript:
+      thisScript.write("#!/bin/bash\n\n")
 
-    thisScript.write("#!/bin/bash\n\n")
+      thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
 
-    thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
+      thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
+      thisScript.write(". setup.sh\n\n")
 
-    thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
-    thisScript.write(". setup.sh\n\n")
+      thisScript.write("cd $CMSSW_BASE/src/\n")
+      thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
-    thisScript.write("cd $CMSSW_BASE/src/\n")
-    thisScript.write("eval `scramv1 runtime -sh`\n\n")
+      thisScript.write("cd " + baseDirectory + "\n\n")
 
-    thisScript.write("cd " + baseDirectory + "\n\n")
+      thisScript.write("#. setupJSONs.sh\n")
+      thisScript.write(". setupPaths.sh\n\n")
 
-    #thisScript.write(". setupJSONs.sh\n")
-    thisScript.write(". setupPaths.sh\n\n")
+      thisScript.write("BDTStudy ")
+      thisScript.write("--json ${JSON_PATH}/plot2016_DM"+str(bdt['deltaM'])+"RP.json ")
+      thisScript.write("--outDir " + outputDirectory + " ")
+      thisScript.write("--inDir " + thisInputDirectory + " ")
+      thisScript.write("--suffix bdt ")
+      if bdt['highDeltaM']:
+        thisScript.write("--isHighDeltaM")
+      thisScript.write(" 1> " + outputDirectory + "/BDTStudy.log 2> " + outputDirectory + "/BDTStudy.err")
+      thisScript.write("\n\n")
 
-    thisScript.write("BDTStudy ")
-    thisScript.write("--json ${JSON_PATH}/plot2016_DM"+str(bdt['deltaM'])+"RP.json ")
-    thisScript.write("--outDir " + outputDirectory + " ")
-    thisScript.write("--inDir " + thisInputDirectory + " ")
-    thisScript.write("--suffix bdt ")
-    if bdt['highDeltaM']:
-      thisScript.write("--isHighDeltaM")
-    thisScript.write(" 1> " + outputDirectory + "/BDTStudy.log 2> " + outputDirectory + "/BDTStudy.err")
-    thisScript.write("\n\n")
-
-    mode = os.fstat(thisScript.fileno()).st_mode
-    mode |= 0o111
-    os.fchmod(thisScript.fileno(), mode & 0o7777)
+      mode = os.fstat(thisScript.fileno()).st_mode
+      mode |= 0o111
+      os.fchmod(thisScript.fileno(), mode & 0o7777)
 
     cmd = "qsub " + outputDirectory + "/theJob.sh"
     print cmd
