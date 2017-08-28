@@ -13,6 +13,7 @@
   <bin name="BDTStudy"          file="BDTStudy.cc">      </bin>
   <bin name="mergeJSONs"        file="mergeJSONs.cc">    </bin>
   <bin name="splitTrainingTest" file="splitTrainingTest.cc"> </bin>
+  <bin name="splitFileTrainingTest" file="splitFileTrainingTest.cc"> </bin>
   <bin name="makePlots"         file="makePlots.cc"> </bin>
   <bin name="getPUWeight"       file="getPUWeight.cc"> </bin>
   <bin name="getDDEstimate"     file="getDDEstimate.cc"> </bin>
