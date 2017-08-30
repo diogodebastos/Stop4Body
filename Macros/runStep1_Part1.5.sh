@@ -10,4 +10,4 @@ PRE_TRAIN=/gstore/t3cms/store/user/cbeiraod/Stop4Body/storage/nTuples_v2017-06-0
 python splitTrainingTest.py -i ${NTUPLE_DIR} --previousTestEvents ${PRE_TEST} --previousTrainEvents ${PRE_TRAIN} --submit
 
 echo "Run the following command to check the progress of the output and resubmit failed jobs:"
-echo "  python checkJobs.py -o ${NTUPLE_DIR}_train"
+echo "  python checkJobs.py --noMerge -o ${NTUPLE_DIR}_train"

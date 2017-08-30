@@ -23,5 +23,5 @@ for DIR in "${NTUPLE_DIR}" "${TEST_DIR}" ;do
 done
 
 echo "Run the following commands to check the progress of the output and resubmit failed jobs:"
-echo "  python checkJobs.py -o ${NTUPLE_DIR}_bdt${CURRENT_BDT}"
-echo "  python checkJobs.py -o ${TEST_DIR}_bdt${CURRENT_BDT}"
+echo "  python checkJobs.py --noMerge -o ${NTUPLE_DIR}_bdt${CURRENT_BDT}"
+echo "  python checkJobs.py --noMerge -o ${TEST_DIR}_bdt${CURRENT_BDT}"
