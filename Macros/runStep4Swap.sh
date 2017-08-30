@@ -11,7 +11,8 @@ fi
 
 CURRENT_BDT=$1
 
-for DIR in "${NTUPLE_DIR}" "${TEST_DIR}" ;do
+#for DIR in "${NTUPLE_DIR}" "${TEST_DIR}" ;do
+  DIR=${SWAP_DIR}
   echo "Processing directory: ${DIR}"
   OUTPUT=${DIR}_bdt${CURRENT_BDT}
 
@@ -20,8 +21,8 @@ for DIR in "${NTUPLE_DIR}" "${TEST_DIR}" ;do
   fi
 
   python applyMVA.py -i ${DIR} -o ${OUTPUT} -w weights_bdt${CURRENT_BDT}
-done
+#done
 
 echo "Run the following commands to check the progress of the output and resubmit failed jobs:"
-echo "  python checkJobs.py --noMerge -o ${NTUPLE_DIR}_bdt${CURRENT_BDT}"
-echo "  python checkJobs.py --noMerge -o ${TEST_DIR}_bdt${CURRENT_BDT}"
+echo "  python checkJobs.py --noMerge -o ${SWAP_DIR}_bdt${CURRENT_BDT}"
+#echo "  python checkJobs.py --noMerge -o ${TEST_DIR}_bdt${CURRENT_BDT}"

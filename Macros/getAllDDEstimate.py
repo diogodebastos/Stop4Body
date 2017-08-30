@@ -17,7 +17,8 @@ if __name__ == "__main__":
   parser.add_argument('-o', '--outputDirectory', required=True, help='Base name of the output directory for each BDT')
   #parser.add_argument('-j', '--jsonFile', required=True, help='The json file describing the samples to use')
   #parser.add_argument('-s', '--doSwap', action='store_true', help='Whether to process with the swapping of MET and LepPt variables')
-  parser.add_argument( '--VRAlt', action='store_true', help='Whether to run for the alternative validation region, defined with 200 < Met < 280')
+  parser.add_argument( '--VR2', action='store_true', help='Whether to run for the second validation region, defined with 200 < Met < 280')
+  parser.add_argument( '--VR3', action='store_true', help='Whether to run for the third validation region, defined with LepPt > 30')
   parser.add_argument( '--isSwap', action='store_true', help='Set this flag if the samples being run on are the ones with the MET and LepPt variables swapped')
   parser.add_argument( '--isSpecial', action='store_true', help='Set this flag if the samples are being run with the special run where the CR is tightened so the SR can be even more loosened')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
@@ -28,8 +29,8 @@ if __name__ == "__main__":
   if not (os.path.exists(inputDirectory) and os.path.isdir(inputDirectory)):
     parser.error('The given input directory does not exist or is not a directory')
 
-  if args.isSwap and args.VRAlt:
-    parser.error('It does not make sense to simulataneously define both conditions for the validation regions')
+  if len([x for x in (args.isSwap,args.VR2,args.VR3) if x is not False]) > 1:
+    parser.error('It does not make sense to simulataneously define more than on condition for the validation region')
 
   if not args.dryRun:
     print "You did not enable dry run. You are on your own!"
@@ -51,8 +52,10 @@ if __name__ == "__main__":
 
   for bdt in BDTs:
     outputDirectory = args.outputDirectory + "_bdt" + bdt['name']
-    if args.VRAlt:
-      outputDirectory = outputDirectory + "_VRAlt"
+    if args.VR2:
+      outputDirectory = outputDirectory + "_VR2"
+    if args.VR3:
+      outputDirectory = outputDirectory + "_VR3"
     if args.isSwap:
       outputDirectory = outputDirectory + "_Swap"
     outputDirectory = outputDirectory + "/"
@@ -89,13 +92,15 @@ if __name__ == "__main__":
       thisScript.write("--signalRegionCut ")
       if args.isSpecial:
         thisScript.write("0.1 --isSpecial ")
-        if args.VRAlt:
-          thisScript.write("--invertMet")
       else:
-        if args.VRAlt:
-          thisScript.write("0.2 --invertMet ")
+        if args.VR2 or args.VR3:
+          thisScript.write("0.2 ")
         else:
           thisScript.write(str(bdt['cut']) + " ")
+      if args.VR2:
+        thisScript.write("--invertMet ")
+      if args.VR3:
+        thisScript.write("--invertLepPt ")
       if args.isSwap:
         thisScript.write("--isSwap ")
       if bdt['highDeltaM']:
@@ -104,21 +109,30 @@ if __name__ == "__main__":
       thisScript.write("\n\n")
 
       #shutil.copy2("./variablesSR.json", outputDirectory + "/cutsJson.json")
-      repldict = {'$(BDTCUT)':str(bdt['cut']), '$(highDeltaM)':' && (LepPt < 30)', '$(METCUT)':'Met > 280'}
+      BDTCutValue = str(bdt['cut'])
+      LepPtCutString = "LepPt < 30"
+      MetCutString = "Met > 280"
+      AdditionalCutString = ""
+      if args.VR2:
+        BDTCutValue = "0.2"
+        MetCutString = "Met > 200 && Met < 280"
+      if args.VR3:
+        BDTCutValue = "0.2"
+        LepPtCutString = "LepPt > 30"
       if args.isSwap:
-        repldict['$(highDeltaM)'] = " && (LepPt < 30) && (HLT_Mu == 1)"
-      if bdt['highDeltaM']:
-        repldict['$(highDeltaM)'] = ""
-        if args.isSwap:
-          repldict['$(highDeltaM)'] = " && (LepPt < 280) && (HLT_Mu == 1)"
+        AdditionalCutString = "HLT_Mu == 1"
       if args.isSpecial:
-        repldict['$(BDTCUT)'] = str(0.1)
-        if args.VRAlt:
-          repldict['$(METCUT)'] = "Met > 200 && Met < 280"
-      else:
-        if args.VRAlt:
-          repldict['$(BDTCUT)'] = str(0.2)
-          repldict['$(METCUT)'] = "Met > 200 && Met < 280"
+        BDTCutValue = "0.1"
+      if bdt['highDeltaM']:
+        LepPtCutString = ""
+        if args.isSwap:
+          LepPtCutString = "LepPt < 280"
+
+      repldict = {'$(BDTCUT)':BDTCutValue, '$(highDeltaM)':'', '$(METCUT)':MetCutString}
+      if LepPtCutString != "":
+        repldict['$(highDeltaM)'] = " $$ (" + LepPtCutString + ")"
+      if AdditionalCutString != "":
+        repldict['$(highDeltaM)'] = repldict['$(highDeltaM)'] + " $$ (" + AdditionalCutString + ")"
       def replfunc(match):
         return repldict[match.group(0)]
 
@@ -137,7 +151,7 @@ if __name__ == "__main__":
       thisScript.write("--suffix bdt ")
       thisScript.write("--variables " + outputDirectory + "/cutsJson.json ")
       thisScript.write("--cuts " + outputDirectory + "/cutsJson.json ")
-      if args.isSwap or args.VRAlt:
+      if args.isSwap or args.VR2 or args.VR3:
         thisScript.write("--unblind")
       thisScript.write(" 1> " + outputDirectory + "/makePlotsLog.log 2> " + outputDirectory + "/makePlotsLog.err")
       thisScript.write("\n\n")
