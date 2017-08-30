@@ -60,6 +60,7 @@ int main(int argc, char** argv)
   bool isHighDM = false;
   double SRCut = 0.4;
   bool invertMet = false;
+  bool invertLepPt = false;
   bool special = false;
 
   if(argc < 2)
@@ -130,6 +131,11 @@ int main(int argc, char** argv)
       invertMet = true;
     }
 
+    if(argument == "--invertLepPt")
+    {
+      invertLepPt = true;
+    }
+
     if(argument == "--isSpecial")
     {
       special = true;
@@ -177,7 +183,10 @@ int main(int argc, char** argv)
   }
   else
   {
-    baseSelection += " && (LepPt < 30.)";
+    if(!invertLepPt)
+      baseSelection += " && (LepPt < 30.)";
+    else
+      baseSelection += " && (LepPt > 30.)";
   }
   if(isSwap)
   {
