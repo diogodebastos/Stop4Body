@@ -17,6 +17,7 @@ if __name__ == "__main__":
   parser.add_argument('-o', '--outDirectory', required=True, help='Name of the output directory')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
   parser.add_argument(      '--filterCheck', default="*", help='Glob to be used when searching which samples have to be checked')
+  parser.add_argument(      '--noMerge', action='store_true', help='Do not merge the output files')
 
   args = parser.parse_args()
 
@@ -115,7 +116,8 @@ if __name__ == "__main__":
   print "Summary:"
   for sample in summary:
     print "  ", sample, ": ", summary[sample]*100, "%"
-  for sample in summary:
+  if not args.noMerge:
+   for sample in summary:
     if summary[sample] == 1:
       jobInfo = {}
       with open(args.outDirectory + "/" + sample + '/jobs.pickle', 'rb') as handle:
