@@ -4,6 +4,13 @@ import re
 import time
 import shutil
 
+def getNJobs():
+  cmd = "qstat | wc -l"
+  p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  out, err = p.communicate()
+
+  return int(out)
+
 def assure_path_exists(path):
   dir = os.path.dirname(path)
   if not os.path.exists(dir):
@@ -163,10 +170,17 @@ if __name__ == "__main__":
     job = outputDirectory + "/theJob.sh"
     cmd = "qsub " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
     print cmd
-    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = p.communicate()
-    print "Out:", out
-    print "Err:", err
+    if not args.dryRun:
+      p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+      out, err = p.communicate()
+      print "Out:", out
+      print "Err:", err
+
+      if getNJobs() > 1700:
+        print "Waiting for some jobs to complete..."
+        while getNJobs() > 1000:
+          time.sleep(5*60)
+        print "Done waiting"
 
 
 
