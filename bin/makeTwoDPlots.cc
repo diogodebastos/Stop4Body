@@ -345,7 +345,7 @@ int main(int argc, char** argv)
         correlationTable << sigCorr << "; " << bkgCorr << "; " << dataCorr;
       }
 
-      correlationTable << "\\\\\n";
+      correlationTable << "\\\\\n" << std::flush;
     }
 
     correlationTable << "\n\n\n";
