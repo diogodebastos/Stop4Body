@@ -186,6 +186,8 @@ int main(int argc, char** argv)
   }
 
   std::ofstream correlationTable(outputDirectory+"/correlation.tex");
+  if(verbose)
+    std::cout << "This just here to avoid a warning which is treated as an error by CMSSW" << std::endl;
 
   std::string selection = "";
   for(auto& cut : cutFlow)
@@ -307,7 +309,7 @@ int main(int argc, char** argv)
           auto dataHist =  Data.get2DHist(variables.Get(i).expression(),
                                           variables.Get(j).expression(),
                                           variables.Get(i).label()+";"+variables.Get(j).label()+";Evt.",
-                                          mcWeight+"*("+selection+")",
+                                          "("+selection+")",
                                           variables.Get(i).bins(),
                                           variables.Get(i).min(),
                                           variables.Get(i).max(),
