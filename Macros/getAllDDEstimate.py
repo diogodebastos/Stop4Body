@@ -137,9 +137,9 @@ if __name__ == "__main__":
 
       repldict = {'$(BDTCUT)':BDTCutValue, '$(highDeltaM)':'', '$(METCUT)':MetCutString}
       if LepPtCutString != "":
-        repldict['$(highDeltaM)'] = " $$ (" + LepPtCutString + ")"
+        repldict['$(highDeltaM)'] = " && (" + LepPtCutString + ")"
       if AdditionalCutString != "":
-        repldict['$(highDeltaM)'] = repldict['$(highDeltaM)'] + " $$ (" + AdditionalCutString + ")"
+        repldict['$(highDeltaM)'] = repldict['$(highDeltaM)'] + " && (" + AdditionalCutString + ")"
       def replfunc(match):
         return repldict[match.group(0)]
 
