@@ -61,6 +61,9 @@ class VariableJsonLoader
     typedef typename std::vector<VariableInfo>::iterator iterator;
     typedef typename std::vector<VariableInfo>::const_iterator const_iterator;
 
+    size_t size() {return variables_.size();}
+    VariablesInfo& Get(size_t n) {return variables[n];}
+
     iterator begin() {return variables_.begin();}
     const_iterator begin() const {return variables_.begin();}
     const_iterator cbegin() const {return variables_.cbegin();}
