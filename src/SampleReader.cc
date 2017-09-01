@@ -591,6 +591,29 @@ TH1D* SampleReader::getHist(std::string name, std::string variable, std::string 
   return retVal;
 }
 
+TH2D* SampleReader::get2DHist(std::string variableX, std::string variableY, std::string axis, std::string weight, int binsX, double minX, double maxX, int binsY, double minY, double maxY)
+{
+  std::string histName = cleanString(variableY+"vs"+variableX);
+
+  TH2D* retVal = new TH2D(histName.c_str(), (";"+axis).c_str(), binsX, minX, maxX, binsY, minY, maxY);
+  retVal->Sumw2();
+
+  for(auto& process : processes_)
+  {
+    TH2D* tmp = process.get2DHist(variableX, variableY, axis, weight, binsX, minX, maxX, binsY, minY, maxY);
+
+    if(retVal == nullptr)
+      retVal = tmp;
+    else
+    {
+      retVal->Add(tmp);
+      delete tmp;
+    }
+  }
+
+  return retVal;
+}
+
 THStack* SampleReader::getStack(std::string baseName, VariableInfo& var, std::string weight)
 {
   THStack* retVal = new THStack((baseName + "_" + var.name()).c_str(), (var.expression() + ";" + var.label() + ";Evt.").c_str());
