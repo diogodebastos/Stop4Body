@@ -50,16 +50,6 @@ bool replace(std::string&, const std::string&, const std::string&);
 
 int main(int argc, char** argv)
 {
-  gInterpreter->GenerateDictionary("map<int, double>","map");
-  TFile test("test.root", "RECREATE");
-
-  std::map<int,double> myMap = { {1, 1.02}, {2, 0.9} };
-  TClass *c = gROOT->FindSTLClass("std::map<int,double>", true);
-
-  test.WriteObjectAny(&myMap, c, "myMap");
-
-  return 0;
-
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
 
