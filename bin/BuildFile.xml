@@ -23,7 +23,7 @@
   <bin name="fakeSystematics"         file="fakeSystematics.cc"> </bin>
   <bin name="skimmer"                 file="skimmer.cc"> </bin>
   <bin name="compareFiles"            file="compareFiles.cc"> </bin>
-  <bin name="getLHEweightScales"      file="getLHEeeightScales.cc"> </bin>
+  <bin name="getLHEweightScales"      file="getLHEweightScales.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
