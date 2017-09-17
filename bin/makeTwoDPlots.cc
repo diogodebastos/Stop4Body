@@ -56,7 +56,7 @@ int main(int argc, char** argv)
   if(argc < 2)
   {
     std::cout << "You did not pass enough parameters" << std::endl;
-    printHelp();
+    //printHelp();
     return 0;
   }
 
@@ -199,7 +199,7 @@ int main(int argc, char** argv)
 
     std::cout << "Getting plots with selection (" << selection << ") and weight (" << mcWeight << ")" << std::endl;
 
-    correlationTable << "Cut: " << cut.label() << "\n";
+    correlationTable << "Cut: " << cut.name() << "\n";
     correlationTable << "\\begin{tabular}{";
     correlationTable << "c|";
     for(size_t i = 0; i < variables.size(); ++i)
@@ -256,7 +256,7 @@ int main(int argc, char** argv)
                                                   variables.Get(j).bins(),
                                                   variables.Get(j).min(),
                                                   variables.Get(j).max());
-          sigCorr = sigHist.GetCorrelationFactor();
+          sigCorr = sigHist->GetCorrelationFactor();
 
           sigHist->SetTitle("");
           sigHist->SetStats(kFALSE);
@@ -286,7 +286,7 @@ int main(int argc, char** argv)
                                       variables.Get(j).bins(),
                                       variables.Get(j).min(),
                                       variables.Get(j).max());
-          bkgCorr = bkgHist.GetCorrelationFactor();
+          bkgCorr = bkgHist->GetCorrelationFactor();
 
           bkgHist->SetTitle("");
           bkgHist->SetStats(kFALSE);
@@ -316,7 +316,7 @@ int main(int argc, char** argv)
                                           variables.Get(j).bins(),
                                           variables.Get(j).min(),
                                           variables.Get(j).max());
-          dataCorr = dataHist.GetCorrelationFactor();
+          dataCorr = dataHist->GetCorrelationFactor();
 
           dataHist->SetTitle("");
           dataHist->SetStats(kFALSE);
