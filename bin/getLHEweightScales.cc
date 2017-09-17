@@ -42,7 +42,7 @@
 #include "UserCode/Stop4Body/interface/commonFunctions.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
-#define LEPCOLL_LIMIT  40
+#define LHEWEIGHT_LIMIT  500
 
 using json = nlohmann::json;
 
@@ -81,7 +81,69 @@ int main(int argc, char** argv)
   SampleReader samples(jsonFileName);
 
   gInterpreter->GenerateDictionary("map<int, double>","map");
+  TClass *mapClass = gROOT->FindSTLClass("std::map<int,double>", true);
   TFile foutput((outputDirectory + "/lheWeights_" + getBaseName(jsonFileName) + ".root").c_str(), "RECREATE");
+
+  for(auto &process : samples)
+  {
+    std::cout << "Processing process: " << process.tag() << std::endl;
+
+    std::map<int,double> processSum;
+
+    for(auto &sample : process)
+    {
+      std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
+
+      std::map<int,double> sampleSum;
+
+      for(auto &file : sample)
+      {
+        TFile finput(file.c_str(), "READ");
+        foutput.cd();
+        TTree *inputtree;
+        if(process.selection() != "")
+          inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
+        else
+          inputtree = static_cast<TTree*>(finput.Get("tree"));
+
+        std::map<int,double> fileSum;
+
+        int nLHEweight;
+        int LHEweight_id[LHEWEIGHT_LIMIT];
+        float LHEweight_wgt[LHEWEIGHT_LIMIT];
+
+        inputtree->SetBranchAddress("nLHEweight"   , &nLHEweight);
+        inputtree->SetBranchAddress("LHEweight_id" , &LHEweight_id);
+        inputtree->SetBranchAddress("LHEweight_wgt", &LHEweight_wgt);
+
+        Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
+
+        for(Int_t i = 0; i < thisNevt; ++i)
+        {
+          inputtree->GetEntry(i);
+
+          for(int i = 0; i < nLHEweight; ++i)
+          {
+            fileSum[LHEweight_id[i]] += LHEweight_wgt[i];
+          }
+        }
+
+        for(auto& kv: fileSum)
+        {
+          sampleSum[kv.first] += kv.second;
+        }
+      }
+
+      foutput.WriteObjectAny(&sampleSum, mapClass, ("sample_"+sample.tag()+"_lhemap").c_str());
+
+      for(auto& kv: sampleSum)
+      {
+        processSum[kv.first] += kv.second;
+      }
+    }
+
+    foutput.WriteObjectAny(&processSum, mapClass, ("process_"+process.tag()+"_lhemap").c_str());
+  }
 
   return 0;
 }
