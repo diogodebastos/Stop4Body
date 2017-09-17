@@ -20,6 +20,8 @@ export SWAPBDT_DIR=${SWAP_DIR}_${CURRENT_BDT}
 export LNT_DIR=${NTUPLE_DIR}_looseNotTight
 export LNTBDT_DIR=${LNT_DIR}_${CURRENT_BDT}
 
+export LHESCALE_DIR=/lstore/cms/cbeiraod/Stop4Body/lheWeightScale
+
 
 #export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"
 export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents --doPromptTagging --doLooseLeptons"
