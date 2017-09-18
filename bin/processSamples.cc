@@ -42,12 +42,14 @@
 #include "UserCode/Stop4Body/interface/commonFunctions.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body/interface/LHEweightMAPs.h"
 
 #define GENPART_LIMIT  40
 #define JETCOLL_LIMIT  40
 #define LEPCOLL_LIMIT  40
 #define TAUCOLL_LIMIT  40
 #define TRACOLL_LIMIT 200
+#define LHEWEIGHT_LIMIT  500
 
 #define ISR_JET_PT 90
 #define SECOND_LEPTON_PT 20
@@ -88,6 +90,7 @@ int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
+  std::string lheScaleDir = "";
   bool doSync = false;
   bool noSkim = false;
   std::string suffix = "";
@@ -123,6 +126,9 @@ int main(int argc, char** argv)
 
     if(argument == "--outDir")
       outputDirectory = argv[++i];
+
+    if(argument == "--lheScaleDir")
+      lheScaleDir = argv[++i];
 
     if(argument == "--doSync")
     {
@@ -177,14 +183,29 @@ int main(int argc, char** argv)
     return 1;
   }
 
+  if(lheScaleDir == "")
+  {
+    std::cout << "You must define the lhe scale directory" << std::endl;
+    return 1;
+  }
+
   if(!fileExists(outputDirectory+"/puWeights.root"))
   {
     std::cout << "You must first obtain the PU weights before trying to process the samples" << std::endl;
     return 1;
   }
 
+  if(!fileExists(lheScaleDir+"/lheWeights.root"))
+  {
+    std::cout << "You must first obtain the LHE scales before trying to process the samples" << std::endl;
+    return 1;
+  }
+
+  gInterpreter->GenerateDictionary("map<int, double>","map");
+
   TDirectory* cwd = gDirectory;
   TFile puWeightFile((outputDirectory + "/puWeights.root").c_str(), "READ");
+  TFile lheScaleFile((lheScaleDir + "/lheWeights.root").c_str(), "READ");
   TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
   centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
   TFile centralMuonSFFile("../data/TnP_NUM_LooseID_DENOM_generalTracks_VAR_map_pt_eta.root", "READ");
@@ -217,6 +238,9 @@ int main(int argc, char** argv)
   for(int i = 0; i < 100; ++i)
     identity[i] = i;
 
+  std::map<int, double>* lheScaleMap;
+  TClass *mapClass = gROOT->FindSTLClass("std::map<int,double>", true);
+
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName);
 
@@ -234,6 +258,19 @@ int main(int argc, char** argv)
         puWeightDistribUp   = static_cast<TH1D*>(tmp->Clone("puWeightDistribUp"));
         tmp = puWeightFile.Get( ("process_"+process.tag()+"_puWeight_Down").c_str());
         puWeightDistribDown = static_cast<TH1D*>(tmp->Clone("puWeightDistribDown"));
+      }
+    }
+
+    lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
+
+    std::map<int, std::string>& lheNames = getLHEMap(lheMap->size());
+    int refKey = -1;
+    for(auto& kv: lheNames)
+    {
+      if(kv.second == "Q2_0")
+      {
+        refKey = kv.first;
+        break;
       }
     }
 
@@ -294,6 +331,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> leptonISOSF;
       ValueWithSystematics<float> leptonFullFastSF;
       ValueWithSystematics<float> looseNotTightWeight;
+      ValueWithSystematics<float> Q2Var;
       ValueWithSystematics<float> weight;
 
       std::cout << "\t      Creating the variations if needed" << std::endl;
@@ -324,13 +362,23 @@ int main(int argc, char** argv)
         leptonISOSF = getLeptonISOSFSys(11, 20, 1.1);
         std::cout << "\t        FullFastSim" << std::endl;
         leptonFullFastSF = getFullFastSFSys(11, 20, 1.1);
+        std::cout << "\t        Q^2" << std::endl;
+        Q2Var = 1;
+        Q2Var.Systematic("Q2_1");
+        Q2Var.Systematic("Q2_2");
+        Q2Var.Systematic("Q2_3");
+        Q2Var.Systematic("Q2_4");
+        Q2Var.Systematic("Q2_5");
+        Q2Var.Systematic("Q2_6");
+        Q2Var.Systematic("Q2_7");
+        Q2Var.Systematic("Q2_8");
       }
 
       std::cout << "\t        looseNotTight" << std::endl;
       looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -343,6 +391,7 @@ int main(int argc, char** argv)
         leptonIDSF.Lock();
         leptonISOSF.Lock();
         leptonFullFastSF.Lock();
+        Q2Var.Lock();
       }
       looseNotTightWeight.Lock();
       weight.Lock();
@@ -356,6 +405,7 @@ int main(int argc, char** argv)
       leptonISOSF = 1.0;
       leptonFullFastSF = 1.0;
       looseNotTightWeight = 1.0;
+      Q2Var = 1.0;
       weight = 1.0;
 
       Float_t genWeight=1;
@@ -984,6 +1034,17 @@ int main(int argc, char** argv)
         UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
         Int_t nVert_i; inputtree->SetBranchAddress("nVert", &nVert_i);
 
+        int nLHEweight;
+        int LHEweight_id[LHEWEIGHT_LIMIT];
+        float LHEweight_wgt[LHEWEIGHT_LIMIT];
+
+        if(!process.isdata())
+        {
+          inputtree->SetBranchAddress("nLHEweight"   , &nLHEweight);
+          inputtree->SetBranchAddress("LHEweight_id" , &LHEweight_id);
+          inputtree->SetBranchAddress("LHEweight_wgt", &LHEweight_wgt);
+        }
+
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
         Float_t met_JetEnUp_Pt;      inputtree->SetBranchAddress("met_JetEnUp_Pt"    , &met_JetEnUp_Pt);
@@ -1310,6 +1371,33 @@ int main(int argc, char** argv)
           {
             if(!swap && !static_cast<bool>(Met > MIN_MET))
               continue;
+          }
+
+          int refQ2 = -1;
+          for(int i = 0; i < nLHEweight; ++i)
+          {
+            std::string name = lheNames[LHEweight_id];
+            if(name.substr(0, 2) == "Q2")
+            {
+              if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
+              {
+                refQ2 = i;
+                break;
+              }
+            }
+          }
+
+          for(int i = 0; i < nLHEweight; ++i)
+          {
+            std::string name = lheNames[LHEweight_id[i]];
+            if(name.substr(0, 2) == "Q2")
+            {
+              if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
+                continue;
+
+              double norm = lheScaleMap[refQ2]/lheScaleMap[i];
+              Q2Var.Systematic(name) = norm * LHEweight_wgt[i]/LHEweight_wgt[refQ2];
+            }
           }
 
           float lep_phi, lep_eta;
@@ -1805,7 +1893,7 @@ int main(int argc, char** argv)
           }
 
           if(!process.isdata())
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var;
           else
             weight = 1.0f;
 
