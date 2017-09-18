@@ -1377,36 +1377,36 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
-          int refQ2 = -1;
-          for(int i = 0; i < nLHEweight; ++i)
-          {
-            std::string name = lheNames[LHEweight_id[i]];
-            if(name.substr(0, 2) == "Q2")
+            int refQ2 = -1;
+            for(int i = 0; i < nLHEweight; ++i)
             {
-              if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
+              std::string name = lheNames[LHEweight_id[i]];
+              if(name.substr(0, 2) == "Q2")
               {
-                refQ2 = i;
-                break;
+                if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
+                {
+                  refQ2 = i;
+                  break;
+                }
               }
             }
-          }
 
-          Q2Var = 1;
-          if(refQ2 >= 0)
-          {
-          for(int i = 0; i < nLHEweight; ++i)
-          {
-            std::string name = lheNames[LHEweight_id[i]];
-            if(name.substr(0, 2) == "Q2")
+            Q2Var = 1;
+            if(refQ2 >= 0)
             {
-              if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
-                continue;
+              for(int i = 0; i < nLHEweight; ++i)
+              {
+                std::string name = lheNames[LHEweight_id[i]];
+                if(name.substr(0, 2) == "Q2")
+                {
+                  if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
+                    continue;
 
-              double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(i);
-              Q2Var.Systematic(name) = norm * LHEweight_wgt[i]/LHEweight_wgt[refQ2];
+                  double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(i);
+                  Q2Var.Systematic(name) = norm * LHEweight_wgt[i]/LHEweight_wgt[refQ2];
+                }
+              }
             }
-          }
-          }
           }
 
           float lep_phi, lep_eta;
