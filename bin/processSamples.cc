@@ -239,7 +239,7 @@ int main(int argc, char** argv)
     identity[i] = i;
 
   std::map<int, double>* lheScaleMap;
-  //TClass *mapClass = 
+  //TClass *mapClass =
   gROOT->FindSTLClass("std::map<int,double>", true);
 
   std::cout << "Reading JSON file" << std::endl;
@@ -262,9 +262,14 @@ int main(int argc, char** argv)
       }
     }
 
-    lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
+    int lheSize = 0;
+    if(!process.isdata())
+    {
+      lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
+      lheSize = lheScaleMap->size();
+    }
 
-    std::map<int, std::string>& lheNames = getLHEMap(lheScaleMap->size());
+    std::map<int, std::string>& lheNames = getLHEMap(lheSize);
     int refLHEKey = -1;
     for(auto& kv: lheNames)
     {
