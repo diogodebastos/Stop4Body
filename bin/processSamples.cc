@@ -239,7 +239,8 @@ int main(int argc, char** argv)
     identity[i] = i;
 
   std::map<int, double>* lheScaleMap;
-  TClass *mapClass = gROOT->FindSTLClass("std::map<int,double>", true);
+  //TClass *mapClass = 
+  gROOT->FindSTLClass("std::map<int,double>", true);
 
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName);
@@ -263,13 +264,13 @@ int main(int argc, char** argv)
 
     lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
 
-    std::map<int, std::string>& lheNames = getLHEMap(lheMap->size());
-    int refKey = -1;
+    std::map<int, std::string>& lheNames = getLHEMap(lheScaleMap->size());
+    int refLHEKey = -1;
     for(auto& kv: lheNames)
     {
       if(kv.second == "Q2_0")
       {
-        refKey = kv.first;
+        refLHEKey = kv.first;
         break;
       }
     }
@@ -1373,10 +1374,13 @@ int main(int argc, char** argv)
               continue;
           }
 
+
+          if(!process.isdata())
+          {
           int refQ2 = -1;
           for(int i = 0; i < nLHEweight; ++i)
           {
-            std::string name = lheNames[LHEweight_id];
+            std::string name = lheNames[LHEweight_id[i]];
             if(name.substr(0, 2) == "Q2")
             {
               if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
@@ -1387,6 +1391,9 @@ int main(int argc, char** argv)
             }
           }
 
+          Q2Var = 1;
+          if(refQ2 >= 0)
+          {
           for(int i = 0; i < nLHEweight; ++i)
           {
             std::string name = lheNames[LHEweight_id[i]];
@@ -1395,9 +1402,11 @@ int main(int argc, char** argv)
               if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
                 continue;
 
-              double norm = lheScaleMap[refQ2]/lheScaleMap[i];
+              double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(i);
               Q2Var.Systematic(name) = norm * LHEweight_wgt[i]/LHEweight_wgt[refQ2];
             }
+          }
+          }
           }
 
           float lep_phi, lep_eta;
