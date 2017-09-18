@@ -132,6 +132,9 @@ int main(int argc, char** argv)
         {
           sampleSum[kv.first] += kv.second;
         }
+
+        if(process.selection() != "")
+          delete inputtree;
       }
 
       foutput.WriteObjectAny(&sampleSum, mapClass, ("sample_"+sample.tag()+"_lhemap").c_str());
