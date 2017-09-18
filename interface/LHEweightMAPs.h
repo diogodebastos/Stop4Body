@@ -463,7 +463,7 @@ std::map<int,std::string> LHEweightMAP446 = {
   {445, "CT10nlo_52"},
 
   {446, "MMHT2014nlo68cl_0"}
-}
+};
 
 std::map<int,std::string> LHEweightMAP254 = {
   {1001, "Q2_0"},
@@ -730,7 +730,7 @@ std::map<int,std::string> LHEweightMAP254 = {
   {5025, "hdamp_24"},
   {5026, "hdamp_25"},
   {5027, "hdamp_26"}
-}
+};
 
 std::map<int,std::string> LHEweightMAP111 = {
   {1001, "Q2_0"},
@@ -862,7 +862,7 @@ std::map<int,std::string> LHEweightMAP111 = {
   {2117, "NNPDF30_nlo_nf_5_pdfas_117"},
   {2118, "NNPDF30_nlo_nf_5_pdfas_118"},
   {2119, "NNPDF30_nlo_nf_5_pdfas_119"},
-}
+};
 
 std::map<int,std::string> LHEweightMAP266 = {
   {1001, "Q2_0"},
@@ -1140,7 +1140,7 @@ std::map<int,std::string> LHEweightMAP266 = {
   {4095, "MSTW2008nlo68cl_nf4_38"},
   {4096, "MSTW2008nlo68cl_nf4_39"},
   {4097, "MSTW2008nlo68cl_nf4_40"}
-}
+};
 
 std::map<int,std::string> LHEweightMAP9 = {
   {10001, "Q2_0"},
@@ -1152,7 +1152,7 @@ std::map<int,std::string> LHEweightMAP9 = {
   {10007, "Q2_6"},
   {10008, "Q2_7"},
   {10009, "Q2_8"}
-}
+};
 
 std::map<int,std::string>& getLHEMap(int numWeights)
 {
