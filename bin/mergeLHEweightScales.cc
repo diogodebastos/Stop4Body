@@ -106,7 +106,7 @@ int main(int argc, char** argv)
     while( (key = (TKey*)next()) )
     {
       std::cout << key->GetName() << std::endl;
-      map<int, double> *tmpMap;
+      std::map<int, double> *tmpMap;
 
       tmpMap = key->ReadObjectAny(mapClass);
 
