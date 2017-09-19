@@ -114,8 +114,6 @@ int main(int argc, char** argv)
 
       foutput.WriteObjectAny(&tmpMap, mapClass, key->GetName());
     }
-
-    break;
   }
 
   return 0;
