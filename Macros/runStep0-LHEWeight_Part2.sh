@@ -2,5 +2,5 @@
 
 . setupPaths.sh
 
-hadd -f ${LHESCALE_DIR}/lheWeights.root ${LHESCALE_DIR}/lheWeights_*.root
+mergeLHEweightScales ${LHESCALE_DIR}/lheWeights.root ${LHESCALE_DIR}/lheWeights_*.root
 
