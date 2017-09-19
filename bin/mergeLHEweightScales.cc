@@ -84,7 +84,7 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  std::cout << "Merging intput files into output file:" << std::endl;
+  std::cout << "Merging input files into output file:" << std::endl;
   std::cout << "  Output: " << outFile << std::endl;
   for(size_t i = 0; i < inFiles.size(); ++i)
   {
@@ -105,12 +105,14 @@ int main(int argc, char** argv)
 
     while( (key = (TKey*)next()) )
     {
-      std::cout << key->GetName() << std::endl;
+      std::cout << "Getting " << key->GetName();
       std::map<int, double> *tmpMap;
 
       tmpMap = static_cast<std::map<int, double>*>(key->ReadObjectAny(mapClass));
 
-      std::cout << "  it has " << tmpMap->size() << " entries" << std::endl;
+      std::cout << " with " << tmpMap->size() << " entries" << std::endl;
+
+      foutput.WriteObjectAny(&tmpMap, mapClass, key->GetName());
     }
 
     break;
