@@ -24,6 +24,7 @@
   <bin name="skimmer"                 file="skimmer.cc"> </bin>
   <bin name="compareFiles"            file="compareFiles.cc"> </bin>
   <bin name="getLHEweightScales"      file="getLHEweightScales.cc"> </bin>
+  <bin name="mergeLHEweightScales"    file="mergeLHEweightScales.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
