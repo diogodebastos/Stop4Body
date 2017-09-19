@@ -108,9 +108,9 @@ int main(int argc, char** argv)
       std::cout << key->GetName() << std::endl;
       std::map<int, double> *tmpMap;
 
-      tmpMap = key->ReadObjectAny(mapClass);
+      tmpMap = static_cast<std::map<int, double>*>(key->ReadObjectAny(mapClass));
 
-      std::cout << "  it has " << tmpMap.size() << " entries" << std::endl;
+      std::cout << "  it has " << tmpMap->size() << " entries" << std::endl;
     }
 
     break;
