@@ -91,7 +91,7 @@ int main(int argc, char** argv)
   }
 
   gInterpreter->GenerateDictionary("map<int, double>","map");
-  //TClass *mapClass = gROOT->FindSTLClass("std::map<int,double>", true);
+  TClass *mapClass = gROOT->FindSTLClass("std::map<int,double>", true);
   TFile foutput((outFile).c_str(), "RECREATE");
 
   for(auto& fileName: inFiles)
@@ -105,6 +105,11 @@ int main(int argc, char** argv)
     while( (key = (TKey*)next()) )
     {
       std::cout << key->GetName() << std::endl;
+      map<int, double> *tmpMap;
+
+      tmpMap = key->ReadObjectAny(mapClass);
+
+      std::cout << "  it has " << tmpMap.size() << " entries" << std::endl;
     }
 
     break;
