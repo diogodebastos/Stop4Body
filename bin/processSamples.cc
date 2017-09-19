@@ -238,7 +238,7 @@ int main(int argc, char** argv)
   for(int i = 0; i < 100; ++i)
     identity[i] = i;
 
-  std::map<int, double>* lheScaleMap;
+  std::map<int, double>* lheScaleMap = nullptr;
   //TClass *mapClass =
   gROOT->FindSTLClass("std::map<int,double>", true);
 

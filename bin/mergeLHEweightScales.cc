@@ -85,7 +85,7 @@ int main(int argc, char** argv)
 
   std::cout << "Merging intput files into output file:" << std::endl;
   std::cout << "  Output: " << outFile << std::endl;
-  for(int i = 0; i < inFiles.size(); ++i)
+  for(size_t i = 0; i < inFiles.size(); ++i)
   {
     std::cout << "  Input[" << i << "]: " << inFiles[i] << std::endl;
   }
