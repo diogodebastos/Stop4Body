@@ -90,11 +90,25 @@ int main(int argc, char** argv)
     std::cout << "  Input[" << i << "]: " << inFiles[i] << std::endl;
   }
 
-  return 0;
-
   gInterpreter->GenerateDictionary("map<int, double>","map");
-  TClass *mapClass = gROOT->FindSTLClass("std::map<int,double>", true);
-  //TFile foutput((outputDirectory + "/lheWeights.root").c_str(), "RECREATE");
+  //TClass *mapClass = gROOT->FindSTLClass("std::map<int,double>", true);
+  TFile foutput((outFile).c_str(), "RECREATE");
+
+  for(auto& fileName: inFiles)
+  {
+    TFile file(fileName.c_str(), "READ");
+    foutput.cd();
+
+    TIter next(file.GetListOfKeys());
+    TKey *key;
+
+    while( (key = (TKey*)next()) )
+    {
+      std::cout << key->GetName() << std::endl;
+    }
+
+    break;
+  }
 
   return 0;
 }
