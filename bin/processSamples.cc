@@ -262,22 +262,9 @@ int main(int argc, char** argv)
       }
     }
 
-    int lheSize = 0;
     if(!process.isdata())
     {
       lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
-      lheSize = lheScaleMap->size();
-    }
-
-    std::map<int, std::string>& lheNames = getLHEMap(lheSize);
-    int refLHEKey = -1;
-    for(auto& kv: lheNames)
-    {
-      if(kv.second == "Q2_0")
-      {
-        refLHEKey = kv.first;
-        break;
-      }
     }
 
     for(auto &sample : process)
@@ -1382,6 +1369,9 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
+            std::map<int, std::string>& lheNames = getLHEMap(nLHEweight);
+
+            int refLHEKey = -1;
             int refQ2 = -1;
             for(int i = 0; i < nLHEweight; ++i)
             {
@@ -1391,6 +1381,7 @@ int main(int argc, char** argv)
                 if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
                 {
                   refQ2 = i;
+                  refLHEKey = LHEweight_id[i];
                   break;
                 }
               }
@@ -1407,7 +1398,7 @@ int main(int argc, char** argv)
                   if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
                     continue;
 
-                  double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(i);
+                  double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(LHEweight_id[i]);
                   Q2Var.Systematic(name) = norm * LHEweight_wgt[i]/LHEweight_wgt[refQ2];
                 }
               }
