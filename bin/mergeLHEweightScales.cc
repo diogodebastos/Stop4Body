@@ -114,6 +114,8 @@ int main(int argc, char** argv)
 
       foutput.WriteObjectAny(&tmpMap, mapClass, key->GetName());
     }
+
+    std::cout << std::flush;
   }
 
   return 0;
