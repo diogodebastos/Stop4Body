@@ -265,6 +265,9 @@ int main(int argc, char** argv)
     if(!process.isdata())
     {
       lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
+      std::cout << "Loaded LHEScaleMap with " << lheScaleMap->size() << " entries:" << std::endl;
+      for(auto& kv: *lheScaleMap)
+        std::cout << "  " << kv.first << ": " << kv.second << std::endl;
     }
 
     for(auto &sample : process)
