@@ -29,6 +29,7 @@ if __name__ == "__main__":
   parser.add_argument( '--isSwap', action='store_true', help='Set this flag if the samples being run on are the ones with the MET and LepPt variables swapped')
   parser.add_argument( '--isSpecial', action='store_true', help='Set this flag if the samples are being run with the special run where the CR is tightened so the SR can be even more loosened')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
+  parser.add_argument('-u', '--unblind', action='store_true', help='Whether to unblind or not')
 
   args = parser.parse_args()
 
@@ -158,7 +159,7 @@ if __name__ == "__main__":
       thisScript.write("--suffix bdt ")
       thisScript.write("--variables " + outputDirectory + "/cutsJson.json ")
       thisScript.write("--cuts " + outputDirectory + "/cutsJson.json ")
-      if args.isSwap or args.VR2 or args.VR3:
+      if args.isSwap or args.VR2 or args.VR3 or args.unblind:
         thisScript.write("--unblind")
       thisScript.write(" 1> " + outputDirectory + "/makePlotsLog.log 2> " + outputDirectory + "/makePlotsLog.err")
       thisScript.write("\n\n")
