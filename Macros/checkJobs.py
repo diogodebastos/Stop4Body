@@ -18,6 +18,7 @@ if __name__ == "__main__":
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
   parser.add_argument(      '--filterCheck', default="*", help='Glob to be used when searching which samples have to be checked')
   parser.add_argument(      '--noMerge', action='store_true', help='Do not merge the output files')
+  parser.add_argument('-a', '--printAll', action='store_true', help='Whether to print all jobs at the end, or only those that are still being processed')
 
   args = parser.parse_args()
 
@@ -115,7 +116,8 @@ if __name__ == "__main__":
 
   print "Summary:"
   for sample in summary:
-    print "  ", sample, ": ", summary[sample]*100, "%"
+    if args.printAll or summary[sample] == 100:
+      print "  ", sample, ": ", summary[sample]*100, "%"
   if not args.noMerge:
    for sample in summary:
     if summary[sample] == 1:
