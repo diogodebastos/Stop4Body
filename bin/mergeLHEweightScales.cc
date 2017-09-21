@@ -112,7 +112,7 @@ int main(int argc, char** argv)
 
       std::cout << " with " << tmpMap->size() << " entries" << std::endl;
 
-      foutput.WriteObjectAny(&tmpMap, mapClass, key->GetName());
+      foutput.WriteObjectAny(tmpMap, mapClass, key->GetName());
     }
 
     std::cout << std::flush;
