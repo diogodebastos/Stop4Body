@@ -270,7 +270,8 @@ int main(int argc, char** argv)
       for(auto& syst: mcWeight.Systematics())
       {
         mcSel.Systematic(syst) = mcWeight.Systematic(syst)+"*( ((isLoose == 1) && (isTight == 0) && (isPrompt == 1)) && "+selection+")";
-        dataSel.Systematic(syst) = "weight_" + syst + " * ( ((isLoose == 1) && (isTight == 0)) && " + selection + ")";
+        if(doNonUniversality)
+          dataSel.Systematic(syst) = "weight_" + syst + " * ( ((isLoose == 1) && (isTight == 0)) && " + selection + ")";
       }
 
       for(auto& syst: valueLoop)
