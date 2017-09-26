@@ -442,11 +442,11 @@ int main(int argc, char** argv)
           bdttree->Branch(("leptonISOSF_"+systematic).c_str(), &(leptonISOSF.Systematic(systematic)));
         for(auto& systematic: leptonFullFastSF.Systematics())
           bdttree->Branch(("leptonFullFastSF_"+systematic).c_str(), &(leptonFullFastSF.Systematic(systematic)));
-        for(auto& systematic: looseNotTightWeight.Systematics())
-          bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
-        for(auto& systematic: weight.Systematics())
-          bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       }
+      for(auto& systematic: looseNotTightWeight.Systematics())
+        bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
+      for(auto& systematic: weight.Systematics())
+        bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       std::cout << "\t      Finished." << std::endl;
 
       bool isTight;      bdttree->Branch("isTight",   &isTight);
