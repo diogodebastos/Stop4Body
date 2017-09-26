@@ -13,7 +13,7 @@ if [[ -d ${INPUT} ]] ; then
     mkdir -p ${OUTPUT}_NU/DeltaM${deltaM}/
 
     JSONFILE=fake_bdt${deltaM}.json
-    fakeSystematics --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}/DeltaM${deltaM} --inDir ${INPUT}_bdt${deltaM}/ --suffix bdt --variables ${JSONFILE} --cuts ${JSONFILE}
-    fakeSystematics --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}_NU/DeltaM${deltaM} --inDir ${INPUT}_bdt${deltaM}/ --suffix bdt --variables ${JSONFILE} --cuts ${JSONFILE} --doNonUniversality
+    fakeSystematics --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}/DeltaM${deltaM} --inDir ${INPUT}_bdt${deltaM}/ --suffix bdt --variables fake_bdt10.json --cuts ${JSONFILE}
+    fakeSystematics --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}_NU/DeltaM${deltaM} --inDir ${INPUT}_bdt${deltaM}/ --suffix bdt --variables fake_bdt10.json --cuts ${JSONFILE} --doNonUniversality
   done
 fi
