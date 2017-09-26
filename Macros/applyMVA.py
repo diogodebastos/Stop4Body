@@ -24,6 +24,7 @@ if __name__ == "__main__":
   parser.add_argument('-o', '--outDirectory', required=True, help='Name of the output directory')
   parser.add_argument('-w', '--weightDirectory', required=True, help='Name of the weights directory')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
+  parser.add_argument(      '--onlyData', action='store_true', help='Whether to only run on data')
 
   args = parser.parse_args()
 
@@ -40,6 +41,8 @@ if __name__ == "__main__":
     baseName = os.path.basename(file)[:-5]
     baseDir = args.outDirectory + "/" + baseName
     if baseName == "puWeights":
+      continue
+    if args.onlyData and baseName[:4] != "Data":
       continue
 
     cmd = "mkdir -p " + baseDir
