@@ -138,22 +138,15 @@ int main(int argc, char** argv)
   std::vector<std::string> systBase;
   if(doNonUniversality)
   {
-    for(int i = 1; i <= 18; ++i)
+    for(int i = 1; i <= 5; ++i)
     {
       std::stringstream converter;
       std::string tmp;
-      converter << "TightLoose_Muon_NU_Bin" << i;
+      converter << "TightLoose_NU_Bin" << i;
       converter >> tmp;
       systBase.push_back(tmp);
     }
-    for(int i = 1; i <= 16; ++i)
-    {
-      std::stringstream converter;
-      std::string tmp;
-      converter << "TightLoose_Electron_NU_Bin" << i;
-      converter >> tmp;
-      systBase.push_back(tmp);
-    }
+    systBase.push_back("TightLoose_NU_AltCorr");
   }
   else
   {

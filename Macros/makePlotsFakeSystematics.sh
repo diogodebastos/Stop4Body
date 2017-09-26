@@ -3,7 +3,7 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-INPUT=~/local-area/Stop4Body/nTuples_v2017-06-05_SysVar
+INPUT=${NTUPLE_DIR}
 OUTPUT=~/local-area/Stop4Body/FakeSystematics
 #OUTPUT=./test/
 
