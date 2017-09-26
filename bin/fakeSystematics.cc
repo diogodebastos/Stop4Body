@@ -258,7 +258,7 @@ int main(int argc, char** argv)
       if(verbose)
         std::cout << "  Doing variable: " << variable.name() << std::endl;
       std::map<std::string, TH1D*> variationHistograms;
-      std::string dataSel;
+      ValueWithSystematics<std::string> dataSel = std::string("");
       ValueWithSystematics<std::string> mcSel = std::string("");
 
       /*{
@@ -266,13 +266,16 @@ int main(int argc, char** argv)
         mcSel = tmp;
       }*/
       mcSel = mcWeight.Value()+"*( ((isLoose == 1) && (isTight == 0) && (isPrompt == 1)) && "+selection+")";
-      for(auto& syst: mcWeight.Systematics())
-        mcSel.Systematic(syst) = mcWeight.Systematic(syst)+"*( ((isLoose == 1) && (isTight == 0) && (isPrompt == 1)) && "+selection+")";
       dataSel = "weight * ( ((isLoose == 1) && (isTight == 0)) && " + selection + ")";
+      for(auto& syst: mcWeight.Systematics())
+      {
+        mcSel.Systematic(syst) = mcWeight.Systematic(syst)+"*( ((isLoose == 1) && (isTight == 0) && (isPrompt == 1)) && "+selection+")";
+        dataSel.Systematic(syst) = "weight_" + syst + " * ( ((isLoose == 1) && (isTight == 0)) && " + selection + ")";
+      }
 
       for(auto& syst: valueLoop)
       {
-        auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel);
+        auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel.GetSystematicOrValue(syst));
         auto mcH   =   MC.getHist(cut.name(), variable, mcSel.GetSystematicOrValue(syst));
 
         auto fakeEstimate = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_"+syst).c_str()));
