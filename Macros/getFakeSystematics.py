@@ -23,7 +23,6 @@ if __name__ == "__main__":
   parser.add_argument('-i', '--inputDirectory', required=True, help='Name of the input directory')
   parser.add_argument('-o', '--outputDirectory', required=True, help='Base name of the output directory for each DM')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
-  parser.add_argument('-u', '--unblind', action='store_true', help='Whether to unblind or not')
 
   args = parser.parse_args()
 
