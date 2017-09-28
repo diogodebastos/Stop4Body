@@ -16,38 +16,6 @@ def assure_path_exists(path):
   if not os.path.exists(dir):
     os.makedirs(dir)
 
-if __name__ == "__main__":
-  import argparse
-
-  parser = argparse.ArgumentParser(description='Process the command line options')
-  parser.add_argument('-i', '--inputDirectory', required=True, help='Name of the input directory')
-  parser.add_argument('-o', '--outputDirectory', required=True, help='Base name of the output directory for each DM')
-  parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
-  parser.add_argument('-u', '--unblind', action='store_true', help='Whether the results have been unblinded or not')
-  parser.add_argument('-f', '--fullCLs', action='store_true', help='Whether to run the full CLs method or not')
-  parser.add_argument('-s', '--submit', action='store_true', help='Whether to build and submit the jobs to calculate the limits')
-  parser.add_argument('-c', '--collect', action='store_true', help='Whether to collect the output of the jobs previously submitted')
-
-  args = parser.parse_args()
-
-  inputDirectory = args.inputDirectory
-  if not (os.path.exists(inputDirectory) and os.path.isdir(inputDirectory)):
-    parser.error('The given input directory does not exist or is not a directory')
-
-  if not args.submit and not args.collect:
-    parser.error('You must define either to submit the jobs or collect the job outputs')
-
-  if args.submit and args.collect:
-    parser.error('You can not simultaneously submit the jobs and collect their outputs')
-
-  if not args.dryRun:
-    print "You did not enable dry run. You are on your own!"
-
-  baseDirectory = os.path.realpath(os.getcwd())
-  inputDirectory = os.path.realpath(inputDirectory)
-  outputDirectory = args.outputDirectory
-  assure_path_exists(outputDirectory)
-
 def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
   for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
     for stopM in (250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800):
@@ -209,6 +177,106 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
           while getNJobs() > 1000:
             time.sleep(5*60)
           print "Done waiting"
+
+def collectJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
+  doneProcessing = True
+
+  for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
+    for stopM in (250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800):
+      neutM = stopM - deltaM
+      pointDirectory = outputDirectory + "/" + str(stopM) + "_" + str(neutM) + "/"
+      if not (os.path.exists(pointDirectory) and os.path.isdir(pointDirectory)):
+        print "The directory \"" + pointDirectory + "\" does not exist, there must have been some problem, aborting."
+        doneProcessing = False
+        continue
+
+      # Add checks for whether the jobs successfully terminated
+      #
+
+  if not doneProcessing:
+    return 1
+
+  aPrioriAsymp = {}
+  aPosterioriAsymp = {}
+  aPrioriFullCLs = {}
+  aPosterioriFullCLs = {}
+  aPrioriAsympDM = {}
+  aPosterioriAsympDM = {}
+  aPrioriFullCLsDM = {}
+  aPosterioriFullCLsDM = {}
+
+  for stopM in (250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800):
+    aPrioriAsymp[stopM] = {}
+    aPrioriAsympDM[stopM] = {}
+    if fullCLs:
+      aPrioriFullCLs[stopM] = {}
+      aPrioriFullCLsDM[stopM] = {}
+    if unblind:
+      aPosterioriAsymp[stopM] = {}
+      aPosterioriAsympDM[stopM] = {}
+      if fullCLs:
+        aPosterioriFullCLs[stopM] = {}
+        aPosterioriFullCLsDM[stopM] = {}
+    for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
+      neutM = stopM - deltaM
+      aPrioriAsymp[stopM][neutM] = {}
+      aPrioriAsympDM[stopM][deltaM] = {}
+      if fullCLs:
+        aPrioriFullCLs[stopM][neutM] = {}
+        aPrioriFullCLsDM[stopM][deltaM] = {}
+      if unblind:
+        aPosterioriAsymp[stopM][neutM] = {}
+        aPosterioriAsympDM[stopM][deltaM] = {}
+        if fullCLs:
+          aPosterioriFullCLs[stopM][neutM] = {}
+          aPosterioriFullCLsDM[stopM][deltaM] = {}
+
+  for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
+    for stopM in (250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800):
+      neutM = stopM - deltaM
+      pointDirectory = outputDirectory + "/" + str(stopM) + "_" + str(neutM) + "/"
+
+      # Get the Asymptotic results:
+      asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPriori.AsymptoticLimits.mH120.root", "READ")
+
+  return 0
+
+if __name__ == "__main__":
+  import argparse
+
+  parser = argparse.ArgumentParser(description='Process the command line options')
+  parser.add_argument('-i', '--inputDirectory', required=True, help='Name of the input directory')
+  parser.add_argument('-o', '--outputDirectory', required=True, help='Base name of the output directory for each DM')
+  parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
+  parser.add_argument('-u', '--unblind', action='store_true', help='Whether the results have been unblinded or not')
+  parser.add_argument('-f', '--fullCLs', action='store_true', help='Whether to run the full CLs method or not')
+  parser.add_argument('-s', '--submit', action='store_true', help='Whether to build and submit the jobs to calculate the limits')
+  parser.add_argument('-c', '--collect', action='store_true', help='Whether to collect the output of the jobs previously submitted')
+
+  args = parser.parse_args()
+
+  inputDirectory = args.inputDirectory
+  if not (os.path.exists(inputDirectory) and os.path.isdir(inputDirectory)):
+    parser.error('The given input directory does not exist or is not a directory')
+
+  if not args.submit and not args.collect:
+    parser.error('You must define either to submit the jobs or collect the job outputs')
+
+  if args.submit and args.collect:
+    parser.error('You can not simultaneously submit the jobs and collect their outputs')
+
+  if not args.dryRun:
+    print "You did not enable dry run. You are on your own!"
+
+  baseDirectory = os.path.realpath(os.getcwd())
+  inputDirectory = os.path.realpath(inputDirectory)
+  outputDirectory = args.outputDirectory
+  assure_path_exists(outputDirectory)
+
+  if args.submit:
+    submitJobs(inputDirectory, outputDirectory, fullCLs=args.fullCLs, unblind=args.unblind)
+  if args.collect:
+    collectJobs(inputDirectory, outputDirectory, fullCLs=args.fullCLs, unblind=args.unblind)
 
 
 
