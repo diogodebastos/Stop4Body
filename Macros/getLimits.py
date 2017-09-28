@@ -238,6 +238,11 @@ def collectJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
 
       # Get the Asymptotic results:
       asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPriori.AsymptoticLimits.mH120.root", "READ")
+      asympTree = asympInFile.Get("limit")
+
+      for limit in asympTree:
+        print limit.limit, ": ", limit.quantileExpected
+      return 0
 
   return 0
 
