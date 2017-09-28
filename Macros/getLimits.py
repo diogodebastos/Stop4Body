@@ -101,6 +101,42 @@ if __name__ == "__main__":
 
         thisScript.write("\n")
 
+        # Run the full CLs method
+        # We need to run independently for each quantile
+        thisScript.write("combine -M HybridNew --LHCmode LHC-limits -t -1")
+        thisScript.write(" --expectedFromGrid 0.5")
+        thisScript.write(" -n APriori")
+        thisScript.write(" " + datacardName)
+        thisScript.write(" > aPrioriFullCLs0500.txt\n")
+
+        thisScript.write("combine -M HybridNew --LHCmode LHC-limits -t -1")
+        thisScript.write(" --expectedFromGrid 0.16")
+        thisScript.write(" -n APriori")
+        thisScript.write(" " + datacardName)
+        thisScript.write(" > aPrioriFullCLs0160.txt\n")
+
+        thisScript.write("combine -M HybridNew --LHCmode LHC-limits -t -1")
+        thisScript.write(" --expectedFromGrid 0.84")
+        thisScript.write(" -n APriori")
+        thisScript.write(" " + datacardName)
+        thisScript.write(" > aPrioriFullCLs0840.txt\n")
+
+        thisScript.write("combine -M HybridNew --LHCmode LHC-limits -t -1")
+        thisScript.write(" --expectedFromGrid 0.975")
+        thisScript.write(" -n APriori")
+        thisScript.write(" " + datacardName)
+        thisScript.write(" > aPrioriFullCLs0975.txt\n")
+
+        thisScript.write("combine -M HybridNew --LHCmode LHC-limits -t -1")
+        thisScript.write(" --expectedFromGrid 0.025")
+        thisScript.write(" -n APriori")
+        thisScript.write(" " + datacardName)
+        thisScript.write(" > aPrioriFullCLs0025.txt\n")
+
+        thisScript.write("hadd higgsCombineAPriori.HybridNew.root higgsCombineAPriori.HybridNew.mH120*.root\n")
+
+        thisScript.write("\n")
+
         # Then get the a-posteriori limits, can only be retrieved after unblinding
         if args.unblind:
           thisScript.write("\n")
@@ -108,6 +144,43 @@ if __name__ == "__main__":
           thisScript.write("combine -M AsymptoticLimits -n APosteriori")
           thisScript.write(" " + datacardName)
           thisScript.write(" > aPosteriori.txt\n")
+
+          thisScript.write("combine -M HybridNew --LHCmode LHC-limits")
+          thisScript.write(" --expectedFromGrid 0.5")
+          thisScript.write(" -n APosteriori")
+          thisScript.write(" " + datacardName)
+          thisScript.write(" > aPosterioriFullCLs0500.txt\n")
+
+          thisScript.write("combine -M HybridNew --LHCmode LHC-limits")
+          thisScript.write(" --expectedFromGrid 0.84")
+          thisScript.write(" -n APosteriori")
+          thisScript.write(" " + datacardName)
+          thisScript.write(" > aPosterioriFullCLs0840.txt\n")
+
+          thisScript.write("combine -M HybridNew --LHCmode LHC-limits")
+          thisScript.write(" --expectedFromGrid 0.16")
+          thisScript.write(" -n APosteriori")
+          thisScript.write(" " + datacardName)
+          thisScript.write(" > aPosterioriFullCLs0160.txt\n")
+
+          thisScript.write("combine -M HybridNew --LHCmode LHC-limits")
+          thisScript.write(" --expectedFromGrid 0.975")
+          thisScript.write(" -n APosteriori")
+          thisScript.write(" " + datacardName)
+          thisScript.write(" > aPosterioriFullCLs0975.txt\n")
+
+          thisScript.write("combine -M HybridNew --LHCmode LHC-limits")
+          thisScript.write(" --expectedFromGrid 0.025")
+          thisScript.write(" -n APosteriori")
+          thisScript.write(" " + datacardName)
+          thisScript.write(" > aPosterioriFullCLs0025.txt\n")
+
+          thisScript.write("combine -M HybridNew --LHCmode LHC-limits")
+          thisScript.write(" -n APosteriori")
+          thisScript.write(" " + datacardName)
+          thisScript.write(" > aPosterioriFullCLs.txt\n")
+
+          thisScript.write("hadd higgsCombineAPosteriori.HybridNew.root higgsCombineAPosteriori.HybridNew.mH120*.root\n")
 
         mode = os.fstat(thisScript.fileno()).st_mode
         mode |= 0o111
