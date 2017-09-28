@@ -204,6 +204,12 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
 
+        if getNJobs() > 1700:
+          print "Waiting for some jobs to complete..."
+          while getNJobs() > 1000:
+            time.sleep(5*60)
+          print "Done waiting"
+
 
 
 
