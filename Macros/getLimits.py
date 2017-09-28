@@ -25,6 +25,8 @@ if __name__ == "__main__":
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
   parser.add_argument('-u', '--unblind', action='store_true', help='Whether the results have been unblinded or not')
   parser.add_argument('-f', '--fullCLs', action='store_true', help='Whether to run the full CLs method or not')
+  parser.add_argument('-s', '--submit', action='store_true', help='Whether to build and submit the jobs to calculate the limits')
+  parser.add_argument('-c', '--collect', action='store_true', help='Whether to collect the output of the jobs previously submitted')
 
   args = parser.parse_args()
 
