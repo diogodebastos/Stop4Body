@@ -50,7 +50,7 @@ if __name__ == "__main__":
   for bdt in BDTs:
     thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"])
 
-    closureOutputDirectory = args.outputDirectory + "/FakeClosure/DeltaM" + bdt['name']
+    closureOutputDirectory = args.outputDirectory + "/FakeClosure/DeltaM" + bdt['name'] + "/"
     print "Creating output directory for fake closure of '" + bdt['name'] + "'"
     assure_path_exists(closureOutputDirectory)
     closureOutputDirectory = os.path.realpath(closureOutputDirectory)
@@ -94,7 +94,7 @@ if __name__ == "__main__":
       p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
       out, err = p.communicate()
 
-    isrOutputDirectory = args.outputDirectory + "/FakeSystematics/DeltaM" + bdt['name']
+    isrOutputDirectory = args.outputDirectory + "/FakeSystematics/DeltaM" + bdt['name'] + "/"
     print "Creating output directory for fake closure of '" + bdt['name'] + "'"
     assure_path_exists(isrOutputDirectory)
     isrOutputDirectory = os.path.realpath(isrOutputDirectory)
@@ -135,7 +135,7 @@ if __name__ == "__main__":
       p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
       out, err = p.communicate()
 
-    nuOutputDirectory = args.outputDirectory + "/FakeSystematics_NU/DeltaM" + bdt['name']
+    nuOutputDirectory = args.outputDirectory + "/FakeSystematics_NU/DeltaM" + bdt['name'] + "/"
     print "Creating output directory for fake closure of '" + bdt['name'] + "'"
     assure_path_exists(nuOutputDirectory)
     nuOutputDirectory = os.path.realpath(nuOutputDirectory)
