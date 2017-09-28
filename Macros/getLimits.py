@@ -34,6 +34,12 @@ if __name__ == "__main__":
   if not (os.path.exists(inputDirectory) and os.path.isdir(inputDirectory)):
     parser.error('The given input directory does not exist or is not a directory')
 
+  if not args.submit and not args.collect:
+    parser.error('You must define either to submit the jobs or collect the job outputs')
+
+  if args.submit and args.collect:
+    parser.error('You can not simultaneously submit the jobs and collect their outputs')
+
   if not args.dryRun:
     print "You did not enable dry run. You are on your own!"
 
@@ -42,6 +48,7 @@ if __name__ == "__main__":
   outputDirectory = args.outputDirectory
   assure_path_exists(outputDirectory)
 
+def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
   for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
     for stopM in (250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800):
       neutM = stopM - deltaM
@@ -106,7 +113,7 @@ if __name__ == "__main__":
 
         # Run the full CLs method
         # We need to run independently for each quantile
-        if args.fullCLs:
+        if fullCLs:
           thisScript.write("combine -M HybridNew --LHCmode LHC-limits -t -1")
           thisScript.write(" --expectedFromGrid 0.5")
           thisScript.write(" -n APriori")
@@ -142,14 +149,14 @@ if __name__ == "__main__":
           thisScript.write("\n")
 
         # Then get the a-posteriori limits, can only be retrieved after unblinding
-        if args.unblind:
+        if unblind:
           thisScript.write("\n")
           thisScript.write("\n")
           thisScript.write("combine -M AsymptoticLimits -n APosteriori")
           thisScript.write(" " + datacardName)
           thisScript.write(" > aPosteriori.txt\n")
 
-          if args.fullCLs:
+          if fullCLs:
             thisScript.write("combine -M HybridNew --LHCmode LHC-limits")
             thisScript.write(" --expectedFromGrid 0.5")
             thisScript.write(" -n APosteriori")
