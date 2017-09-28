@@ -44,7 +44,7 @@ if __name__ == "__main__":
       neutM = stopM - deltaM
       datacardName = str(stopM) + "_" + str(neutM) + ".txt"
 
-      assure_path_exists(outputDirectory + "/" + str(stopM) + "_" + str(neutM))
+      assure_path_exists(outputDirectory + "/" + str(stopM) + "_" + str(neutM) + "/")
 
       cmd = "cp " + inputDirectory + "/" + datacardName + " " + outputDirectory + "/" + str(stopM) + "_" + str(neutM) + "/"
       print cmd
