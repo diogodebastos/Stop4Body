@@ -80,12 +80,9 @@ if __name__ == "__main__":
         thisScript.write(" --expectSignal 0 " + datacardName)
         thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_Bonly.txt \n")
 
-        # Rename the output file so it is not overwritten later
-        thisScript.write("mv fitDiagnostics.root fitDiagnostics_Bonly.root\n")
-
         # Get the pulls of the nuisance parameters
         thisScript.write("python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py")
-        thisScript.write(" -a fitDiagnostics_Bonly.root")
+        thisScript.write(" -a fitDiagnosticsBOnly_" + str(stopM) + "_" + str(neutM) + ".root")
         thisScript.write(" -g plots_Bonly.root")
         thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_Bonly_pulls.txt \n")
 
@@ -97,10 +94,8 @@ if __name__ == "__main__":
         thisScript.write(" --expectSignal 1 " + datacardName)
         thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_BpS.txt \n")
 
-        thisScript.write("mv fitDiagnostics.root fitDiagnostics_BpS.root\n")
-
         thisScript.write("python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py")
-        thisScript.write(" -a fitDiagnostics_BpS.root")
+        thisScript.write(" -a fitDiagnosticsBpS_" + str(stopM) + "_" + str(neutM) + ".root")
         thisScript.write(" -g plots_Bonly.root")
         thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_BpS_pulls.txt \n")
 
