@@ -67,37 +67,37 @@ if __name__ == "__main__":
 
         # First get the limits without fitting to data, the a-priori limits
         # Should be used before unblinding
-        thisScript.write("combine -M AsymptoticLimits --noFitAsimov -n APriori_")
-        thisScript.write(str(stopM) + "_" + str(neutM) + " " + datacardName)
-        thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_aPriori.txt \n")
+        thisScript.write("combine -M AsymptoticLimits --noFitAsimov -n APriori")
+        thisScript.write(" " + datacardName)
+        thisScript.write(" > aPriori.txt\n")
 
         thisScript.write("\n")
 
         # Then generate a background only asimov toy and perform a maximum likelihood fit
         # The objective is to take a look at the pulls of the nuisance parameters and identify possible problems
         thisScript.write("combine -M FitDiagnostics --forceRecreateNLL -t -1")
-        thisScript.write(" -n BOnly_" + str(stopM) + "_" + str(neutM))
+        thisScript.write(" -n BOnly")
         thisScript.write(" --expectSignal 0 " + datacardName)
-        thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_Bonly.txt \n")
+        thisScript.write(" > Bonly.txt\n")
 
         # Get the pulls of the nuisance parameters
         thisScript.write("python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py")
-        thisScript.write(" -a fitDiagnosticsBOnly_" + str(stopM) + "_" + str(neutM) + ".root")
+        thisScript.write(" -a fitDiagnosticsBOnly.root")
         thisScript.write(" -g plots_Bonly.root")
-        thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_Bonly_pulls.txt \n")
+        thisScript.write(" > Bonly_pulls.txt\n")
 
         thisScript.write("\n")
 
         # Repeat for B+S
         thisScript.write("combine -M FitDiagnostics --forceRecreateNLL -t -1")
-        thisScript.write(" -n BpS_" + str(stopM) + "_" + str(neutM))
+        thisScript.write(" -n BpS")
         thisScript.write(" --expectSignal 1 " + datacardName)
-        thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_BpS.txt \n")
+        thisScript.write(" > BpS.txt\n")
 
         thisScript.write("python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py")
-        thisScript.write(" -a fitDiagnosticsBpS_" + str(stopM) + "_" + str(neutM) + ".root")
-        thisScript.write(" -g plots_Bonly.root")
-        thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_BpS_pulls.txt \n")
+        thisScript.write(" -a fitDiagnosticsBpS.root")
+        thisScript.write(" -g plots_BpS.root")
+        thisScript.write(" > BpS_pulls.txt\n")
 
         thisScript.write("\n")
 
@@ -105,9 +105,9 @@ if __name__ == "__main__":
         if args.unblind:
           thisScript.write("\n")
           thisScript.write("\n")
-          thisScript.write("combine -M AsymptoticLimits -n APosteriori_")
-          thisScript.write(str(stopM) + "_" + str(neutM) + " " + datacardName)
-          thisScript.write(" > " + str(stopM) + "_" + str(neutM) + "_aPosteriori.txt \n")
+          thisScript.write("combine -M AsymptoticLimits -n APosteriori")
+          thisScript.write(" " + datacardName)
+          thisScript.write(" > aPosteriori.txt\n")
 
         mode = os.fstat(thisScript.fileno()).st_mode
         mode |= 0o111
