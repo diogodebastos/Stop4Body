@@ -1,6 +1,5 @@
 #!/bin/bash
 
-. setupJSONs.sh
 . setupPaths.sh
 
 DATACARD_DIR=../FromPedrame/DataCards/
@@ -19,5 +18,5 @@ python PlotsSMS/python/makeSMSplots.py ${LIMIT_DIR}/${LIMIT_NAME}.cfg ${LIMIT_NA
 python  pklToHistos.py --inputPickle ${LIMIT_DIR}/${LIMIT_NAME}DM.pkl --outputFile ${LIMIT_DIR}/${LIMIT_NAME}DM.root
 python  smoothHistos.py --inputFile ${LIMIT_DIR}/${LIMIT_NAME}DM.root --outputFile ${LIMIT_DIR}/${LIMIT_NAME}DM_smooth.root --dmplot
 sh makeConfigFile.sh  ${LIMIT_DIR}/${LIMIT_NAME}DM_smooth.root  ${LIMIT_DIR}/${LIMIT_NAME}DM.cfg
-python PlotsSMS/python/makeSMSplots.py ${LIMIT_DIR}/${LIMIT_NAME}DM.cfg ${LIMIT_NAME}DM T2DegStop
+python PlotsSMS/python/makeSMSplots.py ${LIMIT_DIR}/${LIMIT_NAME}DM.cfg ${LIMIT_NAME}DM T2DegStop_dm
 
