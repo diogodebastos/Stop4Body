@@ -283,7 +283,7 @@ if __name__ == "__main__":
   parser.add_argument('-o', '--outputFile', required=True, help='Name of the output file with the histograms')
   parser.add_argument('-d', '--debug', action='store_true', help='Enable debug mode')
   parser.add_argument('--dmplot', action='store_true', help='boh')
-  parser.add_argument('--processAbs', action='Make the intermediate processing plots with the limit on the absolute value of the cross section and not with the limit on the signal strength')
+  parser.add_argument('--processAbs', action='store_true', help='Make the intermediate processing plots with the limit on the absolute value of the cross section and not with the limit on the signal strength')
 
   args = parser.parse_args()
 
