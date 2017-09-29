@@ -236,6 +236,10 @@ def collectJobs(outputDirectory, fullCLs=False, unblind=False):
       neutM = stopM - deltaM
       pointDirectory = outputDirectory + "/" + str(stopM) + "_" + str(neutM) + "/"
 
+      print "Getting results from:"
+      print "  Mstop=", stopM
+      print "  Mneut=", neutM
+
       # Get the Asymptotic results:
       asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPriori.AsymptoticLimits.mH120.root", "READ")
       asympTree = asympInFile.Get("limit")
