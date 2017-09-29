@@ -1,6 +1,5 @@
 #!/bin/bash
 
-. setupJSONs.sh
 . setupPaths.sh
 
 DATACARD_DIR=../FromPedrame/DataCards/
