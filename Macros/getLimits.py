@@ -231,6 +231,15 @@ def collectJobs(outputDirectory, fullCLs=False, unblind=False):
           aPosterioriFullCLs[stopM][neutM] = {}
           aPosterioriFullCLsDM[stopM][deltaM] = {}
 
+  quantileLUT = {
+    -1: "-1.000",
+    0.5: "0.500",
+    0.84: "0.840",
+    0.16: "0.160",
+    0.975: "0.975",
+    0.025: "0.025",
+  }
+
   for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
     for stopM in (250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800):
       neutM = stopM - deltaM
@@ -244,31 +253,31 @@ def collectJobs(outputDirectory, fullCLs=False, unblind=False):
       asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPriori.AsymptoticLimits.mH120.root", "READ")
       asympTree = asympInFile.Get("limit")
       for limit in asympTree:
-        aPrioriAsymp[stopM][neutM][limit.quantileExpected] = limit.limit
-        aPrioriAsympDM[stopM][deltaM][limit.quantileExpected] = limit.limit
+        aPrioriAsymp[stopM][neutM][quantileLUT[limit.quantileExpected]] = limit.limit
+        aPrioriAsympDM[stopM][deltaM][quantileLUT[limit.quantileExpected]] = limit.limit
 
       # If processing the fullCLs, get its results too:
       if fullCLs:
         fullCLsInFile = ROOT.TFile(pointDirectory + "higgsCombineAPriori.HybridNew.root", "READ")
         fullCLsTree = fullCLsInFile.Get("limit")
         for limit in fullCLsTree:
-          aPrioriFullCLs[stopM][neutM][limit.quantileExpected] = limit.limit
-          aPrioriFullCLsDM[stopM][deltaM][limit.quantileExpected] = limit.limit
+          aPrioriFullCLs[stopM][neutM][quantileLUT[limit.quantileExpected]] = limit.limit
+          aPrioriFullCLsDM[stopM][deltaM][quantileLUT[limit.quantileExpected]] = limit.limit
 
       # Repeat the above for the case we have unblinded
       if unblind:
         asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPosteriori.AsymptoticLimits.mH120.root", "READ")
         asympTree = asympInFile.Get("limit")
         for limit in asympTree:
-          aPosterioriAsymp[stopM][neutM][limit.quantileExpected] = limit.limit
-          aPosterioriAsympDM[stopM][deltaM][limit.quantileExpected] = limit.limit
+          aPosterioriAsymp[stopM][neutM][quantileLUT[limit.quantileExpected]] = limit.limit
+          aPosterioriAsympDM[stopM][deltaM][quantileLUT[limit.quantileExpected]] = limit.limit
 
         if fullCLs:
           fullCLsInFile = ROOT.TFile(pointDirectory + "higgsCombineAPosteriori.HybridNew.root", "READ")
           fullCLsTree = fullCLsInFile.Get("limit")
           for limit in fullCLsTree:
-            aPosterioriFullCLs[stopM][neutM][limit.quantileExpected] = limit.limit
-            aPosterioriFullCLsDM[stopM][deltaM][limit.quantileExpected] = limit.limit
+            aPosterioriFullCLs[stopM][neutM][quantileLUT[limit.quantileExpected]] = limit.limit
+            aPosterioriFullCLsDM[stopM][deltaM][quantileLUT[limit.quantileExpected]] = limit.limit
 
   import pickle
 
