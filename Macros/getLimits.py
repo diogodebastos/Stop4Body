@@ -16,7 +16,7 @@ def assure_path_exists(path):
   if not os.path.exists(dir):
     os.makedirs(dir)
 
-def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
+def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False, dryRun=True):
   for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
     for stopM in (250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800):
       neutM = stopM - deltaM
@@ -45,7 +45,7 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
 
         # First get the limits without fitting to data, the a-priori limits
         # Should be used before unblinding
-        thisScript.write("combine -M AsymptoticLimits --noFitAsimov -n APriori")
+        thisScript.write("combine -M AsymptoticLimits --run=blind -n APriori") # before was --noFitAsimov
         thisScript.write(" " + datacardName)
         thisScript.write(" > aPriori.txt\n")
 
@@ -168,7 +168,7 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
 
       cmd = "qsub " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
       print cmd
-      if not args.dryRun:
+      if not dryRun:
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
 
@@ -178,7 +178,7 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
             time.sleep(5*60)
           print "Done waiting"
 
-def collectJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
+def collectJobs(outputDirectory, fullCLs=False, unblind=False):
   doneProcessing = True
 
   for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
@@ -239,10 +239,46 @@ def collectJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False):
       # Get the Asymptotic results:
       asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPriori.AsymptoticLimits.mH120.root", "READ")
       asympTree = asympInFile.Get("limit")
-
       for limit in asympTree:
-        print limit.limit, ": ", limit.quantileExpected
-      return 0
+        aPrioriAsymp[stopM][neutM][limit.quantileExpected] = limit.limit
+        aPrioriAsympDM[stopM][deltaM][limit.quantileExpected] = limit.limit
+
+      # If processing the fullCLs, get its results too:
+      if fullCLs:
+        fullCLsInFile = ROOT.TFile(pointDirectory + "higgsCombineAPriori.HybridNew.root", "READ")
+        fullCLsTree = fullCLsInFile.Get("limit")
+        for limit in fullCLsTree:
+          aPrioriFullCLs[stopM][neutM][limit.quantileExpected] = limit.limit
+          aPrioriFullCLsDM[stopM][deltaM][limit.quantileExpected] = limit.limit
+
+      # Repeat the above for the case we have unblinded
+      if unblind:
+        asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPosteriori.AsymptoticLimits.mH120.root", "READ")
+        asympTree = asympInFile.Get("limit")
+        for limit in asympTree:
+          aPosterioriAsymp[stopM][neutM][limit.quantileExpected] = limit.limit
+          aPosterioriAsympDM[stopM][deltaM][limit.quantileExpected] = limit.limit
+
+        if fullCLs:
+          fullCLsInFile = ROOT.TFile(pointDirectory + "higgsCombineAPosteriori.HybridNew.root", "READ")
+          fullCLsTree = fullCLsInFile.Get("limit")
+          for limit in fullCLsTree:
+            aPosterioriFullCLs[stopM][neutM][limit.quantileExpected] = limit.limit
+            aPosterioriFullCLsDM[stopM][deltaM][limit.quantileExpected] = limit.limit
+
+  import pickle
+
+  pickle.dump( aPrioriAsymp, open( outputDirectory + "/aPrioriAsymp.pkl", "wb" ) )
+  pickle.dump( aPrioriAsympDM, open( outputDirectory + "/aPrioriAsympDM.pkl", "wb" ) )
+  if fullCLs:
+    pickle.dump( aPrioriFullCLs, open( outputDirectory + "/aPrioriFullCLs.pkl", "wb" ) )
+    pickle.dump( aPrioriFullCLsDM, open( outputDirectory + "/aPrioriFullCLsDM.pkl", "wb" ) )
+  if unblind:
+    pickle.dump( aPosterioriAsymp, open( outputDirectory + "/aPosterioriAsymp.pkl", "wb" ) )
+    pickle.dump( aPosterioriAsympDM, open( outputDirectory + "/aPosterioriAsympDM.pkl", "wb" ) )
+    if fullCLs:
+      pickle.dump( aPosterioriFullCLs, open( outputDirectory + "/aPosterioriFullCLs.pkl", "wb" ) )
+      pickle.dump( aPosterioriFullCLsDM, open( outputDirectory + "/aPosterioriFullCLsDM.pkl", "wb" ) )
 
   return 0
 
@@ -261,7 +297,7 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   inputDirectory = args.inputDirectory
-  if not (os.path.exists(inputDirectory) and os.path.isdir(inputDirectory)):
+  if args.submit and not (os.path.exists(inputDirectory) and os.path.isdir(inputDirectory)):
     parser.error('The given input directory does not exist or is not a directory')
 
   if not args.submit and not args.collect:
@@ -270,18 +306,18 @@ if __name__ == "__main__":
   if args.submit and args.collect:
     parser.error('You can not simultaneously submit the jobs and collect their outputs')
 
-  if not args.dryRun:
+  if args.submit and not args.dryRun:
     print "You did not enable dry run. You are on your own!"
 
   baseDirectory = os.path.realpath(os.getcwd())
-  inputDirectory = os.path.realpath(inputDirectory)
   outputDirectory = args.outputDirectory
   assure_path_exists(outputDirectory)
 
   if args.submit:
-    submitJobs(inputDirectory, outputDirectory, fullCLs=args.fullCLs, unblind=args.unblind)
+    inputDirectory = os.path.realpath(inputDirectory)
+    submitJobs(inputDirectory, outputDirectory, fullCLs=args.fullCLs, unblind=args.unblind, dryRun=args.dryRun)
   if args.collect:
-    collectJobs(inputDirectory, outputDirectory, fullCLs=args.fullCLs, unblind=args.unblind)
+    collectJobs(outputDirectory, fullCLs=args.fullCLs, unblind=args.unblind)
 
 
 
