@@ -53,7 +53,7 @@ def getLimit(
   ROOT.gROOT.cd()
 
   # Create the temporary histogram (always dm vs mstop)
-  hnDmTmp = hname + hsuffix + "DmTmp"
+  hnDmTmp = histogramName + histogramSuffix + "DmTmp"
   hDmTmp = ROOT.TH2F(
     hnDmTmp,
     hnDmTmp,
