@@ -2064,11 +2064,13 @@ int main(int argc, char** argv)
             if ( HBHENoiseIsoFilter                 != 1 ) continue;
             if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
             if ( goodVertices                       != 1 ) continue;
-            if ( eeBadScFilter                      != 1 ) continue;
-            if ( globalTightHalo2016Filter          != 1 ) continue;
-            //if ( badMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
-            if ( badMuonMoriond2017                 != 1 ) continue;
-            if ( badCloneMuonMoriond2017            != 1 ) continue;
+            if (process.isdata())
+              if ( eeBadScFilter                      != 1 ) continue;
+            if (!process.issignal())
+              if ( globalTightHalo2016Filter          != 1 ) continue;
+            if ( badMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
+            //if ( badMuonMoriond2017                 != 1 ) continue;
+            //if ( badCloneMuonMoriond2017            != 1 ) continue;
             if ( badChargedHadronFilter             != 1 ) continue;
 
             bool passHLT = false;
