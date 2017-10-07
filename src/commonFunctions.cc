@@ -1085,9 +1085,9 @@ ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, doub
 
   if(LepID == 11)
   {
-    auto bin = electronFullFastSFHIIPHist->FindBin(LepPt, LepEta);
-    val = electronFullFastSFHIIPHist->GetBinContent(bin);
-    unc = electronFullFastSFHIIPHist->GetBinError(bin);
+    auto bin = electronFullFastSFIDHist->FindBin(LepPt, LepEta);
+    val = electronFullFastSFIDHist->GetBinContent(bin);
+    unc = electronFullFastSFIDHist->GetBinError(bin);
     theBin = bin;
 
     std::stringstream converter;
@@ -1100,9 +1100,9 @@ ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, doub
   }
   else
   {
-    auto bin = muonFullFastSFHIIPHist->FindBin(LepPt, LepEta);
-    val = muonFullFastSFHIIPHist->GetBinContent(bin);
-    unc = muonFullFastSFHIIPHist->GetBinError(bin);
+    auto bin = muonFullFastSFIDHist->FindBin(LepPt, LepEta);
+    val = muonFullFastSFIDHist->GetBinContent(bin);
+    unc = muonFullFastSFIDHist->GetBinError(bin);
     theBin = bin;
 
     std::stringstream converter;
