@@ -32,6 +32,12 @@ def pklToHistos(inputPickle, outFile):
   }
 
   d = pickle.load(file( inputPickle ) )
+  usedLabels = []
+  for stop in d:
+    for neut in d[stop]:
+      for lab in d[stop][neut]:
+        if lab not in usedLabels:
+          usedLabels.append(lab)
 
   xs = set()
   ys = set()
@@ -41,13 +47,14 @@ def pklToHistos(inputPickle, outFile):
     for y in d[x]:
       ys.add(y)
       ds.add(y-x)
-      print x,y
+      print "point: ",x,y
 
   xmin,xmax,dxmin = findRange(xs)
   ymin,ymax,dymin = findRange(ys)
   dmin,dmax,ddmin = findRange(ds)
-  print xmin,xmax,dxmin
-  print dmin,dmax,ddmin
+  print "x axis:", xmin,xmax,dxmin
+  print "y axis:", ymin,ymax,dymin
+  #print "dm axis:", dmin,dmax,ddmin
 
   xmin = xmin - dxmin/2.
   xmax = xmax + dxmin/2.
@@ -61,10 +68,11 @@ def pklToHistos(inputPickle, outFile):
   xaxis = None
   yaxis = None
   for v,l in labels.iteritems():
-    histos[l] = ROOT.TH2F(l,l,nbx,xmin,xmax,nby,ymin,ymax)
-    if xaxis==None:
-      xaxis = histos[l].GetXaxis()
-      yaxis = histos[l].GetYaxis()
+    if v in usedLabels:
+      histos[l] = ROOT.TH2F(l,l,nbx,xmin,xmax,nby,ymin,ymax)
+      if xaxis==None:
+        xaxis = histos[l].GetXaxis()
+        yaxis = histos[l].GetYaxis()
 
   for x in d:
     ix = xaxis.FindBin(x)
