@@ -23,9 +23,9 @@ qsub Step0_GetLHEScale_SingleTop.sh
 qsub Step0_GetLHEScale_DY.sh
 
 # Submit job for all Data
-qsub Step0_GetLHEScale_DataJob.sh
-qsub Step0_GetLHEScale_DataSingleElectronJob.sh
-qsub Step0_GetLHEScale_DataSingleMuonJob.sh
+#qsub Step0_GetLHEScale_DataJob.sh
+#qsub Step0_GetLHEScale_DataSingleElectronJob.sh
+#qsub Step0_GetLHEScale_DataSingleMuonJob.sh
 
 # Submit job for each group of signal points with a given stop mass
 qsub Step0_GetLHEScale_Stop250Job.sh
