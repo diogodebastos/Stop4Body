@@ -343,9 +343,9 @@ TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string 
   std::string histName = cleanString(baseName+"_"+var.expression()+"_"+tag_);
   TH1D* retVal = nullptr;
   if(var.hasVarBins())
-    retVal = new TH1D(histName.c_str(), (label_ + ";" + var.label() + ";Evt.").c_str(), var.varBins().size() - 1, var.varBins().data());
+    retVal = new TH1D(histName.c_str(), (label_ + ";" + var.label() + ";Events").c_str(), var.varBins().size() - 1, var.varBins().data());
   else
-    retVal = new TH1D(histName.c_str(), (label_ + ";" + var.label() + ";Evt.").c_str(), var.bins(), var.min(), var.max());
+    retVal = new TH1D(histName.c_str(), (label_ + ";" + var.label() + ";Events").c_str(), var.bins(), var.min(), var.max());
   retVal->Sumw2();
 
   auto cwd = gDirectory;
@@ -616,7 +616,7 @@ TH2D* SampleReader::get2DHist(std::string variableX, std::string variableY, std:
 
 THStack* SampleReader::getStack(std::string baseName, VariableInfo& var, std::string weight)
 {
-  THStack* retVal = new THStack((baseName + "_" + var.name()).c_str(), (var.expression() + ";" + var.label() + ";Evt.").c_str());
+  THStack* retVal = new THStack((baseName + "_" + var.name()).c_str(), (var.expression() + ";" + var.label() + ";Events").c_str());
 
   for(auto& process : processes_)
   {
@@ -633,9 +633,9 @@ TH1D* SampleReader::getHist(std::string baseName, VariableInfo& var, std::string
   std::string histName = cleanString(baseName+"_"+var.expression());
   TH1D* retVal = nullptr;
   if(var.hasVarBins())
-    retVal = new TH1D(histName.c_str(), (var.expression() + ";" + var.label() + ";Evt.").c_str(), var.varBins().size() - 1, var.varBins().data());
+    retVal = new TH1D(histName.c_str(), (var.expression() + ";" + var.label() + ";Events").c_str(), var.varBins().size() - 1, var.varBins().data());
   else
-    retVal = new TH1D(histName.c_str(), (var.expression() + ";" + var.label() + ";Evt.").c_str(), var.bins(), var.min(), var.max());
+    retVal = new TH1D(histName.c_str(), (var.expression() + ";" + var.label() + ";Events").c_str(), var.bins(), var.min(), var.max());
   retVal->Sumw2();
 
   for(auto& process : processes_)

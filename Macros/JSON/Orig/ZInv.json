@@ -5,7 +5,7 @@
       "isdata":false,
       "color":813,
       "lcolor":1,
-      "label":"Z to Invisible",
+      "label":"Z(#nu#nu) + jets",
       "files":[
         {
           "tag":"ZJetsToNuNu_HT100to200",

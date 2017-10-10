@@ -14,6 +14,7 @@
   "variables":[
     {
       "expression":"Met",
+      "label":"E_{T}^{miss} [GeV]",
       "legPos":"top",
       "min":250.0,
       "max":600.0,
@@ -22,6 +23,7 @@
     {
       "name":"Met_ext",
       "expression":"Met",
+      "label":"E_{T}^{miss} [GeV]",
       "legPos":"top",
       "min":0.0,
       "max":1000.0,
@@ -29,7 +31,7 @@
     },
     {
       "expression":"HT",
-      "label":"H_{T}",
+      "label":"H_{T} [GeV]",
       "legPos":"top",
       "min":200.0,
       "max":1000.0,
@@ -37,7 +39,7 @@
     },
     {
       "expression":"NbLoose",
-      "label":"N_{b}^{L}",
+      "label":"N_{b Loose}",
       "legPos":"top",
       "min":-0.5,
       "max":6.5,
@@ -45,7 +47,7 @@
     },
     {
       "expression":"Njet",
-      "label":"N_{J}",
+      "label":"N_{Jet}",
       "legPos":"top",
       "min":-0.5,
       "max":6.5,
@@ -53,7 +55,7 @@
     },
     {
       "expression":"LepPt",
-      "label":"p_{T}(l)",
+      "label":"p_{T}(l) [GeV]",
       "legPos":"top",
       "max":35.0,
       "bins":20
@@ -61,7 +63,7 @@
     {
       "name":"LepPt_ext",
       "expression":"LepPt",
-      "label":"p_{T}(l)",
+      "label":"p_{T}(l) [GeV]",
       "legPos":"top",
       "max":105.0,
       "bins":30
@@ -84,14 +86,14 @@
     },
     {
       "expression":"mt",
-      "label":"M_{T}",
+      "label":"M_{T} [GeV]",
       "legPos":"top",
       "max":200.0,
       "bins":40
     },
     {
       "expression":"Jet1Pt",
-      "label":"p_{T}(j_{1})",
+      "label":"p_{T}(jet 1) [GeV]",
       "legPos":"top",
       "min":110.0,
       "max":810.0,
@@ -99,7 +101,7 @@
     },
     {
       "expression":"JetHBpt",
-      "label":"p_{T}(j_{HB})",
+      "label":"p_{T}(jet HB) [GeV]",
       "legPos":"top",
       "min":30.0,
       "max":710.0,
@@ -107,28 +109,28 @@
     },
     {
       "expression":"JetHBCSV",
-      "label":"CSV(j_{HB})",
+      "label":"CSV(jet HB)",
       "legPos":"top",
       "max":1.0,
       "bins":20
     },
     {
       "expression":"DrJetHBLep",
-      "label":"#Delta R(l,j_{HB})",
+      "label":"#Delta R(l,jet HB)",
       "legPos":"top",
       "max":4.0,
       "bins":40
     },
     {
       "expression":"JetLepMass",
-      "label":"JetLepMass",
+      "label":"M(l, jet 1) [GeV]",
       "legPos":"top",
       "max":800.0,
       "bins":40
     },
     {
       "expression":"J3Mass",
-      "label":"J3Mass",
+      "label":"M(3 jets) [GeV]",
       "legPos":"top",
       "max":1000.0,
       "bins":50

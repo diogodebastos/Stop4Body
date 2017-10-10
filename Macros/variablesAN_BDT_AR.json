@@ -86,6 +86,7 @@
       },
       "Y":{
         "expression":"LepPt",
+        "label":"p_{T}(l) [GeV]",
         "min": 3.5,
         "max": 38,
         "bins": 23,
