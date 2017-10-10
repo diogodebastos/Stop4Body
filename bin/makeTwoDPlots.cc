@@ -11,6 +11,7 @@
 #include <TList.h>
 #include <TCollection.h>
 #include <TObject.h>
+#include <TLatex.h>
 
 #include <iostream>
 #include <vector>

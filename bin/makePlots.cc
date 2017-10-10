@@ -11,6 +11,7 @@
 #include <TList.h>
 #include <TCollection.h>
 #include <TObject.h>
+#include <TLatex.h>
 
 #include <iostream>
 #include <vector>
@@ -589,7 +590,9 @@ int main(int argc, char** argv)
       delete mcS;
       delete ratio;
       delete legA;
-      delete T;
+      //delete T;
+      delete tex;
+      delete tex2;
       delete bgUncH;
       delete bgUnc;
 
