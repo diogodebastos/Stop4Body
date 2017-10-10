@@ -35,10 +35,14 @@
 Macros/JSON/*.json
 
 # Other generated files
+Macros/*.cxx
+Macros/*__cxx.*
+Macros/*rdict.pcm
+Macros/*_C.d
 Macros/*.sh.o*
 Macros/*.sh.e*
-Macros/Step*Scripts/*.sh.o*
-Macros/Step*Scripts/*.sh.e*
+Macros/*Scripts/*.sh.o*
+Macros/*Scripts/*.sh.e*
 Macros/SyncExercise/*.sh.o*
 Macros/SyncExercise/*.sh.e*
 Macros/SyncExercise/cutFlow.tex
