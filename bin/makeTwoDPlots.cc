@@ -332,6 +332,23 @@ int main(int argc, char** argv)
 
           c1.cd(0);
 
+          char Buffer[1024];
+          sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", luminosity/1000, 13.0);
+          TLatex *   tex  = new TLatex(0.805,0.975,Buffer);
+          tex->SetNDC();
+          tex->SetTextAlign(33);
+          tex->SetTextFont(42);
+          tex->SetTextSize(0.038);
+          tex->SetLineWidth(2);
+          tex->Draw();
+          TLatex *   tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52]{Preliminary}");
+          tex2->SetNDC();
+          tex2->SetTextAlign(13);
+          tex2->SetTextFont(42);
+          tex2->SetTextSize(0.038);
+          tex2->SetLineWidth(2);
+          tex2->Draw();
+
           std::string plotName = cut.name() + "_" + variables.Get(j).name() + "_vs_" + variables.Get(i).name();
           c1.SaveAs((outputDirectory+"/"+plotName+".png").c_str());
           c1.SaveAs((outputDirectory+"/"+plotName+".C").c_str());
