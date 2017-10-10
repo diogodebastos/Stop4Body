@@ -129,6 +129,8 @@ int main(int argc, char** argv)
 
   gStyle->SetOptStat(000000);
   gStyle->SetOptTitle(0);
+  gStyle->SetPadTickY(1);
+  gStyle->SetPadTickX(1);
 
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
