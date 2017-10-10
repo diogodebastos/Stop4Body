@@ -248,7 +248,7 @@ int main(int argc, char** argv)
 
           auto sigHist = Sig.process(0).get2DHist(variables.Get(i).expression(),
                                                   variables.Get(j).expression(),
-                                                  variables.Get(i).label()+";"+variables.Get(j).label()+";Evt.",
+                                                  variables.Get(i).label()+";"+variables.Get(j).label()+";Events",
                                                   mcWeight+"*("+selection+")",
                                                   variables.Get(i).bins(),
                                                   variables.Get(i).min(),
@@ -278,7 +278,7 @@ int main(int argc, char** argv)
 
           auto bkgHist = MC.get2DHist(variables.Get(i).expression(),
                                       variables.Get(j).expression(),
-                                      variables.Get(i).label()+";"+variables.Get(j).label()+";Evt.",
+                                      variables.Get(i).label()+";"+variables.Get(j).label()+";Events",
                                       mcWeight+"*("+selection+")",
                                       variables.Get(i).bins(),
                                       variables.Get(i).min(),
@@ -308,7 +308,7 @@ int main(int argc, char** argv)
 
           auto dataHist =  Data.get2DHist(variables.Get(i).expression(),
                                           variables.Get(j).expression(),
-                                          variables.Get(i).label()+";"+variables.Get(j).label()+";Evt.",
+                                          variables.Get(i).label()+";"+variables.Get(j).label()+";Events",
                                           "("+selection+")",
                                           variables.Get(i).bins(),
                                           variables.Get(i).min(),
