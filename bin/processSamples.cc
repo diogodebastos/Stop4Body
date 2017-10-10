@@ -102,6 +102,7 @@ int main(int argc, char** argv)
   bool preemptiveDropEvents = false;
   bool doLooseLeptons = false;
   bool doPromptTagging = false;
+  bool noTrim = false;
   int part = -1;
 
   if(argc < 2)
@@ -143,6 +144,9 @@ int main(int argc, char** argv)
 
     if(argument == "--noSkim")
       noSkim = true;
+
+    if(argument == "--noTrim")
+      noTrim = true;
 
     if(argument == "--jetPtThreshold")
     {
@@ -426,7 +430,7 @@ int main(int argc, char** argv)
       bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       bdttree->Branch("looseNotTightWeight", &looseNotTightWeight.Value(), "looseNotTightWeight/F");
 
-      if(!process.isdata())
+      if(!process.isdata() && noTrim)
       {
         for(auto& systematic: triggerEfficiency.Systematics())
           bdttree->Branch(("triggerEfficiency_"+systematic).c_str(), &(triggerEfficiency.Systematic(systematic)));
@@ -443,8 +447,9 @@ int main(int argc, char** argv)
         for(auto& systematic: leptonFullFastSF.Systematics())
           bdttree->Branch(("leptonFullFastSF_"+systematic).c_str(), &(leptonFullFastSF.Systematic(systematic)));
       }
-      for(auto& systematic: looseNotTightWeight.Systematics())
-        bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
+      if(noTrim)
+        for(auto& systematic: looseNotTightWeight.Systematics())
+          bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
       for(auto& systematic: weight.Systematics())
         bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       std::cout << "\t      Finished." << std::endl;
