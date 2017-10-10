@@ -466,16 +466,34 @@ int main(int argc, char** argv)
       legA->SetHeader("");
       legA->SetTextFont(42);
 
-      TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
+      /*TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
       T->SetFillColor(0);
       T->SetFillStyle(0);
       T->SetLineColor(0);
-      T->SetTextAlign(12);
+      T->SetTextAlign(11);
       char Buffer[1024];
-      sprintf(Buffer, "CMS preliminary, #sqrt{s}=%.1f TeV, #scale[0.5]{#int} L=%.1f fb^{-1}", 13.0, luminosity/1000);
+      //CMS Preliminary   35.9 fb^{-1} (13 TeV)
+      sprintf(Buffer, "CMS preliminary   #sqrt{s}=%.1f TeV, #scale[0.5]{#int} L=%.1f fb^{-1}", 13.0, luminosity/1000);
       T->AddText(Buffer);
       T->Draw("same");
-      T->SetBorderSize(0);
+      T->SetBorderSize(0);// */
+      char Buffer[1024];
+      sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", luminosity/1000, 13.0);
+      TLatex *   tex  = new TLatex(0.805,0.975,Buffer);
+      tex->SetNDC();
+      tex->SetTextAlign(33);
+      tex->SetTextFont(42);
+      tex->SetTextSize(0.038);
+      tex->SetLineWidth(2);
+      tex->Draw();
+      TLatex *   tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52]{Preliminary}");
+      tex2->SetNDC();
+      tex2->SetTextAlign(13);
+      tex2->SetTextFont(42);
+      tex2->SetTextSize(0.038);
+      tex2->SetLineWidth(2);
+      tex2->Draw();
+
 
       c1.cd();
       t2->Draw();
