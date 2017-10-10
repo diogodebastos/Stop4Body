@@ -77,7 +77,7 @@ def getLimit(
       else:
           mneut = mstop - dm
       iyIn = yIn.FindBin(mneut)
-      v = hin.GetBinContent(ixIn,iyIn)
+      v = histogramIn.GetBinContent(ixIn,iyIn)
       iyDmTmp = yDmTmp.FindBin(dm)
       hDmTmp.SetBinContent(ixDmTmp,iyDmTmp,v)
 
@@ -348,13 +348,16 @@ if __name__ == "__main__":
   cres = ROOT.TCanvas("smoothed_limits","smoothed_limits",800,700)
   cres.SetLeftMargin(0.15)
   cres.SetRightMargin(0.20)
-  if results["observed"][0] == None:
+  if results["observed"] == None:
     hobs = results["expected"][0]
   else:
     hobs = results["observed"][0]
   hobs.GetXaxis().SetTitle("m(#tilde{t}) [GeV]")
   hobs.GetYaxis().SetTitle("m(#tilde{#chi}^{0}) [GeV]")
-  hobs.GetZaxis().SetTitle("95% CL upper limit on cross section [pb]")
+  if results["observed"] == None:
+    hobs.GetZaxis().SetTitle("expected 95% CL upper limit on cross section [pb]")
+  else:
+    hobs.GetZaxis().SetTitle("95% CL upper limit on cross section [pb]")
   hobs.GetXaxis().SetTitleOffset(0.80)
   hobs.GetYaxis().SetTitleOffset(1.30)
   hobs.GetZaxis().SetTitleOffset(1.40)
@@ -419,8 +422,9 @@ if __name__ == "__main__":
   }
 
   flim = ROOT.TFile("%s"%args.outputFile,"recreate")
-  print results
   for k,n in outNameDict.iteritems():
+    if results[k] == None:
+      continue
     # write central observed and expected histograms
     if k=="expected" or k=="observed":
       h = results[k][0].Clone(n)
