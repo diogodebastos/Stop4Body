@@ -3,6 +3,8 @@
 . setupPaths.sh
 
 DATACARD_DIR=../FromPedrame/DataCards/
+DATACARD_DIR=/home/t3cms/bargassa/SW/FourBody/CMSSW_8_0_20/src/UserCode/Stop4Body/Macros/DataCards/
+LIMIT_DIR=/lstore/cms/cbeiraod/Stop4Body/LimitsNew/
 
 python getLimits.py -i ${DATACARD_DIR} -o ${LIMIT_DIR} -s -f -u
 
