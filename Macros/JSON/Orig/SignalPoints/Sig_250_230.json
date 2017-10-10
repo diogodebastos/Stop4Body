@@ -11,7 +11,7 @@
       "lstyle":1,
       "fill":0,
       "marker":1,
-      "label":"stop 250, neut 230",
+      "label":"signal=(250,230)",
       "selection":"(GenSusyMStop==250)&&(GenSusyMNeutralino==230)",
       "files":[
         {
