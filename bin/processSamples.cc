@@ -44,6 +44,9 @@
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 #include "UserCode/Stop4Body/interface/LHEweightMAPs.h"
 
+#include "CondFormats/BTauObjects/interface/BTagCalibration.h"
+#include "CondTools/BTau/interface/BTagCalibrationReader.h"
+
 #define GENPART_LIMIT  40
 #define JETCOLL_LIMIT  40
 #define LEPCOLL_LIMIT  40
@@ -104,6 +107,7 @@ int main(int argc, char** argv)
   bool doPromptTagging = false;
   bool noTrim = false;
   int part = -1;
+  std::string bTagCalibrationFile = "";
 
   if(argc < 2)
   {
@@ -173,6 +177,9 @@ int main(int argc, char** argv)
     if(argument == "--doPromptTagging")
       doPromptTagging = true;
 
+    if(argument == "--bTagCalibrationFile")
+      bTagCalibrationFile = argv[++i];
+
     if(argument == "--part")
     {
       std::stringstream converter;
@@ -193,6 +200,9 @@ int main(int argc, char** argv)
     return 1;
   }
 
+  if(bTagCalibrationFile == "")
+    bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
+
   if(!fileExists(outputDirectory+"/puWeights.root"))
   {
     std::cout << "You must first obtain the PU weights before trying to process the samples" << std::endl;
@@ -202,6 +212,12 @@ int main(int argc, char** argv)
   if(!fileExists(lheScaleDir+"/lheWeights.root"))
   {
     std::cout << "You must first obtain the LHE scales before trying to process the samples" << std::endl;
+    return 1;
+  }
+
+  if(!fileExists(bTagCalibrationFile))
+  {
+    std::cout << "You must define a valid b-tag calibration file" << std::endl;
     return 1;
   }
 
@@ -237,6 +253,34 @@ int main(int argc, char** argv)
   TCanvas* muc5 = static_cast<TCanvas*>(FullFastMuHIIP.Get("c5"));
   muonFullFastSFHIIPHist = static_cast<TH2D*>(muc5->GetPrimitive("Full-Fast_ratios_2D"));
   cwd->cd();
+
+  BTagCalibration bCalib("csvv2", bTagCalibrationFile);
+  BTagCalibrationReader bReader (BTagEntry::OP_RESHAPING,  // operating point
+                                  "central",               // central sys type
+                                  {                        // other sys types
+                                    "up_jes",
+                                    "down_jes",
+                                    "up_lf",
+                                    "down_lf",
+                                    "up_hf",
+                                    "down_hf",
+                                    "up_hfstats1",
+                                    "down_hfstats1",
+                                    "up_hfstats2",
+                                    "down_hfstats2",
+                                    "up_lfstats1",
+                                    "down_lfstats1",
+                                    "up_lfstats2",
+                                    "down_lfstats2",
+                                    "up_cferr1",
+                                    "down_cferr1",
+                                    "up_cferr2",
+                                    "down_cferr2",
+                                  }
+                                );
+  bReader.load(bCalib, BTagEntry::FLAV_B, "iterativefit");
+  bReader.load(bCalib, BTagEntry::FLAV_C, "iterativefit");
+  bReader.load(bCalib, BTagEntry::FLAV_UDSG, "iterativefit");
 
   Float_t identity[100];
   for(int i = 0; i < 100; ++i)
