@@ -4,6 +4,8 @@
 <use name="roofit"/>
 <use name="roostats"/>
 <use name="UserCode/Stop4Body"/>
+<use name="CondFormats/BTauObjects"/>
+<use name="CondTools/BTau/interface"/>
 <environment>
   <bin name="processSamples"          file="processSamples.cc"></bin>
   <bin name="makePseudoData"          file="makePseudoData.cc"></bin>
@@ -25,6 +27,7 @@
   <bin name="compareFiles"            file="compareFiles.cc"> </bin>
   <bin name="getLHEweightScales"      file="getLHEweightScales.cc"> </bin>
   <bin name="mergeLHEweightScales"    file="mergeLHEweightScales.cc"> </bin>
+  <bin name="getEventList"            file="getEventList.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
