@@ -1729,6 +1729,7 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
+            bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagCSV, Jet_hadronFlavour);
             triggerEfficiency = triggerEfficiencyFromMETSys(MetDou);
             // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets")
