@@ -4,6 +4,9 @@
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
+#include "CondFormats/BTauObjects/interface/BTagCalibration.h"
+#include "CondTools/BTau/interface/BTagCalibrationReader.h"
+
 #include "TH1.h"
 #include "TH2.h"
 #include <string>
@@ -57,6 +60,8 @@ ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, doubl
 ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double LepEta);
 
 ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double LepPt, double LepEta);
+
+ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta, Float_t* Jet_btagCSV, Int_t* Jet_hadronFlavour);
 
 //ValueWithSystematics<double> stopCrossSectionSys(double stopM, double lspM);
 

@@ -69,6 +69,104 @@ bool replace(std::string& str, const std::string& from, const std::string& to)
     return true;
 }
 
+ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta, Float_t* Jet_btagCSV, Int_t* Jet_hadronFlavour)
+{
+  ValueWithSystematics<double> retVal = 1.0;
+
+  std::vector<std::string> list;
+  list.push_back("Value");
+  list.push_back("JES_Up");
+  list.push_back("JES_Down");
+  list.push_back("LF_Up");
+  list.push_back("LF_Down");
+  list.push_back("HF_Up");
+  list.push_back("HF_Down");
+  list.push_back("LFStats1_Up");
+  list.push_back("LFStats1_Down");
+  list.push_back("HFStats1_Up");
+  list.push_back("HFStats1_Down");
+  list.push_back("LFStats2_Up");
+  list.push_back("LFStats2_Down");
+  list.push_back("HFStats2_Up");
+  list.push_back("HFStats2_Down");
+  list.push_back("CFErr1_Up");
+  list.push_back("CFErr1_Down");
+  list.push_back("CFErr2_Up");
+  list.push_back("CFErr2_Down");
+
+  for(auto & syst: list)
+  {
+    double bTagSF = 1;
+
+    for(int jet : validJets.GetSystematicOrValue(syst))
+    {
+      double pt = jetPt.GetSystematicOrValue(syst)[jet];
+      double eta = Jet_eta[jet];
+      double csv = Jet_btagCSV[jet];
+      int flavor = Jet_hadronFlavour[jet];
+
+      bool isBFlav = false;
+      bool isCFlav = false;
+      bool isLFlav = false;
+      if(std::abs(flavor) == 5) isBFlav = true;
+      if(std::abs(flavor) == 4) isCFlav = true;
+      if(!(isBFlav || isCFlav)) isLFlav = true;
+
+      // bounds
+      if(csv < 0.0) csv = -0.05;
+      if(csv > 1.0) csv = 1.0;
+      if(pt > 1000) pt = 999.;
+
+      BTagEntry::JetFlavor jf = BTagEntry::FLAV_UDSG;
+      if(isBFlav) jf = BTagEntry::FLAV_B;
+      if(isCFlav) jf = BTagEntry::FLAV_C;
+
+      std::string variationString = "central";
+      if(isBFlav || isLFlav)
+      {
+        if(syst == "JES_Up") variationString = "up_jes";
+        if(syst == "JES_Down") variationString = "down_jes";
+      }
+      if(isBFlav)
+      {
+        if(syst == "HF_Up") variationString = "up_hf";
+        if(syst == "HF_Down") variationString = "down_hf";
+        if(syst == "HFStats1_Up") variationString = "up_hfstats1";
+        if(syst == "HFStats1_Down") variationString = "down_hfstats1";
+        if(syst == "HFStats2_Up") variationString = "up_hfstats2";
+        if(syst == "HFStats2_Down") variationString = "down_hfstats2";
+      }
+      if(isCFlav)
+      {
+        if(syst == "CFErr1_Up") variationString = "up_cferr1";
+        if(syst == "CFErr1_Down") variationString = "down_cferr1";
+        if(syst == "CFErr2_Up") variationString = "up_cferr2";
+        if(syst == "CFErr2_Down") variationString = "down_cferr2";
+      }
+      if(isLFlav)
+      {
+        if(syst == "LF_Up") variationString = "up_lf";
+        if(syst == "LF_Down") variationString = "down_lf";
+        if(syst == "LFStats1_Up") variationString = "up_lfstats1";
+        if(syst == "LFStats1_Down") variationString = "down_lfstats1";
+        if(syst == "LFStats2_Up") variationString = "up_lfstats2";
+        if(syst == "LFStats2_Down") variationString = "down_lfstats2";
+      }
+
+      double jetSF = bReader.eval_auto_bounds(variationString, jf, eta, pt, csv);
+
+      bTagSF *= jetSF;
+    }
+
+    if(syst == "Value")
+      retVal.Value() = bTagSF;
+    else
+      retVal.Systematic(syst) = bTagSF;
+  }
+
+  return retVal;
+}
+
 // Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
 doubleUnc triggerEfficiencyFromMET(double met_pt)
 {
