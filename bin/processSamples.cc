@@ -376,6 +376,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> leptonFullFastSF;
       ValueWithSystematics<float> looseNotTightWeight;
       ValueWithSystematics<float> Q2Var;
+      ValueWithSystematics<float> bTagSF;
       ValueWithSystematics<float> weight;
 
       std::cout << "\t      Creating the variations if needed" << std::endl;
@@ -416,13 +417,17 @@ int main(int argc, char** argv)
         Q2Var.Systematic("Q2_6");
         Q2Var.Systematic("Q2_7");
         Q2Var.Systematic("Q2_8");
+        std::cout << "\t        B-Tag SF" << std::endl;
+        bTagSF = 1;
+        bTagSF.Systematic("JES_Up");
+        bTagSF.Systematic("JES_Down");
       }
 
       std::cout << "\t        looseNotTight" << std::endl;
       looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -435,6 +440,7 @@ int main(int argc, char** argv)
         leptonIDSF.Lock();
         leptonISOSF.Lock();
         leptonFullFastSF.Lock();
+        bTagSF.Lock();
         Q2Var.Lock();
       }
       looseNotTightWeight.Lock();
@@ -449,6 +455,7 @@ int main(int argc, char** argv)
       leptonISOSF = 1.0;
       leptonFullFastSF = 1.0;
       looseNotTightWeight = 1.0;
+      bTagSF = 1.0;
       Q2Var = 1.0;
       weight = 1.0;
 
@@ -470,6 +477,7 @@ int main(int argc, char** argv)
       bdttree->Branch("leptonIDSF", &(leptonIDSF.Value()), "leptonIDSF/F");
       bdttree->Branch("leptonISOSF", &(leptonISOSF.Value()), "leptonISOSF/F");
       bdttree->Branch("leptonFullFastSF", &(leptonFullFastSF.Value()), "leptonFullFastSF/F");
+      bdttree->Branch("bTagSF", &(bTagSF.Value()), "bTagSF/F");
       bdttree->Branch("weight", &(weight.Value()), "weight/F");
       bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       bdttree->Branch("looseNotTightWeight", &looseNotTightWeight.Value(), "looseNotTightWeight/F");
@@ -490,6 +498,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("leptonISOSF_"+systematic).c_str(), &(leptonISOSF.Systematic(systematic)));
         for(auto& systematic: leptonFullFastSF.Systematics())
           bdttree->Branch(("leptonFullFastSF_"+systematic).c_str(), &(leptonFullFastSF.Systematic(systematic)));
+        for(auto& systematic: bTagSF.Systematics())
+          bdttree->Branch(("bTagSF_"+systematic).c_str(), &(bTagSF.Systematic(systematic)));
       }
       if(noTrim)
         for(auto& systematic: looseNotTightWeight.Systematics())
@@ -1069,6 +1079,7 @@ int main(int argc, char** argv)
         Int_t nJetIn;  inputtree->SetBranchAddress("nJet", &nJetIn);
         Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
         Int_t Jet_id[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_id", &Jet_id);
+        Int_t Jet_hadronFlavour[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_hadronFlavour", &Jet_hadronFlavour);
         Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
         Float_t Jet_phi[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
         Float_t Jet_btagCSV[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
@@ -1950,7 +1961,7 @@ int main(int argc, char** argv)
           }
 
           if(!process.isdata())
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
           else
             weight = 1.0f;
 
