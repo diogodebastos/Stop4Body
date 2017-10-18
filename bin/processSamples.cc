@@ -1079,7 +1079,6 @@ int main(int argc, char** argv)
         Int_t nJetIn;  inputtree->SetBranchAddress("nJet", &nJetIn);
         Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
         Int_t Jet_id[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_id", &Jet_id);
-        Int_t Jet_hadronFlavour[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_hadronFlavour", &Jet_hadronFlavour);
         Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
         Float_t Jet_phi[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
         Float_t Jet_btagCSV[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
@@ -1093,12 +1092,14 @@ int main(int argc, char** argv)
         int nLHEweight;
         int LHEweight_id[LHEWEIGHT_LIMIT];
         float LHEweight_wgt[LHEWEIGHT_LIMIT];
+        Int_t Jet_hadronFlavour[JETCOLL_LIMIT];
 
         if(!process.isdata())
         {
           inputtree->SetBranchAddress("nLHEweight"   , &nLHEweight);
           inputtree->SetBranchAddress("LHEweight_id" , &LHEweight_id);
           inputtree->SetBranchAddress("LHEweight_wgt", &LHEweight_wgt);
+          inputtree->SetBranchAddress("Jet_hadronFlavour", &Jet_hadronFlavour);
         }
 
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
