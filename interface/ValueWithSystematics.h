@@ -20,6 +20,11 @@
 #include <string>
 #include <vector>
 
+#ifdef _USE_CERN_ROOT
+#include "TFile.h"
+#include "TTree.h"
+#endif
+
 class ValueException: public std::exception
 {
   public:
@@ -59,6 +64,11 @@ class ValueWithSystematicsInternal
     const T& Systematic(const std::string& name) const;
     T& GetSystematicOrValue(const std::string& name);
     const T& GetSystematicOrValue(const std::string& name) const;
+
+    #ifdef _USE_CERN_ROOT
+    void SaveTTree(std::string& name, TFile* file, std::string& title) const;
+    void LoadTTree(std::string& name, TFile* file);
+    #endif
 
     std::vector<std::string> Systematics() const;
 
