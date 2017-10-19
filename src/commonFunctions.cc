@@ -129,8 +129,8 @@ ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueW
       }
       if(isBFlav)
       {
-        if(syst == "HF_Up") variationString = "up_hf";
-        if(syst == "HF_Down") variationString = "down_hf";
+        if(syst == "LF_Up") variationString = "up_lf";
+        if(syst == "LF_Down") variationString = "down_lf";
         if(syst == "HFStats1_Up") variationString = "up_hfstats1";
         if(syst == "HFStats1_Down") variationString = "down_hfstats1";
         if(syst == "HFStats2_Up") variationString = "up_hfstats2";
@@ -145,8 +145,8 @@ ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueW
       }
       if(isLFlav)
       {
-        if(syst == "LF_Up") variationString = "up_lf";
-        if(syst == "LF_Down") variationString = "down_lf";
+        if(syst == "HF_Up") variationString = "up_hf";
+        if(syst == "HF_Down") variationString = "down_hf";
         if(syst == "LFStats1_Up") variationString = "up_lfstats1";
         if(syst == "LFStats1_Down") variationString = "down_lfstats1";
         if(syst == "LFStats2_Up") variationString = "up_lfstats2";
