@@ -136,6 +136,22 @@ if __name__ == "__main__":
         if args.isSwap:
           LepPtCutString = "LepPt < 280"
 
+      if args.unblind:
+        selectionString = "(isTight == 1) && (" + MetCutString + ") && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)"
+        if LepPtCutString is not "":
+          selectionString = selectionString + " && (" + LepPtCutString + ")"
+        if AdditionalCutString is not "":
+          selectionString = selectionString + " && (" + AdditionalCutString + ")"
+
+        thisScript.write("getEventList ")
+        thisScript.write("--json ${JSON_PATH}/Orig/Data.json ")
+        thisScript.write("--inDir " + thisInputDirectory + " ")
+        thisScript.write("--suffix bdt ")
+        thisScript.write("--preselection " + selectionString + " ")
+        thisScript.write("--bdtCut " + BDTCutValue)
+        thisScript.write(" 1> " + outputDirectory + "/EventList.log 2> " + outputDirectory + "/EventList.err")
+        thisScript.write("\n\n")
+
       repldict = {'$(BDTCUT)':BDTCutValue, '$(highDeltaM)':'', '$(METCUT)':MetCutString}
       if LepPtCutString != "":
         repldict['$(highDeltaM)'] = " && (" + LepPtCutString + ")"
