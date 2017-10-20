@@ -115,6 +115,7 @@ int main(int argc, char** argv)
   ValueWithSystematics<float> DrJetHBLepSys;
   ValueWithSystematics<float> JetHBCSVSys;
   std::vector<std::string> variations = {"JES_Up", "JES_Down", "JER_Up", "JER_Down"};
+  if(fileName.find("Data") != std::string::npos) variations = {};
   for(auto& syst : variations)
   {
     Jet1PtSys.Systematic(syst);
