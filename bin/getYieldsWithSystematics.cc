@@ -397,7 +397,6 @@ int main(int argc, char** argv)
     ValueWithSystematics<double> retVal = 0.0;
     std::vector<std::string> mySystematics = {"central"};
     loadSystematics(mySystematics, tree);
-    loadSystematics(mySystematics, additionalCut);
     loadSystematics(mySystematics, weight);
 
     for(auto& syst : mySystematics)
