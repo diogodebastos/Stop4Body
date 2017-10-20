@@ -66,8 +66,8 @@ class ValueWithSystematicsInternal
     const T& GetSystematicOrValue(const std::string& name) const;
 
     #ifdef _USE_CERN_ROOT
-    void SaveTTree(std::string& name, TFile* file, std::string& title="") const;
-    void LoadTTree(std::string& name, TFile* file);
+    void SaveTTree(std::string name, TFile* file, std::string title="") const;
+    void LoadTTree(std::string name, TFile* file);
     #endif
 
     std::vector<std::string> Systematics() const;

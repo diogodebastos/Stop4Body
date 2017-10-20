@@ -136,7 +136,7 @@ const T& ValueWithSystematicsInternal<T>::GetSystematicOrValue(const std::string
 #include "TDirectory.h"
 
 template<class T>
-void ValueWithSystematicsInternal<T>::SaveTTree(std::string& name, TFile* file, std::string& title) const
+void ValueWithSystematicsInternal<T>::SaveTTree(std::string name, TFile* file, std::string title) const
 {
   TDirectory* cwd = gDirectory;
   file->cd();
@@ -164,7 +164,7 @@ void ValueWithSystematicsInternal<T>::SaveTTree(std::string& name, TFile* file, 
 }
 
 template<class T>
-void ValueWithSystematicsInternal<T>::LoadTTree(std::string& name, TFile* file)
+void ValueWithSystematicsInternal<T>::LoadTTree(std::string name, TFile* file)
 {
   TDirectory* cwd = gDirectory;
   file->cd();
