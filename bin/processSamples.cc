@@ -421,6 +421,22 @@ int main(int argc, char** argv)
         bTagSF = 1;
         bTagSF.Systematic("JES_Up");
         bTagSF.Systematic("JES_Down");
+        bTagSF.Systematic("LF_Up");
+        bTagSF.Systematic("LF_Down");
+        bTagSF.Systematic("HF_Up");
+        bTagSF.Systematic("HF_Down");
+        bTagSF.Systematic("LFStats1_Up");
+        bTagSF.Systematic("LFStats1_Down");
+        bTagSF.Systematic("HFStats1_Up");
+        bTagSF.Systematic("HFStats1_Down");
+        bTagSF.Systematic("LFStats2_Up");
+        bTagSF.Systematic("LFStats2_Down");
+        bTagSF.Systematic("HFStats2_Up");
+        bTagSF.Systematic("HFStats2_Down");
+        bTagSF.Systematic("CFErr1_Up");
+        bTagSF.Systematic("CFErr1_Down");
+        bTagSF.Systematic("CFErr2_Up");
+        bTagSF.Systematic("CFErr2_Down");
       }
 
       std::cout << "\t        looseNotTight" << std::endl;
