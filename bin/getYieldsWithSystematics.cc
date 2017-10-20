@@ -273,7 +273,7 @@ int main(int argc, char** argv)
 
     systematics.push_back("PU");
 
-    loadSystName("Q2_", 8)
+    loadSystName("Q2_", 8);
 
     systematics.push_back("CFErr1");
     systematics.push_back("CFErr2");
