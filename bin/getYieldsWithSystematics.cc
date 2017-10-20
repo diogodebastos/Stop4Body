@@ -55,7 +55,7 @@ int main(int argc, char** argv)
   if(argc < 2)
   {
     std::cout << "You did not pass enough parameters" << std::endl;
-    printHelp();
+    //printHelp();
     return 0;
   }
 
@@ -235,11 +235,11 @@ int main(int argc, char** argv)
   {
     std::cout << "The used " << name << ":" << std::endl;
     std::cout << "  " << selection.Value() << std::endl;
-    for(auto& : selection.Systematics())
+    for(auto& syst : selection.Systematics())
       std::cout << "   - " << syst << ": " << selection.Systematic(syst) << std::endl;
     std::cout << std::endl;
     return;
-  }
+  };
 
   printSel("base selection", baseSelection);
   printSel("CR selection", crSelection);
