@@ -199,8 +199,8 @@ ValueWithSystematics<double> triggerEfficiencyFromMETSys(double met_pt)
   double unc = trigEff.uncertainty();
 
   ValueWithSystematics<double> retVal(val);
-  retVal.Systematic("triggerEfficiency_statUp") = val+unc;
-  retVal.Systematic("triggerEfficiency_statDown") = val-unc;
+  retVal.Systematic("triggerEfficiency_stat_Up") = val+unc;
+  retVal.Systematic("triggerEfficiency_stat_Down") = val-unc;
   retVal.Systematic("triggerEfficiency_Up") = val*1.01;
   retVal.Systematic("triggerEfficiency_Down") = val*0.99;
   return retVal;
