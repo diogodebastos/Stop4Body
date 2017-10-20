@@ -297,6 +297,22 @@ int main(int argc, char** argv)
     systVars.push_back("TightLoose_NU_Bin4_Down");
     systVars.push_back("TightLoose_NU_Bin5_Up");
     systVars.push_back("TightLoose_NU_Bin5_Down");
+    systVars.push_back("HF_Up");
+    systVars.push_back("HF_Down");
+    systVars.push_back("LF_Up");
+    systVars.push_back("LF_Down");
+    systVars.push_back("HFStats1_Up");
+    systVars.push_back("HFStats1_Down");
+    systVars.push_back("LFStats1_Up");
+    systVars.push_back("LFStats1_Down");
+    systVars.push_back("HFStats2_Up");
+    systVars.push_back("HFStats2_Down");
+    systVars.push_back("LFStats2_Up");
+    systVars.push_back("LFStats2_Down");
+    systVars.push_back("CFErr1_Up");
+    systVars.push_back("CFErr1_Down");
+    systVars.push_back("CFErr2_Up");
+    systVars.push_back("CFErr2_Down");
 
     for(auto& syst: systVars)
     {

@@ -132,6 +132,74 @@ const T& ValueWithSystematicsInternal<T>::GetSystematicOrValue(const std::string
   return value;
 }
 
+#ifdef _USE_CERN_ROOT
+#include "TDirectory.h"
+
+template<class T>
+void ValueWithSystematicsInternal<T>::SaveTTree(std::string& name, TFile* file, std::string& title) const
+{
+  TDirectory* cwd = gDirectory;
+  file->cd();
+
+  TTree* myTree = new TTree(name.c_str(), ((title == "")?(name.c_str()):(title.c_str())));
+
+  std::string varName = "central";
+  T varValue = value;
+
+  myTree->Branch("variation", &varName);
+  myTree->Branch("value", &varValue);
+
+  myTree->Fill(); // Save the central value
+  // Then loop over the variations and save their values
+  for(auto& syst : systematics)
+  {
+    varName = syst;
+    varValue = systematics[syst];
+    myTree->Fill();
+  }
+
+  myTree->Write("",TObject::kOverwrite);
+  cwd->cd()
+  return;
+}
+
+template<class T>
+void ValueWithSystematicsInternal<T>::LoadTTree(std::string& name, TFile* file)
+{
+  TDirectory* cwd = gDirectory;
+  file->cd();
+
+  TTree* myTree = static_cast<TTree*>(file->Get(name.c_str()));
+
+  std::string varName = "";
+  T varValue;
+
+  myTree->SetBranchAddress("variation", &varName);
+  myTree->SetBranchAddress("value", &varValue);
+
+  size_t nentries = static_cast<size_t>(myTree->GetEntries());
+
+  for(size_t i = 0; i < nentries; i++)
+  {
+    myTree->GetEntry(i);
+
+    if(i == 0)
+    {
+      if(varName != "central")
+        throw ValueException("The chosen ttree (" + name + ") does not have the central value as the first entry.\nIt is likely the ttree was not a ValueWithSystematics saved as a ttree.");
+      value = varValue;
+    }
+    else
+    {
+      systematics[varName] = varValue;
+    }
+  }
+
+  cwd->cd()
+  return;
+}
+#endif
+
 template<class T>
 std::vector<std::string> ValueWithSystematicsInternal<T>::Systematics() const
 {
