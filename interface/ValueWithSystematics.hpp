@@ -153,8 +153,8 @@ void ValueWithSystematicsInternal<T>::SaveTTree(std::string name, TFile* file, s
   // Then loop over the variations and save their values
   for(auto& syst : systematics)
   {
-    varName = syst;
-    varValue = systematics[syst];
+    varName = syst.first;
+    varValue = syst.second;
     myTree->Fill();
   }
 
