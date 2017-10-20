@@ -193,6 +193,7 @@ class ProcessInfo
     //~ProcessInfo();
 
     std::vector<std::string> getAllFiles();
+    TChain* getChain();
     TH1D* getHist(std::string, std::string, std::string, int, double, double);
     TH2D* get2DHist(std::string, std::string, std::string, std::string, int, double, double, int, double, double);
     TH1D* getHist(std::string, VariableInfo&, std::string);
