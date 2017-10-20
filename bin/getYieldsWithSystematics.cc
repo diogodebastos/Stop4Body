@@ -404,7 +404,7 @@ int main(int argc, char** argv)
       TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
       tmpHist.Sumw2();
 
-      tree.GetSystematicOrValue(syst)->Draw("weight>>tmpHist", weight.GetSystematicOrValue(syst));
+      tree.GetSystematicOrValue(syst)->Draw("weight>>tmpHist", weight.GetSystematicOrValue(syst).c_str());
 
       double val = tmpHist.GetBinContent(0) + tmpHist.GetBinContent(1) + tmpHist.GetBinContent(2);
       double unc = tmpHist.GetBinError(0) + tmpHist.GetBinError(1) + tmpHist.GetBinError(2);
