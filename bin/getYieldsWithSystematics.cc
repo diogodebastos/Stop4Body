@@ -440,7 +440,8 @@ int main(int argc, char** argv)
   TFile outFile((outputDirectory + "/yields.root").c_str(), "RECREATE");
 
   auto dataSR = getYield(dataTree, theSRSelection.Value());
-  dataSR.SaveTTree("SR_data", &outFile);
+  if(unblind)
+    dataSR.SaveTTree("SR_data", &outFile);
 
   return 0;
 }
