@@ -159,7 +159,7 @@ void ValueWithSystematicsInternal<T>::SaveTTree(std::string& name, TFile* file, 
   }
 
   myTree->Write("",TObject::kOverwrite);
-  cwd->cd()
+  cwd->cd();
   return;
 }
 
@@ -195,7 +195,7 @@ void ValueWithSystematicsInternal<T>::LoadTTree(std::string& name, TFile* file)
     }
   }
 
-  cwd->cd()
+  cwd->cd();
   return;
 }
 #endif
