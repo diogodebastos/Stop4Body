@@ -239,7 +239,7 @@ int main(int argc, char** argv)
       std::cout << "   - " << syst << ": " << selection.Systematic(syst) << std::endl;
     std::cout << std::endl;
     return;
-  }
+  };
 
   printSel("base selection", baseSelection);
   printSel("CR selection", crSelection);
