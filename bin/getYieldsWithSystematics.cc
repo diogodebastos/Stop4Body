@@ -51,6 +51,7 @@ int main(int argc, char** argv)
   bool doVR1 = false; // Swap the Met and LepPt for this VR
   bool doVR2 = false; // Invert the Met for this VR
   bool doVR3 = false; // Invert the LepPt for this VR
+  bool unblind = false;
 
   if(argc < 2)
   {
@@ -80,6 +81,9 @@ int main(int argc, char** argv)
 
     if(argument == "--suffix")
       suffix = argv[++i];
+
+    if(argument == "--unblind")
+      unblind = true;
 
     if(argument == "--lumi")
     {
