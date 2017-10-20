@@ -252,5 +252,8 @@ int main(int argc, char** argv)
   printSel("fake selection", fakeSelection);
   printSel("VR1Trigger", VR1Trigger);
 
+  if(verbose)
+    std::cout << "We are verbose" << std::endl;
+
   return 0;
 }
