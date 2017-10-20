@@ -234,6 +234,8 @@ int main(int argc, char** argv)
   baseSelection += DPhiJet1Jet2 + " < 2.5 || " + Jet2Pt + " < 60) && (" + HT + " > 200) && (" + Jet1Pt + " > 110) && ";
   baseSelection += metSelection + " && ";
   baseSelection += lepSelection;
+  if(doVR1)
+    baseSelection += " && " + VR1Trigger;
 
   auto printSel = [&](std::string name, ValueWithSystematics<std::string> selection) -> void
   {
