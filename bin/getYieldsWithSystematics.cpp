@@ -235,7 +235,7 @@ int main(int argc, char** argv)
   {
     std::cout << "The used " << name << ":" << std::endl;
     std::cout << "  " << selection.Value() << std::endl;
-    for(auto& : selection.Systematics())
+    for(auto& syst : selection.Systematics())
       std::cout << "   - " << syst << ": " << selection.Systematic(syst) << std::endl;
     std::cout << std::endl;
     return;
