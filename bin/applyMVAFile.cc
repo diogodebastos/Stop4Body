@@ -22,6 +22,7 @@
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
+#include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 //#include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"
 //#include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -104,6 +105,28 @@ int main(int argc, char** argv)
   Float_t JetHBCSV;
   //Int_t nGoodMu, nGoodEl;
   //Float_t LepSip3, LepIso03, LepIso04, DPhiJet1Jet2,
+  ValueWithSystematics<float> Jet1PtSys;
+  ValueWithSystematics<float> mtSys;
+  ValueWithSystematics<float> MetSys;
+  ValueWithSystematics<float> HTSys;
+  ValueWithSystematics<float> NbLooseSys;
+  ValueWithSystematics<float> NjetSys;
+  ValueWithSystematics<float> JetHBptSys;
+  ValueWithSystematics<float> DrJetHBLepSys;
+  ValueWithSystematics<float> JetHBCSVSys;
+  std::vector<std::string> variations = {"JES_Up", "JES_Down", "JER_Up", "JER_Down"};
+  for(auto& syst : variations)
+  {
+    Jet1PtSys.Systematic(syst);
+    mtSys.Systematic(syst);
+    MetSys.Systematic(syst);
+    HTSys.Systematic(syst);
+    NbLooseSys.Systematic(syst);
+    NjetSys.Systematic(syst);
+    JetHBptSys.Systematic(syst);
+    DrJetHBLepSys.Systematic(syst);
+    JetHBCSVSys.Systematic(syst);
+  }
 
   // SET0
   reader->AddVariable("Jet1Pt", &Jet1Pt);
@@ -178,38 +201,63 @@ int main(int argc, char** argv)
     OutputTree->SetBranchAddress("LepDxy", &LepDxy);
     OutputTree->SetBranchAddress("LepDz", &LepDz);
     //OutputTree->SetBranchAddress("LepIso", &LepIso);
-    OutputTree->SetBranchAddress("Met", &Met);
-    OutputTree->SetBranchAddress("mt",  &mt);
-    OutputTree->SetBranchAddress("Q80", &Q80);
-    OutputTree->SetBranchAddress("CosDeltaPhi",&CosDeltaPhi);
-    OutputTree->SetBranchAddress("NbLoose", &NbLoose);
-    OutputTree->SetBranchAddress("NbTight", &NbTight);
-    OutputTree->SetBranchAddress("Njet", &Njet);
-    OutputTree->SetBranchAddress("Jet1Pt", &Jet1Pt);
-    OutputTree->SetBranchAddress("Jet1Eta", &Jet1Eta);
-    OutputTree->SetBranchAddress("Jet2Pt", &Jet2Pt);
-    OutputTree->SetBranchAddress("Jet2Eta", &Jet2Eta);
-    OutputTree->SetBranchAddress("JetHBpt", &JetHBpt);
-    OutputTree->SetBranchAddress("JetHBCSV", &JetHBCSV);
-    OutputTree->SetBranchAddress("DrJet1Lep", &DrJet1Lep);
-    OutputTree->SetBranchAddress("DrJet2Lep", &DrJet2Lep);
-    OutputTree->SetBranchAddress("DrJetHBLep",&DrJetHBLep);
-    OutputTree->SetBranchAddress("DrJet1Jet2",&DrJet1Jet2);
-    OutputTree->SetBranchAddress("JetLepMass",&JetLepMass);
-    OutputTree->SetBranchAddress("J3Mass",&J3Mass);
-    OutputTree->SetBranchAddress("HT",&HT);
     OutputTree->SetBranchAddress("XS", &XS);
     OutputTree->SetBranchAddress("Event", &Event);
     OutputTree->SetBranchAddress("Nevt", &Nevt);
 
-    std::map<std::string, Float_t> MVAs;
+    // These quantities are affected by systematics
+    OutputTree->SetBranchAddress("Q80", &Q80);
+    OutputTree->SetBranchAddress("CosDeltaPhi",&CosDeltaPhi);
+    OutputTree->SetBranchAddress("NbTight", &NbTight);
+    OutputTree->SetBranchAddress("Jet1Eta", &Jet1Eta);
+    OutputTree->SetBranchAddress("Jet2Pt", &Jet2Pt);
+    OutputTree->SetBranchAddress("Jet2Eta", &Jet2Eta);
+    OutputTree->SetBranchAddress("DrJet1Lep", &DrJet1Lep);
+    OutputTree->SetBranchAddress("DrJet2Lep", &DrJet2Lep);
+    OutputTree->SetBranchAddress("DrJet1Jet2",&DrJet1Jet2);
+    OutputTree->SetBranchAddress("JetLepMass",&JetLepMass);
+    OutputTree->SetBranchAddress("J3Mass",&J3Mass);
+
+    OutputTree->SetBranchAddress("Jet1Pt",     &(Jet1PtSys.Value()));
+    OutputTree->SetBranchAddress("mt",         &(mtSys.Value()));
+    OutputTree->SetBranchAddress("Met",        &(MetSys.Value()));
+    OutputTree->SetBranchAddress("HT",         &(HTSys.Value()));
+    OutputTree->SetBranchAddress("NbLoose",    &(NbLooseSys.Value()));
+    OutputTree->SetBranchAddress("Njet",       &(NjetSys.Value()));
+    OutputTree->SetBranchAddress("JetHBpt",    &(JetHBptSys.Value()));
+    OutputTree->SetBranchAddress("DrJetHBLep", &(DrJetHBLepSys.Value()));
+    OutputTree->SetBranchAddress("JetHBCSV",   &(JetHBCSVSys.Value()));
+    for(auto& syst : variations)
+    {
+      OutputTree->SetBranchAddress(("Jet1Pt_" + syst).c_str(),     &(Jet1PtSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("mt_" + syst).c_str(),         &(mtSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("Met_" + syst).c_str(),        &(MetSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("HT_" + syst).c_str(),         &(HTSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("NbLoose_" + syst).c_str(),    &(NbLooseSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("Njet_" + syst).c_str(),       &(NjetSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("JetHBpt_" + syst).c_str(),    &(JetHBptSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("DrJetHBLep_" + syst).c_str(), &(DrJetHBLepSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("JetHBCSV_" + syst).c_str(),   &(JetHBCSVSys.Systematic(syst)));
+    }
+
+    std::map<std::string, ValueWithSystematics<Float_t>> MVAs;
     MVAs["BDT"] = 0;
+    for(auto& syst : variations)
+    {
+      MVAs["BDT"].Systematic(syst) = 0;
+    }
 
     std::map<std::string, TBranch* > MVABranches;
     for(auto & mva : MVAs)
     {
       std::cout << "Creating branch for \"" << mva.first << "\"" << std::endl;
-      MVABranches[mva.first] = OutputTree->Branch(mva.first.c_str(), &mva.second);
+      MVABranches[mva.first] = OutputTree->Branch(mva.first.c_str(), &(mva.second.Value()));
+      std::cout << "Creating branches for the systematic variations:" << std::endl;
+      for(auto& syst : variations)
+      {
+        std::cout << "  - " << syst << std::endl;
+        MVABranches[mva.first + "_" + syst] = OutputTree->Branch((mva.first + "_" + syst).c_str(), &(mva.second.Systematic(syst)));
+      }
     }
 
     std::cout << "--- Processing: " << OutputTree->GetEntries() << " events" << std::endl;
@@ -223,9 +271,34 @@ int main(int argc, char** argv)
       OutputTree->GetEntry(ievt);
       for(auto & mva : MVAs)
       {
+        Jet1Pt = Jet1PtSys.Value();
+        mt = mtSys.Value();
+        Met = MetSys.Value();
+        HT = HTSys.Value();
+        NbLoose = NbLooseSys.Value();
+        Njet = NjetSys.Value();
+        JetHBpt = JetHBptSys.Value();
+        DrJetHBLep = DrJetHBLepSys.Value();
+        JetHBCSV = JetHBCSVSys.Value();
         //if (ievt%1000 == 0) std::cout << "Evaluating method: \"" << mva.first << "\"" << std::endl;
-        mva.second = reader->EvaluateMVA((mva.first + " method").c_str());
+        mva.second.Value() = reader->EvaluateMVA((mva.first + " method").c_str());
         MVABranches[mva.first]->Fill();
+
+        for(auto& syst : variations)
+        {
+          Jet1Pt = Jet1PtSys.Systematic(syst);
+          mt = mtSys.Systematic(syst);
+          Met = MetSys.Systematic(syst);
+          HT = HTSys.Systematic(syst);
+          NbLoose = NbLooseSys.Systematic(syst);
+          Njet = NjetSys.Systematic(syst);
+          JetHBpt = JetHBptSys.Systematic(syst);
+          DrJetHBLep = DrJetHBLepSys.Systematic(syst);
+          JetHBCSV = JetHBCSVSys.Systematic(syst);
+
+          mva.second.Systematic(syst) = reader->EvaluateMVA((mva.first + " method").c_str());
+          MVABranches[mva.first + "_" + syst]->Fill();
+        }
       }
     }
 
