@@ -51,6 +51,7 @@ int main(int argc, char** argv)
   bool doVR1 = false; // Swap the Met and LepPt for this VR
   bool doVR2 = false; // Invert the Met for this VR
   bool doVR3 = false; // Invert the LepPt for this VR
+  bool unblind = false;
 
   if(argc < 2)
   {
@@ -80,6 +81,9 @@ int main(int argc, char** argv)
 
     if(argument == "--suffix")
       suffix = argv[++i];
+
+    if(argument == "--unblind")
+      unblind = true;
 
     if(argument == "--lumi")
     {
@@ -230,6 +234,8 @@ int main(int argc, char** argv)
   baseSelection += DPhiJet1Jet2 + " < 2.5 || " + Jet2Pt + " < 60) && (" + HT + " > 200) && (" + Jet1Pt + " > 110) && ";
   baseSelection += metSelection + " && ";
   baseSelection += lepSelection;
+  if(doVR1)
+    baseSelection += " && " + VR1Trigger;
 
   auto printSel = [&](std::string name, ValueWithSystematics<std::string> selection) -> void
   {
@@ -250,7 +256,192 @@ int main(int argc, char** argv)
   printSel("loose selection", looseSelection);
   printSel("prompt selection", promptSelection);
   printSel("fake selection", fakeSelection);
-  printSel("VR1Trigger", VR1Trigger);
+
+
+  std::vector<std::string> systematics = {"JES", "JER"};
+  {
+    auto loadSystName = [&systematics](std::string baseName, int bins, int min = 1) -> void
+    {
+      for(int i = min; i <= bins; ++i)
+      {
+        std::stringstream converter;
+        converter << baseName << i;
+        systematics.push_back(converter.str());
+      }
+      return;
+    };
+
+    systematics.push_back("PU");
+
+    loadSystName("Q2_", 8)
+
+    systematics.push_back("CFErr1");
+    systematics.push_back("CFErr2");
+    systematics.push_back("HF");
+    systematics.push_back("HFStats1");
+    systematics.push_back("HFStats2");
+    systematics.push_back("LF");
+    systematics.push_back("LFStats1");
+    systematics.push_back("LFStats2");
+
+    systematics.push_back("FullFast");
+    systematics.push_back("FullFast_HIIP_AltCorr");
+    systematics.push_back("FullFast_ID_AltCorr");
+    loadSystName("FullFast_HIIP_Electron_Bin", 40);
+    loadSystName("FullFast_HIIP_Muon_Bin", 48);
+    loadSystName("FullFast_ID_Electron_Bin", 35);
+    loadSystName("FullFast_ID_Muon_Bin", 42);
+
+    systematics.push_back("LeptonIDSF_AltCorr");
+    systematics.push_back("LeptonISOSF_AltCorr");
+    loadSystName("LeptonIDSF_Electron_Bin", 98);
+    loadSystName("LeptonIDSF_Muon_Bin", 56);
+    loadSystName("LeptonISOSF_Electron_Bin", 12);
+    loadSystName("LeptonISOSF_Muon_Bin", 6);
+
+    systematics.push_back("ISRweight_AltCorr");
+    loadSystName("ISRweight_Bin", 6);
+
+    systematics.push_back("EWKISRweight_AltCorr");
+    loadSystName("EWKISRweight_Bin", 7);
+
+    systematics.push_back("TightLoose_AltCorr");
+    loadSystName("TightLoose_Electron_Bin", 16);
+    loadSystName("TightLoose_Muon_Bin", 18);
+
+    systematics.push_back("TightLoose_NU_AltCorr");
+    loadSystName("TightLoose_NU_Bin", 5);
+
+    systematics.push_back("triggerEfficiency");
+
+    systematics.push_back("triggerEfficiency_stat");
+  }
+  std::vector<std::string> variations;
+  {
+    for(auto& syst : systematics)
+    {
+      variations.push_back(syst+"_Up");
+      variations.push_back(syst+"_Down");
+    }
+  }
+  ValueWithSystematics<std::string> weight = "weight";
+  for(auto& syst : variations)
+  {
+    weight.Systematic(syst) = weight.Value() + "_" + syst;
+  }
+
+  if(verbose)
+    std::cout << "Splitting samples according to type" << std::endl;
+  auto MC = samples.getMCBkg();
+  auto Sig = samples.getMCSig();
+  auto Data = samples.getData();
+
+  if(verbose)
+    std::cout << "Building background process map" << std::endl;
+  std::map<std::string, size_t> bkgMap;
+  bool foundTTbar = false, foundWJets = false;
+  for(size_t i = 0; i < MC.nProcesses(); ++i)
+  {
+    if(MC.process(i).tag().find("ttbar") != std::string::npos)
+    {
+      bkgMap["ttbar"] = i;
+      foundTTbar = true;
+    }
+    else
+      bkgMap[MC.process(i).tag()] = i;
+
+    if(MC.process(i).tag() == "WJets")
+      foundWJets = true;
+  }
+  if(!foundTTbar)
+  {
+    std::cout << "There isn't a ttbar sample in the JSON file" << std::endl;
+    return 1;
+  }
+  if(!foundWJets)
+  {
+    std::cout << "There isn't a wjets sample in the JSON file" << std::endl;
+    return 1;
+  }
+
+
+  if(verbose)
+    std::cout << "Filtering the trees" << std::endl;
+
+  TTree* dataTree = Data.getChain()->CopyTree(baseSelection.Value().c_str());
+  ValueWithSystematics<TTree*> bkgTree = MC.getChain()->CopyTree(baseSelection.Value().c_str()); // Do we even need a specific tree for background?
+  std::vector<ValueWithSystematics<TTree*>> sigTree;
+  for(size_t i = 0; i < Sig.nProcesses(); ++i)
+    sigTree.push_back(Sig.process(i).getChain()->CopyTree(baseSelection.Value().c_str()));
+  std::vector<ValueWithSystematics<TTree*>> mcTree;
+  for(size_t i = 0; i < MC.nProcesses(); ++i)
+    mcTree.push_back(MC.process(i).getChain()->CopyTree(baseSelection.Value().c_str()));
+
+  for(auto& syst : baseSelection.Systematics())
+  {
+    bkgTree.Systematic(syst) = MC.getChain()->CopyTree(baseSelection.Systematic(syst).c_str());
+    for(size_t i = 0; i < Sig.nProcesses(); ++i)
+      sigTree[i].Systematic(syst) = Sig.process(i).getChain()->CopyTree(baseSelection.Systematic(syst).c_str());
+    for(size_t i = 0; i < MC.nProcesses(); ++i)
+      mcTree[i].Systematic(syst) = MC.process(i).getChain()->CopyTree(baseSelection.Systematic(syst).c_str());
+  }
+
+  if(verbose)
+    std::cout << "Done filtering" << std::endl << std::endl;
+
+  if(verbose)
+    std::cout << "Preparing to compute all the analysis yields" << std::endl;
+
+  auto getYield = [&](ValueWithSystematics<TTree*> tree, ValueWithSystematics<std::string> weight) -> ValueWithSystematics<double>
+  {
+    ValueWithSystematics<double> retVal = 0.0;
+    std::vector<std::string> mySystematics = {"central"};
+    loadSystematics(mySystematics, tree);
+    loadSystematics(mySystematics, additionalCut);
+    loadSystematics(mySystematics, weight);
+
+    for(auto& syst : mySystematics)
+    {
+      TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
+      tmpHist.Sumw2();
+
+      tree.GetSystematicOrValue(syst)->Draw("weight>>tmpHist", weight.GetSystematicOrValue(syst));
+
+      double val = tmpHist.GetBinContent(0) + tmpHist.GetBinContent(1) + tmpHist.GetBinContent(2);
+      double unc = tmpHist.GetBinError(0) + tmpHist.GetBinError(1) + tmpHist.GetBinError(2);
+
+      if(syst == "central")
+      {
+        retVal.Value() = val;
+        retVal.Systematic("Stat") = unc;
+      }
+      else
+      {
+        retVal.Systematic(syst) = val;
+      }
+    }
+
+    return retVal;
+  };
+
+  // The selection cuts for the several regions of interest
+  ValueWithSystematics<std::string> theSRSelection = std::string("(");
+  theSRSelection += srSelection + " && " + tightSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theSRWJetsSelection = std::string("(");
+  theSRWJetsSelection += srSelection + " && " + wjetsEnrich + " && " + tightSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theSRTTbarSelection = std::string("(");
+  theSRTTbarSelection += srSelection + " && " + ttbarEnrich + " && " + tightSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRWJetsSelection = std::string("(");
+  theCRWJetsSelection += crSelection + " && " + wjetsEnrich + " && " + tightSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRTTbarSelection = std::string("(");
+  theCRTTbarSelection += crSelection + " && " + ttbarEnrich + " && " + tightSelection + ") * " + weight;
+
+  // The output file
+  TFile outFile((outputDirectory + "/yields.root").c_str(), "RECREATE");
+
+  auto dataSR = getYield(dataTree, theSRSelection.Value());
+  if(unblind)
+    dataSR.SaveTTree("SR_data", &outFile);
 
   if(verbose)
     std::cout << "We are verbose" << std::endl;
