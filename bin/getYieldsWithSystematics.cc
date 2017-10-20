@@ -324,7 +324,7 @@ int main(int argc, char** argv)
       variations.push_back(syst+"_Down");
     }
   }
-  ValueWithSystematics<std::string> weight = "weight";
+  ValueWithSystematics<std::string> weight = std::string("weight");
   for(auto& syst : variations)
   {
     weight.Systematic(syst) = weight.Value() + "_" + syst;
