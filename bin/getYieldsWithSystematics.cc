@@ -273,7 +273,7 @@ int main(int argc, char** argv)
 
     systematics.push_back("PU");
 
-    loadSystName("Q2_", 8)
+    loadSystName("Q2_", 8);
 
     systematics.push_back("CFErr1");
     systematics.push_back("CFErr2");
@@ -324,7 +324,7 @@ int main(int argc, char** argv)
       variations.push_back(syst+"_Down");
     }
   }
-  ValueWithSystematics<std::string> weight = "weight";
+  ValueWithSystematics<std::string> weight = std::string("weight");
   for(auto& syst : variations)
   {
     weight.Systematic(syst) = weight.Value() + "_" + syst;
@@ -397,7 +397,6 @@ int main(int argc, char** argv)
     ValueWithSystematics<double> retVal = 0.0;
     std::vector<std::string> mySystematics = {"central"};
     loadSystematics(mySystematics, tree);
-    loadSystematics(mySystematics, additionalCut);
     loadSystematics(mySystematics, weight);
 
     for(auto& syst : mySystematics)
@@ -405,7 +404,7 @@ int main(int argc, char** argv)
       TH1D tmpHist("tmpHist", "tmpHist", 1, 0.0, 20.0);
       tmpHist.Sumw2();
 
-      tree.GetSystematicOrValue(syst)->Draw("weight>>tmpHist", weight.GetSystematicOrValue(syst));
+      tree.GetSystematicOrValue(syst)->Draw("weight>>tmpHist", weight.GetSystematicOrValue(syst).c_str());
 
       double val = tmpHist.GetBinContent(0) + tmpHist.GetBinContent(1) + tmpHist.GetBinContent(2);
       double unc = tmpHist.GetBinError(0) + tmpHist.GetBinError(1) + tmpHist.GetBinError(2);

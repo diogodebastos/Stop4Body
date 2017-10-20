@@ -281,6 +281,17 @@ std::vector<std::string> ProcessInfo::getAllFiles()
   return retVal;
 }
 
+TChain* ProcessInfo::getChain()
+{
+  TChain* retVal = new TChain("bdttree");
+
+  auto files = getAllFiles();
+  for(auto& file : files)
+    retVal->Add(file.c_str());
+
+  return retVal;
+}
+
 TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax)
 {
   std::string histName = cleanString(variable+"_"+tag_);
