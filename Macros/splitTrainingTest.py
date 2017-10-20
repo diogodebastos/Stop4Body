@@ -131,7 +131,8 @@ if __name__ == "__main__":
               thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
               thisScript.write(". setup.sh\n\n")
 
-              thisScript.write("cd $CMSSW_BASE/src/\n")
+              thisScript.write("#cd $CMSSW_BASE/src/\n")
+              thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_0_14/src/\n")
               thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
               thisScript.write("cd " + baseDirectory + "\n\n")
