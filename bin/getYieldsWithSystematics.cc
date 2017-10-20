@@ -160,15 +160,15 @@ int main(int argc, char** argv)
   std::string VR1Trigger = "(HLT_Mu == 1)";
 
   // Build selection strings, with the systematic variations
-  ValueWithSystematics<std::string> Met          = "Met";
-  ValueWithSystematics<std::string> DPhiJet1Jet2 = "DPhiJet1Jet2";
-  ValueWithSystematics<std::string> Jet1Pt       = "Jet1Pt";
-  ValueWithSystematics<std::string> Jet2Pt       = "Jet2Pt";
-  ValueWithSystematics<std::string> HT           = "HT";
-  ValueWithSystematics<std::string> NbLoose      = "NbLoose";
-  ValueWithSystematics<std::string> NbTight      = "NbTight";
-  ValueWithSystematics<std::string> BDT          = "BDT";
-  ValueWithSystematics<std::string> LepPt        = "LepPt";
+  ValueWithSystematics<std::string> Met          = std::string("Met");
+  ValueWithSystematics<std::string> DPhiJet1Jet2 = std::string("DPhiJet1Jet2");
+  ValueWithSystematics<std::string> Jet1Pt       = std::string("Jet1Pt");
+  ValueWithSystematics<std::string> Jet2Pt       = std::string("Jet2Pt");
+  ValueWithSystematics<std::string> HT           = std::string("HT");
+  ValueWithSystematics<std::string> NbLoose      = std::string("NbLoose");
+  ValueWithSystematics<std::string> NbTight      = std::string("NbTight");
+  ValueWithSystematics<std::string> BDT          = std::string("BDT");
+  ValueWithSystematics<std::string> LepPt        = std::string("LepPt");
   { // Loading the systematic variations of the quantities above
     std::vector<std::string> variations = {"JES_Up", "JES_Down", "JER_Up", "JER_Down"};
     for(auto& syst : variations)
@@ -184,13 +184,13 @@ int main(int argc, char** argv)
     }
   }
 
-  ValueWithSystematics<std::string> metSelection = "(";
+  ValueWithSystematics<std::string> metSelection = std::string("(");
   if(doVR2)
     metSelection += Met + " > 200 && " + Met + " < 280)";
   else
     metSelection += Met + " > 280)";
 
-  ValueWithSystematics<std::string> lepSelection = "(";
+  ValueWithSystematics<std::string> lepSelection = std::string("(");
   if(isHighDM)
   {
     if(doVR1)
@@ -206,27 +206,27 @@ int main(int argc, char** argv)
       lepSelection += LepPt + " < 30)";
   }
 
-  ValueWithSystematics<std::string> wjetsEnrich = "(";
+  ValueWithSystematics<std::string> wjetsEnrich = std::string("(");
   wjetsEnrich += NbLoose + " == 0)";
 
-  ValueWithSystematics<std::string> ttbarEnrich = "(";
+  ValueWithSystematics<std::string> ttbarEnrich = std::string("(");
   ttbarEnrich += NbTight + " > 0)";
 
-  ValueWithSystematics<std::string> crSelection = "(";
+  ValueWithSystematics<std::string> crSelection = std::string("(");
   {
     std::stringstream converter;
     converter << CRCut;
     crSelection += BDT + " < " + converter.str() + ")";
   }
 
-  ValueWithSystematics<std::string> srSelection = "(";
+  ValueWithSystematics<std::string> srSelection = std::string("(");
   {
     std::stringstream converter;
     converter << SRCut;
     srSelection += BDT + " > " + converter.str() + ")";
   }
 
-  ValueWithSystematics<std::string> baseSelection = "(";
+  ValueWithSystematics<std::string> baseSelection = std::string("(");
   baseSelection += DPhiJet1Jet2 + " < 2.5 || " + Jet2Pt + " < 60) && (" + HT + " > 200) && (" + Jet1Pt + " > 110) && ";
   baseSelection += metSelection + " && ";
   baseSelection += lepSelection;
