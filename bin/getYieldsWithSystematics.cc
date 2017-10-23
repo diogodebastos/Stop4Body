@@ -457,7 +457,28 @@ int main(int argc, char** argv)
   ValueWithSystematics<std::string> theCRTTbarSelection = std::string("(");
   theCRTTbarSelection += crSelection + " && " + ttbarEnrich + " && " + tightSelection + ") * " + weight;
 
-  auto saveYields = [&](std::string regionName, ValueWithSystematics<std::string> regionSelection, bool unblind, bool doData = true) -> void
+  ValueWithSystematics<std::string> theSRPromptSelection = std::string("(");
+  theSRPromptSelection += srSelection + " && " + tightSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theSRFakeSelection = std::string("(");
+  theSRFakeSelection += srSelection + " && " + tightSelection + " && " + fakeSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRWJetsPromptSelection = std::string("(");
+  theCRWJetsPromptSelection += crSelection + " && " + wjetsEnrich + " && " + tightSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRTTbarPromptSelection = std::string("(");
+  theCRTTbarPromptSelection += crSelection + " && " + ttbarEnrich + " && " + tightSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRWJetsFakeSelection = std::string("(");
+  theCRWJetsFakeSelection += crSelection + " && " + wjetsEnrich + " && " + tightSelection + " && " + fakeSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRTTbarFakeSelection = std::string("(");
+  theCRTTbarFakeSelection += crSelection + " && " + ttbarEnrich + " && " + tightSelection + " && " + fakeSelection + ") * " + weight;
+
+
+  ValueWithSystematics<std::string> theLNTSRSelection = std::string("(");
+  theLNTSRSelection += srSelection + " && " + looseSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTSRPromptSelection = std::string("(");
+  theLNTSRPromptSelection += srSelection + " && " + looseSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTSRFakeSelection = std::string("(");
+  theLNTSRFakeSelection += srSelection + " && " + looseSelection + " && " + fakeSelection + ") * " + weight;
+
+  auto saveYields = [&](std::string regionName, ValueWithSystematics<std::string> regionSelection, bool unblind) -> void
   {
     if(unblind)
     {
@@ -479,7 +500,7 @@ int main(int argc, char** argv)
       auto thisSigYield = getYield(sigTree[], regionSelection);
       thisSigYield.SaveTTree(regionName + "_" + Sig.process(i).tag(), &outFile);
     }
-  }
+  };
 
   bool unblindSRYields = unblind || doVR1 || doVR2 || doVR3;
 
@@ -489,7 +510,33 @@ int main(int argc, char** argv)
   saveYields("CR_WJets", theCRWJetsSelection, true); // No need to blind the control regions
   saveYields("CR_TTbar", theCRTTbarSelection, true);
 
+  saveYields("SR_prompt", theSRPromptSelection, false); // Do not do prompt/fake for data, it is not possible to tag
+  saveYields("SR_fake", theSRFakeSelection, false);
+  saveYields("CR_WJets_prompt", theCRWJetsPromptSelection, false);
+  saveYields("CR_WJets_fake", theCRWJetsFakeSelection, false);
+  saveYields("CR_TTbar_prompt", theCRTTbarPromptSelection, false);
+  saveYields("CR_TTbar_fake", theCRTTbarFakeSelection, false);
+
+  saveYields("LNT_SR", theLNTSRSelection, true); // Do not blind control regions, but do not do prompt/fake for data
+  saveYields("LNT_SR_prompt", theLNTSRPromptSelection, false);
+  saveYields("LNT_SR_fake", theLNTSRFakeSelection, false);
+
   // Do data-driven estimates
+  auto DDFake = [&](std::string baseName) -> void
+  {
+    ValueWithSystematics<double> dataYield;
+    dataYield.LoadTTree("LNT_" + baseName + "_data", &outFile);
+
+    ValueWithSystematics<double> promptBkgYield;
+    promptBkgYield.LoadTTree("LNT_" + baseName + "_prompt_bkg", &outFile);
+
+    ValueWithSystematics<double> fakeYield = dataYield - promptBkgYield;
+    fakeYield.SaveTTree(baseName + "_DDfake", &outFile);
+  };
+
+  DDFake("SR");
+  DDFake("CR_WJets");
+  DDFake("CR_TTbar");
 
   return 0;
 }
