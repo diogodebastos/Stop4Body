@@ -477,6 +477,12 @@ int main(int argc, char** argv)
   theLNTSRPromptSelection += srSelection + " && " + looseSelection + " && " + promptSelection + ") * " + weight;
   ValueWithSystematics<std::string> theLNTSRFakeSelection = std::string("(");
   theLNTSRFakeSelection += srSelection + " && " + looseSelection + " && " + fakeSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTSRRawSelection = std::string("(");
+  theLNTSRRawSelection += srSelection + " && " + looseSelection + ") * (" + weight + "/looseNotTightWeight)";
+  ValueWithSystematics<std::string> theLNTSRRawPromptSelection = std::string("(");
+  theLNTSRRawPromptSelection += srSelection + " && " + looseSelection + " && " + promptSelection + ") * (" + weight + "/looseNotTightWeight)";
+  ValueWithSystematics<std::string> theLNTSRRawFakeSelection = std::string("(");
+  theLNTSRRawFakeSelection += srSelection + " && " + looseSelection + " && " + fakeSelection + ") * (" + weight + "/looseNotTightWeight)";
 
   auto saveYields = [&](std::string regionName, ValueWithSystematics<std::string> regionSelection, bool unblind) -> void
   {
@@ -520,6 +526,9 @@ int main(int argc, char** argv)
   saveYields("LNT_SR", theLNTSRSelection, true); // Do not blind control regions, but do not do prompt/fake for data
   saveYields("LNT_SR_prompt", theLNTSRPromptSelection, false);
   saveYields("LNT_SR_fake", theLNTSRFakeSelection, false);
+  saveYields("LNT_SR_Raw", theLNTSRRawSelection, true);
+  saveYields("LNT_SR_Raw_prompt", theLNTSRRawPromptSelection, false);
+  saveYields("LNT_SR_Raw_fake", theLNTSRRawFakeSelection, false);
 
   // Do data-driven estimates
   auto DDFake = [&](std::string baseName) -> void
