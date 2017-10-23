@@ -484,6 +484,21 @@ int main(int argc, char** argv)
   ValueWithSystematics<std::string> theLNTSRRawFakeSelection = std::string("(");
   theLNTSRRawFakeSelection += srSelection + " && " + looseSelection + " && " + fakeSelection + ") * (" + weight + "/looseNotTightWeight)";
 
+
+  ValueWithSystematics<std::string> theLNTCRWJetsSelection = std::string("(");
+  theLNTCRWJetsSelection += crSelection + " && " + wjetsEnrich + " && " + looseSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRTTbarSelection = std::string("(");
+  theLNTCRTTbarSelection += crSelection + " && " + ttbarEnrich + " && " + looseSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRWJetsPromptSelection = std::string("(");
+  theLNTCRWJetsPromptSelection += crSelection + " && " + wjetsEnrich + " && " + looseSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRTTbarPromptSelection = std::string("(");
+  theLNTCRTTbarPromptSelection += crSelection + " && " + ttbarEnrich + " && " + looseSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRWJetsFakeSelection = std::string("(");
+  theLNTCRWJetsFakeSelection += crSelection + " && " + wjetsEnrich + " && " + looseSelection + " && " + fakeSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRTTbarFakeSelection = std::string("(");
+  theLNTCRTTbarFakeSelection += crSelection + " && " + ttbarEnrich + " && " + looseSelection + " && " + fakeSelection + ") * " + weight;
+
+
   auto saveYields = [&](std::string regionName, ValueWithSystematics<std::string> regionSelection, bool unblind) -> void
   {
     if(unblind)
@@ -519,6 +534,8 @@ int main(int argc, char** argv)
       auto thisSigYield = getYield(sigTree[], regionSelection);
       thisSigYield.SaveTTree(regionName + "_" + Sig.process(i).tag(), &outFile);
     }
+
+    return;
   };
 
   bool unblindSRYields = unblind || doVR1 || doVR2 || doVR3;
@@ -543,23 +560,39 @@ int main(int argc, char** argv)
   saveYields("LNT_SR_Raw_prompt", theLNTSRRawPromptSelection, false);
   saveYields("LNT_SR_Raw_fake", theLNTSRRawFakeSelection, false);
 
+  saveYields("LNT_CR_WJets", theLNTCRWJetsSelection, true); // No need to blind the control regions
+  saveYields("LNT_CR_TTbar", theLNTCRTTbarSelection, true);
+  saveYields("LNT_CR_WJets_prompt", theLNTCRWJetsPromptSelection, false); // Do not do prompt/fake for data
+  saveYields("LNT_CR_WJets_fake", theLNTCRWJetsFakeSelection, false);
+  saveYields("LNT_CR_TTbar_prompt", theLNTCRTTbarPromptSelection, false);
+  saveYields("LNT_CR_TTbar_fake", theLNTCRTTbarFakeSelection, false);
+
   // Do data-driven estimates
-  auto DDFake = [&](std::string baseName) -> void
+  auto DDFake = [](TFile* outFile, std::string baseName) -> void
   {
     ValueWithSystematics<double> dataYield;
-    dataYield.LoadTTree("LNT_" + baseName + "_data", &outFile);
+    dataYield.LoadTTree("LNT_" + baseName + "_data", outFile);
 
     ValueWithSystematics<double> promptBkgYield;
-    promptBkgYield.LoadTTree("LNT_" + baseName + "_prompt_bkg", &outFile);
+    promptBkgYield.LoadTTree("LNT_" + baseName + "_prompt_bkg", outFile);
 
     ValueWithSystematics<double> fakeYield = dataYield - promptBkgYield;
     fakeYield.Systematic("Stat") = std::sqrt(std::pow(dataYield.Systematic("Stat"), 2) + std::pow(promptBkgYield.Systematic("Stat"), 2));
-    fakeYield.SaveTTree(baseName + "_DDfake", &outFile);
+    fakeYield.SaveTTree(baseName + "_DDfake", outFile);
+
+    return;
   };
 
-  DDFake("SR");
-  DDFake("CR_WJets");
-  DDFake("CR_TTbar");
+  DDFake(&outFile, "SR");
+  DDFake(&outFile, "CR_WJets");
+  DDFake(&outFile, "CR_TTbar");
+
+  auto DDPrompt = [](TFile* outFile, std::string baseName, bool removeFake = true) -> void
+  {};
+
+  DDPrompt("SR");
+  DDPrompt("SR_WJets", false); // Do not remove fake component from the CRs for testing closure in VRs
+  DDPrompt("SR_TTbar", false);
 
   return 0;
 }
