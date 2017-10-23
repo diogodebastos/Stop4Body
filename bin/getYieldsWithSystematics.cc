@@ -438,9 +438,19 @@ int main(int argc, char** argv)
   // The output file
   TFile outFile((outputDirectory + "/yields.root").c_str(), "RECREATE");
 
-  auto dataSR = getYield(dataTree, theSRSelection.Value());
-  if(unblind)
+  auto dataSR      = getYield(dataTree, theSRSelection.Value());
+  auto dataSRWJets = getYield(dataTree, theSRWJetsSelection.Value());
+  auto dataSRTTbar = getYield(dataTree, theSRTTbarSelection.Value());
+  auto dataCRWJets = getYield(dataTree, theCRWJetsSelection.Value());
+  auto dataCRTTbar = getYield(dataTree, theCRTTbarSelection.Value());
+  if(unblind || doVR1 || doVR2 || doVR3)
+  {
     dataSR.SaveTTree("SR_data", &outFile);
+    dataSRWJets.SaveTTree("SR_WJets_data", &outFile);
+    dataSRTTbar.SaveTTree("SR_TTbar_data", &outFile);
+  }
+  dataCRWJets.SaveTTree("CR_WJets_data", &outFile);
+  dataCRTTbar.SaveTTree("CR_TTbar_data", &outFile);
 
   return 0;
 }
