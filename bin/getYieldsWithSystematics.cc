@@ -368,22 +368,40 @@ int main(int argc, char** argv)
   if(verbose)
     std::cout << "Filtering the trees" << std::endl;
 
-  TTree* dataTree = Data.getChain()->CopyTree(baseSelection.Value().c_str());
-  ValueWithSystematics<TTree*> bkgTree = MC.getChain()->CopyTree(baseSelection.Value().c_str()); // Do we even need a specific tree for background?
-  std::vector<ValueWithSystematics<TTree*>> sigTree;
-  for(size_t i = 0; i < Sig.nProcesses(); ++i)
-    sigTree.push_back(Sig.process(i).getChain()->CopyTree(baseSelection.Value().c_str()));
-  std::vector<ValueWithSystematics<TTree*>> mcTree;
-  for(size_t i = 0; i < MC.nProcesses(); ++i)
-    mcTree.push_back(MC.process(i).getChain()->CopyTree(baseSelection.Value().c_str()));
+  TChain* tmpChain = Data.getChain();
+  TTree* dataTree = tmpChain->CopyTree(baseSelection.Value().c_str());
+  delete tmpChain;
 
+  tmpChain = MC.getChain();
+  ValueWithSystematics<TTree*> bkgTree = tmpChain->CopyTree(baseSelection.Value().c_str()); // Do we even need a specific tree for background?
   for(auto& syst : baseSelection.Systematics())
   {
-    bkgTree.Systematic(syst) = MC.getChain()->CopyTree(baseSelection.Systematic(syst).c_str());
-    for(size_t i = 0; i < Sig.nProcesses(); ++i)
-      sigTree[i].Systematic(syst) = Sig.process(i).getChain()->CopyTree(baseSelection.Systematic(syst).c_str());
-    for(size_t i = 0; i < MC.nProcesses(); ++i)
-      mcTree[i].Systematic(syst) = MC.process(i).getChain()->CopyTree(baseSelection.Systematic(syst).c_str());
+    bkgTree.Systematic(syst) = tmpChain->CopyTree(baseSelection.Systematic(syst).c_str());
+  }
+  delete tmpChain;
+
+  std::vector<ValueWithSystematics<TTree*>> sigTree;
+  for(size_t i = 0; i < Sig.nProcesses(); ++i)
+  {
+    tmpChain = Sig.process(i).getChain();
+    sigTree.push_back(tmpChain->CopyTree(baseSelection.Value().c_str()));
+    for(auto& syst : baseSelection.Systematics())
+    {
+      sigTree[i].Systematic(syst) = tmpChain->CopyTree(baseSelection.Systematic(syst).c_str());
+    }
+    delete tmpChain;
+  }
+
+  std::vector<ValueWithSystematics<TTree*>> mcTree;
+  for(size_t i = 0; i < MC.nProcesses(); ++i)
+  {
+    tmpChain = MC.process(i).getChain();
+    mcTree.push_back(tmpChain->CopyTree(baseSelection.Value().c_str()));
+    for(auto& syst : baseSelection.Systematics())
+    {
+      mcTree[i].Systematic(syst) = tmpChain->CopyTree(baseSelection.Systematic(syst).c_str());
+    }
+    delete tmpChain;
   }
 
   if(verbose)
