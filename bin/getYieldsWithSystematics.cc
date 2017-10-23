@@ -553,6 +553,7 @@ int main(int argc, char** argv)
     promptBkgYield.LoadTTree("LNT_" + baseName + "_prompt_bkg", &outFile);
 
     ValueWithSystematics<double> fakeYield = dataYield - promptBkgYield;
+    fakeYield.Systematic("Stat") = std::sqrt(std::pow(dataYield.Systematic("Stat"), 2) + std::pow(promptBkgYield.Systematic("Stat"), 2));
     fakeYield.SaveTTree(baseName + "_DDfake", &outFile);
   };
 
