@@ -456,19 +456,39 @@ int main(int argc, char** argv)
   // The output file
   TFile outFile((outputDirectory + "/yields.root").c_str(), "RECREATE");
 
-  auto dataSR      = getYield(dataTree, theSRSelection.Value());
-  auto dataSRWJets = getYield(dataTree, theSRWJetsSelection.Value());
-  auto dataSRTTbar = getYield(dataTree, theSRTTbarSelection.Value());
-  auto dataCRWJets = getYield(dataTree, theCRWJetsSelection.Value());
-  auto dataCRTTbar = getYield(dataTree, theCRTTbarSelection.Value());
-  if(unblind || doVR1 || doVR2 || doVR3)
+  auto saveYields = [&](std::string regionName, ValueWithSystematics<std::string> regionSelection, bool unblind, bool doData = true) -> void
   {
-    dataSR.SaveTTree("SR_data", &outFile);
-    dataSRWJets.SaveTTree("SR_WJets_data", &outFile);
-    dataSRTTbar.SaveTTree("SR_TTbar_data", &outFile);
+    if(unblind)
+    {
+      auto dataYield = getYield(dataTree, regionSelection.Value());
+      dataYield.SaveTTree(regionName + "_data", &outFile);
+    }
+
+    auto bkgYield = getYield(bkgTree, regionSelection);
+    bkgYield.SaveTTree(regionName + "_bkg", &outFile);
+
+    for(auto& bkg : bkgMap)
+    {
+      auto thisBkgYield = getYield(mcTree[bkgMap.second], regionSelection);
+      thisBkgYield.SaveTTree(regionName + "_" + bkg.first, &outFile);
+    }
+
+    for(size_t i = 0; i < Sig.nProcesses(); ++i)
+    {
+      auto thisSigYield = getYield(sigTree[], regionSelection);
+      thisSigYield.SaveTTree(regionName + "_" + Sig.process(i).tag(), &outFile);
+    }
   }
-  dataCRWJets.SaveTTree("CR_WJets_data", &outFile);
-  dataCRTTbar.SaveTTree("CR_TTbar_data", &outFile);
+
+  bool unblindYields = unblind || doVR1 || doVR2 || doVR3;
+
+  saveYields("SR", theSRSelection, unblindYields);
+  saveYields("SR_WJets", theSRWJetsSelection, unblindYields);
+  saveYields("SR_TTbar", theSRTTbarSelection, unblindYields);
+  saveYields("CR_WJets", theCRWJetsSelection, true); // No need to blind the control regions
+  saveYields("CR_TTbar", theCRTTbarSelection, true);
+
+  // Do data-driven estimates
 
   return 0;
 }
