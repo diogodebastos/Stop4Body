@@ -641,9 +641,9 @@ int main(int argc, char** argv)
       if(!(bkg.first == "WJets"))
       {
         if(removeFake)
-          mcCRWJets.LoadTTree("CR_WJets_prompt_" + bkg.first);
+          mcCRWJets.LoadTTree("CR_WJets_prompt_" + bkg.first, outFile);
         else
-          mcCRWJets.LoadTTree("CR_WJets_" + bkg.first);
+          mcCRWJets.LoadTTree("CR_WJets_" + bkg.first, outFile);
         statCRWJets += std::pow(mcCRWJets.Systematic("Stat"), 2);
         otherMCCRWJets += mcCRWJets;
       }
@@ -651,15 +651,53 @@ int main(int argc, char** argv)
       if(!(bkg.first == "ttbar"))
       {
         if(removeFake)
-          mcCRTTbar.LoadTTree("CR_TTbar_prompt_" + bkg.first);
+          mcCRTTbar.LoadTTree("CR_TTbar_prompt_" + bkg.first, outFile);
         else
-          mcCRTTbar.LoadTTree("CR_TTbar_" + bkg.first);
+          mcCRTTbar.LoadTTree("CR_TTbar_" + bkg.first, outFile);
         statCRTTbar += std::pow(mcCRTTbar.Systematic("Stat"), 2);
         otherMCCRTTbar += mcCRTTbar;
       }
     }
     otherMCCRWJets.Systematic("Stat") = std::sqrt(statCRWJets);
     otherMCCRTTbar.Systematic("Stat") = std::sqrt(statCRTTbar);
+
+    ValueWithSystematics<double> subCRWJets = dataCRWJets - fakeCRWJets - otherMCCRWJets;
+    ValueWithSystematics<double> subCRTTbar = dataCRTTbar - fakeCRTTbar - otherMCCRTTbar;
+    subCRWJets.Systematic("Stat") = std::sqrt(
+      std::pow( dataCRWJets.Systematic("Stat"), 2) +
+      std::pow( fakeCRWJets.Systematic("Stat"), 2) +
+      std::pow(otherCRWJets.Systematic("Stat"), 2)
+    );
+    subCRTTbar.Systematic("Stat") = std::sqrt(
+      std::pow( dataCRTTbar.Systematic("Stat"), 2) +
+      std::pow( fakeCRTTbar.Systematic("Stat"), 2) +
+      std::pow(otherCRTTbar.Systematic("Stat"), 2)
+    );
+
+    ValueWithSystematics<double> ratioCRWJets = wjetsSR / wjetsCRWJets;
+    ValueWithSystematics<double> ratioCRTTbar = ttbarSR / ttbarCRTTbar;
+    ratioCRWJets.Systematic("Stat") = std::sqrt(
+      std::pow(wjetsSR.Systematic("Stat")/wjetsCRWJets.Value(), 2) +
+      std::pow(wjetsCRWJets.Systematic("Stat")*wjetsSR.Value()/std::pow(wjetsCRWJets.Value(), 2), 2)
+    );
+    ratioCRWTTbar.Systematic("Stat") = std::sqrt(
+      std::pow(ttbarSR.Systematic("Stat")/ttbarCRWTTbar.Value(), 2) +
+      std::pow(ttbarCRWTTbar.Systematic("Stat")*ttbarSR.Value()/std::pow(ttbarCRWTTbar.Value(), 2), 2)
+    );
+
+    ValueWithSystematics<double> wjetsEstimate = ratioCRWJets * subCRWJets;
+    ValueWithSystematics<double> ttbarEstimate = ratioCRTTbar * subCRTTbar;
+    wjetsEstimate.Systematic("Stat") = std::sqrt(
+      std::pow(ratioCRWJets.Value() * subCRWJets.Systematic("Stat"), 2) +
+      std::pow(ratioCRWJets.Systematic("Stat") * subCRWJets.Value(), 2)
+    );
+    ttbarEstimate.Systematic("Stat") = std::sqrt(
+      std::pow(ratioCRTTbar.Value() * subCRTTbar.Systematic("Stat"), 2) +
+      std::pow(ratioCRTTbar.Systematic("Stat") * subCRTTbar.Value(), 2)
+    );
+
+    wjetsEstimate.SaveTTree(baseName + "_DDWJets", outFile);
+    ttbarEstimate.SaveTTree(baseName + "_DDTTbar", outFile);
 
     return;
   };
