@@ -587,12 +587,86 @@ int main(int argc, char** argv)
   DDFake(&outFile, "CR_WJets");
   DDFake(&outFile, "CR_TTbar");
 
-  auto DDPrompt = [](TFile* outFile, std::string baseName, bool removeFake = true) -> void
-  {};
+  auto DDPrompt = [&](TFile* outFile, std::string baseName, bool removeFake = true) -> void
+  {
+    ValueWithSystematics<double> dataCRWJets;
+    ValueWithSystematics<double> dataCRTTbar;
+    dataCRWJets.LoadTTree("CR_WJets_data", outFile);
+    dataCRTTbar.LoadTTree("CR_TTbar_data", outFile);
 
-  DDPrompt("SR");
-  DDPrompt("SR_WJets", false); // Do not remove fake component from the CRs for testing closure in VRs
-  DDPrompt("SR_TTbar", false);
+    ValueWithSystematics<double> wjetsCRWJets;
+    ValueWithSystematics<double> ttbarCRTTbar;
+    if(removeFake)
+    {
+      wjetsCRWJets.LoadTTree("CR_WJets_prompt_WJets", outFile);
+      ttbarCRTTbar.LoadTTree("CR_TTbar_prompt_ttbar", outFile);
+    }
+    else
+    {
+      wjetsCRWJets.LoadTTree("CR_WJets_WJets", outFile);
+      ttbarCRTTbar.LoadTTree("CR_TTbar_ttbar", outFile);
+    }
+
+    ValueWithSystematics<double> wjetsSR;
+    ValueWithSystematics<double> ttbarSR;
+    if(removeFake)
+    {
+      wjetsSR.LoadTTree(baseName + "_prompt_WJets", outFile);
+      ttbarSR.LoadTTree(baseName + "_prompt_ttbar", outFile);
+    }
+    else
+    {
+      wjetsSR.LoadTTree(baseName + "_WJets", outFile);
+      ttbarSR.LoadTTree(baseName + "_ttbar", outFile);
+    }
+
+    ValueWithSystematics<double> fakeCRWJets = 0;
+    ValueWithSystematics<double> fakeCRTTbar = 0;
+    if(removeFake)
+    {
+      fakeCRWJets.LoadTTree("CR_WJets_DDfake", outFile);
+      fakeCRTTbar.LoadTTree("CR_TTbar_DDfake", outFile);
+    }
+
+    ValueWithSystematics<double> otherMCCRWJets;
+    ValueWithSystematics<double> otherMCCRTTbar;
+    double statCRWJets = 0;
+    double statCRTTbar = 0;
+
+    for(auto& bkg : bkgMap)
+    {
+      ValueWithSystematics<double> mcCRWJets;
+      ValueWithSystematics<double> mcCRTTbar;
+
+      if(!(bkg.first == "WJets"))
+      {
+        if(removeFake)
+          mcCRWJets.LoadTTree("CR_WJets_prompt_" + bkg.first);
+        else
+          mcCRWJets.LoadTTree("CR_WJets_" + bkg.first);
+        statCRWJets += std::pow(mcCRWJets.Systematic("Stat"), 2);
+        otherMCCRWJets += mcCRWJets;
+      }
+
+      if(!(bkg.first == "ttbar"))
+      {
+        if(removeFake)
+          mcCRTTbar.LoadTTree("CR_TTbar_prompt_" + bkg.first);
+        else
+          mcCRTTbar.LoadTTree("CR_TTbar_" + bkg.first);
+        statCRTTbar += std::pow(mcCRTTbar.Systematic("Stat"), 2);
+        otherMCCRTTbar += mcCRTTbar;
+      }
+    }
+    otherMCCRWJets.Systematic("Stat") = std::sqrt(statCRWJets);
+    otherMCCRTTbar.Systematic("Stat") = std::sqrt(statCRTTbar);
+
+    return;
+  };
+
+  DDPrompt(&outFile, "SR");
+  DDPrompt(&outFile, "SR_WJets", false); // Do not remove fake component from the CRs for testing closure in VRs
+  DDPrompt(&outFile, "SR_TTbar", false);
 
   return 0;
 }
