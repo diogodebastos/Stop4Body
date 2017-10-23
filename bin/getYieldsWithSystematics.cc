@@ -518,8 +518,8 @@ int main(int argc, char** argv)
 
       if(!(bkg.first == "WJets" || bkg.first == "ttbar"))
       {
-        thisBkgYield.Systematic("sigma_" + bkg.first + "_Up") = thisBkgYield.Value() * 1.5;
-        thisBkgYield.Systematic("sigma_" + bkg.first + "_Down") = thisBkgYield.Value() * 0.5;
+        thisBkgYield.Systematic("xsec_" + bkg.first + "_Up") = thisBkgYield.Value() * 1.5;
+        thisBkgYield.Systematic("xsec_" + bkg.first + "_Down") = thisBkgYield.Value() * 0.5;
       }
 
       thisBkgYield.SaveTTree(regionName + "_" + bkg.first, &outFile);
