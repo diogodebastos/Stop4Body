@@ -365,6 +365,10 @@ int main(int argc, char** argv)
   }
 
 
+  // The output file
+  TFile outFile((outputDirectory + "/yields.root").c_str(), "RECREATE");
+  // Moving the file here means that the temporary filtered trees will be saved to disk... might help alleviate the memory pressure
+
   if(verbose)
     std::cout << "Filtering the trees" << std::endl;
 
@@ -453,9 +457,6 @@ int main(int argc, char** argv)
   ValueWithSystematics<std::string> theCRTTbarSelection = std::string("(");
   theCRTTbarSelection += crSelection + " && " + ttbarEnrich + " && " + tightSelection + ") * " + weight;
 
-  // The output file
-  TFile outFile((outputDirectory + "/yields.root").c_str(), "RECREATE");
-
   auto saveYields = [&](std::string regionName, ValueWithSystematics<std::string> regionSelection, bool unblind, bool doData = true) -> void
   {
     if(unblind)
@@ -480,11 +481,11 @@ int main(int argc, char** argv)
     }
   }
 
-  bool unblindYields = unblind || doVR1 || doVR2 || doVR3;
+  bool unblindSRYields = unblind || doVR1 || doVR2 || doVR3;
 
-  saveYields("SR", theSRSelection, unblindYields);
-  saveYields("SR_WJets", theSRWJetsSelection, unblindYields);
-  saveYields("SR_TTbar", theSRTTbarSelection, unblindYields);
+  saveYields("SR", theSRSelection, unblindSRYields);
+  saveYields("SR_WJets", theSRWJetsSelection, unblindSRYields);
+  saveYields("SR_TTbar", theSRTTbarSelection, unblindSRYields);
   saveYields("CR_WJets", theCRWJetsSelection, true); // No need to blind the control regions
   saveYields("CR_TTbar", theCRTTbarSelection, true);
 
