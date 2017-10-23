@@ -492,14 +492,27 @@ int main(int argc, char** argv)
       dataYield.SaveTTree(regionName + "_data", &outFile);
     }
 
-    auto bkgYield = getYield(bkgTree, regionSelection);
-    bkgYield.SaveTTree(regionName + "_bkg", &outFile);
+    //auto bkgYield = getYield(bkgTree, regionSelection);
+    //bkgYield.SaveTTree(regionName + "_bkg", &outFile);
 
+    ValueWithSystematics<double> bkgYield;
+    double stat = 0;
     for(auto& bkg : bkgMap)
     {
       auto thisBkgYield = getYield(mcTree[bkgMap.second], regionSelection);
+
+      if(!(bkg.first == "WJets" || bkg.first == "ttbar"))
+      {
+        thisBkgYield.Systematic("sigma_" + bkg.first + "_Up") = thisBkgYield.Value() * 1.5;
+        thisBkgYield.Systematic("sigma_" + bkg.first + "_Down") = thisBkgYield.Value() * 0.5;
+      }
+
       thisBkgYield.SaveTTree(regionName + "_" + bkg.first, &outFile);
+      bkgYield += thisBkgYield;
+      stat += std::pow(thisBkgYield.Systematic("Stat"), 2);
     }
+    bkgYield.Systematic("Stat") = std::sqrt(stat);
+    bkgYield.SaveTTree(regionName + "_bkg", &outFile);
 
     for(size_t i = 0; i < Sig.nProcesses(); ++i)
     {
