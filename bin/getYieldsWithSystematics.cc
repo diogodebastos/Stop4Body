@@ -365,6 +365,10 @@ int main(int argc, char** argv)
   }
 
 
+  // The output file
+  TFile outFile((outputDirectory + "/yields.root").c_str(), "RECREATE");
+  // Moving the file here means that the temporary filtered trees will be saved to disk... might help alleviate the memory pressure
+
   if(verbose)
     std::cout << "Filtering the trees" << std::endl;
 
@@ -453,22 +457,254 @@ int main(int argc, char** argv)
   ValueWithSystematics<std::string> theCRTTbarSelection = std::string("(");
   theCRTTbarSelection += crSelection + " && " + ttbarEnrich + " && " + tightSelection + ") * " + weight;
 
-  // The output file
-  TFile outFile((outputDirectory + "/yields.root").c_str(), "RECREATE");
+  ValueWithSystematics<std::string> theSRPromptSelection = std::string("(");
+  theSRPromptSelection += srSelection + " && " + tightSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theSRFakeSelection = std::string("(");
+  theSRFakeSelection += srSelection + " && " + tightSelection + " && " + fakeSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRWJetsPromptSelection = std::string("(");
+  theCRWJetsPromptSelection += crSelection + " && " + wjetsEnrich + " && " + tightSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRTTbarPromptSelection = std::string("(");
+  theCRTTbarPromptSelection += crSelection + " && " + ttbarEnrich + " && " + tightSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRWJetsFakeSelection = std::string("(");
+  theCRWJetsFakeSelection += crSelection + " && " + wjetsEnrich + " && " + tightSelection + " && " + fakeSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theCRTTbarFakeSelection = std::string("(");
+  theCRTTbarFakeSelection += crSelection + " && " + ttbarEnrich + " && " + tightSelection + " && " + fakeSelection + ") * " + weight;
 
-  auto dataSR      = getYield(dataTree, theSRSelection.Value());
-  auto dataSRWJets = getYield(dataTree, theSRWJetsSelection.Value());
-  auto dataSRTTbar = getYield(dataTree, theSRTTbarSelection.Value());
-  auto dataCRWJets = getYield(dataTree, theCRWJetsSelection.Value());
-  auto dataCRTTbar = getYield(dataTree, theCRTTbarSelection.Value());
-  if(unblind || doVR1 || doVR2 || doVR3)
+
+  ValueWithSystematics<std::string> theLNTSRSelection = std::string("(");
+  theLNTSRSelection += srSelection + " && " + looseSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTSRPromptSelection = std::string("(");
+  theLNTSRPromptSelection += srSelection + " && " + looseSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTSRFakeSelection = std::string("(");
+  theLNTSRFakeSelection += srSelection + " && " + looseSelection + " && " + fakeSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTSRRawSelection = std::string("(");
+  theLNTSRRawSelection += srSelection + " && " + looseSelection + ") * (" + weight + "/looseNotTightWeight)";
+  ValueWithSystematics<std::string> theLNTSRRawPromptSelection = std::string("(");
+  theLNTSRRawPromptSelection += srSelection + " && " + looseSelection + " && " + promptSelection + ") * (" + weight + "/looseNotTightWeight)";
+  ValueWithSystematics<std::string> theLNTSRRawFakeSelection = std::string("(");
+  theLNTSRRawFakeSelection += srSelection + " && " + looseSelection + " && " + fakeSelection + ") * (" + weight + "/looseNotTightWeight)";
+
+
+  ValueWithSystematics<std::string> theLNTCRWJetsSelection = std::string("(");
+  theLNTCRWJetsSelection += crSelection + " && " + wjetsEnrich + " && " + looseSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRTTbarSelection = std::string("(");
+  theLNTCRTTbarSelection += crSelection + " && " + ttbarEnrich + " && " + looseSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRWJetsPromptSelection = std::string("(");
+  theLNTCRWJetsPromptSelection += crSelection + " && " + wjetsEnrich + " && " + looseSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRTTbarPromptSelection = std::string("(");
+  theLNTCRTTbarPromptSelection += crSelection + " && " + ttbarEnrich + " && " + looseSelection + " && " + promptSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRWJetsFakeSelection = std::string("(");
+  theLNTCRWJetsFakeSelection += crSelection + " && " + wjetsEnrich + " && " + looseSelection + " && " + fakeSelection + ") * " + weight;
+  ValueWithSystematics<std::string> theLNTCRTTbarFakeSelection = std::string("(");
+  theLNTCRTTbarFakeSelection += crSelection + " && " + ttbarEnrich + " && " + looseSelection + " && " + fakeSelection + ") * " + weight;
+
+
+  auto saveYields = [&](std::string regionName, ValueWithSystematics<std::string> regionSelection, bool unblind) -> void
   {
-    dataSR.SaveTTree("SR_data", &outFile);
-    dataSRWJets.SaveTTree("SR_WJets_data", &outFile);
-    dataSRTTbar.SaveTTree("SR_TTbar_data", &outFile);
-  }
-  dataCRWJets.SaveTTree("CR_WJets_data", &outFile);
-  dataCRTTbar.SaveTTree("CR_TTbar_data", &outFile);
+    if(unblind)
+    {
+      auto dataYield = getYield(dataTree, regionSelection.Value());
+      dataYield.SaveTTree(regionName + "_data", &outFile);
+    }
+
+    //auto bkgYield = getYield(bkgTree, regionSelection);
+    //bkgYield.SaveTTree(regionName + "_bkg", &outFile);
+
+    ValueWithSystematics<double> bkgYield;
+    double stat = 0;
+    for(auto& bkg : bkgMap)
+    {
+      auto thisBkgYield = getYield(mcTree[bkgMap.second], regionSelection);
+
+      if(!(bkg.first == "WJets" || bkg.first == "ttbar"))
+      {
+        thisBkgYield.Systematic("xsec_" + bkg.first + "_Up") = thisBkgYield.Value() * 1.5;
+        thisBkgYield.Systematic("xsec_" + bkg.first + "_Down") = thisBkgYield.Value() * 0.5;
+      }
+
+      thisBkgYield.SaveTTree(regionName + "_" + bkg.first, &outFile);
+      bkgYield += thisBkgYield;
+      stat += std::pow(thisBkgYield.Systematic("Stat"), 2);
+    }
+    bkgYield.Systematic("Stat") = std::sqrt(stat);
+    bkgYield.SaveTTree(regionName + "_bkg", &outFile);
+
+    for(size_t i = 0; i < Sig.nProcesses(); ++i)
+    {
+      auto thisSigYield = getYield(sigTree[], regionSelection);
+      thisSigYield.SaveTTree(regionName + "_" + Sig.process(i).tag(), &outFile);
+    }
+
+    return;
+  };
+
+  bool unblindSRYields = unblind || doVR1 || doVR2 || doVR3;
+
+  saveYields("SR", theSRSelection, unblindSRYields);
+  saveYields("SR_WJets", theSRWJetsSelection, unblindSRYields);
+  saveYields("SR_TTbar", theSRTTbarSelection, unblindSRYields);
+  saveYields("CR_WJets", theCRWJetsSelection, true); // No need to blind the control regions
+  saveYields("CR_TTbar", theCRTTbarSelection, true);
+
+  saveYields("SR_prompt", theSRPromptSelection, false); // Do not do prompt/fake for data, it is not possible to tag
+  saveYields("SR_fake", theSRFakeSelection, false);
+  saveYields("CR_WJets_prompt", theCRWJetsPromptSelection, false);
+  saveYields("CR_WJets_fake", theCRWJetsFakeSelection, false);
+  saveYields("CR_TTbar_prompt", theCRTTbarPromptSelection, false);
+  saveYields("CR_TTbar_fake", theCRTTbarFakeSelection, false);
+
+  saveYields("LNT_SR", theLNTSRSelection, true); // Do not blind control regions, but do not do prompt/fake for data
+  saveYields("LNT_SR_prompt", theLNTSRPromptSelection, false);
+  saveYields("LNT_SR_fake", theLNTSRFakeSelection, false);
+  saveYields("LNT_SR_Raw", theLNTSRRawSelection, true);
+  saveYields("LNT_SR_Raw_prompt", theLNTSRRawPromptSelection, false);
+  saveYields("LNT_SR_Raw_fake", theLNTSRRawFakeSelection, false);
+
+  saveYields("LNT_CR_WJets", theLNTCRWJetsSelection, true); // No need to blind the control regions
+  saveYields("LNT_CR_TTbar", theLNTCRTTbarSelection, true);
+  saveYields("LNT_CR_WJets_prompt", theLNTCRWJetsPromptSelection, false); // Do not do prompt/fake for data
+  saveYields("LNT_CR_WJets_fake", theLNTCRWJetsFakeSelection, false);
+  saveYields("LNT_CR_TTbar_prompt", theLNTCRTTbarPromptSelection, false);
+  saveYields("LNT_CR_TTbar_fake", theLNTCRTTbarFakeSelection, false);
+
+  // Do data-driven estimates
+  auto DDFake = [](TFile* outFile, std::string baseName) -> void
+  {
+    ValueWithSystematics<double> dataYield;
+    dataYield.LoadTTree("LNT_" + baseName + "_data", outFile);
+
+    ValueWithSystematics<double> promptBkgYield;
+    promptBkgYield.LoadTTree("LNT_" + baseName + "_prompt_bkg", outFile);
+
+    ValueWithSystematics<double> fakeYield = dataYield - promptBkgYield;
+    fakeYield.Systematic("Stat") = std::sqrt(std::pow(dataYield.Systematic("Stat"), 2) + std::pow(promptBkgYield.Systematic("Stat"), 2));
+    fakeYield.SaveTTree(baseName + "_DDfake", outFile);
+
+    return;
+  };
+
+  DDFake(&outFile, "SR");
+  DDFake(&outFile, "CR_WJets");
+  DDFake(&outFile, "CR_TTbar");
+
+  auto DDPrompt = [&](TFile* outFile, std::string baseName, bool removeFake = true) -> void
+  {
+    ValueWithSystematics<double> dataCRWJets;
+    ValueWithSystematics<double> dataCRTTbar;
+    dataCRWJets.LoadTTree("CR_WJets_data", outFile);
+    dataCRTTbar.LoadTTree("CR_TTbar_data", outFile);
+
+    ValueWithSystematics<double> wjetsCRWJets;
+    ValueWithSystematics<double> ttbarCRTTbar;
+    if(removeFake)
+    {
+      wjetsCRWJets.LoadTTree("CR_WJets_prompt_WJets", outFile);
+      ttbarCRTTbar.LoadTTree("CR_TTbar_prompt_ttbar", outFile);
+    }
+    else
+    {
+      wjetsCRWJets.LoadTTree("CR_WJets_WJets", outFile);
+      ttbarCRTTbar.LoadTTree("CR_TTbar_ttbar", outFile);
+    }
+
+    ValueWithSystematics<double> wjetsSR;
+    ValueWithSystematics<double> ttbarSR;
+    if(removeFake)
+    {
+      wjetsSR.LoadTTree(baseName + "_prompt_WJets", outFile);
+      ttbarSR.LoadTTree(baseName + "_prompt_ttbar", outFile);
+    }
+    else
+    {
+      wjetsSR.LoadTTree(baseName + "_WJets", outFile);
+      ttbarSR.LoadTTree(baseName + "_ttbar", outFile);
+    }
+
+    ValueWithSystematics<double> fakeCRWJets = 0;
+    ValueWithSystematics<double> fakeCRTTbar = 0;
+    if(removeFake)
+    {
+      fakeCRWJets.LoadTTree("CR_WJets_DDfake", outFile);
+      fakeCRTTbar.LoadTTree("CR_TTbar_DDfake", outFile);
+    }
+
+    ValueWithSystematics<double> otherMCCRWJets;
+    ValueWithSystematics<double> otherMCCRTTbar;
+    double statCRWJets = 0;
+    double statCRTTbar = 0;
+
+    for(auto& bkg : bkgMap)
+    {
+      ValueWithSystematics<double> mcCRWJets;
+      ValueWithSystematics<double> mcCRTTbar;
+
+      if(!(bkg.first == "WJets"))
+      {
+        if(removeFake)
+          mcCRWJets.LoadTTree("CR_WJets_prompt_" + bkg.first, outFile);
+        else
+          mcCRWJets.LoadTTree("CR_WJets_" + bkg.first, outFile);
+        statCRWJets += std::pow(mcCRWJets.Systematic("Stat"), 2);
+        otherMCCRWJets += mcCRWJets;
+      }
+
+      if(!(bkg.first == "ttbar"))
+      {
+        if(removeFake)
+          mcCRTTbar.LoadTTree("CR_TTbar_prompt_" + bkg.first, outFile);
+        else
+          mcCRTTbar.LoadTTree("CR_TTbar_" + bkg.first, outFile);
+        statCRTTbar += std::pow(mcCRTTbar.Systematic("Stat"), 2);
+        otherMCCRTTbar += mcCRTTbar;
+      }
+    }
+    otherMCCRWJets.Systematic("Stat") = std::sqrt(statCRWJets);
+    otherMCCRTTbar.Systematic("Stat") = std::sqrt(statCRTTbar);
+
+    ValueWithSystematics<double> subCRWJets = dataCRWJets - fakeCRWJets - otherMCCRWJets;
+    ValueWithSystematics<double> subCRTTbar = dataCRTTbar - fakeCRTTbar - otherMCCRTTbar;
+    subCRWJets.Systematic("Stat") = std::sqrt(
+      std::pow( dataCRWJets.Systematic("Stat"), 2) +
+      std::pow( fakeCRWJets.Systematic("Stat"), 2) +
+      std::pow(otherCRWJets.Systematic("Stat"), 2)
+    );
+    subCRTTbar.Systematic("Stat") = std::sqrt(
+      std::pow( dataCRTTbar.Systematic("Stat"), 2) +
+      std::pow( fakeCRTTbar.Systematic("Stat"), 2) +
+      std::pow(otherCRTTbar.Systematic("Stat"), 2)
+    );
+
+    ValueWithSystematics<double> ratioCRWJets = wjetsSR / wjetsCRWJets;
+    ValueWithSystematics<double> ratioCRTTbar = ttbarSR / ttbarCRTTbar;
+    ratioCRWJets.Systematic("Stat") = std::sqrt(
+      std::pow(wjetsSR.Systematic("Stat")/wjetsCRWJets.Value(), 2) +
+      std::pow(wjetsCRWJets.Systematic("Stat")*wjetsSR.Value()/std::pow(wjetsCRWJets.Value(), 2), 2)
+    );
+    ratioCRWTTbar.Systematic("Stat") = std::sqrt(
+      std::pow(ttbarSR.Systematic("Stat")/ttbarCRWTTbar.Value(), 2) +
+      std::pow(ttbarCRWTTbar.Systematic("Stat")*ttbarSR.Value()/std::pow(ttbarCRWTTbar.Value(), 2), 2)
+    );
+
+    ValueWithSystematics<double> wjetsEstimate = ratioCRWJets * subCRWJets;
+    ValueWithSystematics<double> ttbarEstimate = ratioCRTTbar * subCRTTbar;
+    wjetsEstimate.Systematic("Stat") = std::sqrt(
+      std::pow(ratioCRWJets.Value() * subCRWJets.Systematic("Stat"), 2) +
+      std::pow(ratioCRWJets.Systematic("Stat") * subCRWJets.Value(), 2)
+    );
+    ttbarEstimate.Systematic("Stat") = std::sqrt(
+      std::pow(ratioCRTTbar.Value() * subCRTTbar.Systematic("Stat"), 2) +
+      std::pow(ratioCRTTbar.Systematic("Stat") * subCRTTbar.Value(), 2)
+    );
+
+    wjetsEstimate.SaveTTree(baseName + "_DDWJets", outFile);
+    ttbarEstimate.SaveTTree(baseName + "_DDTTbar", outFile);
+
+    return;
+  };
+
+  DDPrompt(&outFile, "SR");
+  DDPrompt(&outFile, "SR_WJets", false); // Do not remove fake component from the CRs for testing closure in VRs
+  DDPrompt(&outFile, "SR_TTbar", false);
 
   if(verbose)
     std::cout << "We are verbose" << std::endl;
