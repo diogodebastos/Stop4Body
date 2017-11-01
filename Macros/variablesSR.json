@@ -2,92 +2,92 @@
   "cuts":[
     {
       "name":"PreselectionMVA",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
       "latex":"Preselection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"PreselectionMVA_prompt",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 1)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 1)$(highDeltaM)",
       "latex":"Preselection MVA ($p_T(l) < 30$) [prompt]"
     },
     {
       "name":"PreselectionMVA_fake",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 0)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 0)$(highDeltaM)",
       "latex":"Preselection MVA ($p_T(l) < 30$) [fake]"
     },
     {
       "name":"PreselectionMVA_wjets",
-      "expression":"(NbLoose == 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (NbLoose == 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
       "latex":"Preselection MVA ($p_T(l) < 30$) [wjets]"
     },
     {
       "name":"PreselectionMVA_ttbar",
-      "expression":"(NbTight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (NbTight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110)$(highDeltaM)",
       "latex":"Preselection MVA ($p_T(l) < 30$) [ttbar]"
     },
     {
       "name":"SelectionMVA",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"SelectionMVA_ttbar",
-      "expression":"(NbTight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (NbTight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"SelectionMVA_wjets",
-      "expression":"(NbLoose == 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (NbLoose == 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT))$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"SelectionMVA_prompt",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 1)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 1)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [prompt]"
     },
     {
       "name":"SelectionMVA_fake",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 0)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 0)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [fake]"
     },
     {
       "name":"CRMVA",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"CRMVA_ttbar",
-      "expression":"(NbTight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (NbTight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"CRMVA_wjets",
-      "expression":"(NbLoose == 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (NbLoose == 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"CRMVA_prompt",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2) && (isPrompt == 1)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2) && (isPrompt == 1)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [prompt]"
     },
     {
       "name":"CRMVA_fake",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2) && (isPrompt == 0)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (BDT < 0.2) && (isPrompt == 0)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [fake]"
     },
     {
       "name":"SelectionMVA_LNT_prompt",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 0 && isLoose == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 1)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 0 && isLoose == 1) && (Jet1Pt > 110) && (BDT > $(BDTCUT)) && (isPrompt == 1)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$) [prompt]"
     },
     {
       "name":"CRMVA_ttbar_prompt",
-      "expression":"(NbTight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 1) && (BDT < 0.2)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (NbTight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 1) && (BDT < 0.2)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     },
     {
       "name":"CRMVA_wjets_prompt",
-      "expression":"(NbLoose == 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 1) && (BDT < 0.2)$(highDeltaM)",
+      "expression":"badCloneMuonMoriond2017 && (NbLoose == 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && ($(METCUT)) && (isTight == 1) && (Jet1Pt > 110) && (isPrompt == 1) && (BDT < 0.2)$(highDeltaM)",
       "latex":"Selection MVA ($p_T(l) < 30$)"
     }
   ],
