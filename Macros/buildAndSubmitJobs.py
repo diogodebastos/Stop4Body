@@ -21,6 +21,7 @@ if __name__ == "__main__":
   parser.add_argument('-s', '--doSwap', action='store_true', help='Whether to process with the swapping of MET and LepPt variables')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
   parser.add_argument(      '--onlyData', action='store_true', help='Whether to only run on data')
+  parser.add_argument(      '--verbose', action='store_true', help='Give verbose output')
 
   args = parser.parse_args()
 
@@ -98,6 +99,10 @@ if __name__ == "__main__":
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
         p = re.compile("Your job (\d+) .+")
+        if args.verbose:
+          print "CMD:", cmd
+          print "OUT:", out
+          print "ERR:", err
         jobNumber = p.search(out).group(1)
 
         jobInfo[jobName] = jobNumber

@@ -706,5 +706,8 @@ int main(int argc, char** argv)
   DDPrompt(&outFile, "SR_WJets", false); // Do not remove fake component from the CRs for testing closure in VRs
   DDPrompt(&outFile, "SR_TTbar", false);
 
+  if(verbose)
+    std::cout << "We are verbose" << std::endl;
+
   return 0;
 }
