@@ -2148,7 +2148,7 @@ int main(int argc, char** argv)
               if ( globalTightHalo2016Filter          != 1 ) continue;
             if ( badMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
             //if ( badMuonMoriond2017                 != 1 ) continue;
-            //if ( badCloneMuonMoriond2017            != 1 ) continue;
+            if ( badCloneMuonMoriond2017            != 1 ) continue; // This one removes some of the spikes in QCD for some reason
             if ( badChargedHadronFilter             != 1 ) continue;
 
             bool passHLT = false;
