@@ -189,7 +189,7 @@ int main(int argc, char** argv)
     std::stringstream converter;
     if(!noSF)
     {
-      converter << "splitFactor*weight"; // Full
+      converter << "badCloneMuonMoriond2017 && splitFactor*weight"; // Full
       //converter << "weight/(triggerEfficiency*WISRSF*ISRweight)"; // Incrementally adding new tests
       //converter << "weight/puWeight"; // Full no PU
       //converter << "XS*filterEfficiency*puWeight*genWeight/sumGenWeight";
