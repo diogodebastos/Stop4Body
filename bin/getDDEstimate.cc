@@ -162,7 +162,7 @@ int main(int argc, char** argv)
   std::string metSelection = " && (Met > 280)";
   if(invertMet)
     metSelection = " && (Met > 200 && Met < 280)";
-  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";

@@ -2,12 +2,12 @@
   "cuts":[
     {
       "name":"PreselectionMVA",
-      "expression":"(badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
+      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
       "latex":"Preselection MVA"
     },
     {
       "name":"SelectionMVA",
-      "expression":"(badCloneMuonMoriond2017 == 1) && (BDT > 0.44) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
+      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (BDT > 0.44) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110)",
       "latex":"Selection MVA"
     }
   ],
