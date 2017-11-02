@@ -514,7 +514,7 @@ int main(int argc, char** argv)
     double stat = 0;
     for(auto& bkg : bkgMap)
     {
-      auto thisBkgYield = getYield(mcTree[bkgMap.second], regionSelection);
+      auto thisBkgYield = getYield(mcTree[bkg.second], regionSelection);
 
       if(!(bkg.first == "WJets" || bkg.first == "ttbar"))
       {
@@ -531,7 +531,7 @@ int main(int argc, char** argv)
 
     for(size_t i = 0; i < Sig.nProcesses(); ++i)
     {
-      auto thisSigYield = getYield(sigTree[], regionSelection);
+      auto thisSigYield = getYield(sigTree[i], regionSelection);
       thisSigYield.SaveTTree(regionName + "_" + Sig.process(i).tag(), &outFile);
     }
 
@@ -664,14 +664,14 @@ int main(int argc, char** argv)
     ValueWithSystematics<double> subCRWJets = dataCRWJets - fakeCRWJets - otherMCCRWJets;
     ValueWithSystematics<double> subCRTTbar = dataCRTTbar - fakeCRTTbar - otherMCCRTTbar;
     subCRWJets.Systematic("Stat") = std::sqrt(
-      std::pow( dataCRWJets.Systematic("Stat"), 2) +
-      std::pow( fakeCRWJets.Systematic("Stat"), 2) +
-      std::pow(otherCRWJets.Systematic("Stat"), 2)
+      std::pow(   dataCRWJets.Systematic("Stat"), 2) +
+      std::pow(   fakeCRWJets.Systematic("Stat"), 2) +
+      std::pow(otherMCCRWJets.Systematic("Stat"), 2)
     );
     subCRTTbar.Systematic("Stat") = std::sqrt(
-      std::pow( dataCRTTbar.Systematic("Stat"), 2) +
-      std::pow( fakeCRTTbar.Systematic("Stat"), 2) +
-      std::pow(otherCRTTbar.Systematic("Stat"), 2)
+      std::pow(   dataCRTTbar.Systematic("Stat"), 2) +
+      std::pow(   fakeCRTTbar.Systematic("Stat"), 2) +
+      std::pow(otherMCCRTTbar.Systematic("Stat"), 2)
     );
 
     ValueWithSystematics<double> ratioCRWJets = wjetsSR / wjetsCRWJets;
@@ -680,9 +680,9 @@ int main(int argc, char** argv)
       std::pow(wjetsSR.Systematic("Stat")/wjetsCRWJets.Value(), 2) +
       std::pow(wjetsCRWJets.Systematic("Stat")*wjetsSR.Value()/std::pow(wjetsCRWJets.Value(), 2), 2)
     );
-    ratioCRWTTbar.Systematic("Stat") = std::sqrt(
-      std::pow(ttbarSR.Systematic("Stat")/ttbarCRWTTbar.Value(), 2) +
-      std::pow(ttbarCRWTTbar.Systematic("Stat")*ttbarSR.Value()/std::pow(ttbarCRWTTbar.Value(), 2), 2)
+    ratioCRTTbar.Systematic("Stat") = std::sqrt(
+      std::pow(ttbarSR.Systematic("Stat")/ttbarCRTTbar.Value(), 2) +
+      std::pow(ttbarCRTTbar.Systematic("Stat")*ttbarSR.Value()/std::pow(ttbarCRTTbar.Value(), 2), 2)
     );
 
     ValueWithSystematics<double> wjetsEstimate = ratioCRWJets * subCRWJets;

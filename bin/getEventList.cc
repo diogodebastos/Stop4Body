@@ -34,7 +34,7 @@ int main(int argc, char** argv)
   if(argc < 2)
   {
     std::cout << "You did not pass enough parameters" << std::endl;
-    printHelp();
+    //printHelp();
     return 0;
   }
 

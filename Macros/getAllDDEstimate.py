@@ -81,7 +81,8 @@ if __name__ == "__main__":
       thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
       thisScript.write(". setup.sh\n\n")
 
-      thisScript.write("cd $CMSSW_BASE/src/\n")
+      thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_0_14/src/\n")
+      thisScript.write("#cd $CMSSW_BASE/src/\n")
       thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
       thisScript.write("cd " + baseDirectory + "\n\n")
@@ -147,7 +148,7 @@ if __name__ == "__main__":
         thisScript.write("--json ${JSON_PATH}/Orig/Data.json ")
         thisScript.write("--inDir " + thisInputDirectory + " ")
         thisScript.write("--suffix bdt ")
-        thisScript.write("--preselection " + selectionString + " ")
+        thisScript.write('--preselection "' + selectionString + '" ')
         thisScript.write("--bdtCut " + BDTCutValue)
         thisScript.write(" 1> " + outputDirectory + "/EventList.log 2> " + outputDirectory + "/EventList.err")
         thisScript.write("\n\n")
