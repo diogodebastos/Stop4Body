@@ -138,7 +138,7 @@ if __name__ == "__main__":
           LepPtCutString = "LepPt < 280"
 
       if args.unblind:
-        selectionString = "badCloneMuonMoriond2017 && (isTight == 1) && (" + MetCutString + ") && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)"
+        selectionString = "(badCloneMuonMoriond2017 == 1) && (isTight == 1) && (" + MetCutString + ") && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)"
         if LepPtCutString is not "":
           selectionString = selectionString + " && (" + LepPtCutString + ")"
         if AdditionalCutString is not "":
