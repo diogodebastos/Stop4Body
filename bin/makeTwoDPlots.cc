@@ -352,7 +352,7 @@ int main(int argc, char** argv)
           tex->Draw();
           TLatex *   tex2;
           if(final)
-            tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52] ");
+            tex2 = new TLatex(0.15,0.965,"#font[61]{CMS}");
           else
             tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52]{Preliminary}");
           tex2->SetNDC();
