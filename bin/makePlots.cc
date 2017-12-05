@@ -62,6 +62,7 @@ int main(int argc, char** argv)
   bool unblind = false;
   bool dofakeclosure = false;
   bool doSummary = false;
+  bool final = false;
 
   if(argc < 2)
   {
@@ -118,6 +119,11 @@ int main(int argc, char** argv)
     if(argument == "--verbose")
     {
       verbose = true;
+    }
+
+    if(argument == "--final")
+    {
+      final = true;
     }
 
     if(argument == "--cumulative")
@@ -488,7 +494,11 @@ int main(int argc, char** argv)
       tex->SetTextSize(0.038);
       tex->SetLineWidth(2);
       tex->Draw();
-      TLatex *   tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52]{Preliminary}");
+      TLatex *   tex2;
+      if(final)
+        tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52] ");
+      else
+        tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52]{Preliminary}");
       tex2->SetNDC();
       tex2->SetTextAlign(13);
       tex2->SetTextFont(42);
