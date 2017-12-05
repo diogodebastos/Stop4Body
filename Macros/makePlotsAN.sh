@@ -3,8 +3,8 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-INPUT=~/local-area/Stop4Body/nTuples_v2017-09-20
-INPUT_TEST=~/local-area/Stop4Body/nTuples_v2017-09-20_test
+INPUT=~/local-area/Stop4Body/nTuples_v2017-10-19
+INPUT_TEST=~/local-area/Stop4Body/nTuples_v2017-10-19_test
 INPUT_SWAP=~/local-area/Stop4Body/nTuples_v2017-08-13_swap
 OUTPUT=~/local-area/Stop4Body/ANPlots/
 #OUTPUT=./test/
@@ -30,12 +30,12 @@ if [[ -d ${INPUT} ]] ; then
   makeTwoDPlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}/Corr/AR/ --inDir ${INPUT_TEST}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
 
   JSONFILE=variablesAN_DataMC_LNT.json
-  makePlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}/DataMC/LNT/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
-  makeTwoDPlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}/Corr/LNT/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
+  #makePlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}/DataMC/LNT/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
+  #makeTwoDPlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}/Corr/LNT/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
 
   JSONFILE=variablesAN_DataMC_VR1.json
-  makePlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT}/DataMC/VR1/ --inDir ${INPUT_SWAP}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
-  makeTwoDPlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT}/Corr/VR1/ --inDir ${INPUT_SWAP}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
+  #makePlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT}/DataMC/VR1/ --inDir ${INPUT_SWAP}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
+  #makeTwoDPlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT}/Corr/VR1/ --inDir ${INPUT_SWAP}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
 
   JSONFILE=variablesAN_DataMC_VR2.json
   makePlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT}/DataMC/VR2/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE}
@@ -58,10 +58,10 @@ if [[ -d ${INPUT} ]] ; then
     makePlots --json ${JSON_PATH}/plot2016_DM${deltaM}RP.json --outDir ${OUTPUT}/BDT/DeltaM${deltaM}/AR --inDir ${INPUT_TEST}_bdt${deltaM}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt
 
     JSONFILE=variablesAN_BDT_LNT.json
-    makePlots --json ${JSON_PATH}/plot2016_DM${deltaM}RP.json --outDir ${OUTPUT}/BDT/DeltaM${deltaM}/LNT --inDir ${INPUT}_bdt${deltaM}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt --unblind
+    #makePlots --json ${JSON_PATH}/plot2016_DM${deltaM}RP.json --outDir ${OUTPUT}/BDT/DeltaM${deltaM}/LNT --inDir ${INPUT}_bdt${deltaM}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt --unblind
 
     JSONFILE=variablesAN_BDT_VR1.json
-    makePlots --json ${JSON_PATH}/plot2016swap_DM${deltaM}RP.json --outDir ${OUTPUT}/BDT/DeltaM${deltaM}/VR1 --inDir ${INPUT_SWAP}_bdt${deltaM}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt --unblind
+    #makePlots --json ${JSON_PATH}/plot2016swap_DM${deltaM}RP.json --outDir ${OUTPUT}/BDT/DeltaM${deltaM}/VR1 --inDir ${INPUT_SWAP}_bdt${deltaM}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt --unblind
 
     JSONFILE=variablesAN_BDT_VR2.json
     makePlots --json ${JSON_PATH}/plot2016_DM${deltaM}RP.json --outDir ${OUTPUT}/BDT/DeltaM${deltaM}/VR2 --inDir ${INPUT}_bdt${deltaM}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt --unblind
