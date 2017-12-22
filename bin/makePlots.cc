@@ -571,8 +571,8 @@ int main(int argc, char** argv)
       bgUncH->Reset("ICE");
       bgUncH->Draw();
       bgUnc->Draw("3");
-      double minErr = -0.1;
-      double maxErr = 2.1;
+      double minErr = 0.5;
+      double maxErr = 1.5;
       double yscale = (1.0-0.2)/(0.18-0);
       bgUncH->GetYaxis()->SetTitle("Data/#Sigma MC");
       bgUncH->SetMinimum(minErr);
