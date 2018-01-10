@@ -336,6 +336,8 @@ int main(int argc, char** argv)
 
     for(auto & variable : variables)
     {
+      std::string plotBaseName = cut.name()+"_"+variable.name();
+
       if(doSummary)
       {
         outSummary << "Cut: " << cut.name() << std::endl;
@@ -370,6 +372,14 @@ int main(int argc, char** argv)
       auto mcH   =   MC.getHist(cut.name(), variable, mcSel);
       auto sigH  =  Sig.process(0).getHist(cut.name(), variable, mcSel); // TODO: stack different signal points
       auto mcS   =   MC.getStack(cut.name(), variable, mcSel);
+
+      auto cwd = gDirectory;
+      TFile syncPlot((outputDirectory+"/"+plotBaseName+"_syncPlot.root").c_str(), "RECREATE");
+      dataH->Write();
+      sigH->Write();
+      mcH->Write();
+      mcS->Write();
+      cwd->cd();
 
       if(dofakeclosure)
         dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str());
@@ -588,8 +598,8 @@ int main(int argc, char** argv)
       bgUncH->GetYaxis()->SetTitleSize(0.036*yscale);
       ratio->Draw("same");
 
-      c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+".png").c_str());
-      c1.SaveAs((outputDirectory+"/"+cut.name()+"_"+variable.name()+".C").c_str());
+      c1.SaveAs((outputDirectory+"/"+plotBaseName+".png").c_str());
+      c1.SaveAs((outputDirectory+"/"+plotBaseName+".C").c_str());
 
       delete dataH;
       delete mcH;
