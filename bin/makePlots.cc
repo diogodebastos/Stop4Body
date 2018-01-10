@@ -48,7 +48,9 @@ protected:
 std::string Sanitize(std::string inStr)
 {
   std::regex e1 ("[^\\w]+");
-  return std::regex_replace(inStr, e1, "_");
+  auto tmpStr = std::regex_replace(inStr, e1, "_");
+  std::regex e2 ("_$");
+  return std::regex_replace(tmpStr, e2, "");
 }
 
 int main(int argc, char** argv)
