@@ -18,6 +18,8 @@ if [[ -d ${INPUT} ]] ; then
 
   JSONFILE=quickFix.json
 
+  makePlots --json ${JSON_PATH}/plot2016_lep.json --outDir ${OUTPUT} --inDir ${INPUT}_bdt10 --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt --unblind
+
   for deltaM in 10 20 30 40 50 60 70 80; do
     mkdir -p ${OUTPUT}/DeltaM${deltaM}/
 
