@@ -19,6 +19,7 @@
 #include <map>
 #include <fstream>
 #include <stdexcept>
+#include <regex>
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
@@ -43,6 +44,12 @@ protected:
   std::string cut_;
   std::string latex_;
 };
+
+std::string Sanitize(std::string inStr)
+{
+  std::regex e1 = "[^\\w]+";
+  return std::regex_replace(inStr, e1, "_");
+}
 
 int main(int argc, char** argv)
 {
@@ -375,10 +382,16 @@ int main(int argc, char** argv)
 
       auto cwd = gDirectory;
       TFile syncPlot((outputDirectory+"/"+plotBaseName+"_syncPlot.root").c_str(), "RECREATE");
-      dataH->Write();
-      sigH->Write();
-      mcH->Write();
-      mcS->Write();
+      dataH->Write("Data");
+      sigH->Write(Sanitize(Sig.process(0).label()).c_str());
+      mcH->Write("mcSum");
+      mcS->Write("mcStack");
+      for(auto& process : MC)
+      {
+        auto tmpHist = process.getHist(cut.name(), variable, mcSel);
+        tmpHist->Write(process.tag().c_str());
+        delete tmpHist;
+      }
       cwd->cd();
 
       if(dofakeclosure)
