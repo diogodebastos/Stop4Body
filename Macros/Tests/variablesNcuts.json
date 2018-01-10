@@ -1,0 +1,34 @@
+{
+  "cuts":[
+    {
+      "name":"PreselectionTest1",
+      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (Met > 200)",
+      "latex":"Preselection Test 1"
+    },
+    {
+      "name":"PreselectionTest2",
+      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (Met > 200) && (Jet1Pt > 110)",
+      "latex":"Preselection Test 2"
+    }
+  ],
+  "variables":[
+    {
+      "expression":"HT",
+      "label":"H_{T} [GeV]",
+      "legPos":"top",
+      "min":200.0,
+      "max":1000.0,
+      "bins":40
+    },
+    {
+      "expression":"BDT",
+      "label":"BDT",
+      "legPos":"top",
+      "min":-0.6,
+      "max":0.6,
+      "bins":48
+    }
+  ],
+  "2Dplots":[
+  ]
+}
