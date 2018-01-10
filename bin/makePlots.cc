@@ -47,7 +47,7 @@ protected:
 
 std::string Sanitize(std::string inStr)
 {
-  std::regex e1 = "[^\\w]+";
+  std::regex e1 ("[^\\w]+");
   return std::regex_replace(inStr, e1, "_");
 }
 
