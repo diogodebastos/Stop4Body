@@ -292,7 +292,7 @@ TChain* ProcessInfo::getChain()
   return retVal;
 }
 
-TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax)
+TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax, bool overflow)
 {
   std::string histName = cleanString(variable+"_"+tag_);
   TH1D* retVal = new TH1D(histName.c_str(), (label_+";"+axis).c_str(), bins, xmin, xmax);
@@ -317,6 +317,17 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
   retVal->SetLineWidth(lwidth_);
   retVal->SetLineStyle(lstyle_);
   retVal->SetMarkerStyle(marker_);
+
+  if(overflow)
+  {
+    double lastBin = retVal->GetBinContent(bins);
+    double overflowBin = retVal->GetBinContent(bins + 1);
+    double lastBinErr = retVal->GetBinError(bins);
+    double overflowBinErr = retVal->GetBinError(bins + 1);
+
+    retVal->SetBinContent(bins, lastBin+overflowBin);
+    retVal->SetBinError(bins, std::sqrt(lastBinErr*lastBinErr + overflowBinErr*overflowBinErr));
+  }
 
   cwd->cd();
   delete chain;
@@ -349,7 +360,7 @@ TH2D* ProcessInfo::get2DHist(std::string variableX, std::string variableY, std::
   return retVal;
 }
 
-TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string weight)
+TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string weight, bool overflow)
 {
   std::string histName = cleanString(baseName+"_"+var.expression()+"_"+tag_);
   TH1D* retVal = nullptr;
@@ -378,6 +389,23 @@ TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string 
   retVal->SetLineWidth(lwidth_);
   retVal->SetLineStyle(lstyle_);
   retVal->SetMarkerStyle(marker_);
+
+
+  if(overflow)
+  {
+    int bins = 0;
+    if(var.hasVarBins())
+      bins = var.varBins().size() - 1;
+    else
+      bins = var.bins();
+    double lastBin = retVal->GetBinContent(bins);
+    double overflowBin = retVal->GetBinContent(bins + 1);
+    double lastBinErr = retVal->GetBinError(bins);
+    double overflowBinErr = retVal->GetBinError(bins + 1);
+
+    retVal->SetBinContent(bins, lastBin+overflowBin);
+    retVal->SetBinError(bins, std::sqrt(lastBinErr*lastBinErr + overflowBinErr*overflowBinErr));
+  }
 
   cwd->cd();
   delete chain;
@@ -568,13 +596,13 @@ TChain* SampleReader::getChain()
   return retVal;
 }
 
-THStack* SampleReader::getStack(std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax)
+THStack* SampleReader::getStack(std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax, bool overflow)
 {
   THStack* retVal = new THStack(variable.c_str(), (variable + ";" + axis).c_str());
 
   for(auto& process : processes_)
   {
-    TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax);
+    TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax, overflow);
     retVal->Add(tmp);
     //delete tmp;
   }
@@ -582,14 +610,14 @@ THStack* SampleReader::getStack(std::string variable, std::string axis, std::str
   return retVal;
 }
 
-TH1D* SampleReader::getHist(std::string name, std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax)
+TH1D* SampleReader::getHist(std::string name, std::string variable, std::string axis, std::string weight, int bins, double xmin, double xmax, bool overflow)
 {
   TH1D* retVal = new TH1D((name).c_str(), (name+";"+axis).c_str(), bins, xmin, xmax);
   retVal->Sumw2();
 
   for(auto& process : processes_)
   {
-    TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax);
+    TH1D* tmp = process.getHist(variable, axis, weight, bins, xmin, xmax, overflow);
     if(retVal == nullptr)
       retVal = tmp;
     else
@@ -625,13 +653,13 @@ TH2D* SampleReader::get2DHist(std::string variableX, std::string variableY, std:
   return retVal;
 }
 
-THStack* SampleReader::getStack(std::string baseName, VariableInfo& var, std::string weight)
+THStack* SampleReader::getStack(std::string baseName, VariableInfo& var, std::string weight, bool overflow)
 {
   THStack* retVal = new THStack((baseName + "_" + var.name()).c_str(), (var.expression() + ";" + var.label() + ";Events").c_str());
 
   for(auto& process : processes_)
   {
-    TH1D* tmp = process.getHist(baseName, var, weight);
+    TH1D* tmp = process.getHist(baseName, var, weight, overflow);
     retVal->Add(tmp);
     //delete tmp;
   }
@@ -639,7 +667,7 @@ THStack* SampleReader::getStack(std::string baseName, VariableInfo& var, std::st
   return retVal;
 }
 
-TH1D* SampleReader::getHist(std::string baseName, VariableInfo& var, std::string weight)
+TH1D* SampleReader::getHist(std::string baseName, VariableInfo& var, std::string weight, bool overflow)
 {
   std::string histName = cleanString(baseName+"_"+var.expression());
   TH1D* retVal = nullptr;
@@ -651,7 +679,7 @@ TH1D* SampleReader::getHist(std::string baseName, VariableInfo& var, std::string
 
   for(auto& process : processes_)
   {
-    TH1D* tmp = process.getHist(baseName, var, weight);
+    TH1D* tmp = process.getHist(baseName, var, weight, overflow);
     if(retVal == nullptr)
       retVal = tmp;
     else
