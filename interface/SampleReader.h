@@ -262,10 +262,10 @@ class SampleReader
     void printErrors(std::ostream&);
     std::vector<std::string> getAllFiles();
     TChain* getChain();
-    THStack* getStack(std::string, std::string, std::string, int, double, double, bool overflow=false);
-    TH1D* getHist(std::string, std::string, std::string, std::string, int, double, double, bool overflow=false);
-    THStack* getStack(std::string, VariableInfo&, std::string, bool overflow=false);
-    TH1D* getHist(std::string, VariableInfo&, std::string, bool overflow=false);
+    THStack* getStack(std::string, std::string, std::string, int, double, double, bool overflow=true);
+    TH1D* getHist(std::string, std::string, std::string, std::string, int, double, double, bool overflow=true);
+    THStack* getStack(std::string, VariableInfo&, std::string, bool overflow=true);
+    TH1D* getHist(std::string, VariableInfo&, std::string, bool overflow=true);
     TH2D* get2DHist(std::string, std::string, std::string, std::string, int, double, double, int, double, double);
     //void draw(std::string, std::string, std::string);
     doubleUnc getYield(std::string, std::string);
