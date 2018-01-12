@@ -327,6 +327,8 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
 
     retVal->SetBinContent(bins, lastBin+overflowBin);
     retVal->SetBinError(bins, std::sqrt(lastBinErr*lastBinErr + overflowBinErr*overflowBinErr));
+    retVal->SetBinContent(bins + 1, 0);
+    retVal->SetBinError(bins + 1, 0);
   }
 
   cwd->cd();
@@ -405,6 +407,8 @@ TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string 
 
     retVal->SetBinContent(bins, lastBin+overflowBin);
     retVal->SetBinError(bins, std::sqrt(lastBinErr*lastBinErr + overflowBinErr*overflowBinErr));
+    retVal->SetBinContent(bins + 1, 0);
+    retVal->SetBinError(bins + 1, 0);
   }
 
   cwd->cd();
