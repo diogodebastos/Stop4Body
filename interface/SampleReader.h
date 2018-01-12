@@ -194,9 +194,9 @@ class ProcessInfo
 
     std::vector<std::string> getAllFiles();
     TChain* getChain();
-    TH1D* getHist(std::string, std::string, std::string, int, double, double, bool overflow=false);
+    TH1D* getHist(std::string, std::string, std::string, int, double, double, bool overflow=true);
     TH2D* get2DHist(std::string, std::string, std::string, std::string, int, double, double, int, double, double);
-    TH1D* getHist(std::string, VariableInfo&, std::string, bool overflow=false);
+    TH1D* getHist(std::string, VariableInfo&, std::string, bool overflow=true);
     doubleUnc getYield(std::string, std::string);
     double getLumi() const;
 
