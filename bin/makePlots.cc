@@ -385,13 +385,18 @@ int main(int argc, char** argv)
       auto cwd = gDirectory;
       TFile syncPlot((outputDirectory+"/"+plotBaseName+"_syncPlot.root").c_str(), "RECREATE");
       dataH->Write("Data");
-      sigH->Write(Sanitize(Sig.process(0).label()).c_str());
       mcH->Write("mcSum");
       mcS->Write("mcStack");
       for(auto& process : MC)
       {
         auto tmpHist = process.getHist(cut.name(), variable, mcSel);
         tmpHist->Write(process.tag().c_str());
+        delete tmpHist;
+      }
+      for(auto& process : Sig)
+      {
+        auto tmpHist = process.getHist(cut.name(), variable, mcSel);
+        tmpHist->Write(Sanitize(process.label()).c_str());
         delete tmpHist;
       }
       cwd->cd();
