@@ -23,6 +23,7 @@ class VariableInfo
     VariableInfo(nlohmann::json jsonInfo);
 
     std::string expression() const {return expression_;}
+    std::string expression(std::string newExp) {expression_ = newExp; return expression_;}
     std::string name() const {return name_;}
     std::string label() const {return label_;}
     double min() const {return min_;}
