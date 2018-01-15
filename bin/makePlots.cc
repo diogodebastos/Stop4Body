@@ -73,6 +73,16 @@ int main(int argc, char** argv)
   bool doSummary = false;
   bool final = false;
 
+  double constantUncertainties = 0;
+  constantUncertainties += 0.025*0.025; // Luminosity uncertainty
+  constantUncertainties +=  0.01* 0.01; // Trigger efficiency
+  constantUncertainties +=  0.01* 0.01; // Pile Up
+  constantUncertainties +=  0.16* 0.16; // JES
+  constantUncertainties +=  0.06* 0.06; // JER
+  constantUncertainties +=  0.08* 0.08; // b-tag
+  constantUncertainties +=  0.01* 0.01; // Lep ID
+  constantUncertainties +=  0.01* 0.01; // Lep Iso
+
   if(argc < 2)
   {
     std::cout << "You did not pass enough parameters" << std::endl;
@@ -387,6 +397,40 @@ int main(int argc, char** argv)
       dataH->Write("Data");
       mcH->Write("mcSum");
       mcS->Write("mcStack");
+      systUncEnv = mcH->Clone("relativeSystematicUncertaintiesEnvelope");
+      systUnc    = mcH->Clone("relativeSystematicUncertainties");
+      for(int xbin=0; xbin <= systUnc->GetXaxis()->GetNbins(); xbin++)
+      {
+        double unc = 0;
+
+        TList* hists = mcS->GetHists();
+        TIter next(hists);
+        TObject* obj = nullptr;
+        while ((obj = next()))
+        {
+          TH1* thisHist = static_cast<TH1*>(obj);
+          std::string histName = thisHist->GetName();
+          double thisUnc = 0;
+          double thisBinContent=thisHist->GetBinContent(xbin);
+          if(histName.find("WJets") != std::string::npos || histName.find("ttbar") != std::string::npos) // ttbar and WJets
+          {
+            thisUnc = thisBinContent*0.2;
+          }
+          else
+          {
+            thisUnc = thisBinContent*0.5;
+          }
+
+          thisUnc = thisUnc/binContent;
+          unc += thisUnc*thisUnc;
+        }
+
+        systUncEnv->SetBinContent(xbin, 0);
+        systUnc->SetBinContent(xbin, 0);
+
+        systUncEnv->SetBinError(xbin, std::sqrt(unc + constantUncertainties));
+        systUnc->SetBinError(xbin, std::sqrt(unc));
+      }
       for(auto& process : MC)
       {
         auto tmpHist = process.getHist(cut.name(), variable, mcSel);
@@ -399,6 +443,10 @@ int main(int argc, char** argv)
         tmpHist->Write(Sanitize(process.label()).c_str());
         delete tmpHist;
       }
+      systUncEnv->Write();
+      systUnc->Write();
+      delete systUncEnv;
+      delete systUnc;
       cwd->cd();
 
       if(dofakeclosure)
