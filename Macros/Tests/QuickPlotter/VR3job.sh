@@ -19,7 +19,7 @@ INPUT_TEST=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test
 INPUT_SWAP=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-08-13_swap
 OUTPUT=/lstore/cms/cbeiraod/Stop4Body/ANPlots/
 
-if [[ -d ${INPUT} ]] ; then
+if [[ -d ${INPUT} || -L ${INPUT} ]] ; then
   VARIABLE_JSON=variablesAN_DataMC.json
 
   JSONFILE=variablesAN_DataMC_VR3.json

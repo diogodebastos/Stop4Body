@@ -21,7 +21,7 @@ OUTPUT=/lstore/cms/cbeiraod/Stop4Body/ANPlots/
 
 deltaM=70
 
-if [[ -d ${INPUT} ]] ; then
+if [[ -d ${INPUT} || -L ${INPUT} ]] ; then
   VARIABLE_JSON=variablesAN_BDT_AR.json
 
   JSONFILE=variablesAN_BDT_VR3.json
