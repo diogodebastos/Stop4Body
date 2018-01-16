@@ -613,7 +613,7 @@ int main(int argc, char** argv)
           myVariations.push_back(systematic + "_Down");
         }
 
-        for(auto& variation : variations)
+        for(auto& variation : myVariations)
         {
           auto varHist = getVarHist(cut.name(), variable, mcSel, variation);
           varHist->Add(mcH, -1);
