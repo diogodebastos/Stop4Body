@@ -1,7 +1,9 @@
 #!/bin/bash
 
+cd ../..
 . setupJSONs.sh
 . setupPaths.sh
+cd -
 
 INPUT=~/local-area/Stop4Body/nTuples_v2017-10-19
 INPUT_TEST=~/local-area/Stop4Body/nTuples_v2017-10-19_test
