@@ -126,15 +126,16 @@ int main(int argc, char** argv)
 
     systematics.push_back("PU");
 
+    systematics.push_back("Q2");
     //loadSystName("Q2_", 8);
-    systematics.push_back("Q2_1");
-    systematics.push_back("Q2_2");
-    systematics.push_back("Q2_3");
-    systematics.push_back("Q2_4");
-    //systematics.push_back("Q2_5");
-    systematics.push_back("Q2_6");
-    //systematics.push_back("Q2_7");
-    systematics.push_back("Q2_8");
+    //systematics.push_back("Q2_1");
+    //systematics.push_back("Q2_2");
+    //systematics.push_back("Q2_3");
+    //systematics.push_back("Q2_4");
+    ////systematics.push_back("Q2_5");
+    //systematics.push_back("Q2_6");
+    ////systematics.push_back("Q2_7");
+    //systematics.push_back("Q2_8");
 
     systematics.push_back("CFErr1");
     systematics.push_back("CFErr2");
@@ -181,6 +182,18 @@ int main(int argc, char** argv)
   {
     for(auto& syst : systematics)
     {
+      if(syst == "Q2")
+      {
+        variations.push_back("Q2_1");
+        variations.push_back("Q2_2");
+        variations.push_back("Q2_3");
+        variations.push_back("Q2_4");
+        //variations.push_back("Q2_5");
+        variations.push_back("Q2_6");
+        //variations.push_back("Q2_7");
+        variations.push_back("Q2_8");
+        continue;
+      }
       variations.push_back(syst+"_Up");
       variations.push_back(syst+"_Down");
     }
@@ -574,38 +587,78 @@ int main(int argc, char** argv)
         variable.expression(replaceSyst(variable.expression(), LepPt       .Value(), LepPt       .GetSystematicOrValue(systematic)));
         variable.expression(replaceSyst(variable.expression(), weight      .Value(), weight      .GetSystematicOrValue(systematic)));
 
-        auto retVal = MC.getHist(name, variable, selection);
+        auto retVal = MC.getHist(innerName, variable, selection);
 
         return retVal;
       };
       auto getSyst = [&](std::string systematic) -> TH1D*
       {
-        auto upHist   = getVarHist(cut.name(), variable, mcSel, systematic + "_Up");
-        auto downHist = getVarHist(cut.name(), variable, mcSel, systematic + "_Down");
+        TH1D* retVal = nullptr;
 
-        upHist->Add(mcH, -1);
-        downHist->Add(mcH, -1);
-
-        for(int xbin=0; xbin <= upHist->GetXaxis()->GetNbins(); xbin++)
+        std::vector<std::string> myVariations;
+        if(systematic == "Q2")
         {
-          double upVar   = std::abs(upHist->GetBinContent(xbin));
-          double downVar = std::abs(downHist->GetBinContent(xbin));
-          double binValue = mcH->GetBinContent(xbin);
-
-          if(downVar > upVar)
-            upVar = downVar;
-
-          if(binValue == 0)
-            upVar = 0;
-          else
-            upVar = upVar/binValue;
-
-          upHist->SetBinContent(xbin, 0);
-          upHist->SetBinError(xbin, upVar);
+          myVariations.push_back(systematic + "_1");
+          myVariations.push_back(systematic + "_2");
+          myVariations.push_back(systematic + "_3");
+          myVariations.push_back(systematic + "_4");
+          //myVariations.push_back(systematic + "_5");
+          myVariations.push_back(systematic + "_6");
+          //myVariations.push_back(systematic + "_7");
+          myVariations.push_back(systematic + "_8");
+        }
+        else
+        {
+          myVariations.push_back(systematic + "_Up");
+          myVariations.push_back(systematic + "_Down");
         }
 
-        delete downHist;
-        return upHist;
+        for(auto& variation : variations)
+        {
+          auto varHist = getVarHist(cut.name(), variable, mcSel, variation);
+          varHist->Add(mcH, -1);
+
+          if(retVal == nullptr)
+          {
+            retVal = varHist;
+
+            for(int xbin=0; xbin <= retVal->GetXaxis()->GetNbins(); xbin++)
+            {
+              double unc = std::abs(retVal->GetBinContent(xbin));
+              double binValue = mcH->GetBinContent(xbin);
+
+              if(binValue == 0)
+                unc = 0;
+              else
+                unc = unc/binValue;
+
+              retVal->SetBinContent(xbin, 0);
+              retVal->SetBinError(xbin, unc);
+            }
+          }
+          else
+          {
+            for(int xbin=0; xbin <= upHist->GetXaxis()->GetNbins(); xbin++)
+            {
+              double prevUnc = retVal->GetBinError(xbin);
+
+              double newUnc = std::abs(varHist->GetBinContent(xbin));
+              double binValue = mcH->GetBinContent(xbin);
+
+              if(binValue == 0)
+                newUnc = 0;
+              else
+                newUnc = newUnc/binValue;
+
+              if(newUnc > prevUnc)
+                retVal->SetBinError(newUnc);
+            }
+
+            delete varHist;
+          }
+        }
+
+        return retVal;
       };
       auto getTotalSyst = [&]() -> TH1D*
       {
