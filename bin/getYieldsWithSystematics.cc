@@ -273,7 +273,8 @@ int main(int argc, char** argv)
 
     systematics.push_back("PU");
 
-    loadSystName("Q2_", 8);
+    //loadSystName("Q2_", 8);
+    systematics.push_back("Q2");
 
     systematics.push_back("CFErr1");
     systematics.push_back("CFErr2");
@@ -320,6 +321,18 @@ int main(int argc, char** argv)
   {
     for(auto& syst : systematics)
     {
+      if(syst == "Q2")
+      {
+        variations.push_back(syst+"_1");
+        variations.push_back(syst+"_2");
+        variations.push_back(syst+"_3");
+        variations.push_back(syst+"_4");
+        variations.push_back(syst+"_5");
+        variations.push_back(syst+"_6");
+        variations.push_back(syst+"_7");
+        variations.push_back(syst+"_8");
+        continue;
+      }
       variations.push_back(syst+"_Up");
       variations.push_back(syst+"_Down");
     }
