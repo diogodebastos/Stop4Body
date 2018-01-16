@@ -14,10 +14,10 @@ cd UserCode/Stop4Body/Macros/
 
 . setupPaths.sh
 
-INPUT=~/local-area/Stop4Body/nTuples_v2017-10-19
-INPUT_TEST=~/local-area/Stop4Body/nTuples_v2017-10-19_test
-INPUT_SWAP=~/local-area/Stop4Body/nTuples_v2017-08-13_swap
-OUTPUT=~/local-area/Stop4Body/ANPlots/
+INPUT=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19
+INPUT_TEST=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test
+INPUT_SWAP=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-08-13_swap
+OUTPUT=/lstore/cms/cbeiraod/Stop4Body/ANPlots/
 
 if [[ -d ${INPUT} ]] ; then
   VARIABLE_JSON=variablesAN_DataMC.json
