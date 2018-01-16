@@ -83,6 +83,112 @@ int main(int argc, char** argv)
   constantUncertainties +=  0.01* 0.01; // Lep ID
   constantUncertainties +=  0.01* 0.01; // Lep Iso
 
+
+  // Build selection strings, with the systematic variations
+  ValueWithSystematics<std::string> Met          = std::string("Met");
+  ValueWithSystematics<std::string> DPhiJet1Jet2 = std::string("DPhiJet1Jet2");
+  ValueWithSystematics<std::string> Jet1Pt       = std::string("Jet1Pt");
+  ValueWithSystematics<std::string> Jet2Pt       = std::string("Jet2Pt");
+  ValueWithSystematics<std::string> HT           = std::string("HT");
+  ValueWithSystematics<std::string> NbLoose      = std::string("NbLoose");
+  ValueWithSystematics<std::string> NbTight      = std::string("NbTight");
+  ValueWithSystematics<std::string> BDT          = std::string("BDT");
+  ValueWithSystematics<std::string> LepPt        = std::string("LepPt");
+  { // Loading the systematic variations of the quantities above
+    std::vector<std::string> variations = {"JES_Up", "JES_Down", "JER_Up", "JER_Down"};
+    for(auto& syst : variations)
+    {
+      Met.Systematic(syst)          = Met.Value() + "_" + syst;
+      DPhiJet1Jet2.Systematic(syst) = DPhiJet1Jet2.Value() + "_" + syst;
+      Jet1Pt.Systematic(syst)       = Jet1Pt.Value() + "_" + syst;
+      Jet2Pt.Systematic(syst)       = Jet2Pt.Value() + "_" + syst;
+      HT.Systematic(syst)           = HT.Value() + "_" + syst;
+      NbLoose.Systematic(syst)      = NbLoose.Value() + "_" + syst;
+      NbTight.Systematic(syst)      = NbTight.Value() + "_" + syst;
+      BDT.Systematic(syst)          = BDT.Value() + "_" + syst;
+    }
+  }
+
+  std::vector<std::string> systematics = {"JES", "JER"};
+  {
+    auto loadSystName = [&systematics](std::string baseName, int bins, int min = 1) -> void
+    {
+      for(int i = min; i <= bins; ++i)
+      {
+        std::stringstream converter;
+        converter << baseName << i;
+        systematics.push_back(converter.str());
+      }
+      return;
+    };
+
+    systematics.push_back("PU");
+
+    //loadSystName("Q2_", 8);
+    systematics.push_back("Q2_1");
+    systematics.push_back("Q2_2");
+    systematics.push_back("Q2_3");
+    systematics.push_back("Q2_4");
+    //systematics.push_back("Q2_5");
+    systematics.push_back("Q2_6");
+    //systematics.push_back("Q2_7");
+    systematics.push_back("Q2_8");
+
+    systematics.push_back("CFErr1");
+    systematics.push_back("CFErr2");
+    systematics.push_back("HF");
+    systematics.push_back("HFStats1");
+    systematics.push_back("HFStats2");
+    systematics.push_back("LF");
+    systematics.push_back("LFStats1");
+    systematics.push_back("LFStats2");
+
+    //systematics.push_back("FullFast");
+    systematics.push_back("FullFast_HIIP_AltCorr");
+    systematics.push_back("FullFast_ID_AltCorr");
+    //loadSystName("FullFast_HIIP_Electron_Bin", 40);
+    //loadSystName("FullFast_HIIP_Muon_Bin", 48);
+    //loadSystName("FullFast_ID_Electron_Bin", 35);
+    //loadSystName("FullFast_ID_Muon_Bin", 42);
+
+    systematics.push_back("LeptonIDSF_AltCorr");
+    systematics.push_back("LeptonISOSF_AltCorr");
+    //loadSystName("LeptonIDSF_Electron_Bin", 98);
+    //loadSystName("LeptonIDSF_Muon_Bin", 56);
+    //loadSystName("LeptonISOSF_Electron_Bin", 12);
+    //loadSystName("LeptonISOSF_Muon_Bin", 6);
+
+    //systematics.push_back("ISRweight_AltCorr");
+    loadSystName("ISRweight_Bin", 6);
+
+    //systematics.push_back("EWKISRweight_AltCorr");
+    loadSystName("EWKISRweight_Bin", 7);
+
+    //systematics.push_back("TightLoose_AltCorr");
+    loadSystName("TightLoose_Electron_Bin", 16);
+    loadSystName("TightLoose_Muon_Bin", 18);
+
+    //systematics.push_back("TightLoose_NU_AltCorr");
+    loadSystName("TightLoose_NU_Bin", 5);
+
+    systematics.push_back("triggerEfficiency");
+
+    //systematics.push_back("triggerEfficiency_stat");
+  }
+  std::vector<std::string> variations;
+  {
+    for(auto& syst : systematics)
+    {
+      variations.push_back(syst+"_Up");
+      variations.push_back(syst+"_Down");
+    }
+  }
+  ValueWithSystematics<std::string> weight = std::string("weight");
+  for(auto& syst : variations)
+  {
+    weight.Systematic(syst) = weight.Value() + "_" + syst;
+  }
+
   if(argc < 2)
   {
     std::cout << "You did not pass enough parameters" << std::endl;
@@ -397,11 +503,14 @@ int main(int argc, char** argv)
       dataH->Write("Data");
       mcH->Write("mcSum");
       mcS->Write("mcStack");
-      systUncEnv = mcH->Clone("relativeSystematicUncertaintiesEnvelope");
-      systUnc    = mcH->Clone("relativeSystematicUncertainties");
+      TH1D* systUncEnv = static_cast<TH1D*>(mcH->Clone("relativeSystematicUncertaintiesEnvelope"));
+      TH1D* systUnc    = static_cast<TH1D*>(mcH->Clone("relativeSystematicUncertainties"));
       for(int xbin=0; xbin <= systUnc->GetXaxis()->GetNbins(); xbin++)
       {
         double unc = 0;
+        double binContent = mcH->GetBinContent(xbin);
+        if(binContent == 0)
+          continue;
 
         TList* hists = mcS->GetHists();
         TIter next(hists);
@@ -429,8 +538,98 @@ int main(int argc, char** argv)
         systUnc->SetBinContent(xbin, 0);
 
         systUncEnv->SetBinError(xbin, std::sqrt(unc + constantUncertainties));
-        systUnc->SetBinError(xbin, std::sqrt(unc));
+        systUnc->SetBinError(xbin, std::sqrt(unc + 0.025*0.025)); //Only add lumi
       }
+      auto replaceSyst = [&](std::string orig, std::string target, std::string with) -> std::string
+      {
+        std::string retVal;
+        retVal = std::regex_replace(orig, std::regex(target), with);
+        return retVal;
+      };
+      auto getVarHist = [&](std::string name, VariableInfo variable, std::string selection, std::string systematic) -> TH1D*
+      {
+        std::string innerName = name + "_" + systematic;
+
+        selection = replaceSyst(selection, Met         .Value(), Met         .GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, DPhiJet1Jet2.Value(), DPhiJet1Jet2.GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, Jet1Pt      .Value(), Jet1Pt      .GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, Jet2Pt      .Value(), Jet2Pt      .GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, HT          .Value(), HT          .GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, NbLoose     .Value(), NbLoose     .GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, NbTight     .Value(), NbTight     .GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, BDT         .Value(), BDT         .GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, LepPt       .Value(), LepPt       .GetSystematicOrValue(systematic));
+        selection = replaceSyst(selection, weight      .Value(), weight      .GetSystematicOrValue(systematic));
+
+        variable.expression(replaceSyst(variable.expression(), Met         .Value(), Met         .GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), DPhiJet1Jet2.Value(), DPhiJet1Jet2.GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), Jet1Pt      .Value(), Jet1Pt      .GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), Jet2Pt      .Value(), Jet2Pt      .GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), HT          .Value(), HT          .GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), NbLoose     .Value(), NbLoose     .GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), NbTight     .Value(), NbTight     .GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), BDT         .Value(), BDT         .GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), LepPt       .Value(), LepPt       .GetSystematicOrValue(systematic)));
+        variable.expression(replaceSyst(variable.expression(), weight      .Value(), weight      .GetSystematicOrValue(systematic)));
+
+        auto retVal = MC.getHist(name, variable, selection);
+
+        return retVal;
+      };
+      auto getSyst = [&](std::string systematic) -> TH1D*
+      {
+        auto upHist   = getVarHist(cut.name(), variable, mcSel, systematic + "_Up");
+        auto downHist = getVarHist(cut.name(), variable, mcSel, systematic + "_Down");
+
+        upHist->Add(mcH, -1);
+        downHist->Add(mcH, -1);
+
+        for(int xbin=0; xbin <= upHist->GetXaxis()->GetNbins(); xbin++)
+        {
+          double upVar   = std::abs(upHist->GetBinContent(xbin));
+          double downVar = std::abs(downHist->GetBinContent(xbin));
+          double binValue = mcH->GetBinContent(xbin);
+
+          if(downVar > upVar)
+            upVar = downVar;
+
+          if(binValue == 0)
+            upVar = 0;
+          else
+            upVar = upVar/binValue;
+
+          upHist->SetBinContent(xbin, 0);
+          upHist->SetBinError(xbin, upVar);
+        }
+
+        delete downHist;
+        return upHist;
+      };
+      auto getTotalSyst = [&]() -> TH1D*
+      {
+        TH1D* retVal = nullptr;
+
+        for(auto & systematic : systematics)
+        {
+          auto tmpHist = getSyst(systematic);
+          if(retVal == nullptr)
+          {
+            retVal = tmpHist;
+            retVal->Sumw2();
+          }
+          else
+          {
+            retVal->Add(tmpHist);
+            delete tmpHist;
+          }
+        }
+
+        return retVal;
+      };
+      systUnc->Sumw2();
+      auto otherSyst = getTotalSyst();
+      systUnc->Add(otherSyst);
+      delete otherSyst;
       for(auto& process : MC)
       {
         auto tmpHist = process.getHist(cut.name(), variable, mcSel);
