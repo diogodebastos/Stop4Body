@@ -638,7 +638,7 @@ int main(int argc, char** argv)
           }
           else
           {
-            for(int xbin=0; xbin <= upHist->GetXaxis()->GetNbins(); xbin++)
+            for(int xbin=0; xbin <= varHist->GetXaxis()->GetNbins(); xbin++)
             {
               double prevUnc = retVal->GetBinError(xbin);
 
@@ -651,7 +651,7 @@ int main(int argc, char** argv)
                 newUnc = newUnc/binValue;
 
               if(newUnc > prevUnc)
-                retVal->SetBinError(newUnc);
+                retVal->SetBinError(xbin, newUnc);
             }
 
             delete varHist;
