@@ -2,12 +2,12 @@
   "cuts":[
     {
       "name":"PreselectionTest1",
-      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (Met > 200)",
+      "expression":"(weight < 2) && (badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (Met > 200)",
       "latex":"Preselection Test 1"
     },
     {
       "name":"PreselectionTest2",
-      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (Met > 200) && (Jet1Pt > 110)",
+      "expression":"(weight < 2) && (badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (Met > 200) && (Jet1Pt > 110)",
       "latex":"Preselection Test 2"
     }
   ],
