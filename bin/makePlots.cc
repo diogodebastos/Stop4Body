@@ -55,6 +55,19 @@ std::string Sanitize(std::string inStr)
   return std::regex_replace(tmpStr, e2, "");
 }
 
+std::string cleanString(std::string inputStr)
+{
+  std::regex nonASCII("[^a-zA-Z0-9 _]");
+  std::regex multipleSpace(" +");
+  std::regex multipleUnderscore("_+");
+
+  std::string replaced = std::regex_replace(inputStr, nonASCII, "_");
+  replaced = std::regex_replace(replaced, multipleSpace, "_");
+  replaced = std::regex_replace(replaced, multipleUnderscore, "_");
+
+  return replaced;
+}
+
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
@@ -509,17 +522,55 @@ int main(int argc, char** argv)
 
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel);
-      auto mcH   =   MC.getHist(cut.name(), variable, mcSel);
-      auto sigH  =  Sig.process(0).getHist(cut.name(), variable, mcSel); // TODO: stack different signal points
-      auto mcS   =   MC.getStack(cut.name(), variable, mcSel);
+      TH1D* sigH = nullptr; // TODO: stack different signal points
+
+      if(dofakeclosure)
+        dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str());
+
+      std::string histName = cleanString(cut.name()+"_"+variable.expression());
+      THStack* mcS = new THStack((cut.name() + "_" + variable.name()).c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str());
+      TH1D* mcH = nullptr;
+      if(variable.hasVarBins())
+        mcH = new TH1D(histName.c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str(), variable.varBins().size() - 1, variable.varBins().data());
+      else
+        mcH = new TH1D(histName.c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str(), variable.bins(), variable.min(), variable.max());
+      mcH->Sumw2();
 
       auto cwd = gDirectory;
       TFile syncPlot((outputDirectory+"/"+plotBaseName+"_syncPlot.root").c_str(), "RECREATE");
+
       dataH->Write("Data");
+
+      for(auto& process : Sig)
+      {
+        cwd->cd();
+        auto tmpHist = process.getHist(cut.name(), variable, mcSel);
+        syncPlot.cd();
+
+        tmpHist->Write(Sanitize(process.label()).c_str());
+        if(sigH == nullptr)
+          sigH = tmpHist;
+        else
+          delete tmpHist;
+      }
+
+      for(auto& process : MC)
+      {
+        cwd->cd();
+        auto tmpHist = process.getHist(cut.name(), variable, mcSel);
+        syncPlot.cd();
+
+        tmpHist->Write(process.tag().c_str());
+        mcS->Add(tmpHist);
+        mcH->Add(tmpHist);
+      }
+
       mcH->Write("mcSum");
       mcS->Write("mcStack");
+
       TH1D* systUncEnv = static_cast<TH1D*>(mcH->Clone("relativeSystematicUncertaintiesEnvelope"));
       TH1D* systUnc    = static_cast<TH1D*>(mcH->Clone("relativeSystematicUncertainties"));
+      systUnc->Sumw2();
       for(int xbin=0; xbin <= systUnc->GetXaxis()->GetNbins(); xbin++)
       {
         double unc = 0;
@@ -555,6 +606,7 @@ int main(int argc, char** argv)
         systUncEnv->SetBinError(xbin, std::sqrt(unc + constantUncertainties));
         systUnc->SetBinError(xbin, std::sqrt(unc + 0.025*0.025)); //Only add lumi
       }
+
       auto replaceSyst = [&](std::string orig, std::string target, std::string with) -> std::string
       {
         std::string retVal;
@@ -681,30 +733,17 @@ int main(int argc, char** argv)
 
         return retVal;
       };
-      systUnc->Sumw2();
+
       auto otherSyst = getTotalSyst();
       systUnc->Add(otherSyst);
       delete otherSyst;
-      for(auto& process : MC)
-      {
-        auto tmpHist = process.getHist(cut.name(), variable, mcSel);
-        tmpHist->Write(process.tag().c_str());
-        delete tmpHist;
-      }
-      for(auto& process : Sig)
-      {
-        auto tmpHist = process.getHist(cut.name(), variable, mcSel);
-        tmpHist->Write(Sanitize(process.label()).c_str());
-        delete tmpHist;
-      }
+
       systUncEnv->Write();
       systUnc->Write();
+
       delete systUncEnv;
       delete systUnc;
       cwd->cd();
-
-      if(dofakeclosure)
-        dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str());
 
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
