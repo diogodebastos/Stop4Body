@@ -2,17 +2,17 @@
   "cuts":[
     {
       "name":"PreselectionMVA_lowDM",
-      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt > 30)",
+      "expression":"(weight < 2) && (badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt > 30)",
       "latex":"Preselection MVA lowDM"
     },
     {
       "name":"PreselectionMVA_lowDM_wjets",
-      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt > 30) && (NbLoose == 0)",
+      "expression":"(weight < 2) && (badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt > 30) && (NbLoose == 0)",
       "latex":"Preselection MVA lowDM wjets"
     },
     {
       "name":"PreselectionMVA_lowDM_ttbar",
-      "expression":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt > 30) && (NbTight > 0)",
+      "expression":"(weight < 2) && (badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt > 30) && (NbTight > 0)",
       "latex":"Preselection MVA lowDM ttbar"
     }
   ],
