@@ -490,6 +490,7 @@ int main(int argc, char** argv)
     for(auto & variable : variables)
     {
       std::string plotBaseName = cut.name()+"_"+variable.name();
+      std::cout << "  Variable: " << variable.name() << std::endl;
 
       if(doSummary)
       {
@@ -607,6 +608,7 @@ int main(int argc, char** argv)
         systUnc->SetBinError(xbin, std::sqrt(unc + 0.025*0.025)); //Only add lumi
       }
 
+      TDirectory *systDir = syncPlot->mkdir("SystematicVariations");
       auto replaceSyst = [&](std::string orig, std::string target, std::string with) -> std::string
       {
         std::string retVal;
@@ -710,6 +712,9 @@ int main(int argc, char** argv)
           }
         }
 
+        systDir->cd();
+        retVal->Write(systematic.c_str());
+        syncPlot.cd();
         return retVal;
       };
       auto getTotalSyst = [&]() -> TH1D*
@@ -718,6 +723,7 @@ int main(int argc, char** argv)
 
         for(auto & systematic : systematics)
         {
+          std::cout << "    " << systematic << std::endl;
           auto tmpHist = getSyst(systematic);
           if(retVal == nullptr)
           {
@@ -731,6 +737,9 @@ int main(int argc, char** argv)
           }
         }
 
+        systDir->cd();
+        retVal->Write(systematic.c_str());
+        syncPlot.cd();
         return retVal;
       };
 
