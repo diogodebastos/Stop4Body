@@ -190,7 +190,7 @@ class ProcessInfo
   public:
     ProcessInfo() = delete;
     ProcessInfo(nlohmann::json jsonInfo, std::string baseDir = "", std::string suffix = "");
-    //~ProcessInfo();
+    ~ProcessInfo();
 
     std::vector<std::string> getAllFiles();
     TChain* getChain();
@@ -252,6 +252,8 @@ class ProcessInfo
 
     TTree* filtered_;
     TFile* tmpFile_;
+
+    std::string tmpDirectory_;
 
     json jsonBack_;
 

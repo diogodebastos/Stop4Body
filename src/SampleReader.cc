@@ -3,8 +3,10 @@
 #include <fstream>
 #include <sstream>
 #include <regex>
+#include <random>
 
 #include "TDirectory.h"
+#include "TSystem.h"
 #include "TFile.h"
 
 std::string cleanString(std::string inputStr)
@@ -18,6 +20,29 @@ std::string cleanString(std::string inputStr)
   replaced = std::regex_replace(replaced, multipleUnderscore, "_");
 
   return replaced;
+}
+
+std::string random_string( size_t length )
+{
+  thread_local static std::mt19937 rg{std::random_device{}()};
+
+  auto randchar = []() -> char
+  {
+    const char charset[] =
+    "0123456789"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz";
+    const size_t max_index = (sizeof(charset) - 2); // do not forget that there is a \0 at the end of a string
+
+    std::uniform_int_distribution<std::string::size_type> pick(0, max_index);
+
+    return charset[ pick(rg) ];
+  };
+
+  std::string str(length,0);
+  std::generate_n( str.begin(), length, randchar );
+
+  return str;
 }
 
 SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
@@ -198,7 +223,8 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix)
   marker_(1),
   mcolor_(1),
   filtered_(nullptr),
-  tmpFile_(nullptr)
+  tmpFile_(nullptr),
+  tmpDirectory_("")
 {
   jsonBack_ = jsonInfo;
   if(jsonInfo.count("tag") == 0 || jsonInfo.count("color") == 0 || jsonInfo.count("label") == 0 || jsonInfo.count("files") == 0)
@@ -520,27 +546,64 @@ bool ProcessInfo::hasBDT() const
 
 void ProcessInfo::filter(std::string filterString)
 {
+  if(tmpDirectory_ == "")
+  {
+    while(true)
+    {
+      tmpDirectory_ = random_string(10);
+      tmpDirectory_ = "/lstore/cms/cbeiraod/." + tmpDirectory_
+      if(gSystem->mkdir(tmpDirectory_.c_str()) == 0)
+        break;
+    }
+  }
+
+  if(filtered_ != nullptr)
+  {
+    delete filtered_;
+    filtered_ = nullptr;
+  }
+
   if(tmpFile_ != nullptr)
   {
     tmpFile_->Close();
     delete tmpFile_;
+    tmpFile_ = nullptr;
   }
 
-  if(filterString == nullptr)
-  {
-    if(filtered_ != nullptr)
-      delete filtered_;
-    filtered_ = nullptr;
+  if(filterString == "")
     return;
-  }
 
   TDirectory* cwd = gDirectory;
-  tmpFile_ = new TFile(("/tmp/plotter_"+tag_+".root").c_str(), "RECREATE");
+  tmpFile_ = new TFile((tmpDirectory_+"/plotter_"+tag_+".root").c_str(), "RECREATE");
   tmpFile_->cd();
   TChain* tmpChain = getChain();
   filtered_ = tmpChain->CopyTree(filterString.c_str());
   delete tmpChain;
   cwd->cd();
+
+  return;
+}
+
+ProcessInfo::~ProcessInfo()
+{
+  if(filtered_ != nullptr)
+  {
+    delete filtered_;
+    filtered_ = nullptr;
+  }
+
+  if(tmpFile_ != nullptr)
+  {
+    tmpFile_->Close();
+    delete tmpFile_;
+    tmpFile_ = nullptr;
+  }
+
+  if(tmpDirectory_ != "")
+  {
+    gSystem->Exec(("rm -Rf " + tmpDirectory_).c_str());
+    tmpDirectory_ = "";
+  }
 
   return;
 }
