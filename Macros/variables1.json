@@ -1,4 +1,5 @@
 {
+  "prefilter":"(badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (weight < 2) && (weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)",
   "cuts":[
     {
       "name":"Preselection",
