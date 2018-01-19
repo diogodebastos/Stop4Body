@@ -719,6 +719,7 @@ int main(int argc, char** argv)
 
         for(auto & systematic : systematics)
         {
+          std::cout << "    " << systematic << std::endl;
           auto tmpHist = getSyst(systematic);
           if(retVal == nullptr)
           {
