@@ -343,6 +343,21 @@ int main(int argc, char** argv)
   if(luminosity <= 0)
     luminosity = Data.getLumi();
 
+  {
+    json jsonFile;
+    std::ifstream inputFile(variablesJson);
+    inputFile >> jsonFile;
+
+    if(jsonFile.count("prefilter") != 0)
+    {
+      std::cout << "Filtering the trees" << std::endl;
+      MC->filter(jsonFile["prefilter"]);
+      Sig->filter(jsonFile["prefilter"]);
+      Data->filter(jsonFile["prefilter"]);
+      std::cout << "Done filtering the trees" << std::endl;
+    }
+  }
+
   std::string mcWeight;
   {
     std::stringstream converter;
