@@ -608,7 +608,7 @@ int main(int argc, char** argv)
         systUnc->SetBinError(xbin, std::sqrt(unc + 0.025*0.025)); //Only add lumi
       }
 
-      TDirectory *systDir = syncPlot->mkdir("SystematicVariations");
+      TDirectory *systDir = syncPlot.mkdir("SystematicVariations");
       auto replaceSyst = [&](std::string orig, std::string target, std::string with) -> std::string
       {
         std::string retVal;
@@ -643,6 +643,9 @@ int main(int argc, char** argv)
 
         auto retVal = MC.getHist(innerName, variable, selection);
 
+        systDir->cd();
+        retVal->Write(systematic.c_str());
+        syncPlot.cd();
         return retVal;
       };
       auto getSyst = [&](std::string systematic) -> TH1D*
@@ -737,9 +740,6 @@ int main(int argc, char** argv)
           }
         }
 
-        systDir->cd();
-        retVal->Write(systematic.c_str());
-        syncPlot.cd();
         return retVal;
       };
 
