@@ -6,7 +6,7 @@ cd ..
 cd -
 
 
-INPUT=~/local-area/Stop4Body/nTuples_v2017-08-13
+INPUT=~/local-area/Stop4Body/nTuples_v2017-10-19_bdt10
 OUTPUT=./plots/
 
 if [[ -d ${INPUT} ]] ; then
