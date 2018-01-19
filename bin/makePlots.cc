@@ -351,7 +351,7 @@ int main(int argc, char** argv)
     if(jsonFile.count("prefilter") != 0)
     {
       TDirectory* cwd = gDirectory;
-      TFile* tmpFile = new TFile("/tmp/tmp.root");
+      TFile* tmpFile = new TFile("/tmp/tmp.root", "RECREATE");
       tmpFile->cd();
       std::cout << "Filtering the trees" << std::endl;
       MC.filter(jsonFile["prefilter"]);
