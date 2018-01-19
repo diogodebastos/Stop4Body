@@ -490,6 +490,7 @@ int main(int argc, char** argv)
     for(auto & variable : variables)
     {
       std::string plotBaseName = cut.name()+"_"+variable.name();
+      std::cout << "  Variable: " << variable.name() << std::endl;
 
       if(doSummary)
       {
