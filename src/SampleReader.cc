@@ -520,10 +520,10 @@ bool ProcessInfo::hasBDT() const
 
 void ProcessInfo::filter(std::string filterString)
 {
-  if(tmpFile != nullptr)
+  if(tmpFile_ != nullptr)
   {
-    tmpFile->Close();
-    delete tmpFile;
+    tmpFile_->Close();
+    delete tmpFile_;
   }
 
   if(filterString == nullptr)
@@ -535,10 +535,11 @@ void ProcessInfo::filter(std::string filterString)
   }
 
   TDirectory* cwd = gDirectory;
-  tmpFile = new TFile(("/tmp/plotter_"+tag_+".root").c_str(), "RECREATE");
-  tmpFile->cd();
+  tmpFile_ = new TFile(("/tmp/plotter_"+tag_+".root").c_str(), "RECREATE");
+  tmpFile_->cd();
   TChain* tmpChain = getChain();
   filtered_ = tmpChain->CopyTree(filterString.c_str());
+  delete tmpChain;
   cwd->cd();
 
   return;
