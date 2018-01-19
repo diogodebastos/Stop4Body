@@ -251,6 +251,7 @@ class ProcessInfo
     int mcolor_;
 
     TTree* filtered_;
+    TFile* tmpFile_;
 
     json jsonBack_;
 

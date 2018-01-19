@@ -197,7 +197,8 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix)
   fill_(0),
   marker_(1),
   mcolor_(1),
-  filtered_(nullptr)
+  filtered_(nullptr),
+  tmpFile_(nullptr)
 {
   jsonBack_ = jsonInfo;
   if(jsonInfo.count("tag") == 0 || jsonInfo.count("color") == 0 || jsonInfo.count("label") == 0 || jsonInfo.count("files") == 0)
@@ -519,6 +520,12 @@ bool ProcessInfo::hasBDT() const
 
 void ProcessInfo::filter(std::string filterString)
 {
+  if(tmpFile != nullptr)
+  {
+    tmpFile->Close();
+    delete tmpFile;
+  }
+
   if(filterString == nullptr)
   {
     if(filtered_ != nullptr)
@@ -527,8 +534,12 @@ void ProcessInfo::filter(std::string filterString)
     return;
   }
 
+  TDirectory* cwd = gDirectory;
+  tmpFile = new TFile(("/tmp/plotter_"+tag_+".root").c_str(), "RECREATE");
+  tmpFile->cd();
   TChain* tmpChain = getChain();
   filtered_ = tmpChain->CopyTree(filterString.c_str());
+  cwd->cd();
 
   return;
 }
