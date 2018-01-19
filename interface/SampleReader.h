@@ -200,6 +200,8 @@ class ProcessInfo
     doubleUnc getYield(std::string, std::string);
     double getLumi() const;
 
+    void filter(std::string);
+
     std::string tag() const {return tag_;}
     std::string label() const {return label_;}
     std::string selection() const {return selection_;}
@@ -247,6 +249,9 @@ class ProcessInfo
     int fill_;
     int marker_;
     int mcolor_;
+
+    TTree* filtered_;
+
     json jsonBack_;
 
     std::vector<SampleInfo> samples_;
@@ -275,6 +280,8 @@ class SampleReader
     SampleReader getMCBkg();
     SampleReader getMCSig();
     SampleReader getMC();
+
+    void filter(std::string);
 
     size_t nProcesses() const {return processes_.size();}
     ProcessInfo process(size_t i) const {return processes_[i];}

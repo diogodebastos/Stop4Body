@@ -196,7 +196,8 @@ ProcessInfo::ProcessInfo(json jsonInfo, std::string baseDir, std::string suffix)
   lstyle_(1),
   fill_(0),
   marker_(1),
-  mcolor_(1)
+  mcolor_(1),
+  filtered_(nullptr)
 {
   jsonBack_ = jsonInfo;
   if(jsonInfo.count("tag") == 0 || jsonInfo.count("color") == 0 || jsonInfo.count("label") == 0 || jsonInfo.count("files") == 0)
@@ -300,6 +301,8 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
 
   auto cwd = gDirectory;
 
+  if(filtered_ == nullptr)
+  {
   TChain* chain = new TChain("bdttree");
   auto files = getAllFiles();
   for(auto& file : files)
@@ -309,6 +312,12 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
   }
 
   chain->Draw((variable+">>"+histName).c_str(), (weight).c_str(), "goff");
+  delete chain;
+  }
+  else
+  {
+    filtered_->Draw((variable+">>"+histName).c_str(), (weight).c_str(), "goff");
+  }
 
   retVal->SetLineColor(color_);
   retVal->SetFillColor(fill_);
@@ -345,7 +354,6 @@ TH1D* ProcessInfo::getHist(std::string variable, std::string axis, std::string w
   }
 
   cwd->cd();
-  delete chain;
 
   return retVal;
 }
@@ -359,6 +367,8 @@ TH2D* ProcessInfo::get2DHist(std::string variableX, std::string variableY, std::
 
   auto cwd = gDirectory;
 
+  if(filtered_ == nullptr)
+  {
   TChain* chain = new TChain("bdttree");
   auto files = getAllFiles();
   for(auto& file : files)
@@ -368,9 +378,14 @@ TH2D* ProcessInfo::get2DHist(std::string variableX, std::string variableY, std::
   }
 
   chain->Draw((variableY+":"+variableX+">>"+histName).c_str(), weight.c_str(), "goff");
+  delete chain;
+  }
+  else
+  {
+    filtered_->Draw((variableY+":"+variableX+">>"+histName).c_str(), weight.c_str(), "goff");
+  }
 
   cwd->cd();
-  delete chain;
 
   return retVal;
 }
@@ -387,6 +402,8 @@ TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string 
 
   auto cwd = gDirectory;
 
+  if(filtered_ == nullptr)
+  {
   TChain* chain = new TChain("bdttree");
   auto files = getAllFiles();
   for(auto& file : files)
@@ -396,6 +413,12 @@ TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string 
   }
 
   chain->Draw((var.expression()+">>"+histName).c_str(), (weight).c_str(), "goff");
+  delete chain;
+  }
+  else
+  {
+    filtered_->Draw((var.expression()+">>"+histName).c_str(), (weight).c_str(), "goff");
+  }
 
   retVal->SetLineColor(color_);
   retVal->SetFillColor(fill_);
@@ -438,7 +461,6 @@ TH1D* ProcessInfo::getHist(std::string baseName, VariableInfo& var, std::string 
   }
 
   cwd->cd();
-  delete chain;
 
   return retVal;
 }
@@ -450,6 +472,8 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
 
   auto cwd = gDirectory;
 
+  if(filtered_ == nullptr)
+  {
   TChain* chain = new TChain("bdttree");
   auto files = getAllFiles();
   for(auto& file : files)
@@ -458,6 +482,12 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
   }
 
   chain->Draw((weight+">>tmpHist").c_str(), (weight+"*("+cut+")").c_str(), "goff");
+  delete chain;
+  }
+  else
+  {
+    filtered_->Draw((weight+">>tmpHist").c_str(), (weight+"*("+cut+")").c_str(), "goff");
+  }
 
   doubleUnc retVal(tmpHist.GetBinContent(1),tmpHist.GetBinError(1));
 
@@ -465,7 +495,6 @@ doubleUnc ProcessInfo::getYield(std::string cut, std::string weight)
   retVal += doubleUnc(tmpHist.GetBinContent(2),tmpHist.GetBinError(2));
 
   cwd->cd();
-  delete chain;
 
   return retVal;
 }
@@ -486,6 +515,22 @@ bool ProcessInfo::hasBDT() const
     return false;
 
   return samples_[0].hasBDT();
+}
+
+void ProcessInfo::filter(std::string filterString)
+{
+  if(filterString == nullptr)
+  {
+    if(filtered_ != nullptr)
+      delete filtered_;
+    filtered_ = nullptr;
+    return;
+  }
+
+  TChain* tmpChain = getChain();
+  filtered_ = tmpChain->CopyTree(filterString.c_str());
+
+  return;
 }
 
 SampleReader::SampleReader(std::string fileName, std::string baseDir, std::string suffix):
@@ -749,4 +794,12 @@ bool SampleReader::hasBDT() const
     return false;
 
   return processes_[0].hasBDT();
+}
+
+void SampleReader::filter(std::string filterString)
+{
+  for(auto& process: processes_)
+    process.filter(filterString);
+
+  return;
 }
