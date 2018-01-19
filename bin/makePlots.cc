@@ -352,6 +352,7 @@ int main(int argc, char** argv)
     {
       TDirectory* cwd = gDirectory;
       TFile* tmpFile = new TFile("/tmp/tmp.root");
+      tmpFile->cd();
       std::cout << "Filtering the trees" << std::endl;
       MC.filter(jsonFile["prefilter"]);
       Sig.filter(jsonFile["prefilter"]);
