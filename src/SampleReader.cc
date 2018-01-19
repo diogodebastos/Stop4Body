@@ -551,7 +551,7 @@ void ProcessInfo::filter(std::string filterString)
     while(true)
     {
       tmpDirectory_ = random_string(10);
-      tmpDirectory_ = "/lstore/cms/cbeiraod/." + tmpDirectory_
+      tmpDirectory_ = "/lstore/cms/cbeiraod/." + tmpDirectory_;
       if(gSystem->mkdir(tmpDirectory_.c_str()) == 0)
         break;
     }
