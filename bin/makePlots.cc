@@ -350,17 +350,18 @@ int main(int argc, char** argv)
 
     if(jsonFile.count("prefilter") != 0)
     {
-      std::cout << "Filtering the trees" << std::endl;
-      if(static_cast<std::string>(jsonFile["prefilter"]) == "")
+      std::string prefilter = jsonFile["prefilter"];
+      std::cout << "Filtering the trees with: " << prefilter << std::endl;
+      if(prefilter == "")
       {
         MC.filter("(weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
         Sig.filter("(weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
       }
       else
       {
-        MC.filter(static_cast<std::string>(jsonFile["prefilter"]) + " && (weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
-        Sig.filter(static_cast<std::string>(jsonFile["prefilter"]) + " && (weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
-        Data.filter(jsonFile["prefilter"]);
+        MC.filter(prefilter + " && (weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
+        Sig.filter(prefilter + " && (weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
+        Data.filter(prefilter);
       }
       std::cout << "Done filtering the trees" << std::endl;
     }
