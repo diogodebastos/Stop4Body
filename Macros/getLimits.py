@@ -242,8 +242,8 @@ def collectJobs(outputDirectory, fullCLs=False, unblind=False):
       print "  Mneut=", neutM
 
       factor = 1
-      if deltaM = 10:
-        if stopM = 250 or stopM = 275 or stopM = 300 or stopM = 325:
+      if deltaM == 10:
+        if stopM == 250 or stopM == 275 or stopM == 300 or stopM == 325:
           factor = 10
 
       # Get the Asymptotic results:
