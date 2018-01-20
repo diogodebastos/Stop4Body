@@ -1,5 +1,5 @@
 {
-  "prefilter":"(isTight == 1) && (HLT_Mu == 1) && (badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (weight < 2) && (weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2) && (DPhiJet1Jet2 < 2.8 || Jet2Pt < 67) && (HT > 181) && (Met > 254) && (Jet1Pt > 100)",
+  "prefilter":"(isTight == 1) && (HLT_Mu == 1) && (badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (weight < 2) && (DPhiJet1Jet2 < 2.8 || Jet2Pt < 67) && (HT > 181) && (Met > 254) && (Jet1Pt > 100)",
   "cuts":[
     {
       "name":"PreselectionMVA_highDM",
