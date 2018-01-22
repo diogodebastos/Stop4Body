@@ -288,7 +288,7 @@ class SampleReader
     void filter(std::string);
 
     size_t nProcesses() const {return processes_.size();}
-    ProcessInfo& process(size_t i) const {return processes_[i];}
+    ProcessInfo& process(size_t i) {return processes_[i];}
 
     bool hasBDT() const;
     json jsonObj() const {return jsonBack_;}
