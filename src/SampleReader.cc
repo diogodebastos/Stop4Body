@@ -572,7 +572,7 @@ void ProcessInfo::filter(std::string filterString)
     return;
 
   TDirectory* cwd = gDirectory;
-  tmpFile_ = new TFile((tmpDirectory_+"/cache_"+tag_+".root").c_str(), "RECREATE");
+  tmpFile_ = static_cast<TFile*>(new TFile((tmpDirectory_+"/cache_"+tag_+".root").c_str(), "RECREATE"));
   tmpFile_->cd();
   TChain* tmpChain = getChain();
   filtered_ = tmpChain->CopyTree(filterString.c_str());
