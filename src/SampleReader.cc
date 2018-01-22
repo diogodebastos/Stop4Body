@@ -559,14 +559,12 @@ void ProcessInfo::filter(std::string filterString)
 
   if(filtered_ != nullptr)
   {
-    delete filtered_;
     filtered_ = nullptr;
   }
 
   if(tmpFile_ != nullptr)
   {
     tmpFile_->Close();
-    delete tmpFile_;
     tmpFile_ = nullptr;
   }
 
@@ -588,14 +586,12 @@ ProcessInfo::~ProcessInfo()
 {
   if(filtered_ != nullptr)
   {
-    delete filtered_;
     filtered_ = nullptr;
   }
 
   if(tmpFile_ != nullptr)
   {
     tmpFile_->Close();
-    delete tmpFile_;
     tmpFile_ = nullptr;
   }
 

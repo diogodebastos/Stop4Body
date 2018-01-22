@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <exception>
+#include <memory>
 
 #include "TChain.h"
 #include "THStack.h"
@@ -250,8 +251,8 @@ class ProcessInfo
     int marker_;
     int mcolor_;
 
-    TTree* filtered_;
-    TFile* tmpFile_;
+    std::shared_ptr<TTree> filtered_;
+    std::shared_ptr<TFile> tmpFile_;
 
     std::string tmpDirectory_;
 
