@@ -1017,7 +1017,6 @@ int main(int argc, char** argv)
 
     for(auto & twoDvariable : twoDvariables)
     {
-      continue;
       std::string dataSel;
       std::string mcSel;
 

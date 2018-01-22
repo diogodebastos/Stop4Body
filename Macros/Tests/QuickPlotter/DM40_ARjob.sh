@@ -26,4 +26,5 @@ if [[ -d ${INPUT} || -L ${INPUT} ]] ; then
 
   JSONFILE=variablesAN_BDT_AR.json
   makePlots --json ${JSON_PATH}/plot2016_DM${deltaM}RP.json --outDir ${OUTPUT}/BDT/DeltaM${deltaM}/AR --inDir ${INPUT_TEST}_bdt${deltaM}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt --final
+  makePlots --json ${JSON_PATH}/plot2016_DM${deltaM}RP.json --outDir ${OUTPUT}/BDT/DeltaM${deltaM}/AR_unblinded --inDir ${INPUT_TEST}_bdt${deltaM}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --suffix bdt --unblind --final
 fi
