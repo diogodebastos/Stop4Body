@@ -1105,7 +1105,11 @@ int main(int argc, char** argv)
           nPadsY = 3;
           break;
         default:
-          throw std::out_of_range("Calm down speedy, check the number of processes");
+          nPadsX = 4;
+          nPadsY = std::ceil(static_cast<double>(nPlots)/nPadsX);
+          canvasY = nPadsY*plotY;
+          canvasX = nPadsX*plotX;
+          //throw std::out_of_range("Calm down speedy, check the number of processes");
       }
 
       std::vector<TObject*> ObjectToDelete;
