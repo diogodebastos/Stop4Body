@@ -30,6 +30,7 @@ if [[ -d ${INPUT} || -L ${INPUT} ]] ; then
     mkdir -p ${OUTPUT}/BDT/DeltaM${deltaM}/VR1
     mkdir -p ${OUTPUT}/BDT/DeltaM${deltaM}/VR2
     mkdir -p ${OUTPUT}/BDT/DeltaM${deltaM}/VR3
+    mkdir -p ${OUTPUT}/BDT/DeltaM${deltaM}/AR_unblinded
   done
 
 
