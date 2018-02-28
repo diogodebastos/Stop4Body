@@ -54,6 +54,7 @@ int main(int argc, char** argv)
   double luminosity = -1.0;
   bool verbose = false;
   bool final = false;
+  bool plotData = false;
 
   if(argc < 2)
   {
@@ -106,6 +107,11 @@ int main(int argc, char** argv)
     {
       final = true;
     }
+
+    if(argument == "--plotData")
+    {
+      plotData = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -132,11 +138,8 @@ int main(int argc, char** argv)
     return 1;
   }
 
-
-  gStyle->SetOptStat(000000);
-  gStyle->SetOptTitle(0);
-  gStyle->SetPadTickY(1);
-  gStyle->SetPadTickX(1);
+  TStyle* tdrstyle = getTDRStyle();
+  tdrstyle->cd();
 
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
@@ -245,9 +248,12 @@ int main(int argc, char** argv)
         }
         else
         {
-          TCanvas c1((cut.name()+"_"+variables.Get(j).name()+"_vs_"+variables.Get(i).name()).c_str(), "", 1200, 400);
+          TCanvas c1((cut.name()+"_"+variables.Get(j).name()+"_vs_"+variables.Get(i).name()).c_str(), "", ((plotData)?1200:800), 400);
           c1.SetLogz();
-          c1.Divide(3,1,0,0);
+          if(plotData)
+            c1.Divide(3,1,0,0);
+          else
+            c1.Divide(2,1,0,0);
 
           TVirtualPad* thisPad = c1.cd(1);
           thisPad->SetLogz(true);
@@ -309,11 +315,14 @@ int main(int argc, char** argv)
           bkgLeg->AddText("Background");
           bkgLeg->Draw("same");
 
-          thisPad = c1.cd(3);
-          thisPad->SetLogz(true);
-          thisPad->SetTopMargin(0.10);
-          thisPad->SetBottomMargin(0.10);
-          thisPad->SetRightMargin(0.20);
+          if(plotData)
+          {
+            thisPad = c1.cd(3);
+            thisPad->SetLogz(true);
+            thisPad->SetTopMargin(0.10);
+            thisPad->SetBottomMargin(0.10);
+            thisPad->SetRightMargin(0.20);
+          }
 
           auto dataHist =  Data.get2DHist(variables.Get(i).expression(),
                                           variables.Get(j).expression(),
@@ -329,15 +338,18 @@ int main(int argc, char** argv)
 
           dataHist->SetTitle("");
           dataHist->SetStats(kFALSE);
-          dataHist->Draw("COLZ");
+          if(plotData)
+          {
+            dataHist->Draw("COLZ");
 
-          TPaveText* dataLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
-          dataLeg->SetFillColor(0);
-          dataLeg->SetFillStyle(0);
-          dataLeg->SetLineColor(0);
-          dataLeg->SetTextAlign(12);
-          dataLeg->AddText("Data");
-          dataLeg->Draw("same");
+            TPaveText* dataLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
+            dataLeg->SetFillColor(0);
+            dataLeg->SetFillStyle(0);
+            dataLeg->SetLineColor(0);
+            dataLeg->SetTextAlign(12);
+            dataLeg->AddText("Data");
+            dataLeg->Draw("same");
+          }
 
           c1.cd(0);
 
@@ -364,6 +376,7 @@ int main(int argc, char** argv)
 
           std::string plotName = cut.name() + "_" + variables.Get(j).name() + "_vs_" + variables.Get(i).name();
           c1.SaveAs((outputDirectory+"/"+plotName+".png").c_str());
+          c1.SaveAs((outputDirectory+"/"+plotName+".pdf").c_str());
           c1.SaveAs((outputDirectory+"/"+plotName+".C").c_str());
 
 
