@@ -9,6 +9,7 @@
 
 #include "TH1.h"
 #include "TH2.h"
+#include "TStyle.h"
 #include <string>
 
 extern TH2D* centralElectronSFHist;
@@ -62,6 +63,8 @@ ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double
 ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double LepPt, double LepEta);
 
 ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta, Float_t* Jet_btagCSV, Int_t* Jet_hadronFlavour);
+
+TStyle* getTDRStyle();
 
 //ValueWithSystematics<double> stopCrossSectionSys(double stopM, double lspM);
 
