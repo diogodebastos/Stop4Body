@@ -42,6 +42,66 @@ protected:
   std::string latex_;
 };
 
+void adjustStyle(TH1* hist)
+{
+  hist->GetYaxis()->SetTitleOffset(1.0);
+
+  int Xbin = hist->GetXaxis()->GetNbins();
+  double xsize = std::min(800.0/(Xbin+1)/180, 0.12);
+  hist->GetXaxis()->SetLabelSize(xsize);
+
+  double scale = 1.0;
+  hist->GetXaxis()->SetTitleSize(0.05*scale);
+  hist->GetXaxis()->SetLabelSize(0.05*scale);
+  hist->GetXaxis()->SetTitleOffset(1);
+  hist->GetYaxis()->SetTitleSize(0.06*scale);
+  hist->GetYaxis()->SetTitleOffset(1.25);
+  hist->GetYaxis()->SetLabelSize(0.06*0.8*scale);
+  hist->GetYaxis()->SetLabelOffset(0.01);
+
+  return;
+}
+
+void drawInfo(TVirtualPad* c1, double luminosity, bool drawPreliminary = false)
+{
+  //double H = c1->GetWh();
+  //double W = c1->GetWw();
+  double l = c1->GetLeftMargin();
+  double t = c1->GetTopMargin();
+  double r = c1->GetRightMargin();
+  double b = c1->GetBottomMargin();
+  //double e = 0.025;
+
+  char Buffer[1024];
+  sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", luminosity/1000, 13.0);
+  TLatex *   tex  = new TLatex();
+  tex->SetNDC();
+  tex->SetTextAngle(0);
+  tex->SetTextColor(kBlack);
+  tex->SetTextFont(42);
+  tex->SetTextAlign(31);
+  tex->SetTextSize(0.6 * t);
+  tex->DrawLatex(1-r,1-t+0.15*t,Buffer);
+
+  TLatex *   tex2  = new TLatex();
+  tex2->SetNDC();
+  tex2->SetTextAngle(0);
+  tex2->SetTextColor(kBlack);
+  tex2->SetTextFont(61);
+  tex2->SetTextSize(1.2*t);
+  tex2->SetTextAlign(13);
+  double posX = l + 0.045*(1-l-r);
+  double posY = 1-t - 0.035*(1-t-b);
+  char cmsText[] = "CMS";
+  tex2->DrawLatex(posX, posY, cmsText);
+  if(drawPreliminary)
+  {
+    std::cout << "Preliminary not implemented yet" << std::endl;
+  }
+
+  return;
+}
+
 
 int main(int argc, char** argv)
 {
@@ -54,6 +114,7 @@ int main(int argc, char** argv)
   double luminosity = -1.0;
   bool verbose = false;
   bool final = false;
+  bool plotData = false;
 
   if(argc < 2)
   {
@@ -106,6 +167,11 @@ int main(int argc, char** argv)
     {
       final = true;
     }
+
+    if(argument == "--plotData")
+    {
+      plotData = true;
+    }
   }
 
   if(jsonFileName == "")
@@ -132,11 +198,8 @@ int main(int argc, char** argv)
     return 1;
   }
 
-
-  gStyle->SetOptStat(000000);
-  gStyle->SetOptTitle(0);
-  gStyle->SetPadTickY(1);
-  gStyle->SetPadTickX(1);
+  TStyle* tdrstyle = getTDRStyle();
+  tdrstyle->cd();
 
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
@@ -157,6 +220,24 @@ int main(int argc, char** argv)
     json jsonFile;
     std::ifstream inputFile(cutsJson);
     inputFile >> jsonFile;
+
+    if(jsonFile.count("prefilter") != 0)
+    {
+      std::string prefilter = jsonFile["prefilter"];
+      std::cout << "Filtering the trees with: " << prefilter << std::endl;
+      if(prefilter == "")
+      {
+        MC.filter("(weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
+        Sig.filter("(weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
+      }
+      else
+      {
+        MC.filter(prefilter + " && (weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
+        Sig.filter(prefilter + " && (weight_Q2_1 < 2) && (weight_Q2_2 < 2) && (weight_Q2_3 < 2) && (weight_Q2_4 < 2) && (weight_Q2_6 < 2) && (weight_Q2_8 < 2)");
+        Data.filter(prefilter);
+      }
+      std::cout << "Done filtering the trees" << std::endl;
+    }
 
     if(jsonFile.count("cuts") == 0)
       throw MissingJSONParam("The JSON file does not contain the 'cuts' entry. It is not a valid file.");
@@ -245,9 +326,12 @@ int main(int argc, char** argv)
         }
         else
         {
-          TCanvas c1((cut.name()+"_"+variables.Get(j).name()+"_vs_"+variables.Get(i).name()).c_str(), "", 1200, 400);
+          TCanvas c1((cut.name()+"_"+variables.Get(j).name()+"_vs_"+variables.Get(i).name()).c_str(), "", ((plotData)?1200:800), 400);
           c1.SetLogz();
-          c1.Divide(3,1,0,0);
+          if(plotData)
+            c1.Divide(3,1,0,0);
+          else
+            c1.Divide(2,1,0,0);
 
           TVirtualPad* thisPad = c1.cd(1);
           thisPad->SetLogz(true);
@@ -270,6 +354,7 @@ int main(int argc, char** argv)
           sigHist->SetTitle("");
           sigHist->SetStats(kFALSE);
           sigHist->Draw("COLZ");
+          adjustStyle(sigHist);
 
           TPaveText* sigLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
           sigLeg->SetFillColor(0);
@@ -300,6 +385,7 @@ int main(int argc, char** argv)
           bkgHist->SetTitle("");
           bkgHist->SetStats(kFALSE);
           bkgHist->Draw("COLZ");
+          adjustStyle(bkgHist);
 
           TPaveText* bkgLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
           bkgLeg->SetFillColor(0);
@@ -309,11 +395,14 @@ int main(int argc, char** argv)
           bkgLeg->AddText("Background");
           bkgLeg->Draw("same");
 
-          thisPad = c1.cd(3);
-          thisPad->SetLogz(true);
-          thisPad->SetTopMargin(0.10);
-          thisPad->SetBottomMargin(0.10);
-          thisPad->SetRightMargin(0.20);
+          if(plotData)
+          {
+            thisPad = c1.cd(3);
+            thisPad->SetLogz(true);
+            thisPad->SetTopMargin(0.10);
+            thisPad->SetBottomMargin(0.10);
+            thisPad->SetRightMargin(0.20);
+          }
 
           auto dataHist =  Data.get2DHist(variables.Get(i).expression(),
                                           variables.Get(j).expression(),
@@ -329,41 +418,27 @@ int main(int argc, char** argv)
 
           dataHist->SetTitle("");
           dataHist->SetStats(kFALSE);
-          dataHist->Draw("COLZ");
+          if(plotData)
+          {
+            dataHist->Draw("COLZ");
+            adjustStyle(dataHist);
 
-          TPaveText* dataLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
-          dataLeg->SetFillColor(0);
-          dataLeg->SetFillStyle(0);
-          dataLeg->SetLineColor(0);
-          dataLeg->SetTextAlign(12);
-          dataLeg->AddText("Data");
-          dataLeg->Draw("same");
+            TPaveText* dataLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
+            dataLeg->SetFillColor(0);
+            dataLeg->SetFillStyle(0);
+            dataLeg->SetLineColor(0);
+            dataLeg->SetTextAlign(12);
+            dataLeg->AddText("Data");
+            dataLeg->Draw("same");
+          }
 
           c1.cd(0);
 
-          char Buffer[1024];
-          sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", luminosity/1000, 13.0);
-          TLatex *   tex  = new TLatex(0.805,0.975,Buffer);
-          tex->SetNDC();
-          tex->SetTextAlign(33);
-          tex->SetTextFont(42);
-          tex->SetTextSize(0.038);
-          tex->SetLineWidth(2);
-          tex->Draw();
-          TLatex *   tex2;
-          if(final)
-            tex2 = new TLatex(0.15,0.965,"#font[61]{CMS}");
-          else
-            tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52]{Preliminary}");
-          tex2->SetNDC();
-          tex2->SetTextAlign(13);
-          tex2->SetTextFont(42);
-          tex2->SetTextSize(0.038);
-          tex2->SetLineWidth(2);
-          tex2->Draw();
+          drawInfo(&c1, luminosity, !final);
 
           std::string plotName = cut.name() + "_" + variables.Get(j).name() + "_vs_" + variables.Get(i).name();
           c1.SaveAs((outputDirectory+"/"+plotName+".png").c_str());
+          c1.SaveAs((outputDirectory+"/"+plotName+".pdf").c_str());
           c1.SaveAs((outputDirectory+"/"+plotName+".C").c_str());
 
 
