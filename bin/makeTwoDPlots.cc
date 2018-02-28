@@ -338,7 +338,7 @@ int main(int argc, char** argv)
           thisPad->SetLogz(true);
           thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
-          //thisPad->SetRightMargin(0.16);
+          thisPad->SetRightMargin(0.16);
 
           auto sigHist = Sig.process(0).get2DHist(variables.Get(i).expression(),
                                                   variables.Get(j).expression(),
@@ -357,7 +357,7 @@ int main(int argc, char** argv)
           sigHist->Draw("COLZ");
           adjustStyle(sigHist);
 
-          TPaveText* sigLeg = new TPaveText(0.10,0.995,0.90,0.95, "NDC");
+          TPaveText* sigLeg = new TPaveText(0.16,0.995,0.90,0.955, "NDC");
           sigLeg->SetFillColor(0);
           sigLeg->SetFillStyle(0);
           sigLeg->SetLineColor(0);
@@ -373,7 +373,7 @@ int main(int argc, char** argv)
           thisPad->SetLogz(true);
           thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
-          //thisPad->SetRightMargin(0.16);
+          thisPad->SetRightMargin(0.16);
 
           auto bkgHist = MC.get2DHist(variables.Get(i).expression(),
                                       variables.Get(j).expression(),
@@ -392,7 +392,7 @@ int main(int argc, char** argv)
           bkgHist->Draw("COLZ");
           adjustStyle(bkgHist);
 
-          TPaveText* bkgLeg = new TPaveText(0.10,0.995,0.90,0.95, "NDC");
+          TPaveText* bkgLeg = new TPaveText(0.16,0.995,0.90,0.955, "NDC");
           bkgLeg->SetFillColor(0);
           bkgLeg->SetFillStyle(0);
           bkgLeg->SetLineColor(0);
@@ -410,7 +410,7 @@ int main(int argc, char** argv)
             thisPad->SetLogz(true);
             thisPad->SetTopMargin(0.05);
             //thisPad->SetBottomMargin(0.10);
-            //thisPad->SetRightMargin(0.16);
+            thisPad->SetRightMargin(0.16);
           }
 
           auto dataHist =  Data.get2DHist(variables.Get(i).expression(),
@@ -432,7 +432,7 @@ int main(int argc, char** argv)
             dataHist->Draw("COLZ");
             adjustStyle(dataHist);
 
-            TPaveText* dataLeg = new TPaveText(0.10,0.995,0.90,0.95, "NDC");
+            TPaveText* dataLeg = new TPaveText(0.16,0.995,0.90,0.955, "NDC");
             dataLeg->SetFillColor(0);
             dataLeg->SetFillStyle(0);
             dataLeg->SetLineColor(0);
