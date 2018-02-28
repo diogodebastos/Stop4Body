@@ -336,11 +336,11 @@ int main(int argc, char** argv)
 
           c1.SetRightMargin(0.0);
           c1.SetLeftMargin(0.0);
+          c1.SetTopMargin(0.0);
 
           TVirtualPad* thisPad = c1.cd(1);
-          tdrstyle->cd();
           thisPad->SetLogz(true);
-          //thisPad->SetTopMargin(0.05);
+          thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
           thisPad->SetRightMargin(0.16);
           thisPad->SetLeftMargin(0.16);
@@ -374,9 +374,8 @@ int main(int argc, char** argv)
           drawInfo(thisPad, luminosity, !final);
 
           thisPad = c1.cd(2);
-          tdrstyle->cd();
           thisPad->SetLogz(true);
-          //thisPad->SetTopMargin(0.05);
+          thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
           thisPad->SetRightMargin(0.16);
           thisPad->SetLeftMargin(0.16);
@@ -412,9 +411,8 @@ int main(int argc, char** argv)
           if(plotData)
           {
             thisPad = c1.cd(3);
-            tdrstyle->cd();
             thisPad->SetLogz(true);
-            //thisPad->SetTopMargin(0.05);
+            thisPad->SetTopMargin(0.05);
             //thisPad->SetBottomMargin(0.10);
             thisPad->SetRightMargin(0.16);
             thisPad->SetLeftMargin(0.16);
