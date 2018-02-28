@@ -375,6 +375,7 @@ int main(int argc, char** argv)
           thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
           thisPad->SetRightMargin(0.16);
+          thisPad->SetLeftMargin(0.16);
 
           auto bkgHist = MC.get2DHist(variables.Get(i).expression(),
                                       variables.Get(j).expression(),
@@ -412,6 +413,7 @@ int main(int argc, char** argv)
             thisPad->SetTopMargin(0.05);
             //thisPad->SetBottomMargin(0.10);
             thisPad->SetRightMargin(0.16);
+            thisPad->SetLeftMargin(0.16);
           }
 
           auto dataHist =  Data.get2DHist(variables.Get(i).expression(),
