@@ -334,12 +334,16 @@ int main(int argc, char** argv)
           else
             c1.Divide(2,1,0,0);
 
+          c1->SetRightMargin(0.0);
+          c1->SetLeftMargin(0.0);
+
           TVirtualPad* thisPad = c1.cd(1);
           tdrstyle->cd();
           thisPad->SetLogz(true);
-          thisPad->SetTopMargin(0.05);
+          //thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
           thisPad->SetRightMargin(0.16);
+          thisPad->SetLeftMargin(0.16);
 
           auto sigHist = Sig.process(0).get2DHist(variables.Get(i).expression(),
                                                   variables.Get(j).expression(),
@@ -372,7 +376,7 @@ int main(int argc, char** argv)
           thisPad = c1.cd(2);
           tdrstyle->cd();
           thisPad->SetLogz(true);
-          thisPad->SetTopMargin(0.05);
+          //thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
           thisPad->SetRightMargin(0.16);
           thisPad->SetLeftMargin(0.16);
@@ -410,7 +414,7 @@ int main(int argc, char** argv)
             thisPad = c1.cd(3);
             tdrstyle->cd();
             thisPad->SetLogz(true);
-            thisPad->SetTopMargin(0.05);
+            //thisPad->SetTopMargin(0.05);
             //thisPad->SetBottomMargin(0.10);
             thisPad->SetRightMargin(0.16);
             thisPad->SetLeftMargin(0.16);
