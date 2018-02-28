@@ -23,6 +23,7 @@
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
 #include "UserCode/Stop4Body/interface/VariableReader.h"
+#include "UserCode/Stop4Body/interface/commonFunctions.h"
 
 using json = nlohmann::json;
 

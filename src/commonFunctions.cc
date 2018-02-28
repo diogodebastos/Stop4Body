@@ -2920,5 +2920,5 @@ TStyle* getTDRStyle()
   tdrStyle->SetHatchesLineWidth(5);
   tdrStyle->SetHatchesSpacing(0.05);
 
-  return tdrstyle;
+  return tdrStyle;
 }
