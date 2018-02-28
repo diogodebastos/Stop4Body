@@ -336,8 +336,8 @@ int main(int argc, char** argv)
           TVirtualPad* thisPad = c1.cd(1);
           thisPad->SetLogz(true);
           thisPad->SetTopMargin(0.10);
-          thisPad->SetBottomMargin(0.10);
-          thisPad->SetRightMargin(0.20);
+          //thisPad->SetBottomMargin(0.10);
+          //thisPad->SetRightMargin(0.20);
 
           auto sigHist = Sig.process(0).get2DHist(variables.Get(i).expression(),
                                                   variables.Get(j).expression(),
@@ -364,11 +364,13 @@ int main(int argc, char** argv)
           sigLeg->AddText(Sig.process(0).label().c_str());
           sigLeg->Draw("same");
 
+          drawInfo(thisPad, luminosity, !final);
+
           thisPad = c1.cd(2);
           thisPad->SetLogz(true);
           thisPad->SetTopMargin(0.10);
-          thisPad->SetBottomMargin(0.10);
-          thisPad->SetRightMargin(0.20);
+          //thisPad->SetBottomMargin(0.10);
+          //thisPad->SetRightMargin(0.20);
 
           auto bkgHist = MC.get2DHist(variables.Get(i).expression(),
                                       variables.Get(j).expression(),
@@ -395,13 +397,15 @@ int main(int argc, char** argv)
           bkgLeg->AddText("Background");
           bkgLeg->Draw("same");
 
+          drawInfo(thisPad, luminosity, !final);
+
           if(plotData)
           {
             thisPad = c1.cd(3);
             thisPad->SetLogz(true);
             thisPad->SetTopMargin(0.10);
-            thisPad->SetBottomMargin(0.10);
-            thisPad->SetRightMargin(0.20);
+            //thisPad->SetBottomMargin(0.10);
+            //thisPad->SetRightMargin(0.20);
           }
 
           auto dataHist =  Data.get2DHist(variables.Get(i).expression(),
@@ -430,11 +434,11 @@ int main(int argc, char** argv)
             dataLeg->SetTextAlign(12);
             dataLeg->AddText("Data");
             dataLeg->Draw("same");
+
+            drawInfo(thisPad, luminosity, !final);
           }
 
           c1.cd(0);
-
-          drawInfo(&c1, luminosity, !final);
 
           std::string plotName = cut.name() + "_" + variables.Get(j).name() + "_vs_" + variables.Get(i).name();
           c1.SaveAs((outputDirectory+"/"+plotName+".png").c_str());
