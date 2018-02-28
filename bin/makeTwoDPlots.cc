@@ -334,8 +334,8 @@ int main(int argc, char** argv)
           else
             c1.Divide(2,1,0,0);
 
-          c1->SetRightMargin(0.0);
-          c1->SetLeftMargin(0.0);
+          c1.SetRightMargin(0.0);
+          c1.SetLeftMargin(0.0);
 
           TVirtualPad* thisPad = c1.cd(1);
           tdrstyle->cd();
