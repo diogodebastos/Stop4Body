@@ -329,9 +329,9 @@ int main(int argc, char** argv)
           TCanvas c1((cut.name()+"_"+variables.Get(j).name()+"_vs_"+variables.Get(i).name()).c_str(), "", ((plotData)?1200:800), 400);
           c1.SetLogz();
           if(plotData)
-            c1.Divide(3,1,0,0);
+            c1.Divide(3,1,0.005,0);
           else
-            c1.Divide(2,1,0,0);
+            c1.Divide(2,1,0.005,0);
 
           c1.SetRightMargin(0.0);
           c1.SetLeftMargin(0.0);
