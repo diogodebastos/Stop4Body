@@ -335,10 +335,11 @@ int main(int argc, char** argv)
             c1.Divide(2,1,0,0);
 
           TVirtualPad* thisPad = c1.cd(1);
+          tdrstyle->cd();
           thisPad->SetLogz(true);
-          thisPad->SetTopMargin(0.10);
+          thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
-          //thisPad->SetRightMargin(0.20);
+          //thisPad->SetRightMargin(0.16);
 
           auto sigHist = Sig.process(0).get2DHist(variables.Get(i).expression(),
                                                   variables.Get(j).expression(),
@@ -357,21 +358,23 @@ int main(int argc, char** argv)
           sigHist->Draw("COLZ");
           adjustStyle(sigHist);
 
-          TPaveText* sigLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
+          TPaveText* sigLeg = new TPaveText(0.10,0.995,0.90,0.95, "NDC");
           sigLeg->SetFillColor(0);
           sigLeg->SetFillStyle(0);
           sigLeg->SetLineColor(0);
           sigLeg->SetTextAlign(12);
+          sigLeg->SetTextFont(42);
           sigLeg->AddText(Sig.process(0).label().c_str());
           sigLeg->Draw("same");
 
           drawInfo(thisPad, luminosity, !final);
 
           thisPad = c1.cd(2);
+          tdrstyle->cd();
           thisPad->SetLogz(true);
-          thisPad->SetTopMargin(0.10);
+          thisPad->SetTopMargin(0.05);
           //thisPad->SetBottomMargin(0.10);
-          //thisPad->SetRightMargin(0.20);
+          //thisPad->SetRightMargin(0.16);
 
           auto bkgHist = MC.get2DHist(variables.Get(i).expression(),
                                       variables.Get(j).expression(),
@@ -390,12 +393,13 @@ int main(int argc, char** argv)
           bkgHist->Draw("COLZ");
           adjustStyle(bkgHist);
 
-          TPaveText* bkgLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
+          TPaveText* bkgLeg = new TPaveText(0.10,0.995,0.90,0.95, "NDC");
           bkgLeg->SetFillColor(0);
           bkgLeg->SetFillStyle(0);
           bkgLeg->SetLineColor(0);
           bkgLeg->SetTextAlign(12);
-          bkgLeg->AddText("Background");
+          bkgLeg->SetTextFont(42);
+          bkgLeg->AddText("Simulated Background");
           bkgLeg->Draw("same");
 
           drawInfo(thisPad, luminosity, !final);
@@ -403,10 +407,11 @@ int main(int argc, char** argv)
           if(plotData)
           {
             thisPad = c1.cd(3);
+            tdrstyle->cd();
             thisPad->SetLogz(true);
-            thisPad->SetTopMargin(0.10);
+            thisPad->SetTopMargin(0.05);
             //thisPad->SetBottomMargin(0.10);
-            //thisPad->SetRightMargin(0.20);
+            //thisPad->SetRightMargin(0.16);
           }
 
           auto dataHist =  Data.get2DHist(variables.Get(i).expression(),
@@ -428,11 +433,12 @@ int main(int argc, char** argv)
             dataHist->Draw("COLZ");
             adjustStyle(dataHist);
 
-            TPaveText* dataLeg = new TPaveText(0.10,0.995,0.90,0.90, "NDC");
+            TPaveText* dataLeg = new TPaveText(0.10,0.995,0.90,0.95, "NDC");
             dataLeg->SetFillColor(0);
             dataLeg->SetFillStyle(0);
             dataLeg->SetLineColor(0);
             dataLeg->SetTextAlign(12);
+            dataLeg->SetTextFont(42);
             dataLeg->AddText("Data");
             dataLeg->Draw("same");
 
