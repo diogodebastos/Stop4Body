@@ -377,7 +377,7 @@ int main(int argc, char** argv)
           signalCanvas.cd();
           signalCanvas.SetLogz(true);
           signalCanvas.SetTopMargin(0.05);
-          signalCanvas.SetRightMargin(0.16);
+          signalCanvas.SetRightMargin(0.18);
           signalCanvas.SetLeftMargin(0.16);
           sigHist->Draw("COLZ");
           adjustStyle(sigHist);
@@ -424,7 +424,7 @@ int main(int argc, char** argv)
           backgroundCanvas.cd();
           backgroundCanvas.SetLogz(true);
           backgroundCanvas.SetTopMargin(0.05);
-          backgroundCanvas.SetRightMargin(0.16);
+          backgroundCanvas.SetRightMargin(0.18);
           backgroundCanvas.SetLeftMargin(0.16);
           bkgHist->Draw("COLZ");
           adjustStyle(bkgHist);
@@ -476,7 +476,7 @@ int main(int argc, char** argv)
             dataCanvas.cd();
             dataCanvas.SetLogz(true);
             dataCanvas.SetTopMargin(0.05);
-            dataCanvas.SetRightMargin(0.16);
+            dataCanvas.SetRightMargin(0.18);
             dataCanvas.SetLeftMargin(0.16);
             dataHist->Draw("COLZ");
             adjustStyle(dataHist);
