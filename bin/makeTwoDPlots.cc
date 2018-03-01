@@ -333,6 +333,7 @@ int main(int argc, char** argv)
             c1.Divide(3,1,0.005,0);
           else
             c1.Divide(2,1,0.005,0);
+          std::string plotName = cut.name() + "_" + variables.Get(j).name() + "_vs_" + variables.Get(i).name();
 
           c1.SetRightMargin(0.0);
           c1.SetLeftMargin(0.0);
@@ -373,6 +374,18 @@ int main(int argc, char** argv)
 
           drawInfo(thisPad, luminosity, !final);
 
+          TCanvas signalCanvas((cut.name()+"_"+variables.Get(j).name()+"_vs_"+variables.Get(i).name() + "_signal").c_str(), "", 400, 400);
+          signalCanvas.cd();
+          signalCanvas.SetLogz(true);
+          signalCanvas.SetTopMargin(0.05);
+          signalCanvas.SetRightMargin(0.16);
+          signalCanvas.SetLeftMargin(0.16);
+          sigHist->Draw("COLZ");
+          adjustStyle(sigHist);
+          sigLeg->Draw("same");
+          drawInfo(&signalCanvas, luminosity, !final);
+          signalCanvas.SaveAs((outputDirectory+"/"+plotName+"_signal.pdf").c_str());
+
           thisPad = c1.cd(2);
           thisPad->SetLogz(true);
           thisPad->SetTopMargin(0.05);
@@ -407,6 +420,18 @@ int main(int argc, char** argv)
           bkgLeg->Draw("same");
 
           drawInfo(thisPad, luminosity, !final);
+
+          TCanvas backgroundCanvas((cut.name()+"_"+variables.Get(j).name()+"_vs_"+variables.Get(i).name() + "_background").c_str(), "", 400, 400);
+          backgroundCanvas.cd();
+          backgroundCanvas.SetLogz(true);
+          backgroundCanvas.SetTopMargin(0.05);
+          backgroundCanvas.SetRightMargin(0.16);
+          backgroundCanvas.SetLeftMargin(0.16);
+          bkgHist->Draw("COLZ");
+          adjustStyle(bkgHist);
+          bkgLeg->Draw("same");
+          drawInfo(&backgroundCanvas, luminosity, !final);
+          backgroundCanvas.SaveAs((outputDirectory+"/"+plotName+"_background.pdf").c_str());
 
           if(plotData)
           {
@@ -447,11 +472,22 @@ int main(int argc, char** argv)
             dataLeg->Draw("same");
 
             drawInfo(thisPad, luminosity, !final);
+
+            TCanvas dataCanvas((cut.name()+"_"+variables.Get(j).name()+"_vs_"+variables.Get(i).name() + "_data").c_str(), "", 400, 400);
+            dataCanvas.cd();
+            dataCanvas.SetLogz(true);
+            dataCanvas.SetTopMargin(0.05);
+            dataCanvas.SetRightMargin(0.16);
+            dataCanvas.SetLeftMargin(0.16);
+            dataHist->Draw("COLZ");
+            adjustStyle(dataHist);
+            dataLeg->Draw("same");
+            drawInfo(&dataCanvas, luminosity, !final);
+            dataCanvas.SaveAs((outputDirectory+"/"+plotName+"_data.pdf").c_str());
           }
 
           c1.cd(0);
 
-          std::string plotName = cut.name() + "_" + variables.Get(j).name() + "_vs_" + variables.Get(i).name();
           c1.SaveAs((outputDirectory+"/"+plotName+".png").c_str());
           c1.SaveAs((outputDirectory+"/"+plotName+".pdf").c_str());
           c1.SaveAs((outputDirectory+"/"+plotName+".C").c_str());
