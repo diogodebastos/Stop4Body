@@ -307,6 +307,8 @@ if __name__ == "__main__":
   dmstopTmp = 25
   ddmIn = 10
   ddmTmp = 5
+  if args.dmplot:
+    ddmTmp = 10
 
   results = { }
 
@@ -354,10 +356,10 @@ if __name__ == "__main__":
     hobs = results["observed"][0]
   hobs.GetXaxis().SetTitle("m(#tilde{t}) [GeV]")
   hobs.GetYaxis().SetTitle("m(#tilde{#chi}^{0}) [GeV]")
-  if results["observed"] == None:
-    hobs.GetZaxis().SetTitle("expected 95% CL upper limit on cross section [pb]")
-  else:
-    hobs.GetZaxis().SetTitle("95% CL upper limit on cross section [pb]")
+  #if results["observed"] == None:
+  #  hobs.GetZaxis().SetTitle("expected 95% CL upper limit on cross section [pb]")
+  #else:
+  #  hobs.GetZaxis().SetTitle("95% CL upper limit on cross section [pb]")
   hobs.GetXaxis().SetTitleOffset(0.80)
   hobs.GetYaxis().SetTitleOffset(1.30)
   hobs.GetZaxis().SetTitleOffset(1.40)
