@@ -185,6 +185,8 @@ int main(int argc, char** argv)
   double maxDM = 80;
   double DMStep = 10;
   int dmBins = (maxDM - minDM) / DMStep + 1;
+  double stopM = 0;
+  double neutM = 0;
 
   //TFile outputTFile(outputFile, "RECREATE");
   TH2D effMap("efficiencyMap", "efficiencyMap", massBins, minMass - massStep/2, maxMass + massStep/2, dmBins, minDM - DMStep/2, maxDM + DMStep/2);
@@ -195,13 +197,21 @@ int main(int argc, char** argv)
   for(auto& process : Sig)
   {
     std::string tmpStr = process.label();
-    std::cout << tmpStr << std::endl;
+    //std::cout << tmpStr << std::endl;
     if(std::regex_match(tmpStr, signalMatch, estractSignalPointRE))
     {
-      std::cout << "Matches: " << signalMatch.size();
-      std::cout << "; StopM: " << signalMatch[1].str();
-      std::cout << "; NeutM: " << signalMatch[2].str();
-      std::cout << std::endl;
+      //std::cout << "Matches: " << signalMatch.size();
+      //std::cout << "; StopM: " << signalMatch[1].str();
+      //std::cout << "; NeutM: " << signalMatch[2].str();
+      //std::cout << std::endl;
+      std::stringstream massConverter;
+      massConverter << signalMatch[1].str();
+      massConverter >> stopM;
+      massConverter.str(std::string());
+      massConverter << signalMatch[2].str();
+      massConverter >> neutM;
+
+      double efficiency = process.getYield(baseSelection + "&&" + signalRegion, mcWeight);
     }
     else
     {
