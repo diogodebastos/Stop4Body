@@ -37,6 +37,7 @@
 #include "TLatex.h"
 #include "TLorentzVector.h"
 #include "TVectorD.h"
+#include "TH2D.h"
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
@@ -189,16 +190,17 @@ int main(int argc, char** argv)
   double neutM = 0;
 
   TFile outputTFile(outputFile.c_str(), "RECREATE");
-  TH2D effMap("efficiencyMap", "efficiencyMap", massBins, minMass - massStep/2, maxMass + massStep/2, dmBins, minDM - DMStep/2, maxDM + DMStep/2);
+  outputTFile.cd();
+  TH2D* effMap = new TH2D("efficiencyMap", "efficiencyMap", massBins, minMass - massStep/2, maxMass + massStep/2, dmBins, minDM - DMStep/2, maxDM + DMStep/2);
 
-  std::regex estractSignalPointRE(".+\\((\\d+),(\\d+)\\)");
+  std::regex extractSignalPointRE(".+\\((\\d+),(\\d+)\\)");
   std::smatch signalMatch;
 
   for(auto& process : Sig)
   {
     std::string tmpStr = process.label();
     //std::cout << tmpStr << std::endl;
-    if(std::regex_match(tmpStr, signalMatch, estractSignalPointRE))
+    if(std::regex_match(tmpStr, signalMatch, extractSignalPointRE))
     {
       //std::cout << "Matches: " << signalMatch.size();
       //std::cout << "; StopM: " << signalMatch[1].str();
@@ -208,12 +210,15 @@ int main(int argc, char** argv)
       massConverter << signalMatch[1].str();
       massConverter >> stopM;
       massConverter.str(std::string());
+      massConverter.clear();
       massConverter << signalMatch[2].str();
       massConverter >> neutM;
 
-      double efficiency = process.getYield(baseSelection + "&&" + signalRegion, mcWeight).value();
-      std::cout << efficiency << std::endl;
-      effMap.Fill(stopM, neutM, efficiency);
+      double efficiency = process.getYield(baseSelection + "&&" + signalRegion, mcWeight).value() * 100.0;
+      std::cout << "(" << stopM << "," << neutM << ")" << efficiency << std::endl;
+      effMap->Fill(stopM, stopM-neutM, efficiency);
+      //effMap->Draw("colz");
+      //std::cin.ignore();
     }
     else
     {
@@ -221,6 +226,7 @@ int main(int argc, char** argv)
     }
   }
 
+  effMap->Write();
   outputTFile.Write();
   outputTFile.Close();
 
