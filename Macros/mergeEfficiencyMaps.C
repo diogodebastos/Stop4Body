@@ -27,10 +27,10 @@ void mergeEfficiencyMaps()
     converter >> fileName;
 
     TFile inputTFile(fileName.c_str(), "READ");
-    TH2D* inputHist = static_cast<TH2D*>(inputTFile->Get("efficiencyMap"));
+    TH2D* inputHist = static_cast<TH2D*>(inputTFile.Get("efficiencyMap"));
     for(auto & stopM : stopMs)
     {
-      double efficiency = inputHist->GetBinContents(inputHist->FindBin(stopM, DM));
+      double efficiency = inputHist->GetBinContent(inputHist->FindBin(stopM, DM));
       effMap->Fill(stopM, DM, efficiency);
     }
   }
