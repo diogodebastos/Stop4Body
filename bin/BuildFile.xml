@@ -28,6 +28,7 @@
   <bin name="getLHEweightScales"      file="getLHEweightScales.cc"> </bin>
   <bin name="mergeLHEweightScales"    file="mergeLHEweightScales.cc"> </bin>
   <bin name="getEventList"            file="getEventList.cc"> </bin>
+  <bin name="getEfficiencyMap"        file="getEfficiencyMap.cc"> </bin>
   <bin name="getYieldsWithSystematics" file="getYieldsWithSystematics.cc"> </bin>
 </environment>
 
