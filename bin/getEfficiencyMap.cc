@@ -11,6 +11,7 @@
 #include <memory>
 #include <cmath>
 #include <cstdlib>
+#include <regex>
 
 #include "TROOT.h"
 #include "TFile.h"
@@ -188,9 +189,23 @@ int main(int argc, char** argv)
   //TFile outputTFile(outputFile, "RECREATE");
   TH2D effMap("efficiencyMap", "efficiencyMap", massBins, minMass - massStep/2, maxMass + massStep/2, dmBins, minDM - DMStep/2, maxDM + DMStep/2);
 
+  std::regex estractSignalPointRE = ".+\\((\\d+),(\\d+)\\)";
+  std::smatch signalMatch;
+
   for(auto& process : Sig)
   {
     std::cout << process.label() << std::endl;
+    if(std::regex_match(process.label(), signalMatch, estractSignalPointRE))
+    {
+      std::cout << "Matches: " << signalMatch.size();
+      std::cout << "; StopM: " << signalMatch[1].str();
+      std::cout << "; NeutM: " << signalMatch[2].str();
+      std::cout << std::endl;
+    }
+    else
+    {
+      std::cout << "A signal point was not found, skipping" << std::endl;
+    }
   }
 
   return 0;
