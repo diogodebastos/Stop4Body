@@ -35,5 +35,9 @@ void mergeEfficiencyMaps()
     }
   }
 
+  effMap->Write();
+  outputFile.Write();
+  outputFile.Close();
+
   return;
 }
