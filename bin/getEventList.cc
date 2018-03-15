@@ -76,7 +76,7 @@ int main(int argc, char** argv)
   //auto Data = samples.getData();
 
   TChain* tmpChain = samples.getChain();
-  tmpChain->SetBranchStatus("*", 0);
+  //tmpChain->SetBranchStatus("*", 0);
   tmpChain->SetBranchStatus("Run", 1);
   tmpChain->SetBranchStatus("LumiSec", 1);
   tmpChain->SetBranchStatus("Event", 1);
