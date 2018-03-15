@@ -76,11 +76,11 @@ int main(int argc, char** argv)
   {
     std::string argument = argv[i];
 
-    if(argument == "--help")
-    {
-      printHelp();
-      return 0;
-    }
+    //if(argument == "--help")
+    //{
+    //  printHelp();
+    //  return 0;
+    //}
 
     if(argument == "--json")
       jsonFileName = argv[++i];
