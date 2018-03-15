@@ -185,7 +185,7 @@ int main(int argc, char** argv)
   double DMStep = 10;
   int dmBins = (maxDM - minDM) / DMStep + 1;
 
-  TFile outputTFile(outputFile, "RECREATE");
+  //TFile outputTFile(outputFile, "RECREATE");
   TH2D effMap("efficiencyMap", "efficiencyMap", massBins, minMass - massStep/2, maxMass + massStep/2, dmBins, minDM - DMStep/2, maxDM + DMStep/2);
 
   for(auto& process : Sig)
