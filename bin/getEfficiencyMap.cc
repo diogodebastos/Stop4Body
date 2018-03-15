@@ -211,7 +211,7 @@ int main(int argc, char** argv)
       massConverter << signalMatch[2].str();
       massConverter >> neutM;
 
-      double efficiency = process.getYield(baseSelection + "&&" + signalRegion, mcWeight).Value();
+      double efficiency = process.getYield(baseSelection + "&&" + signalRegion, mcWeight).value();
       std::cout << efficiency << std::endl;
     }
     else
