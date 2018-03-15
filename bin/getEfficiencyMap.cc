@@ -68,7 +68,7 @@ int main(int argc, char** argv)
   if(argc < 2)
   {
     std::cout << "You did not pass enough parameters" << std::endl;
-    printHelp();
+    //printHelp();
     return 0;
   }
 
@@ -181,7 +181,7 @@ int main(int argc, char** argv)
   double massStep = 25;
   int massBins = (maxMass-minMass)/massStep + 1;
   double minDM = 10;
-  double mexDM = 80;
+  double maxDM = 80;
   double DMStep = 10;
   int dmBins = (maxDM - minDM) / DMStep + 1;
 
