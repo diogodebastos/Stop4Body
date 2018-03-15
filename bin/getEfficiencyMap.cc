@@ -188,7 +188,7 @@ int main(int argc, char** argv)
   double stopM = 0;
   double neutM = 0;
 
-  TFile outputTFile(outputFile, "RECREATE");
+  TFile outputTFile(outputFile.c_str(), "RECREATE");
   TH2D effMap("efficiencyMap", "efficiencyMap", massBins, minMass - massStep/2, maxMass + massStep/2, dmBins, minDM - DMStep/2, maxDM + DMStep/2);
 
   std::regex estractSignalPointRE(".+\\((\\d+),(\\d+)\\)");
