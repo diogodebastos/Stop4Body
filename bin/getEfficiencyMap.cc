@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
   std::string inputDirectory = "";
-  std::string outputDirectory = "./OUT/";
+  std::string outputFile = "./OUT.root";
   std::string suffix = "";
   bool verbose = false;
   bool isHighDM = false;
@@ -86,8 +86,8 @@ int main(int argc, char** argv)
     if(argument == "--json")
       jsonFileName = argv[++i];
 
-    if(argument == "--outDir")
-      outputDirectory = argv[++i];
+    if(argument == "--outFile")
+      outputFile = argv[++i];
 
     if(argument == "--inDir")
       inputDirectory = argv[++i];
@@ -188,7 +188,7 @@ int main(int argc, char** argv)
   double stopM = 0;
   double neutM = 0;
 
-  //TFile outputTFile(outputFile, "RECREATE");
+  TFile outputTFile(outputFile, "RECREATE");
   TH2D effMap("efficiencyMap", "efficiencyMap", massBins, minMass - massStep/2, maxMass + massStep/2, dmBins, minDM - DMStep/2, maxDM + DMStep/2);
 
   std::regex estractSignalPointRE(".+\\((\\d+),(\\d+)\\)");
@@ -213,12 +213,16 @@ int main(int argc, char** argv)
 
       double efficiency = process.getYield(baseSelection + "&&" + signalRegion, mcWeight).value();
       std::cout << efficiency << std::endl;
+      effMap.Fill(stopM, neutM, efficiency);
     }
     else
     {
       std::cout << "A signal point was not found, skipping" << std::endl;
     }
   }
+
+  outputTFile.Write();
+  outputTFile.Close();
 
   return 0;
 }
