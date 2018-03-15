@@ -194,8 +194,9 @@ int main(int argc, char** argv)
 
   for(auto& process : Sig)
   {
-    std::cout << process.label() << std::endl;
-    if(std::regex_match(process.label(), signalMatch, estractSignalPointRE))
+    std::string tmpStr = process.label();
+    std::cout << tmpStr << std::endl;
+    if(std::regex_match(tmpStr, signalMatch, estractSignalPointRE))
     {
       std::cout << "Matches: " << signalMatch.size();
       std::cout << "; StopM: " << signalMatch[1].str();
