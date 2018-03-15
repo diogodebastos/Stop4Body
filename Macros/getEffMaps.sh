@@ -41,3 +41,5 @@ getEfficiencyMap --inDir ${INPUT_DIRECTORY}${BDT}/ --signalRegionCut ${CUT} --su
 BDT=80
 CUT=0.44
 getEfficiencyMap --inDir ${INPUT_DIRECTORY}${BDT}/ --signalRegionCut ${CUT} --suffix bdt --json ${JSON_PATH}/${JSON_FILE} --outFile EfficiencyMaps/map_bdt${BDT}.root
+
+root mergeEfficiencyMaps.C
