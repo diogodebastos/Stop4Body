@@ -48,7 +48,7 @@ void mergeEfficiencyMaps()
   tdrStyle.SetPadTopMargin(0.08);
   tdrStyle.SetPadBottomMargin(0.13);
   tdrStyle.SetPadLeftMargin(0.16);
-  tdrStyle.SetPadRightMargin(0.16);
+  tdrStyle.SetPadRightMargin(0.17);
 
   tdrStyle.SetOptTitle(0);
   tdrStyle.SetTitleFont(42);
@@ -159,7 +159,7 @@ void mergeEfficiencyMaps()
   //double posX = 1 + 0.045*(1-l-r);
   //double posX = 1-r + 0.045*(1-l-r);
   double posX = l + 0.045*(1-l-r);
-  double posY = 1-t + 0.035*(1-t-b);
+  double posY = 1-t + 0.035*(1-t-b) + 0.02;
   char cmsText[] = "CMS";
   tex2->DrawLatex(posX, posY, cmsText);
 
@@ -172,8 +172,8 @@ void mergeEfficiencyMaps()
   tex3->SetTextAlign(13);
   //double posX = 1 + 0.045*(1-l-r);
   //double posX = 1-r + 0.045*(1-l-r);
-  double posX2 = l + 0.045*(1-l-r) + 0.05;
-  double posY2 = 1-t + 0.035*(1-t-b);
+  double posX2 = l + 0.045*(1-l-r) + 0.07;
+  double posY2 = 1-t + 0.035*(1-t-b) + 0.02;
   char cmsText2[] = "Simulation";
   tex3->DrawLatex(posX2, posY2, cmsText2);
 
