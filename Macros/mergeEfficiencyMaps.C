@@ -131,12 +131,12 @@ void mergeEfficiencyMaps()
   TCanvas c1("c1", "c1", 800, 800);
   effMap->Draw("colz");
 
-  double H = c1->GetWh();
-  double W = c1->GetWw();
-  double l = c1->GetLeftMargin();
-  double t = c1->GetTopMargin();
-  double r = c1->GetRightMargin();
-  double b = c1->GetBottomMargin();
+  double H = c1.GetWh();
+  double W = c1.GetWw();
+  double l = c1.GetLeftMargin();
+  double t = c1.GetTopMargin();
+  double r = c1.GetRightMargin();
+  double b = c1.GetBottomMargin();
   double e = 0.025;
   char Buffer[1024];
   sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", 35.9, 13.0);
