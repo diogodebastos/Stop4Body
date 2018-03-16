@@ -173,7 +173,7 @@ void mergeEfficiencyMaps()
   //double posX = 1 + 0.045*(1-l-r);
   //double posX = 1-r + 0.045*(1-l-r);
   double posX2 = l + 0.045*(1-l-r) + 0.09;
-  double posY2 = 1-t + 0.035*(1-t-b) + 0.03;
+  double posY2 = 1-t + 0.035*(1-t-b) + 0.025;
   char cmsText2[] = "Simulation";
   tex3->DrawLatex(posX2, posY2, cmsText2);
 
