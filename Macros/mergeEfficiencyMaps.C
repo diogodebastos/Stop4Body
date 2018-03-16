@@ -139,7 +139,8 @@ void mergeEfficiencyMaps()
   double b = c1.GetBottomMargin();
   double e = 0.025;
   char Buffer[1024];
-  sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", 35.9, 13.0);
+  //sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", 35.9, 13.0);
+  sprintf(Buffer, "(%.1f TeV)", 13.0);
   TLatex *   tex  = new TLatex();
   tex->SetNDC();
   tex->SetTextAngle(0);
