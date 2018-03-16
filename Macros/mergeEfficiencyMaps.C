@@ -103,7 +103,7 @@ void mergeEfficiencyMaps()
   double scale = 0.9;
   effMap->GetXaxis()->SetTitleSize(0.05*scale);
   effMap->GetXaxis()->SetLabelSize(0.05*scale);
-  effMap->GetXaxis()->SetTitleOffset(1);
+  effMap->GetXaxis()->SetTitleOffset(1.1);
   effMap->GetYaxis()->SetTitleSize(0.06*scale);
   effMap->GetYaxis()->SetTitleOffset(1.25);
   effMap->GetYaxis()->SetLabelSize(0.06*0.8*scale);
@@ -173,7 +173,7 @@ void mergeEfficiencyMaps()
   //double posX = 1 + 0.045*(1-l-r);
   //double posX = 1-r + 0.045*(1-l-r);
   double posX2 = l + 0.045*(1-l-r) + 0.09;
-  double posY2 = 1-t + 0.035*(1-t-b) + 0.02;
+  double posY2 = 1-t + 0.035*(1-t-b) + 0.03;
   char cmsText2[] = "Simulation";
   tex3->DrawLatex(posX2, posY2, cmsText2);
 
