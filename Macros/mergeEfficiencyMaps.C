@@ -48,7 +48,7 @@ void mergeEfficiencyMaps()
   tdrStyle.SetPadTopMargin(0.08);
   tdrStyle.SetPadBottomMargin(0.13);
   tdrStyle.SetPadLeftMargin(0.16);
-  tdrStyle.SetPadRightMargin(0.08);
+  tdrStyle.SetPadRightMargin(0.16);
 
   tdrStyle.SetOptTitle(0);
   tdrStyle.SetTitleFont(42);
@@ -128,7 +128,7 @@ void mergeEfficiencyMaps()
   effMap->Write();
   outputFile.Write();
 
-  TCanvas c1("c1", "c1", 800, 800);
+  TCanvas c1("c1", "c1", 800, 600);
   effMap->Draw("colz");
 
   double H = c1.GetWh();
@@ -159,9 +159,23 @@ void mergeEfficiencyMaps()
   //double posX = 1 + 0.045*(1-l-r);
   //double posX = 1-r + 0.045*(1-l-r);
   double posX = l + 0.045*(1-l-r);
-  double posY = 1-t - 0.035*(1-t-b);
-  char cmsText[] = "#font[61]{CMS} #font[52]{Simulation}";
+  double posY = 1-t + 0.035*(1-t-b);
+  char cmsText[] = "CMS";
   tex2->DrawLatex(posX, posY, cmsText);
+
+  TLatex *   tex3  = new TLatex();
+  tex3->SetNDC();
+  tex3->SetTextAngle(0);
+  tex3->SetTextColor(kBlack);
+  tex3->SetTextFont(52);
+  tex3->SetTextSize(0.7*t);
+  tex3->SetTextAlign(13);
+  //double posX = 1 + 0.045*(1-l-r);
+  //double posX = 1-r + 0.045*(1-l-r);
+  double posX2 = l + 0.045*(1-l-r) + 0.05;
+  double posY2 = 1-t + 0.035*(1-t-b);
+  char cmsText2[] = "Simulation";
+  tex3->DrawLatex(posX2, posY2, cmsText2);
 
   c1.SaveAs("EfficiencyMaps/combined.pdf");
 
