@@ -3,9 +3,9 @@
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body/
 export JSON_PATH=$BASE_PATH/Macros/JSON/
 
-export NTUPLE_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19
-export SYNC_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_sync
-export PU_TEST_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_PU_test
+export NTUPLE_DIR=/lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-03
+#export SYNC_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_sync
+#export PU_TEST_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_PU_test
 
 export CURRENT_BDT=bdt10
 
@@ -20,9 +20,9 @@ export SWAPBDT_DIR=${SWAP_DIR}_${CURRENT_BDT}
 export LNT_DIR=${NTUPLE_DIR}_looseNotTight
 export LNTBDT_DIR=${LNT_DIR}_${CURRENT_BDT}
 
-export LHESCALE_DIR=/lstore/cms/cbeiraod/Stop4Body/lheWeightScale
+export LHESCALE_DIR=/lstore/cms/dbastos/Stop4Body/lheWeightScale
 
-export LIMIT_DIR=/lstore/cms/cbeiraod/Stop4Body/Limits/
+#export LIMIT_DIR=/lstore/cms/cbeiraod/Stop4Body/Limits/
 
 
 #export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"
