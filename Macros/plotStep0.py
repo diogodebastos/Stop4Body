@@ -16,6 +16,7 @@ if __name__ == "__main__":
     file2Name=args.file2
     histName=args.histogram
 
+    c = TCanvas("c",histName,800,600)
     f1 = ROOT.TFile(file1Name,"READ")
     f2 = ROOT.TFile(file2Name,"READ")
 
@@ -28,11 +29,10 @@ if __name__ == "__main__":
     h1.SetLineColor(ROOT.kBlue)
     h2.SetLineColor(ROOT.kRed)
 
-
-    c = TCanvas("c",histName,800,600)
-
     h1.Draw()
     h2.Draw("same")
+
+    c.BuildLegend(x1 = 0.3,y1 = 0.21,x2 = 0.3,y2 = 0.21)
 
     c.SaveAs("plots/"+histName+".pdf")
 
