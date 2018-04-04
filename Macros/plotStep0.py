@@ -16,25 +16,34 @@ if __name__ == "__main__":
     file2Name=args.file2
     histName=args.histogram
 
-    ROOT.gStyle.SetOptStat(0)
+    ROOT.gStyle.SetOptStat("00000000")
+#    ROOT.gStyle.SetOptTitle(0)
 
     c = TCanvas("c",histName,800,600)
+    
     f1 = ROOT.TFile(file1Name,"READ")
     f2 = ROOT.TFile(file2Name,"READ")
 
     h1 = f1.Get(histName)
     h2 = f2.Get(histName)
 
-    h1.SetTitle("H1")
-    h2.SetTitle("H2")
-
     h1.SetLineColor(ROOT.kBlue)
     h2.SetLineColor(ROOT.kRed)
 
     h1.Draw()
     h2.Draw("same")
+    
+    h1.SetTitle("H1")
+    h2.SetTitle("H2")
+    
+    c.BuildLegend(0.9,0.8,1,0.9)
+    h1.SetTitle(histName)
+    #c.cd()
+    #Tl = ROOT.TLatex(0.5,0.9,histName)
+    #Tl.SetTextSize(0.04)
+    #Tl.SetTextAlign(13)    
+    #Tl.Draw()
 
-    c.BuildLegend(x1 = 0.3,y1 = 0.21,x2 = 0.3,y2 = 0.21)
 
     c.SaveAs("plots/"+histName+".pdf")
 
