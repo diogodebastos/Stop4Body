@@ -1,4 +1,4 @@
-import root_numpy
+import ROOT import TFile, TH1F, TCanvas
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
@@ -10,14 +10,31 @@ if __name__ == "__main__":
     parser.add_argument('-p', '--histogram', required=True, help='Histogram name to be plotted')
 
     args = parser.parse_args()
-    file1=args.file1
-    file2=args.file2
+    file1Name=args.file1
+    file2Name=args.file2
     histName=args.histogram
 
-    rootFile1 = root_numpy.root2array(args.file1,branches=histogram)
-    rootFile2 = root_numpy.root2array(args.file2,branches=histogram)
+    f1 = ROOT.TFile(file1Name,"READ")
+    f2 = ROOT.TFile(file2Name,"READ")
 
-    plt.hist(rootfile1)
-    plt.hist(rootfile2)
-    #plt.savefig(histogram+'.pdf', bbox_inches='tight')
-    plt.show()
+    h1 = f1.Get(histName)
+    h2 = f2.Get(histName)
+
+    h1.SetTitle("H1")
+    h2.SetTitle("H2")
+
+    h1.SetLineColor(ROOT.kBlue)
+    h2.SetLineColor(ROOT.Rred)
+
+
+    c = TCanvas("c",histName,800,600)
+
+    h1x.Draw()
+    h2x.Draw("same")
+
+    c.SaveAs("plots/"+histName+".pdf")
+
+#/lstore/cms/cbeiraod/Stop4Body/puWeights
+#/lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-03/
+#puWeights_stop675.json.root
+#python plotStep0.py -f /lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-03/puWeights_stop675.json.root -k /lstore/cms/cbeiraod/Stop4Body/puWeights/puWeights_stop675.json.root -p sample_T2DegStop_675_595_nTrueInt
