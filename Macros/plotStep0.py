@@ -8,9 +8,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process the command line options')
 
     parser.add_argument('-f', '--file1', required=True, help='File1 name')
-    parser.add_argument('-k', '--file2', required=True, help='File2 name')
+    parser.add_argument('-k', '--file2', help='File2 name')
     parser.add_argument('-p', '--histogram', required=True, help='Histogram name to be plotted')
-    parser.add_argument('-u', '--unified', help='Give only the name of the file and the hist')
+    parser.add_argument('-u', '--unified', action='store_true', help='Give only the name of the file and the hist')
 
     args = parser.parse_args()
     file1Name=args.file1
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     c = TCanvas("c",histName,800,600)
 
     if args.unified:
-        cbeiraodPath="/lstore/cms/cbeiraod/Stop4Body/puWeights"
+        cbeiraodPath="/lstore/cms/cbeiraod/Stop4Body/puWeights/"
         dbastosPath="/lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-03/"
 
         f1 = ROOT.TFile(cbeiraodPath+file1Name,"READ")
