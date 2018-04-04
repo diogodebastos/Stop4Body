@@ -16,6 +16,8 @@ if __name__ == "__main__":
     file2Name=args.file2
     histName=args.histogram
 
+    ROOT.gStyle.SetOptStat(0)
+
     c = TCanvas("c",histName,800,600)
     f1 = ROOT.TFile(file1Name,"READ")
     f2 = ROOT.TFile(file2Name,"READ")
