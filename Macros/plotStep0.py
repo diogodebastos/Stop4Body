@@ -1,9 +1,11 @@
-import ROOT import TFile, TH1F, TCanvas
-import matplotlib.pyplot as plt
+import ROOT
+from ROOT import TFile, TH1F, TCanvas
 
 if __name__ == "__main__":
     import sys
     import argparse
+
+    parser = argparse.ArgumentParser(description='Process the command line options')
 
     parser.add_argument('-f', '--file1', required=True, help='File1 name')
     parser.add_argument('-k', '--file2', required=True, help='File2 name')
@@ -24,13 +26,13 @@ if __name__ == "__main__":
     h2.SetTitle("H2")
 
     h1.SetLineColor(ROOT.kBlue)
-    h2.SetLineColor(ROOT.Rred)
+    h2.SetLineColor(ROOT.kRed)
 
 
     c = TCanvas("c",histName,800,600)
 
-    h1x.Draw()
-    h2x.Draw("same")
+    h1.Draw()
+    h2.Draw("same")
 
     c.SaveAs("plots/"+histName+".pdf")
 
