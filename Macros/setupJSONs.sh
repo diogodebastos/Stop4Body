@@ -9,7 +9,7 @@ rm    $JSON_PATH/*.json
 mergeJSONs $JSON_PATH/Orig/Wjets.json         $JSON_PATH/Orig/Wjets_*.json
 mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
 cp         $JSON_PATH/Orig/Wjets.json         $JSON_PATH/Wjets.json
-#cp         $JSON_PATH/Orig/TTbar.json         $JSON_PATH/TTbar.json
+cp         $JSON_PATH/Orig/TTbar.json         $JSON_PATH/TTbar.json
 #cp         $JSON_PATH/Orig/TTbar_LO.json      $JSON_PATH/TTbar_LO.json
 cp         $JSON_PATH/Orig/TTLep.json         $JSON_PATH/TTLep.json
 mergeJSONs $JSON_PATH/TT_pow.json             $JSON_PATH/Orig/TT_pow.json $JSON_PATH/Orig/TT_pow_backup.json
