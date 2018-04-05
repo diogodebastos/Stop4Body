@@ -2,5 +2,5 @@
 
 . setupPaths.sh
 
-hadd -f ${NTUPLE_DIR}/puWeights.root ${NTUPLE_DIR}/puWeights_*.root
+hadd -f ${PUWEIGHT_DIR}/puWeights.root ${PUWEIGHT_DIR}/puWeights_*.root
 
