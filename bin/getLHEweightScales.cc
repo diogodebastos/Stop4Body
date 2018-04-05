@@ -148,6 +148,8 @@ int main(int argc, char** argv)
     foutput.WriteObjectAny(&processSum, mapClass, ("process_"+process.tag()+"_lhemap").c_str());
   }
 
+  std::cout << "Done!" << std::endl << std::endl;
+
   return 0;
 }
 
