@@ -11,7 +11,7 @@ cd LHEWeightScripts
 
 # Submit job for all MC
 qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarJob.sh
-qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarLOJob.sh
+#qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarLOJob.sh
 qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTLepJob.sh
 qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTpowJob.sh
 qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WjetsJob.sh

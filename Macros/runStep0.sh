@@ -11,7 +11,7 @@ cd Step0Scripts
 
 # Submit job for all MC
 qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTbarJob.sh
-qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTbarLOJob.sh
+#qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTbarLOJob.sh
 qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTLepJob.sh
 qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTpowJob.sh
 qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_WjetsJob.sh
