@@ -17,7 +17,7 @@ cd UserCode/Stop4Body/Macros/
 
 . setupPaths.sh
 
-if [[ -d ${NTUPLE_DIR} ]]; then
-  getPUWeight --json ${JSON_PATH}/TTbar_LO.json  --outDir ${NTUPLE_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
+if [[ -d ${PUWEIGHT_DIR} ]]; then
+  getPUWeight --json ${JSON_PATH}/TTbar_LO.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
 fi
 
