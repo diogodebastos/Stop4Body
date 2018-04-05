@@ -21,6 +21,7 @@ export LNT_DIR=${NTUPLE_DIR}_looseNotTight
 export LNTBDT_DIR=${LNT_DIR}_${CURRENT_BDT}
 
 export LHESCALE_DIR=/lstore/cms/cbeiraod/Stop4Body/lheWeightScale
+export PUWEIGHT_DIR=/lstore/cms/cbeiraod/Stop4Body/puWeights
 
 export LIMIT_DIR=/lstore/cms/cbeiraod/Stop4Body/Limits/
 
