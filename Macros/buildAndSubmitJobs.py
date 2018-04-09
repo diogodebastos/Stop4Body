@@ -92,7 +92,7 @@ if __name__ == "__main__":
     jobInfo = {}
     for job in jobs:
       jobName = os.path.basename(job)
-      cmd = "qsub " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+      cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
       if args.dryRun:
         print "Going to run command:", cmd
       if not args.dryRun:
