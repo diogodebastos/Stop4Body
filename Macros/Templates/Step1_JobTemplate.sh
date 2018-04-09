@@ -8,8 +8,7 @@ source $VO_CMS_SW_DIR/cmsset_default.sh
 export CMS_PATH=$VO_CMS_SW_DIR
 source /cvmfs/cms.cern.ch/crab3/crab.sh
 
-cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_0_14/src/
-#cd $CMSSW_BASE/src/
+cd $CMSSW_BASE/src/
 eval `scramv1 runtime -sh`
 
 #cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/
