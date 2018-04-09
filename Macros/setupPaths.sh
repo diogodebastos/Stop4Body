@@ -5,7 +5,7 @@ source localUserSetup.sh
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body/
 export JSON_PATH=$BASE_PATH/Macros/JSON/
 
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2017-10-19
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2018-04-03
 export SYNC_DIR=${BASE_NTUPLE_PATH}/nTuples_sync
 export PU_TEST_DIR=${BASE_NTUPLE_PATH}/nTuples_PU_test
 
@@ -26,7 +26,6 @@ export LHESCALE_DIR=${BASE_NTUPLE_PATH}/lheWeightScale
 export PUWEIGHT_DIR=${BASE_NTUPLE_PATH}/puWeights
 
 export LIMIT_DIR=${BASE_NTUPLE_PATH}/Limits/
-
 
 #export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"
 export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents --doPromptTagging --doLooseLeptons"
