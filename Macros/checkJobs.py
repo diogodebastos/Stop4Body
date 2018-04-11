@@ -89,7 +89,7 @@ if __name__ == "__main__":
           out, err = p.communicate()
 
         fullJob = sample + "/" + job
-        cmd = "qsub " + fullJob + " -e " + fullJob + ".e$JOB_ID -o " + fullJob + ".o$JOB_ID"
+        cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + fullJob + " -e " + fullJob + ".e$JOB_ID -o " + fullJob + ".o$JOB_ID"
         if args.dryRun:
           print "\t", cmd
         else:
