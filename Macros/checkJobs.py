@@ -117,7 +117,7 @@ if __name__ == "__main__":
   print "Summary:"
   for sample in summary:
     if args.printAll or summary[sample] != 1.0:
-      print "  ", sample, ": ", summary[sample]*100, "%"
+      print "  ", sample, ": %.2f " % (summary[sample]*100) + "%"
   if not args.noMerge:
    for sample in summary:
     if summary[sample] == 1:
@@ -133,10 +133,3 @@ if __name__ == "__main__":
       else:
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
-
-
-
-
-
-
-
