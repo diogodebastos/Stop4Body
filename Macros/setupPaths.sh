@@ -4,7 +4,7 @@ source localUserSetup.sh
 
 export YEAR=2017
 
-export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body/
+export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body
 export JSON_PATH=$BASE_PATH/Macros/JSON/${YEAR}
 
 export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2018-07-03
