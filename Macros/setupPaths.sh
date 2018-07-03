@@ -2,10 +2,12 @@
 
 source localUserSetup.sh
 
-export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body/
-export JSON_PATH=$BASE_PATH/Macros/JSON/
+export YEAR=2017
 
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2018-07-02
+export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body/${YEAR}
+export JSON_PATH=$BASE_PATH/Macros/JSON/${YEAR}
+
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2018-07-03
 export SYNC_DIR=${BASE_NTUPLE_PATH}/nTuples_sync
 export PU_TEST_DIR=${BASE_NTUPLE_PATH}/nTuples_PU_test
 
@@ -22,8 +24,8 @@ export SWAPBDT_DIR=${SWAP_DIR}_${CURRENT_BDT}
 export LNT_DIR=${NTUPLE_DIR}_looseNotTight
 export LNTBDT_DIR=${LNT_DIR}_${CURRENT_BDT}
 
-export LHESCALE_DIR=${BASE_NTUPLE_PATH}/lheWeightScale
-export PUWEIGHT_DIR=${BASE_NTUPLE_PATH}/puWeights
+export LHESCALE_DIR=${BASE_NTUPLE_PATH}/lheWeightScale/${YEAR}
+export PUWEIGHT_DIR=${BASE_NTUPLE_PATH}/puWeights/${YEAR}
 
 export LIMIT_DIR=${BASE_NTUPLE_PATH}/Limits/
 
