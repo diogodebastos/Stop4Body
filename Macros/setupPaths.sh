@@ -5,7 +5,7 @@ source localUserSetup.sh
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body/
 export JSON_PATH=$BASE_PATH/Macros/JSON/
 
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2018-04-03
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2018-07-02
 export SYNC_DIR=${BASE_NTUPLE_PATH}/nTuples_sync
 export PU_TEST_DIR=${BASE_NTUPLE_PATH}/nTuples_PU_test
 
