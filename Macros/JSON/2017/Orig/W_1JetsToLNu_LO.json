@@ -8,7 +8,7 @@
       "label":"W + Jets",
       "files":[
         {
-          "tag":"W1JetsToLNu_LO",
+          "tag":"W_1JetsToLNu_LO",
           "xsec": 1.0,
           "br": 1.0,
           "filesPerPart":10,
