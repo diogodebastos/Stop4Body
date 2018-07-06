@@ -114,6 +114,8 @@ elif [ ${YEAR} == 2017 ]; then
  # Make a JSON for all MC except signal
 # mergeJSONs $JSON_PATH/Orig/Wjets.json         $JSON_PATH/Orig/W*jets*.json
  mergeJSONs $JSON_PATH/Orig/Wjets_${YEAR}.json   $JSON_PATH/Orig/W_*Jets*.json
-# mergeJSONs $JSON_PATH/backgroundMC_${YEAR}.json $JSON_PATH/Orig/Wjets_${YEAR}.json #$JSON_PATH/Orig/TTbar.json 
+ mergeJSONs $JSON_PATH/Orig/ZInv_${YEAR}.json    $JSON_PATH/Orig/ZJetsToNuNu*.json
+# mergeJSONs $JSON_PATH/backgroundMC_${YEAR}.json $JSON_PATH/Orig/Wjets_${YEAR}.json $JSON_PATH/Orig/ZInv_${YEAR}.json #$JSON_PATH/Orig/TTbar.json 
  cp         $JSON_PATH/Orig/Wjets_${YEAR}.json   $JSON_PATH/Wjets_${YEAR}.json
+ cp         $JSON_PATH/Orig/ZInv_${YEAR}.json    $JSON_PATH/ZInv_${YEAR}.json
 fi
