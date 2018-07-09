@@ -54,6 +54,7 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop775Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop800Job.sh
 elif [ ${YEAR} == 2017 ]; then
+ # Submit job for all MC
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_WjetsJob_2017.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInvJob_2017.sh 
 fi
