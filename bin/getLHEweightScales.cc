@@ -99,6 +99,7 @@ int main(int argc, char** argv)
       for(auto &file : sample)
       {
         TFile finput(file.c_str(), "READ");
+        std::cout << "\t\tProcessing file: " << file.c_str() << std::endl;
         foutput.cd();
         TTree *inputtree;
         if(process.selection() != "")
@@ -124,6 +125,8 @@ int main(int argc, char** argv)
 
           for(int i = 0; i < nLHEweight; ++i)
           {
+            std::cout << "\t\t\tLHEweight_id[" << i << "]: " << LHEweight_id[i] << std::endl;
+
             fileSum[LHEweight_id[i]] += LHEweight_wgt[i];
           }
         }
