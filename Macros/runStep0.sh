@@ -58,8 +58,8 @@ elif [ ${YEAR} == 2017 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTbarJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_WjetsJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInvJob.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC1Job
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC2Job
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC1Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC2Job.sh
  
  # Submit job for all DATA
  
