@@ -18,6 +18,10 @@ cd UserCode/Stop4Body/Macros/
 . setupPaths.sh
 
 if [[ -d ${PUWEIGHT_DIR} ]]; then
-  getPUWeight --json ${JSON_PATH}/Orig/Wjets_${YEAR}.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
+ if [ ${YEAR} == 2016 ]; then
+  getPUWeight --json ${JSON_PATH}/otherMC2.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
+ elif [ ${YEAR} == 2017 ]; then
+  getPUWeight --json ${JSON_PATH}/ZInv.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
+ fi
 fi
 
