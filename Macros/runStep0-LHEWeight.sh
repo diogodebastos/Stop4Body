@@ -17,7 +17,7 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WjetsJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_QCD.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_ttX.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_ZInv.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_ZInvJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_VV.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_SingleTop.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DY.sh
@@ -53,7 +53,11 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_Stop800Job.sh
 elif [ ${YEAR} == 2017 ]; then
  # Submit job for all MC
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WjetsJob_2017.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_ZInvJob_2017.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WjetsJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_ZInvJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC1Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC2Job.sh
+ 
 fi
 cd -

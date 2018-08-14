@@ -18,6 +18,9 @@ cd UserCode/Stop4Body/Macros/
 . setupPaths.sh
 
 if [[ -d ${NTUPLE_DIR} ]]; then
-  getLHEweightScales --json ${JSON_PATH}/Orig/ZInv_${YEAR}.json  --outDir ${LHESCALE_DIR}
+ if [ ${YEAR} == 2016 ]; then
+  getLHEweightScales --json ${JSON_PATH}/otherMC2.json  --outDir ${LHESCALE_DIR}
+ elif [ ${YEAR} == 2017 ]; then
+  getLHEweightScales --json ${JSON_PATH}/ZInv.json  --outDir ${LHESCALE_DIR}
+ fi
 fi
-

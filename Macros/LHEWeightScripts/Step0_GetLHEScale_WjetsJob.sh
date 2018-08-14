@@ -18,6 +18,6 @@ cd UserCode/Stop4Body/Macros/
 . setupPaths.sh
 
 if [[ -d ${NTUPLE_DIR} ]]; then
-  getLHEweightScales --json ${JSON_PATH}/Orig/Wjets.json  --outDir ${LHESCALE_DIR}
+  getLHEweightScales --json ${JSON_PATH}/Wjets.json  --outDir ${LHESCALE_DIR}
 fi
 
