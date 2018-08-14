@@ -21,7 +21,7 @@ if [ ${YEAR} == 2016 ]; then
  #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_otherMCJob4.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_QCD.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ttX.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInv.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInvJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_VV.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_SingleTop.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_DY.sh
@@ -54,9 +54,15 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop775Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop800Job.sh
 elif [ ${YEAR} == 2017 ]; then
- # Submit job for all MC
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_WjetsJob_2017.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInvJob_2017.sh 
+ # Submit jobs for all MC
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTbarJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_WjetsJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInvJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC1Job
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC2Job
+ 
+ # Submit job for all DATA
+ 
 fi
 cd -
 
