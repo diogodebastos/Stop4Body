@@ -42,7 +42,7 @@
 #include "UserCode/Stop4Body/interface/commonFunctions.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
-#define LHEWEIGHT_LIMIT  500
+#define LHEWEIGHT_LIMIT  1000
 
 using json = nlohmann::json;
 
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 
           for(int i = 0; i < nLHEweight; ++i)
           {
-            std::cout << "\t\t\tLHEweight_id[" << i << "]: " << LHEweight_id[i] << std::endl;
+            //std::cout << "\t\t\tLHEweight_id[" << i << "]: " << LHEweight_id[i] << std::endl;
 
             fileSum[LHEweight_id[i]] += LHEweight_wgt[i];
           }
