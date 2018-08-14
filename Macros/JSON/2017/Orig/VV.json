@@ -1,0 +1,49 @@
+{
+  "lines":[
+    {
+      "tag":"VV",
+      "isdata":false,
+      "color":824,
+      "lcolor":1,
+      "label":"Multiboson",
+      "files":[
+        {
+          "tag":"WW",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/WW",
+              "split":57
+            }
+          ]
+        },
+        {
+          "tag":"ZZ",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/ZZ",
+              "split":47
+            }
+          ]
+        },
+        {
+          "tag":"WZ",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":10,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/WZ",
+              "split":73
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
