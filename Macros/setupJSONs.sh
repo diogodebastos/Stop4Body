@@ -112,10 +112,13 @@ if [ ${YEAR} == 2016 ]; then
 
 elif [ ${YEAR} == 2017 ]; then
  # Make a JSON for all MC except signal
-# mergeJSONs $JSON_PATH/Orig/Wjets.json         $JSON_PATH/Orig/W*jets*.json
- mergeJSONs $JSON_PATH/Orig/Wjets_${YEAR}.json   $JSON_PATH/Orig/W_*Jets*.json
- mergeJSONs $JSON_PATH/Orig/ZInv_${YEAR}.json    $JSON_PATH/Orig/ZJetsToNuNu*.json
-# mergeJSONs $JSON_PATH/backgroundMC_${YEAR}.json $JSON_PATH/Orig/Wjets_${YEAR}.json $JSON_PATH/Orig/ZInv_${YEAR}.json #$JSON_PATH/Orig/TTbar.json 
- cp         $JSON_PATH/Orig/Wjets_${YEAR}.json   $JSON_PATH/Wjets_${YEAR}.json
- cp         $JSON_PATH/Orig/ZInv_${YEAR}.json    $JSON_PATH/ZInv_${YEAR}.json
+ mergeJSONs $JSON_PATH/Orig/Wjets.json   $JSON_PATH/Orig/W_*Jets*.json
+ mergeJSONs $JSON_PATH/Orig/ZInv.json    $JSON_PATH/Orig/ZJetsToNuNu*.json
+ # mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
+ cp         $JSON_PATH/Orig/TTbar.json   $JSON_PATH/TTbar.json
+ cp         $JSON_PATH/Orig/Wjets.json   $JSON_PATH/Wjets.json
+ cp         $JSON_PATH/Orig/ZInv.json    $JSON_PATH/ZInv.json
+ mergeJSONs $JSON_PATH/otherMC1.json     $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/DYJets.json
+ mergeJSONs $JSON_PATH/otherMC2.json     $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/QCD.json $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTZToLLNuNu.json
+ mergeJSONs $JSON_PATH/allMC.json        $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json $JSON_PATH/ZInv.json $JSON_PATH/otherMC1.json $JSON_PATH/otherMC2.json
 fi
