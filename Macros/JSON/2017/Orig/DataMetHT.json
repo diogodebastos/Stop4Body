@@ -12,7 +12,7 @@
           "tag":"Data_2017B",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":4792,
           "filesPerPart":25,
           "paths":[
             {
@@ -25,7 +25,7 @@
           "tag":"Data_2017C",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":6893,
           "filesPerPart":25,
           "paths":[
             {
@@ -38,7 +38,7 @@
           "tag":"Data_2017D",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":4320,
           "filesPerPart":25,
           "paths":[
             {
@@ -51,7 +51,7 @@
           "tag":"Data_2017E",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":9423,
           "filesPerPart":25,
           "paths":[
             {
@@ -64,7 +64,7 @@
           "tag":"Data_2017F",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":13527,
           "filesPerPart":25,
           "paths":[
             {

@@ -12,7 +12,7 @@
           "tag":"Data_2017B_JetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":4793,
           "filesPerPart":25,
           "paths":[
             {
@@ -25,7 +25,7 @@
           "tag":"Data_2017C_JetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":9755,
           "filesPerPart":25,
           "paths":[
             {
@@ -38,7 +38,7 @@
           "tag":"Data_2017D_JetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":4182,
           "filesPerPart":25,
           "paths":[
             {
@@ -51,7 +51,7 @@
           "tag":"Data_2017E_JetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":9423,
           "filesPerPart":25,
           "paths":[
             {
@@ -64,7 +64,7 @@
           "tag":"Data_2017F_JetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":#TODO,
+          "recordedLumi":13563,
           "filesPerPart":25,
           "paths":[
             {
