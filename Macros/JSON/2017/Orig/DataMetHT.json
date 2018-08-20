@@ -9,106 +9,67 @@
       "label":"Data",
       "files":[
         {
-          "tag":"Data_2016B",
+          "tag":"Data_2017B",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/MET_Run2016B_03Feb2017_v2",
-              "split":250
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/MET_Run2017B_17Nov2017",
+              "split":290
             }
           ]
         },
         {
-          "tag":"Data_2016C",
+          "tag":"Data_2017C",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/MET_Run2016C_03Feb2017",
-              "split":144
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/MET_Run2017C_17Nov2017",
+              "split":252
             }
           ]
         },
         {
-          "tag":"Data_2016D",
+          "tag":"Data_2017D",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/MET_Run2016D_03Feb2017",
-              "split":184
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/MET_Run2017D_17Nov2017",
+              "split":281
             }
           ]
         },
         {
-          "tag":"Data_2016E",
+          "tag":"Data_2017E",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/MET_Run2016E_03Feb2017",
-              "split":178
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/MET_Run2017E_17Nov2017",
+              "split":445
             }
           ]
         },
         {
-          "tag":"Data_2016F",
+          "tag":"Data_2017F",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/MET_Run2016F_03Feb2017",
-              "split":108
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016G",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/MET_Run2016G_03Feb2017",
-              "split":231
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016H_v2",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/MET_Run2016H_03Feb2017_v2",
-              "split":340
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016H_v3",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/MET_Run2016H_03Feb2017_v3",
-              "split":9
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/MET_Run2017F_17Nov2017",
+              "split":492
             }
           ]
         }

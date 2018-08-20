@@ -123,13 +123,13 @@ elif [ ${YEAR} == 2017 ]; then
  mergeJSONs $JSON_PATH/allMC.json                    $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json $JSON_PATH/ZInv.json $JSON_PATH/otherMC1.json $JSON_PATH/otherMC2.json
 
  #Make a JSON with the samples that are to be processed:
- cp         $JSON_PATH/MC2Process.json               $JSON_PATH/allMC.json
+ cp         $JSON_PATH/allMC.json                    $JSON_PATH/MC2Process.json
  
  # Copy the data JSON over, so that all locations are consistent
  cp         $JSON_PATH/Orig/DataJetHT.json           $JSON_PATH/DataJetHT
  cp         $JSON_PATH/Orig/DataMetHT.json           $JSON_PATH/DataMetHT
  cp         $JSON_PATH/Orig/DataSingleElectron.json  $JSON_PATH/DataSingleElectron.json
  cp         $JSON_PATH/Orig/DataSingleMuon.json      $JSON_PATH/DataSingleMuon.json
- mergeJSONs $JSON_PATH/allData.json                  $JSON_PATH/Orig/DataJetHT.json $JSON_PATH/Orig/DataMetHT.json  $JSON_PATH/Orig/DataSingleElectron.json  $JSON_PATH/Orig/DataSingleMuon.json
+ mergeJSONs $JSON_PATH/allData.json                  $JSON_PATH/Orig/DataJetHT.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
  #mergeJSONs $JSON_PATH/DataLepton.json         $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
 fi

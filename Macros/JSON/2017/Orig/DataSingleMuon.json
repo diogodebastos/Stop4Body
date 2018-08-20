@@ -9,106 +9,67 @@
       "label":"Data",
       "files":[
         {
-          "tag":"Data_2016B_SingleMu",
+          "tag":"Data_2017B_SingleMu",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleMuon_Run2016B_03Feb2017_v2",
-              "split":972
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017B_17Nov2017",
+              "split":382
             }
           ]
         },
         {
-          "tag":"Data_2016C_SingleMu",
+          "tag":"Data_2017C_SingleMu",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016C_03Feb2017",
-              "split":425
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017C_17Nov2017",
+              "split":378
             }
           ]
         },
         {
-          "tag":"Data_2016D_SingleMu",
+          "tag":"Data_2017D_SingleMu",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleMuon_Run2016D_03Feb2017",
-              "split":684
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017D_17Nov2017",
+              "split":412
             }
           ]
         },
         {
-          "tag":"Data_2016E_SingleMu",
+          "tag":"Data_2017E_SingleMu",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleMuon_Run2016E_03Feb2017",
-              "split":637
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017E_17Nov2017",
+              "split":418
             }
           ]
         },
         {
-          "tag":"Data_2016F_SingleMu",
+          "tag":"Data_2017F_SingleMu",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016F_03Feb2017",
-              "split":456
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016G_SingleMu",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016G_03Feb2017",
-              "split":542
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016H_v2_SingleMu",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016H_03Feb2017_v2",
-              "split":601
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016H_v3_SingleMu",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/temp/Stop4Body/GridProd/SingleMuon_Run2016H_03Feb2017_v3",
-              "split":30
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017F_17Nov2017",
+              "split":457
             }
           ]
         }

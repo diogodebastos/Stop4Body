@@ -9,106 +9,67 @@
       "label":"Data",
       "files":[
         {
-          "tag":"Data_2016B_SingleEl",
+          "tag":"Data_2017B_SingleEl",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleElectron_Run2016B_03Feb2017_v2",
-              "split":974
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017B_17Nov2017/",
+              "split":317
             }
           ]
         },
         {
-          "tag":"Data_2016C_SingleEl",
+          "tag":"Data_2017C_SingleEl",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleElectron_Run2016C_03Feb2017",
-              "split":814
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017C_17Nov2017",
+              "split":427
             }
           ]
         },
         {
-          "tag":"Data_2016D_SingleEl",
+          "tag":"Data_2017D_SingleEl",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleElectron_Run2016D_03Feb2017",
-              "split":631
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017D_17Nov2017",
+              "split":347
             }
           ]
         },
         {
-          "tag":"Data_2016E_SingleEl",
+          "tag":"Data_2017E_SingleEl",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleElectron_Run2016E_03Feb2017",
-              "split":504
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017E_17Nov2017",
+              "split":427
             }
           ]
         },
         {
-          "tag":"Data_2016F_SingleEl",
+          "tag":"Data_2017F_SingleEl",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":#TODO,
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleElectron_Run2016F_03Feb2017",
-              "split":721
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016G_SingleEl",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleElectron_Run2016G_03Feb2017",
-              "split":659
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016H_v2_SingleEl",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/store/user/cbeiraod/Stop4Body/Prod20170223/SingleElectron_Run2016H_03Feb2017_v2",
-              "split":575
-            }
-          ]
-        },
-        {
-          "tag":"Data_2016H_v3_SingleEl",
-          "xsec":1.0,
-          "br":1.0,
-          "recordedLumi":#TODO,
-          "filesPerPart":25,
-          "paths":[
-            {
-              "path":"/lstore/cms/cbeiraod/Stop4Body/GridProd/SingleElectron_Run2016H_03Feb2017_v3",
-              "split":27
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017F_17Nov2017",
+              "split":396
             }
           ]
         }

@@ -7,7 +7,7 @@ export YEAR=2017
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body
 export JSON_PATH=$BASE_PATH/Macros/JSON/${YEAR}
 
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v${YEAR}-08-21
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2018-08-21
 export SYNC_DIR=${BASE_NTUPLE_PATH}/nTuples_sync
 export PU_TEST_DIR=${BASE_NTUPLE_PATH}/nTuples_PU_test
 
