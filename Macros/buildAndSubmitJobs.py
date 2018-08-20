@@ -19,6 +19,7 @@ if __name__ == "__main__":
   parser.add_argument('-t', '--jobTemplate', default="./Templates/Step1_JobTemplate.sh", help='Template for the script for each job')
   parser.add_argument(      '--filterSubmit', default="*", help='Glob to be used when searching which samples have to be submitted')
   parser.add_argument('-s', '--doSwap', action='store_true', help='Whether to process with the swapping of MET and LepPt variables')
+  parser.add_argument('-y', '--year', required=True, help='The year the samples were produced.')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
   parser.add_argument(      '--onlyData', action='store_true', help='Whether to only run on data')
   parser.add_argument(      '--verbose', action='store_true', help='Give verbose output')
@@ -39,36 +40,36 @@ if __name__ == "__main__":
     jsonFiles.append("Data.json")
   if not args.onlyData:
     jsonFiles.append("MC2Process.json")
-    jsonFiles.append("stop250.json")
-    jsonFiles.append("stop275.json")
-    jsonFiles.append("stop300.json")
-    jsonFiles.append("stop325.json")
-    jsonFiles.append("stop350.json")
-    jsonFiles.append("stop375.json")
-    jsonFiles.append("stop400.json")
-    jsonFiles.append("stop425.json")
-    jsonFiles.append("stop450.json")
-    jsonFiles.append("stop475.json")
-    jsonFiles.append("stop500.json")
-    jsonFiles.append("stop525.json")
-    jsonFiles.append("stop550.json")
-    jsonFiles.append("stop575.json")
-    jsonFiles.append("stop600.json")
-    jsonFiles.append("stop625.json")
-    jsonFiles.append("stop650.json")
-    jsonFiles.append("stop675.json")
-    jsonFiles.append("stop700.json")
-    jsonFiles.append("stop725.json")
-    jsonFiles.append("stop750.json")
-    jsonFiles.append("stop775.json")
-    jsonFiles.append("stop800.json")
+    #jsonFiles.append("stop250.json")
+    #jsonFiles.append("stop275.json")
+    #jsonFiles.append("stop300.json")
+    #jsonFiles.append("stop325.json")
+    #jsonFiles.append("stop350.json")
+    #jsonFiles.append("stop375.json")
+    #jsonFiles.append("stop400.json")
+    #jsonFiles.append("stop425.json")
+    #jsonFiles.append("stop450.json")
+    #jsonFiles.append("stop475.json")
+    #jsonFiles.append("stop500.json")
+    #jsonFiles.append("stop525.json")
+    #jsonFiles.append("stop550.json")
+    #jsonFiles.append("stop575.json")
+    #jsonFiles.append("stop600.json")
+    #jsonFiles.append("stop625.json")
+    #jsonFiles.append("stop650.json")
+    #jsonFiles.append("stop675.json")
+    #jsonFiles.append("stop700.json")
+    #jsonFiles.append("stop725.json")
+    #jsonFiles.append("stop750.json")
+    #jsonFiles.append("stop775.json")
+    #jsonFiles.append("stop800.json")
 
   cmd = "buildJobs --template " + args.jobTemplate + " --jsonTemplate " + args.jsonTemplate + " --outDir " + args.outDirectory
   if args.doSwap:
     cmd = cmd + " --swap"
 
   for json in jsonFiles:
-    thisCMD = cmd + " --samples JSON/" + json
+    thisCMD = cmd + " --samples JSON/" + args.year + "/" + json
     print "Running the command:", thisCMD
     p = subprocess.Popen(thisCMD, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
@@ -117,18 +118,3 @@ if __name__ == "__main__":
       while getNJobs() > 1000:
         time.sleep(5*60)
       print "Done waiting"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
