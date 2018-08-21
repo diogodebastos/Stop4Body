@@ -132,4 +132,7 @@ elif [ ${YEAR} == 2017 ]; then
  cp         $JSON_PATH/Orig/DataSingleMuon.json      $JSON_PATH/DataSingleMuon.json
  mergeJSONs $JSON_PATH/allData.json                  $JSON_PATH/Orig/DataJetHT.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
  #mergeJSONs $JSON_PATH/DataLepton.json         $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
+ 
+ # Make a JSON for the PU tests
+ mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/DataJetHT.json 
 fi
