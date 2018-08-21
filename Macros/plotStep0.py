@@ -24,7 +24,8 @@ if __name__ == "__main__":
 
     if args.unified:
         cbeiraodPath="/lstore/cms/cbeiraod/Stop4Body/puWeights/"
-        dbastosPath="/lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-03/"
+        #dbastosPath="/lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-09/"
+        dbastosPath="/lstore/cms/dbastos/Stop4Body/puWeights/2017/"      
 
         f1 = ROOT.TFile(cbeiraodPath+file1Name,"READ")
         f2 = ROOT.TFile(dbastosPath+file1Name,"READ")
@@ -59,3 +60,4 @@ if __name__ == "__main__":
 #/lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-03/
 #puWeights_stop675.json.root
 #python plotStep0.py -f /lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-03/puWeights_stop675.json.root -k /lstore/cms/cbeiraod/Stop4Body/puWeights/puWeights_stop675.json.root -p sample_T2DegStop_675_595_nTrueInt
+#python plotStep0.py -u -f puWeights_Wjets.json.root -p process_WJets_puWeight
