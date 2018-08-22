@@ -12,7 +12,7 @@
           "tag":"Data_2017B_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":4792,
+          "recordedLumi":4794,
           "filesPerPart":25,
           "paths":[
             {
@@ -25,7 +25,7 @@
           "tag":"Data_2017C_SingleMu",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":9630,
+          "recordedLumi":9631,
           "filesPerPart":25,
           "paths":[
             {
