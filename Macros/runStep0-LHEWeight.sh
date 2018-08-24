@@ -59,7 +59,7 @@ elif [ ${YEAR} == 2017 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC1Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC2Job.sh
  # Submit job for all Data
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DataJob.sh
+ # qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DataJob.sh
  # Submit job for each group of signal points with a given stop mass
 
 fi
