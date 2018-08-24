@@ -11,7 +11,7 @@
           "tag":"W_2JetsToLNu_LO",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/W_2JetsToLNu_LO",

@@ -8,13 +8,13 @@
       "label":"DY + Jets",
       "files":[
         {
-          "tag":"DYJetsToLL_M50_HT100to200",
+          "tag":"DYJetsToLL_M50_HT50to200",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT100to200",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT50to200",
               "split":99
             }
           ]
@@ -23,7 +23,7 @@
           "tag":"DYJetsToLL_M50_HT200to400",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT200to400",
@@ -35,7 +35,7 @@
           "tag":"DYJetsToLL_M50_HT400to600",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT400to600",
@@ -47,7 +47,7 @@
           "tag":"DYJetsToLL_M50_HT600to800",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT600to800",
@@ -59,7 +59,7 @@
           "tag":"DYJetsToLL_M50_HT800to1200",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT800to1200",
@@ -71,7 +71,7 @@
           "tag":"DYJetsToLL_M50_HT1200to2500",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT1200to2500",
@@ -83,7 +83,7 @@
           "tag":"DYJetsToLL_M50_HT2500toInf",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT2500toInf",
@@ -92,25 +92,25 @@
           ]
         },
         {
-          "tag":"DYJetsToLL_M4to50_HT70to100",
+          "tag":"DYJetsToLL_M4to50_HT70to50",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT70to100",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT70to50",
               "split":92
             }
           ]
         },
         {
-          "tag":"DYJetsToLL_M4to50_HT100to200",
+          "tag":"DYJetsToLL_M4to50_HT50to200",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT100to200",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT50to200",
               "split":82
             }
           ]
@@ -119,7 +119,7 @@
           "tag":"DYJetsToLL_M4to50_HT200to400",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT200to400",
@@ -131,7 +131,7 @@
           "tag":"DYJetsToLL_M4to50_HT400to600",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT400to600",
@@ -143,7 +143,7 @@
           "tag":"DYJetsToLL_M4to50_HT600toInf",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT600toInf",

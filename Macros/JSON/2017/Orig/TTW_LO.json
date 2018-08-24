@@ -11,7 +11,7 @@
           "tag":"TTW_LO",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":5,
+          "filesPerPart":3,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/TTW_LO",
