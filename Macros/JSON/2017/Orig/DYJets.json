@@ -8,13 +8,13 @@
       "label":"DY + Jets",
       "files":[
         {
-          "tag":"DYJetsToLL_M50_HT50to200",
+          "tag":"DYJetsToLL_M50_HT100to200",
           "xsec":1.0,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT50to200",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT100to200",
               "split":99
             }
           ]
@@ -27,7 +27,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT200to400",
-              "split":78
+              "split":83
             }
           ]
         },
@@ -39,7 +39,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M50_HT400to600",
-              "split":70
+              "split":75
             }
           ]
         },
@@ -92,25 +92,25 @@
           ]
         },
         {
-          "tag":"DYJetsToLL_M4to50_HT70to50",
+          "tag":"DYJetsToLL_M4to50_HT70to100",
           "xsec":1.0,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT70to50",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT70to100",
               "split":92
             }
           ]
         },
         {
-          "tag":"DYJetsToLL_M4to50_HT50to200",
+          "tag":"DYJetsToLL_M4to50_HT100to200",
           "xsec":1.0,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to50_HT50to200",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/DYJetsToLL_M4to100_HT50to200",
               "split":82
             }
           ]
