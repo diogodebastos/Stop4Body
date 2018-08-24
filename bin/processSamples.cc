@@ -992,7 +992,7 @@ int main(int argc, char** argv)
       Float_t HLT_Ele;               bdttree->Branch("HLT_Ele",               &HLT_Ele,               "HLT_Ele/F"              );
       Float_t HLT_Mu;                bdttree->Branch("HLT_Mu",                &HLT_Mu,                "HLT_Mu/F"               );
 
-      Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
+//      Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
       Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
       Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
@@ -1356,12 +1356,12 @@ int main(int argc, char** argv)
               lPTETA = lPTETA && ( (std::abs(LepGood_eta[i]) > ECALGap_MaxEta)
                                 || (std::abs(LepGood_eta[i]) < ECALGap_MinEta) );
             }
-
+/*
             bool lID       = (std::abs(LepGood_dxy[i]) < 0.02)
                           && (std::abs(LepGood_dz[i]) < 0.1);
             bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
                           && (std::abs(LepGood_dz[i]) < 0.5);
-/*
+
             bool lIS       = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
             bool lIS_loose = LepGood_relIso03[i] < 0.8 || LepGood_absIso03[i] < 20.0;
 
@@ -1950,7 +1950,7 @@ int main(int argc, char** argv)
           //HLT_Mu                              = HLT_IsoMu24;
           HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;
           HLT_Mu                              = HLT_IsoMu27;
-          METFilters                          = Flag_METFilters;
+          //METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
           eeBadScFilter                       = Flag_eeBadScFilter;
