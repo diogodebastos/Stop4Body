@@ -43,7 +43,7 @@
 #include "UserCode/Stop4Body/interface/commonFunctions.h"
 #include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
 
-#define LHEWEIGHT_LIMIT  500
+#define LHEWEIGHT_LIMIT  1000
 
 int main(int argc, char** argv)
 {
