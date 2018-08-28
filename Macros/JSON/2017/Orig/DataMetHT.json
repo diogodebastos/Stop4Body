@@ -9,7 +9,7 @@
       "label":"Data",
       "files":[
         {
-          "tag":"Data_2017B",
+          "tag":"Data_2017B_MetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4793,
@@ -22,7 +22,7 @@
           ]
         },
         {
-          "tag":"Data_2017C",
+          "tag":"Data_2017C_MetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":6812,
@@ -35,7 +35,7 @@
           ]
         },
         {
-          "tag":"Data_2017D",
+          "tag":"Data_2017D_MetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4248,
@@ -48,7 +48,7 @@
           ]
         },
         {
-          "tag":"Data_2017E",
+          "tag":"Data_2017E_MetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":9314,
@@ -61,7 +61,7 @@
           ]
         },
         {
-          "tag":"Data_2017F",
+          "tag":"Data_2017F_MetHT",
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":13499,
