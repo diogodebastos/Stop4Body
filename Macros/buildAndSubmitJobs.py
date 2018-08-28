@@ -37,7 +37,8 @@ if __name__ == "__main__":
   if args.doSwap:
     jsonFiles.append("DataSingleLepton.json")
   else:
-    jsonFiles.append("Data.json")
+    #jsonFiles.append("Data.json")
+    jsonFiles.append("allData.json")
   if not args.onlyData:
     jsonFiles.append("MC2Process.json")
     #jsonFiles.append("stop250.json")

@@ -126,8 +126,8 @@ elif [ ${YEAR} == 2017 ]; then
  cp         $JSON_PATH/allMC.json                    $JSON_PATH/MC2Process.json
  
  # Copy the data JSON over, so that all locations are consistent
- cp         $JSON_PATH/Orig/DataJetHT.json           $JSON_PATH/DataJetHT
- cp         $JSON_PATH/Orig/DataMetHT.json           $JSON_PATH/DataMetHT
+ cp         $JSON_PATH/Orig/DataJetHT.json           $JSON_PATH/DataJetHT.json
+ cp         $JSON_PATH/Orig/DataMetHT.json           $JSON_PATH/DataMetHT.json
  cp         $JSON_PATH/Orig/DataSingleElectron.json  $JSON_PATH/DataSingleElectron.json
  cp         $JSON_PATH/Orig/DataSingleMuon.json      $JSON_PATH/DataSingleMuon.json
  mergeJSONs $JSON_PATH/allData.json                  $JSON_PATH/Orig/DataJetHT.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
