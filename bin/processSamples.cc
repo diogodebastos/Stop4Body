@@ -1072,9 +1072,9 @@ int main(int argc, char** argv)
           inputtree = static_cast<TTree*>(finput.Get("tree"));
 
         // Read Branches you are interested in from the input tree
-        //Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
-        //Float_t mtw2;        inputtree->SetBranchAddress("event_mtw2"       , &mtw2);
-        //Float_t mtw;         inputtree->SetBranchAddress("event_mtw"       , &mtw);
+//        Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
+//        Float_t mtw2;        inputtree->SetBranchAddress("event_mtw2"       , &mtw2);
+//        Float_t mtw;         inputtree->SetBranchAddress("event_mtw"       , &mtw);
         Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
         Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
@@ -1084,7 +1084,7 @@ int main(int argc, char** argv)
         Float_t LepGood_eta[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eta", &LepGood_eta);
         Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
         Float_t LepGood_relIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_relIso03",&LepGood_relIso03);
-        //Float_t LepGood_absIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_absIso03",&LepGood_absIso03);
+//        Float_t LepGood_absIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_absIso03",&LepGood_absIso03);
         Float_t LepGood_dxy[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_dxy",&LepGood_dxy);
         Float_t LepGood_dz[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
         Float_t LepGood_mass[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
@@ -1191,7 +1191,7 @@ int main(int argc, char** argv)
         Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
         Int_t HLT_IsoMu27;                   inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
 
-        //Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
+//      Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
         Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
         Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
         Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
@@ -1356,14 +1356,13 @@ int main(int argc, char** argv)
               lPTETA = lPTETA && ( (std::abs(LepGood_eta[i]) > ECALGap_MaxEta)
                                 || (std::abs(LepGood_eta[i]) < ECALGap_MinEta) );
             }
-/*
             bool lID       = (std::abs(LepGood_dxy[i]) < 0.02)
                           && (std::abs(LepGood_dz[i]) < 0.1);
             bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
                           && (std::abs(LepGood_dz[i]) < 0.5);
 
-            bool lIS       = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
-            bool lIS_loose = LepGood_relIso03[i] < 0.8 || LepGood_absIso03[i] < 20.0;
+            bool lIS       = LepGood_relIso03[i] < 0.2; // || LepGood_absIso03[i] < 5.0;
+            bool lIS_loose = LepGood_relIso03[i] < 0.8; // || LepGood_absIso03[i] < 20.0;
 
             if(lPTETA && lID && lIS)
             {
@@ -1381,7 +1380,6 @@ int main(int argc, char** argv)
               else
                 nGoodEl_loose++;
             }
-            */
           }
           std::sort(validLeptons.begin(), validLeptons.end(), [&LepGood_pt] (const int &left, const int &right) {
             return LepGood_pt[left] > LepGood_pt[right];
