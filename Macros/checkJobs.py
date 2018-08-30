@@ -59,6 +59,8 @@ if __name__ == "__main__":
             complete = complete + 1
           else:
             resubmitJob = True
+        elif 'The expected files were' in open(outFile).read():
+          resubmitJob = True
         else:
           resubmitJob = True
       else:
