@@ -36,6 +36,8 @@ if __name__ == "__main__":
 
   for sample in samples:
     sampleName = os.path.basename(os.path.normpath(sample))
+    if sampleName[:6] == "DataMC":
+      continue
     print "Sample:", sampleName
 
     jobInfo = {}

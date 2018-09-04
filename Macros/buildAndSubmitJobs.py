@@ -68,7 +68,7 @@ if __name__ == "__main__":
     #jsonFiles.append("stop800.json")
   if args.thisSample:
     jsonFiles = []
-    jsonFiles.append(thisSample+".json")
+    jsonFiles.append(args.thisSample+".json")
 
   cmd = "buildJobs --template " + args.jobTemplate + " --jsonTemplate " + args.jsonTemplate + " --outDir " + args.outDirectory
   if args.doSwap:
