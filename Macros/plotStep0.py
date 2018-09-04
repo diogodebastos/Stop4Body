@@ -16,20 +16,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
     file1Name=args.file1
     file2Name=args.file2
-    histName=args.histogram
-
     ROOT.gStyle.SetOptStat("00000000")
 #    ROOT.gStyle.SetOptTitle(0)
 
-    c = TCanvas("c",histName,800,600)
     
     if args.unified:
         cbeiraodPath="/lstore/cms/cbeiraod/Stop4Body/puWeights/"
         #dbastosPath="/lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-09/"
         dbastosPath="/lstore/cms/dbastos/Stop4Body/puWeights/2017/"      
-
         f1 = ROOT.TFile(cbeiraodPath+file1Name,"READ")
         f2 = ROOT.TFile(dbastosPath+file1Name,"READ")
+        file2Name=file1Name
+        histName=args.histogram
     elif args.pileUp:
         basePath = "/lstore/cms/dbastos/Stop4Body/"
         nTupleDir = "nTuples_v2018-08-24/"
@@ -40,6 +38,8 @@ if __name__ == "__main__":
         f1 = ROOT.TFile(file1Name,"READ")
         f2 = ROOT.TFile(file2Name,"READ")
 
+    c = TCanvas("c",histName,1200,800)
+    
     h1 = f1.Get(histName)
     h2 = f2.Get(histName)
 
