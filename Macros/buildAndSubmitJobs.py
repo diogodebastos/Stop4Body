@@ -23,6 +23,8 @@ if __name__ == "__main__":
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
   parser.add_argument(      '--onlyData', action='store_true', help='Whether to only run on data')
   parser.add_argument(      '--verbose', action='store_true', help='Give verbose output')
+  parser.add_argument(      '--thisSample', help='Build jobs only for a specific sample')
+
 
   args = parser.parse_args()
 
@@ -64,6 +66,9 @@ if __name__ == "__main__":
     #jsonFiles.append("stop750.json")
     #jsonFiles.append("stop775.json")
     #jsonFiles.append("stop800.json")
+  if args.thisSample:
+    jsonFiles = []
+    jsonFiles.append(thisSample+".json")
 
   cmd = "buildJobs --template " + args.jobTemplate + " --jsonTemplate " + args.jsonTemplate + " --outDir " + args.outDirectory
   if args.doSwap:
