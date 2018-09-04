@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     h1.SetTitle(file1Name)
     h1.GetXaxis().SetTitle("X axis title")
-    h1.GetYaxis()->SetTitle("Y axis title")
+    h1.GetYaxis().SetTitle("Y axis title")
     h2.SetTitle(file2Name")
     
     c.BuildLegend(0.9,0.8,1,0.9)
