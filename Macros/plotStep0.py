@@ -1,5 +1,5 @@
 import ROOT
-from ROOT import TFile, TH1F, TCanvas, TTree, THStack
+from ROOT import TFile, TH1F, TCanvas, TTree, THStack, TText
 
 if __name__ == "__main__":
     import sys
@@ -30,6 +30,8 @@ if __name__ == "__main__":
         var=args.variable
         h1 = f1.Get(var)
         h2 = f2.Get(var)
+        h1.GetXaxis().SetTitle("X axis title")
+        h1.GetYaxis().SetTitle("Y axis title")
     elif args.pileUp:
         basePath = "/lstore/cms/dbastos/Stop4Body/"
         nTupleDir = "nTuples_v2018-08-24/"
@@ -39,8 +41,8 @@ if __name__ == "__main__":
         f2 = ROOT.TFile(basePath+nTupleDir+file2Name,"READ")
         t1=f1.Get("bdttree")
         t2=f2.Get("bdttree")
-        h1 = TH1F("h1",var,150,0,150)
-        h2 = TH1F("h2",var,150,0,150)
+        h1 = TH1F("h1",var,50,0,50)
+        h2 = TH1F("h2",var,50,0,50)
         t1.Draw("nVert>>h1","","goff")
         t2.Draw("nVert>>h2","","goff")
         
@@ -57,26 +59,27 @@ if __name__ == "__main__":
     
     h1.SetLineColor(ROOT.kBlue)
     h2.SetLineColor(ROOT.kRed)
-
+    h1.SetTitle(file1Name.replace(".root",""))
+    h2.SetTitle(file2Name.replace(".root",""))
+    
     #h1.Draw()
     #h2.Draw("same")
     hs.Draw()
     
-    h1.SetTitle(file1Name)
-    h1.GetXaxis().SetTitle("X axis title")
-    h1.GetYaxis().SetTitle("Y axis title")
-    h2.SetTitle(file2Name)
-    
-    c1.BuildLegend(0.9,0.8,1,0.9)
-    h1.SetTitle(var)
+    T = TText()
+    T.SetTextFont(42)
+    T.SetTextAlign(21)
+    T.DrawTextNDC(.5,.95,var)
+
+    c1.BuildLegend(0.66, 0.87, 0.93, 0.77, "")
+    c1.SetTitle(var)
     #c.cd()
     #Tl = ROOT.TLatex(0.5,0.9,var)
     #Tl.SetTextSize(0.04)
     #Tl.SetTextAlign(13)
     #Tl.Draw()
 
-
-    pdfName=file1Name+"_"+file2Name+"_"+var
+    pdfName=var+"_"+file1Name.replace(".root","")+"_vs_"+file2Name.replace(".root","")
     c1.SaveAs("plots/"+pdfName+".pdf")
 
 #/lstore/cms/cbeiraod/Stop4Body/puWeights

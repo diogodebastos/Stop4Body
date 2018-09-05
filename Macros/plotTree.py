@@ -26,14 +26,18 @@ b2=t2.GetBranch("nVert")
 
 nE1=b1.GetEntries()
 
+maxVal=max(h1.GetMaximum(),h2.GetMaximum())
+minVal=max(h1.GetMinimum(),h2.GetMinimum())
+
+c1 = TCanvas("c1","nVert", 1200, 1350)
+
 hs= THStack("hs","")
 hs.Add(h1)
 hs.Add(h2)
 
 hs.Draw()
 
+c1.BuildLegend(0.66, 0.85, 0.87, 0.75, "")
+
 #for i in range(nE1):
 #  h1.Fill(b1.GetEntry(i))
-
-#c1 = TCanvas("c1","name",1200,800)
-
