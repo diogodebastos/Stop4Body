@@ -37,6 +37,8 @@ if __name__ == "__main__":
         
         f1 = ROOT.TFile(basePath+nTupleDir+file1Name,"READ")
         f2 = ROOT.TFile(basePath+nTupleDir+file2Name,"READ")
+        t1=f1.Get("bdttree")
+        t2=f2.Get("bdttree")
         h1 = TH1F("h1",var,150,0,150)
         h2 = TH1F("h2",var,150,0,150)
         t1.Draw("nVert>>h1","","goff")
