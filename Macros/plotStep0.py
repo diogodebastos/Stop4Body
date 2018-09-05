@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
 
     pdfName=file1Name+"_"+file2Name+"_"+var
-    c.SaveAs("plots/"+pdfName+".pdf")
+    c1.SaveAs("plots/"+pdfName+".pdf")
 
 #/lstore/cms/cbeiraod/Stop4Body/puWeights
 #/lstore/cms/dbastos/Stop4Body/nTuples_v2018-04-03/
