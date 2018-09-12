@@ -1,5 +1,5 @@
 import ROOT
-from ROOT import TFile, TH1F, TCanvas, TTree, THStack
+from ROOT import TFile, TH1F, TCanvas, TTree, THStack, TText
 
 nVert="/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2018-09-06/DataMC_PU/Preselection_nVert_syncPlot_1.root"
 
@@ -7,11 +7,11 @@ ROOT.gStyle.SetOptStat("00000000")
 
 fNVert = ROOT.TFile(nVert,"READ")
 hs= THStack("hs","")
-c1 = TCanvas("c1","nVert", 1200, 1350)
+c1 = TCanvas("c1","nVert", 1600, 900)
 
 data = fNVert.Get("Data")
 data.Scale(1/data.Integral())
-data.SetLineColor(ROOT.kBlue)
+data.SetLineColor(ROOT.kBlack)
 hs.Add(data)
 
 ttbar = fNVert.Get("ttbar")
@@ -21,44 +21,52 @@ hs.Add(ttbar)
 
 WJets = fNVert.Get("WJets")
 WJets.Scale(1/WJets.Integral())
-WJets.SetLineColor(ROOT.kRed)
+WJets.SetLineColor(ROOT.kBlue)
 hs.Add(WJets)
 
 ZInv = fNVert.Get("ZInv")
 ZInv.Scale(1/ZInv.Integral())
-ZInv.SetLineColor(ROOT.kRed)
+ZInv.SetLineColor(ROOT.kGreen)
 hs.Add(ZInv)
 
 VV = fNVert.Get("VV")
 VV.Scale(1/VV.Integral())
-VV.SetLineColor(ROOT.kRed)
+VV.SetLineColor(ROOT.kYellow)
 hs.Add(VV)
 
 DYJets = fNVert.Get("DYJets")
 DYJets.Scale(1/DYJets.Integral())
-DYJets.SetLineColor(ROOT.kRed)
+DYJets.SetLineColor(ROOT.kMagenta)
 hs.Add(DYJets)
 
 SingleTop = fNVert.Get("SingleTop")
 SingleTop.Scale(1/SingleTop.Integral())
-SingleTop.SetLineColor(ROOT.kRed)
+SingleTop.SetLineColor(ROOT.kCyan)
 hs.Add(SingleTop)
 
 QCD = fNVert.Get("QCD")
 QCD.Scale(1/QCD.Integral())
-QCD.SetLineColor(ROOT.kRed)
+QCD.SetLineColor(ROOT.kOrange)
 hs.Add(QCD)
 
 ttx = fNVert.Get("ttx")
 ttx.Scale(1/ttx.Integral())
-ttx.SetLineColor(ROOT.kRed)
+ttx.SetLineColor(ROOT.kSpring)
 hs.Add(ttx)
 
 hs.Draw()
-c1.BuildLegend(0.66, 0.85, 0.87, 0.75, "")
+T = TText()
+T.SetTextFont(42)
+T.SetTextAlign(21)
+T.DrawTextNDC(.5,.95,"nVert")
+c1.BuildLegend(0.66, 0.85, 0.87, 0.65, "")
+c1.SetTitle("nVert")
 
-########
+pdfName="PU_Test"
+c1.SaveAs("plots/"+pdfName+".pdf")
 
+
+'''
 path="/lstore/cms/dbastos/Stop4Body/nTuples_v2018-08-24/"
 nTuple1="ZJetsToNuNu_HT600to800.root"
 nTuple2="Data_2017B_MetHT.root"
@@ -90,3 +98,5 @@ hs.Draw()
 
 #for i in range(nE1):
 #  h1.Fill(b1.GetEntry(i))
+'''
+
