@@ -55,7 +55,7 @@ int main(int argc, char** argv)
   std::string suffix = "";
   std::string dataPUFileName = "";
   std::string mcPUFileName = "";
-  int nBins = 50;
+  int nBins = 100;
 
   if(argc < 2)
   {
