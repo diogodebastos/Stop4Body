@@ -4,8 +4,75 @@
       "expression":"LepPt",
       "label":"p_{T}(l)",
       "legPos":"top",
-      "max":150.0,
-      "bins":30
+      "max":200.0,
+      "bins":40
+    },
+    {
+      "expression":"LepEta",
+      "label":"#eta(l)",
+      "min":-3,
+      "max":3,
+      "bins":20
+    },
+    {
+      "expression":"LepChg",
+      "label":"Lepton Charge",
+      "min":-1.1,
+      "max":1.1,
+      "bins":20
+    },
+    {
+      "expression":"Met",
+      "legPos":"top",
+      "min":250.0,
+      "max":1000.0,
+      "bins":35
+    },
+    {
+      "expression":"mt",
+      "label":"M_{T}",
+      "max":300.0,
+      "bins":20
+    },
+    {
+      "expression":"Njet",
+      "label":"N_{J}",
+      "min":-0.5,
+      "max":9.5,
+      "bins":10
+    },
+    {
+      "expression":"Jet1Pt",
+      "label":"p_{T}(J_{1})",
+      "min":100.0,
+      "max":1000.0,
+      "bins":25
+    },
+    {
+      "expression":"JetHBpt",
+      "label":"p_{T}(J_{B1})",
+      "max":100.0,
+      "bins":20
+    },
+    {
+      "expression":"HT20",
+      "label":"H_{T}(p_{T}>20)",
+      "min":100.0,
+      "max":1000.0,
+      "bins":25
+    },
+    {
+      "expression":"NbLoose30",
+      "label":"N_{b}^{L}",
+      "min":-0.5,
+      "max":6.5,
+      "bins":7
+    },
+    {
+      "expression":"DrJetHBLep",
+      "label":"#Delta R (J_{B1},l)",
+      "max":5,
+      "bins":20
     },
     {
       "expression":"nVert",
@@ -13,13 +80,6 @@
       "min":0.0,
       "max":100.0,
       "bins":100
-    },
-    {
-      "expression":"Met",
-      "legPos":"top",
-      "min":250.0,
-      "max":600.0,
-      "bins":35
     }
   ],
   "2Dplots":[
