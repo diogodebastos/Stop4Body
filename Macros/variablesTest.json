@@ -1,0 +1,29 @@
+{
+  "variables":[
+    {
+      "expression":"LepPt",
+      "label":"p_{T}(l)",
+      "legPos":"top",
+      "max":150.0,
+      "bins":30
+    },
+    {
+      "expression":"nVert",
+      "legTop":true,
+      "min":0.0,
+      "max":100.0,
+      "bins":100
+    },
+    {
+      "expression":"Met",
+      "legPos":"top",
+      "min":250.0,
+      "max":600.0,
+      "bins":35
+    }
+  ],
+  "2Dplots":[
+   {
+   }
+  ]
+}
