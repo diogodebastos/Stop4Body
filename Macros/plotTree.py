@@ -1,7 +1,7 @@
 import ROOT
 from ROOT import TFile, TH1F, TCanvas, TTree, THStack, TText
 
-nVert="/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2018-09-06/DataMC_PU/Preselection_nVert_syncPlot_1.root"
+nVert="/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2018-09-13/DataMC_PU/Preselection_nVert_syncPlot_nVert.root"
 
 ROOT.gStyle.SetOptStat("00000000")
 

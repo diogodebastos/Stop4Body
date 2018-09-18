@@ -136,6 +136,6 @@ elif [ ${YEAR} == 2017 ]; then
  # Make a JSON for the PU tests
  mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/DataJetHT.json
  # Make the JSONs for plotting
- mergeJSONs $JSON_PATH/plot2017.json           $JSON_PATH/allMC.json $JSON_PATH/allData.json 
+ mergeJSONs $JSON_PATH/plot2017.json           $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json 
  
 fi
