@@ -397,8 +397,8 @@ int main(int argc, char** argv)
     //cutFlow.push_back(CutInfo("JetPt110", "Jet1Pt > 110", "$p_T\\left(j_1\\right) > 110$"));
     //cutFlow.push_back(CutInfo("MET300", "Met > 300", "$MET > 300$"));
     //cutFlow.push_back(CutInfo("LepPt30", "LepPt < 30", "$p_T\\left(l\\right) < 30$"));
-    cutFlow.push_back(CutInfo("ElFS_Selection", "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl <= 2) && (nGoodMu = 0)", "ElFS_Selection"));
-    cutFlow.push_back(CutInfo("MuFS_Selection", "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodMu <= 2) && (nGoodEl = 0)", "MuFS_Selection"));
+    cutFlow.push_back(CutInfo("ElFS_Selection", "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl <= 2) && (nGoodMu == 0)", "ElFS_Selection"));
+    cutFlow.push_back(CutInfo("MuFS_Selection", "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodMu <= 2) && (nGoodEl == 0)", "MuFS_Selection"));
     cutFlow.push_back(CutInfo("Selection", "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)", "Selection"));
     //cutFlow.push_back(CutInfo("Test", "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (Njet60 < 3)", "$N(jet_{60}) < 3$"));
   }
