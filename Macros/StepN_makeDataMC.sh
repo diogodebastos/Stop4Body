@@ -19,8 +19,8 @@ if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT_LEP} ]] ; then
     mkdir -p ${OUTPUT_LEP}
   fi
-  if [[ ! -d ${OUTPUT_TEST} ]] ; then
-    mkdir -p ${OUTPUT_TEST}
+  if [[ ! -d ${OUTPUT_2017} ]] ; then
+    mkdir -p ${OUTPUT_2017}
   fi
   #makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT}     --inDir ${INPUT} --variables variables.json --cuts variables.json
   #makePlots --json ${JSON_PATH}/plot${YEAR}_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --variables variables.json --cuts variables.json
