@@ -1,0 +1,116 @@
+{
+ "cuts":[
+   {
+     "name":"PreselectionMu",
+     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (HLT_Mu == 1)",
+     "latex":"Preselection ($#mu$ channel)"
+   },
+   
+   {
+     "name":"PreselectionEl",
+     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) && (HLT_Ele == 1)",
+     "latex":"Preselection ($e$ channel)"
+   }
+  ],
+  "variables":[
+    {
+      "expression":"LepPt [GeV]",
+      "label":"p_{T}(l)",
+      "legPos":"top",
+      "max":200.0,
+      "bins":40
+    },
+    {
+      "expression":"LepEta",
+      "label":"#eta(l)",
+      "min":-3,
+      "max":3,
+      "bins":50
+    },
+    {
+      "expression":"LepChg",
+      "label":"Lepton Charge",
+      "min":-1.1,
+      "max":1.1,
+      "bins":20
+    },
+    {
+     "expression":"Met",
+     "label":"E_{T}^{miss} [GeV]",
+     "legPos":"top",
+      "min":250.0,
+      "max":1000.0,
+      "bins":35
+    },
+    {
+      "expression":"mt",
+      "label":"M_{T} [GeV]",
+      "max":300.0,
+      "bins":40
+    },
+    {
+     "expression":"Njet",
+     "label":"N_{Jet}",
+     "legPos":"top",
+      "min":-0.5,
+      "max":5.5,
+      "bins":6
+    },
+    {
+     "expression":"Jet1Pt",
+     "label":"p_{T}(jet 1) [GeV]",
+     "legPos":"top",
+      "min":100.0,
+      "max":1000.0,
+      "bins":50
+    },
+    {
+      "expression":"JetHBpt",
+      "label":"p_{T}(jet HB) [GeV]",
+      "legPos":"top",
+      "min":30.0,
+      "max":710.0,
+      "bins":34
+    },
+    {
+      "expression":"HT",
+      "label":"H_{T} [GeV]",
+      "legPos":"top",
+      "min":200.0,
+      "max":1000.0,
+      "bins":40
+    },
+    {
+      "expression":"NbLoose",
+      "label":"N_{b Loose}",
+      "legPos":"top",
+      "min":-0.5,
+      "max":6.5,
+      "bins":7
+    },
+    {
+      "expression":"DrJetHBLep",
+      "label":"#Delta R (J_{B1},l)",
+      "max":4.0,
+      "bins":40
+    },
+    {
+      "expression":"JetHBCSV",
+      "label":"CSV(jet HB)",
+      "legPos":"top",
+      "max":1.0,
+      "bins":20
+    },
+    {
+      "expression":"nVert",
+      "legTop":true,
+      "min":0.0,
+      "max":100.0,
+      "bins":100
+    }
+  ],
+  "2Dplots":[
+   {
+   }
+  ]
+}
