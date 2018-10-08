@@ -14,8 +14,8 @@
   ],
   "variables":[
     {
-      "expression":"LepPt [GeV]",
-      "label":"p_{T}(l)",
+      "expression":"LepPt",
+      "label":"p_{T}(l) [GeV]",
       "legPos":"top",
       "max":200.0,
       "bins":40
