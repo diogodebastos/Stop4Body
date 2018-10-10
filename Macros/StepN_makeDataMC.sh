@@ -25,5 +25,5 @@ if [[ -d ${INPUT} ]] ; then
   #makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT}     --inDir ${INPUT} --variables variables.json --cuts variables.json
   #makePlots --json ${JSON_PATH}/plot${YEAR}_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --variables variables.json --cuts variables.json
   #makePlots --json ${JSON_PATH}/plot${YEAR}_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --variables variables.json --cuts variables.json
-  makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT_2017} --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json --puTest
+  makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT_2017} --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json --puTest --noSF
 fi
