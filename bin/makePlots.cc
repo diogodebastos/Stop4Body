@@ -383,7 +383,7 @@ int main(int argc, char** argv)
     {
      //weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
      //converter << "XS*filterEfficiency*(genWeight/sumGenWeight)";
-      converter << "XS*(genWeight/sumGenWeight)*puWeight*Q2Var;
+      converter << "XS*(genWeight/sumGenWeight)*puWeight*Q2Var";
     }
     converter << "*" << luminosity;
     converter >> mcWeight;
