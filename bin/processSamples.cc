@@ -1360,9 +1360,8 @@ int main(int argc, char** argv)
                           && (std::abs(LepGood_dz[i]) < 0.1);
             bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
                           && (std::abs(LepGood_dz[i]) < 0.5);
-
-            bool lIS       = LepGood_relIso03[i] < 0.2; // || LepGood_absIso03[i] < 5.0;
-            bool lIS_loose = LepGood_relIso03[i] < 0.8; // || LepGood_absIso03[i] < 20.0;
+            bool lIS       = LepGood_absIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
+            bool lIS_loose = LepGood_relIso03[i] < 0.8 || LepGood_absIso03[i] < 20.0;
 
             if(lPTETA && lID && lIS)
             {
