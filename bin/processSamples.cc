@@ -76,6 +76,11 @@ const double CSV_Loose = 0.5426;
 const double CSV_Medium = 0.800; // TODO: Update
 const double CSV_Tight = 0.935;
 
+extern TH2D* centralElectronRecoSFHist2017_lowEt;
+extern TH2D* centralElectronRecoSFHist2017;
+extern TH2D* centralElectronSFHist2017;
+extern TH2D* centralMuonSFHist2017;
+
 extern TH2D* centralElectronSFHist;
 extern TH2D* centralMuonSFHist;
 extern TH1F* hephyElectronIDSFHistBarrel;
@@ -226,6 +231,16 @@ int main(int argc, char** argv)
   TDirectory* cwd = gDirectory;
   TFile puWeightFile((outputDirectory + "/puWeights.root").c_str(), "READ");
   TFile lheScaleFile((lheScaleDir + "/lheWeights.root").c_str(), "READ");
+  
+  TFile centralElectronRecoSFFile2017_lowEt("egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+  centralElectronRecoSFHist2017_lowEt = static_cast<TH2D*>(centralElectronRecoSFFile2017_lowEt).Get("EGamma_SF2D");
+  TFile centralElectronRecoSFFile2017("egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
+  centralElectronRecoSFHist2017 = static_cast<TH2D*>(centralElectronRecoSFFile2017).Get("EGamma_SF2D");
+  TFile centralElectronSFFile2017("../data/ElectronScaleFactors_Run2017.root", "READ");
+  centralElectronSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017).Get("Run2017_CutBasedVetoNoIso94X");
+  TFile centralMuonSFFile2017("../data/MuonScaleFactors_Run2017.root", "READ");
+  centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017).Get("Run2017_CutBasedVetoNoIso94X");
+  
   TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
   centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
   TFile centralMuonSFFile("../data/TnP_NUM_LooseID_DENOM_generalTracks_VAR_map_pt_eta.root", "READ");
