@@ -11,6 +11,7 @@ TH2D* centralElectronRecoSFHist2017_lowEt = nullptr;
 TH2D* centralElectronRecoSFHist2017 = nullptr;
 TH2D* centralElectronSFHist2017 = nullptr;
 TH2D* centralMuonSFHist2017 = nullptr;
+TH2D* MuonISOSFHist2017 = nullptr;
 
 TH2D* centralElectronSFHist = nullptr;
 TH2D* centralMuonSFHist = nullptr;
@@ -637,6 +638,7 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(ValueWithSystematics<doubl
   return retVal;
 }
 
+//https://twiki.cern.ch/twiki/bin/view/CMS/Egamma2017DataRecommendations#Electron%20Reconstruction%20Scale%20Fa
 doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta)
 {
  double val = 1, unc = 0;
@@ -674,6 +676,7 @@ doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta)
  return retVal;
 }
 
+//https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSLeptonSF#Scale%20Factors%20for%202017%20Data
 doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
 {
  double val = 1, unc = 0;
@@ -714,6 +717,18 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
  }
  doubleUnc retVal(val, unc);
  return retVal;
+}
+
+doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
+{
+ if(std::abs(LepID) == 11) // If electron
+ {
+  
+ }
+ else if(std::abs(LepID) == 13) // If  muon
+ {
+  
+ }
 }
 
 // Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0

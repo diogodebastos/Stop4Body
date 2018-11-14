@@ -12,6 +12,12 @@
 #include "TStyle.h"
 #include <string>
 
+extern TH2D* centralElectronRecoSFHist2017_lowEt;
+extern TH2D* centralElectronRecoSFHist2017;
+extern TH2D* centralElectronSFHist2017;
+extern TH2D* centralMuonSFHist2017;
+extern TH2D* MuonISOSFHist2017;
+
 extern TH2D* centralElectronSFHist;
 extern TH2D* centralMuonSFHist;
 extern TH1F* hephyElectronIDSFHistBarrel;
@@ -39,6 +45,9 @@ doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt
 doubleUnc ISRweightFromNISRJet(int nISRJet);
 doubleUnc EWKISRweightFromISRpT(double ISRpT);
 doubleUnc EWKISRweightFromISRpT(double lep_pt, double lep_phi, double met_pt, double met_phi);
+doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta);
+doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta);
+doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
 
