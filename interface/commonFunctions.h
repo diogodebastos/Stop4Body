@@ -15,6 +15,7 @@
 extern TH2D* centralElectronRecoSFHist2017_lowEt;
 extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronSFHist2017;
+extern TH2D* ElectronISOSFHist2017;
 extern TH2D* centralMuonSFHist2017;
 extern TH2D* MuonISOSFHist2017;
 

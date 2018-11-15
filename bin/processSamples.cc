@@ -79,6 +79,7 @@ const double CSV_Tight = 0.935;
 extern TH2D* centralElectronRecoSFHist2017_lowEt;
 extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronSFHist2017;
+extern TH2D* ElectronISOSFHist2017;
 extern TH2D* centralMuonSFHist2017;
 extern TH2D* MuonISOSFHist2017;
 
@@ -239,10 +240,11 @@ int main(int argc, char** argv)
   centralElectronRecoSFHist2017 = static_cast<TH2D*>(centralElectronRecoSFFile2017).Get("EGamma_SF2D");
   TFile centralElectronSFFile2017("../data/ElectronScaleFactors_Run2017.root", "READ");
   centralElectronSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017).Get("Run2017_CutBasedVetoNoIso94X");
+  ElectronISOSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017).Get("Run2017_MVAVLooseTightIP2DMini2"); //TODO: check this Hist
   TFile centralMuonSFFile2017("../data/MuonScaleFactors_ID_Run2017.root", "READ");
   centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017).Get("Run2017_CutBasedVetoNoIso94X");
   TFile MuonISOSFFile2017("../data/MuonScaleFactors_ISO_Run2017.root", "READ");
-  MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017).Get("");
+  MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017).Get("Run2017_CutBasedVetoNoIso94X"); //TODO: check this Hist
   
   TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
   centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
