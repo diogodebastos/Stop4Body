@@ -648,10 +648,12 @@ doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta)
   if(centralElectronSFHist2017 == nullptr)
     return doubleUnc(1,0);
   if(std::abs(LepEta) >= 2.5)
-    int sign = 1
+  {
+    int sign = 1;
     if (LepEta < 0)
-      sign = -1
+      sign = -1;
     LepEta = sign*2.49999;
+   }
     
   if (LepPt<20) {
    if (LepPt < 10)
@@ -663,7 +665,7 @@ doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta)
   }
   else {
    if (LepPt >= 500)
-     LepPt = 499.999
+     LepPt = 499.999;
    auto bin = centralElectronRecoSFHist2017->FindBin(LepEta, LepPt);
    val = centralElectronRecoSFHist2017->GetBinContent(bin);
    unc = centralElectronRecoSFHist2017->GetBinError(bin);
@@ -688,14 +690,14 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
   if (LepPt < 10)
     LepPt = 10;
   if (LepPt >= 500)
-    LepPt = 499.999
-    
+    LepPt = 499.999;
   if(std::abs(LepEta) >= 2.5)
-    int sign = 1
+  {
+    int sign = 1;
     if (LepEta < 0)
-      sign = -1
+      sign = -1;
     LepEta = sign*2.49999;
-    
+  } 
   auto bin = centralElectronSFHist2017->FindBin(LepEta, LepPt);
   val = centralElectronSFHist2017->GetBinContent(bin);
   unc = centralElectronSFHist2017->GetBinError(bin);
@@ -708,7 +710,7 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
   if (LepPt < 20)
     LepPt = 20;
   if (LepPt >= 120)
-    LepPt = 119.999
+    LepPt = 119.999;
   if(LepEta >= 2.4)
     LepEta = 2.39999;
     
@@ -730,7 +732,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
   if (LepPt < 10)
     LepPt = 10;
   if (LepPt >= 500)
-    LepPt = 499.999
+    LepPt = 499.999;
     
   if(std::abs(LepEta) >= 2.5)
     int sign = 1
@@ -742,7 +744,6 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
   val = ElectronISOSFHist2017->GetBinContent(bin);
   unc = ElectronISOSFHist2017->GetBinError(bin);
  }
- {
  else if(std::abs(LepID) == 13) // If  muon
  {
   LepEta = std::abs(LepEta);
@@ -751,7 +752,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
   if (LepPt < 20)
     LepPt = 20;
   if (LepPt >= 120)
-    LepPt = 119.999
+    LepPt = 119.999;
   if(LepEta >= 2.4)
     LepEta = 2.39999;
     
