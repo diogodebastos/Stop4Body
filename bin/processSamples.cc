@@ -586,7 +586,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Njet80;
       ValueWithSystematics<float> Njet90;
       ValueWithSystematics<float> Njet100;
-      //ValueWithSystematics<float> JetValidPt;
+      ValueWithSystematics<float> JetValidPt;
       //ValueWithSystematics<float> JetValidEta;
       ValueWithSystematics<float> Jet1Pt;
       ValueWithSystematics<float> Jet1Eta;
@@ -678,10 +678,10 @@ int main(int argc, char** argv)
         Njet100.Systematic("JES_Down");
         Njet100.Systematic("JER_Up");
         Njet100.Systematic("JER_Down");
-        //JetValidPt.Systematic("JES_Up");
-        //JetValidPt.Systematic("JES_Down");
-        //JetValidPt.Systematic("JER_Down")        
-        //JetValidPt.Systematic("JER_Up");
+        JetValidPt.Systematic("JES_Up");
+        JetValidPt.Systematic("JES_Down");
+        JetValidPt.Systematic("JER_Down")        
+        JetValidPt.Systematic("JER_Up");
         //JetValidEta.Systematic("JES_Up");
         //JetValidEta.Systematic("JES_Down");
         //JetValidEta.Systematic("JER_Up");
@@ -833,7 +833,7 @@ int main(int argc, char** argv)
         Njet80.Lock();
         Njet90.Lock();
         Njet100.Lock();
-        //JetValidPt.Lock();
+        JetValidPt.Lock();
         //JetValidEta.Lock();
         Jet1Pt.Lock();
         Jet1Eta.Lock();
@@ -956,8 +956,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("Njet90_"+systematic).c_str(), &(Njet90.Systematic(systematic)));
         for(auto& systematic: Njet100.Systematics())
           bdttree->Branch(("Njet100_"+systematic).c_str(), &(Njet100.Systematic(systematic)));
-        //for(auto& systematic: JetValidPt.Systematics())
-          //bdttree->Branch(("JetValidPt_"+systematic).c_str(), &(JetValidPt.Systematic(systematic)));
+        for(auto& systematic: JetValidPt.Systematics())
+          bdttree->Branch(("JetValidPt_"+systematic).c_str(), &(JetValidPt.Systematic(systematic)));
         //for(auto& systematic: JetValidEta.Systematics())
           //bdttree->Branch(("JetValidEta_"+systematic).c_str(), &(JetValidEta.Systematic(systematic)));
         for(auto& systematic: Jet1Pt.Systematics())
@@ -1686,12 +1686,14 @@ int main(int argc, char** argv)
             continue;
 
           TLorentzVector VLep;
+          /*
           if(validJets.size() > 0)
           {
             auto jetIndex = validJets[0];
             JetValidPt    = LepGood_phi[jetIndex];
             JetValidEta   = LepGood_eta[jetIndex];
           }
+          */
           if(validLeptons.size() > 0)
           {
             auto leptonIndex = validLeptons[0];
@@ -1805,6 +1807,7 @@ int main(int argc, char** argv)
           }
 
           ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
+          JetValidPt = jetPt;
           Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
           Jet1CSV    = loadQuantity(Jet_btagCSV, validJets, 0);
