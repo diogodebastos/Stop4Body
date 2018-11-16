@@ -235,16 +235,16 @@ int main(int argc, char** argv)
   TFile lheScaleFile((lheScaleDir + "/lheWeights.root").c_str(), "READ");
   
   TFile centralElectronRecoSFFile2017_lowEt("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-  centralElectronRecoSFHist2017_lowEt = static_cast<TH2D*>(centralElectronRecoSFFile2017_lowEt).Get("EGamma_SF2D");
+  centralElectronRecoSFHist2017_lowEt = static_cast<TH2D*>(centralElectronRecoSFFile2017_lowEt.Get("EGamma_SF2D"));
   TFile centralElectronRecoSFFile2017("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
-  centralElectronRecoSFHist2017 = static_cast<TH2D*>(centralElectronRecoSFFile2017).Get("EGamma_SF2D");
+  centralElectronRecoSFHist2017 = static_cast<TH2D*>(centralElectronRecoSFFile2017.Get("EGamma_SF2D"));
   TFile centralElectronSFFile2017("../data/ElectronScaleFactors_Run2017.root", "READ");
-  centralElectronSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017).Get("Run2017_CutBasedVetoNoIso94X");
-  ElectronISOSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017).Get("Run2017_MVAVLooseTightIP2DMini2"); //TODO: check this Hist
+  centralElectronSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017.Get("Run2017_CutBasedVetoNoIso94X"));
+  ElectronISOSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017.Get("Run2017_MVAVLooseTightIP2DMini2")); //TODO: check this Hist
   TFile centralMuonSFFile2017("../data/MuonScaleFactors_ID_Run2017.root", "READ");
-  centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017).Get("Run2017_CutBasedVetoNoIso94X");
+  centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017.Get("Run2017_CutBasedVetoNoIso94X"));
   TFile MuonISOSFFile2017("../data/MuonScaleFactors_ISO_Run2017.root", "READ");
-  MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017).Get("Run2017_CutBasedVetoNoIso94X"); //TODO: check this Hist
+  MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017.Get("Run2017_CutBasedVetoNoIso94X")); //TODO: check this Hist
   
   TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
   centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
