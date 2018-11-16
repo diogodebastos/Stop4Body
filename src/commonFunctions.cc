@@ -737,7 +737,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
   if(std::abs(LepEta) >= 2.5)
     int sign = 1
     if (LepEta < 0)
-      sign = -1
+      sign = -1;
     LepEta = sign*2.49999;
     
   auto bin = ElectronISOSFHist2017->FindBin(LepEta, LepPt);
