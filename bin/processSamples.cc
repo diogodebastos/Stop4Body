@@ -676,7 +676,7 @@ int main(int argc, char** argv)
         Njet100.Systematic("JER_Down");
         JetValidPt.Systematic("JES_Up");
         JetValidPt.Systematic("JES_Down");
-        JetValidPt.Systematic("JER_Down")        
+        JetValidPt.Systematic("JER_Down");
         JetValidPt.Systematic("JER_Up");
         //JetValidEta.Systematic("JES_Up");
         //JetValidEta.Systematic("JES_Down");
