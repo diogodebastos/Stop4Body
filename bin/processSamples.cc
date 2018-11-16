@@ -572,10 +572,6 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> mt;
       ValueWithSystematics<float> Q80;
       ValueWithSystematics<float> CosDeltaPhi;
-
-      Float_t JetValidPt;     bdttree->Branch("JetValidPt",     &JetValidPt,     "JetValidPt/F");
-      Float_t JetValidEta;    bdttree->Branch("JetValidEta",    &JetValidEta,    "LepEta/F");
-
       ValueWithSystematics<float> nIsr_out;
       ValueWithSystematics<float> Njet;
       ValueWithSystematics<float> Njet30;
