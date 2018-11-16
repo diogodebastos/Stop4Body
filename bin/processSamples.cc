@@ -234,9 +234,9 @@ int main(int argc, char** argv)
   TFile puWeightFile((outputDirectory + "/puWeights.root").c_str(), "READ");
   TFile lheScaleFile((lheScaleDir + "/lheWeights.root").c_str(), "READ");
   
-  TFile centralElectronRecoSFFile2017_lowEt("egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+  TFile centralElectronRecoSFFile2017_lowEt("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
   centralElectronRecoSFHist2017_lowEt = static_cast<TH2D*>(centralElectronRecoSFFile2017_lowEt).Get("EGamma_SF2D");
-  TFile centralElectronRecoSFFile2017("egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
+  TFile centralElectronRecoSFFile2017("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
   centralElectronRecoSFHist2017 = static_cast<TH2D*>(centralElectronRecoSFFile2017).Get("EGamma_SF2D");
   TFile centralElectronSFFile2017("../data/ElectronScaleFactors_Run2017.root", "READ");
   centralElectronSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017).Get("Run2017_CutBasedVetoNoIso94X");
