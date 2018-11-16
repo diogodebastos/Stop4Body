@@ -174,7 +174,7 @@ ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueW
   return retVal;
 }
 
-// Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
+// Taken from Ivan's presentation, here: https://cernbox.cern.ch/index.php/s/xvQ8Nw48efsSdb8
 doubleUnc triggerEfficiencyFromMET(double met_pt)
 {
   double val = 0, unc = 0;
@@ -764,7 +764,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
  return retVal;
 }
 
-// Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
+// Taken from Ivan's presentation, here: https://cernbox.cern.ch/index.php/s/xvQ8Nw48efsSdb8
 doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta)
 {
   LepEta = std::abs(LepEta);
@@ -956,7 +956,7 @@ ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double
   return retVal;
 }
 
-// Taken from Ivan's presentation, here: https://www.dropbox.com/s/nqj5qfpikvws1rv/17-03-internal2-mikulec.pdf?dl=0
+// Taken from Ivan's presentation, here: https://cernbox.cern.ch/index.php/s/xvQ8Nw48efsSdb8
 doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta)
 {
   LepEta = std::abs(LepEta);
