@@ -544,6 +544,7 @@ int main(int argc, char** argv)
         bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       std::cout << "\t      Finished." << std::endl;
 
+      bool isL1PreFiring; bdttree->Branch("isL1PreFiring",   &isL1PreFiring);
       bool isTight;      bdttree->Branch("isTight",   &isTight);
       bool isLoose;      bdttree->Branch("isLoose",   &isLoose);
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
@@ -582,7 +583,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Njet80;
       ValueWithSystematics<float> Njet90;
       ValueWithSystematics<float> Njet100;
-      ValueWithSystematics<float> JetValidPt;
+      //ValueWithSystematics<float> JetValidPt;
       //ValueWithSystematics<float> JetValidEta;
       ValueWithSystematics<float> Jet1Pt;
       ValueWithSystematics<float> Jet1Eta;
@@ -674,10 +675,10 @@ int main(int argc, char** argv)
         Njet100.Systematic("JES_Down");
         Njet100.Systematic("JER_Up");
         Njet100.Systematic("JER_Down");
-        JetValidPt.Systematic("JES_Up");
-        JetValidPt.Systematic("JES_Down");
-        JetValidPt.Systematic("JER_Down");
-        JetValidPt.Systematic("JER_Up");
+        //JetValidPt.Systematic("JES_Up");
+        //JetValidPt.Systematic("JES_Down");
+        //JetValidPt.Systematic("JER_Down");
+        //JetValidPt.Systematic("JER_Up");
         //JetValidEta.Systematic("JES_Up");
         //JetValidEta.Systematic("JES_Down");
         //JetValidEta.Systematic("JER_Up");
@@ -829,7 +830,7 @@ int main(int argc, char** argv)
         Njet80.Lock();
         Njet90.Lock();
         Njet100.Lock();
-        JetValidPt.Lock();
+        //JetValidPt.Lock();
         //JetValidEta.Lock();
         Jet1Pt.Lock();
         Jet1Eta.Lock();
@@ -882,10 +883,8 @@ int main(int argc, char** argv)
       bdttree->Branch("Njet80",&Njet80.Value(),"Njet80/F");
       bdttree->Branch("Njet90",&Njet90.Value(),"Njet90/F");
       bdttree->Branch("Njet100",&Njet100.Value(),"Njet100/F");
-      
       //bdttree->Branch("JetValidPt",&JetValidPt.Value(),"JetValidPt/F");
       //bdttree->Branch("JetValidEta",&JetValidEta.Value(),"JetValidEta/F");      
-      
       bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
       bdttree->Branch("Jet1Eta",&Jet1Eta.Value(),"Jet1Eta/F");
       bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
@@ -952,8 +951,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("Njet90_"+systematic).c_str(), &(Njet90.Systematic(systematic)));
         for(auto& systematic: Njet100.Systematics())
           bdttree->Branch(("Njet100_"+systematic).c_str(), &(Njet100.Systematic(systematic)));
-        for(auto& systematic: JetValidPt.Systematics())
-          bdttree->Branch(("JetValidPt_"+systematic).c_str(), &(JetValidPt.Systematic(systematic)));
+        //for(auto& systematic: JetValidPt.Systematics())
+          //bdttree->Branch(("JetValidPt_"+systematic).c_str(), &(JetValidPt.Systematic(systematic)));
         //for(auto& systematic: JetValidEta.Systematics())
           //bdttree->Branch(("JetValidEta_"+systematic).c_str(), &(JetValidEta.Systematic(systematic)));
         for(auto& systematic: Jet1Pt.Systematics())
@@ -1294,9 +1293,11 @@ int main(int argc, char** argv)
           // Object ID
           std::vector<int> validLeptons;
           std::vector<int> looseLeptons;
+          std::vector<int> l1PreFiringJets;
           ValueWithSystematics<std::vector<double>> jetPt;
           ValueWithSystematics<std::vector<int>> validJets;
           ValueWithSystematics<std::vector<int>> bjetList; // Same as validJets, but sorted by CSV value
+          //ValueWithSystematics<std::vector<int>> l1PreFiringList;
 
           validLeptons.clear();
           looseLeptons.clear();
@@ -1332,6 +1333,7 @@ int main(int argc, char** argv)
               std::vector<int> empty;
               validJets.Systematic(syst) = empty;
               bjetList.Systematic(syst) = empty;
+              //l1PreFiringList.Systematic(syst) = empty;
             }
 
             for(Int_t i = 0; i < nJetIn; ++i)
@@ -1340,6 +1342,10 @@ int main(int argc, char** argv)
               {
                 validJets.GetSystematicOrValue(syst).push_back(i);
                 bjetList.GetSystematicOrValue(syst).push_back(i);
+                // if (std::abs(Jet_eta[i]) > 2.25 && (jetPt.GetSystematicOrValue(syst))[i] > 100)
+                // {
+                //  l1PreFiringList(syst).push_back(i);
+                // }
               }
             }
 
@@ -1803,7 +1809,6 @@ int main(int argc, char** argv)
           }
 
           ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
-          JetValidPt = jetPt;
           Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
           Jet1CSV    = loadQuantity(Jet_btagCSV, validJets, 0);
@@ -1934,6 +1939,22 @@ int main(int argc, char** argv)
           list.clear();
           list.push_back("Value");
           loadSystematics(list, validJets);
+
+          for(auto& syst: list)
+          {
+            for(auto &jet : validJets.GetSystematicOrValue(syst))
+            {
+             const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
+             if (std::abs(Jet_eta[jet]) > 2.25 && pt > 100) 
+             {
+              isL1PreFiring = true;
+             }
+             else
+             {
+              isL1PreFiring = false;
+             }
+            }
+          }
 
           HT = 0;
           Njet = validJets.size();
