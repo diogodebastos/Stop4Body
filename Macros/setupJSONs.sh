@@ -111,6 +111,8 @@ if [ ${YEAR} == 2016 ]; then
  mergeJSONs $JSON_PATH/4Pedrame.json  $JSON_PATH/Orig/SignalPoints/Sig_300_270.json $JSON_PATH/TTLep.json
 
 elif [ ${YEAR} == 2017 ]; then
+ # Test VV process with new heppy tuples
+ cp         $JSON_PATH/Orig/VV.json               $JSON_PATH/VV.json
  # Make a JSON for all MC except signal
  mergeJSONs $JSON_PATH/Orig/Wjets.json               $JSON_PATH/Orig/W_*Jets*.json
  mergeJSONs $JSON_PATH/Orig/ZInv.json                $JSON_PATH/Orig/ZJetsToNuNu*.json

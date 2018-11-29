@@ -40,9 +40,12 @@ if __name__ == "__main__":
     jsonFiles.append("DataSingleLepton.json")
   else:
     #jsonFiles.append("Data.json")
-    jsonFiles.append("allData.json")
+# Commented for MC test of VV process with new heppy tuples
+#    jsonFiles.append("allData.json")
   if not args.onlyData:
-    jsonFiles.append("MC2Process.json")
+# Commented for MC test of VV process with new heppy tuples
+#    jsonFiles.append("MC2Process.json")
+    jsonFiles.append("VV.json")
     #jsonFiles.append("stop250.json")
     #jsonFiles.append("stop275.json")
     #jsonFiles.append("stop300.json")
