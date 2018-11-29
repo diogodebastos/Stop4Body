@@ -54,14 +54,16 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop775Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop800Job.sh
 elif [ ${YEAR} == 2017 ]; then
+ # Test MC samples
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_VV.sh
  # Submit jobs for all MC
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTbarJob.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_WjetsJob.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInvJob.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC1Job.sh
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC2Job.sh
+ #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_TTbarJob.sh
+ #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_WjetsJob.sh
+ #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInvJob.sh
+ #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC1Job.sh
+ #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC2Job.sh
  # Submit job for all DATA
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_DataJob.sh
+ #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_DataJob.sh
  # Submit job for each group of signal points with a given stop mass
 
 fi

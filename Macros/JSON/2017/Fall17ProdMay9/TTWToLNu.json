@@ -1,0 +1,25 @@
+{
+  "lines":[
+    {
+      "tag":"ttx",
+      "isdata":false,
+      "color":620,
+      "lcolor":1,
+      "label":"t#bar{t}X",
+      "files":[
+        {
+          "tag":"TTWToLNu",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":3,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/TTWToLNu_fxfx",
+              "split":61
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

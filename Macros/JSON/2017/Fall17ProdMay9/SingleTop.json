@@ -1,0 +1,73 @@
+{
+  "lines":[
+    {
+      "tag":"SingleTop",
+      "isdata":false,
+      "color":592,
+      "lcolor":1,
+      "label":"Single Top",
+      "files":[
+       {
+         "tag":"T_sch_lep",
+         "xsec": 1.0,
+         "br": 1.0,
+         "filesPerPart":5,
+         "paths":[
+           {
+             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/T_sch_lep",
+             "split":97
+           }
+         ]
+       },
+       {
+         "tag":"T_tch",
+         "xsec": 1.0,
+         "br": 1.0,
+         "filesPerPart":5,
+         "paths":[
+           {
+             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/T_tch",
+             "split":93
+           }
+         ]
+       },
+       {
+          "tag":"TBar_tch",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/TBar_tch",
+              "split":58
+            }
+          ]
+        },
+        {
+          "tag":"T_tWch_noFullyHad",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/T_tWch_noFullyHad",
+              "split":65
+            }
+          ]
+        },
+        {
+          "tag":"TBar_tWch_noFullyHad",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/TBar_tWch_noFullyHad",
+              "split":69
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

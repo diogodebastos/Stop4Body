@@ -1,0 +1,25 @@
+{
+  "lines":[
+    {
+      "tag":"ZInv",
+      "isdata":false,
+      "color":813,
+      "lcolor":1,
+      "label":"Z(#nu#nu) + jets",
+      "files":[
+        {
+          "tag":"ZJetsToNuNu_HT1200to2500",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/ZJetsToNuNu_HT1200to2500",
+              "split":19
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
