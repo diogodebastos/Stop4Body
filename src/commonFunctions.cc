@@ -695,18 +695,6 @@ ValueWithSystematics<double> getLeptonRecoSF2017Sys(double LepID, double LepPt, 
   return retVal;
 }
 
-ValueWithSystematics<double> getLeptonRecoSF2017Sys(ValueWithSystematics<double> LepID, ValueWithSystematics<double> LepPt, ValueWithSystematics<double> LepEta)
-{
-  ValueWithSystematics<double> retVal = getLeptonRecoSF2017Sys(LepID.Value(), LepPt.Value(), LepEta.Value());
-
-  for(auto& syst: LepID.Systematics())
-  {
-    retVal.Systematic(syst) = getLeptonRecoSF2017Sys(LepID.Systematic(syst)).value();
-  }
-
-  return retVal;
-}
-
 //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSLeptonSF#Scale%20Factors%20for%202017%20Data
 doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
 {
