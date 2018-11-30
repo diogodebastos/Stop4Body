@@ -422,9 +422,9 @@ int main(int argc, char** argv)
         puWeight.Systematic("PU_Up");
         puWeight.Systematic("PU_Down");
         std::cout << "\t        lID" << std::endl;
-        leptonIDSF = getLeptonIDSF2017Sys(11, 20, 1.1);
+        leptonIDSF = getLeptonIDSF2017Sys(13, 20, 1.1);
         std::cout << "\t        lISO" << std::endl;
-        leptonISOSF = getLeptonISOSF2017Sys(11, 20, 1.1);
+        leptonISOSF = getLeptonISOSF2017Sys(13, 20, 1.1);
         std::cout << "\t        FullFastSim" << std::endl;
         leptonFullFastSF = getFullFastSFSys(11, 20, 1.1);
         std::cout << "\t        Q^2" << std::endl;
