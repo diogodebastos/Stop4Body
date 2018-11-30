@@ -745,6 +745,18 @@ ValueWithSystematics<double> getLeptonIDSF2017Sys(double LepID, double LepPt, do
   double unc = lepIDSF.uncertainty();
 
   ValueWithSystematics<double> retVal(val);
+  
+  retVal.Systematic("LeptonIDSF2017_Electron_stat_Up");
+  retVal.Systematic("LeptonIDSF2017_Electron_stat_Down");
+  retVal.Systematic("LeptonIDSF2017_Electron_Up");
+  retVal.Systematic("LeptonIDSF2017_Electron_Down");
+  
+  retVal.Systematic("LeptonIDSF2017_Muon_stat_Up");
+  retVal.Systematic("LeptonIDSF2017_Muon_stat_Down");
+  retVal.Systematic("LeptonIDSF2017_Muon_Up");
+  retVal.Systematic("LeptonIDSF2017_Muon_Down");
+  retVal.Lock();
+  
   if(std::abs(LepID) == 11)
   {
    retVal.Systematic("LeptonIDSF2017_Electron_stat_Up") = val+unc;
