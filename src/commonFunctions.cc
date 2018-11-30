@@ -212,6 +212,7 @@ ValueWithSystematics<double> triggerEfficiencyFromMETSys(double met_pt)
   retVal.Systematic("triggerEfficiency_Down") = val*0.99;
   return retVal;
 }
+
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double> met_pt)
 {
   ValueWithSystematics<double> retVal = triggerEfficiencyFromMETSys(met_pt.Value());
@@ -679,6 +680,33 @@ doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta)
  return retVal;
 }
 
+// UPDATE DoubleUNC to ValueWithSystematics
+ValueWithSystematics<double> getLeptonRecoSF2017Sys(double LepID, double LepPt, double LepEta)
+{
+  doubleUnc lepRecoSF = getLeptonRecoSF2017(LepID, LepPt, LepEta);
+  double val = lepRecoSF.value();
+  double unc = lepRecoSF.uncertainty();
+
+  ValueWithSystematics<double> retVal(val);
+  retVal.Systematic("LeptonRecoSF_stat_Up") = val+unc;
+  retVal.Systematic("LeptonRecoSF_stat_Down") = val-unc;
+  retVal.Systematic("LeptonRecoSF_Up") = val*1.01;
+  retVal.Systematic("LeptonRecoSF_Down") = val*0.99;
+  return retVal;
+}
+
+ValueWithSystematics<double> getLeptonRecoSF2017Sys(ValueWithSystematics<double> LepID, ValueWithSystematics<double> LepPt, ValueWithSystematics<double> LepEta)
+{
+  ValueWithSystematics<double> retVal = getLeptonRecoSF2017Sys(LepID.Value(), LepPt.Value(), LepEta.Value());
+
+  for(auto& syst: LepID.Systematics())
+  {
+    retVal.Systematic(syst) = getLeptonRecoSF2017Sys(LepID.Systematic(syst)).value();
+  }
+
+  return retVal;
+}
+
 //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSLeptonSF#Scale%20Factors%20for%202017%20Data
 doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
 {
@@ -722,6 +750,30 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
  return retVal;
 }
 
+ValueWithSystematics<double> getLeptonIDSF2017Sys(double LepID, double LepPt, double LepEta)
+{
+  doubleUnc lepRecoSF = getLeptonIDSF2017(LepID, LepPt, LepEta);
+  double val = lepRecoSF.value();
+  double unc = lepRecoSF.uncertainty();
+
+  ValueWithSystematics<double> retVal(val);
+  if(std::abs(LepID) == 11)
+  {
+   retVal.Systematic("LeptonIDSF2017_Electron_stat_Up") = val+unc;
+   retVal.Systematic("LeptonIDSF2017_Electron_stat_Down") = val-unc;
+   retVal.Systematic("LeptonIDSF2017_Electron_Up") = val*1.01;
+   retVal.Systematic("LeptonIDSF2017_Electron_Down") = val*0.99; 
+  }
+  else if(std::abs(LepID) == 13)
+  {
+   retVal.Systematic("LeptonIDSF2017_Muon_stat_Up") = val+unc;
+   retVal.Systematic("LeptonIDSF2017_Muon_stat_Down") = val-unc;
+   retVal.Systematic("LeptonIDSF2017_Muon_Up") = val*1.01;
+   retVal.Systematic("LeptonIDSF2017_Muon_Down") = val*0.99;
+  }
+  return retVal;
+}
+
 doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
 {
  double val = 1, unc = 0;
@@ -762,6 +814,30 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
  }
  doubleUnc retVal(val, unc);
  return retVal;
+}
+
+ValueWithSystematics<double> getLeptonISOSF2017Sys(double LepID, double LepPt, double LepEta)
+{
+  doubleUnc lepRecoSF = getLeptonISOSF2017(LepID, LepPt, LepEta);
+  double val = lepRecoSF.value();
+  double unc = lepRecoSF.uncertainty();
+
+  ValueWithSystematics<double> retVal(val);
+  if(std::abs(LepID) == 11)
+  {
+   retVal.Systematic("LeptonISOF2017_Electron_stat_Up") = val+unc;
+   retVal.Systematic("LeptonISOF2017_Electron_stat_Down") = val-unc;
+   retVal.Systematic("LeptonISOF2017_Electron_Up") = val*1.01;
+   retVal.Systematic("LeptonISOF2017_Electron_Down") = val*0.99; 
+  }
+  else if(std::abs(LepID) == 13)
+  {
+   retVal.Systematic("LeptonISOF2017_Muon_stat_Up") = val+unc;
+   retVal.Systematic("LeptonISOF2017_Muon_stat_Down") = val-unc;
+   retVal.Systematic("LeptonISOF2017_Muon_Up") = val*1.01;
+   retVal.Systematic("LeptonISOF2017_Muon_Down") = val*0.99;
+  }
+  return retVal;
 }
 
 // Taken from Ivan's presentation, here: https://cernbox.cern.ch/index.php/s/xvQ8Nw48efsSdb8

@@ -422,9 +422,9 @@ int main(int argc, char** argv)
         puWeight.Systematic("PU_Up");
         puWeight.Systematic("PU_Down");
         std::cout << "\t        lID" << std::endl;
-        leptonIDSF = getLeptonIDSFSys(11, 20, 1.1);
+        leptonIDSF = getLeptonIDSF2017Sys(11, 20, 1.1);
         std::cout << "\t        lISO" << std::endl;
-        leptonISOSF = getLeptonISOSFSys(11, 20, 1.1);
+        leptonISOSF = getLeptonISOSF2017Sys(11, 20, 1.1);
         std::cout << "\t        FullFastSim" << std::endl;
         leptonFullFastSF = getFullFastSFSys(11, 20, 1.1);
         std::cout << "\t        Q^2" << std::endl;
@@ -1716,9 +1716,12 @@ int main(int argc, char** argv)
             Q80 = 1.0 - 80.*80./(2.0 * LepPt * Met);
 
             if(!process.isdata())
-            {
-              leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta);
-              leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
+            { // 2016
+              //leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta);
+              //leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
+              // 2017
+              leptonIDSF = getLeptonIDSF2017Sys(LepID, LepPt, LepEta);
+              leptonISOSF = getLeptonISOSF2017Sys(LepID, LepPt, LepEta);
               if(sample.isFastsim() || process.isfastsim()) // Maybe need to add some more conditions here
                 leptonFullFastSF = getFullFastSFSys(LepID, LepPt, LepEta);
               else
