@@ -740,9 +740,9 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
 
 ValueWithSystematics<double> getLeptonIDSF2017Sys(double LepID, double LepPt, double LepEta)
 {
-  doubleUnc lepRecoSF = getLeptonIDSF2017(LepID, LepPt, LepEta);
-  double val = lepRecoSF.value();
-  double unc = lepRecoSF.uncertainty();
+  doubleUnc lepIDSF = getLeptonIDSF2017(LepID, LepPt, LepEta);
+  double val = lepIDSF.value();
+  double unc = lepIDSF.uncertainty();
 
   ValueWithSystematics<double> retVal(val);
   if(std::abs(LepID) == 11)
@@ -806,9 +806,9 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
 
 ValueWithSystematics<double> getLeptonISOSF2017Sys(double LepID, double LepPt, double LepEta)
 {
-  doubleUnc lepRecoSF = getLeptonISOSF2017(LepID, LepPt, LepEta);
-  double val = lepRecoSF.value();
-  double unc = lepRecoSF.uncertainty();
+  doubleUnc lepISOSF = getLeptonISOSF2017(LepID, LepPt, LepEta);
+  double val = lepISOSF.value();
+  double unc = lepISOSF.uncertainty();
 
   ValueWithSystematics<double> retVal(val);
   if(std::abs(LepID) == 11)
