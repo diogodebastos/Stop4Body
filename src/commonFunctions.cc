@@ -730,7 +730,7 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
   if(LepEta >= 2.4)
     LepEta = 2.39999;
     
-  auto bin = centralMuonSFHist2017->FindBin(LepEta, LepPt);
+  auto bin = centralMuonSFHist2017->FindBin(LepPt, LepEta);
   val = centralMuonSFHist2017->GetBinContent(bin);
   unc = centralMuonSFHist2017->GetBinError(bin);
  }
@@ -796,7 +796,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
   if(LepEta >= 2.4)
     LepEta = 2.39999;
     
-  auto bin = MuonISOSFHist2017->FindBin(LepEta, LepPt);
+  auto bin = MuonISOSFHist2017->FindBin(LepPt, LepEta);
   val = MuonISOSFHist2017->GetBinContent(bin);
   unc = MuonISOSFHist2017->GetBinError(bin);
  }
