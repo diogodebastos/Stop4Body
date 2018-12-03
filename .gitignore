@@ -53,3 +53,4 @@ Macros/pileup_latest.txt
 Macros/DataPileupHistogram*.root
 Macros/GOLDEN_JSON.txt
 Macros/MCPileupHistogram.root
+Macros/core.*
