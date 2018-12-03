@@ -1338,7 +1338,7 @@ int main(int argc, char** argv)
 
             for(Int_t i = 0; i < nJetIn; ++i)
             { // Jet selection >> ID=tight and abs(eta) < 2.4
-              if(Jet_pt[i] == 1 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
+              if(Jet_id[i] == 1 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
                 validJets.GetSystematicOrValue(syst).push_back(i);
                 bjetList.GetSystematicOrValue(syst).push_back(i);
