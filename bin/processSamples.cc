@@ -1293,7 +1293,7 @@ int main(int argc, char** argv)
           // Object ID
           std::vector<int> validLeptons;
           std::vector<int> looseLeptons;
-          std::vector<int> l1PreFiringJets;
+          //std::vector<int> l1PreFiringJets;
           ValueWithSystematics<std::vector<double>> jetPt;
           ValueWithSystematics<std::vector<int>> validJets;
           ValueWithSystematics<std::vector<int>> bjetList; // Same as validJets, but sorted by CSV value
@@ -1337,8 +1337,8 @@ int main(int argc, char** argv)
             }
 
             for(Int_t i = 0; i < nJetIn; ++i)
-            {
-              if(std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
+            { // Jet selection >> ID=tight and abs(eta) < 2.4
+              if(Jet_pt[i] == 1 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
                 validJets.GetSystematicOrValue(syst).push_back(i);
                 bjetList.GetSystematicOrValue(syst).push_back(i);
@@ -1688,14 +1688,7 @@ int main(int argc, char** argv)
             continue;
 
           TLorentzVector VLep;
-          /*
-          if(validJets.size() > 0)
-          {
-            auto jetIndex = validJets[0];
-            JetValidPt    = LepGood_phi[jetIndex];
-            JetValidEta   = LepGood_eta[jetIndex];
-          }
-          */
+
           if(validLeptons.size() > 0)
           {
             auto leptonIndex = validLeptons[0];
