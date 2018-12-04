@@ -563,10 +563,12 @@ int main(int argc, char** argv)
       Float_t Lep2Dxy;   bdttree->Branch("Lep2Dxy",   &Lep2Dxy,   "Lep2Dxy/F");
       Float_t Lep2Dz;    bdttree->Branch("Lep2Dz",    &Lep2Dz,    "Lep2Dz/F");
       Float_t Lep2Iso03; bdttree->Branch("Lep2Iso03", &Lep2Iso03, "Lep2Iso03/F");
-      Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
-      Float_t nGoodMu_loose;
+      Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
+      Float_t nGoodEl_cutId_loose;   bdttree->Branch("nGoodEl_cutId_loose",&nGoodEl_cutId_loose,"nGoodEl_cutId_loose/F");
+      
       Float_t nGoodEl_loose;
+      Float_t nGoodMu_loose;
 
 
       ValueWithSystematics<float> Met;
@@ -1118,6 +1120,11 @@ int main(int argc, char** argv)
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
         Int_t LepGood_mediumMuonId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
+        Int_t LepGood_eleCutId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eleCutIdPog2017", &LepGood_eleCutIdPog2017); //0=none, 1=veto, 2=loose, 3=medium, 4=tight
+        Int_t LepGood_eleMVAId2017[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eleMVAId2017", &LepGood_eleMVAId2017); //0=none, 1=wp90, 2=wp80
+        //LepGood_SOSTightID2017_wp80
+        //LepGood_SOSTightID2017_wp90
+        Int_t LepGood_muCutIdPog2017[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_muCutIdPog2017", &LepGood_muCutIdPog2017); //0=none, 1=soft, 2=loose, 3=medium, 4=tight
         Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
         Float_t LepGood_eta[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eta", &LepGood_eta);
         Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
@@ -1383,6 +1390,7 @@ int main(int argc, char** argv)
 
           nGoodMu = 0;
           nGoodEl = 0;
+          nGoodEl_cutId_loose = 0;
           nGoodMu_loose = 0;
           nGoodEl_loose = 0;
           for(int i = 0; i < nLepGood; ++i)
@@ -1415,6 +1423,10 @@ int main(int argc, char** argv)
                 nGoodMu++;
               else
                 nGoodEl++;
+                if(LepGood_eleCutId[i] >= 2)
+                {
+                 nGoodEl_cutId_loose++;
+                }
             }
             if(lPTETA && lID_loose && lIS_loose)
             {
