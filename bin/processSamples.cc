@@ -1423,7 +1423,7 @@ int main(int argc, char** argv)
                 nGoodMu++;
               else
                 nGoodEl++;
-                if(LepGood_eleCutId[i] >= 2)
+                if(LepGood_eleCutIdPog2017[i] >= 2)
                 {
                  nGoodEl_cutId_loose++;
                 }
