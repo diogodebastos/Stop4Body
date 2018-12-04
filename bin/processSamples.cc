@@ -564,11 +564,15 @@ int main(int argc, char** argv)
       Float_t Lep2Dz;    bdttree->Branch("Lep2Dz",    &Lep2Dz,    "Lep2Dz/F");
       Float_t Lep2Iso03; bdttree->Branch("Lep2Iso03", &Lep2Iso03, "Lep2Iso03/F");
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
-      Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
       Float_t nGoodEl_cutId_veto;   bdttree->Branch("nGoodEl_cutId_veto",&nGoodEl_cutId_veto,"nGoodEl_cutId_veto/F");
       Float_t nGoodEl_cutId_loose;   bdttree->Branch("nGoodEl_cutId_loose",&nGoodEl_cutId_loose,"nGoodEl_cutId_loose/F");
       Float_t nGoodEl_cutId_medium;   bdttree->Branch("nGoodEl_cutId_medium",&nGoodEl_cutId_medium,"nGoodEl_cutId_medium/F");
       Float_t nGoodEl_cutId_tight;   bdttree->Branch("nGoodEl_cutId_tight",&nGoodEl_cutId_tight,"nGoodEl_cutId_tight/F");
+      Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
+      Float_t nGoodMu_cutId_soft;   bdttree->Branch("nGoodMu_cutId_soft",&nGoodMu_cutId_soft,"nGoodMu_cutId_soft/F");
+      Float_t nGoodMu_cutId_loose;   bdttree->Branch("nGoodMu_cutId_loose",&nGoodMu_cutId_loose,"nGoodMu_cutId_loose/F");
+      Float_t nGoodMu_cutId_medium;   bdttree->Branch("nGoodMu_cutId_medium",&nGoodMu_cutId_medium,"nGoodMu_cutId_medium/F");
+      Float_t nGoodMu_cutId_tight;   bdttree->Branch("nGoodMu_cutId_tight",&nGoodMu_cutId_tight,"nGoodMu_cutId_tight/F");
       
       Float_t nGoodEl_loose;
       Float_t nGoodMu_loose;
@@ -1400,6 +1404,10 @@ int main(int argc, char** argv)
 
           nGoodMu = 0;
           nGoodMu_loose = 0;
+          nGoodMu_cutId_soft = 0;
+          nGoodMu_cutId_loose = 0;
+          nGoodMu_cutId_medium = 0;
+          nGoodMu_cutId_tight = 0;
           for(int i = 0; i < nLepGood; ++i)
           {
             bool lPTETA = false;
@@ -1428,6 +1436,22 @@ int main(int argc, char** argv)
               validLeptons.push_back(i);
               if(std::abs(LepGood_pdgId[i]) == 13)
                 nGoodMu++;
+                if(LepGood_muCutIdPog2017[i] > 0)
+                {
+                 nGoodMu_cutId_soft++;
+                 if(LepGood_muCutIdPog2017[i] > 1)
+                 {
+                  nGoodMu_cutId_loose++;
+                  if(LepGood_muCutIdPog2017[i] > 2)
+                  {
+                   nGoodMu_cutId_medium++;
+                   if(LepGood_muCutIdPog2017[i] > 3)
+                   {
+                    nGoodMu_cutId_tight++;
+                   }
+                  }
+                 }
+                }
               else
                 nGoodEl++;
                 if(LepGood_eleCutIdPog2017[i] > 0)
