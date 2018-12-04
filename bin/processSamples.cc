@@ -1120,7 +1120,7 @@ int main(int argc, char** argv)
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
         Int_t LepGood_mediumMuonId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
-        Int_t LepGood_eleCutId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eleCutIdPog2017", &LepGood_eleCutIdPog2017); //0=none, 1=veto, 2=loose, 3=medium, 4=tight
+        Int_t LepGood_eleCutIdPog2017[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eleCutIdPog2017", &LepGood_eleCutIdPog2017); //0=none, 1=veto, 2=loose, 3=medium, 4=tight
         Int_t LepGood_eleMVAId2017[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eleMVAId2017", &LepGood_eleMVAId2017); //0=none, 1=wp90, 2=wp80
         //LepGood_SOSTightID2017_wp80
         //LepGood_SOSTightID2017_wp90
