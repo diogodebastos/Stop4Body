@@ -553,7 +553,8 @@ int main(int argc, char** argv)
       Float_t LepEta;    bdttree->Branch("LepEta",    &LepEta,    "LepEta/F");
       Float_t LepDxy;    bdttree->Branch("LepDxy",    &LepDxy,    "LepDxy/F");
       Float_t LepDz;     bdttree->Branch("LepDz",     &LepDz,     "LepDz/F");
-      Float_t LepIso03;  bdttree->Branch("LepIso03",  &LepIso03,  "LepIso03/F");
+      Float_t LepAbsIso03;  bdttree->Branch("LepAbsIso03",  &LepAbsIso03,  "LepAbsIso03/F");
+      Float_t LepRelIso03;  bdttree->Branch("LepRelIso03",  &LepRelIso03,  "LepRelIso03/F");
       Float_t LepHybIso03; bdttree->Branch("LepHybIso03",  &LepHybIso03,  "LepHybIso03/F");
       Float_t isPrompt;  bdttree->Branch("isPrompt",  &isPrompt,  "isPrompt/F");
       Float_t Lep2ID;    bdttree->Branch("Lep2ID",    &Lep2ID,    "Lep2ID/F");
@@ -584,6 +585,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> CosDeltaPhi;
       ValueWithSystematics<float> nIsr_out;
       ValueWithSystematics<float> Njet;
+      /*
       ValueWithSystematics<float> Njet30;
       ValueWithSystematics<float> Njet40;
       ValueWithSystematics<float> Njet50;
@@ -592,8 +594,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Njet80;
       ValueWithSystematics<float> Njet90;
       ValueWithSystematics<float> Njet100;
-      //ValueWithSystematics<float> JetValidPt;
-      //ValueWithSystematics<float> JetValidEta;
+      */
       ValueWithSystematics<float> Jet1Pt;
       ValueWithSystematics<float> Jet1Eta;
       ValueWithSystematics<float> Jet1CSV;
@@ -652,6 +653,7 @@ int main(int argc, char** argv)
         Njet.Systematic("JES_Down");
         Njet.Systematic("JER_Up");
         Njet.Systematic("JER_Down");
+        /*
         Njet30.Systematic("JES_Up");
         Njet30.Systematic("JES_Down");
         Njet30.Systematic("JER_Up");
@@ -684,14 +686,7 @@ int main(int argc, char** argv)
         Njet100.Systematic("JES_Down");
         Njet100.Systematic("JER_Up");
         Njet100.Systematic("JER_Down");
-        //JetValidPt.Systematic("JES_Up");
-        //JetValidPt.Systematic("JES_Down");
-        //JetValidPt.Systematic("JER_Down");
-        //JetValidPt.Systematic("JER_Up");
-        //JetValidEta.Systematic("JES_Up");
-        //JetValidEta.Systematic("JES_Down");
-        //JetValidEta.Systematic("JER_Up");
-        //JetValidEta.Systematic("JER_Down")        
+        */
         Jet1Pt.Systematic("JES_Up");
         Jet1Pt.Systematic("JES_Down");
         Jet1Pt.Systematic("JER_Up");
@@ -831,6 +826,7 @@ int main(int argc, char** argv)
         CosDeltaPhi.Lock();
         nIsr_out.Lock();
         Njet.Lock();
+        /*
         Njet30.Lock();
         Njet40.Lock();
         Njet50.Lock();
@@ -839,8 +835,7 @@ int main(int argc, char** argv)
         Njet80.Lock();
         Njet90.Lock();
         Njet100.Lock();
-        //JetValidPt.Lock();
-        //JetValidEta.Lock();
+        */
         Jet1Pt.Lock();
         Jet1Eta.Lock();
         Jet1CSV.Lock();
@@ -884,6 +879,7 @@ int main(int argc, char** argv)
 
       bdttree->Branch("nIsr", &nIsr_out.Value(), "nIsr/F");
       bdttree->Branch("Njet",&Njet.Value(),"Njet/F");
+      /*
       bdttree->Branch("Njet30",&Njet30.Value(),"Njet30/F");
       bdttree->Branch("Njet40",&Njet40.Value(),"Njet40/F");
       bdttree->Branch("Njet50",&Njet50.Value(),"Njet50/F");
@@ -892,6 +888,7 @@ int main(int argc, char** argv)
       bdttree->Branch("Njet80",&Njet80.Value(),"Njet80/F");
       bdttree->Branch("Njet90",&Njet90.Value(),"Njet90/F");
       bdttree->Branch("Njet100",&Njet100.Value(),"Njet100/F");
+      */
       //bdttree->Branch("JetValidPt",&JetValidPt.Value(),"JetValidPt/F");
       //bdttree->Branch("JetValidEta",&JetValidEta.Value(),"JetValidEta/F");      
       bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
@@ -944,6 +941,7 @@ int main(int argc, char** argv)
           bdttree->Branch(("nIsr_"+systematic).c_str(), &(nIsr_out.Systematic(systematic)));
         for(auto& systematic: Njet.Systematics())
           bdttree->Branch(("Njet_"+systematic).c_str(), &(Njet.Systematic(systematic)));
+        /*
         for(auto& systematic: Njet30.Systematics())
           bdttree->Branch(("Njet30_"+systematic).c_str(), &(Njet30.Systematic(systematic)));
         for(auto& systematic: Njet40.Systematics())
@@ -960,6 +958,7 @@ int main(int argc, char** argv)
           bdttree->Branch(("Njet90_"+systematic).c_str(), &(Njet90.Systematic(systematic)));
         for(auto& systematic: Njet100.Systematics())
           bdttree->Branch(("Njet100_"+systematic).c_str(), &(Njet100.Systematic(systematic)));
+        */
         //for(auto& systematic: JetValidPt.Systematics())
           //bdttree->Branch(("JetValidPt_"+systematic).c_str(), &(JetValidPt.Systematic(systematic)));
         //for(auto& systematic: JetValidEta.Systematics())
@@ -1428,7 +1427,7 @@ int main(int argc, char** argv)
                           && (std::abs(LepGood_dz[i]) < 0.1);
             bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
                           && (std::abs(LepGood_dz[i]) < 0.5);
-            bool lIS       = LepGood_absIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
+            bool lIS       = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
             bool lIS_loose = LepGood_relIso03[i] < 0.8 || LepGood_absIso03[i] < 20.0;
 
             if(lPTETA && lID && lIS)
@@ -1753,9 +1752,10 @@ int main(int argc, char** argv)
             LepEta      = LepGood_eta[leptonIndex];
             LepDxy      = LepGood_dxy[leptonIndex];
             LepDz       = LepGood_dz[leptonIndex];
-            LepIso03    = LepGood_relIso03[leptonIndex];
+            LepAbsIso03 = LepGood_absIso03[leptonIndex];
+            LepRelIso03 = LepGood_relIso03[leptonIndex];
             Float_t minPt = 25.;
-            LepHybIso03 = LepIso03*std::min(LepPt, minPt);
+            LepHybIso03 = LepRelIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
 
             ValueWithSystematics<double> CosDeltaPhiDou = CosDeltaPhiSys(MetPhi, ValueWithSystematics<double>(lep_phi));
@@ -1820,7 +1820,8 @@ int main(int argc, char** argv)
             LepEta      = -9999;
             LepDxy      = -9999;
             LepDz       = -9999;
-            LepIso03    = -9999;
+            LepAbsIso03 = -9999;
+            LepRelIso03 = -9999;
             LepHybIso03 = -9999;
             isPrompt    = -9999;
           }
@@ -2009,6 +2010,7 @@ int main(int argc, char** argv)
 
           HT = 0;
           Njet = validJets.size();
+          /*
           Njet30 = 0;
           Njet40 = 0;
           Njet50 = 0;
@@ -2017,6 +2019,7 @@ int main(int argc, char** argv)
           Njet80 = 0;
           Njet90 = 0;
           Njet100 = 0;
+          */
           for(auto& syst: list)
           {
             for(auto &jet : validJets.GetSystematicOrValue(syst))
@@ -2024,7 +2027,7 @@ int main(int argc, char** argv)
               const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
 
               HT.GetSystematicOrValue(syst) += pt;
-
+              /*
               if(pt > 30)
                 ++(Njet30.GetSystematicOrValue(syst));
               if(pt > 40)
@@ -2041,6 +2044,7 @@ int main(int argc, char** argv)
                 ++(Njet90.GetSystematicOrValue(syst));
               if(pt > 100)
                 ++(Njet100.GetSystematicOrValue(syst));
+              */
             }
           }
 
@@ -2127,7 +2131,7 @@ int main(int argc, char** argv)
                 SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_id[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
               }
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
-              SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
+              SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepRelIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
               SyFile << "   Delta Phi Jet1 Jet2: " << DPhiJet1Jet2.Value() << std::endl;
               SyFile << "   weight for 10 fb-1: " << weight.Value()*10000 << " (without SFs: " << 10000*XS*filterEfficiency*(genWeight/sumGenWeight) << ")" << std::endl;
               SyFile << "   passed: ";
