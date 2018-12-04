@@ -565,7 +565,10 @@ int main(int argc, char** argv)
       Float_t Lep2Iso03; bdttree->Branch("Lep2Iso03", &Lep2Iso03, "Lep2Iso03/F");
       Float_t nGoodEl;   bdttree->Branch("nGoodEl",&nGoodEl,"nGoodEl/F");
       Float_t nGoodMu;   bdttree->Branch("nGoodMu",&nGoodMu,"nGoodMu/F");
+      Float_t nGoodEl_cutId_veto;   bdttree->Branch("nGoodEl_cutId_veto",&nGoodEl_cutId_veto,"nGoodEl_cutId_veto/F");
       Float_t nGoodEl_cutId_loose;   bdttree->Branch("nGoodEl_cutId_loose",&nGoodEl_cutId_loose,"nGoodEl_cutId_loose/F");
+      Float_t nGoodEl_cutId_medium;   bdttree->Branch("nGoodEl_cutId_medium",&nGoodEl_cutId_medium,"nGoodEl_cutId_medium/F");
+      Float_t nGoodEl_cutId_tight;   bdttree->Branch("nGoodEl_cutId_tight",&nGoodEl_cutId_tight,"nGoodEl_cutId_tight/F");
       
       Float_t nGoodEl_loose;
       Float_t nGoodMu_loose;
@@ -1388,11 +1391,15 @@ int main(int argc, char** argv)
               continue;
           }
 
-          nGoodMu = 0;
           nGoodEl = 0;
-          nGoodEl_cutId_loose = 0;
-          nGoodMu_loose = 0;
           nGoodEl_loose = 0;
+          nGoodEl_cutId_veto = 0;
+          nGoodEl_cutId_loose = 0;
+          nGoodEl_cutId_medium = 0;
+          nGoodEl_cutId_tight = 0;
+
+          nGoodMu = 0;
+          nGoodMu_loose = 0;
           for(int i = 0; i < nLepGood; ++i)
           {
             bool lPTETA = false;
@@ -1423,9 +1430,21 @@ int main(int argc, char** argv)
                 nGoodMu++;
               else
                 nGoodEl++;
-                if(LepGood_eleCutIdPog2017[i] >= 2)
+                if(LepGood_eleCutIdPog2017[i] > 0)
                 {
-                 nGoodEl_cutId_loose++;
+                 nGoodEl_cutId_veto++;
+                 if(LepGood_eleCutIdPog2017[i] > 1)
+                 {
+                  nGoodEl_cutId_loose++;
+                  if(LepGood_eleCutIdPog2017[i] > 2)
+                  {
+                   nGoodEl_cutId_medium++;
+                   if(LepGood_eleCutIdPog2017[i] > 3)
+                   {
+                    nGoodEl_cutId_tight++;
+                   }
+                  }
+                 }
                 }
             }
             if(lPTETA && lID_loose && lIS_loose)
