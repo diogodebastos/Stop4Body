@@ -117,7 +117,7 @@ elif [ ${YEAR} == 2017 ]; then
  #mergeJSONs $JSON_PATH/Orig/Wjets.json               $JSON_PATH/Orig/W_*Jets*.json
  #mergeJSONs $JSON_PATH/Orig/ZInv.json                $JSON_PATH/Orig/ZJetsToNuNu*.json
  cp         $JSON_PATH/Orig/TTbar_madgraph.json      $JSON_PATH/TTbar.json
- cp         $JSON_PATH/Orig/WNJets.json              $JSON_PATH/WJets.json
+ cp         $JSON_PATH/Orig/WNJets.json              $JSON_PATH/Wjets.json
  cp         $JSON_PATH/Orig/ZInv.json                $JSON_PATH/ZInv.json
  mergeJSONs $JSON_PATH/ttX.json                      $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTZToLLNuNu.json
  mergeJSONs $JSON_PATH/otherMC1.json                 $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/DYJets.json
