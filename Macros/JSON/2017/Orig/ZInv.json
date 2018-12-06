@@ -15,7 +15,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/ZJetsToNuNu_HT100to200",
-              "split":260
+              "split":326
             }
           ]
         },
@@ -27,7 +27,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/ZJetsToNuNu_HT200to400",
-              "split":       400
+              "split":414
             }
           ]
         },
@@ -39,7 +39,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/ZJetsToNuNu_HT400to600",
-              "split":       314
+              "split":223
             }
           ]
         },
@@ -51,7 +51,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/ZJetsToNuNu_HT600to800",
-              "split":       488
+              "split":132
             }
           ]
         },
@@ -63,7 +63,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/ZJetsToNuNu_HT800t1200",
-              "split":       487
+              "split":50
             }
           ]
         },
@@ -75,7 +75,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/ZJetsToNuNu_HT1200to2500",
-              "split":       276
+              "split":19
             }
           ]
         },
@@ -87,7 +87,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/ZJetsToNuNu_HT2500toInf",
-              "split":       308
+              "split":8
             }
           ]
         }

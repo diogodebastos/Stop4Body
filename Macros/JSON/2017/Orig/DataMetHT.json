@@ -17,7 +17,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017B_17Nov2017",
-              "split":290
+              "split":579
             }
           ]
         },
@@ -30,7 +30,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017C_17Nov2017",
-              "split":252
+              "split":1078
             }
           ]
         },
@@ -56,7 +56,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017E_17Nov2017",
-              "split":445
+              "split":890
             }
           ]
         },
@@ -69,7 +69,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017F_17Nov2017",
-              "split":492
+              "split":1967
             }
           ]
         }

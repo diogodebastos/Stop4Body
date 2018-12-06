@@ -55,10 +55,10 @@ elif [ ${YEAR} == 2017 ]; then
  # Test MC samples
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_VV.sh
  # Submit job for all MC
-# qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarJob.sh
-# qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WjetsJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WjetsJob.sh
 # qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_ZInvJob.sh
-# qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC1Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC1Job.sh
 # qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC2Job.sh
  # Submit job for all Data
  # qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DataJob.sh

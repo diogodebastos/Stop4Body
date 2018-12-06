@@ -17,7 +17,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017B_17Nov2017",
-              "split":382
+              "split":1146
             }
           ]
         },
@@ -30,7 +30,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017C_17Nov2017",
-              "split":378
+              "split":1510
             }
           ]
         },
@@ -43,7 +43,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017D_17Nov2017",
-              "split":412
+              "split":823
             }
           ]
         },
@@ -56,7 +56,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017E_17Nov2017",
-              "split":418
+              "split":1669
             }
           ]
         },
@@ -69,7 +69,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017F_17Nov2017",
-              "split":457
+              "split":2737
             }
           ]
         }

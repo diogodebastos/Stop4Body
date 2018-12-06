@@ -114,10 +114,10 @@ elif [ ${YEAR} == 2017 ]; then
  # Test VV process with new heppy tuples
  cp         $JSON_PATH/Orig/VV.json               $JSON_PATH/VV.json
  # Make a JSON for all MC except signal
- mergeJSONs $JSON_PATH/Orig/Wjets.json               $JSON_PATH/Orig/W_*Jets*.json
- mergeJSONs $JSON_PATH/Orig/ZInv.json                $JSON_PATH/Orig/ZJetsToNuNu*.json
- cp         $JSON_PATH/Orig/TTbar.json               $JSON_PATH/TTbar.json
- cp         $JSON_PATH/Orig/Wjets.json               $JSON_PATH/Wjets.json
+ #mergeJSONs $JSON_PATH/Orig/Wjets.json               $JSON_PATH/Orig/W_*Jets*.json
+ #mergeJSONs $JSON_PATH/Orig/ZInv.json                $JSON_PATH/Orig/ZJetsToNuNu*.json
+ cp         $JSON_PATH/Orig/TTbar_madgraph.json      $JSON_PATH/TTbar.json
+ cp         $JSON_PATH/Orig/WNJets.json              $JSON_PATH/WJets.json
  cp         $JSON_PATH/Orig/ZInv.json                $JSON_PATH/ZInv.json
  mergeJSONs $JSON_PATH/ttX.json                      $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTZToLLNuNu.json
  mergeJSONs $JSON_PATH/otherMC1.json                 $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/DYJets.json

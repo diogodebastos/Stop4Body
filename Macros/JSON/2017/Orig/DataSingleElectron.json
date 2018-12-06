@@ -17,7 +17,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017B_17Nov2017/",
-              "split":317
+              "split":634
             }
           ]
         },
@@ -30,7 +30,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017C_17Nov2017",
-              "split":427
+              "split":1705
             }
           ]
         },
@@ -43,7 +43,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017D_17Nov2017",
-              "split":347
+              "split":693
             }
           ]
         },
@@ -56,7 +56,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017E_17Nov2017",
-              "split":427
+              "split":1280
             }
           ]
         },
@@ -69,7 +69,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017F_17Nov2017",
-              "split":396
+              "split":1583
             }
           ]
         }
