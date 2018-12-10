@@ -45,7 +45,8 @@ if __name__ == "__main__":
   if not args.onlyData:
 # Commented for MC test of VV process with new heppy tuples
 #    jsonFiles.append("MC2Process.json")
-    jsonFiles.append("VV.json")
+    #jsonFiles.append("VV.json")
+    jsonFiles.append("tmpMC.json")
     #jsonFiles.append("stop250.json")
     #jsonFiles.append("stop275.json")
     #jsonFiles.append("stop300.json")

@@ -123,6 +123,8 @@ elif [ ${YEAR} == 2017 ]; then
  mergeJSONs $JSON_PATH/otherMC1.json                 $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/DYJets.json
  mergeJSONs $JSON_PATH/otherMC2.json                 $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/QCD.json $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTZToLLNuNu.json
  mergeJSONs $JSON_PATH/allMC.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
+ mergeJSONs $JSON_PATH/tmpMC.json                    $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json $JSON_PATH/ZInv.json $JSON_PATH/otherMC1.json
+  
  #Make a JSON with the samples that are to be processed:
  cp         $JSON_PATH/allMC.json                    $JSON_PATH/MC2Process.json
  
