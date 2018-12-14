@@ -14,8 +14,8 @@
          "filesPerPart":5,
          "paths":[
            {
-             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/T_sch_lep",
-             "split":97
+             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_sch_lep",
+             "split":194
            }
          ]
        },
@@ -26,8 +26,8 @@
          "filesPerPart":5,
          "paths":[
            {
-             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/T_tch",
-             "split":93
+             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_tch",
+             "split":186
            }
          ]
        },
@@ -38,8 +38,8 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/TBar_tch",
-              "split":58
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TBar_tch",
+              "split":116
             }
           ]
         },
@@ -50,8 +50,8 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/T_tWch_noFullyHad",
-              "split":65
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_tWch_noFullyHad",
+              "split":130
             }
           ]
         },
@@ -62,8 +62,8 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/TBar_tWch_noFullyHad",
-              "split":69
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TBar_tWch_noFullyHad",
+              "split":137
             }
           ]
         }

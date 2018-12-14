@@ -21,6 +21,7 @@ if [[ -d ${PUWEIGHT_DIR} ]]; then
  if [ ${YEAR} == 2016 ]; then
   getLHEweightScales --json ${JSON_PATH}/Data.json  --outDir ${LHESCALE_DIR}
  elif [ ${YEAR} == 2017 ]; then
-  getLHEweightScales --json ${JSON_PATH}/allData.json  --outDir ${LHESCALE_DIR}
+  getLHEweightScales --json ${JSON_PATH}/analysisData.json  --outDir ${LHESCALE_DIR}
+  #getLHEweightScales --json ${JSON_PATH}/allData.json  --outDir ${LHESCALE_DIR}
  fi
 fi

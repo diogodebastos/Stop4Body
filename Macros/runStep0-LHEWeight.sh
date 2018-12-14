@@ -53,15 +53,15 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_Stop800Job.sh
 elif [ ${YEAR} == 2017 ]; then
  # Test MC samples
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_VV.sh
+ #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_VV.sh
  # Submit job for all MC
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WjetsJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_ZInvJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC1Job.sh
-# qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC2Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC2Job.sh
  # Submit job for all Data
- # qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DataJob.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DataJob.sh
  # Submit job for each group of signal points with a given stop mass
 
 fi
