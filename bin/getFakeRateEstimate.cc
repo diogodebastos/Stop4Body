@@ -22,14 +22,11 @@
 
 using json = nlohmann::json;
 
-void printHelp();
-
-
 int main(int argc, char** argv)
 {
   double luminosity = -1;
-  std::string jsonFileName = ${JSON_PATH}/DataJetHT.json
-  std::string inputDirectory = ${INPUT}
+  std::string jsonFileName = ${JSON_PATH}/DataJetHT.json;
+  std::string inputDirectory = ${INPUT};
   std::string suffix = "";
   
   SampleReader samples(jsonFileName, inputDirectory, suffix);
