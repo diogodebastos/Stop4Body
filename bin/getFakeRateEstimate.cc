@@ -26,8 +26,10 @@ int main(int argc, char** argv)
 {
   std::string debug;
   double luminosity = -1;
-  std::string jsonFileName = ${JSON_PATH}/DataJetHT.json;
-  std::string inputDirectory = ${INPUT};
+  // Placeholder for ${JSON_PATH}
+  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
+  // Placeholder for ${INPUT}
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2018-12-14/";
   std::string suffix = "";
   
   SampleReader samples(jsonFileName, inputDirectory, suffix);
