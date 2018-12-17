@@ -24,6 +24,7 @@ using json = nlohmann::json;
 
 int main(int argc, char** argv)
 {
+  std::string debug;
   double luminosity = -1;
   std::string jsonFileName = ${JSON_PATH}/DataJetHT.json;
   std::string inputDirectory = ${INPUT};
@@ -36,8 +37,8 @@ int main(int argc, char** argv)
   
   std::stringstream converter;
   converter << "luminosity: " << luminosity;
-  
-  std::cout << converter << std::endl;
+  converter >> debug;
+  std::cout << debug << std::endl;
   
   return 0;
 }
