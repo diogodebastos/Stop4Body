@@ -29,7 +29,7 @@ int main(int argc, char** argv)
   // Placeholder for ${JSON_PATH}
   std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
   // Placeholder for ${INPUT}
-  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2018-12-14/";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2018-09-13";
   std::string suffix = "";
   
   SampleReader samples(jsonFileName, inputDirectory, suffix);
