@@ -37,7 +37,7 @@ int main(int argc, char** argv)
   auto Data = samples.getData();
   
   luminosity = Data.getLumi();
-  
+
   std::stringstream converter;
   converter << "luminosity: ";
   converter << luminosity/1000;
