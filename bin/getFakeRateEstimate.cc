@@ -27,9 +27,10 @@ int main(int argc, char** argv)
   std::string debug;
   double luminosity = -1;
   // Placeholder for ${JSON_PATH}
-  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
+  //std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
+  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataMetHT.json";
   // Placeholder for ${INPUT}
-  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2018-09-13";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2018-12-14";
   std::string suffix = "";
   
   SampleReader samples(jsonFileName, inputDirectory, suffix);
@@ -38,9 +39,9 @@ int main(int argc, char** argv)
   luminosity = Data.getLumi();
   
   std::stringstream converter;
-  converter << "luminosity: " << luminosity;
-  converter >> debug;
-  std::cout << debug << std::endl;
+  converter << "luminosity: ";
+  converter << luminosity/1000;
+  std::cout << converter.str() << std::endl;
   
   return 0;
 }
