@@ -1,14 +1,24 @@
 {
  "cuts":[
    {
-     "name":"PreselectionMu",
-     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodMu <= 2) && (nGoodEl == 0)",
+     "name":"Preselection loosest",
+     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2)",
+     "latex":"Preselection"
+   },
+   {
+     "name":"PS e channel",
+     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl_cutId_veto == 1) && (nGoodMu == 0)",
+     "latex":"Preselection ($e$ channel)"
+   },
+   {
+     "name":"PS mu channel",
+     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodMu_cutId_loose == 1) && (nGoodEl == 0)",
      "latex":"Preselection ($#mu$ channel)"
    },
    {
-     "name":"PreselectionEl",
-     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl <= 2) && (nGoodMu == 0)",
-     "latex":"Preselection ($e$ channel)"
+     "name":"Preselection",
+     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl_cutId_veto + nGoodMu_cutId_loose ==1)",
+     "latex":"Preselection ($#mu$ channel)"
    }
   ],
   "variables":[
