@@ -167,8 +167,10 @@ int main(int argc, char** argv)
     //loadSystName("FullFast_ID_Electron_Bin", 35);
     //loadSystName("FullFast_ID_Muon_Bin", 42);
 
-    systematics.push_back("LeptonIDSF_AltCorr");
-    systematics.push_back("LeptonISOSF_AltCorr");
+    //systematics.push_back("LeptonIDSF_AltCorr");
+    //systematics.push_back("LeptonISOSF_AltCorr");
+    systematics.push_back("LeptonIDSF2017_AltCorr");
+    systematics.push_back("LeptonISOSF2017_AltCorr");
     //loadSystName("LeptonIDSF_Electron_Bin", 98);
     //loadSystName("LeptonIDSF_Muon_Bin", 56);
     //loadSystName("LeptonISOSF_Electron_Bin", 12);
