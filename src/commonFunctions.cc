@@ -746,30 +746,29 @@ ValueWithSystematics<double> getLeptonIDSF2017Sys(double LepID, double LepPt, do
 
   ValueWithSystematics<double> retVal(val);
   
-  retVal.Systematic("LeptonIDSF2017_Electron_stat_Up");
-  retVal.Systematic("LeptonIDSF2017_Electron_stat_Down");
   retVal.Systematic("LeptonIDSF2017_Electron_Up");
   retVal.Systematic("LeptonIDSF2017_Electron_Down");
   
-  retVal.Systematic("LeptonIDSF2017_Muon_stat_Up");
-  retVal.Systematic("LeptonIDSF2017_Muon_stat_Down");
   retVal.Systematic("LeptonIDSF2017_Muon_Up");
   retVal.Systematic("LeptonIDSF2017_Muon_Down");
+  
+  retVal.Systematic("LeptonIDSF2017_AltCorr_Up");
+  retVal.Systematic("LeptonIDSF2017_AltCorr_Down");
   retVal.Lock();
   
   if(std::abs(LepID) == 11)
   {
-   retVal.Systematic("LeptonIDSF2017_Electron_stat_Up") = val+unc;
-   retVal.Systematic("LeptonIDSF2017_Electron_stat_Down") = val-unc;
-   retVal.Systematic("LeptonIDSF2017_Electron_Up") = val*1.01;
-   retVal.Systematic("LeptonIDSF2017_Electron_Down") = val*0.99; 
+   retVal.Systematic("LeptonIDSF2017_Electron_Up") = val+unc;
+   retVal.Systematic("LeptonIDSF2017_Electron_Down") = val-unc;
+   retVal.Systematic("LeptonIDSF2017_AltCorr_Up") = val+unc;
+   retVal.Systematic("LeptonIDSF2017_AltCorr_Down") = val-unc;
   }
   else if(std::abs(LepID) == 13)
   {
-   retVal.Systematic("LeptonIDSF2017_Muon_stat_Up") = val+unc;
-   retVal.Systematic("LeptonIDSF2017_Muon_stat_Down") = val-unc;
-   retVal.Systematic("LeptonIDSF2017_Muon_Up") = val*1.01;
-   retVal.Systematic("LeptonIDSF2017_Muon_Down") = val*0.99;
+   retVal.Systematic("LeptonIDSF2017_Muon_Up") = val+unc;
+   retVal.Systematic("LeptonIDSF2017_Muon_Down") = val-unc;
+   retVal.Systematic("LeptonIDSF2017_AltCorr_Up") = val+unc;
+   retVal.Systematic("LeptonIDSF2017_AltCorr_Down") = val-unc;
   }
   return retVal;
 }
@@ -823,29 +822,29 @@ ValueWithSystematics<double> getLeptonISOSF2017Sys(double LepID, double LepPt, d
   double unc = lepISOSF.uncertainty();
 
   ValueWithSystematics<double> retVal(val);
-  retVal.Systematic("LeptonISOSF2017_Electron_stat_Up");
-  retVal.Systematic("LeptonISOSF2017_Electron_stat_Down");
   retVal.Systematic("LeptonISOSF2017_Electron_Up");
   retVal.Systematic("LeptonISOSF2017_Electron_Down");
   
-  retVal.Systematic("LeptonISOSF2017_Muon_stat_Up");
-  retVal.Systematic("LeptonISOSF2017_Muon_stat_Down");
   retVal.Systematic("LeptonISOSF2017_Muon_Up");
   retVal.Systematic("LeptonISOSF2017_Muon_Down");
+  
+  retVal.Systematic("LeptonISOSF2017_AltCorr_Up");
+  retVal.Systematic("LeptonISOSF2017_AltCorr_Down");
+  
   retVal.Lock();
   if(std::abs(LepID) == 11)
   {
-   retVal.Systematic("LeptonISOSF2017_Electron_stat_Up") = val+unc;
-   retVal.Systematic("LeptonISOSF2017_Electron_stat_Down") = val-unc;
-   retVal.Systematic("LeptonISOSF2017_Electron_Up") = val*1.01;
-   retVal.Systematic("LeptonISOSF2017_Electron_Down") = val*0.99; 
+   retVal.Systematic("LeptonISOSF2017_Electron_Up") = val+unc;
+   retVal.Systematic("LeptonISOSF2017_Electron_Down") = val-unc;
+   retVal.Systematic("LeptonISOSF2017_AltCorr_Up") = val+unc;
+   retVal.Systematic("LeptonISOSF2017_AltCorr_Down") = val-unc;
   }
   else if(std::abs(LepID) == 13)
   {
-   retVal.Systematic("LeptonISOSF2017_Muon_stat_Up") = val+unc;
-   retVal.Systematic("LeptonISOSF2017_Muon_stat_Down") = val-unc;
-   retVal.Systematic("LeptonISOSF2017_Muon_Up") = val*1.01;
-   retVal.Systematic("LeptonISOSF2017_Muon_Down") = val*0.99;
+   retVal.Systematic("LeptonISOSF2017_Muon_Up") = val+unc;
+   retVal.Systematic("LeptonISOSF2017_Muon_Down") = val-unc;
+   retVal.Systematic("LeptonISOSF2017_AltCorr_Up") = val+unc;
+   retVal.Systematic("LeptonISOSF2017_AltCorr_Down") = val-unc;
   }
   return retVal;
 }
