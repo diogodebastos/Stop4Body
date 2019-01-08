@@ -1035,6 +1035,10 @@ int main(int argc, char** argv)
       Float_t HLT_PFMET100_PFMHT100; bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
       Float_t HLT_PFMET110_PFMHT110; bdttree->Branch("HLT_PFMET110_PFMHT110", &HLT_PFMET110_PFMHT110, "HLT_PFMET110_PFMHT110/F");
       Float_t HLT_PFMET120_PFMHT120; bdttree->Branch("HLT_PFMET120_PFMHT120", &HLT_PFMET120_PFMHT120, "HLT_PFMET120_PFMHT120/F");
+      //This should be updated for all samples after the next heppy run
+      if(process.isdata()) {
+        Float_t HLT_PFHT1050;          bdttree->Branch("HLT_PFHT1050", &HLT_PFHT1050, "HLT_PFHT1050/F");
+      }
       Float_t HLT_Ele;               bdttree->Branch("HLT_Ele",               &HLT_Ele,               "HLT_Ele/F"              );
       Float_t HLT_Mu;                bdttree->Branch("HLT_Mu",                &HLT_Mu,                "HLT_Mu/F"               );
 
@@ -1233,7 +1237,7 @@ int main(int argc, char** argv)
         Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);// */
 
         // 2016 HLT
-        Int_t   HLT_PFMET90_PFMHT90_IDTight; inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
+        Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
         Int_t HLT_PFMET100_PFMHT100_IDTight; inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
         Int_t HLT_PFMET110_PFMHT110_IDTight; inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
         Int_t HLT_PFMET120_PFMHT120_IDTight; inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
@@ -1241,6 +1245,15 @@ int main(int argc, char** argv)
         Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
         Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
         Int_t HLT_IsoMu27;                   inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
+
+        // 2017 HLT
+        //This should be updated for all samples after the next heppy run
+        //Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
+        //Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
+        //Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
+        if(process.isdata()) {
+         Int_t HLT_BIT_HLT_PFHT1050_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);         
+        }
 
 //      Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
         Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
@@ -2067,6 +2080,10 @@ int main(int argc, char** argv)
           HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
           HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
           HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
+          //HLT_PFMET100_PFMHT100               = HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v;
+          //HLT_PFMET110_PFMHT110               = HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
+          //HLT_PFMET120_PFMHT120               = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v;
+          HLT_PFHT1050                        = HLT_BIT_HLT_PFHT1050_v;
           //HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
           //HLT_Mu                              = HLT_IsoMu24;
           HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;

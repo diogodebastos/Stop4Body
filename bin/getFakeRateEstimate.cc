@@ -35,13 +35,49 @@ int main(int argc, char** argv)
   
   SampleReader samples(jsonFileName, inputDirectory, suffix);
   auto Data = samples.getData();
+  auto MC = samples.getMCBkg();
   
+  //debug
   luminosity = Data.getLumi();
 
   std::stringstream converter;
   converter << "luminosity: ";
   converter << luminosity/1000;
   std::cout << converter.str() << std::endl;
+
+  // Measurement Region
+  std::string mRegion = "(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 40) && (mt < 30)";
+  std::string tightEl = "(nGoodEl_cutId_veto)"
+  std::string tightMu = "(nGoodMu_cutId_loose)"
+  
+  size_t jetHTIndex, otherIndex;
+  bool foundJetHT = false, foundOtherIndex = false;
+  for (size_t i = 0; i < Data.nProcesses; i++) {
+   // TODO: Check out to: If contains sting -> "_JetHT"
+   if(Data.process(i).tag() == "_JetHT") {
+    jetHTIndex = i;
+    foundJetHT = true;
+   }
+  }
+  for (size_t i = 0; i < MC.nProcesses; i++) {
+   if(MC.process(i).tag() != "ZInv" && MC.process(i).tag() != "QCD") {
+    otherIndex = i;
+    foundOtherIndex = true;
+   }
+  }
+  auto jetht = Data.process(jetHTIndex);
+  auto other = MC.process(otherIndex);
+  
+  // Plot eTL
+  auto eL = jetht.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
+  auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
+  
+  
+  
+  //auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
+  //auto mcH   = MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
+  
+
   
   return 0;
 }
