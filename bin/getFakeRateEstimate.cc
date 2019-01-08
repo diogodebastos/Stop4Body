@@ -47,19 +47,19 @@ int main(int argc, char** argv)
 
   // Measurement Region
   std::string mRegion = "(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 40) && (mt < 30)";
-  std::string tightEl = "(nGoodEl_cutId_veto)"
-  std::string tightMu = "(nGoodMu_cutId_loose)"
+  std::string tightEl = "(nGoodEl_cutId_veto)";
+  std::string tightMu = "(nGoodMu_cutId_loose)";
   
-  size_t jetHTIndex, otherIndex;
+  size_t jetHTIndex = 0, otherIndex = 0;
   bool foundJetHT = false, foundOtherIndex = false;
-  for (size_t i = 0; i < Data.nProcesses; i++) {
+  for (size_t i = 0; i < Data.nProcesses(); i++) {
    // TODO: Check out to: If contains sting -> "_JetHT"
    if(Data.process(i).tag() == "_JetHT") {
     jetHTIndex = i;
     foundJetHT = true;
    }
   }
-  for (size_t i = 0; i < MC.nProcesses; i++) {
+  for (size_t i = 0; i < MC.nProcesses(); i++) {
    if(MC.process(i).tag() != "ZInv" && MC.process(i).tag() != "QCD") {
     otherIndex = i;
     foundOtherIndex = true;
