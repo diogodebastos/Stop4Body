@@ -65,6 +65,16 @@ int main(int argc, char** argv)
     foundOtherIndex = true;
    }
   }
+  if(!foundJetHT)
+  {
+    std::cout << "There isn't a JetHT sample in the JSON file" << std::endl;
+    return 1;
+  }
+  if(!foundOtherIndex)
+  {
+    std::cout << "There isn't a other MC sample in the JSON file" << std::endl;
+    return 1;
+  }
   auto jetht = Data.process(jetHTIndex);
   auto other = MC.process(otherIndex);
   
