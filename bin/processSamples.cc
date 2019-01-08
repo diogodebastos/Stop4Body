@@ -1036,8 +1036,9 @@ int main(int argc, char** argv)
       Float_t HLT_PFMET110_PFMHT110; bdttree->Branch("HLT_PFMET110_PFMHT110", &HLT_PFMET110_PFMHT110, "HLT_PFMET110_PFMHT110/F");
       Float_t HLT_PFMET120_PFMHT120; bdttree->Branch("HLT_PFMET120_PFMHT120", &HLT_PFMET120_PFMHT120, "HLT_PFMET120_PFMHT120/F");
       //This should be updated for all samples after the next heppy run
+      Float_t HLT_PFHT1050;
       if(process.isdata()) {
-        Float_t HLT_PFHT1050;          bdttree->Branch("HLT_PFHT1050", &HLT_PFHT1050, "HLT_PFHT1050/F");
+        bdttree->Branch("HLT_PFHT1050", &HLT_PFHT1050, "HLT_PFHT1050/F");
       }
       Float_t HLT_Ele;               bdttree->Branch("HLT_Ele",               &HLT_Ele,               "HLT_Ele/F"              );
       Float_t HLT_Mu;                bdttree->Branch("HLT_Mu",                &HLT_Mu,                "HLT_Mu/F"               );
@@ -1251,8 +1252,9 @@ int main(int argc, char** argv)
         //Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
         //Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
         //Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
+        Int_t HLT_BIT_HLT_PFHT1050_v;
         if(process.isdata()) {
-         Int_t HLT_BIT_HLT_PFHT1050_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);         
+         inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);         
         }
 
 //      Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
