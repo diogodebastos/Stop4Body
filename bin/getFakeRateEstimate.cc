@@ -79,8 +79,10 @@ int main(int argc, char** argv)
   auto other = MC.process(otherIndex);
   
   // Plot eTL
-  auto eL = jetht.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
-  auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
+  //TO DO: Replace other with jetht when samples are available
+  auto eL = other.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
+  auto eT = other.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
+  
   
   
   
