@@ -83,7 +83,18 @@ int main(int argc, char** argv)
   auto eL = other.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
   auto eT = other.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
   
+  auto ratio = static_cast<TH1D*>(eL->Clone("Ratio"));
+  ratio->SetTitle("Tight to Loose ratio");
+  ratio->Divide(eT);
   
+  TCanvas c1("tmp_canv", "", 800, 800);
+  gStyle->SetOptStat(0);
+
+  TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
+  t1->Draw();
+  t1->cd();
+  //t1->SetLogy(true);
+  ratio->Draw("hist");
   
   
   //auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
