@@ -95,7 +95,7 @@ int main(int argc, char** argv)
   t1->cd();
   //t1->SetLogy(true);
   ratio->Draw("hist");
-  
+  c1.SaveAs(("/getFakeRate_test.png").c_str());
   
   //auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
   //auto mcH   = MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
