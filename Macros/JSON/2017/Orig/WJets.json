@@ -9,7 +9,7 @@
       "files":[
         {
           "tag":"WJetsToLNu_HT100To200",
-          "xsec":1.0,
+          "xsec":1629.87,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
@@ -21,7 +21,7 @@
         },
         {
           "tag":"WJetsToLNu_HT200To400",
-          "xsec":1.0,
+          "xsec":435.6,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
@@ -33,7 +33,7 @@
         },
         {
           "tag":"WJetsToLNu_HT400To600",
-          "xsec":1.0,
+          "xsec":59.169,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
@@ -45,7 +45,7 @@
         },
         {
           "tag":"WJetsToLNu_HT600To800",
-          "xsec":1.0,
+          "xsec":14.5805,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
@@ -57,7 +57,7 @@
         },
         {
           "tag":"WJetsToLNu_HT800To1200",
-          "xsec":1.0,
+          "xsec":6.65612,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
@@ -69,7 +69,7 @@
         },
         {
           "tag":"WJetsToLNu_HT1200To2500",
-          "xsec":1.0,
+          "xsec":1.60809,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
@@ -81,7 +81,7 @@
         },
         {
           "tag":"WJetsToLNu_HT2500ToInf",
-          "xsec":1.0,
+          "xsec":0.0389136,
           "br":1.0,
           "filesPerPart":5,
           "paths":[

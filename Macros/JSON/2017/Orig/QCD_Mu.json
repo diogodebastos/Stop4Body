@@ -5,7 +5,7 @@
       "isdata":false,
       "color":809,
       "lcolor":1,
-      "label":"Multijet Mu enriched",
+      "label":"Multijet",
       "files":[
         {
           "tag":"QCD_Pt15to20_Mu5",
