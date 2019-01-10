@@ -27,10 +27,9 @@ int main(int argc, char** argv)
   std::string debug;
   double luminosity = -1;
   // Placeholder for ${JSON_PATH}
-  //std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
-  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataMetHT.json";
+  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/plot2017.json";
   // Placeholder for ${INPUT}
-  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2018-12-14";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-01-04-test";
   std::string suffix = "";
   
   SampleReader samples(jsonFileName, inputDirectory, suffix);
@@ -53,14 +52,15 @@ int main(int argc, char** argv)
   size_t jetHTIndex = 0, otherIndex = 0;
   bool foundJetHT = false, foundOtherIndex = false;
   for (size_t i = 0; i < Data.nProcesses(); i++) {
-   // TODO: Check out to: If contains sting -> "_JetHT"
-   if(Data.process(i).tag() == "_JetHT") {
+   // TODO: Check out to: If contains string -> "_JetHT"
+   //if(Data.process(i).tag().find("_JetHt") != std::string::npos) {
+   if(Data.process(i).tag() == "Data") {
     jetHTIndex = i;
     foundJetHT = true;
    }
   }
   for (size_t i = 0; i < MC.nProcesses(); i++) {
-   if(MC.process(i).tag() != "ZInv" && MC.process(i).tag() != "QCD") {
+   if(MC.process(i).tag() != "ZInv" || MC.process(i).tag() != "QCD") {
     otherIndex = i;
     foundOtherIndex = true;
    }
@@ -80,13 +80,15 @@ int main(int argc, char** argv)
   
   // Plot eTL
   //TO DO: Replace other with jetht when samples are available
-  auto eL = other.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
-  auto eT = other.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
+  //auto eL = jetht.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
+  //auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
+  auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
+  auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
   
-  auto ratio = static_cast<TH1D*>(eL->Clone("Ratio"));
+  auto ratio = static_cast<TH1D*>(eT->Clone("Ratio"));
   ratio->SetTitle("Tight to Loose ratio");
-  ratio->Divide(eT);
-  
+  ratio->Divide(eL);
+  printf("Canvas\n"); 
   TCanvas c1("tmp_canv", "", 800, 800);
   gStyle->SetOptStat(0);
 
@@ -94,12 +96,8 @@ int main(int argc, char** argv)
   t1->Draw();
   t1->cd();
   //t1->SetLogy(true);
-  ratio->Draw("hist");
-  c1.SaveAs(("/getFakeRate_test.png").c_str());
-  
-  //auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
-  //auto mcH   = MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
-  
+  ratio->Draw();
+  c1.SaveAs("getFakeRate_test.png");
 
   
   return 0;
