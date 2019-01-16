@@ -31,7 +31,12 @@ int main(int argc, char** argv)
   // Placeholder for ${INPUT}
   std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-01-04-test";
   std::string suffix = "";
-  
+  // Placeholder for ${variables} 
+  std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-fakeRateMethod.json";
+  std::string cutsJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-fakeRateMethod.json";
+
+  std::cout << "Reading json files" << std::endl;
+  VariableJsonLoader variables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
   auto Data = samples.getData();
   auto MC = samples.getMCBkg();
@@ -48,12 +53,6 @@ int main(int argc, char** argv)
   std::string mRegion = "(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 40) && (mt < 30)";
   std::string tightEl = "(nGoodEl_cutId_veto)";
   std::string tightMu = "(nGoodMu_cutId_loose)";
-
-  const Int_t elNBINS = 7;
-  Double_t elEdges[elNBINS + 1] = {5, 12, 20, 30, 50, 80, 200};
-
-  const Int_t muNBINS = 8;
-  Double_t muEdges[muNBINS + 1] = {3.5, 5, 12, 20, 30, 50, 80, 200};
   
   size_t jetHTIndex = 0, otherIndex = 0;
   bool foundJetHT = false, foundOtherIndex = false;
@@ -88,23 +87,33 @@ int main(int argc, char** argv)
   //TO DO: Replace other with jetht when samples are available
   //auto eL = jetht.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
   //auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
-  auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, elNBINS, elEdges);
-  auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
   
-  auto ratio = static_cast<TH1D*>(eT->Clone("Ratio"));
-  ratio->SetTitle("Tight to Loose ratio");
-  ratio->Divide(eL);
-  printf("Canvas\n"); 
-  TCanvas c1("tmp_canv", "", 800, 800);
-  gStyle->SetOptStat(0);
+  for(auto & variable : variables)
+  {
+    //outSummary << "Cut: " << cut.name() << std::endl;
+    //outSummary << "Variable: " << variable.name() << std::endl;
+    ValueWithSystematics<std::string> dataSel = std::string("");
+    dataSel = "weight * ( " + tightEl + ")";
 
-  TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
-  t1->Draw();
-  t1->cd();
-  //t1->SetLogy(true);
-  ratio->Draw();
-  c1.SaveAs("getFakeRate_test.png");
+    auto eT = jetht.getHist("LepPt", variable, dataSel);
+    auto eL = jetht.getHist("LepPt", variable,"weight");
+    //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
+    //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
+    
+    auto ratio = static_cast<TH1D*>(eT->Clone("Ratio"));
+    ratio->SetTitle("Tight to Loose ratio");
+    ratio->Divide(eL);
+    printf("Canvas\n"); 
+    TCanvas c1("tmp_canv", "", 800, 800);
+    gStyle->SetOptStat(0);
 
+    TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
+    t1->Draw();
+    t1->cd();
+    //t1->SetLogy(true);
+    ratio->Draw();
+    c1.SaveAs("getFakeRate_test.png");
+   }
   
   return 0;
 }

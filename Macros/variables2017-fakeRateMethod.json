@@ -1,0 +1,21 @@
+{
+ "cuts":[
+   {
+     "name":"FRM",
+     "expression":"(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 40) && (mt < 30)",
+     "latex":""
+   }
+  ],
+  "variables":[
+    {
+      "expression":"LepPt",
+      "label":"p_{T}(l) [GeV]",
+      "legPos":"top",
+      "varBins":[3.5,5,12,20,30,50,80,200]
+    }
+  ],
+  "2Dplots":[
+   {
+   }
+  ]
+}
