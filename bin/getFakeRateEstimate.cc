@@ -95,7 +95,7 @@ int main(int argc, char** argv)
     ValueWithSystematics<std::string> dataSel = std::string("");
     dataSel = "weight * ( " + tightEl + ")";
 
-    auto eT = jetht.getHist("LepPt", variable, dataSel);
+    auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + ")");
     auto eL = jetht.getHist("LepPt", variable,"weight");
     //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
     //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
