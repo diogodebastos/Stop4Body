@@ -100,19 +100,23 @@ int main(int argc, char** argv)
     //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
     //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
     
-    auto ratio = static_cast<TH1D*>(eT->Clone("Ratio"));
-    ratio->SetTitle("Tight to Loose ratio");
+    auto ratio = static_cast<TH1D*>(eT->Clone("electronEfficiencyAllEta"));
+    ratio->SetTitle("Electron Efficiency");
     ratio->Divide(eL);
     printf("Canvas\n"); 
     TCanvas c1("tmp_canv", "", 800, 800);
     gStyle->SetOptStat(0);
+    
+    ratio->Draw();   
+    c1.cd();
 
-    TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
-    t1->Draw();
-    t1->cd();
+    //TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
+    //t1->Draw();
+    //t1->cd();
     //t1->SetLogy(true);
-    ratio->Draw();
-    c1.SaveAs("getFakeRate_test.png");
+    //ratio->Draw();
+    c1.SaveAs(("tightToLooseRatios_2017_"+variable.name()+".png").c_str());
+    ratio->SaveAs(("tightToLooseRatios_2017_"+variable.name()+".root").c_str());
    }
   
   return 0;
