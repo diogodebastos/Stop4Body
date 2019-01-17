@@ -65,6 +65,7 @@ elif [ ${YEAR} == 2017 ]; then
  # Submit job for all DATA
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_DataJob.sh
  # Submit job for each group of signal points with a given stop mass
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop500Job.sh
 
 fi
 cd -

@@ -55,7 +55,7 @@ if __name__ == "__main__":
     #jsonFiles.append("stop425.json")
     #jsonFiles.append("stop450.json")
     #jsonFiles.append("stop475.json")
-    #jsonFiles.append("stop500.json")
+    jsonFiles.append("stop500.json")
     #jsonFiles.append("stop525.json")
     #jsonFiles.append("stop550.json")
     #jsonFiles.append("stop575.json")

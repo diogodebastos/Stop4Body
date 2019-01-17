@@ -141,6 +141,9 @@ elif [ ${YEAR} == 2017 ]; then
  mergeJSONs $JSON_PATH/allData.json                  $JSON_PATH/Orig/DataJetHT.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
  #mergeJSONs $JSON_PATH/DataLepton.json         $JSON_PATH/Orig/DataSingleElectron.json $JSON_PATH/Orig/DataSingleMuon.json
  
+ # Make a JSON for each group of signal points with the same stop mass
+ mergeJSONs $JSON_PATH/stop500.json            $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
+ 
  # Make a JSON for the PU tests
  mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/DataJetHT.json
  # Make the JSONs for plotting
