@@ -1239,13 +1239,16 @@ int main(int argc, char** argv)
 
         //TODO: This should be updated for all samples after the next heppy run
         // Remove the "if's" for both data bool
-
         // 2016 HLT
+        Int_t HLT_PFMET90_PFMHT90_IDTight;   
+        Int_t HLT_PFMET100_PFMHT100_IDTight;
+        Int_t HLT_PFMET110_PFMHT110_IDTight;  
+        Int_t HLT_PFMET120_PFMHT120_IDTight; 
         if(!process.isdata()){
-         Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
-         Int_t HLT_PFMET100_PFMHT100_IDTight; inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
-         Int_t HLT_PFMET110_PFMHT110_IDTight; inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
-         Int_t HLT_PFMET120_PFMHT120_IDTight; inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
+         inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
+         inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
+         inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
+         inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
          Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
          Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
          Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
@@ -2311,20 +2314,22 @@ int main(int argc, char** argv)
             bool passHLT = false;
             if(!swap) // Normally use the MET triggers, but only for data
             {
+             //TODO: This should be updated for all samples after the next heppy run
               if(process.isdata())
-              {
-                if(HLT_PFMET90_PFMHT90_IDTight != 0)
+              { 
+                //if(HLT_PFMET90_PFMHT90_IDTight != 0)
+                  //passHLT = true;
+                if(HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v != 0)
                   passHLT = true;
-                if(HLT_PFMET100_PFMHT100_IDTight != 0)
+                if(HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v != 0)
                   passHLT = true;
-                if(HLT_PFMET110_PFMHT110_IDTight != 0)
-                  passHLT = true;
-                if(HLT_PFMET120_PFMHT120_IDTight != 0)
+                if(HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v != 0)
                   passHLT = true;
               }
               else
                 passHLT = true;
             }
+            /*
             else // If swapping MET and LepPt, apply single lepton triggers to data and MC, for data avoid double counting
             {
               if(HLT_IsoMu27 != 0)
@@ -2339,7 +2344,7 @@ int main(int argc, char** argv)
                   passHLT = false;
               }
             }
-
+            */
             if(!passHLT)
               continue;
           }
