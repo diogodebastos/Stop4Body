@@ -1243,7 +1243,10 @@ int main(int argc, char** argv)
         Int_t HLT_PFMET90_PFMHT90_IDTight;   
         Int_t HLT_PFMET100_PFMHT100_IDTight;
         Int_t HLT_PFMET110_PFMHT110_IDTight;  
-        Int_t HLT_PFMET120_PFMHT120_IDTight; 
+        Int_t HLT_PFMET120_PFMHT120_IDTight;
+        Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;
+        Int_t HLT_IsoMu27;
+         
         if(!process.isdata()){
          inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
          inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
@@ -1251,8 +1254,8 @@ int main(int argc, char** argv)
          inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
          Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
          Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
-         Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
-         Int_t HLT_IsoMu27;                   inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
+         inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
+         inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
         }
 
         // 2017 HLT
