@@ -1035,7 +1035,7 @@ int main(int argc, char** argv)
       Float_t HLT_PFMET100_PFMHT100; bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
       Float_t HLT_PFMET110_PFMHT110; bdttree->Branch("HLT_PFMET110_PFMHT110", &HLT_PFMET110_PFMHT110, "HLT_PFMET110_PFMHT110/F");
       Float_t HLT_PFMET120_PFMHT120; bdttree->Branch("HLT_PFMET120_PFMHT120", &HLT_PFMET120_PFMHT120, "HLT_PFMET120_PFMHT120/F");
-      //This should be updated for all samples after the next heppy run
+      //TODO: This should be updated for all samples after the next heppy run
       Float_t HLT_PFHT1050;
       if(process.isdata()) {
         bdttree->Branch("HLT_PFHT1050", &HLT_PFHT1050, "HLT_PFHT1050/F");
@@ -1237,23 +1237,31 @@ int main(int argc, char** argv)
         Int_t HLT_PFMET90_PFMHT90;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90", &HLT_PFMET90_PFMHT90);
         Int_t HLT_PFMETNoMu90_PFMHTNoMu90;   inputtree->SetBranchAddress("HLT_PFMETNoMu90_PFMHTNoMu90", &HLT_PFMETNoMu90_PFMHTNoMu90);// */
 
+        //TODO: This should be updated for all samples after the next heppy run
+        // Remove the "if's" for both data bool
+
         // 2016 HLT
-        Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
-        Int_t HLT_PFMET100_PFMHT100_IDTight; inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
-        Int_t HLT_PFMET110_PFMHT110_IDTight; inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
-        Int_t HLT_PFMET120_PFMHT120_IDTight; inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
-        Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
-        Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
-        Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
-        Int_t HLT_IsoMu27;                   inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
+        if(!process.isdata()){
+         Int_t HLT_PFMET90_PFMHT90_IDTight;   inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
+         Int_t HLT_PFMET100_PFMHT100_IDTight; inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
+         Int_t HLT_PFMET110_PFMHT110_IDTight; inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
+         Int_t HLT_PFMET120_PFMHT120_IDTight; inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
+         Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
+         Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
+         Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
+         Int_t HLT_IsoMu27;                   inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
+        }
 
         // 2017 HLT
-        //This should be updated for all samples after the next heppy run
-        //Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
-        //Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
-        //Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v; inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
+        //TODO: This should be updated for all samples after the next heppy run
         Int_t HLT_BIT_HLT_PFHT1050_v;
+        Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v; 
+        Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
+        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v; 
         if(process.isdata()) {
+         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
+         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
+         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);         
         }
 
