@@ -56,7 +56,7 @@
 
 #define ISR_JET_PT 90
 #define SECOND_LEPTON_PT 20
-#define MIN_MET 100
+#define MIN_MET 0
 
 using json = nlohmann::json;
 
