@@ -48,9 +48,47 @@ int main(int argc, char** argv)
   converter << "luminosity: ";
   converter << luminosity/1000;
   std::cout << converter.str() << std::endl;
+  
+  std::string selection = "";
+  std::vector<CutInfo> cutFlow;
+  json jsonFile;
+  std::ifstream inputFile(cutsJson);
+  inputFile >> jsonFile;
+  
+  for(auto& cut : jsonFile["cuts"])
+  {
+    try
+    {
+      std::string cutName, cutString, cutLatex;
+
+      if(cut.count("name") == 0)
+        throw MissingJSONParam("The cut does not have a name.");
+      cutName = cut["name"];
+
+      if(cut.count("expression") == 0)
+        throw MissingJSONParam("The cut does not have an expression.");
+      cutString = cut["expression"];
+
+      if(cut.count("latex") == 0)
+      {
+        cutLatex = cutName;
+      }
+      else
+      {
+        cutLatex = cut["latex"];
+      }
+
+      cutFlow.push_back(CutInfo(cutName, cutString, cutLatex));
+    }
+    catch(MissingJSONParam& exception)
+    {
+      std::cout << "Incomplete cut found, skipping it." << std::endl;
+      std::cout << "The message was: " << exception.what() << std::endl;
+    }
+  }
 
   // Measurement Region
-  std::string mRegion = "(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 150) && (mt < 30)";
+  std::string mRegion = "(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 100) && (mt < 30)";
   std::string tightEl = "(nGoodEl_cutId_veto)";
   std::string tightMu = "(nGoodMu_cutId_loose)";
   
@@ -91,36 +129,55 @@ int main(int argc, char** argv)
   //TO DO: Replace other with jetht when samples are available
   //auto eL = jetht.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
   //auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
-  
-  for(auto & variable : variables)
+  for(auto& cut : cutFlow)
   {
-    //outSummary << "Cut: " << cut.name() << std::endl;
-    //outSummary << "Variable: " << variable.name() << std::endl;
-    ValueWithSystematics<std::string> dataSel = std::string("");
-    dataSel = "weight * ( " + tightEl + ")";
+    if(cut.cut() != "")
+    {
+      if(cumulativeCuts)
+      {
+        if(selection == "")
+          selection  = "(" + cut.cut() + ")";
+        else
+          selection += " && (" + cut.cut() + ")";
+      }
+      else
+      {
+        selection = cut.cut();
+      }
+    }
 
-    auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
-    auto eL = jetht.getHist("LepPt", variable,"weight * (" + mRegion + ")");
-    //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
-    //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
-    
-    auto ratio = static_cast<TH1D*>(eT->Clone("electronEfficiencyAllEta"));
-    ratio->SetTitle("Electron Efficiency");
-    ratio->Divide(eL);
-    printf("Canvas\n"); 
-    TCanvas c1("tmp_canv", "", 800, 800);
-    gStyle->SetOptStat(0);
-    
-    ratio->Draw();   
-    c1.cd();
-
-    //TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
-    //t1->Draw();
-    //t1->cd();
-    //t1->SetLogy(true);
-    //ratio->Draw();
-    c1.SaveAs(("tightToLooseRatios_2017_"+variable.name()+".png").c_str());
-    ratio->SaveAs(("tightToLooseRatios_2017_"+variable.name()+".root").c_str());
+    std::cout << "Getting variables and yields with selection (" << selection << ") and weight (" << mcWeight << ")" << std::endl;
+    for(auto & variable : variables)
+    {
+     //outSummary << "Cut: " << cut.name() << std::endl;
+     //outSummary << "Variable: " << variable.name() << std::endl;
+     ValueWithSystematics<std::string> dataSel = std::string("");
+     dataSel = "weight * ( " + tightEl + ")";
+     
+     //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
+     auto eT = jetht.getHist("LepPt", variable, "weight * ( " + selection + ")");
+     auto eL = jetht.getHist("LepPt", variable,"weight * (" + mRegion + ")");
+     //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
+     //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
+     
+     auto ratio = static_cast<TH1D*>(eT->Clone("electronEfficiencyAllEta"));
+     ratio->SetTitle("Electron Efficiency");
+     ratio->Divide(eL);
+     printf("Canvas\n"); 
+     TCanvas c1("tmp_canv", "", 800, 800);
+     gStyle->SetOptStat(0);
+     
+     ratio->Draw();   
+     c1.cd();
+     
+     //TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
+     //t1->Draw();
+     //t1->cd();
+     //t1->SetLogy(true);
+     //ratio->Draw();
+     c1.SaveAs(("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()+".png").c_str());
+     ratio->SaveAs(("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()+".root").c_str());
+    }
    }
   
   return 0;
