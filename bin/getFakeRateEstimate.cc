@@ -169,7 +169,7 @@ int main(int argc, char** argv)
      else if(cut.name() == "muon"){
       mRegion_lep = mRegion + " && (nGoodMu > 0)";
      }
-     std::cout << "Measurement region cuts: " << mRegion << std::endl;
+     std::cout << "Measurement region cuts: " << mRegion_lep << std::endl;
      
      auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep + ")");
      //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
