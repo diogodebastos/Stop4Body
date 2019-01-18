@@ -187,5 +187,7 @@ int main(int argc, char** argv)
     }
    }
   
+  system("hadd -f tightToLooseRatios_2017.root tightToLooseRatios_2017_electron_LepPt.root tightToLooseRatios_2017_muon_LepPt.root");
+    
   return 0;
 }
