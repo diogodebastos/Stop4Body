@@ -182,14 +182,13 @@ int main(int argc, char** argv)
      ratio->Draw();   
      c1.cd();
      
-     //TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
-     //t1->Draw();
-     //t1->cd();
-     //t1->SetLogy(true);
-     //ratio->Draw();
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
      c1.SaveAs((name + ".png").c_str());
      ratio->SaveAs((name + ".root").c_str());
+     
+     delete lT;
+     delete lL;
+     delete ratio;
     }
    }
   
