@@ -166,7 +166,7 @@ int main(int argc, char** argv)
      //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
      //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
      
-     auto ratio = static_cast<TH1D*>(eT->Clone("electronEfficiencyAllEta"));
+     auto ratio = static_cast<TH1D*>(eT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
      ratio->SetTitle((cut.name() + " efficiency").c_str());
      ratio->Divide(eL);
      printf("Canvas\n"); 
@@ -181,8 +181,9 @@ int main(int argc, char** argv)
      //t1->cd();
      //t1->SetLogy(true);
      //ratio->Draw();
-     c1.SaveAs(("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()+".png").c_str());
-     ratio->SaveAs(("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()+".root").c_str());
+     std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
+     c1.SaveAs(name + ".png");
+     ratio->SaveAs(name + ".root");
     }
    }
   
