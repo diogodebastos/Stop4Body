@@ -161,8 +161,14 @@ int main(int argc, char** argv)
      dataSel = "weight * ( " + tightEl + ")";
      
      //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
-     auto eT = jetht.getHist("LepPt", variable, "weight * ( " + selection + ")");
-     auto eL = jetht.getHist("LepPt", variable,"weight * (" + mRegion + ")");
+     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + selection + ")");
+     if(cut.name() == "electron") {
+      mRegion = mRegion + " && (nGoodMu == 0)"
+     }
+     else if(cut.name() == "muon"){
+      mRegion = mRegion + " && (nGoodEl == 0)"
+     }
+     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion + ")");
      //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
      //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
      

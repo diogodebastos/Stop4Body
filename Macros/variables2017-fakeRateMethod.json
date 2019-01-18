@@ -2,12 +2,12 @@
  "cuts":[
    {
      "name":"electron",
-     "expression":"(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 100) && (mt < 30) && (nGoodMu == 0)",
+     "expression":"(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 100) && (mt < 30) && (nGoodEl_cutId_veto > 0) && (nGoodMu == 0)",
      "latex":"FRM ($e$ channel)"
    },
    {
      "name":"muon",
-     "expression":"(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 100) && (mt < 30) && (nGoodEl == 0)",
+     "expression":"(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 100) && (mt < 30) && (nGoodMu_cutId_loose > 0) && (nGoodEl == 0)",
      "latex":"FRM ($#mu$ channel)"
    }
   ],
