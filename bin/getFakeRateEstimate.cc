@@ -167,7 +167,7 @@ int main(int argc, char** argv)
      //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
      
      auto ratio = static_cast<TH1D*>(eT->Clone("electronEfficiencyAllEta"));
-     ratio->SetTitle(cut.name() + " efficiency");
+     ratio->SetTitle((cut.name() + " efficiency").c_str());
      ratio->Divide(eL);
      printf("Canvas\n"); 
      TCanvas c1("tmp_canv", "", 800, 800);
