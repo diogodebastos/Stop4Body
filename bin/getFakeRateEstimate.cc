@@ -182,8 +182,8 @@ int main(int argc, char** argv)
      //t1->SetLogy(true);
      //ratio->Draw();
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-     c1.SaveAs(name + ".png");
-     ratio->SaveAs(name + ".root");
+     c1.SaveAs((name + ".png").c_str());
+     ratio->SaveAs((name + ".root").c_str());
     }
    }
   
