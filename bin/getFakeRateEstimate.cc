@@ -152,7 +152,7 @@ int main(int argc, char** argv)
      selection = cut.cut();
     }
 
-    std::cout << "Getting variables and yields with selection (" << selection << ") and weight (" << mcWeight << ")" << std::endl;
+    std::cout << "Getting variables and yields with selection (" << selection << ")" << std::endl;
     for(auto & variable : variables)
     {
      //outSummary << "Cut: " << cut.name() << std::endl;
