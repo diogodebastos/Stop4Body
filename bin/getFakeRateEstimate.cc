@@ -163,18 +163,18 @@ int main(int argc, char** argv)
      //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
      auto lT = jetht.getHist("LepPt", variable, "weight * ( " + selection + ")");
      if(cut.name() == "electron") {
-      mRegion = mRegion + " && (nGoodMu == 0)"
+      mRegion = mRegion + " && (nGoodMu == 0)";
      }
      else if(cut.name() == "muon"){
-      mRegion = mRegion + " && (nGoodEl == 0)"
+      mRegion = mRegion + " && (nGoodEl == 0)";
      }
      auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion + ")");
      //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
      //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
      
-     auto ratio = static_cast<TH1D*>(eT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
+     auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
      ratio->SetTitle((cut.name() + " efficiency").c_str());
-     ratio->Divide(eL);
+     ratio->Divide(lL);
      printf("Canvas\n"); 
      TCanvas c1("tmp_canv", "", 800, 800);
      gStyle->SetOptStat(0);
