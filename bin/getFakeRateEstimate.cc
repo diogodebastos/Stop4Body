@@ -149,17 +149,7 @@ int main(int argc, char** argv)
   {
     if(cut.cut() != "")
     {
-      if(cumulativeCuts)
-      {
-        if(selection == "")
-          selection  = "(" + cut.cut() + ")";
-        else
-          selection += " && (" + cut.cut() + ")";
-      }
-      else
-      {
-        selection = cut.cut();
-      }
+     selection = cut.cut();
     }
 
     std::cout << "Getting variables and yields with selection (" << selection << ") and weight (" << mcWeight << ")" << std::endl;
