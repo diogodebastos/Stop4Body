@@ -104,8 +104,8 @@ int main(int argc, char** argv)
   }
 
   // Measurement Region
-  std::string mRegion = "(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 150) && (mt < 50)";
-  std::string mRegion_lep = "";
+  std::string mRegion_lep_tight = "";
+  std::string mRegion_lep_loose = "";
   std::string tightEl = "(nGoodEl_cutId_veto)";
   std::string tightMu = "(nGoodMu_cutId_loose)";
   
@@ -162,16 +162,18 @@ int main(int argc, char** argv)
      dataSel = "weight * ( " + tightEl + ")";
      
      //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
-     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + selection + ")");
      if(cut.name() == "electron") {
-      mRegion_lep = mRegion + " && (nGoodEl > 0)";
+      mRegion_lep_tight = selection + " && (nGoodEl_cutId_veto)"
+      mRegion_lep_loose = selection + " && (nGoodEl > 0)";
      }
      else if(cut.name() == "muon"){
-      mRegion_lep = mRegion + " && (nGoodMu > 0)";
+      mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)"
+      mRegion_lep_loose = selection + " && (nGoodMu > 0)";
      }
-     std::cout << "Measurement region cuts: " << mRegion_lep << std::endl;
+     //std::cout << "Measurement region cuts: " << selection << std::endl;
      
-     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep + ")");
+     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + mRegion_lep_tight + ")");
+     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep_loose + ")");
      //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
      //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
      
