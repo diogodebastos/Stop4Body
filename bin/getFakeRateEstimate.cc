@@ -171,7 +171,7 @@ int main(int argc, char** argv)
      }
      std::cout << "Measurement region cuts: " << mRegion << std::endl;
      
-     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion + ")");
+     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep + ")");
      //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
      //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
      
