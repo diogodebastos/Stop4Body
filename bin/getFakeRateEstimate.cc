@@ -105,6 +105,7 @@ int main(int argc, char** argv)
 
   // Measurement Region
   std::string mRegion = "(HLT_PFHT1050 == 1) && (HT > 1200) && (Met < 150) && (mt < 50)";
+  std::string mRegion_lep = "";
   std::string tightEl = "(nGoodEl_cutId_veto)";
   std::string tightMu = "(nGoodMu_cutId_loose)";
   
@@ -163,10 +164,10 @@ int main(int argc, char** argv)
      //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
      auto lT = jetht.getHist("LepPt", variable, "weight * ( " + selection + ")");
      if(cut.name() == "electron") {
-      mRegion = mRegion + " && (nGoodEl > 0)";
+      mRegion_lep = mRegion + " && (nGoodEl > 0)";
      }
      else if(cut.name() == "muon"){
-      mRegion = mRegion + " && (nGoodMu > 0)";
+      mRegion_lep = mRegion + " && (nGoodMu > 0)";
      }
      std::cout << "Measurement region cuts: " << mRegion << std::endl;
      
