@@ -149,5 +149,6 @@ elif [ ${YEAR} == 2017 ]; then
  # Make the JSONs for plotting
  mergeJSONs $JSON_PATH/plot2017.json           $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json 
  mergeJSONs $JSON_PATH/plot2017-QCD-en.json    $JSON_PATH/allMC-QCD-en.json $JSON_PATH/DataMetHT.json 
+ mergeJSONs $JSON_PATH/plot2017-inj.json       $JSON_PATH/plot2017.json $JSON_PATH/stop500.json
  
 fi
