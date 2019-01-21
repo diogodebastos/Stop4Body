@@ -1254,7 +1254,7 @@ int main(int argc, char** argv)
         Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v; 
         Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
         Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v; 
-        if(!process.isdata() || !process.issignal()){
+        if(!(process.isdata() || process.issignal())){
          inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
          inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
          inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
@@ -2095,7 +2095,7 @@ int main(int argc, char** argv)
 
           //TODO: This should be updated for all samples after the next heppy run
           //2016 HLT
-          if(!process.isdata() || !process.issignal()){           
+          if(!(process.isdata() || process.issignal())){           
            HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
            HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
            HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
