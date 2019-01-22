@@ -553,7 +553,10 @@ int main(int argc, char** argv)
 
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel);
-      TH1D* sigH = nullptr; // TODO: stack different signal points
+      
+      // TODO: stack different signal points
+      THStack* sigS = new THStack((cut.name() + "_" + variable.name()).c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str()); 
+      TH1D* sigH = nullptr;       
 
       if(dofakeclosure)
         dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str());
@@ -583,6 +586,7 @@ int main(int argc, char** argv)
           sigH = tmpHist;
         else
           delete tmpHist;
+        sigS->Add(tmpHist);
       }
 
       for(auto& process : MC)
@@ -850,12 +854,13 @@ int main(int argc, char** argv)
       if(!puTest)
       {
         dataH->Draw("same");
-        sigH->Draw("hist same");
+        //sigH->Draw("hist same");
+        sigS->Draw("nostack");
       }
       else
       {
         TH1D* data2 = static_cast<TH1D*>(dataH->Clone("dataToDraw"));
-        data2->Scale(mcH->Integral()/data2->Integral());
+        data2->Scale(mcH->Integral()/data2->Integral()); //Scale data to MC to compare shape
         data2->Draw("same");
       }
 
