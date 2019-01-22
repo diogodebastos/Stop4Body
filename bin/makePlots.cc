@@ -584,9 +584,9 @@ int main(int argc, char** argv)
         tmpHist->Write(Sanitize(process.label()).c_str());
         if(sigH == nullptr)
           sigH = tmpHist;
+          sigS->Add(tmpHist);
         else
           delete tmpHist;
-        sigS->Add(tmpHist);
       }
 
       for(auto& process : MC)
