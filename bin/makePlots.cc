@@ -582,9 +582,10 @@ int main(int argc, char** argv)
         syncPlot.cd();
 
         tmpHist->Write(Sanitize(process.label()).c_str());
-        if(sigH == nullptr)
-          sigH = tmpHist;
-          sigS->Add(tmpHist);
+        if(sigH == nullptr){
+         sigH = tmpHist;
+         sigS->Add(tmpHist);
+        }
         else
           delete tmpHist;
       }
