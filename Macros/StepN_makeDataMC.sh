@@ -4,47 +4,17 @@
 . setupPaths.sh
 
 INPUT=${NTUPLE_DIR}
-OUTPUT=${INPUT}/DataMC
-OUTPUT_POW=${INPUT}/DataMC_pow
-OUTPUT_LEP=${INPUT}/DataMC_lep
-
-OUTPUT_2017=${INPUT}/DataMC_2017
-OUTPUT_2017EL=${INPUT}/DataMC_2017el
-OUTPUT_2017MU=${INPUT}/DataMC_2017mu
-
-OUTPUT_TEST=${INPUT}/DataMC_test
+OUTPUT=${INPUT}/DataMC-signal-stack
+OUTPUT_QUICK=${INPUT}/DataMC_quick
 
 if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then
     mkdir -p ${OUTPUT}
   fi
-#  if [[ ! -d ${OUTPUT_POW} ]] ; then
-#    mkdir -p ${OUTPUT_POW}
-#  fi
-#  if [[ ! -d ${OUTPUT_LEP} ]] ; then
-#    mkdir -p ${OUTPUT_LEP}
-#  fi
-  if [[ ! -d ${OUTPUT_2017} ]] ; then
-    mkdir -p ${OUTPUT_2017}
-  fi
-#  if [[ ! -d ${OUTPUT_2017EL} ]] ; then
-#    mkdir -p ${OUTPUT_2017EL}
-#  fi
-#  if [[ ! -d ${OUTPUT_2017MU} ]] ; then
-#    mkdir -p ${OUTPUT_2017MU}
-#  fi
-  if [[ ! -d ${OUTPUT_TEST} ]] ; then
-    mkdir -p ${OUTPUT_TEST}
-  fi
-  #makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT}     --inDir ${INPUT} --variables variables.json --cuts variables.json
-  #makePlots --json ${JSON_PATH}/plot${YEAR}_pow.json --outDir ${OUTPUT_POW} --inDir ${INPUT} --variables variables.json --cuts variables.json
-  #makePlots --json ${JSON_PATH}/plot${YEAR}_lep.json --outDir ${OUTPUT_LEP} --inDir ${INPUT} --variables variables.json --cuts variables.json  #makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT_2017EL} --inDir ${INPUT} --variables variables2017el.json --cuts variables2017el.json --puTest
-  
-  #Electron Final state
-#  makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT_2017EL} --inDir ${INPUT} --variables variables2017el.json --cuts variables2017el.json --puTest
-  #Muon Final state
-#  makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT_2017EL} --inDir ${INPUT} --variables variables2017mu.json --cuts variables2017el.json --puTest
+  if [[ ! -d ${OUTPUT_QUICK} ]] ; then
+    mkdir -p ${OUTPUT_QUICK}
+  fi  
 
-  makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT_2017} --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json --puTest
-  makePlots --json ${JSON_PATH}/plot${YEAR}.json     --outDir ${OUTPUT_TEST} --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json --puTest --noSF
+  makePlots --doSummary --quick --json ${JSON_PATH}/plot${YEAR}-inj-quick.json  --outDir ${OUTPUT_QUICK} --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json
+  makePlots --doSummary         --json ${JSON_PATH}/plot${YEAR}-inj.json        --outDir ${OUTPUT}       --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json
 fi
