@@ -561,7 +561,6 @@ int main(int argc, char** argv)
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel);
       
-      // TODO: stack different signal points
       THStack* sigS = new THStack((cut.name() + "_" + variable.name()).c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str()); 
       TH1D* sigH = nullptr;       
 
