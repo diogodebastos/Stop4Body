@@ -89,6 +89,94 @@ int main(int argc, char** argv)
   bool quick = false;
   bool final = false;
 
+  for(int i = 1; i < argc; ++i)
+  {
+    std::string argument = argv[i];
+
+    if(argument == "--help")
+    {
+      printHelp();
+      return 0;
+    }
+
+    if(argument == "--json")
+      jsonFileName = argv[++i];
+
+    if(argument == "--outDir")
+      outputDirectory = argv[++i];
+
+    if(argument == "--inDir")
+      inputDirectory = argv[++i];
+
+    if(argument == "--suffix")
+      suffix = argv[++i];
+
+    if(argument == "--variables")
+      variablesJson = argv[++i];
+
+    if(argument == "--cuts")
+      cutsJson = argv[++i];
+
+    if(argument == "--lumi")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> luminosity;
+    }
+
+    if(argument == "--noPUweight")
+    {
+      noPUweight = true;
+    }
+
+    if(argument == "--puTest") // This option normalizes data and MC so we compare shapes
+    {
+      puTest = true;
+    }
+
+    if(argument == "--verbose")
+    {
+      verbose = true;
+    }
+
+    if(argument == "--final")
+    {
+      final = true;
+    }
+
+    if(argument == "--cumulative")
+    {
+      cumulativeCuts = true;
+    }
+
+    if(argument == "--rawEvents") // Change the MC weight to 1 to get the raw number of events (does not affect if puTest is set)
+    {
+      rawEvents = true;
+    }
+
+    if(argument == "--noSF")
+    {
+      noSF = true;
+    }
+
+    if(argument == "--unblind")
+    {
+      unblind = true;
+    }
+
+    if(argument == "--dofakeclosure")
+    {
+      dofakeclosure = true;
+      unblind = true;
+    }
+
+    if(argument == "--doSummary")
+      doSummary = true;
+      
+    if(argument == "--quick")
+      quick = true;
+  }
+
   double constantUncertainties = 0;
   constantUncertainties += 0.025*0.025; // Luminosity uncertainty
   constantUncertainties +=  0.01* 0.01; // Trigger efficiency
@@ -228,94 +316,6 @@ int main(int argc, char** argv)
     std::cout << "You did not pass enough parameters" << std::endl;
     printHelp();
     return 0;
-  }
-
-  for(int i = 1; i < argc; ++i)
-  {
-    std::string argument = argv[i];
-
-    if(argument == "--help")
-    {
-      printHelp();
-      return 0;
-    }
-
-    if(argument == "--json")
-      jsonFileName = argv[++i];
-
-    if(argument == "--outDir")
-      outputDirectory = argv[++i];
-
-    if(argument == "--inDir")
-      inputDirectory = argv[++i];
-
-    if(argument == "--suffix")
-      suffix = argv[++i];
-
-    if(argument == "--variables")
-      variablesJson = argv[++i];
-
-    if(argument == "--cuts")
-      cutsJson = argv[++i];
-
-    if(argument == "--lumi")
-    {
-      std::stringstream convert;
-      convert << argv[++i];
-      convert >> luminosity;
-    }
-
-    if(argument == "--noPUweight")
-    {
-      noPUweight = true;
-    }
-
-    if(argument == "--puTest") // This option normalizes data and MC so we compare shapes
-    {
-      puTest = true;
-    }
-
-    if(argument == "--verbose")
-    {
-      verbose = true;
-    }
-
-    if(argument == "--final")
-    {
-      final = true;
-    }
-
-    if(argument == "--cumulative")
-    {
-      cumulativeCuts = true;
-    }
-
-    if(argument == "--rawEvents") // Change the MC weight to 1 to get the raw number of events (does not affect if puTest is set)
-    {
-      rawEvents = true;
-    }
-
-    if(argument == "--noSF")
-    {
-      noSF = true;
-    }
-
-    if(argument == "--unblind")
-    {
-      unblind = true;
-    }
-
-    if(argument == "--dofakeclosure")
-    {
-      dofakeclosure = true;
-      unblind = true;
-    }
-
-    if(argument == "--doSummary")
-      doSummary = true;
-      
-    if(argument == "--quick")
-      quick = true;
   }
 
   if(jsonFileName == "")
