@@ -591,8 +591,8 @@ int main(int argc, char** argv)
         //tmpHist->Write(Sanitize(process.label()).c_str());
         tmpHist->Write(process.tag().c_str());
         
-        sigH->Add(tmpHist);
         sigS->Add(tmpHist);       
+        sigH = tmpHist;
         /*
         if(sigH == nullptr){
          sigH->Add(tmpHist);
