@@ -315,7 +315,7 @@ int main(int argc, char** argv)
       doSummary = true;
       
     if(argument == "--quick")
-      doSummary = true;
+      quick = true;
   }
 
   if(jsonFileName == "")
