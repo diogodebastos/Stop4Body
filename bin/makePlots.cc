@@ -137,7 +137,9 @@ int main(int argc, char** argv)
       }
       return;
     };
-
+    
+    systematics.push_back("PU");
+    
     if(!quick){
      systematics.push_back("Q2");
      //loadSystName("Q2_", 8);
@@ -193,10 +195,8 @@ int main(int argc, char** argv)
      
      //systematics.push_back("triggerEfficiency_stat");
     }
-    
-    systematics.push_back("PU");
-   }
   }
+  
   std::vector<std::string> variations;
   {
     for(auto& syst : systematics)
