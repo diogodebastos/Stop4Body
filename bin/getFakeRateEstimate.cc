@@ -164,11 +164,11 @@ int main(int argc, char** argv)
      //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
      if(cut.name() == "electron") {
       mRegion_lep_tight = selection + " && (nGoodEl_cutId_veto)";
-      mRegion_lep_loose = selection + " && (nGoodEl > 0)";
+      mRegion_lep_loose = selection + " && (nGoodEl)";
      }
      else if(cut.name() == "muon"){
       mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)";
-      mRegion_lep_loose = selection + " && (nGoodMu > 0)";
+      mRegion_lep_loose = selection + " && (nGoodMu)";
      }
      //std::cout << "Measurement region cuts: " << selection << std::endl;
      
