@@ -858,7 +858,7 @@ int main(int argc, char** argv)
       {
         dataH->Draw("same");
         //sigH->Draw("hist same");
-        sigS->Draw("nostack");
+        sigS->Draw("same nostack");
       }
       else
       {
