@@ -589,7 +589,9 @@ int main(int argc, char** argv)
         else
           delete tmpHist;
       }
-
+      
+      sigS->Write("sigStack");
+      
       for(auto& process : MC)
       {
         cwd->cd();
@@ -1010,6 +1012,7 @@ int main(int argc, char** argv)
       delete dataH;
       delete mcH;
       delete sigH;
+      delete sigS;
       // Delete individual hists in the stack
       TList* histList = mcS->GetHists();
       if(histList != nullptr)
