@@ -590,12 +590,17 @@ int main(int argc, char** argv)
         std::cout << "Process: " << process.tag().c_str() << std::endl;
         //tmpHist->Write(Sanitize(process.label()).c_str());
         tmpHist->Write(process.tag().c_str());
+        
+        sigH->Add(tmpHist);
+        sigS->Add(tmpHist);       
+        /*
         if(sigH == nullptr){
-         sigH = tmpHist;
+         sigH->Add(tmpHist);
          sigS->Add(tmpHist);
         }
         else
           delete tmpHist;
+        */
       }
       
       sigS->Write("sigStack");
