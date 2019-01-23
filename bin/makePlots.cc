@@ -86,6 +86,7 @@ int main(int argc, char** argv)
   bool unblind = false;
   bool dofakeclosure = false;
   bool doSummary = false;
+  bool quick = false;
   bool final = false;
 
   double constantUncertainties = 0;
@@ -137,61 +138,64 @@ int main(int argc, char** argv)
       return;
     };
 
+    if(!quick){
+     systematics.push_back("Q2");
+     //loadSystName("Q2_", 8);
+     //systematics.push_back("Q2_1");
+     //systematics.push_back("Q2_2");
+     //systematics.push_back("Q2_3");
+     //systematics.push_back("Q2_4");
+     ////systematics.push_back("Q2_5");
+     //systematics.push_back("Q2_6");
+     ////systematics.push_back("Q2_7");
+     //systematics.push_back("Q2_8");
+     
+     systematics.push_back("CFErr1");
+     systematics.push_back("CFErr2");
+     systematics.push_back("HF");
+     systematics.push_back("HFStats1");
+     systematics.push_back("HFStats2");
+     systematics.push_back("LF");
+     systematics.push_back("LFStats1");
+     systematics.push_back("LFStats2");
+     
+     //systematics.push_back("FullFast");
+     systematics.push_back("FullFast_HIIP_AltCorr");
+     systematics.push_back("FullFast_ID_AltCorr");
+     //loadSystName("FullFast_HIIP_Electron_Bin", 40);
+     //loadSystName("FullFast_HIIP_Muon_Bin", 48);
+     //loadSystName("FullFast_ID_Electron_Bin", 35);
+     //loadSystName("FullFast_ID_Muon_Bin", 42);
+     
+     //systematics.push_back("LeptonIDSF_AltCorr");
+     //systematics.push_back("LeptonISOSF_AltCorr");
+     systematics.push_back("LeptonIDSF2017_AltCorr");
+     systematics.push_back("LeptonISOSF2017_AltCorr");
+     //loadSystName("LeptonIDSF_Electron_Bin", 98);
+     //loadSystName("LeptonIDSF_Muon_Bin", 56);
+     //loadSystName("LeptonISOSF_Electron_Bin", 12);
+     //loadSystName("LeptonISOSF_Muon_Bin", 6);
+     
+     //systematics.push_back("ISRweight_AltCorr");
+     loadSystName("ISRweight_Bin", 6);
+     
+     //systematics.push_back("EWKISRweight_AltCorr");
+     loadSystName("EWKISRweight_Bin", 7);
+     
+     //systematics.push_back("TightLoose_AltCorr");
+     loadSystName("TightLoose_Electron_Bin", 16);
+     loadSystName("TightLoose_Muon_Bin", 18);
+     
+     //systematics.push_back("TightLoose_NU_AltCorr");
+     loadSystName("TightLoose_NU_Bin", 5);
+     
+     systematics.push_back("triggerEfficiency");
+     
+     //systematics.push_back("triggerEfficiency_stat");
+    }
+    
     systematics.push_back("PU");
-
-    systematics.push_back("Q2");
-    //loadSystName("Q2_", 8);
-    //systematics.push_back("Q2_1");
-    //systematics.push_back("Q2_2");
-    //systematics.push_back("Q2_3");
-    //systematics.push_back("Q2_4");
-    ////systematics.push_back("Q2_5");
-    //systematics.push_back("Q2_6");
-    ////systematics.push_back("Q2_7");
-    //systematics.push_back("Q2_8");
-
-    systematics.push_back("CFErr1");
-    systematics.push_back("CFErr2");
-    systematics.push_back("HF");
-    systematics.push_back("HFStats1");
-    systematics.push_back("HFStats2");
-    systematics.push_back("LF");
-    systematics.push_back("LFStats1");
-    systematics.push_back("LFStats2");
-
-    //systematics.push_back("FullFast");
-    systematics.push_back("FullFast_HIIP_AltCorr");
-    systematics.push_back("FullFast_ID_AltCorr");
-    //loadSystName("FullFast_HIIP_Electron_Bin", 40);
-    //loadSystName("FullFast_HIIP_Muon_Bin", 48);
-    //loadSystName("FullFast_ID_Electron_Bin", 35);
-    //loadSystName("FullFast_ID_Muon_Bin", 42);
-
-    //systematics.push_back("LeptonIDSF_AltCorr");
-    //systematics.push_back("LeptonISOSF_AltCorr");
-    systematics.push_back("LeptonIDSF2017_AltCorr");
-    systematics.push_back("LeptonISOSF2017_AltCorr");
-    //loadSystName("LeptonIDSF_Electron_Bin", 98);
-    //loadSystName("LeptonIDSF_Muon_Bin", 56);
-    //loadSystName("LeptonISOSF_Electron_Bin", 12);
-    //loadSystName("LeptonISOSF_Muon_Bin", 6);
-
-    //systematics.push_back("ISRweight_AltCorr");
-    loadSystName("ISRweight_Bin", 6);
-
-    //systematics.push_back("EWKISRweight_AltCorr");
-    loadSystName("EWKISRweight_Bin", 7);
-
-    //systematics.push_back("TightLoose_AltCorr");
-    loadSystName("TightLoose_Electron_Bin", 16);
-    loadSystName("TightLoose_Muon_Bin", 18);
-
-    //systematics.push_back("TightLoose_NU_AltCorr");
-    loadSystName("TightLoose_NU_Bin", 5);
-
-    systematics.push_back("triggerEfficiency");
-
-    //systematics.push_back("triggerEfficiency_stat");
+   }
   }
   std::vector<std::string> variations;
   {
