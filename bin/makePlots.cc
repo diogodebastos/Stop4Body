@@ -588,7 +588,7 @@ int main(int argc, char** argv)
         auto tmpHist = process.getHist(cut.name(), variable, mcSel);
         syncPlot.cd();
 
-        tmpHist->Write(Sanitize(process.label()).c_str());
+        //tmpHist->Write(Sanitize(process.label()).c_str());
         tmpHist->Write(process.tag()).c_str());
         if(sigH == nullptr){
          sigH = tmpHist;
