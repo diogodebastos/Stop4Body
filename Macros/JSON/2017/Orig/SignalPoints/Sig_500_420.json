@@ -12,7 +12,6 @@
       "fill":0,
       "marker":1,
       "label":"signal=(500,420)",
-      "selection":"(GenSusyMStop==500)&&(GenSusyMNeutralino==420)",
       "files":[
         {
           "tag":"T2DegStop_500_420",
