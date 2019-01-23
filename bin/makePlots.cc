@@ -587,7 +587,7 @@ int main(int argc, char** argv)
         cwd->cd();
         auto tmpHist = process.getHist(cut.name(), variable, mcSel);
         syncPlot.cd();
-
+        std::cout << "Process: " << process.tag().c_str() << std::endl;
         //tmpHist->Write(Sanitize(process.label()).c_str());
         tmpHist->Write(process.tag().c_str());
         if(sigH == nullptr){
