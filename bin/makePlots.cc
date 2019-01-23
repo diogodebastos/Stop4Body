@@ -173,7 +173,7 @@ int main(int argc, char** argv)
     if(argument == "--doSummary")
       doSummary = true;
       
-    if(argument == "--quick")
+    if(argument == "--quick") //Don't load all the systematics for quicker plots. Use when debuggind or want to check small code iterations
       quick = true;
   }
 
@@ -587,20 +587,11 @@ int main(int argc, char** argv)
         cwd->cd();
         auto tmpHist = process.getHist(cut.name(), variable, mcSel);
         syncPlot.cd();
-        std::cout << "Process: " << process.tag().c_str() << std::endl;
-        //tmpHist->Write(Sanitize(process.label()).c_str());
-        tmpHist->Write(process.tag().c_str());
+        //std::cout << "Process: " << process.tag().c_str() << std::endl;
+        tmpHist->Write(Sanitize(process.label()).c_str());
         
         sigS->Add(tmpHist);       
         sigH = tmpHist;
-        /*
-        if(sigH == nullptr){
-         sigH->Add(tmpHist);
-         sigS->Add(tmpHist);
-        }
-        else
-          delete tmpHist;
-        */
       }
       
       sigS->Write("sigStack");
