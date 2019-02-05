@@ -104,8 +104,8 @@
       "label":"N_{b Loose}",
       "legPos":"top",
       "min":-0.5,
-      "max":6.5,
-      "bins":7
+      "max":5.5,
+      "bins":6
     },
     {
       "expression":"DrJetHBLep",
