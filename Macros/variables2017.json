@@ -14,21 +14,6 @@
      "name":"Preselection",
      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl_cutId_veto + nGoodMu_cutId_loose == 1)",
      "latex":"Preselection"
-   },
-   {
-     "name":"PS_loosest",
-     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu == 1)",
-     "latex":"Preselection loosest"
-   },
-   {
-     "name":"PS_old_loosest",
-     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl+nGoodMu <= 2) ",
-     "latex":"Preselection loosest"
-   },
-   {
-     "name":"PS_new_lep_id",
-     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl_cutId_veto + nGoodMu_cutId_loose <= 2)",
-     "latex":"Preselection"
    }
   ],
   "variables":[
@@ -104,8 +89,8 @@
       "label":"N_{b Loose}",
       "legPos":"top",
       "min":-0.5,
-      "max":6.5,
-      "bins":7
+      "max":5.5,
+      "bins":6
     },
     {
       "expression":"DrJetHBLep",
