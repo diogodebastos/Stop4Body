@@ -204,7 +204,7 @@ int main(int argc, char** argv)
   {
   }
   
-  if(doPreFakeRate)
+  if(preFakeRate)
   {
    // Signal Region = Preselection
    controlRegion = "";
