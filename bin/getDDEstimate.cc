@@ -62,6 +62,7 @@ int main(int argc, char** argv)
   bool invertMet = false;
   bool invertLepPt = false;
   bool special = false;
+  bool preFakeRate = false;
 
   if(argc < 2)
   {
@@ -140,6 +141,11 @@ int main(int argc, char** argv)
     {
       special = true;
     }
+    
+    if(argument == "--doPreFakeRate")
+    {
+      preFakeRate = true;
+    }
   }
 
   if(SRCut < 0.2 && !special)
@@ -197,7 +203,14 @@ int main(int argc, char** argv)
   else
   {
   }
-
+  
+  if(doPreFakeRate)
+  {
+   // Signal Region = Preselection
+   controlRegion = "";
+   signalRegion = "";
+  }
+  
   std::string wjetsControlRegion = controlRegion + " && " + wjetsEnrich;
   std::string ttbarControlRegion = controlRegion + " && " + ttbarEnrich;
   std::string wjetsSignalRegionClosure = signalRegion + " && " + wjetsEnrich;
