@@ -185,8 +185,11 @@ int main(int argc, char** argv)
      ratio->SetTitle((cut.name() + " efficiency").c_str());
      ratio->Divide(lL);
      
-     pEff = new TEfficiency(lT,lL);
-     pFile->Write();
+     if(TEfficiency::CheckConsistency(h_pass,h_total))
+     {
+      pEff = new TEfficiency(lT,lL);
+      pFile->Write();
+     }
      
      printf("Canvas\n"); 
      TCanvas c1("tmp_canv", "", 800, 800);
