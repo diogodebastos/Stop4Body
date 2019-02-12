@@ -149,6 +149,8 @@ int main(int argc, char** argv)
   //auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
   TEfficiency* pEff = 0;
   TFile* pFile = new TFile("efficiency.root","recreate");
+  TH1D* passTight = nullptr;
+  TH1D* totalLoose = nullptr;
   
   for(auto& cut : cutFlow)
   {
@@ -185,9 +187,12 @@ int main(int argc, char** argv)
      ratio->SetTitle((cut.name() + " efficiency").c_str());
      ratio->Divide(lL);
      
-     if(TEfficiency::CheckConsistency(lT,lL))
+     passTight = lT->Clone();
+     totalLoose = lL->Clone();
+     
+     if(TEfficiency::CheckConsistency(passTight,totalLoose))
      {
-      pEff = new TEfficiency(lT,lL);
+      pEff = new TEfficiency(passTight,totalLoose);
       pFile->Write();
      }
      
@@ -205,6 +210,7 @@ int main(int argc, char** argv)
      delete lT;
      delete lL;
      delete ratio;
+     delete pEff;
     }
    }
   
