@@ -186,7 +186,7 @@ int main(int argc, char** argv)
      ratio->Divide(lL);
      
      pEff = new TEfficiency(lT,lL);
-     pFile->Write()
+     pFile->Write();
      
      printf("Canvas\n"); 
      TCanvas c1("tmp_canv", "", 800, 800);
