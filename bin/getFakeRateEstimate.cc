@@ -191,8 +191,13 @@ int main(int argc, char** argv)
      passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
      totalLoose = static_cast<TH1D*>(lL->Clone("looseLeptons"));
      
-     passTight->Draw(); 
+     passTight->Draw();
+     int n1bins = passTight.GetNbinsX(); 
      totalLoose->Draw(); 
+     int n2bins = totalLoose.GetNbinsX(); 
+     std::cout << "n bins passTight " << n1bins << std::endl;
+     std::cout << "n bins totalLoose " << n2bins << std::endl;
+     
      checkConsistency = TEfficiency::CheckConsistency(*passTight,*totalLoose);
      std::cout << "Consistency check: " << checkConsistency << std::endl;
      
