@@ -160,8 +160,8 @@ int main(int argc, char** argv)
      
 //     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + mRegion_lep_tight + ")");
 //     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep_loose + ")");
-     auto lT = jetht.getHist("LepPt", variable, "( " + mRegion_lep_tight + ")");
-     auto lL = jetht.getHist("LepPt", variable,"(" + mRegion_lep_loose + ")");
+     auto lT = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + ")");
+     auto lL = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + ")");
      
      auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
      ratio->SetTitle((cut.name() + " efficiency").c_str());
@@ -187,7 +187,7 @@ int main(int argc, char** argv)
      }
      
      printf("Canvas\n"); 
-     TCanvas c1("tmp_canv", "", 800, 800);
+     TCanvas c1("eff\_canv", "", 800, 800);
      gStyle->SetOptStat(0);
      
      ratio->Draw();   
@@ -197,9 +197,9 @@ int main(int argc, char** argv)
      c1.SaveAs((name + ".png").c_str());
      ratio->SaveAs((name + ".root").c_str());
      
-     TCanvas c2("eff_canv", "", 800, 800);
-     pEff->Draw("");     
-     c2.SaveAs(("eff_" + name + ".png").c_str());
+     pEff->Draw("");
+     pEff->SetTitle((cut.name() + " efficiency").c_str());
+     c1.SaveAs(("eff_" + name + ".png").c_str());
      
      delete passTight;
      delete totalLoose;
