@@ -192,9 +192,9 @@ int main(int argc, char** argv)
      totalLoose = static_cast<TH1D*>(lL->Clone("looseLeptons"));
      
      passTight->Draw();
-     int n1bins = passTight.GetNbinsX(); 
+     int n1bins = passTight->GetNbinsX(); 
      totalLoose->Draw(); 
-     int n2bins = totalLoose.GetNbinsX(); 
+     int n2bins = totalLoose->GetNbinsX(); 
      std::cout << "n bins passTight " << n1bins << std::endl;
      std::cout << "n bins totalLoose " << n2bins << std::endl;
      
