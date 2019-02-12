@@ -147,7 +147,8 @@ int main(int argc, char** argv)
   //TO DO: Replace other with jetht when samples are available
   //auto eL = jetht.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
   //auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
-  TEfficiency* pEff = 0;
+  //TEfficiency* pEff = 0;
+  //TEfficiency* pEff = new TEfficiency("eff","my efficiency;x;y;#epsilon",10,0,10,20,-5,5);
   TFile* pFile = new TFile("efficiency.root","recreate");
   TH1D* passTight = nullptr;
   TH1D* totalLoose = nullptr;
@@ -188,18 +189,22 @@ int main(int argc, char** argv)
      ratio->SetTitle((cut.name() + " efficiency").c_str());
      ratio->Divide(lL);
      
-     passTight = lT->Clone("tightlLeptons");
-     totalLoose = lL->Clone("looseLeptons");
+     passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
+     totalLoose = static_cast<TH1D*>(lL->Clone("looseLeptons"));
      
-     checkConsistency = TEfficiency::CheckConsistency(passTight,totalLoose)
+     passTight->Draw(); 
+     totalLoose->Draw(); 
+     //checkConsistency = TEfficiency::CheckConsistency(passTight,totalLoose);
      
-     std::cout << "Consistency check: " << checkConsistency << std::endl 
+     //std::cout << "Consistency check: " << checkConsistency << std::endl;
      
-     if(checkConsistency)
-     {
-      pEff = new TEfficiency(passTight,totalLoose);
-      pFile->Write();
-     }
+     TEfficiency* pEff = new TEfficiency(*passTight,*totalLoose);
+     pFile->Write();
+     //if(checkConsistency)
+     //{
+     // pEff = new TEfficiency(passTight,totalLoose);
+     // pFile->Write();
+     //}
      
      printf("Canvas\n"); 
      TCanvas c1("tmp_canv", "", 800, 800);
