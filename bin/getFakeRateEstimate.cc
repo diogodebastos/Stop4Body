@@ -188,8 +188,8 @@ int main(int argc, char** argv)
      ratio->SetTitle((cut.name() + " efficiency").c_str());
      ratio->Divide(lL);
      
-     passTight = lT->Clone();
-     totalLoose = lL->Clone();
+     passTight = lT->Clone("tightlLeptons");
+     totalLoose = lL->Clone("looseLeptons");
      
      checkConsistency = TEfficiency::CheckConsistency(passTight,totalLoose)
      
