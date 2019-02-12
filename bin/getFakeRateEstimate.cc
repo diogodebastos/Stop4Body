@@ -185,7 +185,7 @@ int main(int argc, char** argv)
      ratio->SetTitle((cut.name() + " efficiency").c_str());
      ratio->Divide(lL);
      
-     if(TEfficiency::CheckConsistency(h_pass,h_total))
+     if(TEfficiency::CheckConsistency(lT,lL))
      {
       pEff = new TEfficiency(lT,lL);
       pFile->Write();
