@@ -14,6 +14,7 @@
 #include <TLegend.h>
 #include <TPaveText.h>
 #include <TGraphErrors.h>
+#include <TEfficiency.h>
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
@@ -146,6 +147,9 @@ int main(int argc, char** argv)
   //TO DO: Replace other with jetht when samples are available
   //auto eL = jetht.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
   //auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
+  TEfficiency* pEff = 0;
+  TFile* pFile = new TFile("efficiency.root","recreate");
+  
   for(auto& cut : cutFlow)
   {
     if(cut.cut() != "")
@@ -180,6 +184,10 @@ int main(int argc, char** argv)
      auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
      ratio->SetTitle((cut.name() + " efficiency").c_str());
      ratio->Divide(lL);
+     
+     pEff = new TEfficiency(lT,lL);
+     pFile->Write()
+     
      printf("Canvas\n"); 
      TCanvas c1("tmp_canv", "", 800, 800);
      gStyle->SetOptStat(0);
