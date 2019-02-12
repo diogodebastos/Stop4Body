@@ -126,28 +126,8 @@ int main(int argc, char** argv)
     return 1;
   }
   auto jetht = Data.process(jetHTIndex);
-/*
-  size_t otherIndex = 0;
-  bool foundOtherIndex = false;
-  for (size_t i = 0; i < MC.nProcesses(); i++) {
-   if(MC.process(i).tag() != "ZInv" || MC.process(i).tag() != "QCD") {
-    otherIndex = i;
-    foundOtherIndex = true;
-   }
-  }
-  if(!foundOtherIndex)
-  {
-    std::cout << "There isn't a other MC sample in the JSON file" << std::endl;
-    return 1;
-  }
-  auto other = MC.process(otherIndex);
-*/
-  
-  // Plot eTL
-  //TO DO: Replace other with jetht when samples are available
-  //auto eL = jetht.getHist("LepPt", "LepPt;Evt.","weight * ()", 500, 0,500);
-  //auto eT = jetht.getHist("LepPt", "LepPt;Evt.", "weight * ( "+tightEl+")", 500, 0,500);
-  TFile* pFile = new TFile("efficiency.root","recreate");
+
+  //TFile* pFile = new TFile("efficiency.root","recreate");
   TEfficiency* pEff = 0;
   TH1D* passTight = nullptr;
   TH1D* totalLoose = nullptr;
@@ -177,12 +157,11 @@ int main(int argc, char** argv)
       mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)";
       mRegion_lep_loose = selection + " && (nGoodMu)";
      }
-     //std::cout << "Measurement region cuts: " << selection << std::endl;
      
-     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + mRegion_lep_tight + ")");
-     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep_loose + ")");
-     //auto eT = jetht.getHist("LepPt", "LepPt;Ratio", tightEl, 40, 0,200);
-     //auto eL = jetht.getHist("LepPt", "LepPt;Ratio","" ,40, 0,200);
+//     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + mRegion_lep_tight + ")");
+//     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep_loose + ")");
+     auto lT = jetht.getHist("LepPt", variable, "( " + mRegion_lep_tight + ")");
+     auto lL = jetht.getHist("LepPt", variable,"(" + mRegion_lep_loose + ")");
      
      auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
      ratio->SetTitle((cut.name() + " efficiency").c_str());
@@ -192,11 +171,11 @@ int main(int argc, char** argv)
      totalLoose = static_cast<TH1D*>(lL->Clone("looseLeptons"));
      
      passTight->Draw();
-     int n1bins = passTight->GetNbinsX(); 
      totalLoose->Draw(); 
-     int n2bins = totalLoose->GetNbinsX(); 
-     std::cout << "n bins passTight " << n1bins << std::endl;
-     std::cout << "n bins totalLoose " << n2bins << std::endl;
+     //int n1bins = passTight->GetNbinsX(); 
+     //int n2bins = totalLoose->GetNbinsX(); 
+     //std::cout << "n bins passTight " << n1bins << std::endl;
+     //std::cout << "n bins totalLoose " << n2bins << std::endl;
      
      checkConsistency = TEfficiency::CheckConsistency(*passTight,*totalLoose);
      std::cout << "Consistency check: " << checkConsistency << std::endl;
@@ -204,7 +183,7 @@ int main(int argc, char** argv)
      if(checkConsistency)
      {
       pEff = new TEfficiency(*passTight,*totalLoose);
-      pFile->Write();
+      //pFile->Write();
      }
      
      printf("Canvas\n"); 
@@ -218,6 +197,12 @@ int main(int argc, char** argv)
      c1.SaveAs((name + ".png").c_str());
      ratio->SaveAs((name + ".root").c_str());
      
+     TCanvas c2("eff_canv", "", 800, 800);
+     pEff->Draw("");     
+     c2.SaveAs(("eff_" + name + ".png").c_str());
+     
+     delete passTight;
+     delete totalLoose;
      delete lT;
      delete lL;
      delete ratio;
