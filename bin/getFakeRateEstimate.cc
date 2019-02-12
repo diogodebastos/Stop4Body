@@ -151,6 +151,7 @@ int main(int argc, char** argv)
   TFile* pFile = new TFile("efficiency.root","recreate");
   TH1D* passTight = nullptr;
   TH1D* totalLoose = nullptr;
+  bool checkConsistency = false;
   
   for(auto& cut : cutFlow)
   {
@@ -190,7 +191,11 @@ int main(int argc, char** argv)
      passTight = lT->Clone();
      totalLoose = lL->Clone();
      
-     if(TEfficiency::CheckConsistency(passTight,totalLoose))
+     checkConsistency = TEfficiency::CheckConsistency(passTight,totalLoose)
+     
+     std::cout << "Consistency check: " << checkConsistency << std::endl 
+     
+     if(checkConsistency)
      {
       pEff = new TEfficiency(passTight,totalLoose);
       pFile->Write();
