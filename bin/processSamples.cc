@@ -2037,7 +2037,7 @@ int main(int argc, char** argv)
             for(auto &jet : validJets.GetSystematicOrValue(syst))
             {
              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
-             if (std::abs(Jet_eta[jet]) >= 2 && Jet_eta[jet]) < 3.5 && pt >= 40) 
+             if (std::abs(Jet_eta[jet]) >= 2 && std::abs(Jet_eta[jet]) < 3.5 && pt >= 40) 
              {
               isL1PreFiring = true;
               
@@ -2172,7 +2172,8 @@ int main(int argc, char** argv)
           if(isL1PreFiring)
           {
             //loop over jets? 
-            auto l1map = getL1preFiringMapsSys(Jet1Eta, Jet1Pt);
+            //auto l1map = getL1preFiringMapsSys(Jet_eta, jetPt);
+            auto l1map = getL1preFiringMapsSys(Jet1Eta.Value(), Jet1Pt.Value());
             l1prefireWeight = 1 - l1map; 
             weight *= l1prefireWeight;
           }
