@@ -82,6 +82,7 @@ extern TH2D* centralElectronSFHist2017;
 extern TH2D* ElectronISOSFHist2017;
 extern TH2D* centralMuonSFHist2017;
 extern TH2D* MuonISOSFHist2017;
+extern TH2D* L1prefiring_jetpt_2017BtoFHist;
 
 extern TH2D* centralElectronSFHist;
 extern TH2D* centralMuonSFHist;
@@ -245,6 +246,8 @@ int main(int argc, char** argv)
   centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017.Get("NUM_LooseID_DEN_genTracks_pt_abseta")); //TODO: check this Hist
   TFile MuonISOSFFile2017("../data/MuonScaleFactors_ISO_Run2017.root", "READ");
   MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017.Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta")); //TODO: check this Hist
+  TFile L1prefiring_jetpt_2017BtoFFile("../data/L1prefiring_jetpt_2017BtoF.root");
+  L1prefiring_jetpt_2017BtoFHist = static_cast<TH2D*>(L1prefiring_jetpt_2017BtoFFile.Get("L1prefiring_jetpt_2017BtoF"));
   
   TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
   centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
@@ -395,6 +398,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> leptonISOSF;
       ValueWithSystematics<float> leptonFullFastSF;
       ValueWithSystematics<float> looseNotTightWeight;
+      ValueWithSystematics<float> l1prefireWeight;
       ValueWithSystematics<float> Q2Var;
       ValueWithSystematics<float> bTagSF;
       ValueWithSystematics<float> weight;
@@ -458,12 +462,15 @@ int main(int argc, char** argv)
         bTagSF.Systematic("CFErr2_Up");
         bTagSF.Systematic("CFErr2_Down");
       }
+      
+      std::cout << "\t        l1preFire" << std::endl;
+      l1prefireWeight = getL1preFiringMapsSys(2.5, 225);
 
       std::cout << "\t        looseNotTight" << std::endl;
       looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -478,6 +485,7 @@ int main(int argc, char** argv)
         leptonFullFastSF.Lock();
         bTagSF.Lock();
         Q2Var.Lock();
+        l1prefireWeight.Lock();
       }
       looseNotTightWeight.Lock();
       weight.Lock();
@@ -491,6 +499,7 @@ int main(int argc, char** argv)
       leptonISOSF = 1.0;
       leptonFullFastSF = 1.0;
       looseNotTightWeight = 1.0;
+      l1prefireWeight = 1.0;
       bTagSF = 1.0;
       Q2Var = 1.0;
       weight = 1.0;
@@ -517,6 +526,7 @@ int main(int argc, char** argv)
       bdttree->Branch("weight", &(weight.Value()), "weight/F");
       bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       bdttree->Branch("looseNotTightWeight", &looseNotTightWeight.Value(), "looseNotTightWeight/F");
+      bdttree->Branch("l1prefireWeight", &l1prefireWeight.Value(), "l1prefireWeight/F");
 
       if(!process.isdata() && noTrim)
       {
@@ -2027,9 +2037,10 @@ int main(int argc, char** argv)
             for(auto &jet : validJets.GetSystematicOrValue(syst))
             {
              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
-             if (std::abs(Jet_eta[jet]) > 2.25 && pt > 100) 
+             if (std::abs(Jet_eta[jet]) >= 2 && Jet_eta[jet]) < 3.5 && pt >= 40) 
              {
               isL1PreFiring = true;
+              
              }
              else
              {
@@ -2157,6 +2168,17 @@ int main(int argc, char** argv)
           else
           {
             looseNotTightWeight = 1;
+          }
+          if(isL1PreFiring)
+          {
+            //loop over jets? 
+            auto l1map = getL1preFiringMapsSys(Jet1Eta, Jet1Pt);
+            l1prefireWeight = 1 - l1map; 
+            weight *= l1prefireWeight;
+          }
+          else
+          {
+            l1prefireWeight = 1;
           }
 
           //if(doSync)

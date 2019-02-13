@@ -275,7 +275,8 @@ int main(int argc, char** argv)
      //systematics.push_back("TightLoose_AltCorr");
      loadSystName("TightLoose_Electron_Bin", 16);
      loadSystName("TightLoose_Muon_Bin", 18);
-     
+     systematics.push_back("L1prefireWeight");
+
      //systematics.push_back("TightLoose_NU_AltCorr");
      loadSystName("TightLoose_NU_Bin", 5);
      

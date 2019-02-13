@@ -13,6 +13,7 @@ TH2D* centralElectronSFHist2017 = nullptr;
 TH2D* ElectronISOSFHist2017 = nullptr;
 TH2D* centralMuonSFHist2017 = nullptr;
 TH2D* MuonISOSFHist2017 = nullptr;
+TH2D* L1prefiring_jetpt_2017BtoFHist = nullptr;
 
 TH2D* centralElectronSFHist = nullptr;
 TH2D* centralMuonSFHist = nullptr;
@@ -1357,6 +1358,38 @@ ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double Le
   }
 
   return retVal;
+}
+
+doubleUnc getL1preFiringMaps(double JetEta, double JetPt)
+{
+ double val = 1, unc = 0;
+ if(L1prefiring_jetpt_2017BtoFHist == nullptr)
+   return doubleUnc(1,0);
+ 
+ auto bin = L1prefiring_jetpt_2017BtoFHist->FindBin(JetEta,JetPt);
+ val = L1prefiring_jetpt_2017BtoFHist->GetBinContent(bin);
+ unc = L1prefiring_jetpt_2017BtoFHist->GetBinError(bin);
+ 
+ doubleUnc retVal(val, unc);
+ return retVal;
+}
+
+ValueWithSystematics<double> getL1preFiringMapsSys(double JetEta, double JetPt)
+{
+ doubleUnc jetMap = getL1preFiringMaps(JetEta, JetPt);
+ double val = jetMap.value();
+ double unc = jetMap.uncertainty();
+ 
+ ValueWithSystematics<double> retVal(val);
+ retVal.Systematic("L1prefireWeight_Up");
+ retVal.Systematic("L1prefireWeight_Down");
+ 
+ retVal.Lock();
+ 
+ retVal.Systematic("L1prefireWeight_Up") = val+unc;
+ retVal.Systematic("L1prefireWeight_Down") = val-unc;
+ 
+ return retVal;
 }
 
 ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, double LepEta)
