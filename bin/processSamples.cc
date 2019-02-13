@@ -2037,7 +2037,7 @@ int main(int argc, char** argv)
             for(auto &jet : validJets.GetSystematicOrValue(syst))
             {
              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
-             if (std::abs(Jet_eta[jet]) >= 2 && Jet_eta[jet]) < 3.5 && pt >= 40) 
+             if (std::abs(Jet_eta[jet]) >= 2 && std::abs(Jet_eta[jet]) < 3.5 && pt >= 40) 
              {
               isL1PreFiring = true;
               
