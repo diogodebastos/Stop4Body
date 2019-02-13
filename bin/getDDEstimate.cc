@@ -204,17 +204,21 @@ int main(int argc, char** argv)
   {
   }
   
-  if(preFakeRate)
-  {
-   // Signal Region = Preselection
-   controlRegion = "";
-   signalRegion = "";
-  }
-  
   std::string wjetsControlRegion = controlRegion + " && " + wjetsEnrich;
   std::string ttbarControlRegion = controlRegion + " && " + ttbarEnrich;
   std::string wjetsSignalRegionClosure = signalRegion + " && " + wjetsEnrich;
   std::string ttbarSignalRegionClosure = signalRegion + " && " + ttbarEnrich;
+
+  if(preFakeRate)
+  {
+   // Signal Region = Preselection
+   controlRegion = "";
+   signalRegion = baseSelection;
+   wjetsControlRegion = wjetsEnrich;
+   ttbarControlRegion = ttbarEnrich;
+   wjetsSignalRegionClosure = wjetsEnrich;
+   ttbarSignalRegionClosure = ttbarEnrich;
+  }
 
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
@@ -348,10 +352,16 @@ int main(int argc, char** argv)
   if(verbose)
     std::cout << "Building control plot of BDT output" << std::endl;
   {
+   /* TODO: Commented for testing purposes on SR = Preselection
     auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
     auto mcH   =        MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
     auto sigH  =  Sig.process(0).getHist("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
     auto mcS   =             MC.getStack("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
+  */
+    auto dataH = Data.process(0).getHist("LepPt", "LepPt;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
+    auto mcH   =        MC.getHist("MC", "LepPt", "LepPt;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
+    auto sigH  =  Sig.process(0).getHist("LepPt", "LepPt;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
+    auto mcS   =             MC.getStack("LepPt", "LepPt;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
 
     auto ratio = static_cast<TH1D*>(dataH->Clone("Ratio"));
     ratio->SetTitle(";BDT;Data/#Sigma MC");
@@ -471,7 +481,8 @@ int main(int argc, char** argv)
   //outputTable << "\\hline\n";
   //promptDD(outputTable, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
   //promptDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
-
+  if(verbose)
+    std::cout << "Doing Fake rate prediction" << std::endl;
   outputTable << "\\hline\n";
   fakeDD(outputTable, Data, MC, looseSelection + " && " + baseSelection + " && " + signalRegion, mcWeight);
 
@@ -516,7 +527,15 @@ int main(int argc, char** argv)
   naiveDD(outputTable, ttbar, Data, MC, looseSelection + " && " + baseSelection + " && " + ttbarSignalRegionClosure, looseSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   outputTable << "\\hline\n\\end{tabular}\n";
-
+  /*
+  if(verbose)
+    std::cout << "Filling fake rate method table" << std::endl;
+  outputTable << "\n\nFake rate estimation method\n";
+  outputTable << "\\begin{tabular}{r|ccccc}\n";
+  outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n"; // TODO:code here
+  fakeDD(outputTable, Data, MC, looseSelection + " && " + baseSelection, mcWeight); // TODO:code here
+  outputTable << "\\hline\n\\end{tabular}\n";
+  */
   if(verbose)
     std::cout << "Filling systematic variations table" << std::endl;
   outputTable << "\n\nSystematic variations for full DD\n";
