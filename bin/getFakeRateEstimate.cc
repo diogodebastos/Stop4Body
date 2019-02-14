@@ -133,6 +133,14 @@ int main(int argc, char** argv)
   TEfficiency* pEff = 0;
   TH1D* passTight = nullptr;
   TH1D* totalLoose = nullptr;
+  
+  TEfficiency* pEffLowEta = 0;
+  TH1D* passTightLowEta = nullptr;
+  TH1D* totalLooseLowEta = nullptr;
+  
+  TEfficiency* pEffHighEta = 0;
+  TH1D* passTightHighEta = nullptr;
+  TH1D* totalLooseHighEta = nullptr;
   bool checkConsistency = false;
   
   for(auto& cut : cutFlow)
@@ -171,6 +179,12 @@ int main(int argc, char** argv)
 //     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep_loose + ")");
      auto lT = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + ")");
      auto lL = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + ")");
+
+     auto lTlowEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight +  " && (LepEta < 1.5))");
+     auto lLlowEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + " && (LepEta < 1.5))");
+
+     auto lThighEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + " && (LepEta >= 1.5))");
+     auto lLhighEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + " && (LepEta >= 1.5))");
      
 //     auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
 //     ratio->SetTitle((cut.name() + " efficiency").c_str());
@@ -178,6 +192,12 @@ int main(int argc, char** argv)
      
      passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
      totalLoose = static_cast<TH1D*>(lL->Clone("looseLeptons"));
+
+     passTightLowEta = static_cast<TH1D*>(lTlowEta->Clone("tightlLeptons"));
+     totalLooseLowEta = static_cast<TH1D*>(lLlowEta->Clone("looseLeptons"));
+
+     passTightHighEta = static_cast<TH1D*>(lThighEta->Clone("tightlLeptons"));
+     totalLooseHighEta = static_cast<TH1D*>(lLhighEta->Clone("looseLeptons"));
      
 //     passTight->Draw();
 //     totalLoose->Draw(); 
@@ -192,6 +212,8 @@ int main(int argc, char** argv)
      if(checkConsistency)
      {
       pEff = new TEfficiency(*passTight,*totalLoose);
+      pEffLowEta = new TEfficiency(*passTightLowEta,*totalLooseLowEta);
+      pEffHighEta = new TEfficiency(*passTightHighEta,*totalLooseHighEta);
       //pFile->Write();
      }
      
@@ -210,12 +232,32 @@ int main(int argc, char** argv)
      pEff->SetTitle((cut.name() + " efficiency").c_str());
      c1.SaveAs(("eff_" + name + ".png").c_str());
      
+     pEffLowEta->Draw("");
+     pEffLowEta->SetTitle((cut.name() + " efficiency (eta < 1.5)").c_str());
+     c1.SaveAs(("eff_" + name + "_LowEta.png").c_str());
+     
+     pEffHighEta->Draw("");
+     pEffHighEta->SetTitle((cut.name() + " efficiency (eta > 1.5)").c_str());
+     c1.SaveAs(("eff_" + name + "_HighEta.png").c_str());
+     
+     delete lL;
+     delete lT;
      delete passTight;
      delete totalLoose;
-     delete lT;
-     delete lL;
-//     delete ratio;
      delete pEff;
+     
+     delete lLlowEta;
+     delete lTlowEta;
+     delete passTightLowEta;
+     delete totalLooseLowEta;
+     delete pEffLowEta;
+     
+     delete lLhighEta;
+     delete lThighEta;
+     delete passTightHighEta;
+     delete totalLooseHighEta;
+     delete pEffHighEta;
+//     delete ratio;
     }
    }
   
