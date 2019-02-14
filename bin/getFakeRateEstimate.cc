@@ -58,13 +58,6 @@ int main(int argc, char** argv)
   auto Data = samples.getData();
   auto MC = samples.getMCBkg();
   
-  //debug
-  luminosity = Data.getLumi();
-
-  std::stringstream converter;
-  converter << "luminosity: ";
-  converter << luminosity/1000;
-  std::cout << converter.str() << std::endl;
   
   std::string selection = "";
   std::vector<CutInfo> cutFlow;
@@ -126,7 +119,16 @@ int main(int argc, char** argv)
     return 1;
   }
   auto jetht = Data.process(jetHTIndex);
+  
+  doubleUnc yield = 0;
 
+  //debug
+  luminosity = jetht.getLumi();
+
+  std::stringstream converter;
+  converter << "luminosity: ";
+  converter << luminosity/1000;
+  std::cout << converter.str() << std::endl;
   //TFile* pFile = new TFile("efficiency.root","recreate");
   TEfficiency* pEff = 0;
   TH1D* passTight = nullptr;
@@ -150,28 +152,35 @@ int main(int argc, char** argv)
      
      //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
      if(cut.name() == "electron") {
+      std::cout << "\nelectron" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodEl_cutId_veto)";
       mRegion_lep_loose = selection + " && (nGoodEl)";
      }
      else if(cut.name() == "muon"){
+      std::cout << "\nmuon" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)";
       mRegion_lep_loose = selection + " && (nGoodMu)";
      }
-     
+     yield = jetht.getYield(selection, "weight");
+     std::cout << "Selection: " << yield.value() << std::endl;
+     yield = jetht.getYield(mRegion_lep_tight, "weight");
+     std::cout << "Tight: " << yield.value() << std::endl;
+     yield = jetht.getYield(mRegion_lep_loose, "weight");
+     std::cout << "Loose: " << yield.value() << "\n" << std::endl;
 //     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + mRegion_lep_tight + ")");
 //     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep_loose + ")");
      auto lT = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + ")");
      auto lL = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + ")");
      
-     auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
-     ratio->SetTitle((cut.name() + " efficiency").c_str());
-     ratio->Divide(lL);
+//     auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
+//     ratio->SetTitle((cut.name() + " efficiency").c_str());
+//     ratio->Divide(lL);
      
      passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
      totalLoose = static_cast<TH1D*>(lL->Clone("looseLeptons"));
      
-     passTight->Draw();
-     totalLoose->Draw(); 
+//     passTight->Draw();
+//     totalLoose->Draw(); 
      //int n1bins = passTight->GetNbinsX(); 
      //int n2bins = totalLoose->GetNbinsX(); 
      //std::cout << "n bins passTight " << n1bins << std::endl;
@@ -187,15 +196,15 @@ int main(int argc, char** argv)
      }
      
      printf("Canvas\n"); 
-     TCanvas c1("eff\_canv", "", 800, 800);
+     TCanvas c1("effcanv", "", 800, 800);
      gStyle->SetOptStat(0);
      
-     ratio->Draw();   
+//     ratio->Draw();   
      c1.cd();
      
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-     c1.SaveAs((name + ".png").c_str());
-     ratio->SaveAs((name + ".root").c_str());
+//     c1.SaveAs((name + ".png").c_str());
+//     ratio->SaveAs((name + ".root").c_str());
      
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
@@ -205,12 +214,12 @@ int main(int argc, char** argv)
      delete totalLoose;
      delete lT;
      delete lL;
-     delete ratio;
+//     delete ratio;
      delete pEff;
     }
    }
   
-  system("hadd -f tightToLooseRatios_2017.root tightToLooseRatios_2017_electron_LepPt.root tightToLooseRatios_2017_muon_LepPt.root");
+//  system("hadd -f tightToLooseRatios_2017.root tightToLooseRatios_2017_electron_LepPt.root tightToLooseRatios_2017_muon_LepPt.root");
     
   return 0;
 }
