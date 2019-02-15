@@ -129,7 +129,7 @@ int main(int argc, char** argv)
   converter << "luminosity: ";
   converter << luminosity/1000;
   std::cout << converter.str() << std::endl;
-  //TFile* pFile = new TFile("efficiency.root","recreate");
+//  TFile* pFile = new TFile("efficiency.root","recreate");
   TEfficiency* pEff = 0;
   TH1D* passTight = nullptr;
   TH1D* totalLoose = nullptr;
@@ -190,14 +190,16 @@ int main(int argc, char** argv)
 //     ratio->SetTitle((cut.name() + " efficiency").c_str());
 //     ratio->Divide(lL);
      
+     std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
+
      passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
-     totalLoose = static_cast<TH1D*>(lL->Clone("looseLeptons"));
+     totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
 
      passTightLowEta = static_cast<TH1D*>(lTlowEta->Clone("tightlLeptons"));
-     totalLooseLowEta = static_cast<TH1D*>(lLlowEta->Clone("looseLeptons"));
+     totalLooseLowEta = static_cast<TH1D*>(lLlowEta->Clone((name + "_LowEta").c_str()));
 
      passTightHighEta = static_cast<TH1D*>(lThighEta->Clone("tightlLeptons"));
-     totalLooseHighEta = static_cast<TH1D*>(lLhighEta->Clone("looseLeptons"));
+     totalLooseHighEta = static_cast<TH1D*>(lLhighEta->Clone((name + "_HighEta").c_str()));
      
 //     passTight->Draw();
 //     totalLoose->Draw(); 
@@ -214,7 +216,6 @@ int main(int argc, char** argv)
       pEff = new TEfficiency(*passTight,*totalLoose);
       pEffLowEta = new TEfficiency(*passTightLowEta,*totalLooseLowEta);
       pEffHighEta = new TEfficiency(*passTightHighEta,*totalLooseHighEta);
-      //pFile->Write();
      }
      
      printf("Canvas\n"); 
@@ -224,21 +225,25 @@ int main(int argc, char** argv)
 //     ratio->Draw();   
      c1.cd();
      
-     std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
 //     c1.SaveAs((name + ".png").c_str());
 //     ratio->SaveAs((name + ".root").c_str());
      
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
      c1.SaveAs(("eff_" + name + ".png").c_str());
+     pEff->SaveAs((name + ".root").c_str());
      
      pEffLowEta->Draw("");
      pEffLowEta->SetTitle((cut.name() + " efficiency (eta < 1.5)").c_str());
      c1.SaveAs(("eff_" + name + "_LowEta.png").c_str());
+     pEffLowEta->SaveAs((name + "_LowEta.root").c_str());
      
      pEffHighEta->Draw("");
      pEffHighEta->SetTitle((cut.name() + " efficiency (eta > 1.5)").c_str());
      c1.SaveAs(("eff_" + name + "_HighEta.png").c_str());
+     pEffHighEta->SaveAs((name + "_HighEta.root").c_str());
+     
+//     pFile->Write();
      
      delete lL;
      delete lT;
@@ -262,6 +267,7 @@ int main(int argc, char** argv)
    }
   
 //  system("hadd -f tightToLooseRatios_2017.root tightToLooseRatios_2017_electron_LepPt.root tightToLooseRatios_2017_muon_LepPt.root");
+  system("hadd -f tightToLooseRatios_2017.root tightToLoose*.root");
     
   return 0;
 }
