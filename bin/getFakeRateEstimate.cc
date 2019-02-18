@@ -46,7 +46,7 @@ int main(int argc, char** argv)
   // Placeholder for ${JSON_PATH}
   std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
   // Placeholder for ${INPUT}
-  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-01-04-test";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-02-07-JetHT";
   std::string suffix = "";
   // Placeholder for ${variables} 
   std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-fakeRateMethod.json";
@@ -180,11 +180,11 @@ int main(int argc, char** argv)
      auto lT = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + ")");
      auto lL = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + ")");
 
-     auto lTlowEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight +  " && (LepEta < 1.5))");
-     auto lLlowEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + " && (LepEta < 1.5))");
+     auto lTlowEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight +  " && ((LepEta < 1.5) && (LepEta > -1.5)))");
+     auto lLlowEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + " && ((LepEta < 1.5) && (LepEta > -1.5)))");
 
-     auto lThighEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + " && (LepEta >= 1.5))");
-     auto lLhighEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + " && (LepEta >= 1.5))");
+     auto lThighEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + " && ((LepEta >= 1.5) || (LepEta <= -1.5)))");
+     auto lLhighEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + " && ((LepEta >= 1.5) || (LepEta <= -1.5)))");
      
 //     auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
 //     ratio->SetTitle((cut.name() + " efficiency").c_str());
