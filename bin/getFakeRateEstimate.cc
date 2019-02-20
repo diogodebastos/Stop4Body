@@ -68,6 +68,7 @@ int main(int argc, char** argv)
 
   std::string lowEta  = " && ((LepEta < 1.5) && (LepEta > -1.5))";
   std::string highEta = " && ((LepEta >= 1.5) || (LepEta <= -1.5))";
+  std::string nonPrompt = " && (isPrompt == 0)";
 
   std::vector<CutInfo> cutFlow;
   json jsonFile;
@@ -188,20 +189,20 @@ int main(int argc, char** argv)
      auto pEffLowEta = getFakeRate(name+"_LowEta", jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffHighEta = getFakeRate(name+"_HighEta", jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
    
-     auto pEffWjets = getFakeRate(name, wjets, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
     
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 800, 800);
      gStyle->SetOptStat(0);  
      c1.cd();
      
-     pEff->Draw("");
      pEffWjets->SetLineColor(811);
-     pEffWjets->Draw("same");
      pEffTTbar->SetLineColor(614);
+     pEff->Draw("");
+     pEffWjets->Draw("same");
      pEffTTbar->Draw("same");
-     c1.SaveAs(("stack_" + name + ".png").c_str());
+     c1.SaveAs(("DataMCeff_" + name + ".png").c_str());
      
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
