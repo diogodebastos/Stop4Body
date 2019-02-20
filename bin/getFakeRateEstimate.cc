@@ -23,6 +23,8 @@
 
 using json = nlohmann::json;
 
+TEfficiency getFakeRate(ProcessInfo &, std::string, std::string, std::string, std::string, std::string){
+
 class CutInfo
 {
 public:
@@ -280,7 +282,13 @@ int main(int argc, char** argv)
      pEffHighEta->SaveAs((name + "_HighEta.root").c_str());
      
 //     pFile->Write();
-     
+     auto testEff = getFakeRate(jetht, variable, dataSel, mRegion_lep_tight + dataSel, mRegion_lep_loose + dataSel, "weight");
+
+     testEff->Draw("");
+     testEff->SetTitle((cut.name()).c_str());
+     c1.SaveAs(("TESTeff_" + name + "_.png").c_str());
+     testEff->SaveAs((name + "_TEST.root").c_str());
+
      delete lL;
      delete lT;
      delete passTight;
@@ -306,4 +314,43 @@ int main(int argc, char** argv)
   system("hadd -f tightToLooseRatios_2017.root tightToLoose*.root");
     
   return 0;
+}
+
+//doubleUnc naiveDD(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
+//doubleUnc naiveDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+//naiveDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+TEfficiency getFakeRate(ProcessInfo &Process, std::string variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
+ doubleUnc yield = 0;
+ std::cout << "Getting variables and yields with selection (" << baseSelection << ")" << std::endl;
+ 
+ yield = Process.getYield(baseSelection, Weight);
+ std::cout << "Yield at:\n-Base selection: " << yield.value() << std::endl;
+ yield = Process.getYield(tightSelection, Weight);
+ std::cout << "-Tight: " << yield.value() << std::endl;
+ yield = Process.getYield(looseSelection, Weight);
+ std::cout << "-Loose: " << yield.value() << "\n" << std::endl;
+ 
+ auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + ")");
+ auto lL = Process.getHist(variable.name().c_str(), variable,"(" + looseSelection + ")");
+ 
+ std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
+
+ passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
+ totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
+ 
+ checkConsistency = TEfficiency::CheckConsistency(*passTight,*totalLoose);
+ std::cout << "Consistency check: " << checkConsistency << std::endl;
+ 
+ if(checkConsistency)
+ {
+  pEff = new TEfficiency(*passTight,*totalLoose);
+ }
+ return pEff;
+ 
+ delete lL;
+ delete lT;
+ delete passTight;
+ delete totalLoose;
+ delete pEff;
 }
