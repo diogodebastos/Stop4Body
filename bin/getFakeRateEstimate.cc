@@ -64,7 +64,7 @@ int main(int argc, char** argv)
   
   
   std::string selection = "";
-  std::string dataSel = " && (HLT_PFHT1050)";
+  std::string dataSel = "";
 
   std::string lowEta  = " && ((LepEta < 1.5) && (LepEta > -1.5))";
   std::string highEta = " && ((LepEta >= 1.5) || (LepEta <= -1.5))";
@@ -152,9 +152,6 @@ int main(int argc, char** argv)
   auto wjets = MC.process(wjetsIndex);
   auto ttbar = MC.process(ttbarIndex);
   
-  
-  doubleUnc yield = 0;
-
   //debug
   luminosity = jetht.getLumi();
 
@@ -173,6 +170,7 @@ int main(int argc, char** argv)
     if(cut.cut() != "")
     {
      selection = cut.cut();
+     dataSel = selection + " && (HLT_PFHT1050)";
     }
     for(auto & variable : variables)
     {
