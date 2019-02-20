@@ -123,8 +123,6 @@ int main(int argc, char** argv)
   }
   auto jetht = Data.process(jetHTIndex);
   
-  if(verbose)
-    std::cout << "Extracting ttbar and wjets from other backgrounds" << std::endl;
   size_t ttbarIndex = 0, wjetsIndex = 0;
   bool foundTTbar = false, foundWJets = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
