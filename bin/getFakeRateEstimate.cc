@@ -241,8 +241,10 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  yield = Process.getYield(looseSelection, Weight);
  std::cout << "-Loose: " << yield.value() << "\n" << std::endl;
  
- auto lT = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + tightSelection + " )");
- auto lL = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + looseSelection + " )");
+ //auto lT = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + tightSelection + " )");
+ //auto lL = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + looseSelection + " )");
+ auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + " )");
  
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
