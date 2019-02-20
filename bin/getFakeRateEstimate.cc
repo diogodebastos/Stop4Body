@@ -188,10 +188,20 @@ int main(int argc, char** argv)
      auto pEffLowEta = getFakeRate(name+"_LowEta", jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffHighEta = getFakeRate(name+"_HighEta", jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
    
+     auto pEffWjets = getFakeRate(name, wjets, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
+    
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 800, 800);
      gStyle->SetOptStat(0);  
      c1.cd();
+     
+     THStack* effS = new THStack((cut.name() + "_" + variable.name()).c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str()); 
+     effS->Add(pEff);
+     effS->Add(pEffWjets);
+     effS->Add(pEffTTbar);
+     effS->Draw("SAME nostack")
+     c1.SaveAs(("stack_" + name + ".png").c_str());
      
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
