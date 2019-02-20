@@ -85,6 +85,7 @@ int main(int argc, char** argv)
   bool noSF = false;
   bool unblind = false;
   bool dofakeclosure = false;
+  bool dofakeratio = false;
   bool doSummary = false;
   bool quick = false;
   bool final = false;
@@ -169,7 +170,10 @@ int main(int argc, char** argv)
       dofakeclosure = true;
       unblind = true;
     }
-
+    if(argument == "--dofakeratio")
+    {
+      dofakeratio = true;
+    }
     if(argument == "--doSummary")
       doSummary = true;
       
@@ -543,7 +547,8 @@ int main(int argc, char** argv)
       if(dofakeclosure)
       {
         mcSel = mcWeight+"*( ((isPrompt == 0) && (isTight == 1)) && "+selection+")";
-        dataSel = "weight * ( ((isPrompt == 0) && (isLoose == 1) && (isTight == 0)) && " + selection + ")";
+        //dataSel = "weight * ( ((isPrompt == 0) && (isLoose == 1) && (isTight == 0)) && " + selection + ")";
+        dataSel = "weight * ( ((isLoose == 1) && (isTight == 0)) && " + selection + ")";
       }
       else
       {
@@ -552,6 +557,11 @@ int main(int argc, char** argv)
           dataSel = blindSel+selection;
         else
           dataSel = selection;
+      }
+      if(dofakeratio)
+      {
+       mcSel = mcWeight+"*( ((isPrompt == 1) && (isLoose == 1)) && "+selection+")";
+       dataSel = "weight * ( (isLoose == 1) && " + selection + ")";
       }
 
       if(rawEvents)
@@ -1259,7 +1269,8 @@ int main(int argc, char** argv)
     {
       mcSelToUse = "((isPrompt == 0) && (isTight == 1) && "+selection+")";
       mcWeightToUse = mcWeight;
-      dataSelToUse = "(((isPrompt == 0) && (isLoose == 1) && (isTight == 0)) && " + selection + ")";
+      //dataSelToUse = "(((isPrompt == 0) && (isLoose == 1) && (isTight == 0)) && " + selection + ")";
+      dataSelToUse = "(((isLoose == 1) && (isTight == 0)) && " + selection + ")";
       dataWeightToUse = "weight";
     }
     else
@@ -1269,7 +1280,13 @@ int main(int argc, char** argv)
       dataWeightToUse = "1";
       dataSelToUse = blindSel+selection;
     }
-
+    if(dofakeratio)
+    {
+      mcSelToUse = "((isPrompt == 1) && (isLoose == 1) && "+selection+")";
+      mcWeightToUse = mcWeight;
+      dataSelToUse = "((isLoose == 1) && " + selection + ")";
+      dataWeightToUse = "weight";
+    }
     if(rawEvents)
     {
       mcSelToUse = selection;

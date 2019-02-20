@@ -44,9 +44,10 @@ int main(int argc, char** argv)
   std::string debug;
   double luminosity = -1;
   // Placeholder for ${JSON_PATH}
-  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
+  std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
+  std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/allMC.json";
   // Placeholder for ${INPUT}
-  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-02-07-JetHT";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-02-07";
   std::string suffix = "";
   // Placeholder for ${variables} 
   std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-fakeRateMethod.json";
@@ -54,9 +55,10 @@ int main(int argc, char** argv)
 
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
-  SampleReader samples(jsonFileName, inputDirectory, suffix);
-  auto Data = samples.getData();
-  auto MC = samples.getMCBkg();
+  SampleReader dataSamples(jsonFileNameData, inputDirectory, suffix);
+  SampleReader MCSamples(jsonFileNameMC, inputDirectory, suffix);
+  auto Data = dataSamples.getData();
+  auto MC = MCSamples.getMCBkg();
   
   
   std::string selection = "";
@@ -120,6 +122,38 @@ int main(int argc, char** argv)
   }
   auto jetht = Data.process(jetHTIndex);
   
+  if(verbose)
+    std::cout << "Extracting ttbar and wjets from other backgrounds" << std::endl;
+  size_t ttbarIndex = 0, wjetsIndex = 0;
+  bool foundTTbar = false, foundWJets = false;
+  for(size_t i = 0; i < MC.nProcesses(); ++i)
+  {
+    if(MC.process(i).tag() == "WJets")
+    {
+      wjetsIndex = i;
+      foundWJets = true;
+    }
+
+    if(MC.process(i).tag().find("ttbar") != std::string::npos)
+    {
+      ttbarIndex = i;
+      foundTTbar = true;
+    }
+  }
+  if(!foundTTbar)
+  {
+    std::cout << "There isn't a ttbar sample in the JSON file" << std::endl;
+    return 1;
+  }
+  if(!foundWJets)
+  {
+    std::cout << "There isn't a wjets sample in the JSON file" << std::endl;
+    return 1;
+  }
+  auto wjets = MC.process(wjetsIndex);
+  auto ttbar = MC.process(ttbarIndex);
+  
+  
   doubleUnc yield = 0;
 
   //debug
@@ -162,12 +196,12 @@ int main(int argc, char** argv)
      if(cut.name() == "electron") {
       std::cout << "\nelectron" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodEl_cutId_veto)";
-      mRegion_lep_loose = selection + " && (nGoodEl)";
+      mRegion_lep_loose = selection;
      }
      else if(cut.name() == "muon"){
       std::cout << "\nmuon" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)";
-      mRegion_lep_loose = selection + " && (nGoodMu)";
+      mRegion_lep_loose = selection;
      }
      yield = jetht.getYield(selection, "weight");
      std::cout << "Selection: " << yield.value() << std::endl;

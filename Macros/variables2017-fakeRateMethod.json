@@ -2,12 +2,12 @@
  "cuts":[
    {
      "name":"electron",
-     "expression":"(HLT_PFHT1050) && (HT > 1200) && (Met < 105) && (mt < 30)",
+     "expression":"(HLT_PFHT1050) && (HT > 1200) && (Met < 40) && (mt < 30) && (nGoodEl)",
      "latex":"FRM ($e$ channel)"
    },
    {
      "name":"muon",
-     "expression":"(HLT_PFHT1050) && (HT > 1200) && (Met < 105) && (mt < 30)",
+     "expression":"(HLT_PFHT1050) && (HT > 1200) && (Met < 40) && (mt < 30) && (nGoodMu)",
      "latex":"FRM ($#mu$ channel)"
    }
   ],
@@ -17,13 +17,6 @@
       "label":"p_{T}(l) [GeV]",
       "legPos":"top",
       "varBins":[3.5,5,12,20,30,50,80,200]
-    },
-    {
-      "expression":"LepEta",
-      "label":"#eta(l)",
-      "min":-3,
-      "max":3,
-      "bins":50
     }
   ],
   "2Dplots":[
