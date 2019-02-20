@@ -184,7 +184,6 @@ int main(int argc, char** argv)
     }
     
 
-    std::cout << "Getting variables and yields with selection (" << selection << ")" << std::endl;
     for(auto & variable : variables)
     {
      //outSummary << "Cut: " << cut.name() << std::endl;
@@ -203,6 +202,8 @@ int main(int argc, char** argv)
       mRegion_lep_loose = selection;
      }
      dataSel = selection + " && (HLT_PFHT1050)";
+     
+     std::cout << "Getting variables and yields with selection (" << dataSel << ")" << std::endl;
      
      yield = jetht.getYield(dataSel, "weight");
      std::cout << "Selection: " << yield.value() << std::endl;
