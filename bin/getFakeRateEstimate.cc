@@ -185,8 +185,8 @@ int main(int argc, char** argv)
      
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffLowEta = getFakeRate(name, jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffHighEta = getFakeRate(name, jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffLowEta = getFakeRate(name+"_LowEta", jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffHighEta = getFakeRate(name+"_LowEta", jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
    
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 800, 800);
