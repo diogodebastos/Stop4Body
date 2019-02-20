@@ -196,11 +196,9 @@ int main(int argc, char** argv)
      gStyle->SetOptStat(0);  
      c1.cd();
      
-     THStack* effS = new THStack((cut.name() + "_" + variable.name()).c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str()); 
-     effS->Add(pEff);
-     effS->Add(pEffWjets);
-     effS->Add(pEffTTbar);
-     effS->Draw("SAME nostack")
+     pEff->Draw("");
+     pEffWjets->Draw("same");
+     pEffTTbar->Draw("same");
      c1.SaveAs(("stack_" + name + ".png").c_str());
      
      pEff->Draw("");
