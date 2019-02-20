@@ -561,7 +561,7 @@ int main(int argc, char** argv)
       if(dofakeratio)
       {
        mcSel = mcWeight+"*( ((isPrompt == 1) && (isLoose == 1)) && "+selection+")";
-       dataSel = "weight * ( (isLoose == 1) && " + selection + ")";
+       dataSel = "weight * ( ((HLT_PFHT1050) && (isLoose == 1)) && " + selection + ")";
       }
 
       if(rawEvents)
@@ -1284,7 +1284,7 @@ int main(int argc, char** argv)
     {
       mcSelToUse = "((isPrompt == 1) && (isLoose == 1) && "+selection+")";
       mcWeightToUse = mcWeight;
-      dataSelToUse = "((isLoose == 1) && " + selection + ")";
+      dataSelToUse = "(((HLT_PFHT1050) && (isLoose == 1)) && " + selection + ")";
       dataWeightToUse = "weight";
     }
     if(rawEvents)

@@ -62,6 +62,7 @@ int main(int argc, char** argv)
   
   
   std::string selection = "";
+  std::string dataSel = "";
   std::vector<CutInfo> cutFlow;
   json jsonFile;
   std::ifstream inputFile(cutsJson);
@@ -183,15 +184,15 @@ int main(int argc, char** argv)
     {
      selection = cut.cut();
     }
+    
 
     std::cout << "Getting variables and yields with selection (" << selection << ")" << std::endl;
     for(auto & variable : variables)
     {
      //outSummary << "Cut: " << cut.name() << std::endl;
      //outSummary << "Variable: " << variable.name() << std::endl;
-     ValueWithSystematics<std::string> dataSel = std::string("");
-     dataSel = "weight * ( " + tightEl + ")";
-     
+     //ValueWithSystematics<std::string> dataSel = std::string("");
+     //dataSel = "weight * ( " + tightEl + ")";
      //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
      if(cut.name() == "electron") {
       std::cout << "\nelectron" << std::endl;
@@ -203,22 +204,24 @@ int main(int argc, char** argv)
       mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)";
       mRegion_lep_loose = selection;
      }
-     yield = jetht.getYield(selection, "weight");
+     dataSel = selection + " && (HLT_PFHT1050)";
+     
+     yield = jetht.getYield(dataSel, "weight");
      std::cout << "Selection: " << yield.value() << std::endl;
-     yield = jetht.getYield(mRegion_lep_tight, "weight");
+     yield = jetht.getYield(mRegion_lep_tight + dataSel, "weight");
      std::cout << "Tight: " << yield.value() << std::endl;
-     yield = jetht.getYield(mRegion_lep_loose, "weight");
+     yield = jetht.getYield(mRegion_lep_loose + dataSel, "weight");
      std::cout << "Loose: " << yield.value() << "\n" << std::endl;
 //     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + mRegion_lep_tight + ")");
 //     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep_loose + ")");
-     auto lT = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + ")");
-     auto lL = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + ")");
+     auto lT = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight  + dataSel + ")");
+     auto lL = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose  + dataSel + ")");
 
-     auto lTlowEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight +  " && ((LepEta < 1.5) && (LepEta > -1.5)))");
-     auto lLlowEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + " && ((LepEta < 1.5) && (LepEta > -1.5)))");
+     auto lTlowEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight  + dataSel +  " && ((LepEta < 1.5) && (LepEta > -1.5)))");
+     auto lLlowEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose  + dataSel + " && ((LepEta < 1.5) && (LepEta > -1.5)))");
 
-     auto lThighEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight + " && ((LepEta >= 1.5) || (LepEta <= -1.5)))");
-     auto lLhighEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose + " && ((LepEta >= 1.5) || (LepEta <= -1.5)))");
+     auto lThighEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight  + dataSel + " && ((LepEta >= 1.5) || (LepEta <= -1.5)))");
+     auto lLhighEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose  + dataSel + " && ((LepEta >= 1.5) || (LepEta <= -1.5)))");
      
 //     auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
 //     ratio->SetTitle((cut.name() + " efficiency").c_str());
