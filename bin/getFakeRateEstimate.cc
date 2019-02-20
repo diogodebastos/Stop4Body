@@ -23,7 +23,7 @@
 
 using json = nlohmann::json;
 
-TEfficiency* getFakeRate(ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
+TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
 
 class CutInfo
 {
@@ -64,7 +64,11 @@ int main(int argc, char** argv)
   
   
   std::string selection = "";
-  std::string dataSel = "";
+  std::string dataSel = " && (HLT_PFHT1050)";
+
+  std::string lowEta  = " && ((LepEta < 1.5) && (LepEta > -1.5))";
+  std::string highEta = " && ((LepEta >= 1.5) || (LepEta <= -1.5))";
+
   std::vector<CutInfo> cutFlow;
   json jsonFile;
   std::ifstream inputFile(cutsJson);
@@ -102,12 +106,6 @@ int main(int argc, char** argv)
     }
   }
 
-  // Measurement Region
-  std::string mRegion_lep_tight = "";
-  std::string mRegion_lep_loose = "";
-  std::string tightEl = "(nGoodEl_cutId_veto)";
-  std::string tightMu = "(nGoodMu_cutId_loose)";
-  
   size_t jetHTIndex = 0;
   bool foundJetHT = false;
   for (size_t i = 0; i < Data.nProcesses(); i++) {
@@ -165,106 +163,37 @@ int main(int argc, char** argv)
   converter << luminosity/1000;
   std::cout << converter.str() << std::endl;
 //  TFile* pFile = new TFile("efficiency.root","recreate");
-  TEfficiency* pEff = 0;
-  TH1D* passTight = nullptr;
-  TH1D* totalLoose = nullptr;
-  
-  TEfficiency* pEffLowEta = 0;
-  TH1D* passTightLowEta = nullptr;
-  TH1D* totalLooseLowEta = nullptr;
-  
-  TEfficiency* pEffHighEta = 0;
-  TH1D* passTightHighEta = nullptr;
-  TH1D* totalLooseHighEta = nullptr;
-  bool checkConsistency = false;
-  
+
+  // Measurement Region
+  std::string mRegion_lep_tight = "";
+  std::string mRegion_lep_loose = "";
+
   for(auto& cut : cutFlow)
   {
     if(cut.cut() != "")
     {
      selection = cut.cut();
     }
-    
-
     for(auto & variable : variables)
     {
-     //outSummary << "Cut: " << cut.name() << std::endl;
-     //outSummary << "Variable: " << variable.name() << std::endl;
-     //ValueWithSystematics<std::string> dataSel = std::string("");
-     //dataSel = "weight * ( " + tightEl + ")";
-     //auto eT = jetht.getHist("LepPt", variable, "weight * ( " + tightEl + " && " + mRegion + ")");
      if(cut.name() == "electron") {
       std::cout << "\nelectron" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodEl_cutId_veto)";
-      mRegion_lep_loose = selection;
      }
      else if(cut.name() == "muon"){
       std::cout << "\nmuon" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)";
-      mRegion_lep_loose = selection;
      }
-     dataSel = selection + " && (HLT_PFHT1050)";
-     
-     std::cout << "Getting variables and yields with selection (" << dataSel << ")" << std::endl;
-     
-     yield = jetht.getYield(dataSel, "weight");
-     std::cout << "Selection: " << yield.value() << std::endl;
-     yield = jetht.getYield(mRegion_lep_tight + dataSel, "weight");
-     std::cout << "Tight: " << yield.value() << std::endl;
-     yield = jetht.getYield(mRegion_lep_loose + dataSel, "weight");
-     std::cout << "Loose: " << yield.value() << "\n" << std::endl;
-//     auto lT = jetht.getHist("LepPt", variable, "weight * ( " + mRegion_lep_tight + ")");
-//     auto lL = jetht.getHist("LepPt", variable,"weight * (" + mRegion_lep_loose + ")");
-     auto lT = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight  + dataSel + ")");
-     auto lL = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose  + dataSel + ")");
-
-     auto lTlowEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight  + dataSel +  " && ((LepEta < 1.5) && (LepEta > -1.5)))");
-     auto lLlowEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose  + dataSel + " && ((LepEta < 1.5) && (LepEta > -1.5)))");
-
-     auto lThighEta = jetht.getHist(variable.name().c_str(), variable, "( " + mRegion_lep_tight  + dataSel + " && ((LepEta >= 1.5) || (LepEta <= -1.5)))");
-     auto lLhighEta = jetht.getHist(variable.name().c_str(), variable,"(" + mRegion_lep_loose  + dataSel + " && ((LepEta >= 1.5) || (LepEta <= -1.5)))");
-     
-//     auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
-//     ratio->SetTitle((cut.name() + " efficiency").c_str());
-//     ratio->Divide(lL);
      
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-
-     passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
-     totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
-
-     passTightLowEta = static_cast<TH1D*>(lTlowEta->Clone("tightlLeptons"));
-     totalLooseLowEta = static_cast<TH1D*>(lLlowEta->Clone((name + "_LowEta").c_str()));
-
-     passTightHighEta = static_cast<TH1D*>(lThighEta->Clone("tightlLeptons"));
-     totalLooseHighEta = static_cast<TH1D*>(lLhighEta->Clone((name + "_HighEta").c_str()));
-     
-//     passTight->Draw();
-//     totalLoose->Draw(); 
-     //int n1bins = passTight->GetNbinsX(); 
-     //int n2bins = totalLoose->GetNbinsX(); 
-     //std::cout << "n bins passTight " << n1bins << std::endl;
-     //std::cout << "n bins totalLoose " << n2bins << std::endl;
-     
-     checkConsistency = TEfficiency::CheckConsistency(*passTight,*totalLoose);
-     std::cout << "Consistency check: " << checkConsistency << std::endl;
-     
-     if(checkConsistency)
-     {
-      pEff = new TEfficiency(*passTight,*totalLoose);
-      pEffLowEta = new TEfficiency(*passTightLowEta,*totalLooseLowEta);
-      pEffHighEta = new TEfficiency(*passTightHighEta,*totalLooseHighEta);
-     }
-     
+     auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffLowEta = getFakeRate(name, jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffHighEta = getFakeRate(name, jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
+   
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 800, 800);
-     gStyle->SetOptStat(0);
-     
-//     ratio->Draw();   
+     gStyle->SetOptStat(0);  
      c1.cd();
-     
-//     c1.SaveAs((name + ".png").c_str());
-//     ratio->SaveAs((name + ".root").c_str());
      
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
@@ -282,31 +211,10 @@ int main(int argc, char** argv)
      pEffHighEta->SaveAs((name + "_HighEta.root").c_str());
      
 //     pFile->Write();
-     auto testEff = getFakeRate(jetht, variable, dataSel, mRegion_lep_tight + dataSel, mRegion_lep_loose + dataSel, "weight");
 
-     testEff->Draw("");
-     testEff->SetTitle((cut.name()).c_str());
-     c1.SaveAs(("TESTeff_" + name + "_.png").c_str());
-     testEff->SaveAs((name + "_TEST.root").c_str());
-
-     delete lL;
-     delete lT;
-     delete passTight;
-     delete totalLoose;
      delete pEff;
-     
-     delete lLlowEta;
-     delete lTlowEta;
-     delete passTightLowEta;
-     delete totalLooseLowEta;
      delete pEffLowEta;
-     
-     delete lLhighEta;
-     delete lThighEta;
-     delete passTightHighEta;
-     delete totalLooseHighEta;
      delete pEffHighEta;
-//     delete ratio;
     }
    }
   
@@ -316,18 +224,17 @@ int main(int argc, char** argv)
   return 0;
 }
 
-//doubleUnc naiveDD(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
-//doubleUnc naiveDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
-//naiveDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
-
-TEfficiency* getFakeRate(ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
+TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
  TEfficiency* pEff = 0;
  TH1D* passTight = nullptr;
  TH1D* totalLoose = nullptr;
  doubleUnc yield = 0;
  bool checkConsistency = false;
  
-std::cout << "Getting variables and yields with selection (" << baseSelection << ")" << std::endl;
+ tightSelection = tightSelection + baseSelection;
+ looseSelection = looseSelection + baseSelection;
+ 
+ std::cout << "Getting variables and yields with selection (" << baseSelection << ")" << std::endl;
  
  yield = Process.getYield(baseSelection, Weight);
  std::cout << "Yield at:\n-Base selection: " << yield.value() << std::endl;
@@ -336,11 +243,9 @@ std::cout << "Getting variables and yields with selection (" << baseSelection <<
  yield = Process.getYield(looseSelection, Weight);
  std::cout << "-Loose: " << yield.value() << "\n" << std::endl;
  
- auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + ")");
- auto lL = Process.getHist(variable.name().c_str(), variable,"(" + looseSelection + ")");
+ auto lT = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + tightSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + looseSelection + " )");
  
- std::string name = ("tightToLooseRatios_2017_"+variable.name()).c_str();
-
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
  
