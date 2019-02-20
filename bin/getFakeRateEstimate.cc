@@ -197,9 +197,9 @@ int main(int argc, char** argv)
      c1.cd();
      
      pEff->Draw("");
-     pEffWjets->SetLineColor(811)
+     pEffWjets->SetLineColor(811);
      pEffWjets->Draw("same");
-     pEffTTbar->SetLineColor(614)
+     pEffTTbar->SetLineColor(614);
      pEffTTbar->Draw("same");
      c1.SaveAs(("stack_" + name + ".png").c_str());
      
