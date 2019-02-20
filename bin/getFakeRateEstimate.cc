@@ -23,7 +23,7 @@
 
 using json = nlohmann::json;
 
-TEfficiency getFakeRate(ProcessInfo &, std::string, std::string, std::string, std::string, std::string){
+TEfficiency* getFakeRate(ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
 
 class CutInfo
 {
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
   std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
   std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/allMC.json";
   // Placeholder for ${INPUT}
-  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-02-07";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-02-07-noSkim";
   std::string suffix = "";
   // Placeholder for ${variables} 
   std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-fakeRateMethod.json";
@@ -320,9 +320,14 @@ int main(int argc, char** argv)
 //doubleUnc naiveDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 //naiveDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
 
-TEfficiency getFakeRate(ProcessInfo &Process, std::string variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
+TEfficiency* getFakeRate(ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
+ TEfficiency* pEff = 0;
+ TH1D* passTight = nullptr;
+ TH1D* totalLoose = nullptr;
  doubleUnc yield = 0;
- std::cout << "Getting variables and yields with selection (" << baseSelection << ")" << std::endl;
+ bool checkConsistency = false;
+ 
+std::cout << "Getting variables and yields with selection (" << baseSelection << ")" << std::endl;
  
  yield = Process.getYield(baseSelection, Weight);
  std::cout << "Yield at:\n-Base selection: " << yield.value() << std::endl;
@@ -334,7 +339,7 @@ TEfficiency getFakeRate(ProcessInfo &Process, std::string variable,std::string b
  auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + ")");
  auto lL = Process.getHist(variable.name().c_str(), variable,"(" + looseSelection + ")");
  
- std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
+ std::string name = ("tightToLooseRatios_2017_"+variable.name()).c_str();
 
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
