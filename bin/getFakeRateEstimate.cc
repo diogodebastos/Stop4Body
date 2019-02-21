@@ -22,8 +22,8 @@
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
-
-TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string, bool removePrompt = false, ProcessInfo *promptMC = nullptr);
+TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
+TEfficiency* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
 
 class CutInfo
 {
@@ -191,8 +191,8 @@ int main(int argc, char** argv)
    
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffRemovePromptTest = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight", true, *wjets);
-    
+     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, wjets, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
+
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 800, 800);
      gStyle->SetOptStat(0);  
@@ -240,13 +240,12 @@ int main(int argc, char** argv)
   return 0;
 }
 
-TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight, bool removePrompt = false, ProcessInfo *promptMC = nullptr){
+TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
  TEfficiency* pEff = 0;
  TH1D* passTight = nullptr;
  TH1D* totalLoose = nullptr;
  doubleUnc yield = 0;
  bool checkConsistency = false;
- std::string isPrompt = " && (isPrompt == 1)";
 
  tightSelection = tightSelection + baseSelection;
  looseSelection = looseSelection + baseSelection;
@@ -264,12 +263,6 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  //auto lL = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + looseSelection + " )");
  auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + " )");
  auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + " )");
- if (removePrompt) {
-  auto promptT = promptMC->getHist(variable.name().c_str(), variable, "( " + tightSelection + isPrompt + " )");
-  auto promptL = promptMC->getHist(variable.name().c_str(), variable, "( " + looseSelection + isPrompt + " )");
-  lT->Add(promptT,-1);
-  lL->Add(promptL,-1);
- }
  
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
@@ -285,6 +278,45 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  
  delete lL;
  delete lT;
+ delete passTight;
+ delete totalLoose;
+ delete pEff;
+}
+
+TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, VariableInfo& variable, std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
+ TEfficiency* pEff = 0;
+ TH1D* passTight = nullptr;
+ TH1D* totalLoose = nullptr;
+ doubleUnc yield = 0;
+ bool checkConsistency = false;
+ std::string isPrompt = " && (isPrompt == 1)";
+
+ tightSelection = tightSelection + baseSelection;
+ looseSelection = looseSelection + baseSelection;
+ 
+ auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + " )");
+ auto promptT = promptMC.getHist(variable.name().c_str(), variable, "( " + tightSelection + isPrompt + " )");
+ auto promptL = promptMC.getHist(variable.name().c_str(), variable, "( " + looseSelection + isPrompt + " )");
+ lT->Add(promptT,-1);
+ lL->Add(promptL,-1);
+  
+ passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
+ totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
+ 
+ checkConsistency = TEfficiency::CheckConsistency(*passTight,*totalLoose);
+ std::cout << "Consistency check: " << checkConsistency << std::endl;
+ 
+ if(checkConsistency)
+ {
+  pEff = new TEfficiency(*passTight,*totalLoose);
+ }
+ return pEff;
+ 
+ delete lL;
+ delete lT;
+ delete promptT;
+ delete promptL;
  delete passTight;
  delete totalLoose;
  delete pEff;
