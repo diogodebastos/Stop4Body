@@ -181,12 +181,15 @@ int main(int argc, char** argv)
   converter << "luminosity: ";
   converter << luminosity/1000;
   std::cout << converter.str() << std::endl;
+ 
   std::string mcWeight;
   {
     std::stringstream converter2;
+    converter2 << "splitFactor*weight";
     converter2 << "*" << luminosity;
     converter2 >> mcWeight;
   }
+  
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
 //  TFile* pFile = new TFile("efficiency.root","recreate");
