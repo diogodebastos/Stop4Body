@@ -151,6 +151,6 @@ elif [ ${YEAR} == 2017 ]; then
  mergeJSONs $JSON_PATH/plot2017-QCD-en.json    $JSON_PATH/allMC-QCD-en.json $JSON_PATH/DataMetHT.json 
  mergeJSONs $JSON_PATH/plot2017-inj.json       $JSON_PATH/plot2017.json $JSON_PATH/stop500.json
  mergeJSONs $JSON_PATH/plot2017-inj-quick.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/Wjets.json  $JSON_PATH/stop500.json
- mergeJSONs $JSON_PATH/plot2017-fake.json      $JSON_PATH/DataJetHT.json $JSON_PATH/ZInv.json JSON_PATH/Orig/SingleTop.json $JSON_PATH/Wjets.json $JSON_PATH/Orig/VV.json  $JSON_PATH/ttX.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/QCD.json 
+ mergeJSONs $JSON_PATH/plot2017-fake.json      $JSON_PATH/DataJetHT.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Wjets.json $JSON_PATH/Orig/VV.json  $JSON_PATH/ttX.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/QCD.json 
  
 fi
