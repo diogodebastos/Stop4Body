@@ -223,7 +223,7 @@ int main(int argc, char** argv)
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
      */
-     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 1200, 1350);
@@ -331,8 +331,8 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  gStyle->SetOptStat(0);  
  c1.cd();
  // Data
- auto lT = Process.getHist(variable.name().c_str(), variable, Weight + "weight * ( " + tightSelection + dataSelection + " )");
- auto lL = Process.getHist(variable.name().c_str(), variable, Weight + "weight * ( " + looseSelection + dataSelection + " )");
+ auto lT = Process.getHist(variable.name().c_str(), variable, "weight * ( " + tightSelection + dataSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, "weight * ( " + looseSelection + dataSelection + " )");
  //debug
  lL->Draw();
  c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
