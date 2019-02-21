@@ -206,6 +206,7 @@ int main(int argc, char** argv)
      }
      
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
+     /*
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffLowEta = getFakeRate(name+"_LowEta", jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffHighEta = getFakeRate(name+"_HighEta", jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
@@ -213,6 +214,7 @@ int main(int argc, char** argv)
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     */
      auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
 
      printf("Canvas\n"); 
@@ -223,8 +225,8 @@ int main(int argc, char** argv)
      pEffRemovePromptTest->Draw("");
      pEffRemovePromptTest->SetTitle((cut.name() + " efficiency").c_str());
      c1.SaveAs(("RemovePrompt_" + name + ".png").c_str());
-     pEffRemovePromptTest->SaveAs((name + ".root").c_str());
-     
+     pEffRemovePromptTest->SaveAs(("RemovePrompt_" + name + ".root").c_str());
+     /*
      pEffWjets->SetLineColor(811);
      pEffTTbar->SetLineColor(614);
      pEffQCD->SetLineColor(809);
@@ -248,8 +250,8 @@ int main(int argc, char** argv)
      pEffHighEta->Draw("");
      pEffHighEta->SetTitle((cut.name() + " efficiency (eta > 1.5)").c_str());
      c1.SaveAs(("eff_" + name + "_HighEta.png").c_str());
-     pEffHighEta->SaveAs((name + "_HighEta.root").c_str());
-     
+     pEffHighEta->SaveAs((name + "_HighEta.root").c_str
+     */
 //     pFile->Write();
 
      delete pEff;
@@ -316,13 +318,30 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
 
  tightSelection = tightSelection + baseSelection;
  looseSelection = looseSelection + baseSelection;
+
+ printf("Canvas\n"); 
+ TCanvas c1("debug", "", 1200, 1350);
+ gStyle->SetOptStat(0);  
+ c1.cd();
  
  auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + " )");
  auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + " )");
+ //debug
+ lL->Draw();
+ c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
+ lL->SaveAs(("leptonLoose_" + name + ".root").c_str());
  auto promptT = promptMC.getHist(variable.name().c_str(), variable, "( " + tightSelection + isPrompt + " )");
  auto promptL = promptMC.getHist(variable.name().c_str(), variable, "( " + looseSelection + isPrompt + " )");
+ //debug
+ promptL->Draw();
+ c1.SaveAs(("promptLoose_" + name + ".png").c_str());
+ promptL->SaveAs(("promptLoose_" + name + ".root").c_str());
  lT->Add(promptT,-1);
  lL->Add(promptL,-1);
+ //debug
+ lL->Draw();
+ c1.SaveAs(("leptonLooseDiff_" + name + ".png").c_str());
+ lL->SaveAs(("leptonLooseDiff_" + name + ".root").c_str());
   
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
