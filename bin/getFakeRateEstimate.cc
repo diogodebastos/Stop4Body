@@ -23,7 +23,7 @@
 
 using json = nlohmann::json;
 
-TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string,ProcessInfo *, bool);
+TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, ProcessInfo *promptMC = nullptr, bool removePrompt = false);
 
 class CutInfo
 {
@@ -267,8 +267,8 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  if (removePrompt) {
   auto promptT = promptMC->getHist(variable.name().c_str(), variable, "( " + tightSelection + isPrompt + " )");
   auto promptL = promptMC->getHist(variable.name().c_str(), variable, "( " + looseSelection + isPrompt + " )");
-  lT->Add(-1,promptT);
-  lL->Add(-1,promptL);
+  lT->Add(promptT,-1);
+  lL->Add(promptL,-1);
  }
  
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
