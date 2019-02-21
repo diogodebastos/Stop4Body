@@ -287,7 +287,6 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  TEfficiency* pEff = 0;
  TH1D* passTight = nullptr;
  TH1D* totalLoose = nullptr;
- doubleUnc yield = 0;
  bool checkConsistency = false;
  std::string isPrompt = " && (isPrompt == 1)";
 
