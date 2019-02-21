@@ -251,12 +251,14 @@ int main(int argc, char** argv)
      pEffHighEta->SetTitle((cut.name() + " efficiency (eta > 1.5)").c_str());
      c1.SaveAs(("eff_" + name + "_HighEta.png").c_str());
      pEffHighEta->SaveAs((name + "_HighEta.root").c_str
-     */
+     
 //     pFile->Write();
 
      delete pEff;
      delete pEffLowEta;
      delete pEffHighEta;
+     */
+     delete pEffRemovePromptTest;
     }
    }
   
