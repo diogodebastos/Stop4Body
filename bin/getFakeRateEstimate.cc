@@ -191,7 +191,7 @@ int main(int argc, char** argv)
    
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffRemovePromptTest = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight", true, wjets);
+     auto pEffRemovePromptTest = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight", true, *wjets);
     
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 800, 800);
