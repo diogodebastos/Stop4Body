@@ -23,7 +23,7 @@
 
 using json = nlohmann::json;
 TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
-TEfficiency* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
+TEfficiency* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string, std::string);
 
 class CutInfo
 {
@@ -215,7 +215,7 @@ int main(int argc, char** argv)
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
      */
-     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
 
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 1200, 1350);
@@ -311,29 +311,27 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  delete pEff;
 }
 
-TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, VariableInfo& variable, std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
+TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
  TEfficiency* pEff = 0;
  TH1D* passTight = nullptr;
  TH1D* totalLoose = nullptr;
  bool checkConsistency = false;
  std::string isPrompt = " && (isPrompt == 1)";
 
- tightSelection = tightSelection + baseSelection;
- looseSelection = looseSelection + baseSelection;
-
  printf("Canvas\n"); 
  TCanvas c1("debug", "", 1200, 1350);
  gStyle->SetOptStat(0);  
  c1.cd();
- 
- auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + " )");
- auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + " )");
+ // Data
+ auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + dataSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + dataSelection + " )");
  //debug
  lL->Draw();
  c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
  lL->SaveAs(("leptonLoose_" + name + ".root").c_str());
- auto promptT = promptMC.getHist(variable.name().c_str(), variable, "( " + tightSelection + isPrompt + " )");
- auto promptL = promptMC.getHist(variable.name().c_str(), variable, "( " + looseSelection + isPrompt + " )");
+ //prompt MC
+ auto promptT = promptMC.getHist(variable.name().c_str(), variable, "( " + tightSelection + mcSelection + isPrompt + " )");
+ auto promptL = promptMC.getHist(variable.name().c_str(), variable, "( " + looseSelection + mcSelection + isPrompt + " )");
  //debug
  promptL->Draw();
  c1.SaveAs(("promptLoose_" + name + ".png").c_str());
