@@ -69,6 +69,7 @@ int main(int argc, char** argv)
   std::string lowEta  = " && ((LepEta < 1.5) && (LepEta > -1.5))";
   std::string highEta = " && ((LepEta >= 1.5) || (LepEta <= -1.5))";
   std::string nonPrompt = " && (isPrompt == 0)";
+  std::string isPrompt = " && (isPrompt == 1)";
 
   std::vector<CutInfo> cutFlow;
   json jsonFile;
@@ -191,17 +192,24 @@ int main(int argc, char** argv)
    
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffRemovePromptTest = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight", true, wjets);
     
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 800, 800);
      gStyle->SetOptStat(0);  
      c1.cd();
      
+     pEffRemovePromptTest->Draw("");
+     pEffRemovePromptTest->SetTitle((cut.name() + " efficiency").c_str());
+     c1.SaveAs(("RemovePrompt_" + name + ".png").c_str());
+     pEffRemovePromptTest->SaveAs((name + ".root").c_str());
+     
      pEffWjets->SetLineColor(811);
      pEffTTbar->SetLineColor(614);
      pEff->Draw("");
      pEffWjets->Draw("same");
      pEffTTbar->Draw("same");
+     c1.BuildLegend(0.7,0.95,0.95,0.85,"")
      c1.SaveAs(("DataMCeff_" + name + ".png").c_str());
      
      pEff->Draw("");
@@ -233,7 +241,7 @@ int main(int argc, char** argv)
   return 0;
 }
 
-TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
+TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight, ProcessInfo *promptMC = nullptr, bool removePrompt = false){
  TEfficiency* pEff = 0;
  TH1D* passTight = nullptr;
  TH1D* totalLoose = nullptr;
@@ -256,6 +264,13 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  //auto lL = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + looseSelection + " )");
  auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + " )");
  auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + " )");
+ if (removePrompt) {
+  auto promptT = promptMC.getHist(variable.name().c_str(), variable, "( " + tightSelection + isPrompt + " )");
+  auto promptL = promptMC.getHist(variable.name().c_str(), variable, "( " + looseSelection + isPrompt + " )");
+  TH1D* diff = nullptr;
+  lT.Add(-1,promptT);
+  lL.Add(-1,promptL);
+ }
  
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
