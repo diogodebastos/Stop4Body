@@ -23,7 +23,7 @@
 
 using json = nlohmann::json;
 
-TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string, ProcessInfo *promptMC = nullptr, bool removePrompt = false);
+TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string, bool removePrompt = false, ProcessInfo *promptMC = nullptr);
 
 class CutInfo
 {
@@ -240,7 +240,7 @@ int main(int argc, char** argv)
   return 0;
 }
 
-TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight, ProcessInfo *promptMC = nullptr, bool removePrompt = false){
+TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& variable,std::string baseSelection, std::string tightSelection, std::string looseSelection, std::string Weight, bool removePrompt = false, ProcessInfo *promptMC = nullptr){
  TEfficiency* pEff = 0;
  TH1D* passTight = nullptr;
  TH1D* totalLoose = nullptr;
