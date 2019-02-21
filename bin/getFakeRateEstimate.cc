@@ -124,8 +124,8 @@ int main(int argc, char** argv)
   }
   auto jetht = Data.process(jetHTIndex);
   
-  size_t ttbarIndex = 0, wjetsIndex = 0;
-  bool foundTTbar = false, foundWJets = false;
+  size_t ttbarIndex = 0, wjetsIndex = 0, promptIndex = 0;
+  bool foundTTbar = false, foundWJets = false, foundPrompt = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
   {
     if(MC.process(i).tag() == "WJets")
@@ -139,6 +139,12 @@ int main(int argc, char** argv)
       ttbarIndex = i;
       foundTTbar = true;
     }
+    
+    if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" )
+    {
+     promptIndex = i;
+     foundPrompt = true;
+    }
   }
   if(!foundTTbar)
   {
@@ -150,8 +156,14 @@ int main(int argc, char** argv)
     std::cout << "There isn't a wjets sample in the JSON file" << std::endl;
     return 1;
   }
+  if(!foundPrompt)
+  {
+    std::cout << "There isn't a prompt sample in the JSON file" << std::endl;
+    return 1;
+  }
   auto wjets = MC.process(wjetsIndex);
   auto ttbar = MC.process(ttbarIndex);
+  auto prompt = MC.process(promptIndex);
   
   //debug
   luminosity = jetht.getLumi();
@@ -191,7 +203,7 @@ int main(int argc, char** argv)
    
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, wjets, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
 
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 800, 800);
