@@ -206,7 +206,7 @@ int main(int argc, char** argv)
      auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
 
      printf("Canvas\n"); 
-     TCanvas c1("effcanv", "", 800, 800);
+     TCanvas c1("effcanv", "", 1200, 1350);
      gStyle->SetOptStat(0);  
      c1.cd();
      
