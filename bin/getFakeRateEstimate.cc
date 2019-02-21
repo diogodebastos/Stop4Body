@@ -124,8 +124,8 @@ int main(int argc, char** argv)
   }
   auto jetht = Data.process(jetHTIndex);
   
-  size_t ttbarIndex = 0, wjetsIndex = 0, promptIndex = 0;
-  bool foundTTbar = false, foundWJets = false, foundPrompt = false;
+  size_t ttbarIndex = 0, wjetsIndex = 0, promptIndex = 0, qcdIndex = 0;
+  bool foundTTbar = false, foundWJets = false, foundPrompt = false, foundQCD = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
   {
     if(MC.process(i).tag() == "WJets")
@@ -133,17 +133,20 @@ int main(int argc, char** argv)
       wjetsIndex = i;
       foundWJets = true;
     }
-
     if(MC.process(i).tag().find("ttbar") != std::string::npos)
     {
       ttbarIndex = i;
       foundTTbar = true;
     }
-    
     if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" )
     {
      promptIndex = i;
      foundPrompt = true;
+    }
+    if(MC.process(i).tag() == "QCD")
+    {
+      qcdIndex = i;
+      foundQCD = true;
     }
   }
   if(!foundTTbar)
@@ -161,9 +164,15 @@ int main(int argc, char** argv)
     std::cout << "There isn't a prompt sample in the JSON file" << std::endl;
     return 1;
   }
+  if(!foundQCD)
+  {
+    std::cout << "There isn't a qcd sample in the JSON file" << std::endl;
+    return 1;
+  }
   auto wjets = MC.process(wjetsIndex);
   auto ttbar = MC.process(ttbarIndex);
   auto prompt = MC.process(promptIndex);
+  auto qcd = MC.process(qcdIndex);
   
   //debug
   luminosity = jetht.getLumi();
@@ -203,6 +212,7 @@ int main(int argc, char** argv)
    
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
 
      printf("Canvas\n"); 
@@ -217,10 +227,12 @@ int main(int argc, char** argv)
      
      pEffWjets->SetLineColor(811);
      pEffTTbar->SetLineColor(614);
+     pEffQCD->SetLineColor(809);
      pEff->Draw("");
      pEffWjets->Draw("same");
      pEffTTbar->Draw("same");
-     c1.BuildLegend(0.7,0.95,0.95,0.85,"");
+     pEffQCD->Draw("same");
+     c1.BuildLegend(0.5,0.95,0.95,0.65,"");
      c1.SaveAs(("DataMCeff_" + name + ".png").c_str());
      
      pEff->Draw("");
