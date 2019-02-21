@@ -62,9 +62,9 @@ int main(int argc, char** argv)
   auto Data = dataSamples.getData();
   auto MC = MCSamples.getMCBkg();
   
-  
   std::string selection = "";
   std::string dataSel = "";
+  //std::string mcWeight = "XS*(genWeight/sumGenWeight)*puWeight*";
 
   std::string lowEta  = " && ((LepEta < 1.5) && (LepEta > -1.5))";
   std::string highEta = " && ((LepEta >= 1.5) || (LepEta <= -1.5))";
@@ -181,6 +181,14 @@ int main(int argc, char** argv)
   converter << "luminosity: ";
   converter << luminosity/1000;
   std::cout << converter.str() << std::endl;
+  std::string mcWeight;
+  {
+    std::stringstream converter2;
+    converter2 << "*" << luminosity;
+    converter2 >> mcWeight;
+  }
+  std::cout << "Using mcWeight: " << mcWeight << std::endl;
+
 //  TFile* pFile = new TFile("efficiency.root","recreate");
 
   // Measurement Region
@@ -311,7 +319,7 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  delete pEff;
 }
 
-TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string Weight){
+TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
  TEfficiency* pEff = 0;
  TH1D* passTight = nullptr;
  TH1D* totalLoose = nullptr;
@@ -323,15 +331,15 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  gStyle->SetOptStat(0);  
  c1.cd();
  // Data
- auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + dataSelection + " )");
- auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + dataSelection + " )");
+ auto lT = Process.getHist(variable.name().c_str(), variable, Weight + "weight * ( " + tightSelection + dataSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, Weight + "weight * ( " + looseSelection + dataSelection + " )");
  //debug
  lL->Draw();
  c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
  lL->SaveAs(("leptonLoose_" + name + ".root").c_str());
  //prompt MC
- auto promptT = promptMC.getHist(variable.name().c_str(), variable, "( " + tightSelection + mcSelection + isPrompt + " )");
- auto promptL = promptMC.getHist(variable.name().c_str(), variable, "( " + looseSelection + mcSelection + isPrompt + " )");
+ auto promptT = promptMC.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
+ auto promptL = promptMC.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
  //debug
  promptL->Draw();
  c1.SaveAs(("promptLoose_" + name + ".png").c_str());
