@@ -15,6 +15,7 @@
 #include <TPaveText.h>
 #include <TGraphErrors.h>
 #include <TEfficiency.h>
+#include <TGraphAsymmErrors.h>
 
 #include "UserCode/Stop4Body/interface/json.hpp"
 #include "UserCode/Stop4Body/interface/SampleReader.h"
@@ -174,7 +175,7 @@ int main(int argc, char** argv)
   auto prompt = MC.process(promptIndex);
   auto qcd = MC.process(qcdIndex);
   
-  //debug
+  //DEBUG
   luminosity = jetht.getLumi();
 
   std::stringstream converter;
@@ -237,7 +238,7 @@ int main(int argc, char** argv)
      pEffRemovePromptTest->SetTitle((cut.name() + " efficiency").c_str());
      c1.SaveAs(("RemovePrompt_" + name + ".png").c_str());
      pEffRemovePromptTest->SaveAs(("RemovePrompt_" + name + ".root").c_str());
-     //Commented for debug
+     //Commented for DEBUG
      /*
      pEffWjets->SetLineColor(811);
      pEffTTbar->SetLineColor(614);
@@ -331,16 +332,16 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  std::string isPrompt = " && (isPrompt == 1)";
 
  printf("Canvas\n"); 
- TCanvas c1("debug", "", 1200, 1350);
+ TCanvas c1("DEBUG", "", 1200, 1350);
  gStyle->SetOptStat(0);  
  c1.cd();
  // Data
  auto lT = Process.getHist(variable.name().c_str(), variable, "weight * ( " + tightSelection + dataSelection + " )");
  auto lL = Process.getHist(variable.name().c_str(), variable, "weight * ( " + looseSelection + dataSelection + " )");
- //debug
- lL->Draw();
- c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
- lL->SaveAs(("leptonLoose_" + name + ".root").c_str());
+ //DEBUG
+ //lL->Draw();
+ //c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
+ //lL->SaveAs(("leptonLoose_" + name + ".root").c_str());
  //prompt MC
  TH1D* allPromptT = nullptr;
  TH1D* allPromptL = nullptr;
@@ -349,9 +350,9 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
   if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){
     auto tmpHistT = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
     auto tmpHistL = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
-    //debug
-    tmpHistL->Draw();
-    c1.SaveAs((MC.process(i).tag().c_str() + name + ".png").c_str());
+    //DEBUG
+    //tmpHistL->Draw();
+    //c1.SaveAs((MC.process(i).tag().c_str() + name + ".png").c_str());
     if(allPromptT == nullptr){
      allPromptT = tmpHistT;
     }
@@ -366,14 +367,21 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
     }
   }
  }
- //debug
  lT->Add(allPromptT,-1);
  lL->Add(allPromptL,-1);
- //debug
- lL->Draw();
- c1.SaveAs(("leptonLooseDiff_" + name + ".png").c_str());
- lL->SaveAs(("leptonLooseDiff_" + name + ".root").c_str());
-  
+ //DEBUG
+ //lL->Draw();
+ //c1.SaveAs(("leptonLooseDiff_" + name + ".png").c_str());
+ //lL->SaveAs(("leptonLooseDiff_" + name + ".root").c_str());
+ 
+ TGraphAsymmErrors* testEff = new TGraphAsymmErrors();
+ testEff->Divide(lT,lL); 
+ 
+ //DEBUG
+ testEff->Draw();
+ c1.SaveAs(("testEff_" + name + ".png").c_str());
+ testEff->SaveAs(("testEff_" + name + ".root").c_str());
+ 
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
  
