@@ -24,7 +24,7 @@
 
 using json = nlohmann::json;
 TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
-TEfficiency* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, SampleReader&,VariableInfo&, std::string, std::string, std::string, std::string, std::string);
+TH1D* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, SampleReader&,VariableInfo&, std::string, std::string, std::string, std::string, std::string);
 
 class CutInfo
 {
@@ -227,17 +227,10 @@ int main(int argc, char** argv)
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
      */
-     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, MC,variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
-     printf("Canvas\n"); 
-     TCanvas c1("effcanv", "", 1200, 1350);
-     gStyle->SetOptStat(0);  
-     c1.cd();
-     
-     pEffRemovePromptTest->Draw("");
-     pEffRemovePromptTest->SetTitle((cut.name() + " efficiency").c_str());
-     c1.SaveAs(("RemovePrompt_" + name + ".png").c_str());
-     pEffRemovePromptTest->SaveAs(("RemovePrompt_" + name + ".root").c_str());
+     auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC,variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC,variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC,variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      //Commented for DEBUG
      /*
      pEffWjets->SetLineColor(811);
@@ -271,7 +264,7 @@ int main(int argc, char** argv)
      delete pEffLowEta;
      delete pEffHighEta;
      */
-     delete pEffRemovePromptTest;
+     delete pEffRemovePrompt;
     }
    }
   
@@ -324,13 +317,8 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  delete pEff;
 }
 
-TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
- TEfficiency* pEff = 0;
- TH1D* passTight = nullptr;
- TH1D* totalLoose = nullptr;
- bool checkConsistency = false;
+TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
  std::string isPrompt = " && (isPrompt == 1)";
-
  printf("Canvas\n"); 
  TCanvas c1("DEBUG", "", 1200, 1350);
  gStyle->SetOptStat(0);  
@@ -345,7 +333,7 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  //prompt MC
  TH1D* allPromptT = nullptr;
  TH1D* allPromptL = nullptr;
- 
+
  for(size_t i = 0; i < MC.nProcesses(); ++i){ 
   if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){
     auto tmpHistT = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
@@ -365,6 +353,8 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
     else{
      allPromptL->Add(tmpHistL,1);
     }
+    delete tmpHistT;
+    delete tmpHistL;
   }
  }
  lT->Add(allPromptT,-1);
@@ -387,22 +377,12 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  ratio->Draw();
  c1.SaveAs(("ratio_" + name + ".png").c_str());
  ratio->SaveAs(("ratio_" + name + ".root").c_str());
- 
- passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
- totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
- 
- checkConsistency = TEfficiency::CheckConsistency(*passTight,*totalLoose);
- std::cout << "Consistency check: " << checkConsistency << std::endl;
- 
- if(checkConsistency)
- {
-  pEff = new TEfficiency(*passTight,*totalLoose);
- }
- return pEff;
+
+ return ratio;
  
  delete lL;
  delete lT;
- delete passTight;
- delete totalLoose;
- delete pEff;
+ delete allPromptT;
+ delete allPromptL;
+ delete ratio;
 }
