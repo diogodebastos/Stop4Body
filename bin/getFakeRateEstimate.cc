@@ -237,6 +237,7 @@ int main(int argc, char** argv)
      pEffRemovePromptTest->SetTitle((cut.name() + " efficiency").c_str());
      c1.SaveAs(("RemovePrompt_" + name + ".png").c_str());
      pEffRemovePromptTest->SaveAs(("RemovePrompt_" + name + ".root").c_str());
+     //Commented for debug
      /*
      pEffWjets->SetLineColor(811);
      pEffTTbar->SetLineColor(614);
@@ -341,14 +342,24 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
  lL->SaveAs(("leptonLoose_" + name + ".root").c_str());
  //prompt MC
- auto promptT = promptMC.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
- auto promptL = promptMC.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
+ TH1D* allPromptT = nullptr;
+ TH1D* allPromptL = nullptr;
+ for(auto& process : promptMC)
+ {
+  auto tmpHistT = process.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
+  auto tmpHistL = process.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
+  //debug
+  tmpHistL->Draw();
+  c1.SaveAs(("tmpHistLoose_" + name + ".png").c_str());
+  tmpHistL->SaveAs(("tmpHistLoose_" + name + ".root").c_str());
+  allPromptT->Add(tmpHistT,1);
+  allPromptL->Add(tmpHistL,1);
+ }
+ //auto promptT = promptMC.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
+ //auto promptL = promptMC.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
  //debug
- promptL->Draw();
- c1.SaveAs(("promptLoose_" + name + ".png").c_str());
- promptL->SaveAs(("promptLoose_" + name + ".root").c_str());
- lT->Add(promptT,-1);
- lL->Add(promptL,-1);
+ lT->Add(allPromptT,-1);
+ lL->Add(allPromptL,-1);
  //debug
  lL->Draw();
  c1.SaveAs(("leptonLooseDiff_" + name + ".png").c_str());
