@@ -338,7 +338,7 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
 
  for(size_t i = 0; i < MC.nProcesses(); ++i){ 
   //if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){
-  if(MC.process(i).tag() == "WJets" || MC.process(i).tag() != "ttbar" ){
+  if(MC.process(i).tag() == "WJets" || MC.process(i).tag() == "ttbar" ){
     auto tmpHistT = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
     auto tmpHistL = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
     //DEBUG
