@@ -346,14 +346,24 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  TH1D* allPromptL = nullptr;
  
  for(size_t i = 0; i < MC.nProcesses(); ++i){ 
-  if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){ 
+  if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){
     auto tmpHistT = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
     auto tmpHistL = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
     //debug
     tmpHistL->Draw();
     c1.SaveAs((MC.process(i).tag().c_str() + name + ".png").c_str());
-    allPromptT->Add(tmpHistT,1);
-    allPromptL->Add(tmpHistL,1);
+    if(allPromptT == nullptr){
+     allPromptT = tmpHistT;
+    }
+    else{
+     allPromptT->Add(tmpHistT,1);
+    }
+    if(allPromptL == nullptr){
+     allPromptL = tmpHistL;
+    }
+    else{
+     allPromptL->Add(tmpHistL,1);
+    }
   }
  }
  //debug
