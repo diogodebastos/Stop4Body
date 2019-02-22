@@ -228,9 +228,9 @@ int main(int argc, char** argv)
      auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
      */
 
-     auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC,variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC,variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC,variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      //Commented for DEBUG
      /*
      pEffWjets->SetLineColor(811);
@@ -326,8 +326,8 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  gStyle->SetOptStat(0);  
  c1.cd();
  // Data
- auto lT = Process.getHist(variable.name().c_str(), variable, "weight * ( " + tightSelection + dataSelection + " )");
- auto lL = Process.getHist(variable.name().c_str(), variable, "weight * ( " + looseSelection + dataSelection + " )");
+ auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + dataSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + dataSelection + " )");
  //DEBUG
  //lL->Draw();
  //c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
@@ -356,8 +356,6 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
     else{
      allPromptL->Add(tmpHistL,1);
     }
-    delete tmpHistT;
-    delete tmpHistL;
   }
  }
  lT->Add(allPromptT,-1);
