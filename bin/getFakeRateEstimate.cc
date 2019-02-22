@@ -23,7 +23,7 @@
 
 using json = nlohmann::json;
 TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
-TEfficiency* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string, std::string);
+TEfficiency* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, SampleReader&,VariableInfo&, std::string, std::string, std::string, std::string, std::string);
 
 class CutInfo
 {
@@ -226,7 +226,7 @@ int main(int argc, char** argv)
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
      */
-     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffRemovePromptTest = getFakeRateRemovePrompt(name, jetht, prompt, MC,variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
      printf("Canvas\n"); 
      TCanvas c1("effcanv", "", 1200, 1350);
@@ -323,7 +323,7 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  delete pEff;
 }
 
-TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
+TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
  TEfficiency* pEff = 0;
  TH1D* passTight = nullptr;
  TH1D* totalLoose = nullptr;
@@ -344,16 +344,19 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  //prompt MC
  TH1D* allPromptT = nullptr;
  TH1D* allPromptL = nullptr;
- for(auto& process : promptMC)
+ 
+ for(auto &process: MC)
  {
-  auto tmpHistT = process.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
-  auto tmpHistL = process.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
-  //debug
-  tmpHistL->Draw();
-  c1.SaveAs(("tmpHistLoose_" + name + ".png").c_str());
-  tmpHistL->SaveAs(("tmpHistLoose_" + name + ".root").c_str());
-  allPromptT->Add(tmpHistT,1);
-  allPromptL->Add(tmpHistL,1);
+   if(process.tag() == promptMC.tag()){
+    auto tmpHistT = process.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
+    auto tmpHistL = process.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
+    //debug
+    tmpHistL->Draw();
+    c1.SaveAs(("tmpHistLoose_" + name + ".png").c_str());
+    tmpHistL->SaveAs(("tmpHistLoose_" + name + ".root").c_str());
+    allPromptT->Add(tmpHistT,1);
+    allPromptL->Add(tmpHistL,1);
+   }
  }
  //auto promptT = promptMC.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
  //auto promptL = promptMC.getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
@@ -379,8 +382,6 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  
  delete lL;
  delete lT;
- delete promptT;
- delete promptL;
  delete passTight;
  delete totalLoose;
  delete pEff;
