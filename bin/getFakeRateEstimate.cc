@@ -265,6 +265,8 @@ int main(int argc, char** argv)
      delete pEffHighEta;
      */
      delete pEffRemovePrompt;
+     delete pEffRemovePromptLowEta;
+     delete pEffRemovePromptHightEta;
     }
    }
   
