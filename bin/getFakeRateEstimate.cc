@@ -381,7 +381,7 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  c1.SaveAs(("testEff_" + name + ".png").c_str());
  testEff->SaveAs(("testEff_" + name + ".root").c_str());
  
- auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
+ auto ratio = static_cast<TH1D*>(lT->Clone((name+"EfficiencyAllEta").c_str()));
  ratio->Divide(lL);
  //DEBUG
  ratio->Draw();
