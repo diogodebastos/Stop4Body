@@ -376,11 +376,17 @@ TEfficiency* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, Pro
  
  TGraphAsymmErrors* testEff = new TGraphAsymmErrors();
  testEff->Divide(lT,lL); 
- 
  //DEBUG
  testEff->Draw();
  c1.SaveAs(("testEff_" + name + ".png").c_str());
  testEff->SaveAs(("testEff_" + name + ".root").c_str());
+ 
+ auto ratio = static_cast<TH1D*>(lT->Clone((cut.name()+"EfficiencyAllEta").c_str()));
+ ratio->Divide(lL);
+ //DEBUG
+ ratio->Draw();
+ c1.SaveAs(("ratio_" + name + ".png").c_str());
+ ratio->SaveAs(("ratio_" + name + ".root").c_str());
  
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
