@@ -193,7 +193,6 @@ int main(int argc, char** argv)
   
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
-//  TFile* pFile = new TFile("efficiency.root","recreate");
 
   // Measurement Region
   std::string mRegion_lep_tight = "";
@@ -219,34 +218,47 @@ int main(int argc, char** argv)
      
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
      /*
-     auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffLowEta = getFakeRate(name+"_LowEta", jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffHighEta = getFakeRate(name+"_HighEta", jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
-   
-     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     */
-
      auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     //Commented for DEBUG
-     /*
+     delete pEffRemovePrompt;
+     delete pEffRemovePromptLowEta;
+     delete pEffRemovePromptHightEta;
+  */ //Commented for DEBUG
+     auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     
+     TCanvas c1("DEBUG", "", 1200, 1350);
+     gStyle->SetOptStat(0);  
+     c1.cd();
      pEffWjets->SetLineColor(811);
      pEffTTbar->SetLineColor(614);
      pEffQCD->SetLineColor(809);
+     pEffWjets->SetTitle("WJets");
+     pEffTTbar->SetTitle("TTbar");
+     pEffQCD->SetTitle("QCD");
+     pEff->SetTitle("Data");
      pEff->Draw("");
      pEffWjets->Draw("same");
      pEffTTbar->Draw("same");
      pEffQCD->Draw("same");
-     c1.BuildLegend(0.5,0.95,0.95,0.65,"");
+     c1.BuildLegend(0.75,0.95,0.95,0.80,"");
      c1.SaveAs(("DataMCeff_" + name + ".png").c_str());
-     
+     delete pEffWjets;
+     delete pEffTTbar;
+     delete pEffQCD;
+     delete pEff;
+
+/*
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
      c1.SaveAs(("eff_" + name + ".png").c_str());
      pEff->SaveAs((name + ".root").c_str());
+  
+     auto pEffLowEta = getFakeRate(name+"_LowEta", jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
+     auto pEffHighEta = getFakeRate(name+"_HighEta", jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
      
      pEffLowEta->Draw("");
      pEffLowEta->SetTitle((cut.name() + " efficiency (eta < 1.5)").c_str());
@@ -258,20 +270,15 @@ int main(int argc, char** argv)
      c1.SaveAs(("eff_" + name + "_HighEta.png").c_str());
      pEffHighEta->SaveAs((name + "_HighEta.root").c_str
      
-//     pFile->Write();
-
      delete pEff;
      delete pEffLowEta;
      delete pEffHighEta;
      */
-     delete pEffRemovePrompt;
-     delete pEffRemovePromptLowEta;
-     delete pEffRemovePromptHightEta;
     }
    }
   
 //  system("hadd -f tightToLooseRatios_2017.root tightToLooseRatios_2017_electron_LepPt.root tightToLooseRatios_2017_muon_LepPt.root");
-  system("hadd -f tightToLooseRatios_2017.root tightToLoose*.root");
+//  system("hadd -f tightToLooseRatios_2017.root tightToLoose*.root");
     
   return 0;
 }
@@ -320,6 +327,7 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
 }
 
 TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
+ TFile* pFile = new TFile("efficiency.root","recreate");
  std::string isPrompt = " && (isPrompt == 1)";
  printf("Canvas\n"); 
  TCanvas c1("DEBUG", "", 1200, 1350);
@@ -337,8 +345,8 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  TH1D* allPromptL = nullptr;
 
  for(size_t i = 0; i < MC.nProcesses(); ++i){ 
-  //if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){
-  if(MC.process(i).tag() == "WJets" || MC.process(i).tag() == "ttbar" ){
+  if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){
+  //if(MC.process(i).tag() == "WJets" || MC.process(i).tag() == "ttbar" ){
     auto tmpHistT = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
     auto tmpHistL = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
     //DEBUG
@@ -366,9 +374,13 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  //lL->SaveAs(("leptonLooseDiff_" + name + ".root").c_str());
  
  TGraphAsymmErrors* testEff = new TGraphAsymmErrors();
+ testEff->SetTitle(name.c_str());
  testEff->Divide(lT,lL); 
+ pFile->cd();
+ testEff->Write("MyGraph");
+ pFile->ls();
  //DEBUG
- testEff->Draw();
+ testEff->Draw("AP");
  c1.SaveAs(("testEff_" + name + ".png").c_str());
  testEff->SaveAs(("testEff_" + name + ".root").c_str());
  
