@@ -560,8 +560,8 @@ int main(int argc, char** argv)
       }
       if(dofakeratio)
       {
-       mcSel = mcWeight+"*( ((isPrompt == 1) && (isLoose == 1)) && "+selection+")";
-       dataSel = "weight * ( ((HLT_PFHT1050) && (isLoose == 1)) && " + selection + ")";
+       mcSel = mcWeight+"*(((isPrompt >= -1) && (isLoose == 1)) && "+selection+")";
+       dataSel = "(((HLT_PFHT1050) && (isLoose == 1)) && " + selection + ")";
       }
 
       if(rawEvents)
@@ -1282,9 +1282,9 @@ int main(int argc, char** argv)
     }
     if(dofakeratio)
     {
-      mcSelToUse = "((isPrompt == 1) && (isLoose == 1) && "+selection+")";
+      mcSelToUse = mcSel;
       mcWeightToUse = mcWeight;
-      dataSelToUse = "(((HLT_PFHT1050) && (isLoose == 1)) && " + selection + ")";
+      dataSelToUse = dataSel;
       dataWeightToUse = "weight";
     }
     if(rawEvents)

@@ -25,7 +25,7 @@
           "tag":"Data_2017C_JetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":9633,
+          "recordedLumi":9631,
           "filesPerPart":25,
           "paths":[
             {
@@ -64,7 +64,7 @@
           "tag":"Data_2017F_JetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":13535,
+          "recordedLumi":13534,
           "filesPerPart":25,
           "paths":[
             {
