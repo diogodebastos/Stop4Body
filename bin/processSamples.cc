@@ -113,6 +113,7 @@ int main(int argc, char** argv)
   bool preemptiveDropEvents = false;
   bool doLooseLeptons = false;
   bool doPromptTagging = false;
+  bool doJetHT = false;
   bool noTrim = false;
   int part = -1;
   std::string bTagCalibrationFile = "";
@@ -184,6 +185,9 @@ int main(int argc, char** argv)
 
     if(argument == "--doPromptTagging")
       doPromptTagging = true;
+
+    if(argument == "--doJetHT")
+      doJetHT = true;
 
     if(argument == "--bTagCalibrationFile")
       bTagCalibrationFile = argv[++i];
@@ -2346,7 +2350,7 @@ int main(int argc, char** argv)
             if(!swap) // Normally use the MET triggers, but only for data
             {
              //TODO: This should be updated for all samples after the next heppy run
-              if(process.isdata())
+              if(process.isdata() && !doJetHT)
               {
                 //if(HLT_PFMET90_PFMHT90_IDTight != 0)
                   //passHLT = true;
@@ -2355,6 +2359,10 @@ int main(int argc, char** argv)
                 if(HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v != 0)
                   passHLT = true;
                 if(HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v != 0)
+                  passHLT = true;
+              }
+              else if (process.isdata() && doJetHT) {
+                if(HLT_BIT_HLT_PFHT1050_v != 0)
                   passHLT = true;
               }
               else
