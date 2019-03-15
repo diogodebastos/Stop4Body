@@ -234,7 +234,7 @@ int main(int argc, char** argv)
   TDirectory* cwd = gDirectory;
   TFile puWeightFile((outputDirectory + "/puWeights.root").c_str(), "READ");
   TFile lheScaleFile((lheScaleDir + "/lheWeights.root").c_str(), "READ");
-  
+
   TFile centralElectronRecoSFFile2017_lowEt("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
   centralElectronRecoSFHist2017_lowEt = static_cast<TH2D*>(centralElectronRecoSFFile2017_lowEt.Get("EGamma_SF2D"));
   TFile centralElectronRecoSFFile2017("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
@@ -248,7 +248,7 @@ int main(int argc, char** argv)
   MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017.Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta")); //TODO: check this Hist
   TFile L1prefiring_jetpt_2017BtoFFile("../data/L1prefiring_jetpt_2017BtoF.root");
   L1prefiring_jetpt_2017BtoFHist = static_cast<TH2D*>(L1prefiring_jetpt_2017BtoFFile.Get("L1prefiring_jetpt_2017BtoF"));
-  
+
   TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
   centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
   TFile centralMuonSFFile("../data/TnP_NUM_LooseID_DENOM_generalTracks_VAR_map_pt_eta.root", "READ");
@@ -462,7 +462,7 @@ int main(int argc, char** argv)
         bTagSF.Systematic("CFErr2_Up");
         bTagSF.Systematic("CFErr2_Down");
       }
-      
+
       std::cout << "\t        l1preFire" << std::endl;
       l1prefireWeight = getL1preFiringMapsSys(2.5, 225);
 
@@ -563,6 +563,7 @@ int main(int argc, char** argv)
       Float_t LepEta;    bdttree->Branch("LepEta",    &LepEta,    "LepEta/F");
       Float_t LepDxy;    bdttree->Branch("LepDxy",    &LepDxy,    "LepDxy/F");
       Float_t LepDz;     bdttree->Branch("LepDz",     &LepDz,     "LepDz/F");
+      Float_t LepMT;     bdttree->Branch("LepMT",     &LepMT,     "LepMT/F");
       Float_t LepAbsIso03;  bdttree->Branch("LepAbsIso03",  &LepAbsIso03,  "LepAbsIso03/F");
       Float_t LepRelIso03;  bdttree->Branch("LepRelIso03",  &LepRelIso03,  "LepRelIso03/F");
       Float_t LepHybIso03; bdttree->Branch("LepHybIso03",  &LepHybIso03,  "LepHybIso03/F");
@@ -584,7 +585,7 @@ int main(int argc, char** argv)
       Float_t nGoodMu_cutId_loose;   bdttree->Branch("nGoodMu_cutId_loose",&nGoodMu_cutId_loose,"nGoodMu_cutId_loose/F");
       Float_t nGoodMu_cutId_medium;   bdttree->Branch("nGoodMu_cutId_medium",&nGoodMu_cutId_medium,"nGoodMu_cutId_medium/F");
       Float_t nGoodMu_cutId_tight;   bdttree->Branch("nGoodMu_cutId_tight",&nGoodMu_cutId_tight,"nGoodMu_cutId_tight/F");
-      
+
       Float_t nGoodEl_loose;
       Float_t nGoodMu_loose;
 
@@ -900,7 +901,7 @@ int main(int argc, char** argv)
       bdttree->Branch("Njet100",&Njet100.Value(),"Njet100/F");
       */
       //bdttree->Branch("JetValidPt",&JetValidPt.Value(),"JetValidPt/F");
-      //bdttree->Branch("JetValidEta",&JetValidEta.Value(),"JetValidEta/F");      
+      //bdttree->Branch("JetValidEta",&JetValidEta.Value(),"JetValidEta/F");
       bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
       bdttree->Branch("Jet1Eta",&Jet1Eta.Value(),"Jet1Eta/F");
       bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
@@ -1252,18 +1253,18 @@ int main(int argc, char** argv)
         //TODO: This should be updated for all samples after the next heppy run
         // Remove the "if's" for both data bool
         // 2016 HLT
-        Int_t HLT_PFMET90_PFMHT90_IDTight;   
+        Int_t HLT_PFMET90_PFMHT90_IDTight;
         Int_t HLT_PFMET100_PFMHT100_IDTight;
-        Int_t HLT_PFMET110_PFMHT110_IDTight;  
+        Int_t HLT_PFMET110_PFMHT110_IDTight;
         Int_t HLT_PFMET120_PFMHT120_IDTight;
         Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;
         Int_t HLT_IsoMu27;
         //TODO: This should be updated for all samples after the next heppy run
         Int_t HLT_BIT_HLT_PFHT780_v;
         Int_t HLT_BIT_HLT_PFHT1050_v;
-        Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v; 
+        Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v;
         Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
-        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v; 
+        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v;
         if(!(process.isdata() || process.issignal())){
          inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
          inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
@@ -1278,8 +1279,8 @@ int main(int argc, char** argv)
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT780_v", &HLT_BIT_HLT_PFHT780_v);         
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);         
+         inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT780_v", &HLT_BIT_HLT_PFHT780_v);
+         inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);
         }
 
 //      Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
@@ -1794,6 +1795,7 @@ int main(int argc, char** argv)
             LepDz       = LepGood_dz[leptonIndex];
             LepAbsIso03 = LepGood_absIso03[leptonIndex];
             LepRelIso03 = LepGood_relIso03[leptonIndex];
+            LepMT       = LepGood_mt[leptonIndex];
             Float_t minPt = 25.;
             LepHybIso03 = LepRelIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
@@ -1860,6 +1862,7 @@ int main(int argc, char** argv)
             LepEta      = -9999;
             LepDxy      = -9999;
             LepDz       = -9999;
+            LepMT       = -9999;
             LepAbsIso03 = -9999;
             LepRelIso03 = -9999;
             LepHybIso03 = -9999;
@@ -2037,10 +2040,10 @@ int main(int argc, char** argv)
             for(auto &jet : validJets.GetSystematicOrValue(syst))
             {
              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
-             if (std::abs(Jet_eta[jet]) >= 2 && std::abs(Jet_eta[jet]) < 3.5 && pt >= 40) 
+             if (std::abs(Jet_eta[jet]) >= 2 && std::abs(Jet_eta[jet]) < 3.5 && pt >= 40)
              {
               isL1PreFiring = true;
-              
+
              }
              else
              {
@@ -2106,7 +2109,7 @@ int main(int argc, char** argv)
 
           //TODO: This should be updated for all samples after the next heppy run
           //2016 HLT
-          if(!(process.isdata() || process.issignal())){           
+          if(!(process.isdata() || process.issignal())){
            HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
            HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
            HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
@@ -2122,7 +2125,7 @@ int main(int argc, char** argv)
            HLT_PFHT780                         = HLT_BIT_HLT_PFHT780_v;
            HLT_PFHT1050                        = HLT_BIT_HLT_PFHT1050_v;
           }
-          
+
           //HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
           //HLT_Mu                              = HLT_IsoMu24;
           //METFilters                          = Flag_METFilters;
@@ -2171,10 +2174,10 @@ int main(int argc, char** argv)
           }
           if(isL1PreFiring)
           {
-            //loop over jets? 
+            //loop over jets?
             //auto l1map = getL1preFiringMapsSys(Jet_eta, jetPt);
             auto l1map = getL1preFiringMapsSys(Jet1Eta.Value(), Jet1Pt.Value());
-            l1prefireWeight = 1 - l1map; 
+            l1prefireWeight = 1 - l1map;
             weight *= l1prefireWeight;
           }
           else
@@ -2344,7 +2347,7 @@ int main(int argc, char** argv)
             {
              //TODO: This should be updated for all samples after the next heppy run
               if(process.isdata())
-              { 
+              {
                 //if(HLT_PFMET90_PFMHT90_IDTight != 0)
                   //passHLT = true;
                 if(HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v != 0)
