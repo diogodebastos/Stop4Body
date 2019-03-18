@@ -177,26 +177,24 @@ int main(int argc, char** argv)
   
   //DEBUG
   luminosity = jetht.getLumi();
-
-  std::stringstream converter;
-  converter << "luminosity: ";
-  converter << luminosity/1000;
-  std::cout << converter.str() << std::endl;
- 
   std::string mcWeight;
   {
-    std::stringstream converter2;
-    converter2 << "splitFactor*weight";
-    converter2 << "*" << luminosity;
-    converter2 >> mcWeight;
+    std::stringstream converter;
+    converter << "splitFactor*weight";
+    converter << "*" << luminosity;
+    converter >> mcWeight;
   }
+  std::stringstream lumiConverter;
+  lumiConverter << "luminosity: ";
+  lumiConverter << luminosity/1000;
+  std::cout << lumiConverter.str() << std::endl;
   
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
 
   // Measurement Region
   std::string mRegion_lep_tight = "";
-  std::string mRegion_lep_loose = "";
+  std::string mRegion_lep_loose = "(isLoose) && ";
 
   for(auto& cut : cutFlow)
   {
@@ -217,14 +215,14 @@ int main(int argc, char** argv)
      }
      
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-     /*
+     
      auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      delete pEffRemovePrompt;
      delete pEffRemovePromptLowEta;
      delete pEffRemovePromptHightEta;
-  */ //Commented for DEBUG
+ /* //Commented for DEBUG
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
@@ -250,7 +248,7 @@ int main(int argc, char** argv)
      delete pEffTTbar;
      delete pEffQCD;
      delete pEff;
-
+*/
 /*
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
