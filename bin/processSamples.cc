@@ -621,6 +621,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Jet3CSV;
       ValueWithSystematics<float> DPhiJet1Jet2;
       ValueWithSystematics<float> HT;
+      ValueWithSystematics<float> HT_raw;
 
       ValueWithSystematics<float> NbLoose;
       ValueWithSystematics<float> NbTight;
@@ -746,6 +747,10 @@ int main(int argc, char** argv)
         HT.Systematic("JES_Down");
         HT.Systematic("JER_Up");
         HT.Systematic("JER_Down");
+        HT_raw.Systematic("JES_Up");
+        HT_raw.Systematic("JES_Down");
+        HT_raw.Systematic("JER_Up");
+        HT_raw.Systematic("JER_Down");
         NbLoose.Systematic("JES_Up");
         NbLoose.Systematic("JES_Down");
         NbLoose.Systematic("JER_Up");
@@ -862,6 +867,7 @@ int main(int argc, char** argv)
         Jet3CSV.Lock();
         DPhiJet1Jet2.Lock();
         HT.Lock();
+        HT_raw.Lock();
         NbLoose.Lock();
         NbTight.Lock();
         NbLooseTo50.Lock();
@@ -917,6 +923,7 @@ int main(int argc, char** argv)
       bdttree->Branch("Jet3CSV",&Jet3CSV.Value(),"Jet3CSV/F");
       bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
       bdttree->Branch("HT",&HT.Value(),"HT/F");
+      bdttree->Branch("HT_raw",&HT_raw.Value(),"HT_raw/F");
 
       bdttree->Branch("NbLoose",&NbLoose.Value(),"NbLoose/F");
       bdttree->Branch("NbTight",&NbTight.Value(),"NbTight/F");
@@ -1000,6 +1007,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("DPhiJet1Jet2_"+systematic).c_str(), &(DPhiJet1Jet2.Systematic(systematic)));
         for(auto& systematic: HT.Systematics())
           bdttree->Branch(("HT_"+systematic).c_str(), &(HT.Systematic(systematic)));
+        for(auto& systematic: HT_raw.Systematics())
+          bdttree->Branch(("HT_raw_"+systematic).c_str(), &(HT_raw.Systematic(systematic)));
         for(auto& systematic: NbLoose.Systematics())
           bdttree->Branch(("NbLoose_"+systematic).c_str(), &(NbLoose.Systematic(systematic)));
         for(auto& systematic: NbTight.Systematics())
@@ -1353,6 +1362,7 @@ int main(int argc, char** argv)
           std::vector<int> looseLeptons;
           //std::vector<int> l1PreFiringJets;
           ValueWithSystematics<std::vector<double>> jetPt;
+          ValueWithSystematics<std::vector<int>> allJets;
           ValueWithSystematics<std::vector<int>> validJets;
           ValueWithSystematics<std::vector<int>> bjetList; // Same as validJets, but sorted by CSV value
           //ValueWithSystematics<std::vector<int>> l1PreFiringList;
@@ -1389,6 +1399,7 @@ int main(int argc, char** argv)
             if(syst != "Value")
             {
               std::vector<int> empty;
+              allJets.Systematic(syst) = empty;
               validJets.Systematic(syst) = empty;
               bjetList.Systematic(syst) = empty;
               //l1PreFiringList.Systematic(syst) = empty;
@@ -1396,6 +1407,7 @@ int main(int argc, char** argv)
 
             for(Int_t i = 0; i < nJetIn; ++i)
             { // Jet selection >> ID=tight and abs(eta) < 2.4
+              allJets.GetSystematicOrValue(syst).push_back(i);
               if(Jet_id[i] == 1 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
                 validJets.GetSystematicOrValue(syst).push_back(i);
@@ -1406,7 +1418,9 @@ int main(int argc, char** argv)
                 // }
               }
             }
-
+            std::sort(allJets.GetSystematicOrValue(syst).begin(), allJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
+              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
+            });
             std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
               return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
             });
@@ -2068,6 +2082,7 @@ int main(int argc, char** argv)
           Njet90 = 0;
           Njet100 = 0;
           */
+
           for(auto& syst: list)
           {
             for(auto &jet : validJets.GetSystematicOrValue(syst))
@@ -2093,6 +2108,21 @@ int main(int argc, char** argv)
               if(pt > 100)
                 ++(Njet100.GetSystematicOrValue(syst));
               */
+            }
+          }
+
+          HT_raw = 0;
+
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, allJets);
+          for(auto& syst: list)
+          {
+            for(auto &jet : allJets.GetSystematicOrValue(syst))
+            {
+              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
+
+              HT_raw.GetSystematicOrValue(syst) += pt;
             }
           }
 
