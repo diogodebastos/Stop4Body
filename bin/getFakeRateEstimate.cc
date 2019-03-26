@@ -24,6 +24,7 @@
 
 using json = nlohmann::json;
 TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
+TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string);
 TH1D* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, SampleReader&,VariableInfo&, std::string, std::string, std::string, std::string, std::string);
 
 class CutInfo
@@ -52,7 +53,7 @@ int main(int argc, char** argv)
   // Placeholder for ${INPUT}
   std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-02-07-noSkim";
   std::string suffix = "";
-  // Placeholder for ${variables} 
+  // Placeholder for ${variables}
   std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-fakeRateMethod.json";
   std::string cutsJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-fakeRateMethod.json";
 
@@ -62,7 +63,7 @@ int main(int argc, char** argv)
   SampleReader MCSamples(jsonFileNameMC, inputDirectory, suffix);
   auto Data = dataSamples.getData();
   auto MC = MCSamples.getMCBkg();
-  
+
   std::string selection = "";
   std::string dataSel = "";
   //std::string mcWeight = "XS*(genWeight/sumGenWeight)*puWeight*";
@@ -75,7 +76,7 @@ int main(int argc, char** argv)
   json jsonFile;
   std::ifstream inputFile(cutsJson);
   inputFile >> jsonFile;
-  
+
   for(auto& cut : jsonFile["cuts"])
   {
     try
@@ -124,7 +125,7 @@ int main(int argc, char** argv)
     return 1;
   }
   auto jetht = Data.process(jetHTIndex);
-  
+
   size_t ttbarIndex = 0, wjetsIndex = 0, promptIndex = 0, qcdIndex = 0;
   bool foundTTbar = false, foundWJets = false, foundPrompt = false, foundQCD = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
@@ -174,7 +175,7 @@ int main(int argc, char** argv)
   auto ttbar = MC.process(ttbarIndex);
   auto prompt = MC.process(promptIndex);
   auto qcd = MC.process(qcdIndex);
-  
+
   //DEBUG
   luminosity = jetht.getLumi();
   std::string mcWeight;
@@ -188,7 +189,7 @@ int main(int argc, char** argv)
   lumiConverter << "luminosity: ";
   lumiConverter << luminosity/1000;
   std::cout << lumiConverter.str() << std::endl;
-  
+
   std::cout << "Using mcWeight: " << mcWeight << std::endl;
 
 
@@ -213,23 +214,25 @@ int main(int argc, char** argv)
       std::cout << "\nmuon" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)";
      }
-     
+
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-     
+
      auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      delete pEffRemovePrompt;
      delete pEffRemovePromptLowEta;
      delete pEffRemovePromptHightEta;
+     auto mcClosure = getFakeRateMCClosure(name, MC, variable, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+
  /* //Commented for DEBUG
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     
+
      TCanvas c1("DEBUG", "", 1200, 1350);
-     gStyle->SetOptStat(0);  
+     gStyle->SetOptStat(0);
      c1.cd();
      pEffWjets->SetLineColor(811);
      pEffTTbar->SetLineColor(614);
@@ -254,30 +257,30 @@ int main(int argc, char** argv)
      pEff->SetTitle((cut.name() + " efficiency").c_str());
      c1.SaveAs(("eff_" + name + ".png").c_str());
      pEff->SaveAs((name + ".root").c_str());
-  
+
      auto pEffLowEta = getFakeRate(name+"_LowEta", jetht, variable, dataSel + lowEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffHighEta = getFakeRate(name+"_HighEta", jetht, variable, dataSel + highEta, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     
+
      pEffLowEta->Draw("");
      pEffLowEta->SetTitle((cut.name() + " efficiency (eta < 1.5)").c_str());
      c1.SaveAs(("eff_" + name + "_LowEta.png").c_str());
      pEffLowEta->SaveAs((name + "_LowEta.root").c_str());
-     
+
      pEffHighEta->Draw("");
      pEffHighEta->SetTitle((cut.name() + " efficiency (eta > 1.5)").c_str());
      c1.SaveAs(("eff_" + name + "_HighEta.png").c_str());
      pEffHighEta->SaveAs((name + "_HighEta.root").c_str
-     
+
      delete pEff;
      delete pEffLowEta;
      delete pEffHighEta;
      */
     }
    }
-  
+
 //  system("hadd -f tightToLooseRatios_2017.root tightToLooseRatios_2017_electron_LepPt.root tightToLooseRatios_2017_muon_LepPt.root");
 //  system("hadd -f tightToLooseRatios_2017.root tightToLoose*.root");
-    
+
   return 0;
 }
 
@@ -290,33 +293,33 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
 
  tightSelection = tightSelection + baseSelection;
  looseSelection = looseSelection + baseSelection;
- 
+
  std::cout << "Getting variables and yields with selection (" << baseSelection << ")" << std::endl;
- 
+
  yield = Process.getYield(baseSelection, Weight);
  std::cout << "Yield at:\n-Base selection: " << yield.value() << std::endl;
  yield = Process.getYield(tightSelection, Weight);
  std::cout << "-Tight: " << yield.value() << std::endl;
  yield = Process.getYield(looseSelection, Weight);
  std::cout << "-Loose: " << yield.value() << "\n" << std::endl;
- 
+
  //auto lT = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + tightSelection + " )");
  //auto lL = Process.getHist(variable.name().c_str(), variable, Weight + " * ( " + looseSelection + " )");
  auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + " )");
  auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + " )");
- 
+
  passTight = static_cast<TH1D*>(lT->Clone("tightlLeptons"));
  totalLoose = static_cast<TH1D*>(lL->Clone(name.c_str()));
- 
+
  checkConsistency = TEfficiency::CheckConsistency(*passTight,*totalLoose);
  std::cout << "Consistency check: " << checkConsistency << std::endl;
- 
+
  if(checkConsistency)
  {
   pEff = new TEfficiency(*passTight,*totalLoose);
  }
  return pEff;
- 
+
  delete lL;
  delete lT;
  delete passTight;
@@ -324,12 +327,43 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  delete pEff;
 }
 
+TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& variable, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
+  std::string isPrompt = " && (isPrompt == 1)";
+  TH1D* mcSumTight = nullptr;
+  TH1D* mcSumLoose = nullptr;
+
+  //mcH = new TH1D(histName.c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str(), variable.varBins().size() - 1, variable.varBins().data());
+
+  for(auto& process : MC)
+  {
+    cwd->cd();
+    auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + mcSelection + tightSelection + isPrompt + " )");
+    auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + mcSelection + looseSelection + isPrompt + " )");
+
+    mcSumTight->Add(tmpHistTight);
+    mcSumLoose->Add(tmpHistLoose);
+  }
+
+  TGraphAsymmErrors* mcClosureRatio = new TGraphAsymmErrors();
+  mcClosureRatio->SetTitle(name.c_str());
+  mcClosureRatio->Divide(mcSumTight,mcSumLoose);
+  mcClosureRatio->Write("MyGraph");
+  mcClosureRatio->Draw("AP");
+  c1.SaveAs(("mcClosureRatio_" + name + ".png").c_str());
+  mcClosureRatio->SaveAs(("mcClosureRatio_" + name + ".root").c_str());
+
+  return mcClosureRatio;
+  delete mcSumTight;
+  delete mcSumLoose;
+  delete mcClosureRatio;
+}
+
 TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
  TFile* pFile = new TFile("efficiency.root","recreate");
  std::string isPrompt = " && (isPrompt == 1)";
- printf("Canvas\n"); 
+ printf("Canvas\n");
  TCanvas c1("DEBUG", "", 1200, 1350);
- gStyle->SetOptStat(0);  
+ gStyle->SetOptStat(0);
  c1.cd();
  // Data
  auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + dataSelection + " )");
@@ -342,7 +376,7 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  TH1D* allPromptT = nullptr;
  TH1D* allPromptL = nullptr;
 
- for(size_t i = 0; i < MC.nProcesses(); ++i){ 
+ for(size_t i = 0; i < MC.nProcesses(); ++i){
   if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){
   //if(MC.process(i).tag() == "WJets" || MC.process(i).tag() == "ttbar" ){
     auto tmpHistT = MC.process(i).getHist(variable.name().c_str(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
@@ -370,10 +404,10 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  //lL->Draw();
  //c1.SaveAs(("leptonLooseDiff_" + name + ".png").c_str());
  //lL->SaveAs(("leptonLooseDiff_" + name + ".root").c_str());
- 
+
  TGraphAsymmErrors* testEff = new TGraphAsymmErrors();
  testEff->SetTitle(name.c_str());
- testEff->Divide(lT,lL); 
+ testEff->Divide(lT,lL);
  pFile->cd();
  testEff->Write("MyGraph");
  pFile->ls();
@@ -381,7 +415,7 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  testEff->Draw("AP");
  c1.SaveAs(("testEff_" + name + ".png").c_str());
  testEff->SaveAs(("testEff_" + name + ".root").c_str());
- 
+
  auto ratio = static_cast<TH1D*>(lT->Clone((name+"EfficiencyAllEta").c_str()));
  ratio->Divide(lL);
  //DEBUG
@@ -390,7 +424,7 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  ratio->SaveAs(("ratio_" + name + ".root").c_str());
 
  return ratio;
- 
+
  delete lL;
  delete lT;
  delete allPromptT;
