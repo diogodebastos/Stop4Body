@@ -195,7 +195,7 @@ int main(int argc, char** argv)
 
   // Measurement Region
   std::string mRegion_lep_tight = "";
-  std::string mRegion_lep_loose = "(isLoose) && ";
+  std::string mRegion_lep_loose = "&& (isLoose)";
 
   for(auto& cut : cutFlow)
   {
@@ -224,6 +224,7 @@ int main(int argc, char** argv)
      delete pEffRemovePromptLowEta;
      delete pEffRemovePromptHightEta;
      auto mcClosure = getFakeRateMCClosure(name, MC, variable, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     delete mcClosure;
 
  /* //Commented for DEBUG
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
