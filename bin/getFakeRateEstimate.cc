@@ -328,6 +328,9 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
 }
 
 TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& variable, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
+  TCanvas c1("DEBUG", "", 1200, 1350);
+  c1.cd();
+  gStyle->SetOptStat(0);
   std::string isPrompt = " && (isPrompt == 1)";
   TH1D* mcSumTight = nullptr;
   TH1D* mcSumLoose = nullptr;
@@ -336,7 +339,6 @@ TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, Vari
 
   for(auto& process : MC)
   {
-    cwd->cd();
     auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + mcSelection + tightSelection + isPrompt + " )");
     auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + mcSelection + looseSelection + isPrompt + " )");
 
