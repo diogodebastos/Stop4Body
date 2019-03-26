@@ -335,6 +335,8 @@ TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, Vari
   std::string isPrompt = " && (isPrompt == 1)";
   TH1D* mcSumTight = nullptr;
   TH1D* mcSumLoose = nullptr;
+  mcSumTight = new TH1D(histName.c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str(), variable.varBins().size() - 1, variable.varBins().data());
+
 
   //mcH = new TH1D(histName.c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str(), variable.varBins().size() - 1, variable.varBins().data());
 
@@ -343,8 +345,21 @@ TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, Vari
     auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
     auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
 
-    mcSumTight->Add(tmpHistTight);
-    mcSumLoose->Add(tmpHistLoose);
+//    mcSumTight->Add(tmpHistTight);
+  //  mcSumLoose->Add(tmpHistLoose);
+
+    if(mcSumTight == nullptr){
+     mcSumTight = tmpHistTight;
+    }
+    else{
+     mcSumTight->Add(tmpHistTight,1);
+    }
+    if(mcSumLoose == nullptr){
+     mcSumLoose = tmpHistLoose;
+    }
+    else{
+     mcSumLoose->Add(tmpHistLoose,1);
+    }
   }
 
   TGraphAsymmErrors* mcClosureRatio = new TGraphAsymmErrors();
