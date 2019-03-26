@@ -335,8 +335,6 @@ TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, Vari
   std::string isPrompt = " && (isPrompt == 1)";
   TH1D* mcSumTight = nullptr;
   TH1D* mcSumLoose = nullptr;
-  mcSumTight = new TH1D(histName.c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str(), variable.varBins().size() - 1, variable.varBins().data());
-
 
   //mcH = new TH1D(histName.c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str(), variable.varBins().size() - 1, variable.varBins().data());
 
