@@ -195,7 +195,7 @@ int main(int argc, char** argv)
 
   // Measurement Region
   std::string mRegion_lep_tight = "";
-  std::string mRegion_lep_loose = "&& (isLoose)";
+  std::string mRegion_lep_loose = "(isLoose) && ";
 
   for(auto& cut : cutFlow)
   {
@@ -340,8 +340,8 @@ TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, Vari
 
   for(auto& process : MC)
   {
-    auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + mcSelection + tightSelection + isPrompt + " )");
-    auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + mcSelection + looseSelection + isPrompt + " )");
+    auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
+    auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
 
     mcSumTight->Add(tmpHistTight);
     mcSumLoose->Add(tmpHistLoose);
