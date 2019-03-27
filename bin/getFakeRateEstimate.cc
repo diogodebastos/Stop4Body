@@ -288,7 +288,7 @@ int main(int argc, char** argv)
    }
 
 //  system("hadd -f tightToLooseRatios_2017.root tightToLooseRatios_2017_electron_LepPt.root tightToLooseRatios_2017_muon_LepPt.root");
-//  system("hadd -f tightToLooseRatios_2017.root tightToLoose*.root");
+  system("hadd -f tightToLooseRatios_2017.root *tightToLoose*.root");
 
   return 0;
 }
@@ -374,7 +374,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
       }
     //}
   }
-
+/*
   TGraphAsymmErrors* mcClosureRatio = new TGraphAsymmErrors();
   mcClosureRatio->SetTitle(name.c_str());
   mcClosureRatio->Divide(mcSumTight,mcSumLoose);
@@ -382,19 +382,19 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
   mcClosureRatio->Draw("AP");
   c1.SaveAs(("mcClosureRatio_" + name + ".png").c_str());
   mcClosureRatio->SaveAs(("mcClosureRatio_" + name + ".root").c_str());
-
-  auto ratio = static_cast<TH1D*>(mcSumTight->Clone((name+"th1d").c_str()));
-  ratio->SetTitle(name.c_str());
+  delete mcClosureRatio;
+*/
+  auto ratio = static_cast<TH1D*>(mcSumTight->Clone(("mcClosure_"+name).c_str()));
+  ratio->SetTitle("mcClosure_"+name.c_str());
   ratio->Divide(mcSumLoose);
   //DEBUG
   ratio->Draw();
-  c1.SaveAs(("TH1DmcClosureRatio_" + name + ".png").c_str());
-  ratio->SaveAs(("TH1DmcClosureRatio_" + name + ".root").c_str());
+  c1.SaveAs(("mcClosure_" + name + ".png").c_str());
+  ratio->SaveAs(("mcClosure_" + name + ".root").c_str());
 
   return ratio;
   delete mcSumTight;
   delete mcSumLoose;
-  delete mcClosureRatio;
 }
 
 TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
@@ -443,7 +443,7 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  //lL->Draw();
  //c1.SaveAs(("leptonLooseDiff_" + name + ".png").c_str());
  //lL->SaveAs(("leptonLooseDiff_" + name + ".root").c_str());
-
+/*
  TGraphAsymmErrors* testEff = new TGraphAsymmErrors();
  testEff->SetTitle(name.c_str());
  testEff->Divide(lT,lL);
@@ -454,14 +454,14 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  testEff->Draw("AP");
  c1.SaveAs(("testEff_" + name + ".png").c_str());
  testEff->SaveAs(("testEff_" + name + ".root").c_str());
-
- auto ratio = static_cast<TH1D*>(lT->Clone((name+"EfficiencyAllEta").c_str()));
+*/
+ auto ratio = static_cast<TH1D*>(lT->Clone((name).c_str()));
  ratio->SetTitle(name.c_str());
  ratio->Divide(lL);
  //DEBUG
  ratio->Draw();
- c1.SaveAs(("ratio_" + name + ".png").c_str());
- ratio->SaveAs(("ratio_" + name + ".root").c_str());
+ c1.SaveAs((name + ".png").c_str());
+ ratio->SaveAs((name + ".root").c_str());
 
  return ratio;
 
