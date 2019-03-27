@@ -343,7 +343,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
 
   for(auto& process : MC)
   {
-    if(process.tag() != "QCD" && MC.process(i).tag() != "ZInv" && MC.process(i).tag() != "VV"){  
+    if(process.tag() != "QCD" && process.tag() != "ZInv" && process.tag() != "VV"){  
       auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
       auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
       //DEBUG
