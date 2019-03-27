@@ -398,7 +398,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
 }
 
 TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
- TFile* pFile = new TFile("efficiency.root","recreate");
+ //TFile* pFile = new TFile("efficiency.root","recreate");
  std::string isPrompt = " && (isPrompt == 1)";
  printf("Canvas\n");
  TCanvas c1("DEBUG", "", 1200, 1350);
