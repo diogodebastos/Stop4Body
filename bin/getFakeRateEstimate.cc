@@ -24,7 +24,7 @@
 
 using json = nlohmann::json;
 TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
-TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string);
+TH1D* getFakeRateMCClosure(std::string name, SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string);
 TH1D* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, SampleReader&,VariableInfo&, std::string, std::string, std::string, std::string, std::string);
 
 class CutInfo
