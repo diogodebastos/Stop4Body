@@ -385,7 +385,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
   delete mcClosureRatio;
 */
   auto ratio = static_cast<TH1D*>(mcSumTight->Clone(("mcClosure_"+name).c_str()));
-  ratio->SetTitle("mcClosure_"+name.c_str());
+  ratio->SetTitle(("mcClosure_"+name).c_str());
   ratio->Divide(mcSumLoose);
   //DEBUG
   ratio->Draw();
