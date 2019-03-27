@@ -228,6 +228,8 @@ int main(int argc, char** argv)
      auto mcClosureLowEta = getFakeRateMCClosure(name + "_LowEta", MC, variable, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto mcClosureHighEta = getFakeRateMCClosure(name + "_HighEta", MC, variable, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      delete mcClosure;
+     delete mcClosureLowEta;
+     delete mcClosureHighEta;
 
  /* //Commented for DEBUG
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
@@ -346,11 +348,12 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
   for(auto& process : MC)
   {
     //if(process.tag() != "QCD" && process.tag() != "ZInv" && process.tag() != "VV"){
-      auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + " )"); // + isNonPrompt + " )");
-      auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + " )"); // + isNonPrompt + " )");
+      auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isNonPrompt + " )");
+      auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isNonPrompt + " )");
       //DEBUG
-      tmpHistTight->Draw();
-      c1.SaveAs((process.tag().c_str() + name + ".png").c_str());
+      //tmpHistTight->Draw();
+      //c1.SaveAs((process.tag().c_str() + name + ".png").c_str());
+
       //  mcSumTight->Add(tmpHistTight);
       //  mcSumLoose->Add(tmpHistLoose);
 
