@@ -328,11 +328,13 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  delete pEff;
 }
 
-TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& variable, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
+TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& variable, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
   TCanvas c1("DEBUG", "", 1200, 1350);
   c1.cd();
   gStyle->SetOptStat(0);
   std::string isPrompt = " && (isPrompt == 1)";
+  auto placeholder = MC.process(0).getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
+
   TH1D* mcSumTight = nullptr;
   TH1D* mcSumLoose = nullptr;
 
@@ -342,7 +344,9 @@ TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, Vari
   {
     auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
     auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
-
+    //DEBUG
+    tmpHistTight->Draw();
+    c1.SaveAs((process.tag().c_str() + name + ".png").c_str());
 //    mcSumTight->Add(tmpHistTight);
   //  mcSumLoose->Add(tmpHistLoose);
 
@@ -367,8 +371,15 @@ TGraphAsymmErrors* getFakeRateMCClosure(std::string name, SampleReader &MC, Vari
   mcClosureRatio->Draw("AP");
   c1.SaveAs(("mcClosureRatio_" + name + ".png").c_str());
   mcClosureRatio->SaveAs(("mcClosureRatio_" + name + ".root").c_str());
-
-  return mcClosureRatio;
+/*
+  auto ratio = static_cast<TH1D*>(lT->Clone((name+"EfficiencyAllEta").c_str()));
+  ratio->Divide(lL);
+  //DEBUG
+  ratio->Draw();
+  c1.SaveAs(("TH1DmcClosureRatio_" + name + ".png").c_str());
+  ratio->SaveAs(("TH1DmcClosureRatio_" + name + ".root").c_str());
+*/
+  return placeholder;
   delete mcSumTight;
   delete mcSumLoose;
   delete mcClosureRatio;
