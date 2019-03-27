@@ -225,6 +225,8 @@ int main(int argc, char** argv)
      delete pEffRemovePromptHightEta;
 */
      auto mcClosure = getFakeRateMCClosure(name, MC, variable, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto mcClosureLowEta = getFakeRateMCClosure(name + "_LowEta", MC, variable, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto mcClosureHighEta = getFakeRateMCClosure(name + "_HighEta", MC, variable, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      delete mcClosure;
 
  /* //Commented for DEBUG
@@ -333,8 +335,8 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
   TCanvas c1("DEBUG", "", 1200, 1350);
   c1.cd();
   gStyle->SetOptStat(0);
-  std::string isPrompt = " && (isPrompt == 1)";
-  auto placeholder = MC.process(0).getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
+  std::string isNonPrompt = " && (isPrompt == 0)";
+  //auto placeholder = MC.process(0).getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isNonPrompt + " )");
 
   TH1D* mcSumTight = nullptr;
   TH1D* mcSumLoose = nullptr;
@@ -343,13 +345,13 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
 
   for(auto& process : MC)
   {
-    if(process.tag() != "QCD" && process.tag() != "ZInv" && process.tag() != "VV"){
-      auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
-      auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
+    //if(process.tag() != "QCD" && process.tag() != "ZInv" && process.tag() != "VV"){
+      auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + " )"); // + isNonPrompt + " )");
+      auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + " )"); // + isNonPrompt + " )");
       //DEBUG
       tmpHistTight->Draw();
       c1.SaveAs((process.tag().c_str() + name + ".png").c_str());
-      //    mcSumTight->Add(tmpHistTight);
+      //  mcSumTight->Add(tmpHistTight);
       //  mcSumLoose->Add(tmpHistLoose);
 
       if(mcSumTight == nullptr){
@@ -364,7 +366,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
       else{
         mcSumLoose->Add(tmpHistLoose,1);
       }
-    }
+    //}
   }
 
   TGraphAsymmErrors* mcClosureRatio = new TGraphAsymmErrors();
@@ -382,7 +384,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
   c1.SaveAs(("TH1DmcClosureRatio_" + name + ".png").c_str());
   ratio->SaveAs(("TH1DmcClosureRatio_" + name + ".root").c_str());
 
-  return placeholder;
+  return ratio;
   delete mcSumTight;
   delete mcSumLoose;
   delete mcClosureRatio;
