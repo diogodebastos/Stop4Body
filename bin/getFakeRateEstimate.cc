@@ -343,7 +343,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
 
   for(auto& process : MC)
   {
-    if(process.tag() != "QCD" && process.tag() != "ZInv" && process.tag() != "VV"){  
+    if(process.tag() != "QCD" && process.tag() != "ZInv" && process.tag() != "VV"){
       auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
       auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
       //DEBUG
@@ -374,14 +374,14 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
   mcClosureRatio->Draw("AP");
   c1.SaveAs(("mcClosureRatio_" + name + ".png").c_str());
   mcClosureRatio->SaveAs(("mcClosureRatio_" + name + ".root").c_str());
-/*
-  auto ratio = static_cast<TH1D*>(lT->Clone((name+"EfficiencyAllEta").c_str()));
-  ratio->Divide(lL);
+
+  auto ratio = static_cast<TH1D*>(mcSumTight->Clone((name+"th1d").c_str()));
+  ratio->Divide(mcSumLoose);
   //DEBUG
   ratio->Draw();
   c1.SaveAs(("TH1DmcClosureRatio_" + name + ".png").c_str());
   ratio->SaveAs(("TH1DmcClosureRatio_" + name + ".root").c_str());
-*/
+
   return placeholder;
   delete mcSumTight;
   delete mcSumLoose;
