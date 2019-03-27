@@ -343,25 +343,27 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
 
   for(auto& process : MC)
   {
-    auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
-    auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
-    //DEBUG
-    tmpHistTight->Draw();
-    c1.SaveAs((process.tag().c_str() + name + ".png").c_str());
-//    mcSumTight->Add(tmpHistTight);
-  //  mcSumLoose->Add(tmpHistLoose);
+    if(process.tag() != "QCD" && MC.process(i).tag() != "ZInv" && MC.process(i).tag() != "VV"){  
+      auto tmpHistTight = process.getHist(variable.name(), variable, mcWeight + " * ( " + tightSelection + mcSelection + isPrompt + " )");
+      auto tmpHistLoose = process.getHist(variable.name(), variable, mcWeight + " * ( " + looseSelection + mcSelection + isPrompt + " )");
+      //DEBUG
+      tmpHistTight->Draw();
+      c1.SaveAs((process.tag().c_str() + name + ".png").c_str());
+      //    mcSumTight->Add(tmpHistTight);
+      //  mcSumLoose->Add(tmpHistLoose);
 
-    if(mcSumTight == nullptr){
-     mcSumTight = tmpHistTight;
-    }
-    else{
-     mcSumTight->Add(tmpHistTight,1);
-    }
-    if(mcSumLoose == nullptr){
-     mcSumLoose = tmpHistLoose;
-    }
-    else{
-     mcSumLoose->Add(tmpHistLoose,1);
+      if(mcSumTight == nullptr){
+        mcSumTight = tmpHistTight;
+      }
+      else{
+        mcSumTight->Add(tmpHistTight,1);
+      }
+      if(mcSumLoose == nullptr){
+        mcSumLoose = tmpHistLoose;
+      }
+      else{
+        mcSumLoose->Add(tmpHistLoose,1);
+      }
     }
   }
 
