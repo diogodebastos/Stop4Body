@@ -217,14 +217,16 @@ int main(int argc, char** argv)
      }
 
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-/*
+
+     // Fake Ratio in Data without the prompt contribution, estimated with MC
      auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      delete pEffRemovePrompt;
      delete pEffRemovePromptLowEta;
      delete pEffRemovePromptHightEta;
-*/
+
+     // MC Closure
      auto mcClosure = getFakeRateMCClosure(name, MC, variable, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto mcClosureLowEta = getFakeRateMCClosure(name + "_LowEta", MC, variable, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto mcClosureHighEta = getFakeRateMCClosure(name + "_HighEta", MC, variable, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
@@ -382,6 +384,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
   mcClosureRatio->SaveAs(("mcClosureRatio_" + name + ".root").c_str());
 
   auto ratio = static_cast<TH1D*>(mcSumTight->Clone((name+"th1d").c_str()));
+  ratio->SetTitle(name.c_str());
   ratio->Divide(mcSumLoose);
   //DEBUG
   ratio->Draw();
@@ -453,6 +456,7 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  testEff->SaveAs(("testEff_" + name + ".root").c_str());
 
  auto ratio = static_cast<TH1D*>(lT->Clone((name+"EfficiencyAllEta").c_str()));
+ ratio->SetTitle(name.c_str());
  ratio->Divide(lL);
  //DEBUG
  ratio->Draw();
