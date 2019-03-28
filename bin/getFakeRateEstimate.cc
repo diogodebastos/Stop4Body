@@ -463,7 +463,7 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  tgraphRatio->SetTitle(name.c_str());
  tgraphRatio->Divide(lT,lL);
  pFile->cd();
- tgraphRatio->(("TGraph_" + name).c_str());
+ tgraphRatio->Write(("TGraph_" + name).c_str());
  //pFile->ls();
  //DEBUG
  tgraphRatio->Draw("AP");
