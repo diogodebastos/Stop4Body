@@ -413,7 +413,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
 }
 
 TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
- TFile* pFile = new TFile("efficiency.root","recreate");
+ TFile* pFile = new TFile(("TGraph_" + name + ".root").c_str(),"recreate");
  std::string isPrompt = " && (isPrompt == 1)";
  printf("Canvas\n");
  TCanvas c1("DEBUG", "", 1200, 1350);
@@ -468,7 +468,7 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  //DEBUG
  tgraphRatio->Draw("AP");
  c1.SaveAs(("TGraph_" + name + ".png").c_str());
- tgraphRatio->SaveAs(("TGraph_" + name + ".root").c_str());
+ //tgraphRatio->SaveAs(("TGraph_" + name + ".root").c_str());
  delete tgraphRatio;
 
  auto ratio = static_cast<TH1D*>(lT->Clone((name).c_str()));
