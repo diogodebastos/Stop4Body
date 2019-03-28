@@ -390,9 +390,11 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
     //}
   }
 /*
+   TFile* pFile = new TFile(("TGraph_mcClosure_" + name + ".root").c_str(),"recreate");
    TGraphAsymmErrors* mcClosureRatio = new TGraphAsymmErrors();
    mcClosureRatio->SetTitle(name.c_str());
    mcClosureRatio->Divide(mcSumTight,mcSumLoose);
+   pFile->cd();
    mcClosureRatio->Write(("TGraph_mcClosure_" + name).c_str());
    mcClosureRatio->Draw("AP");
    c1.SaveAs(("TGraph_mcClosure_" + name + ".png").c_str());
@@ -413,7 +415,6 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
 }
 
 TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
- TFile* pFile = new TFile(("TGraph_" + name + ".root").c_str(),"recreate");
  std::string isPrompt = " && (isPrompt == 1)";
  printf("Canvas\n");
  TCanvas c1("DEBUG", "", 1200, 1350);
@@ -458,19 +459,19 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  //lL->Draw();
  //c1.SaveAs(("leptonLooseDiff_" + name + ".png").c_str());
  //lL->SaveAs(("leptonLooseDiff_" + name + ".root").c_str());
-
+/*
+ TFile* pFile = new TFile(("TGraph_" + name + ".root").c_str(),"recreate");
  TGraphAsymmErrors* tgraphRatio = new TGraphAsymmErrors();
  tgraphRatio->SetTitle(name.c_str());
  tgraphRatio->Divide(lT,lL);
  pFile->cd();
  tgraphRatio->Write(("TGraph_" + name).c_str());
- //pFile->ls();
  //DEBUG
  tgraphRatio->Draw("AP");
  c1.SaveAs(("TGraph_" + name + ".png").c_str());
  //tgraphRatio->SaveAs(("TGraph_" + name + ".root").c_str());
  delete tgraphRatio;
-
+*/
  auto ratio = static_cast<TH1D*>(lT->Clone((name).c_str()));
  ratio->SetTitle(name.c_str());
  ratio->Divide(lL);
