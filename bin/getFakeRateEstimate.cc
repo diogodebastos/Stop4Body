@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 {
   std::string variablesJson = "";
   std::string cutsJson = ""
-  
+
   std::string debug;
   double luminosity = -1;
   // Placeholder for ${JSON_PATH}
@@ -395,14 +395,14 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
     //}
   }
 /*
-  TGraphAsymmErrors* mcClosureRatio = new TGraphAsymmErrors();
-  mcClosureRatio->SetTitle(name.c_str());
-  mcClosureRatio->Divide(mcSumTight,mcSumLoose);
-  mcClosureRatio->Write("MyGraph");
-  mcClosureRatio->Draw("AP");
-  c1.SaveAs(("mcClosureRatio_" + name + ".png").c_str());
-  mcClosureRatio->SaveAs(("mcClosureRatio_" + name + ".root").c_str());
-  delete mcClosureRatio;
+   TGraphAsymmErrors* mcClosureRatio = new TGraphAsymmErrors();
+   mcClosureRatio->SetTitle(name.c_str());
+   mcClosureRatio->Divide(mcSumTight,mcSumLoose);
+   mcClosureRatio->Write(("TGraph_mcClosure_" + name).c_str());
+   mcClosureRatio->Draw("AP");
+   c1.SaveAs(("TGraph_mcClosure_" + name + ".png").c_str());
+   mcClosureRatio->SaveAs(("TGraph_mcClosure_" + name + ".root").c_str());
+   delete mcClosureRatio;
 */
   auto ratio = static_cast<TH1D*>(mcSumTight->Clone(("mcClosure_"+name).c_str()));
   ratio->SetTitle(("mcClosure_"+name).c_str());
