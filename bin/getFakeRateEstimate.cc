@@ -59,6 +59,7 @@ int main(int argc, char** argv)
   // Placeholder for ${variables}
   // std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
   // std::string cutsJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
+  // getFakeRateEstimate --variables ../Macros/variables2017-getRatio-muon.json --cuts ../Macros/variables2017-getRatio-muon.json
 
   for(int i = 1; i < argc; ++i)
   {
@@ -412,7 +413,7 @@ TH1D* getFakeRateMCClosure(std::string name, SampleReader &MC, VariableInfo& var
 }
 
 TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInfo &promptMC, SampleReader &MC, VariableInfo& variable, std::string dataSelection, std::string mcSelection, std::string tightSelection, std::string looseSelection, std::string mcWeight){
- //TFile* pFile = new TFile("efficiency.root","recreate");
+ TFile* pFile = new TFile("efficiency.root","recreate");
  std::string isPrompt = " && (isPrompt == 1)";
  printf("Canvas\n");
  TCanvas c1("DEBUG", "", 1200, 1350);
@@ -457,18 +458,19 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  //lL->Draw();
  //c1.SaveAs(("leptonLooseDiff_" + name + ".png").c_str());
  //lL->SaveAs(("leptonLooseDiff_" + name + ".root").c_str());
-/*
- TGraphAsymmErrors* testEff = new TGraphAsymmErrors();
- testEff->SetTitle(name.c_str());
- testEff->Divide(lT,lL);
+
+ TGraphAsymmErrors* tgraphRatio = new TGraphAsymmErrors();
+ tgraphRatio->SetTitle(name.c_str());
+ tgraphRatio->Divide(lT,lL);
  pFile->cd();
- testEff->Write("MyGraph");
- pFile->ls();
+ tgraphRatio->(("TGraph_" + name).c_str());
+ //pFile->ls();
  //DEBUG
- testEff->Draw("AP");
- c1.SaveAs(("testEff_" + name + ".png").c_str());
- testEff->SaveAs(("testEff_" + name + ".root").c_str());
-*/
+ tgraphRatio->Draw("AP");
+ c1.SaveAs(("TGraph_" + name + ".png").c_str());
+ tgraphRatio->SaveAs(("TGraph_" + name + ".root").c_str());
+ delete tgraphRatio;
+
  auto ratio = static_cast<TH1D*>(lT->Clone((name).c_str()));
  ratio->SetTitle(name.c_str());
  ratio->Divide(lL);
