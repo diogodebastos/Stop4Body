@@ -46,7 +46,7 @@ protected:
 int main(int argc, char** argv)
 {
   std::string variablesJson = "";
-  std::string cutsJson = ""
+  std::string cutsJson = "";
 
   std::string debug;
   double luminosity = -1;
@@ -63,12 +63,6 @@ int main(int argc, char** argv)
   for(int i = 1; i < argc; ++i)
   {
     std::string argument = argv[i];
-
-    if(argument == "--help")
-    {
-      printHelp();
-      return 0;
-    }
 
     if(argument == "--variables")
       variablesJson = argv[++i];
