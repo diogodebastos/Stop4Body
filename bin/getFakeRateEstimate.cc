@@ -45,6 +45,9 @@ protected:
 
 int main(int argc, char** argv)
 {
+  std::string variablesJson = "";
+  std::string cutsJson = ""
+  
   std::string debug;
   double luminosity = -1;
   // Placeholder for ${JSON_PATH}
@@ -54,8 +57,25 @@ int main(int argc, char** argv)
   std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-02-07-noSkim";
   std::string suffix = "";
   // Placeholder for ${variables}
-  std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
-  std::string cutsJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
+  // std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
+  // std::string cutsJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
+
+  for(int i = 1; i < argc; ++i)
+  {
+    std::string argument = argv[i];
+
+    if(argument == "--help")
+    {
+      printHelp();
+      return 0;
+    }
+
+    if(argument == "--variables")
+      variablesJson = argv[++i];
+
+    if(argument == "--cuts")
+      cutsJson = argv[++i];
+  }
 
   std::cout << "Reading json files" << std::endl;
   VariableJsonLoader variables(variablesJson);
