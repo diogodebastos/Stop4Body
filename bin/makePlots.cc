@@ -389,6 +389,7 @@ int main(int argc, char** argv)
       converter << "splitFactor*weight"; // Full
       //converter << "weight/(triggerEfficiency*WISRSF*ISRweight)"; // Incrementally adding new tests
       //converter << "weight/puWeight"; // Full no PU
+      //converter << "weight/l1prefireWeight"; // Full no PU
       //converter << "XS*filterEfficiency*puWeight*genWeight/sumGenWeight";
       if(noPUweight)
         converter << "/puWeight";
@@ -526,6 +527,8 @@ int main(int argc, char** argv)
         selection = cut.cut();
       }
     }
+    std::string dataSel;
+    std::string mcSel;
 
     std::cout << "Getting variables and yields with selection (" << selection << ") and weight (" << mcWeight << ")" << std::endl;
 
@@ -540,9 +543,6 @@ int main(int argc, char** argv)
         outSummary << "Variable: " << variable.name() << std::endl;
         outSummary << "Bins:" << std::endl;
       }
-
-      std::string dataSel;
-      std::string mcSel;
 
       if(dofakeclosure)
       {
@@ -560,14 +560,19 @@ int main(int argc, char** argv)
       }
       if(dofakeratio)
       {
-       mcSel = mcWeight+"*(((isPrompt >= -1) && (isLoose == 1)) && "+selection+")";
-       dataSel = "(((HLT_PFHT1050) && (isLoose == 1)) && " + selection + ")";
+       //mcSel = mcWeight+" / puWeight * ("+selection+")"; // / 3.0 or * 0.3
+       mcSel = mcWeight+"/(filterEfficiency*looseNotTightWeight*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*bTagSF*puWeight) * ("+selection+")";
+       //dataSel = "weight * (" +selection+")";
+       dataSel = "( (HLT_PFHT1050) && " +selection+")";
       }
 
       if(rawEvents)
       {
         mcSel = selection;
       }
+      std::cout << "MC selection: " << mcSel << std::endl;
+      std::cout << "Data selection: " << dataSel << std::endl;
+
 
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel);

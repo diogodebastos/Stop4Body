@@ -1,0 +1,64 @@
+{
+ "cuts":[
+   {
+     "name":"electron_loose",
+     "expression":"(HT>1200) && (Met<40) && (mt<30) && (nGoodEl==1) && (nGoodMu==0)",
+     "latex":"FRM ($e$ channel)"
+   },
+   {
+     "name":"muon_loose",
+     "expression":"(HT>1200) && (Met<40) && (mt<30) && (nGoodEl==0) && (nGoodMu==1)",
+     "latex":"FRM ($#mu$ channel)"
+   },
+   {
+     "name":"electron_tight",
+     "expression":"(HT>1200) && (Met<40) && (mt<30) && (nGoodEl==1) && (nGoodMu==0) && (nGoodEl_cutId_veto)",
+     "latex":"FRM ($e$ channel)"
+   },
+   {
+     "name":"muon_tight",
+     "expression":"(HT>1200) && (Met<40) && (mt<30) && (nGoodEl==0) && (nGoodMu==1) && (nGoodMu_cutId_loose)",
+     "latex":"FRM ($#mu$ channel)"
+   }
+  ],
+  "variables":[
+    {
+      "expression":"LepPt",
+      "label":"p_{T}(l) [GeV]",
+      "legPos":"top",
+      "varBins":[3.5,5,12,20,30,50,80,200,210]
+    },
+    {
+      "expression":"LepEta",
+      "label":"#eta(l)",
+      "min":-3,
+      "max":3,
+      "bins":5
+    },
+    {
+      "expression":"HT",
+      "label":"H_{T} [GeV]",
+      "legPos":"top",
+      "min":1200.0,
+      "max":2000.0,
+      "bins":20
+    },
+    {
+     "expression":"Met",
+     "label":"E_{T}^{miss} [GeV]",
+     "legPos":"top",
+      "max":50.0,
+      "bins":10
+    },
+    {
+      "expression":"mt",
+      "label":"M_{T} [GeV]",
+      "max":40.0,
+      "bins":8
+    }
+  ],
+  "2Dplots":[
+   {
+   }
+  ]
+}

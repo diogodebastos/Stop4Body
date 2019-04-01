@@ -6,7 +6,7 @@
 INPUT=${NTUPLE_DIR}
 OUTPUT=${INPUT}/DataMC-signal-stack
 OUTPUT_QUICK=${INPUT}/DataMC_quick
-OUTPUT_FAKE=${INPUT}/DataMC_fake
+OUTPUT_FAKE=${INPUT}/Plots_fake
 
 if [[ -d ${INPUT} ]] ; then
   if [[ ! -d ${OUTPUT} ]] ; then
@@ -19,7 +19,10 @@ if [[ -d ${INPUT} ]] ; then
     mkdir -p ${OUTPUT_FAKE}
   fi
   
-  makePlots --doSummary --quick --json ${JSON_PATH}/plot${YEAR}-inj-quick.json  --outDir ${OUTPUT_QUICK} --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json
-  makePlots --doSummary         --json ${JSON_PATH}/plot${YEAR}-inj.json        --outDir ${OUTPUT}       --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json
-  makePlots --doSummary --quick --json ${JSON_PATH}/plot${YEAR}-fake.json       --outDir ${OUTPUT}       --inDir ${INPUT} --variables variables2017-fakeRateMethod.json --cuts variables2017-fakeRateMethod.json --dofakeratio
+ # makePlots --doSummary --quick --json ${JSON_PATH}/plot${YEAR}-inj-quick.json  --outDir ${OUTPUT_QUICK} --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json
+ # makePlots --doSummary         --json ${JSON_PATH}/plot${YEAR}-inj.json        --outDir ${OUTPUT}       --inDir ${INPUT} --variables variables2017.json --cuts variables2017.json
+#  makePlots --quick --doSummary --json ${JSON_PATH}/plot${YEAR}-fake.json --outDir ${OUTPUT_FAKE} --inDir ${INPUT} --variables variables2017-fakeRateMethod.json --cuts variables2017-fakeRateMethod.json --dofakeratio
+  #makePlots --quick --doSummary --json ${JSON_PATH}/plot${YEAR}-fake.json --outDir ${OUTPUT_FAKE} --inDir ${INPUT} --variables variables2017-fakeRateMethod.json --cuts variables2017-fakeRateMethod.json --dofakeratio
+  #makePlots --quick --noSF --doSummary --json ${JSON_PATH}/plot${YEAR}-fake.json --outDir ${OUTPUT_FAKE} --inDir ${INPUT} --variables variables2017-fakeRateMethod.json --cuts variables2017-fakeRateMethod.json --dofakeratio
+  makePlots --quick --doSummary --json ${JSON_PATH}/plot${YEAR}-fake.json --outDir ${OUTPUT_FAKE} --inDir ${INPUT} --variables variables2017-plotFakesTL.json --cuts variables2017-plotFakesTL.json --dofakeratio
 fi

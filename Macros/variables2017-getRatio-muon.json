@@ -1,0 +1,21 @@
+{
+ "cuts":[
+   {
+     "name":"muon",
+     "expression":"(HT>1200) && (mt<30) && (Met<40) && (nGoodEl==0) && (nGoodMu==1)",
+     "latex":"FRM ($#mu$ channel)"
+   }
+  ],
+  "variables":[
+    {
+      "expression":"LepPt",
+      "label":"p_{T}(l) [GeV]",
+      "legPos":"top",
+      "varBins":[3.5,5,12,20,30,50,80,85]
+    }
+  ],
+  "2Dplots":[
+   {
+   }
+  ]
+}
