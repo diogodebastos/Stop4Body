@@ -54,3 +54,5 @@ Macros/DataPileupHistogram*.root
 Macros/GOLDEN_JSON.txt
 Macros/MCPileupHistogram.root
 Macros/core.*
+Macros/FakeRate/*.png
+Macros/FakeRate/*.root
