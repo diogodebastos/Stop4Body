@@ -186,6 +186,9 @@ int main(int argc, char** argv)
     if(argument == "--looseNotTight")
       looseNotTight = true;
 
+    if(argument == "--doFakeClosure")
+      doFakeClosure = true;
+
     if(argument == "--preemptiveDropEvents")
       preemptiveDropEvents = true;
 
@@ -421,6 +424,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> leptonISOSF;
       ValueWithSystematics<float> leptonFullFastSF;
       ValueWithSystematics<float> looseNotTightWeight;
+      ValueWithSystematics<float> looseNotTightWeight2017MCClosure;
       ValueWithSystematics<float> l1prefireWeight;
       ValueWithSystematics<float> Q2Var;
       ValueWithSystematics<float> bTagSF;
@@ -490,7 +494,9 @@ int main(int argc, char** argv)
       l1prefireWeight = getL1preFiringMapsSys(2.5, 225);
 
       std::cout << "\t        looseNotTight" << std::endl;
-      looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
+      //looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
+      looseNotTightWeight = getLeptonTightLooseRatio2017Sys(11, 20, 1.1);
+      looseNotTightWeight2017MCClosure = getLeptonTightLooseRatio2017MCClosureSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
       weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight;
@@ -511,6 +517,7 @@ int main(int argc, char** argv)
         l1prefireWeight.Lock();
       }
       looseNotTightWeight.Lock();
+      looseNotTightWeight2017MCClosure.Lock();
       weight.Lock();
 
 
@@ -522,6 +529,7 @@ int main(int argc, char** argv)
       leptonISOSF = 1.0;
       leptonFullFastSF = 1.0;
       looseNotTightWeight = 1.0;
+      looseNotTightWeight2017MCClosure = 1.0;
       l1prefireWeight = 1.0;
       bTagSF = 1.0;
       Q2Var = 1.0;
@@ -549,6 +557,7 @@ int main(int argc, char** argv)
       bdttree->Branch("weight", &(weight.Value()), "weight/F");
       bdttree->Branch("isLooseNotTight", &isLooseNotTight);
       bdttree->Branch("looseNotTightWeight", &looseNotTightWeight.Value(), "looseNotTightWeight/F");
+      bdttree->Branch("looseNotTightWeight2017MCClosure", &looseNotTightWeight2017MCClosure.Value(), "looseNotTightWeight2017MCClosure/F");
       bdttree->Branch("l1prefireWeight", &l1prefireWeight.Value(), "l1prefireWeight/F");
 
       if(!process.isdata() && noTrim)
@@ -572,7 +581,9 @@ int main(int argc, char** argv)
       }
       if(noTrim)
         for(auto& systematic: looseNotTightWeight.Systematics())
-          bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
+        bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
+        for(auto& systematic: looseNotTightWeight2017.Systematics())
+        bdttree->Branch(("looseNotTightWeight2017MCClosure_"+systematic).c_str(), &(looseNotTightWeight2017MCClosure.Systematic(systematic)));
       for(auto& systematic: weight.Systematics())
         bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       std::cout << "\t      Finished." << std::endl;
@@ -2217,8 +2228,14 @@ int main(int argc, char** argv)
 
           if(isLooseNotTight)
           {
-            auto efficiency = getLeptonTightLooseRatioSys(LepID, LepPt, LepEta);
+            //auto efficiency = getLeptonTightLooseRatioSys(LepID, LepPt, LepEta);
+            auto efficiency = getLeptonTightLooseRatio2017Sys(LepID, LepPt, LepEta);
             looseNotTightWeight = efficiency/(1-efficiency);
+            if(doFakeClosure)
+            {
+              auto efficiency2017MCClosure = getLeptonTightLooseRatio2017MCClosureSys(LepID, LepPt, LepEta);
+              looseNotTightWeight = efficiency2017MCClosure/(1-efficiency2017MCClosure);
+            }
             weight *= looseNotTightWeight;
           }
           else

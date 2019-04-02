@@ -58,6 +58,7 @@ doubleUnc EWKISRweightFromISRpT(double lep_pt, double lep_phi, double met_pt, do
 doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta);
+doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta);
 doubleUnc getL1preFiringMaps(double JetEta, double JetPt);
 doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
@@ -80,6 +81,8 @@ ValueWithSystematics<double> getLeptonRecoSF2017Sys(double LepID, double LepPt, 
 ValueWithSystematics<double> getLeptonIDSF2017Sys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonISOSF2017Sys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getL1preFiringMapsSys(double JetEta, double JetPt);
+ValueWithSystematics<double> getLeptonTightLooseRatio2017Sys(double LepID, double LepPt, double LepEta);
+ValueWithSystematics<double> getLeptonTightLooseRatio2017MCClosureSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double LepEta);
