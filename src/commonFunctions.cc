@@ -15,6 +15,15 @@ TH2D* centralMuonSFHist2017 = nullptr;
 TH2D* MuonISOSFHist2017 = nullptr;
 TH2D* L1prefiring_jetpt_2017BtoFHist = nullptr;
 
+TH1D* electronTightToLoose_2017_LowEta = nullptr;
+TH1D* electronTightToLoose_2017_HighEta = nullptr;
+TH1D* muonTightToLoose_2017_LowEta = nullptr;
+TH1D* muonTightToLoose_2017_HighEta = nullptr;
+TH1D* mcClosure_electronTightToLoose_2017_LowEta = nullptr;
+TH1D* mcClosure_electronTightToLoose_2017_HighEta = nullptr;
+TH1D* mcClosure_muonTightToLoose_2017_LowEta = nullptr;
+TH1D* mcClosure_muonTightToLoose_2017_HighEta = nullptr;
+
 TH2D* centralElectronSFHist = nullptr;
 TH2D* centralMuonSFHist = nullptr;
 TH1F* hephyElectronIDSFHistBarrel = nullptr;
@@ -656,11 +665,11 @@ doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta)
       sign = -1;
     LepEta = sign*2.49999;
    }
-    
+
   if (LepPt<20) {
    if (LepPt < 10)
      LepPt = 10;
-     
+
    auto bin = centralElectronRecoSFHist2017_lowEt->FindBin(LepEta, LepPt);
    val = centralElectronRecoSFHist2017_lowEt->GetBinContent(bin);
    unc = centralElectronRecoSFHist2017_lowEt->GetBinError(bin);
@@ -714,7 +723,7 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
     if (LepEta < 0)
       sign = -1;
     LepEta = sign*2.49999;
-  } 
+  }
   auto bin = centralElectronSFHist2017->FindBin(LepEta, LepPt);
   val = centralElectronSFHist2017->GetBinContent(bin);
   unc = centralElectronSFHist2017->GetBinError(bin);
@@ -730,7 +739,7 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
     LepPt = 119.999;
   if(LepEta >= 2.4)
     LepEta = 2.39999;
-    
+
   auto bin = centralMuonSFHist2017->FindBin(LepPt, LepEta);
   val = centralMuonSFHist2017->GetBinContent(bin);
   unc = centralMuonSFHist2017->GetBinError(bin);
@@ -746,17 +755,17 @@ ValueWithSystematics<double> getLeptonIDSF2017Sys(double LepID, double LepPt, do
   double unc = lepIDSF.uncertainty();
 
   ValueWithSystematics<double> retVal(val);
-  
+
   retVal.Systematic("LeptonIDSF2017_Electron_Up");
   retVal.Systematic("LeptonIDSF2017_Electron_Down");
-  
+
   retVal.Systematic("LeptonIDSF2017_Muon_Up");
   retVal.Systematic("LeptonIDSF2017_Muon_Down");
-  
+
   retVal.Systematic("LeptonIDSF2017_AltCorr_Up");
   retVal.Systematic("LeptonIDSF2017_AltCorr_Down");
   retVal.Lock();
-  
+
   if(std::abs(LepID) == 11)
   {
    retVal.Systematic("LeptonIDSF2017_Electron_Up") = val+unc;
@@ -791,7 +800,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
     if (LepEta < 0)
       sign = -1;
     LepEta = sign*2.49999;
-  } 
+  }
   auto bin = ElectronISOSFHist2017->FindBin(LepEta, LepPt);
   val = ElectronISOSFHist2017->GetBinContent(bin);
   unc = ElectronISOSFHist2017->GetBinError(bin);
@@ -807,7 +816,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
     LepPt = 119.999;
   if(LepEta >= 2.4)
     LepEta = 2.39999;
-    
+
   auto bin = MuonISOSFHist2017->FindBin(LepPt, LepEta);
   val = MuonISOSFHist2017->GetBinContent(bin);
   unc = MuonISOSFHist2017->GetBinError(bin);
@@ -825,13 +834,13 @@ ValueWithSystematics<double> getLeptonISOSF2017Sys(double LepID, double LepPt, d
   ValueWithSystematics<double> retVal(val);
   retVal.Systematic("LeptonISOSF2017_Electron_Up");
   retVal.Systematic("LeptonISOSF2017_Electron_Down");
-  
+
   retVal.Systematic("LeptonISOSF2017_Muon_Up");
   retVal.Systematic("LeptonISOSF2017_Muon_Down");
-  
+
   retVal.Systematic("LeptonISOSF2017_AltCorr_Up");
   retVal.Systematic("LeptonISOSF2017_AltCorr_Down");
-  
+
   retVal.Lock();
   if(std::abs(LepID) == 11)
   {
@@ -1175,6 +1184,195 @@ ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, doubl
   return retVal;
 }
 
+doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta)
+{
+  double val = 1, unc = 0;
+  if(std::abs(LepID) == 13)
+  {
+    if(LepPt >= 85)
+      LepPt = 84.999;
+    if(std::abs(LepEta) < 1.5)
+    {
+      auto bin = muonTightToLoose_2017_LowEta->FindBin(LepPt);
+      val = muonTightToLoose_2017_LowEta->GetBinContent(bin);
+      unc = muonTightToLoose_2017_LowEta->GetBinError(bin);
+    }
+    else
+    {
+      auto bin = muonTightToLoose_2017_HighEta->FindBin(LepPt);
+      val = muonTightToLoose_2017_HighEta->GetBinContent(bin);
+      unc = muonTightToLoose_2017_HighEta->GetBinError(bin);
+    }
+  }
+  else
+  {
+    if(LepPt >= 210)
+      LepPt = 209.999;
+    if(std::abs(LepEta) < 1.5)
+    {
+      auto bin = electronTightToLoose_2017_LowEta->FindBin(LepPt);
+      val = electronTightToLoose_2017_LowEta->GetBinContent(bin);
+      unc = electronTightToLoose_2017_LowEta->GetBinError(bin);
+    }
+    else
+    {
+      auto bin = electronTightToLoose_2017_HighEta->FindBin(LepPt);
+      val = electronTightToLoose_2017_HighEta->GetBinContent(bin);
+      unc = electronTightToLoose_2017_HighEta->GetBinError(bin);
+    }
+  }
+
+  doubleUnc retVal(val, unc);
+  return retVal;
+}
+ValueWithSystematics<double> getLeptonTightLooseRatio2017Sys(double LepID, double LepPt, double LepEta)
+{
+  ValueWithSystematics<double> retVal(0.0);
+  if(muonTightToLoose_2017_LowEta == nullptr || muonTightToLoose_2017_HighEta == nullptr)
+    return retVal = 1.0;
+  if(electronTightToLoose_2017_LowEta == nullptr || electronTightToLoose_2017_HighEta == nullptr)
+    return retVal = 1.0;
+
+  int electronBins1 = electronTightToLoose_2017_LowEta->GetNbinsX();
+  int electronBins2 = electronTightToLoose_2017_HighEta->GetNbinsX();
+  int muonBins1 = muonTightToLoose_2017_LowEta->GetNbinsX();
+  int muonBins2 = muonTightToLoose_2017_HighEta->GetNbinsX();
+  for(int i = 1; i <= electronBins1 + electronBins2; ++i)
+  {
+    std::stringstream converter;
+    converter << "TightLoose_Electron_Bin" << i;
+    retVal.Systematic(converter.str() + "_Up");
+    retVal.Systematic(converter.str() + "_Down");
+  }
+  for(int i = 1; i <= muonBins1 + muonBins2; ++i)
+  {
+    std::stringstream converter;
+    converter << "TightLoose_Muon_Bin" << i;
+    retVal.Systematic(converter.str() + "_Up");
+    retVal.Systematic(converter.str() + "_Down");
+  }
+  retVal.Systematic("TightLoose_AltCorr_Up");
+  retVal.Systematic("TightLoose_AltCorr_Down");
+  retVal.Systematic("TightLoose_NU_Bin1_Up");
+  retVal.Systematic("TightLoose_NU_Bin1_Down");
+  retVal.Systematic("TightLoose_NU_Bin2_Up");
+  retVal.Systematic("TightLoose_NU_Bin2_Down");
+  retVal.Systematic("TightLoose_NU_Bin3_Up");
+  retVal.Systematic("TightLoose_NU_Bin3_Down");
+  retVal.Systematic("TightLoose_NU_Bin4_Up");
+  retVal.Systematic("TightLoose_NU_Bin4_Down");
+  retVal.Systematic("TightLoose_NU_Bin5_Up");
+  retVal.Systematic("TightLoose_NU_Bin5_Down");
+  retVal.Systematic("TightLoose_NU_AltCorr_Up");
+  retVal.Systematic("TightLoose_NU_AltCorr_Down");
+  retVal.Lock();
+
+  double val = 1, unc = 0;
+  int theBin = 0;
+  if(std::abs(LepID) == 13)
+  {
+    if(LepPt >= 85)
+      LepPt = 84.999;
+    if(std::abs(LepEta) < 1.5)
+    {
+      auto bin = muonTightToLoose_2017_LowEta->FindBin(LepPt);
+      val = muonTightToLoose_2017_LowEta->GetBinContent(bin);
+      unc = muonTightToLoose_2017_LowEta->GetBinError(bin);
+      theBin = bin;
+    }
+    else
+    {
+      auto bin = muonTightToLoose_2017_HighEta->FindBin(LepPt);
+      val = muonTightToLoose_2017_HighEta->GetBinContent(bin);
+      unc = muonTightToLoose_2017_HighEta->GetBinError(bin);
+      theBin = bin + muonBins1;
+    }
+
+    std::stringstream converter;
+    converter << "TightLoose_Muon_Bin" << theBin;
+    retVal = val;
+    retVal.Systematic(converter.str() + "_Up") = val + unc;
+    retVal.Systematic(converter.str() + "_Down") = val - unc;
+    retVal.Systematic("TightLoose_AltCorr_Up") = val + unc;
+    retVal.Systematic("TightLoose_AltCorr_Down") = val - unc;
+  }
+  else
+  {
+    if(LepPt >= 210)
+      LepPt = 209.999;
+    if(std::abs(LepEta) < 1.5)
+    {
+      auto bin = electronTightToLoose_2017_LowEta->FindBin(LepPt);
+      val = electronTightToLoose_2017_LowEta->GetBinContent(bin);
+      unc = electronTightToLoose_2017_LowEta->GetBinError(bin);
+      theBin = bin;
+    }
+    else
+    {
+      auto bin = electronTightToLoose_2017_HighEta->FindBin(LepPt);
+      val = electronTightToLoose_2017_HighEta->GetBinContent(bin);
+      unc = electronTightToLoose_2017_HighEta->GetBinError(bin);
+      theBin = bin + electronBins1;
+    }
+
+    std::stringstream converter;
+    converter << "TightLoose_Electron_Bin" << theBin;
+    retVal = val;
+    retVal.Systematic(converter.str() + "_Up") = val + unc;
+    retVal.Systematic(converter.str() + "_Down") = val - unc;
+    retVal.Systematic("TightLoose_AltCorr_Up") = val + unc;
+    retVal.Systematic("TightLoose_AltCorr_Down") = val - unc;
+  }
+
+  if(LepPt < 5)
+  {
+    retVal.Systematic("TightLoose_NU_Bin1_Up") = retVal.Value() * (1 + 0.2);
+    retVal.Systematic("TightLoose_NU_Bin1_Down") = retVal.Value() * (1 - 0.2);
+    retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.2);
+    retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.2);
+  }
+  else
+  {
+    if(LepPt < 12)
+    {
+      retVal.Systematic("TightLoose_NU_Bin2_Up") = retVal.Value() * (1 + 0.2);
+      retVal.Systematic("TightLoose_NU_Bin2_Down") = retVal.Value() * (1 - 0.2);
+      retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.2);
+      retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.2);
+    }
+    else
+    {
+      if(LepPt < 20)
+      {
+        retVal.Systematic("TightLoose_NU_Bin3_Up") = retVal.Value() * (1 + 0.3);
+        retVal.Systematic("TightLoose_NU_Bin3_Down") = retVal.Value() * (1 - 0.3);
+        retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.3);
+        retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.3);
+      }
+      else
+      {
+        if(LepPt < 30)
+        {
+          retVal.Systematic("TightLoose_NU_Bin4_Up") = retVal.Value() * (1 + 0.3);
+          retVal.Systematic("TightLoose_NU_Bin4_Down") = retVal.Value() * (1 - 0.3);
+          retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.3);
+          retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.3);
+        }
+        else
+        {
+          retVal.Systematic("TightLoose_NU_Bin5_Up") = retVal.Value() * (1 + 0.5);
+          retVal.Systematic("TightLoose_NU_Bin5_Down") = retVal.Value() * (1 - 0.5);
+          retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.5);
+          retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.5);
+        }
+      }
+    }
+  }
+
+  return retVal;
+}
+
+
 doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta)
 {
   double val = 1, unc = 0;
@@ -1365,11 +1563,11 @@ doubleUnc getL1preFiringMaps(double JetEta, double JetPt)
  double val = 1, unc = 0;
  if(L1prefiring_jetpt_2017BtoFHist == nullptr)
    return doubleUnc(1,0);
- 
+
  auto bin = L1prefiring_jetpt_2017BtoFHist->FindBin(JetEta,JetPt);
  val = L1prefiring_jetpt_2017BtoFHist->GetBinContent(bin);
  unc = L1prefiring_jetpt_2017BtoFHist->GetBinError(bin);
- 
+
  doubleUnc retVal(val, unc);
  return retVal;
 }
@@ -1379,16 +1577,16 @@ ValueWithSystematics<double> getL1preFiringMapsSys(double JetEta, double JetPt)
  doubleUnc jetMap = getL1preFiringMaps(JetEta, JetPt);
  double val = jetMap.value();
  double unc = jetMap.uncertainty();
- 
+
  ValueWithSystematics<double> retVal(val);
  retVal.Systematic("L1prefireWeight_Up");
  retVal.Systematic("L1prefireWeight_Down");
- 
+
  retVal.Lock();
- 
+
  retVal.Systematic("L1prefireWeight_Up") = val+unc;
  retVal.Systematic("L1prefireWeight_Down") = val-unc;
- 
+
  return retVal;
 }
 
