@@ -263,14 +263,14 @@ int main(int argc, char** argv)
   L1prefiring_jetpt_2017BtoFHist = static_cast<TH2D*>(L1prefiring_jetpt_2017BtoFFile.Get("L1prefiring_jetpt_2017BtoF"));
 
   TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
-  electronTightToLoose_2017_LowEta = static_cast<TH1F*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_LowEta"));
-  electronTightToLoose_2017_HighEta = static_cast<TH1F*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_HighEta"));
-  muonTightToLoose_2017_LowEta = static_cast<TH1F*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_LowEta"));
-  muonTightToLoose_2017_HighEta = static_cast<TH1F*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_HighEta"));
-  mcClosure_electronTightToLoose_2017_LowEta = static_cast<TH1F*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_LowEta"));
-  mcClosure_electronTightToLoose_2017_HighEta = static_cast<TH1F*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_HighEta"));
-  mcClosure_muonTightToLoose_2017_LowEta = static_cast<TH1F*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_LowEta"));
-  mcClosure_muonTightToLoose_2017_HighEta = static_cast<TH1F*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_HighEta"));
+  electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_LowEta"));
+  electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_HighEta"));
+  muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_LowEta"));
+  muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_HighEta"));
+  mcClosure_electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_LowEta"));
+  mcClosure_electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_HighEta"));
+  mcClosure_muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_LowEta"));
+  mcClosure_muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_HighEta"));
 
   TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
   centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
