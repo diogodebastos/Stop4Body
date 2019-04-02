@@ -2230,14 +2230,18 @@ int main(int argc, char** argv)
           if(isLooseNotTight)
           {
             //auto efficiency = getLeptonTightLooseRatioSys(LepID, LepPt, LepEta);
-            auto efficiency = getLeptonTightLooseRatio2017Sys(LepID, LepPt, LepEta);
-            looseNotTightWeight = efficiency/(1-efficiency);
             if(doFakeClosure)
             {
               auto efficiency2017MCClosure = getLeptonTightLooseRatio2017MCClosureSys(LepID, LepPt, LepEta);
-              looseNotTightWeight = efficiency2017MCClosure/(1-efficiency2017MCClosure);
+              looseNotTightWeight2017MCClosure = efficiency2017MCClosure/(1-efficiency2017MCClosure);
+              weight *= looseNotTightWeight2017MCClosure;
             }
-            weight *= looseNotTightWeight;
+            else
+            {
+              auto efficiency = getLeptonTightLooseRatio2017Sys(LepID, LepPt, LepEta);
+              looseNotTightWeight = efficiency/(1-efficiency);
+              weight *= looseNotTightWeight;
+            }
           }
           else
           {
