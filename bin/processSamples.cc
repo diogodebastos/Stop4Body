@@ -119,6 +119,7 @@ int main(int argc, char** argv)
   bool overrideXSec = false;
   bool swap = false;
   bool looseNotTight = false;
+  bool doFakeClosure = false;
   bool preemptiveDropEvents = false;
   bool doLooseLeptons = false;
   bool doPromptTagging = false;
@@ -582,7 +583,7 @@ int main(int argc, char** argv)
       if(noTrim)
         for(auto& systematic: looseNotTightWeight.Systematics())
         bdttree->Branch(("looseNotTightWeight_"+systematic).c_str(), &(looseNotTightWeight.Systematic(systematic)));
-        for(auto& systematic: looseNotTightWeight2017.Systematics())
+        for(auto& systematic: looseNotTightWeight2017MCClosure.Systematics())
         bdttree->Branch(("looseNotTightWeight2017MCClosure_"+systematic).c_str(), &(looseNotTightWeight2017MCClosure.Systematic(systematic)));
       for(auto& systematic: weight.Systematics())
         bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
