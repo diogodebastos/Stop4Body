@@ -500,7 +500,7 @@ int main(int argc, char** argv)
       looseNotTightWeight2017MCClosure = getLeptonTightLooseRatio2017MCClosureSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure; 
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
