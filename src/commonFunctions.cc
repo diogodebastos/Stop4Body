@@ -713,36 +713,47 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
  {
   if(centralElectronSFHist2017 == nullptr)
     return doubleUnc(1,0);
-  if (LepPt < 10)
-    LepPt = 10;
-  if (LepPt >= 500)
-    LepPt = 499.999;
-  if(std::abs(LepEta) >= 2.5)
-  {
-    int sign = 1;
-    if (LepEta < 0)
+  if (LepPt > 10){ //TODO: This is a temporary fix where the SFs at low pt are the same as 2016 samples.
+    if (LepPt >= 500)
+      LepPt = 499.999;
+    if(std::abs(LepEta) >= 2.5)
+    {
+      int sign = 1;
+      if (LepEta < 0)
       sign = -1;
-    LepEta = sign*2.49999;
+      LepEta = sign*2.49999;
+    }
+    auto bin = centralElectronSFHist2017->FindBin(LepEta, LepPt);
+    val = centralElectronSFHist2017->GetBinContent(bin);
+    unc = centralElectronSFHist2017->GetBinError(bin);
   }
-  auto bin = centralElectronSFHist2017->FindBin(LepEta, LepPt);
-  val = centralElectronSFHist2017->GetBinContent(bin);
-  unc = centralElectronSFHist2017->GetBinError(bin);
+  else {
+    //LepPt = 10;
+    doubleUnc sfEl2016 = getLeptonIDSF(LepID, LepPt, LepEta);
+    val = sfEl2016.value();
+    unc = sfEl2016.uncertainty();
+  }
  }
  else if(std::abs(LepID) == 13) // If  muon
  {
   LepEta = std::abs(LepEta);
   if(centralMuonSFHist2017 == nullptr)
     return doubleUnc(1,0);
-  if (LepPt < 20)
-    LepPt = 20;
-  if (LepPt >= 120)
-    LepPt = 119.999;
-  if(LepEta >= 2.4)
-    LepEta = 2.39999;
-
-  auto bin = centralMuonSFHist2017->FindBin(LepPt, LepEta);
-  val = centralMuonSFHist2017->GetBinContent(bin);
-  unc = centralMuonSFHist2017->GetBinError(bin);
+  if (LepPt > 20){
+    if (LepPt >= 120)
+      LepPt = 119.999;
+    if(LepEta >= 2.4)
+      LepEta = 2.39999;
+    auto bin = centralMuonSFHist2017->FindBin(LepPt, LepEta);
+    val = centralMuonSFHist2017->GetBinContent(bin);
+    unc = centralMuonSFHist2017->GetBinError(bin);
+  }
+  else {
+    //LepPt = 20;
+    doubleUnc sfMu2016 = getLeptonIDSF(LepID, LepPt, LepEta);
+    val = sfMu2016.value();
+    unc = sfMu2016.uncertainty();
+  }
  }
  doubleUnc retVal(val, unc);
  return retVal;
@@ -790,36 +801,47 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
  {
   if(ElectronISOSFHist2017 == nullptr)
     return doubleUnc(1,0);
-  if (LepPt < 10)
-    LepPt = 10;
-  if (LepPt >= 500)
-    LepPt = 499.999;
-  if(std::abs(LepEta) >= 2.5)
-  {
-    int sign = 1;
-    if (LepEta < 0)
+  if (LepPt < 10){
+    if (LepPt >= 500)
+      LepPt = 499.999;
+    if(std::abs(LepEta) >= 2.5)
+    {
+      int sign = 1;
+      if (LepEta < 0)
       sign = -1;
-    LepEta = sign*2.49999;
+      LepEta = sign*2.49999;
+    }
+    auto bin = ElectronISOSFHist2017->FindBin(LepEta, LepPt);
+    val = ElectronISOSFHist2017->GetBinContent(bin);
+    unc = ElectronISOSFHist2017->GetBinError(bin);
   }
-  auto bin = ElectronISOSFHist2017->FindBin(LepEta, LepPt);
-  val = ElectronISOSFHist2017->GetBinContent(bin);
-  unc = ElectronISOSFHist2017->GetBinError(bin);
+  else {
+    //LepPt = 10;
+    doubleUnc sfEl2016 = getLeptonISOSF(LepID, LepPt, LepEta);
+    val = sfEl2016.value();
+    unc = sfEl2016.uncertainty();
+  }
  }
  else if(std::abs(LepID) == 13) // If  muon
  {
   LepEta = std::abs(LepEta);
   if(MuonISOSFHist2017 == nullptr)
     return doubleUnc(1,0);
-  if (LepPt < 20)
-    LepPt = 20;
-  if (LepPt >= 120)
-    LepPt = 119.999;
-  if(LepEta >= 2.4)
-    LepEta = 2.39999;
-
-  auto bin = MuonISOSFHist2017->FindBin(LepPt, LepEta);
-  val = MuonISOSFHist2017->GetBinContent(bin);
-  unc = MuonISOSFHist2017->GetBinError(bin);
+  if (LepPt > 20){
+    if (LepPt >= 120)
+      LepPt = 119.999;
+    if(LepEta >= 2.4)
+      LepEta = 2.39999;
+    auto bin = MuonISOSFHist2017->FindBin(LepPt, LepEta);
+    val = MuonISOSFHist2017->GetBinContent(bin);
+    unc = MuonISOSFHist2017->GetBinError(bin);
+  }
+  else {
+    //LepPt = 20;
+    doubleUnc sfMu2016 = getLeptonISOSF(LepID, LepPt, LepEta);
+    val = sfMu2016.value();
+    unc = sfMu2016.uncertainty();
+  }
  }
  doubleUnc retVal(val, unc);
  return retVal;
