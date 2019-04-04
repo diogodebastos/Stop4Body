@@ -62,7 +62,7 @@ int main(int argc, char** argv)
   bool invertMet = false;
   bool invertLepPt = false;
   bool special = false;
-  bool preFakeRate = false;
+  bool doMCFakeClosure = false;
 
   if(argc < 2)
   {
@@ -141,10 +141,10 @@ int main(int argc, char** argv)
     {
       special = true;
     }
-    
-    if(argument == "--doPreFakeRate")
+
+    if(argument == "--doMCFakeClosure")
     {
-      preFakeRate = true;
+      doMCFakeClosure = true;
     }
   }
 
@@ -203,13 +203,13 @@ int main(int argc, char** argv)
   else
   {
   }
-  
+
   std::string wjetsControlRegion = controlRegion + " && " + wjetsEnrich;
   std::string ttbarControlRegion = controlRegion + " && " + ttbarEnrich;
   std::string wjetsSignalRegionClosure = signalRegion + " && " + wjetsEnrich;
   std::string ttbarSignalRegionClosure = signalRegion + " && " + ttbarEnrich;
 
-  if(preFakeRate)
+  if(doMCFakeClosure)
   {
    // Signal Region = Preselection
    controlRegion = "";

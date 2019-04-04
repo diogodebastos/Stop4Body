@@ -56,3 +56,4 @@ Macros/MCPileupHistogram.root
 Macros/core.*
 Macros/FakeRate/*.png
 Macros/FakeRate/*.root
+notes
