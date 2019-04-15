@@ -21,7 +21,8 @@
   <bin name="makeTwoDPlots"           file="makeTwoDPlots.cc"> </bin>
   <bin name="getPUWeight"             file="getPUWeight.cc"> </bin>
   <bin name="getDDEstimate"           file="getDDEstimate.cc"> </bin>
-  <bin name="getFakeRateEstimate"     file="getFakeRateEstimate.cc"> </bin>
+  <bin name="getFakeRateRatio"     file="getFakeRateRatio.cc"> </bin>
+  <bin name="fakeRateClosure"         file="fakeRateClosure.cc"> </bin>
   <bin name="buildJobs"               file="buildJobs.cc"> </bin>
   <bin name="fakeSystematics"         file="fakeSystematics.cc"> </bin>
   <bin name="skimmer"                 file="skimmer.cc"> </bin>

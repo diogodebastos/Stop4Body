@@ -59,7 +59,7 @@ int main(int argc, char** argv)
   // Placeholder for ${variables}
   // std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
   // std::string cutsJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
-  // getFakeRateEstimate --variables ../Macros/variables2017-getRatio-muon.json --cuts ../Macros/variables2017-getRatio-muon.json
+  // getFakeRateRatio --variables ../Macros/variables2017-getRatio-muon.json --cuts ../Macros/variables2017-getRatio-muon.json
 
   for(int i = 1; i < argc; ++i)
   {

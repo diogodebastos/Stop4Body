@@ -1,0 +1,21 @@
+{
+ "cuts":[
+   {
+     "name":"electron",
+     "expression":"",
+     "latex":"FRM ($e$ channel)"
+   }
+  ],
+  "variables":[
+    {
+      "expression":"LepPt",
+      "label":"p_{T}(l) [GeV]",
+      "legPos":"top",
+      "varBins":[3.5,5,12,20,30,50,80,200,210]
+    }
+  ],
+  "2Dplots":[
+   {
+   }
+  ]
+}

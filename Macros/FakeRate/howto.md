@@ -10,8 +10,8 @@ Calculate the eTL ratio:
 
 ```sh
 cd Macros/FakeRate
-getFakeRateEstimate --variables ../variables2017-getRatio-electron.json --cuts ../variables2017-getRatio-electron.json
-getFakeRateEstimate --variables ../variables2017-getRatio-muon.json --cuts ../variables2017-getRatio-muon.json
+getFakeRateRatio --variables ../variables2017-getRatio-electron.json --cuts ../variables2017-getRatio-electron.json
+getFakeRateRatio --variables ../variables2017-getRatio-muon.json --cuts ../variables2017-getRatio-muon.json
 ```
 
 Force ratios on the last bins of the muon channel
@@ -24,4 +24,12 @@ copy `tightToLooseRatios_2017.root` to data folder
 
 ```sh
 cp tightToLooseRatios_2017.root ../../data/
+```
+
+Do Monte Carlo Closure
+
+runFakeMCClosure.sh
+
+```sh
+. runFakeMCClosure.sh
 ```
