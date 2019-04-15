@@ -628,7 +628,7 @@ doubleUnc fakeDD_MCClosure(std::ostream &outputTable, SampleReader &LNTMC, std::
 TH1* histsSumFromStack(THStack* stack)
 {
   //TH1D* mcH = nullptr;
-  const Int_t NBINS = 7;
+  const Int_t NBINS = 8;
   Double_t edges[NBINS+1] = {3.5,5,12,20,30,50,80,200,210};
   TH1D* mcH = new TH1D("mcH", "lepPt", NBINS, edges);
   //TH1D* mcH = new TH1D("mcH", "lepPt", 20,0,200.0);
@@ -649,12 +649,11 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   std::cout << SR << std::endl;
   std::string AN = leptonTight + " && " + preSelection;
   std::cout << AN << std::endl;
-  variable.name(), variable
-  auto LNTinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+")", 20, 0, 200.0);
+  auto LNTinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+")");
   auto sumInSR = histsSumFromStack(LNTinSR);
-  auto LNTMCinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+" && (isPrompt==1)"+")", 20, 0, 200.0);
+  auto LNTMCinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+" && (isPrompt==1)"+")");
   auto sumMCinSR = histsSumFromStack(LNTMCinSR);
-  auto fullMC = MC.getStack(variable.name(), variable, mcWeight+"*("+AN+" && !(isPrompt==1)"+")", 20, 0, 200.0);
+  auto fullMC = MC.getStack(variable.name(), variable, mcWeight+"*("+AN+" && !(isPrompt==1)"+")");
 
   doubleUnc N = MC.getYield(AN+" && !(isPrompt==1)", mcWeight);
   std::cout << "Yield in Full MC-fakes: "<< N << std::endl;
@@ -662,7 +661,7 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   TCanvas c1("Closure_canv", "", 800, 800);
   gStyle->SetOptStat(0);
   fullMC->Draw("hist");
-  const Int_t NBINS = 7;
+  const Int_t NBINS = 8;
   Double_t edges[NBINS+1] = {3.5,5,12,20,30,50,80,200,210};
   TH1D* tmpHist = new TH1D("tmpHist", "lepPt", NBINS, edges);
   doubleUnc sumEstimated(0,0);
