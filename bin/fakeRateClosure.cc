@@ -77,6 +77,7 @@ int main(int argc, char** argv)
   bool invertLepPt = false;
   bool special = false;
   bool doMCFakeClosure = false;
+  bool doPlots = false;
 
   if(argc < 2)
   {
@@ -165,6 +166,10 @@ int main(int argc, char** argv)
     if(argument == "--doMCFakeClosure")
     {
       doMCFakeClosure = true;
+    }
+    if(argument == "--doPlots")
+    {
+      doPlots = true;
     }
   }
 
@@ -394,154 +399,140 @@ int main(int argc, char** argv)
   for(auto & variable : variables)
   {
     MCClosure(MC, variable, baseSelection, looseSelection, analysisLeptonFinalState, mcWeight);
+    // Make a plot of the BDToutput, just for control reasons
+    if(verbose && doPlots)
+    {
+      std::cout << "Building control plots witn LepPt" << std::endl;
+      TCanvas c2("LepPt_canv", "", 800, 800);
+      c2.cd();
+      std::cout << "L!T Total MC" << std::endl;
+      auto mcS = MC.getStack(variable.name(), variable, mcWeight+"*("+looseSelection+"&&"+baseSelection+")");
+      mcS->Draw("hist");
+      c2.SaveAs((outputDirectory+"/LepPt.png").c_str());
+      delete mcS;
+      std::cout << "L!T Non-prompt" << std::endl;
+      auto mcS_nonPrompt  = MC.getStack(variable.name(), variable, mcWeight+"*("+looseSelection+"&&"+baseSelection+"&&(isPrompt==0)"+")");
+      mcS_nonPrompt->Draw("hist");
+      c2.SaveAs((outputDirectory+"/LepPt_nonPrompt.png").c_str());
+      delete mcS_nonPrompt;
+      std::cout << "L!T Prompt" << std::endl;
+      auto mcS_prompt = MC.getStack(variable.name(), variable, mcWeight+"*("+looseSelection+"&&"+baseSelection+"&&(isPrompt==1)"+")");
+      mcS_prompt->Draw("hist");
+      c2.SaveAs((outputDirectory+"/LepPt_prompt.png").c_str());
+      delete mcS_prompt;
+
+      std::cout << "Full MC, tight selection with non-Prompt" << std::endl;
+      auto mcS_full = MC.getStack(variable.name(), variable, mcWeight+"*("+analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)"+")");
+      mcS_full->Draw("hist");
+      c2.SaveAs((outputDirectory+"/LepPt_full.png").c_str());
+      //   doubleUnc N = MC.getYield(analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)", mcWeight);
+      //    doubleUnc N = MC.getYield(analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)", mcWeight+"/(looseNotTightWeight2017MCClosure*puWeight)");
+      delete mcS_full;
+      /*
+      auto ratio = static_cast<TH1D*>(dataH->Clone("Ratio"));
+      ratio->SetTitle(";BDT;Data/#Sigma MC");
+      ratio->Divide(mcH);
+      */
+      /*
+      TCanvas c1("BDT_canv", "", 800, 800);
+      gStyle->SetOptStat(0);
+
+      TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
+      TPad* t2 = new TPad("t2","t2", 0.0, 0.0, 1.0, 0.2);
+      t1->Draw();
+      t1->cd();
+      t1->SetLogy(true);
+      mcS->Draw("hist");
+      //    dataH->Draw("same");
+      //    sigH->Draw("hist same");
+
+      TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
+      legA->SetFillColor(0);
+      legA->SetFillStyle(0);
+      legA->SetLineColor(0);
+      legA->SetHeader("");
+      legA->SetTextFont(42);
+
+      TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
+      T->SetFillColor(0);
+      T->SetFillStyle(0);
+      T->SetLineColor(0);
+      T->SetTextAlign(12);
+      char Buffer[1024];
+      sprintf(Buffer, "CMS preliminary, #sqrt{s}=%.1f TeV, #scale[0.5]{#int} L=%.1f fb^{-1}", 13.0, luminosity/1000);
+      T->AddText(Buffer);
+      T->Draw("same");
+      T->SetBorderSize(0);
+
+      c1.cd();
+      t2->Draw();
+      t2->cd();
+      t2->SetGridy(true);
+      t2->SetPad(0,0.0,1.0,0.2);
+      t2->SetTopMargin(0);
+      t2->SetBottomMargin(0.5);
+
+      TH1D *bgUncH = static_cast<TH1D*>(mcH->Clone("BDT_bgUncH"));
+      for(int xbin=1; xbin <= bgUncH->GetXaxis()->GetNbins(); xbin++)
+      {
+        if(bgUncH->GetBinContent(xbin)==0)
+        continue;
+
+        double unc = bgUncH->GetBinError(xbin) / bgUncH->GetBinContent(xbin);
+
+        // Add systematic uncertainties
+        unc = unc*unc;
+        unc += 0.026*0.026; // Luminosity uncertainty
+        unc = std::sqrt(unc);
+
+        bgUncH->SetBinContent(xbin,1);
+        bgUncH->SetBinError(xbin,unc);
+      }
+
+      TGraphErrors *bgUnc = new TGraphErrors(bgUncH);
+      bgUnc->SetLineColor(1);
+      bgUnc->SetFillStyle(3001);
+      bgUnc->SetFillColor(kGray);
+      bgUnc->SetMarkerColor(1);
+      bgUnc->SetMarkerStyle(1);
+      bgUncH->Reset("ICE");
+      bgUncH->Draw();
+      bgUnc->Draw("3");
+      double yscale = (1.0-0.2)/(0.18-0);
+      bgUncH->GetYaxis()->SetTitle("Data/#Sigma MC");
+      bgUncH->SetMinimum(0.4);
+      bgUncH->SetMaximum(1.6);
+      bgUncH->GetXaxis()->SetTitle("");
+      bgUncH->GetXaxis()->SetTitleOffset(1.3);
+      bgUncH->GetXaxis()->SetLabelSize(0.033*yscale);
+      bgUncH->GetXaxis()->SetTitleSize(0.036*yscale);
+      bgUncH->GetXaxis()->SetTickLength(0.03*yscale);
+      bgUncH->GetYaxis()->SetTitleOffset(0.3);
+      bgUncH->GetYaxis()->SetNdivisions(5);
+      bgUncH->GetYaxis()->SetLabelSize(0.033*yscale);
+      bgUncH->GetYaxis()->SetTitleSize(0.036*yscale);
+      //    ratio->Draw("same");
+
+
+      //    c1.SaveAs((outputDirectory+"/BDTout.C").c_str());
+
+      //    delete dataH;
+      delete mcH;
+      //    delete sigH;
+      // Delete individual hists in the stack
+      TList* histList = mcS->GetHists();
+      histList->Delete();
+      delete mcS;
+      //    delete ratio;
+      delete legA;
+      delete T;
+      delete bgUncH;
+      delete bgUnc;
+      */
+    }
   }
   //fakeDD_MCClosure(outputTable, MC, analysisLeptonFinalState+ " && " + baseSelection, mcWeight);
 
-  // Make a plot of the BDToutput, just for control reasons
-  if(verbose)
-    std::cout << "Building control plots witn LepPt" << std::endl;
-  {
-   /* TODO: Commented for testing purposes on SR = Preselection
-    auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
-    auto mcH   =        MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
-    auto sigH  =  Sig.process(0).getHist("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
-    auto mcS   =             MC.getStack("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
-  */
-// Commented for DEBUG
-//    auto dataH = Data.process(0).getHist("LepPt", "LepPt;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
-    //auto mcH   =        MC.getHist("MC", "LepPt", "LepPt;Evt.", mcWeight+"*("+looseSelection+"&&"+baseSelection+")", 40, 0, 200.0);
-//    auto sigH  =  Sig.process(0).getHist("LepPt", "LepPt;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
-    TCanvas c2("LepPt_canv", "", 800, 800);
-    c2.cd();
-    if(verbose)
-      std::cout << "L!T Total MC" << std::endl;
-    auto mcS = MC.getStack("LepPt", "LepPt;Evt.", mcWeight+"*("+looseSelection+"&&"+baseSelection+")", 20, 0, 200.0);
-    mcS->Draw("hist");
-    c2.SaveAs((outputDirectory+"/LepPt.png").c_str());
-    delete mcS;
-    if(verbose)
-      std::cout << "L!T Non-prompt" << std::endl;
-    auto mcS_nonPrompt  = MC.getStack("LepPt", "LepPt;Evt.", mcWeight+"*("+looseSelection+"&&"+baseSelection+"&&(isPrompt==0)"+")", 20, 0, 200.0);
-    mcS_nonPrompt->Draw("hist");
-    c2.SaveAs((outputDirectory+"/LepPt_nonPrompt.png").c_str());
-    delete mcS_nonPrompt;
-    if(verbose)
-      std::cout << "L!T Prompt" << std::endl;
-    auto mcS_prompt = MC.getStack("LepPt", "LepPt;Evt.", mcWeight+"*("+looseSelection+"&&"+baseSelection+"&&(isPrompt==1)"+")", 20, 0, 200.0);
-    mcS_prompt->Draw("hist");
-    c2.SaveAs((outputDirectory+"/LepPt_prompt.png").c_str());
-    delete mcS_prompt;
-
-    if(verbose)
-      std::cout << "Full MC, tight selection with non-Prompt" << std::endl;
-    auto mcS_full = MC.getStack("LepPt", "LepPt;Evt.", mcWeight+"*("+analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)"+")", 20, 0, 200.0);
-    mcS_full->Draw("hist");
-    c2.SaveAs((outputDirectory+"/LepPt_full.png").c_str());
- //   doubleUnc N = MC.getYield(analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)", mcWeight);
-//    doubleUnc N = MC.getYield(analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)", mcWeight+"/(looseNotTightWeight2017MCClosure*puWeight)");
-    delete mcS_full;
-/*
-    auto ratio = static_cast<TH1D*>(dataH->Clone("Ratio"));
-    ratio->SetTitle(";BDT;Data/#Sigma MC");
-    ratio->Divide(mcH);
-*/
-/*
-    TCanvas c1("BDT_canv", "", 800, 800);
-    gStyle->SetOptStat(0);
-
-    TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
-    TPad* t2 = new TPad("t2","t2", 0.0, 0.0, 1.0, 0.2);
-    t1->Draw();
-    t1->cd();
-    t1->SetLogy(true);
-    mcS->Draw("hist");
-//    dataH->Draw("same");
-//    sigH->Draw("hist same");
-
-    TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
-    legA->SetFillColor(0);
-    legA->SetFillStyle(0);
-    legA->SetLineColor(0);
-    legA->SetHeader("");
-    legA->SetTextFont(42);
-
-    TPaveText* T = new TPaveText(0.1,0.995,0.84,0.95, "NDC");
-    T->SetFillColor(0);
-    T->SetFillStyle(0);
-    T->SetLineColor(0);
-    T->SetTextAlign(12);
-    char Buffer[1024];
-    sprintf(Buffer, "CMS preliminary, #sqrt{s}=%.1f TeV, #scale[0.5]{#int} L=%.1f fb^{-1}", 13.0, luminosity/1000);
-    T->AddText(Buffer);
-    T->Draw("same");
-    T->SetBorderSize(0);
-
-    c1.cd();
-    t2->Draw();
-    t2->cd();
-    t2->SetGridy(true);
-    t2->SetPad(0,0.0,1.0,0.2);
-    t2->SetTopMargin(0);
-    t2->SetBottomMargin(0.5);
-
-    TH1D *bgUncH = static_cast<TH1D*>(mcH->Clone("BDT_bgUncH"));
-    for(int xbin=1; xbin <= bgUncH->GetXaxis()->GetNbins(); xbin++)
-    {
-      if(bgUncH->GetBinContent(xbin)==0)
-        continue;
-
-      double unc = bgUncH->GetBinError(xbin) / bgUncH->GetBinContent(xbin);
-
-      // Add systematic uncertainties
-      unc = unc*unc;
-      unc += 0.026*0.026; // Luminosity uncertainty
-      unc = std::sqrt(unc);
-
-      bgUncH->SetBinContent(xbin,1);
-      bgUncH->SetBinError(xbin,unc);
-    }
-
-    TGraphErrors *bgUnc = new TGraphErrors(bgUncH);
-    bgUnc->SetLineColor(1);
-    bgUnc->SetFillStyle(3001);
-    bgUnc->SetFillColor(kGray);
-    bgUnc->SetMarkerColor(1);
-    bgUnc->SetMarkerStyle(1);
-    bgUncH->Reset("ICE");
-    bgUncH->Draw();
-    bgUnc->Draw("3");
-    double yscale = (1.0-0.2)/(0.18-0);
-    bgUncH->GetYaxis()->SetTitle("Data/#Sigma MC");
-    bgUncH->SetMinimum(0.4);
-    bgUncH->SetMaximum(1.6);
-    bgUncH->GetXaxis()->SetTitle("");
-    bgUncH->GetXaxis()->SetTitleOffset(1.3);
-    bgUncH->GetXaxis()->SetLabelSize(0.033*yscale);
-    bgUncH->GetXaxis()->SetTitleSize(0.036*yscale);
-    bgUncH->GetXaxis()->SetTickLength(0.03*yscale);
-    bgUncH->GetYaxis()->SetTitleOffset(0.3);
-    bgUncH->GetYaxis()->SetNdivisions(5);
-    bgUncH->GetYaxis()->SetLabelSize(0.033*yscale);
-    bgUncH->GetYaxis()->SetTitleSize(0.036*yscale);
-//    ratio->Draw("same");
-
-
-//    c1.SaveAs((outputDirectory+"/BDTout.C").c_str());
-
-//    delete dataH;
-    delete mcH;
-//    delete sigH;
-    // Delete individual hists in the stack
-    TList* histList = mcS->GetHists();
-    histList->Delete();
-    delete mcS;
-//    delete ratio;
-    delete legA;
-    delete T;
-    delete bgUncH;
-    delete bgUnc;
-*/
-  }
 
   //outputTable << "\\hline\n";
   //fakeDD(outputTable, Data, MC, looseSelection + " && " + baseSelection + " && (nGoodMu == 0)" , mcWeight);
