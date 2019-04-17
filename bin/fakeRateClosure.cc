@@ -578,7 +578,7 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   T->SetLineColor(0);
   T->SetTextAlign(12);
   char Buffer[1024];
-  sprintf(Buffer, "CMS preliminary, #sqrt{s}=%.1f TeV, #scale[0.5]{#int} L=%.1f fb^{-1}", 13.0, 38666/1000);
+  sprintf(Buffer, "CMS preliminary, #sqrt{s}=%.1f TeV, #scale[0.5]{#int} L=%.1f fb^{-1}", 13.0, 38666.0/1000);
   T->AddText(Buffer);
   T->Draw("same");
   T->SetBorderSize(0);
