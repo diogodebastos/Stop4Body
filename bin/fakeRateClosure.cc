@@ -562,7 +562,7 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   t1->cd();
   //t1->SetLogy(true);
   fullMC->Draw("hist");
-  estimatedHist->SetMarkerStyle(2.0);
+  estimatedHist->SetLineWidth(2.0);
   estimatedHist->Draw("same");
 
   TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
@@ -592,7 +592,17 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   t2->SetTopMargin(0);
   t2->SetBottomMargin(0.5);
 
+  double yscale = (1.0-0.2)/(0.18-0);
   ratio->GetYaxis()->SetTitle("Pred/#Sigma MC");
+  ratio->GetXaxis()->SetTitle("");
+  ratio->GetXaxis()->SetTitleOffset(1.3);
+  ratio->GetXaxis()->SetLabelSize(0.033*yscale);
+  ratio->GetXaxis()->SetTitleSize(0.036*yscale);
+  ratio->GetXaxis()->SetTickLength(0.03*yscale);
+  ratio->GetYaxis()->SetTitleOffset(0.3);
+  ratio->GetYaxis()->SetNdivisions(5);
+  ratio->GetYaxis()->SetLabelSize(0.033*yscale);
+  ratio->GetYaxis()->SetTitleSize(0.036*yscale);
   ratio->SetMinimum(0.4);
   ratio->SetMaximum(2.5);
   ratio->Draw("same");
