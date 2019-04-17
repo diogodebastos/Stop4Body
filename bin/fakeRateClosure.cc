@@ -195,7 +195,7 @@ int main(int argc, char** argv)
   std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
 
-  std::string leptonChannel = "(nGoodEl == 1 && (nGoodMu == 0)";
+  std::string leptonChannel = "(nGoodEl == 1) && (nGoodMu == 0)";
   std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto == 1) && (nGoodMu== 0)";
   //std::string analysisLeptonFinalState = "(nGoodEl == 0) && (nGoodMu_cutId_loose == 1)";
 
