@@ -425,8 +425,6 @@ int main(int argc, char** argv)
       auto mcS_full = MC.getStack(variable.name(), variable, mcWeight+"*("+analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)"+")");
       mcS_full->Draw("hist");
       c2.SaveAs((outputDirectory+"/LepPt_full.png").c_str());
-      //   doubleUnc N = MC.getYield(analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)", mcWeight);
-      //    doubleUnc N = MC.getYield(analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)", mcWeight+"/(looseNotTightWeight2017MCClosure*puWeight)");
       delete mcS_full;
       /*
       auto ratio = static_cast<TH1D*>(dataH->Clone("Ratio"));
@@ -645,16 +643,14 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   auto LNTMCinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+" && (isPrompt==1)"+")");
   auto sumMCinSR = histsSumFromStack(LNTMCinSR);
   auto fullMC = MC.getStack(variable.name(), variable, mcWeight+"*("+AN+" && !(isPrompt==1)"+")");
+  auto sumFullMC = histsSumFromStack(fullMC);
 
   doubleUnc N = MC.getYield(AN+" && !(isPrompt==1)", mcWeight);
   std::cout << "Yield in Full MC-fakes: "<< N << std::endl;
 
-  TCanvas c1("Closure_canv", "", 800, 800);
-  gStyle->SetOptStat(0);
-  fullMC->Draw("hist");
   const Int_t NBINS = 8;
   Double_t edges[NBINS+1] = {3.5,5,12,20,30,50,80,200,210};
-  TH1D* tmpHist = new TH1D("tmpHist", "lepPt", NBINS, edges);
+  TH1D* estimatedHist = new TH1D("estimatedHist", "lepPt", NBINS, edges);
   doubleUnc sumEstimated(0,0);
   for(int xbin=1; xbin <= fullMC->GetXaxis()->GetNbins(); xbin++)
   {
@@ -664,14 +660,44 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
 
     sumEstimated += estimate;
 
-    tmpHist->SetBinContent(xbin, estimate.value());
-    tmpHist->SetBinError(xbin, estimate.uncertainty());
+    estimatedHist->SetBinContent(xbin, estimate.value());
+    estimatedHist->SetBinError(xbin, estimate.uncertainty());
     //std::cout << estimate.value() << std::endl;
   }
   std::cout << "Total predicted: "<< sumEstimated << std::endl;
 
-  tmpHist->Draw("same");
-  //c1.SetLogy();
+  auto ratio = static_cast<TH1D*>(sumFullMC->Clone("Ratio"));
+  ratio->SetTitle("predicted/MC");
+  ratio->Divide(estimatedHist);
+
+  TCanvas c1("Closure_canv", "", 800, 800);
+  gStyle->SetOptStat(0);
+
+  TPad* t1 = new TPad("t1","t1", 0.0, 0.20, 1.0, 1.0);
+  t1->Draw();
+  t1->cd();
+  //t1->SetLogy(true);
+  fullMC->Draw("hist");
+  estimatedHist->Draw("same");
+
+  TLegend *legA = gPad->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
+  legA->SetFillColor(0);
+  legA->SetFillStyle(0);
+  legA->SetLineColor(0);
+  legA->SetHeader("");
+  legA->SetTextFont(42);
+
+  TPad* t2 = new TPad("t2","t2", 0.0, 0.0, 1.0, 0.2);
+  c1.cd();
+  t2->Draw();
+  t2->cd();
+  t2->SetGridy(true);
+  t2->SetPad(0,0.0,1.0,0.2);
+  t2->SetTopMargin(0);
+  t2->SetBottomMargin(0.5);
+
+  ratio->Draw("same");
+
   std::string outputDirectory  = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-04-02-fakeMCClosure/MCClosure";
   c1.SaveAs((outputDirectory+"/closure.png").c_str());
   doubleUnc placeholder = MC.getYield(AN+"&& !(isPrompt==1)", mcWeight);
