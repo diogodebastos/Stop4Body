@@ -594,7 +594,7 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
 
   ratio->GetYaxis()->SetTitle("Pred/#Sigma MC");
   ratio->SetMinimum(0.4);
-  ratio->SetMaximum(4.0);
+  ratio->SetMaximum(2.5);
   ratio->Draw("same");
 
   std::string outputDirectory  = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-04-02-fakeMCClosure/MCClosure";
