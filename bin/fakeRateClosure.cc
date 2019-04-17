@@ -194,9 +194,11 @@ int main(int argc, char** argv)
 
   std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
-  std::string leptonChannel = "(nGoodEl == 0) && (nGoodMu == 1)";
-  //std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto == 1) && (nGoodMu== 0)";
-  std::string analysisLeptonFinalState = "(nGoodEl == 0) && (nGoodMu_cutId_loose == 1)";
+
+  std::string leptonChannel = "(nGoodEl == 1 && (nGoodMu == 0)";
+  std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto == 1) && (nGoodMu== 0)";
+  //std::string analysisLeptonFinalState = "(nGoodEl == 0) && (nGoodMu_cutId_loose == 1)";
+
   //std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto + nGoodMu_cutId_loose == 1)";
   //std::string promptSelection = "(isPrompt == 1)";
   //std::string fakeSelsLoose == 1) && !(isTight == 1)"ection = "!(isPrompt == 1)";
@@ -652,7 +654,7 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   Double_t edges[NBINS+1] = {3.5,5,12,20,30,50,80,200,210};
   TH1D* estimatedHist = new TH1D("estimatedHist", "lepPt", NBINS, edges);
   doubleUnc sumEstimated(0,0);
-  for(int xbin=1; xbin <= fullMC->GetXaxis()->GetNbins(); xbin++)
+  for(int xbin=1; xbin <= sumFullMC->GetXaxis()->GetNbins(); xbin++)
   {
     doubleUnc binInSR(sumInSR->GetBinContent(xbin),sumInSR->GetBinError(xbin));
     doubleUnc binMCinSR(sumMCinSR->GetBinContent(xbin),sumMCinSR->GetBinError(xbin));
