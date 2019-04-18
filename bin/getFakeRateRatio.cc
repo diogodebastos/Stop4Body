@@ -197,7 +197,7 @@ int main(int argc, char** argv)
   {
     std::stringstream converter;
     //converter << "splitFactor*weight";
-    converter << "XS*(genWeight/sumGenWeight)"; //*puWeight";
+    //converter << "XS*(genWeight/sumGenWeight)"; //*puWeight";
     converter << "XS*(genWeight/sumGenWeight)*puWeight";
     converter << "*" << luminosity;
     converter >> mcWeight;
