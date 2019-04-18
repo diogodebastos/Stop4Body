@@ -563,8 +563,8 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   t1->cd();
   //t1->SetLogy(true);
   fullMC->Draw("hist");
-  fullMC->SetTitle("Prediction");
-  fullMC->SetLineColor(1);
+  estimatedHist->SetTitle("Prediction");
+  estimatedHist->SetLineColor(1);
   estimatedHist->SetLineWidth(2.0);
   estimatedHist->Draw("same");
 
