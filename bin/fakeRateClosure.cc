@@ -550,9 +550,9 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   }
   std::cout << "Total predicted: "<< sumEstimated << std::endl;
 
-  auto ratio = static_cast<TH1D*>(sumFullMC->Clone("Ratio"));
+  auto ratio = static_cast<TH1D*>(estimatedHist->Clone("Ratio"));
   ratio->SetTitle("predicted/MC");
-  ratio->Divide(estimatedHist);
+  ratio->Divide(sumFullMC);
 
   TCanvas c1("Closure_canv", "", 800, 800);
   gStyle->SetOptStat(0);
@@ -562,6 +562,8 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   t1->cd();
   //t1->SetLogy(true);
   fullMC->Draw("hist");
+  fullMC->SetTitle("Prediction");
+  fullMC->SetLineColor(1);
   estimatedHist->SetLineWidth(2.0);
   estimatedHist->Draw("same");
 
@@ -603,8 +605,8 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   ratio->GetYaxis()->SetNdivisions(5);
   ratio->GetYaxis()->SetLabelSize(0.033*yscale);
   ratio->GetYaxis()->SetTitleSize(0.036*yscale);
-  ratio->SetMinimum(0.4);
-  ratio->SetMaximum(2.5);
+  ratio->SetMinimum(0.5);
+  ratio->SetMaximum(1.5);
   ratio->Draw("same");
 
   std::string outputDirectory  = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-04-02-fakeMCClosure/MCClosure";
