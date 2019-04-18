@@ -307,7 +307,8 @@ int main(int argc, char** argv)
   {
     std::stringstream converter;
     if(isPseudoData)
-      converter << "XS*(genWeight/sumGenWeight)"; // The scale factors are not considered here
+      //converter << "XS*(genWeight/sumGenWeight)"; // The scale factors are not considered here
+      converter << "XS*(genWeight/sumGenWeight)*puWeight"; // The scale factors are not considered here
       //converter << "splitFactor*XS*filterEfficiency*(genWeight/sumGenWeight)*puWeight"; // The scale factors are not considered here
     else
       converter << "splitFactor*weight";
