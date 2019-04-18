@@ -54,7 +54,7 @@ int main(int argc, char** argv)
   std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
   std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/allMC.json";
   // Placeholder for ${INPUT}
-  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-02-07-noSkim";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-04-02-fakeMCClosure";
   std::string suffix = "";
   // Placeholder for ${variables}
   // std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
@@ -198,6 +198,7 @@ int main(int argc, char** argv)
     std::stringstream converter;
     //converter << "splitFactor*weight";
     converter << "XS*(genWeight/sumGenWeight)"; //*puWeight";
+    converter << "XS*(genWeight/sumGenWeight)*puWeight";
     converter << "*" << luminosity;
     converter >> mcWeight;
   }
@@ -249,7 +250,7 @@ int main(int argc, char** argv)
      delete mcClosureLowEta;
      delete mcClosureHighEta;
 
- /* //Commented for DEBUG
+     // Plot Fake Ratio in Data and MC non-prompt 
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
@@ -275,7 +276,6 @@ int main(int argc, char** argv)
      delete pEffTTbar;
      delete pEffQCD;
      delete pEff;
-*/
 /*
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
