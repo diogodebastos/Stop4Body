@@ -38,10 +38,12 @@ if __name__ == "__main__":
 
   jsonFiles = [#"MC2Process.json",
                "Wjets.json",
-               #"TTbar.json",
+               "TTbar.json",
+               "ZInv.json",
                #"TTbar_LO.json",
-               "TTLep.json",
-               "TT_pow.json",
+               #"TTLep.json",
+               #"TT_pow.json",
+               "otherMC1.json",
                "otherMC2.json",
                "stop250.json",
                "stop275.json",
@@ -96,7 +98,7 @@ if __name__ == "__main__":
     for json in jsonFiles:
       print "Splitting the samples"
       cmd = "splitTrainingTest"
-      cmd += " --json JSON/" + json
+      cmd += " --json JSON/2017/" + json
       cmd += " --inDir " + args.inDirectory
       cmd += " --testOutDir " + testOut
       cmd += " --trainOutDir " + trainOut
@@ -112,7 +114,7 @@ if __name__ == "__main__":
     processedFiles = [args.inDirectory + "/puWeights.root"]
     baseDirectory = os.path.realpath(os.getcwd())
     for file in jsonFiles:
-      jsonFileName = "JSON/" + file
+      jsonFileName = "JSON/2017/" + file
       with open(jsonFileName) as data_file:
         data = json.load(data_file)
         for i in range(len(data["lines"])):
@@ -193,21 +195,3 @@ if __name__ == "__main__":
         if not args.dryRun:
           p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
           out, err = p.communicate()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
