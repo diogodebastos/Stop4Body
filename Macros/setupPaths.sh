@@ -15,6 +15,10 @@ export CURRENT_BDT=bdt10
 
 export TRAIN_DIR=${NTUPLE_DIR}_train
 export TEST_DIR=${NTUPLE_DIR}_test
+#For debug while splitting is not ready
+export TRAIN_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_train
+export TEST_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test
+
 export BDTTEST_DIR=${TEST_DIR}_${CURRENT_BDT}
 export BDTTRAIN_DIR=${TRAIN_DIR}_${CURRENT_BDT}
 export BDT_DIR=${TEST_DIR}_${CURRENT_BDT}

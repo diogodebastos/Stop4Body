@@ -14,4 +14,3 @@ if [[ -f ${SIGNAL} && -f ${BACKGROUND} ]] ; then
   trainMVA --method BDT --signalFile ${SIGNAL} --backgroundFile ${BACKGROUND} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST}
   root runTMVAGui.C
 fi
-
