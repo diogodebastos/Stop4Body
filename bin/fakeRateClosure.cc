@@ -401,7 +401,7 @@ int main(int argc, char** argv)
   //fakeDD_MCClosure(outputTable, MC, looseSelection + " && " + baseSelection, mcWeight);
   for(auto & variable : variables)
   {
-    MCClosure(MC, variable, baseSelection, looseSelection, analysisLeptonFinalState, mcWeight, outDir);
+    MCClosure(MC, variable, baseSelection, looseSelection, analysisLeptonFinalState, mcWeight, outputDirectory);
     // Make a plot of the BDToutput, just for control reasons
     if(verbose && doPlots)
     {
