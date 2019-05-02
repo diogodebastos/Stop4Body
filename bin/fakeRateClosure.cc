@@ -56,7 +56,7 @@ protected:
 void printHelp();
 TH1* histsSumFromStack(THStack*);
 doubleUnc fakeDD_MCClosure(std::ostream &, SampleReader &, std::string, std::string);
-doubleUnc MCClosure(SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string, std::string);
+doubleUnc MCClosure(SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string, std::string, std::string);
 ValueWithSystematics<doubleUnc> fakeDDSys(std::ostream &, SampleReader &, SampleReader &, std::string, const ValueWithSystematics<std::string>&);
 
 int main(int argc, char** argv)
@@ -205,7 +205,7 @@ int main(int argc, char** argv)
   std::string metSelection = " && (Met > 280)";
   if(invertMet)
     metSelection = " && (Met > 200 && Met < 280)";
-  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110) && " + leptonChannel + metSelection;
+  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110) && " + metSelection;
   //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
@@ -401,7 +401,7 @@ int main(int argc, char** argv)
   //fakeDD_MCClosure(outputTable, MC, looseSelection + " && " + baseSelection, mcWeight);
   for(auto & variable : variables)
   {
-    MCClosure(MC, variable, baseSelection, looseSelection, analysisLeptonFinalState, mcWeight, outputDirectory);
+    MCClosure(MC, variable, baseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory);
     // Make a plot of the BDToutput, just for control reasons
     if(verbose && doPlots)
     {
@@ -517,9 +517,9 @@ TH1* histsSumFromStack(THStack* stack)
   return mcH;
 }
 
-doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSelection, std::string looseSelection, std::string leptonTight,std::string mcWeight, std::string outputDirectory)
+doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSelection, std::string looseSelection, std::string leptonLoose ,std::string leptonTight,std::string mcWeight, std::string outputDirectory)
 {
-  std::string SR = looseSelection + " && " + preSelection;
+  std::string SR = looseSelection + " && " + leptonLoose + " && " + preSelection;
   std::cout << SR << std::endl;
   std::string AN = leptonTight + " && " + preSelection;
   std::cout << AN << std::endl;
