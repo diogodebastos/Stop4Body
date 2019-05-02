@@ -56,7 +56,7 @@ protected:
 void printHelp();
 TH1* histsSumFromStack(THStack*);
 doubleUnc fakeDD_MCClosure(std::ostream &, SampleReader &, std::string, std::string);
-doubleUnc MCClosure(SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string);
+doubleUnc MCClosure(SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string, std::string);
 ValueWithSystematics<doubleUnc> fakeDDSys(std::ostream &, SampleReader &, SampleReader &, std::string, const ValueWithSystematics<std::string>&);
 
 int main(int argc, char** argv)
@@ -401,7 +401,7 @@ int main(int argc, char** argv)
   //fakeDD_MCClosure(outputTable, MC, looseSelection + " && " + baseSelection, mcWeight);
   for(auto & variable : variables)
   {
-    MCClosure(MC, variable, baseSelection, looseSelection, analysisLeptonFinalState, mcWeight);
+    MCClosure(MC, variable, baseSelection, looseSelection, analysisLeptonFinalState, mcWeight, outDir);
     // Make a plot of the BDToutput, just for control reasons
     if(verbose && doPlots)
     {
@@ -517,7 +517,7 @@ TH1* histsSumFromStack(THStack* stack)
   return mcH;
 }
 
-doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSelection, std::string looseSelection, std::string leptonTight,std::string mcWeight)
+doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSelection, std::string looseSelection, std::string leptonTight,std::string mcWeight, std::string outputDirectory)
 {
   std::string SR = looseSelection + " && " + preSelection;
   std::cout << SR << std::endl;
@@ -610,7 +610,6 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   ratio->SetMaximum(1.5);
   ratio->Draw("same");
 
-  std::string outputDirectory  = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-04-02-fakeMCClosure/MCClosure";
   c1.SaveAs((outputDirectory+"/closure.png").c_str());
   doubleUnc placeholder = MC.getYield(AN+"&& !(isPrompt==1)", mcWeight);
   return placeholder;
