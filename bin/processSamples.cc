@@ -454,9 +454,11 @@ int main(int argc, char** argv)
         puWeight.Systematic("PU_Up");
         puWeight.Systematic("PU_Down");
         std::cout << "\t        lID" << std::endl;
-        leptonIDSF = getLeptonIDSF2017Sys(13, 20, 1.1);
+        leptonIDSF = getLeptonIDSF2017Sys(13, 7.5, 1.1);
         std::cout << "\t        lISO" << std::endl;
-        leptonISOSF = getLeptonISOSF2017Sys(13, 20, 1.1);
+        //leptonISOSF = getLeptonISOSF2017Sys(13, 20, 1.1);
+        // Using 2016 ISO SFs
+        leptonISOSF = getLeptonISOSFSys(13, 7.5, 1.1);
         std::cout << "\t        FullFastSim" << std::endl;
         leptonFullFastSF = getFullFastSFSys(11, 20, 1.1);
         std::cout << "\t        Q^2" << std::endl;
@@ -500,7 +502,7 @@ int main(int argc, char** argv)
       looseNotTightWeight2017MCClosure = getLeptonTightLooseRatio2017MCClosureSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure; 
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())

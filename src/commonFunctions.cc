@@ -728,7 +728,7 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
     unc = centralElectronSFHist2017->GetBinError(bin);
   }
   else {
-    //LepPt = 10;
+    //LepPt < 10;
     doubleUnc sfEl2016 = getLeptonIDSF(LepID, LepPt, LepEta);
     val = sfEl2016.value();
     unc = sfEl2016.uncertainty();
@@ -749,7 +749,7 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
     unc = centralMuonSFHist2017->GetBinError(bin);
   }
   else {
-    //LepPt = 20;
+    //LepPt < 20;
     doubleUnc sfMu2016 = getLeptonIDSF(LepID, LepPt, LepEta);
     val = sfMu2016.value();
     unc = sfMu2016.uncertainty();
@@ -801,7 +801,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
  {
   if(ElectronISOSFHist2017 == nullptr)
     return doubleUnc(1,0);
-  if (LepPt < 10){
+  if (LepPt > 10){
     if (LepPt >= 500)
       LepPt = 499.999;
     if(std::abs(LepEta) >= 2.5)
@@ -816,7 +816,7 @@ doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta)
     unc = ElectronISOSFHist2017->GetBinError(bin);
   }
   else {
-    //LepPt = 10;
+    //LepPt < 10;
     doubleUnc sfEl2016 = getLeptonISOSF(LepID, LepPt, LepEta);
     val = sfEl2016.value();
     unc = sfEl2016.uncertainty();
