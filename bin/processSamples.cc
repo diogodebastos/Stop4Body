@@ -1859,10 +1859,10 @@ int main(int argc, char** argv)
             if(!process.isdata())
             { // 2016
               //leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta);
-              //leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
+              leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
               // 2017
               leptonIDSF = getLeptonIDSF2017Sys(LepID, LepPt, LepEta);
-              leptonISOSF = getLeptonISOSF2017Sys(LepID, LepPt, LepEta);
+              //leptonISOSF = getLeptonISOSF2017Sys(LepID, LepPt, LepEta);
               if(sample.isFastsim() || process.isfastsim()) // Maybe need to add some more conditions here
                 leptonFullFastSF = getFullFastSFSys(LepID, LepPt, LepEta);
               else

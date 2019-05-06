@@ -408,27 +408,45 @@ int main(int argc, char** argv)
       std::cout << "Building control plots witn LepPt" << std::endl;
       TCanvas c2("LepPt_canv", "", 800, 800);
       c2.cd();
+
+      std::string SR = looseSelection + " && " + leptonChannel + " && " + baseSelection;
+      std::string AN = analysisLeptonFinalState + " && " + baseSelection;
+
       std::cout << "L!T Total MC" << std::endl;
-      auto mcS = MC.getStack(variable.name(), variable, mcWeight+"*("+looseSelection+"&&"+baseSelection+")");
+      auto mcS = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+")");
       mcS->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt.png").c_str());
+      c2.SaveAs((outputDirectory+"/LepPt_total_LooseNotTight.png").c_str());
       delete mcS;
+
       std::cout << "L!T Non-prompt" << std::endl;
-      auto mcS_nonPrompt  = MC.getStack(variable.name(), variable, mcWeight+"*("+looseSelection+"&&"+baseSelection+"&&(isPrompt==0)"+")");
+      auto mcS_nonPrompt  = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+"&&(isPrompt==0)"+")");
       mcS_nonPrompt->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_nonPrompt.png").c_str());
+      c2.SaveAs((outputDirectory+"/LepPt_nonPrompt_LooseNotTight.png").c_str());
       delete mcS_nonPrompt;
+
       std::cout << "L!T Prompt" << std::endl;
-      auto mcS_prompt = MC.getStack(variable.name(), variable, mcWeight+"*("+looseSelection+"&&"+baseSelection+"&&(isPrompt==1)"+")");
+      auto mcS_prompt = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+"&&(isPrompt==1)"+")");
       mcS_prompt->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_prompt.png").c_str());
+      c2.SaveAs((outputDirectory+"/LepPt_prompt_LooseNotTight.png").c_str());
       delete mcS_prompt;
 
+      std::cout << "Weighted" << std::endl;
+      auto LNTinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+")");
+      LNTinSR->Draw("hist");
+      c2.SaveAs((outputDirectory+"/LepPt_weighted_LooseNotTight.png").c_str());
+      delete LNTinSR;
+
+      std::cout << "Weighted Prompt" << std::endl;
+      auto LNTMCinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+" && (isPrompt==1)"+")");
+      LNTMCinSR->Draw("hist");
+      c2.SaveAs((outputDirectory+"/LepPt_weighted_prompt_LooseNotTight.png").c_str());
+      delete LNTMCinSR;
+
       std::cout << "Full MC, tight selection with non-Prompt" << std::endl;
-      auto mcS_full = MC.getStack(variable.name(), variable, mcWeight+"*("+analysisLeptonFinalState+"&&"+baseSelection+"&& !(isPrompt==1)"+")");
-      mcS_full->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_full.png").c_str());
-      delete mcS_full;
+      auto fullMC = MC.getStack(variable.name(), variable, mcWeight+"*("+AN+" && !(isPrompt==1)"+")");
+      fullMC->Draw("hist");
+      c2.SaveAs((outputDirectory+"/LepPt_full_tight_nonPrompt.png").c_str());
+      delete fullMC;
     }
   }
 
