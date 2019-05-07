@@ -246,14 +246,14 @@ int main(int argc, char** argv)
   std::string CCSR1b =  CCSR1 + " && (mt>60) && (mt<95) && (LepChg == -1) && (LepPt<30)";
   std::string CCSR1ab = "("+CCSR1a+")||("+CCSR1b+")";
   std::cout << CCSR1ab << std::endl;
-  std::string CCSR1c =  CCSR1 + " && (mt>95) && (LepPt>5) && (LepPt<30)"
+  std::string CCSR1c =  CCSR1 + " && (mt>95) && (LepPt>5) && (LepPt<30)";
 
   std::string CCSR2 =   CCSR +  " && (HT>300) && (Jet1Pt>325) && (NbLoose > 0) && (LepEta < 2.4 ) && (LepEta > -2.4)";
   std::string CCSR2a =  CCSR2 + " && (mt<60) && (LepPt<30)";
   std::string CCSR2b =  CCSR2 + " && (mt>60) && (mt<95) && (LepPt<30)";
   std::string CCSR2ab = "("+CCSR2a+")||("+CCSR2b+")";
   std::cout << CCSR2ab << std::endl;
-  std::string CCSR2c =  CCSR2 + " && (mt>95) && (LepPt>5) && (LepPt<30)"
+  std::string CCSR2c =  CCSR2 + " && (mt>95) && (LepPt>5) && (LepPt<30)";
 
 
   std::string wjetsEnrich = "(NbLoose == 0)";
