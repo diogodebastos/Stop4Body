@@ -194,19 +194,28 @@ int main(int argc, char** argv)
 
   std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
+  //std::string looseSelection = "(isLooseNotTight)";
 
-  std::string leptonChannel = "(nGoodEl == 1) && (nGoodMu == 0)";
-  std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto == 1) && (nGoodMu== 0)";
-  //std::string analysisLeptonFinalState = "(nGoodEl == 0) && (nGoodMu_cutId_loose == 1)";
+  std::string leptonChannel = "(nGoodEl == 0) && (nGoodMu == 1)";
+  //std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto == 1) && (nGoodMu== 0)";
+  std::string analysisLeptonFinalState = "(nGoodEl == 0) && (nGoodMu_cutId_loose == 1)";
 
   //std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto + nGoodMu_cutId_loose == 1)";
   //std::string promptSelection = "(isPrompt == 1)";
   //std::string fakeSelsLoose == 1) && !(isTight == 1)"ection = "!(isPrompt == 1)";
-  std::string metSelection = " && (Met > 280)";
+  std::string metSelection = " && (Met < 100)";
   if(invertMet)
     metSelection = " && (Met > 200 && Met < 280)";
-  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  //std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
   //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  std::string CCSR =    "(Njet < 3) && (DPhiJet1Jet2 < 2.5) && (Met > 300)";
+  std::string CCSR1 =   CCSR +   " && (HT>400) && (Jet1Pt>100) && (NbLoose == 0) && (LepEta < 1.5 ) && (LepEta > -1.5)";
+  std::string CCSR1a =  CCSR1 + " && (mt<60) && (LepChg == -1) && (LepPt<30)";
+  std::string CCSR1b =  CCSR1 + " && (mt>60) && (mt<95) && (LepChg == -1) && (LepPt<30)";
+  std::string CCSR1ab = "("+CCSR1a+")||("+CCSR1b+")";
+  std::cout << CCSR1ab << std::endl;
+
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
