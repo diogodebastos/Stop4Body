@@ -56,7 +56,7 @@ protected:
 void printHelp();
 TH1* histsSumFromStack(THStack*);
 doubleUnc fakeDD_MCClosure(std::ostream &, SampleReader &, std::string, std::string);
-doubleUnc MCClosure(SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string, std::string, std::string);
+doubleUnc MCClosure(SampleReader &, std::string, VariableInfo&, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 ValueWithSystematics<doubleUnc> fakeDDSys(std::ostream &, SampleReader &, SampleReader &, std::string, const ValueWithSystematics<std::string>&);
 
 int main(int argc, char** argv)
@@ -192,33 +192,79 @@ int main(int argc, char** argv)
   std::ifstream inputFile(cutsJson);
   inputFile >> jsonFile;
 
+  for(auto& cut : jsonFile["cuts"])
+  {
+    try
+    {
+      std::string cutName, cutString, cutLatex;
+
+      if(cut.count("name") == 0)
+        throw MissingJSONParam("The cut does not have a name.");
+      cutName = cut["name"];
+
+      if(cut.count("expression") == 0)
+        throw MissingJSONParam("The cut does not have an expression.");
+      cutString = cut["expression"];
+
+      if(cut.count("latex") == 0)
+      {
+        cutLatex = cutName;
+      }
+      else
+      {
+        cutLatex = cut["latex"];
+      }
+
+      cutFlow.push_back(CutInfo(cutName, cutString, cutLatex));
+    }
+    catch(MissingJSONParam& exception)
+    {
+      std::cout << "Incomplete cut found, skipping it." << std::endl;
+      std::cout << "The message was: " << exception.what() << std::endl;
+    }
+  }
+
   std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
   //std::string looseSelection = "(isLooseNotTight)";
 
-  std::string leptonChannel = "(nGoodEl == 0) && (nGoodMu == 1)";
-  //std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto == 1) && (nGoodMu== 0)";
-  std::string analysisLeptonFinalState = "(nGoodEl == 0) && (nGoodMu_cutId_loose == 1)";
+  std::string leptonChannel = "";
+  std::string analysisLeptonFinalState = "";
 
-  //std::string analysisLeptonFinalState = "(nGoodEl_cutId_veto + nGoodMu_cutId_loose == 1)";
   //std::string promptSelection = "(isPrompt == 1)";
   //std::string fakeSelsLoose == 1) && !(isTight == 1)"ection = "!(isPrompt == 1)";
-  std::string metSelection = " && (Met < 100)";
+  std::string metSelection = " && (Met > 280)";
   if(invertMet)
     metSelection = " && (Met > 200 && Met < 280)";
-  //std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
-  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  //std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
   //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
   std::string CCSR =    "(Njet < 3) && (DPhiJet1Jet2 < 2.5) && (Met > 300)";
-  std::string CCSR1 =   CCSR +   " && (HT>400) && (Jet1Pt>100) && (NbLoose == 0) && (LepEta < 1.5 ) && (LepEta > -1.5)";
+
+  std::string CCSR1 =   CCSR +  " && (HT>400) && (Jet1Pt>100) && (NbLoose == 0) && (LepEta < 1.5 ) && (LepEta > -1.5)";
   std::string CCSR1a =  CCSR1 + " && (mt<60) && (LepChg == -1) && (LepPt<30)";
   std::string CCSR1b =  CCSR1 + " && (mt>60) && (mt<95) && (LepChg == -1) && (LepPt<30)";
   std::string CCSR1ab = "("+CCSR1a+")||("+CCSR1b+")";
   std::cout << CCSR1ab << std::endl;
+  std::string CCSR1c =  CCSR1 + " && (mt>95) && (LepPt>5) && (LepPt<30)"
+
+  std::string CCSR2 =   CCSR +  " && (HT>300) && (Jet1Pt>325) && (NbLoose > 0) && (LepEta < 2.4 ) && (LepEta > -2.4)";
+  std::string CCSR2a =  CCSR2 + " && (mt<60) && (LepPt<30)";
+  std::string CCSR2b =  CCSR2 + " && (mt>60) && (mt<95) && (LepPt<30)";
+  std::string CCSR2ab = "("+CCSR2a+")||("+CCSR2b+")";
+  std::cout << CCSR2ab << std::endl;
+  std::string CCSR2c =  CCSR2 + " && (mt>95) && (LepPt>5) && (LepPt<30)"
+
 
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
+
+  std::string QCDbaseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (HT > 200) && (Jet1Pt > 110) && (Met < 100)";
+  std::string WJetsBaseSelection = baseSelection + "&&" + wjetsEnrich;
+  std::string TTBarBaseSelection = baseSelection + "&&" + ttbarEnrich;
+
+
   if(special)
   {
     std::stringstream converter;
@@ -408,54 +454,73 @@ int main(int argc, char** argv)
   outputTable << "\\hline\n";
   //fakeDD(outputTable, Data, MC, looseSelection + " && " + baseSelection, mcWeight);
   //fakeDD_MCClosure(outputTable, MC, looseSelection + " && " + baseSelection, mcWeight);
-  for(auto & variable : variables)
+  for(auto& cut : cutFlow)
   {
-    MCClosure(MC, variable, baseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory);
-    // Make a plot of the BDToutput, just for control reasons
-    if(verbose && doPlots)
+    if(cut.name() == "electron") {
+      std::cout << "\nelectron" << std::endl;
+      leptonChannel = "(nGoodEl == 1) && (nGoodMu == 0)";
+      analysisLeptonFinalState = "(nGoodEl_cutId_veto == 1) && (nGoodMu== 0)";
+    }
+    else if(cut.name() == "muon"){
+      std::cout << "\nmuon" << std::endl;
+      leptonChannel = "(nGoodEl == 0) && (nGoodMu == 1)";
+      analysisLeptonFinalState = "(nGoodEl == 0) && (nGoodMu_cutId_loose == 1)";
+    }
+    std::string name = cut.name().c_str();
+    for(auto & variable : variables)
     {
-      std::cout << "Building control plots witn LepPt" << std::endl;
-      TCanvas c2("LepPt_canv", "", 800, 800);
-      c2.cd();
 
-      std::string SR = looseSelection + " && " + leptonChannel + " && " + baseSelection;
-      std::string AN = analysisLeptonFinalState + " && " + baseSelection;
+      MCClosure(MC, name, variable, baseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"");
+      MCClosure(MC, name, variable, QCDbaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"QCDen");
+      MCClosure(MC, name, variable, WJetsBaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"WJetsEn");
+      MCClosure(MC, name, variable, TTBarBaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"TTbarEn");
 
-      std::cout << "L!T Total MC" << std::endl;
-      auto mcS = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+")");
-      mcS->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_total_LooseNotTight.png").c_str());
-      delete mcS;
+      // Make a plot of the BDToutput, just for control reasons
+      if(verbose && doPlots)
+      {
+        std::cout << "Building control plots witn LepPt" << std::endl;
+        TCanvas c2("LepPt_canv", "", 800, 800);
+        c2.cd();
 
-      std::cout << "L!T Non-prompt" << std::endl;
-      auto mcS_nonPrompt  = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+"&&(isPrompt==0)"+")");
-      mcS_nonPrompt->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_nonPrompt_LooseNotTight.png").c_str());
-      delete mcS_nonPrompt;
+        std::string SR = looseSelection + " && " + leptonChannel + " && " + baseSelection;
+        std::string AN = analysisLeptonFinalState + " && " + baseSelection;
 
-      std::cout << "L!T Prompt" << std::endl;
-      auto mcS_prompt = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+"&&(isPrompt==1)"+")");
-      mcS_prompt->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_prompt_LooseNotTight.png").c_str());
-      delete mcS_prompt;
+        std::cout << "L!T Total MC" << std::endl;
+        auto mcS = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+")");
+        mcS->Draw("hist");
+        c2.SaveAs((outputDirectory+"/LepPt_total_LooseNotTight.png").c_str());
+        delete mcS;
 
-      std::cout << "Weighted" << std::endl;
-      auto LNTinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+")");
-      LNTinSR->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_weighted_LooseNotTight.png").c_str());
-      delete LNTinSR;
+        std::cout << "L!T Non-prompt" << std::endl;
+        auto mcS_nonPrompt  = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+"&&(isPrompt==0)"+")");
+        mcS_nonPrompt->Draw("hist");
+        c2.SaveAs((outputDirectory+"/LepPt_nonPrompt_LooseNotTight.png").c_str());
+        delete mcS_nonPrompt;
 
-      std::cout << "Weighted Prompt" << std::endl;
-      auto LNTMCinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+" && (isPrompt==1)"+")");
-      LNTMCinSR->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_weighted_prompt_LooseNotTight.png").c_str());
-      delete LNTMCinSR;
+        std::cout << "L!T Prompt" << std::endl;
+        auto mcS_prompt = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+"&&(isPrompt==1)"+")");
+        mcS_prompt->Draw("hist");
+        c2.SaveAs((outputDirectory+"/LepPt_prompt_LooseNotTight.png").c_str());
+        delete mcS_prompt;
 
-      std::cout << "Full MC, tight selection with non-Prompt" << std::endl;
-      auto fullMC = MC.getStack(variable.name(), variable, mcWeight+"*("+AN+" && !(isPrompt==1)"+")");
-      fullMC->Draw("hist");
-      c2.SaveAs((outputDirectory+"/LepPt_full_tight_nonPrompt.png").c_str());
-      delete fullMC;
+        std::cout << "Weighted" << std::endl;
+        auto LNTinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+")");
+        LNTinSR->Draw("hist");
+        c2.SaveAs((outputDirectory+"/LepPt_weighted_LooseNotTight.png").c_str());
+        delete LNTinSR;
+
+        std::cout << "Weighted Prompt" << std::endl;
+        auto LNTMCinSR = MC.getStack(variable.name(), variable, mcWeight+"*looseNotTightWeight2017MCClosure*("+SR+" && (isPrompt==1)"+")");
+        LNTMCinSR->Draw("hist");
+        c2.SaveAs((outputDirectory+"/LepPt_weighted_prompt_LooseNotTight.png").c_str());
+        delete LNTMCinSR;
+
+        std::cout << "Full MC, tight selection with non-Prompt" << std::endl;
+        auto fullMC = MC.getStack(variable.name(), variable, mcWeight+"*("+AN+" && !(isPrompt==1)"+")");
+        fullMC->Draw("hist");
+        c2.SaveAs((outputDirectory+"/LepPt_full_tight_nonPrompt.png").c_str());
+        delete fullMC;
+      }
     }
   }
 
@@ -544,7 +609,7 @@ TH1* histsSumFromStack(THStack* stack)
   return mcH;
 }
 
-doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSelection, std::string looseSelection, std::string leptonLoose ,std::string leptonTight,std::string mcWeight, std::string outputDirectory)
+doubleUnc MCClosure(SampleReader &MC, std::string name,VariableInfo& variable, std::string preSelection, std::string looseSelection, std::string leptonLoose ,std::string leptonTight,std::string mcWeight, std::string outputDirectory, std::string extra)
 {
   std::string SR = looseSelection + " && " + leptonLoose + " && " + preSelection;
   std::cout << SR << std::endl;
@@ -637,7 +702,7 @@ doubleUnc MCClosure(SampleReader &MC, VariableInfo& variable, std::string preSel
   ratio->SetMaximum(1.5);
   ratio->Draw("same");
 
-  c1.SaveAs((outputDirectory+"/closure.png").c_str());
+  c1.SaveAs((outputDirectory+"/closure_"+name+"_"+extra+".png").c_str());
   doubleUnc placeholder = MC.getYield(AN+"&& !(isPrompt==1)", mcWeight);
   return placeholder;
   delete LNTinSR;
