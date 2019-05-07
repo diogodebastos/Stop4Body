@@ -475,6 +475,11 @@ int main(int argc, char** argv)
       MCClosure(MC, name, variable, WJetsBaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"WJetsEn");
       MCClosure(MC, name, variable, TTBarBaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"TTbarEn");
 
+      MCClosure(MC, name, variable, CCSR1ab, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"CCSR1ab");
+      MCClosure(MC, name, variable, CCSR1c, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"CCSR1c");
+      MCClosure(MC, name, variable, CCSR2ab, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"CCSR2ab");
+      MCClosure(MC, name, variable, CCSR2c, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"CCSR2c");
+
       // Make a plot of the BDToutput, just for control reasons
       if(verbose && doPlots)
       {
