@@ -250,7 +250,7 @@ int main(int argc, char** argv)
      delete mcClosureLowEta;
      delete mcClosureHighEta;
 
-     // Plot Fake Ratio in Data and MC non-prompt 
+     // Plot Fake Ratio in Data and MC non-prompt
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
@@ -342,6 +342,15 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  {
   pEff = new TEfficiency(*passTight,*totalLoose);
  }
+
+ auto ratio = static_cast<TH1D*>(lT->Clone((name).c_str()));
+ ratio->SetTitle(name.c_str());
+ ratio->Divide(lL);
+ //DEBUG
+ ratio->Draw();
+ c1.SaveAs((name + "tlRatio.png").c_str());
+ ratio->SaveAs((name + "tlRatio.root").c_str());
+
  return pEff;
 
  delete lL;
