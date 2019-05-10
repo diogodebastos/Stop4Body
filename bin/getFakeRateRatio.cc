@@ -315,6 +315,11 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  doubleUnc yield = 0;
  bool checkConsistency = false;
 
+ printf("Canvas\n");
+ TCanvas c1("DEBUG", "", 1200, 1350);
+ gStyle->SetOptStat(0);
+ c1.cd();
+
  tightSelection = tightSelection + baseSelection;
  looseSelection = looseSelection + baseSelection;
 
@@ -430,8 +435,10 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  gStyle->SetOptStat(0);
  c1.cd();
  // Data
- auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + dataSelection + " )");
- auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + dataSelection + " )");
+ auto lT = Process.getHist(variable.name().c_str(), variable, "weight*( " + tightSelection + dataSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, "weight*( " + looseSelection + dataSelection + " )");
+ //auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + dataSelection + " )");
+ //auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + dataSelection + " )");
  //DEBUG
  //lL->Draw();
  //c1.SaveAs(("leptonLoose_" + name + ".png").c_str());
