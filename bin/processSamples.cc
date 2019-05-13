@@ -1088,11 +1088,13 @@ int main(int argc, char** argv)
           bdttree->Branch(("J3Mass_"+systematic).c_str(), &(J3Mass.Systematic(systematic)));
       }
 
-      Float_t HLT_PFMET90_PFMHT90;          bdttree->Branch("HLT_PFMET90_PFMHT90",   &HLT_PFMET90_PFMHT90,   "HLT_PFMET90_PFMHT90/F"  );
-      Float_t HLT_PFMET100_PFMHT100;        bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
-      Float_t HLT_PFMET110_PFMHT110;        bdttree->Branch("HLT_PFMET110_PFMHT110", &HLT_PFMET110_PFMHT110, "HLT_PFMET110_PFMHT110/F");
-      Float_t HLT_PFMET120_PFMHT120;        bdttree->Branch("HLT_PFMET120_PFMHT120", &HLT_PFMET120_PFMHT120, "HLT_PFMET120_PFMHT120/F");
-      Float_t HLT_PFMET120_PFMHT120_PFHT60; bdttree->Branch("HLT_PFMET120_PFMHT120_PFHT60", &HLT_PFMET120_PFMHT120_PFHT60, "HLT_PFMET120_PFMHT120_PFHT60/F");
+      Float_t HLT_PFMET90_PFMHT90;           bdttree->Branch("HLT_PFMET90_PFMHT90",   &HLT_PFMET90_PFMHT90,   "HLT_PFMET90_PFMHT90/F"  );
+      Float_t HLT_PFMET100_PFMHT100;         bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
+      Float_t HLT_PFMET110_PFMHT110;         bdttree->Branch("HLT_PFMET110_PFMHT110", &HLT_PFMET110_PFMHT110, "HLT_PFMET110_PFMHT110/F");
+      Float_t HLT_PFMET120_PFMHT120;         bdttree->Branch("HLT_PFMET120_PFMHT120", &HLT_PFMET120_PFMHT120, "HLT_PFMET120_PFMHT120/F");
+      Float_t HLT_PFMET120_PFMHT120_PFHT60;  bdttree->Branch("HLT_PFMET120_PFMHT120_PFHT60", &HLT_PFMET120_PFMHT120_PFHT60, "HLT_PFMET120_PFMHT120_PFHT60/F");
+      Float_t HLT_PFMETNoMu120_PFMHTNoMu120; bdttree->Branch("HLT_PFMETNoMu120_PFMHTNoMu120", &HLT_PFMETNoMu120_PFMHTNoMu120, "HLT_PFMETNoMu120_PFMHTNoMu120/F");
+      Float_t HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60; bdttree->Branch("HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60", &HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60, "HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60/F");
       //TODO: This should be updated for all samples after the next heppy run
       Float_t HLT_PFHT780;
       Float_t HLT_PFHT1050;
@@ -1313,6 +1315,9 @@ int main(int argc, char** argv)
         Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
         Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v;
         Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v;
+        Int_t HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v;
+        Int_t HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v;
+
         if(!(process.isdata() || process.issignal())){
          inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
          inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
@@ -1328,6 +1333,8 @@ int main(int argc, char** argv)
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v);
+         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v);
+         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT780_v", &HLT_BIT_HLT_PFHT780_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);
         }
@@ -2193,6 +2200,8 @@ int main(int argc, char** argv)
            HLT_PFMET110_PFMHT110               = HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
            HLT_PFMET120_PFMHT120               = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v;
            HLT_PFMET120_PFMHT120_PFHT60        = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v;
+           HLT_PFMETNoMu120_PFMHTNoMu120       = HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v;
+           HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60= HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v;
            HLT_PFHT780                         = HLT_BIT_HLT_PFHT780_v;
            HLT_PFHT1050                        = HLT_BIT_HLT_PFHT1050_v;
           }
