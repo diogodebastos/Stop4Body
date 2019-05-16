@@ -141,8 +141,8 @@ int main(int argc, char** argv)
   }
   auto jetht = Data.process(jetHTIndex);
 
-  size_t ttbarIndex = 0, wjetsIndex = 0, promptIndex = 0, qcdIndex = 0;
-  bool foundTTbar = false, foundWJets = false, foundPrompt = false, foundQCD = false;
+  size_t ttbarIndex = 0, wjetsIndex = 0, zinvIndex = 0, promptIndex = 0, qcdIndex = 0;
+  bool foundTTbar = false, foundWJets = false, foundZInv = false, foundPrompt = false, foundQCD = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
   {
     if(MC.process(i).tag() == "WJets")
@@ -154,6 +154,11 @@ int main(int argc, char** argv)
     {
       ttbarIndex = i;
       foundTTbar = true;
+    }
+    if(MC.process(i).tag() == "ZInv")
+    {
+      zinvIndex = i;
+      foundZInv = true;
     }
     if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" )
     {
@@ -176,6 +181,11 @@ int main(int argc, char** argv)
     std::cout << "There isn't a wjets sample in the JSON file" << std::endl;
     return 1;
   }
+  if(!foundZInv)
+  {
+    std::cout << "There isn't a zinv sample in the JSON file" << std::endl;
+    return 1;
+  }
   if(!foundPrompt)
   {
     std::cout << "There isn't a prompt sample in the JSON file" << std::endl;
@@ -188,6 +198,7 @@ int main(int argc, char** argv)
   }
   auto wjets = MC.process(wjetsIndex);
   auto ttbar = MC.process(ttbarIndex);
+  auto zinv = MC.process(zinvIndex)
   auto prompt = MC.process(promptIndex);
   auto qcd = MC.process(qcdIndex);
 
@@ -252,12 +263,18 @@ int main(int argc, char** argv)
 */
      // Plot Fake Ratio in Data and MC non-prompt
 //     auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
-//     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffWjetsLowEta = getFakeRate(name + "_LowEta", wjets, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffWjetsHighEta = getFakeRate(name + "_HighEta", wjets, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+/*
+     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffWjetsLowEta = getFakeRate(name + "_LowEta", wjets, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffWjetsHighEta = getFakeRate(name + "_HighEta", wjets, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffTTbarLowEta = getFakeRate(name + "_LowEta", ttbar, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffTTbarHighEta = getFakeRate(name + "_HighEta", ttbar, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+*/
+     auto pEffZInv = getFakeRate(name, zinv, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffZInvLowEta = getFakeRate(name + "_LowEta", zinv, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffZInvHighEta = getFakeRate(name + "_HighEta", zinv, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+
 //     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
 //     auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
 /*
@@ -361,7 +378,7 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
  ratio->Draw();
  c1.SaveAs(("mcClosure_" + name + ".png").c_str());
  ratio->SaveAs(("mcClosure_" + name + ".root").c_str());
- 
+
  return pEff;
 
  delete lL;
