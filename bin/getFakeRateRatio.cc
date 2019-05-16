@@ -198,7 +198,7 @@ int main(int argc, char** argv)
   }
   auto wjets = MC.process(wjetsIndex);
   auto ttbar = MC.process(ttbarIndex);
-  auto zinv = MC.process(zinvIndex)
+  auto zinv = MC.process(zinvIndex);
   auto prompt = MC.process(promptIndex);
   auto qcd = MC.process(qcdIndex);
 
