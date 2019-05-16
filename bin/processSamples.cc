@@ -2438,12 +2438,14 @@ int main(int argc, char** argv)
              //TODO: This should be updated for all samples after the next heppy run
               if(process.isdata() && !doJetHT)
               {
-                //if(HLT_PFMET90_PFMHT90_IDTight != 0)
-                  //passHLT = true;
+                /* Using onlu Unprescaled triggers for 2017 Data
+                if(HLT_PFMET90_PFMHT90_IDTight != 0)
+                  passHLT = true;
                 if(HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v != 0)
                   passHLT = true;
                 if(HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v != 0)
                   passHLT = true;
+                */
                 if(HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v != 0)
                   passHLT = true;
                 if(HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v != 0)
