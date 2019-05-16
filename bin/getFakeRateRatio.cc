@@ -233,7 +233,7 @@ int main(int argc, char** argv)
      }
 
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-
+/*
      // Fake Ratio in Data without the prompt contribution, estimated with MC
      auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
@@ -249,13 +249,18 @@ int main(int argc, char** argv)
      delete mcClosure;
      delete mcClosureLowEta;
      delete mcClosureHighEta;
-
+*/
      // Plot Fake Ratio in Data and MC non-prompt
-     auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
-     auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
-
+//     auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
+//     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffWjetsLowEta = getFakeRate(name + "_LowEta", wjets, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffWjetsHighEta = getFakeRate(name + "_HighEta", wjets, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffTTbarLowEta = getFakeRate(name + "_LowEta", ttbar, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffTTbarHighEta = getFakeRate(name + "_HighEta", ttbar, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
+//     auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
+/*
      TCanvas c1("DEBUG", "", 1200, 1350);
      gStyle->SetOptStat(0);
      c1.cd();
@@ -276,6 +281,7 @@ int main(int argc, char** argv)
      delete pEffTTbar;
      delete pEffQCD;
      delete pEff;
+*/
 /*
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
@@ -348,20 +354,21 @@ TEfficiency* getFakeRate(std::string name, ProcessInfo &Process, VariableInfo& v
   pEff = new TEfficiency(*passTight,*totalLoose);
  }
 
- auto ratio = static_cast<TH1D*>(lT->Clone((name).c_str()));
- ratio->SetTitle(name.c_str());
+ auto ratio = static_cast<TH1D*>(lT->Clone(("mcClosure_"+name).c_str()));
+ ratio->SetTitle(("mcClosure_"+name).c_str());
  ratio->Divide(lL);
  //DEBUG
  ratio->Draw();
- c1.SaveAs((name + "tlRatio.png").c_str());
- ratio->SaveAs((name + "tlRatio.root").c_str());
-
+ c1.SaveAs(("mcClosure_" + name + ".png").c_str());
+ ratio->SaveAs(("mcClosure_" + name + ".root").c_str());
+ 
  return pEff;
 
  delete lL;
  delete lT;
  delete passTight;
  delete totalLoose;
+ delete ratio;
  delete pEff;
 }
 
