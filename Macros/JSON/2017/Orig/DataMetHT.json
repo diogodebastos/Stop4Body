@@ -16,7 +16,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017B_17Nov2017",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017B_17Nov2017",
               "split":579
             }
           ]
@@ -29,8 +29,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017C_17Nov2017",
-              "split":1078
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017C_17Nov2017",
+              "split":1058
             }
           ]
         },
@@ -42,7 +42,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017D_17Nov2017",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017D_17Nov2017",
               "split":281
             }
           ]
@@ -55,7 +55,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017E_17Nov2017",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017E_17Nov2017",
               "split":890
             }
           ]
@@ -68,7 +68,7 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/MET_Run2017F_17Nov2017",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017F_17Nov2017",
               "split":1967
             }
           ]
