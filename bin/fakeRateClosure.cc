@@ -263,7 +263,7 @@ int main(int argc, char** argv)
   std::string QCDbaseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (HT > 200) && (Jet1Pt > 110) && (Met < 100)";
   std::string WJetsBaseSelection = baseSelection + "&&" + wjetsEnrich;
   std::string TTBarBaseSelection = baseSelection + "&&" + ttbarEnrich;
-
+  std::string ZInvBaseSelection  = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (mt > 100) && (Met>280) && (NbLoose == 0)";
 
   if(special)
   {
@@ -318,7 +318,7 @@ int main(int argc, char** argv)
   auto MC = samples.getMCBkg();
   auto Sig = samples.getMCSig();
   auto Data = samples.getData();
-
+/*
   if(verbose)
     std::cout << "Extracting ttbar and wjets from other backgrounds" << std::endl;
   size_t ttbarIndex = 0, wjetsIndex = 0;
@@ -349,7 +349,7 @@ int main(int argc, char** argv)
   }
   auto wjets = MC.process(wjetsIndex);
   auto ttbar = MC.process(ttbarIndex);
-
+*/
   if(verbose)
     std::cout << "Retrieving luminosity" << std::endl;
   if(luminosity <= 0)
@@ -469,8 +469,11 @@ int main(int argc, char** argv)
     std::string name = cut.name().c_str();
     for(auto & variable : variables)
     {
-
       MCClosure(MC, name, variable, baseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"");
+      //MCClosure(MC, name, variable, baseSelection + "&& (LepPt < 30)", looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"zinv_lepPt30");
+
+/*
+      MCClosure(MC, name, variable, baseSelection + "&&" + wjetsEnrich, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"presel_noBJets");
       MCClosure(MC, name, variable, QCDbaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"QCDen");
       MCClosure(MC, name, variable, WJetsBaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"WJetsEn");
       MCClosure(MC, name, variable, TTBarBaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"TTbarEn");
@@ -480,6 +483,8 @@ int main(int argc, char** argv)
       MCClosure(MC, name, variable, CCSR2ab, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"CCSR2ab");
       MCClosure(MC, name, variable, CCSR2c, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"CCSR2c");
 
+      MCClosure(MC, name, variable, ZInvBaseSelection, looseSelection, leptonChannel, analysisLeptonFinalState, mcWeight, outputDirectory,"ZInvEn");
+*/
       // Make a plot of the BDToutput, just for control reasons
       if(verbose && doPlots)
       {
