@@ -498,7 +498,7 @@ int main(int argc, char** argv)
         std::cout << "L!T Total MC" << std::endl;
         auto mcS = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+")");
         mcS->SetTitle("L!T Total MC");
-        mcS->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
+        //mcS->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
         mcS->Draw("hist");
         c2.SaveAs((outputDirectory+"/LepPt_total_LooseNotTight.png").c_str());
         delete mcS;
@@ -506,7 +506,7 @@ int main(int argc, char** argv)
         std::cout << "L!T Non-prompt" << std::endl;
         auto mcS_nonPrompt  = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+"&&(isPrompt==0)"+")");
         mcS_nonPrompt->SetTitle("L!T Non-prompt");
-        mcS_nonPrompt->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
+        //mcS_nonPrompt->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
         mcS_nonPrompt->Draw("hist");
         c2.SaveAs((outputDirectory+"/LepPt_nonPrompt_LooseNotTight.png").c_str());
         delete mcS_nonPrompt;
@@ -514,7 +514,7 @@ int main(int argc, char** argv)
         std::cout << "L!T Prompt" << std::endl;
         auto mcS_prompt = MC.getStack(variable.name(), variable, mcWeight+"*("+SR+"&&(isPrompt==1)"+")");
         mcS_prompt->SetTitle("L!T Prompt");
-        mcS_prompt->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
+        //mcS_prompt->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
         mcS_prompt->Draw("hist");
         c2.SaveAs((outputDirectory+"/LepPt_prompt_LooseNotTight.png").c_str());
         delete mcS_prompt;
@@ -534,7 +534,7 @@ int main(int argc, char** argv)
         std::cout << "Full MC, tight selection with non-Prompt" << std::endl;
         auto fullMC = MC.getStack(variable.name(), variable, mcWeight+"*("+AN+" && !(isPrompt==1)"+")");
         fullMC->SetTitle("Full MC, tight selection with non-Prompt");
-        fullMC->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
+        //fullMC->BuildLegend(0.845,0.69,0.65,0.89, "NDC");
         fullMC->Draw("hist");
         c2.SaveAs((outputDirectory+"/LepPt_full_tight_nonPrompt.png").c_str());
         delete fullMC;
