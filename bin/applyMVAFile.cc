@@ -136,11 +136,11 @@ int main(int argc, char** argv)
   reader->AddVariable("LepChg", &LepChg);
   reader->AddVariable("LepEta", &LepEta);
   reader->AddVariable("LepPt", &LepPt);
-  reader->AddVariable("HT", &HT);
-  reader->AddVariable("NbLoose", &NbLoose);
-  reader->AddVariable("Njet", &Njet);
   reader->AddVariable("JetHBpt", &JetHBpt);
   reader->AddVariable("DrJetHBLep",&DrJetHBLep);
+  reader->AddVariable("Njet30", &Njet);
+  reader->AddVariable("HT", &HT);
+  reader->AddVariable("NbLoose", &NbLoose);
   // SET1
   // SET2
   reader->AddVariable("JetHBCSV",&JetHBCSV);

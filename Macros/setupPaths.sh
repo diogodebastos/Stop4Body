@@ -7,17 +7,25 @@ export YEAR=2017
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body
 export JSON_PATH=$BASE_PATH/Macros/JSON/${YEAR}
 
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2018-12-14
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-16-updated
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-02-07-noSkim
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-04-02-fakeMCClosure
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-04-30-skimmed
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-06-skimmed
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-10-WJets-closure
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-10-TTbar-closure
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-10-ZInv-QCDratio-closure
+
 export SYNC_DIR=${BASE_NTUPLE_PATH}/nTuples_sync
 export PU_TEST_DIR=${BASE_NTUPLE_PATH}/nTuples_PU_test
 
-export CURRENT_BDT=bdt10
+export CURRENT_BDT=bdt30
 
 export TRAIN_DIR=${NTUPLE_DIR}_train
 export TEST_DIR=${NTUPLE_DIR}_test
 #For debug while splitting is not ready
-export TRAIN_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_train
-export TEST_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test
+#export TRAIN_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_train
+#export TEST_DIR=/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test
 
 export BDTTEST_DIR=${TEST_DIR}_${CURRENT_BDT}
 export BDTTRAIN_DIR=${TRAIN_DIR}_${CURRENT_BDT}
