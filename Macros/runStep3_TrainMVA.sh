@@ -3,17 +3,20 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-SIGNAL=${TRAIN_DIR}/T2DegStop_deltaM30.root
-BACKGROUND=${TRAIN_DIR}/Background_TTbar.root
+SIGNAL=T2DegStop_deltaM30.root
+BACKGROUND=Background_TTbar.root
+
+SIGNAL_TRAIN=${TRAIN_DIR}/${SIGNAL}
+BACKGROUND_TRAIN=${TRAIN_DIR}/${BACKGROUND}
 
 # If test files are not defined, the trainMVA binary will assume the supplied file is to be split into train and test by TMVA
-SIGNAL_TEST=${TEST_DIR}/T2DegStop_deltaM30.root
-BACKGROUND_TEST=${TEST_DIR}/Background_TTbar.root
+SIGNAL_TEST=${TEST_DIR}/${SIGNAL}
+BACKGROUND_TEST=${TEST_DIR}/${BACKGROUND}
 
 #trainMVA --method BDT --signalFile ${SIGNAL} --backgroundFile ${BACKGROUND} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST}
 
-if [[ -f ${SIGNAL} && -f ${BACKGROUND} ]] ; then
+if [[ -f ${SIGNAL_TRAIN} && -f ${BACKGROUND_TRAIN} ]] ; then
   echo "Training BDT..."
-  trainMVA --method BDT --signalFile ${SIGNAL} --backgroundFile ${BACKGROUND} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST}
+  trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST}
   root runTMVAGui.C
 fi

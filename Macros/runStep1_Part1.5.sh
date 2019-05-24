@@ -12,4 +12,3 @@ python splitTrainingTest.py -i ${NTUPLE_DIR} --submit
 
 echo "Run the following command to check the progress of the output and resubmit failed jobs:"
 echo "  python checkJobs.py --noMerge -o ${NTUPLE_DIR}_train"
-echo "  python checkJobs.py --noMerge -o ${NTUPLE_DIR}_test"
