@@ -352,16 +352,10 @@ int main(int argc, char** argv)
   if(verbose)
     std::cout << "Building control plot of BDT output" << std::endl;
   {
-   /* TODO: Commented for testing purposes on SR = Preselection
     auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
     auto mcH   =        MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
     auto sigH  =  Sig.process(0).getHist("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
     auto mcS   =             MC.getStack("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
-  */
-    auto dataH = Data.process(0).getHist("LepPt", "LepPt;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
-    auto mcH   =        MC.getHist("MC", "LepPt", "LepPt;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
-    auto sigH  =  Sig.process(0).getHist("LepPt", "LepPt;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
-    auto mcS   =             MC.getStack("LepPt", "LepPt;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
 
     auto ratio = static_cast<TH1D*>(dataH->Clone("Ratio"));
     ratio->SetTitle(";BDT;Data/#Sigma MC");
