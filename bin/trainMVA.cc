@@ -113,8 +113,8 @@ int main(int argc, char** argv)
   factory->AddVariable("LepPt",'F');
   factory->AddVariable("JetHBpt",'F');
   factory->AddVariable("DrJetHBLep",'F');
-  //factory->AddVariable("Njet",'F');
-  factory->AddVariable("Njet30",'F');
+  factory->AddVariable("Njet",'F');
+  //factory->AddVariable("Njet30",'F');
   //factory->AddVariable("HT20",'F');
   factory->AddVariable("HT",'F');
   //factory->AddVariable("NbLoose20",'F');
