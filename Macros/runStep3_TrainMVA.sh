@@ -3,8 +3,9 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-SIGNAL=T2DegStop_deltaM30.root
-BACKGROUND=Background_TTbar.root
+SIGNAL=T2DegStop_500_420.root.root
+# SIGNAL=T2DegStop_deltaM80.root
+BACKGROUND=Background_TTbar-WJets.root
 
 SIGNAL_TRAIN=${TRAIN_DIR}/${SIGNAL}
 BACKGROUND_TRAIN=${TRAIN_DIR}/${BACKGROUND}

@@ -174,11 +174,11 @@ int main(int argc, char** argv)
   factory->SetSignalWeightExpression("1/Nevt");
 
   // For DM = 10 -> 60
-  TCut mycuts  = "(LepPt < 30.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
-  TCut mycutb  = "(LepPt < 30.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
+//  TCut mycuts  = "(LepPt < 30.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
+//  TCut mycutb  = "(LepPt < 30.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
   // For DM = 70, 80
-  //TCut mycuts  = "(LepPt < 100000.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
-  //TCut mycutb  = "(LepPt < 100000.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
+  TCut mycuts  = "(LepPt < 100000.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
+  TCut mycutb  = "(LepPt < 100000.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
 
   factory->PrepareTrainingAndTestTree( mycuts, mycutb, "nTrain_Signal=0:nTrain_Background=0:nTest_Signal=0:nTest_Background=0:SplitMode=Random:NormMode=EqualNumEvents" );
 
