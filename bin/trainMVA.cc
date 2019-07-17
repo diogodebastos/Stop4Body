@@ -184,7 +184,7 @@ int main(int argc, char** argv)
   else{
     lepBase = "(LepPt < 30)";
   }
-  Tcut preSel = "(Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
+  TCut preSel = "(Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
 
   TCut mycuts  = lepBase+preSel;
   TCut mycutb  = lepBase+preSel;
