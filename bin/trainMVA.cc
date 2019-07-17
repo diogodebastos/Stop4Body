@@ -29,6 +29,7 @@ int main(int argc, char** argv)
   std::string backgroundFileName_test = "";
   std::vector<std::string> methods;
   methods.clear();
+  bool isHighDeltaM = false;
 
   // Default MVA methods to be trained + tested
   std::map<std::string,int> Use;
@@ -74,6 +75,9 @@ int main(int argc, char** argv)
 
     if(argument == "--method")
       methods.push_back(argv[++i]);
+
+    if(argument == "--isHighDeltaM")
+      isHighDeltaM = true;
   }
 
   for(auto & method : methods)
@@ -173,12 +177,17 @@ int main(int argc, char** argv)
   factory->SetBackgroundWeightExpression( "XS/Nevt" );
   factory->SetSignalWeightExpression("1/Nevt");
 
-  // For DM = 10 -> 60
-//  TCut mycuts  = "(LepPt < 30.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
-//  TCut mycutb  = "(LepPt < 30.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
-  // For DM = 70, 80
-  TCut mycuts  = "(LepPt < 100000.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
-  TCut mycutb  = "(LepPt < 100000.) && (Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
+  TCut lepBase;
+  if(isHighDeltaM){
+    lepBase = "(LepPt < 100000.)";
+  }
+  else{
+    lepBase = "(LepPt < 30)";
+  }
+  Tcut preSel = "(Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
+
+  TCut mycuts  = lepBase+preSel;
+  TCut mycutb  = lepBase+preSel;
 
   factory->PrepareTrainingAndTestTree( mycuts, mycutb, "nTrain_Signal=0:nTrain_Background=0:nTest_Signal=0:nTest_Background=0:SplitMode=Random:NormMode=EqualNumEvents" );
 

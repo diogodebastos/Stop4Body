@@ -3,7 +3,7 @@
 . setupJSONs.sh
 . setupPaths.sh
 
-SIGNAL=T2DegStop_500_420.root.root
+SIGNAL=T2DegStop_500_420.root
 # SIGNAL=T2DegStop_deltaM80.root
 BACKGROUND=Background_TTbar-WJets.root
 
@@ -16,8 +16,11 @@ BACKGROUND_TEST=${TEST_DIR}/${BACKGROUND}
 
 #trainMVA --method BDT --signalFile ${SIGNAL} --backgroundFile ${BACKGROUND} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST}
 
+
+
 if [[ -f ${SIGNAL_TRAIN} && -f ${BACKGROUND_TRAIN} ]] ; then
   echo "Training BDT..."
-  trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST}
+  # Use isHighDeltaM for dm=70;80
+  trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST} --isHighDeltaM
   root runTMVAGui.C
 fi
