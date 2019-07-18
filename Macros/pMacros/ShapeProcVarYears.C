@@ -20,26 +20,52 @@ void ShapeProcVarYears(int delta=80, bool doWjets = false, bool doTTbar = false,
 gStyle->SetOptStat(000000);
 gStyle->SetPalette(1);
 
-std::string path16 = "/home/t3cms/bargassa/STORE/Stop4body/SET2102_DM";
-//std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05_test_bdt";
-std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05_test_w16_bdt";
+//std::string path16 = "/home/t3cms/bargassa/STORE/Stop4body/SET2102_DM";
+std::string path16 = "/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt";
+//std::string path16 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
+
+/std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05_test_bdt";
+//std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
+//std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/CrisSamples-DM10-nTuples_v2017-10-19_test_bdt";
+
 std::string dm = std::to_string(delta);
 std::string signalPoint;
 std::string title = "";
 TCut lept;
+int dmInt = std::stoi(dm);
 
-if(dm == "80") {
-  signalPoint = "/T2DegStop_500_420_bdt.root";
+if(dmInt >  60) {
   lept = "LepPt<10000.";
-  //title = "(500,420)";
+  if(dm == "80"){
+    signalPoint = "/T2DegStop_500_420_bdt.root";
+    //title = "(500,420)";
+  }
+  else if(dm == "70"){
+    signalPoint = "/T2DegStop_525_455_bdt.root";
+  }
 }
-else if(dm == "10"){
-  signalPoint = "/T2DegStop_500_490_bdt.root";
+else if(dmInt <= 60){
   lept = "LepPt<30.";
-  //title = "(500,490)";
+  if(dm == "10"){
+    signalPoint = "/T2DegStop_500_490_bdt.root";
+    //title = "(500,490)";
+  }
+  else if(dm == "20"){
+    signalPoint = "/T2DegStop_500_480_bdt.root";
+  }
+  else if(dm == "30"){
+    signalPoint = "/T2DegStop_550_520_bdt.root";
+  }
+  else if(dm == "40"){
+    signalPoint = "/T2DegStop_550_510_bdt.root";
+  }
+  else if(dm == "50"){
+    signalPoint = "/T2DegStop_525_475_bdt.root";
+  }
+  else if(dm == "60"){
+    signalPoint = "/T2DegStop_525_465_bdt.root";
+  }
 }
-
-
 
 /////////////////////////////////////////////////////////////
 // Define cuts
@@ -152,7 +178,22 @@ if(doWjets){
   hs->Scale(1.0/hs->Integral());
 
   //----2017----///////////////////////////////////////////////
-
+/*  
+  TFile F1((path17+dm+"/Wjets_100to200_bdt.root").c_str(), "READ");
+  TTree* z1 = static_cast<TTree*>(F1.Get("bdttree"));
+  TFile F2((path17+dm+"/Wjets_200to400_bdt.root").c_str(), "READ");
+  TTree* z2 = static_cast<TTree*>(F2.Get("bdttree"));
+  TFile F3((path17+dm+"/Wjets_400to600_bdt.root").c_str(), "READ");
+  TTree* z3 = static_cast<TTree*>(F3.Get("bdttree"));
+  TFile F4((path17+dm+"/Wjets_600to800_bdt.root").c_str(), "READ");
+  TTree* z4 = static_cast<TTree*>(F4.Get("bdttree"));
+  TFile F5((path17+dm+"/Wjets_800to1200_bdt.root").c_str(), "READ");
+  TTree* z5 = static_cast<TTree*>(F5.Get("bdttree"));
+  TFile F6((path17+dm+"/Wjets_1200to2500_bdt.root").c_str(), "READ");
+  TTree* z6 = static_cast<TTree*>(F6.Get("bdttree"));
+  TFile F7((path17+dm+"/Wjets_2500toInf_bdt.root").c_str(), "READ");
+  TTree* z7 = static_cast<TTree*>(F7.Get("bdttree"));
+*/
   TFile F1((path17+dm+"/WJetsToLNu_HT100To200_bdt.root").c_str(), "READ");
   TTree* z1 = static_cast<TTree*>(F1.Get("bdttree"));
   TFile F2((path17+dm+"/WJetsToLNu_HT200To400_bdt.root").c_str(), "READ");
@@ -214,7 +255,15 @@ if(doTTbar){
   tbdt->Add(htt);
   tbdt->Scale(1.0/tbdt->Integral());
   delete htt;
-
+/*  
+  TFile TT2((path17+dm+"/TT_pow_bdt.root").c_str(), "READ");
+  TTree* tt2 = static_cast<TTree*>(TT2.Get("bdttree"));
+  TH1F *htt2 = new TH1F("htt2",variable.c_str(),Xbin,Xmin,Xmax);
+  tt2->Draw((variable+">>htt2").c_str(),"weight*splitFactor*36416.8"*region);
+  tbdt2->Add(htt2);
+  tbdt2->Scale(1.0/tbdt2->Integral());
+  delete htt2;
+*/
   TFile TT2((path17+dm+"/TTJets_bdt.root").c_str(), "READ");
   TTree* tt2 = static_cast<TTree*>(TT2.Get("bdttree"));
   TH1F *htt2 = new TH1F("htt2",variable.c_str(),Xbin,Xmin,Xmax);
@@ -290,5 +339,5 @@ lg->AddEntry(hw3,"Wjets 400<HT<600","l");
 lg->AddEntry(hw4,"Wjets 600<HT<800","l");
 lg->Draw();
 */
-c1->SaveAs(("plots_w16/BDTyears_dm"+dm+title+"_"+variable+".pdf").c_str());
+c1->SaveAs(("plots/BDTyears_dm"+dm+title+"_"+variable+".pdf").c_str());
 }
