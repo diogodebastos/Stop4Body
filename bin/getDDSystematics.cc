@@ -22,6 +22,7 @@
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
+doubleUnc methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string)
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 
@@ -197,14 +198,18 @@ int main(int argc, char** argv)
 
   // crSelection += " && " + baseSelection;
   // srSelection += " && " + baseSelection;
-  wjetsEnrich += " && " + baseSelection;
-  ttbarEnrich += " && " + baseSelection;
+  // wjetsEnrich += " && " + baseSelection;
+  // ttbarEnrich += " && " + baseSelection;
+
+  std::string WJetsSR_VR = wjetsEnrich + " && "  + srSelection;
 
   printSel("base selection", baseSelection);
   printSel("CR selection", crSelection);
   printSel("SR selection", srSelection);
   printSel("wjets enrichment", wjetsEnrich);
   printSel("ttbar enrichment", ttbarEnrich);
+  printSel("WJets SR-VR", wjetsEnrich);
+
 
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
@@ -272,17 +277,39 @@ int main(int argc, char** argv)
   }
 
   auto wjets = MC.process(bkgMap["WJets"]);
+  doubleUnc SysDD = methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
 
-  doubleUnc nDD = fullDD(wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + srSelection, baseSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
+  //doubleUnc nDD = fullDD(wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + srSelection, baseSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight); // Do this without setting any VR and you should get DD estiamtion for given process == to AN
 
   if(verbose)
-    std::cout << "Estimate on DD method: " << nDD << std::endl;
+    std::cout << "Estimate on DD method: " << SysDD << std::endl;
   if(unblind){
     std::cout<<"placeholder"<<std::endl;
   }
 }
 
 // Ported from getDDEstimate.cc -> Might want to incorporate this function on commonFunctions.cc
+
+doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight)
+{
+  doubleUnc DatainSR = Data.getYield(baseSelection + " && " + signalRegion + xEnrich, "1.0");
+
+  doubleUnc NDDinSR = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + controlRegion + " && " + xEnrich, mcWeight);
+
+  doubleUnc otherMC (0,0);
+  for(auto &process: MC)
+  {
+    if(process.tag() != toEstimate.tag())
+      otherMC += process.getYield(baseSelection + " && " + signalRegion + " && " + xEnrich , mcWeight);
+  }
+  std::cout << "DatainSR: " << DatainSR << std::endl;
+  std::cout << "NDDinSR: " << NDDinSR << std::endl;
+  std::cout << "otherMC: " << otherMC << std::endl;
+  
+  doubleUnc sysDD = DatainSR - (NDDinSR + otherMC);
+
+  return sysDD;
+}
 
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
