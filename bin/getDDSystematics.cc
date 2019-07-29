@@ -176,8 +176,8 @@ int main(int argc, char** argv)
   std::string ttbarEnrich = "(NbTight > 0)";
   baseSelection += " && " + metSelection;
   baseSelection += " && " + lepSelection;
-  std::string crSelection = "(BDT < "+ CRCut.str() +" )"
-  std::string srSelection = "(BDT > "+ SRCut.str() +" )";
+  std::string crSelection = "(BDT < "+ std::to_string(CRCut) +" )";
+  std::string srSelection = "(BDT > "+ std::to_string(SRCut) +" )";
   if(doVR1)
     baseSelection += " && " + VR1Trigger;
 
@@ -186,7 +186,7 @@ int main(int argc, char** argv)
     std::cout << "The used " << name << ":" << std::endl;
     std::cout << "  " << selection << std::endl;
     std::cout << std::endl;
-  }
+  };
 
   // crSelection += " && " + baseSelection;
   // srSelection += " && " + baseSelection;
@@ -241,7 +241,7 @@ int main(int argc, char** argv)
 
   for(auto& bkg : bkgMap)
   {
-    cout<<bkg.first<<","<<bkg.second<<endl;
+    std::cout << bkg.first << "," << bkg.second << std::endl;
     // if(!(bkg.first == "WJets"))
     // {
     // }
@@ -250,14 +250,16 @@ int main(int argc, char** argv)
     // }
   }
 
-  // doubleUnc nDD = fullDD(wjest, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  //doubleUnc nDD = fullDD(wjest, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
   // if(verbose)
   //   std::cout << "Estimate on DD method: " << nDD << std::endl;
-
+  if(unblind){
+    std::cout<<"placeholder"<<std::endl;
+  }
 }
 
 // Ported from getDDEstimate.cc -> Might want to incorporate this function on commonFunctions.cc
-
+/*
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
   doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
@@ -273,7 +275,7 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
   }
   doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + controlRegion, mcWeight);
 
-  doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes)
+  doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
 
   return estimate;
 }
@@ -290,3 +292,4 @@ doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalR
 
   return estimate;
 }
+*/
