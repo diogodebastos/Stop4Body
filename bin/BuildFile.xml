@@ -32,6 +32,7 @@
   <bin name="getEventList"            file="getEventList.cc"> </bin>
   <bin name="getEfficiencyMap"        file="getEfficiencyMap.cc"> </bin>
   <bin name="getYieldsWithSystematics" file="getYieldsWithSystematics.cc"> </bin>
+  <bin name="getDDSystematics" file="getDDSystematics.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
