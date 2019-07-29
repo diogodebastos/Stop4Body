@@ -273,7 +273,7 @@ int main(int argc, char** argv)
 
   auto wjets = MC.process(bkgMap["WJets"]);
 
-  doubleUnc nDD = fullDD(wjest, Data, MC, looseSelection, tightSelection, baseSelection + " && " + srSelection, baseSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
+  doubleUnc nDD = fullDD(wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + srSelection, baseSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
 
   if(verbose)
     std::cout << "Estimate on DD method: " << nDD << std::endl;
