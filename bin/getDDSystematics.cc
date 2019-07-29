@@ -32,6 +32,7 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
   double luminosity = -1.0;
+  bool isPseudoData = false;
   bool verbose = false;
   double SRCut = 0.4;
   double CRCut = 0.2;
@@ -78,6 +79,11 @@ int main(int argc, char** argv)
       std::stringstream convert;
       convert << argv[++i];
       convert >> luminosity;
+    }
+
+    if(argument == "--isPseudoData")
+    {
+      isPseudoData = true;
     }
 
     if(argument == "--signalRegionCut")
@@ -172,6 +178,7 @@ int main(int argc, char** argv)
 
   //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
   std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
+  std::string preSelection = baseSelection + " && (Met > 280) && " + lepSelection;
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   baseSelection += " && " + metSelection;
@@ -249,17 +256,34 @@ int main(int argc, char** argv)
     // {
     // }
   }
+  if(verbose)
+    std::cout << "Retrieving luminosity" << std::endl;
+  if(luminosity <= 0)
+    luminosity = Data.getLumi();
+  std::string mcWeight;
+  {
+    std::stringstream converter;
+    if(isPseudoData)
+      converter << "splitFactor*XS*filterEfficiency*(genWeight/sumGenWeight)"; // The scale factors are not considered here
+    else
+      converter << "splitFactor*weight";
+    converter << "*" << luminosity;
+    converter >> mcWeight;
+  }
 
-  //doubleUnc nDD = fullDD(wjest, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
-  // if(verbose)
-  //   std::cout << "Estimate on DD method: " << nDD << std::endl;
+  auto wjets = MC.process(bkgMap["WJets"]);
+
+  doubleUnc nDD = fullDD(wjest, Data, MC, looseSelection, tightSelection, baseSelection + " && " + srSelection, baseSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
+
+  if(verbose)
+    std::cout << "Estimate on DD method: " << nDD << std::endl;
   if(unblind){
     std::cout<<"placeholder"<<std::endl;
   }
 }
 
 // Ported from getDDEstimate.cc -> Might want to incorporate this function on commonFunctions.cc
-/*
+
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
   doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
@@ -292,4 +316,3 @@ doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalR
 
   return estimate;
 }
-*/
