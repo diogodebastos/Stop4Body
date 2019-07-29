@@ -177,7 +177,7 @@ int main(int argc, char** argv)
   }
 
   //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
-  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
+  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
   std::string preSelection = baseSelection + " && (Met > 280) && " + lepSelection;
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
@@ -308,9 +308,6 @@ doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalR
 {
   doubleUnc LNTinSR = LNTData.getYield(signalRegion, "weight");
   doubleUnc LNTMCinSR = LNTMC.getYield(signalRegion + " && isPrompt == 1", mcWeight);
-
-  doubleUnc NinCR = LNTMC.getYield(signalRegion + " && isPrompt == 1", mcWeight+"/looseNotTightWeight");
-  doubleUnc DatainCR = LNTData.getYield(signalRegion, "1.0");
 
   doubleUnc estimate = LNTinSR - LNTMCinSR;
 
