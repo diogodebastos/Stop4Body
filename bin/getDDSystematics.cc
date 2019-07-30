@@ -25,7 +25,7 @@ using json = nlohmann::json;
 doubleUnc methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
-doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string)
+doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
 
 
 int main(int argc, char** argv)
@@ -271,7 +271,8 @@ int main(int argc, char** argv)
   {
     std::stringstream converter;
     if(isPseudoData)
-      converter << "splitFactor*XS*filterEfficiency*(genWeight/sumGenWeight)"; // The scale factors are not considered here
+      //converter << "splitFactor*XS*filterEfficiency*(genWeight/sumGenWeight)"; // The scale factors are not considered here
+      converter << "splitFactor*XS*filterEfficiency*(genWeight/sumGenWeight)*puWeight"; // The scale factors are not considered here
     else
       converter << "splitFactor*weight";
     converter << "*" << luminosity;
@@ -280,17 +281,17 @@ int main(int argc, char** argv)
 
   auto wjets = MC.process(bkgMap["WJets"]);
   doubleUnc NaiveDD = naiveDD(wjets, Data, MC, tightSelection + " && " + baseSelection + "&&" + srSelection + "&&" + wjetsEnrich, tightSelection + " && " + baseSelection + "&&" + crSelection + "&&" + wjetsEnrich, mcWeight);
-  doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 
   if(verbose)
     std::cout << "Naive DD: " << NaiveDD << std::endl;
-
-  doubleUnc SysDD = methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
+  
+  std::cout << std::endl;
+  //doubleUnc SysDD = methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
 
   //doubleUnc nDD = fullDD(wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + srSelection, baseSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight); // Do this without setting any VR and you should get DD estiamtion for given process == to AN
 
-  if(verbose)
-    std::cout << "Estimate on DD method: " << SysDD << std::endl;
+  //if(verbose)
+    //std::cout << "Estimate on DD method: " << SysDD << std::endl;
   if(unblind){
     std::cout<<"placeholder"<<std::endl;
   }
@@ -366,7 +367,7 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   {
     if(process.tag() != toEstimate.tag())
       otherMC += process.getYield(controlRegion, mcWeight);
-      otherMCinSR += process.getYield(signalRegion, mcWeight);
+      otherMCinSR += process.getYield(signalRegion + " && (isPrompt)", mcWeight);
   }
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC);
