@@ -26,7 +26,7 @@ doubleUnc methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, 
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
-
+void printSel(std::string, std::string)
 
 int main(int argc, char** argv)
 {
@@ -43,6 +43,7 @@ int main(int argc, char** argv)
   bool doVR1 = false; // Swap the Met and LepPt for this VR
   bool doVR2 = false; // Invert the Met for this VR
   bool doVR3 = false; // Invert the LepPt for this VR
+  bool doLoosenBDT = false; // SRCut and CRCut == 0.1 -> When BDTcut is too high of VR SR
   bool unblind = false;
 
   if(argc < 2)
@@ -123,6 +124,11 @@ int main(int argc, char** argv)
       doVR3 = true;
     }
 
+    if(argument == "--doLoosenBDT")
+    {
+      doLoosenBDT = true;
+    }
+
     if(argument == "--verbose")
     {
       verbose = true;
@@ -191,19 +197,10 @@ int main(int argc, char** argv)
   if(doVR1)
     baseSelection += " && " + VR1Trigger;
 
-  auto printSel  = [&](std::string name, std::string selection) -> void
-  {
-    std::cout << "The used " << name << ":" << std::endl;
-    std::cout << "  " << selection << std::endl;
-    std::cout << std::endl;
-  };
-
   // crSelection += " && " + baseSelection;
   // srSelection += " && " + baseSelection;
   // wjetsEnrich += " && " + baseSelection;
   // ttbarEnrich += " && " + baseSelection;
-
-  std::string WJetsSR_VR = wjetsEnrich + " && "  + srSelection;
 
   printSel("base selection", baseSelection);
   printSel("CR selection", crSelection);
@@ -211,7 +208,6 @@ int main(int argc, char** argv)
   printSel("wjets enrichment", wjetsEnrich);
   printSel("ttbar enrichment", ttbarEnrich);
   printSel("WJets SR-VR", wjetsEnrich);
-
 
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
@@ -283,6 +279,10 @@ int main(int argc, char** argv)
   auto ttbar = MC.process(bkgMap["ttbar"]);
 
   naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
+  if (doLoosenBDT){
+    srSelection = "(BDT > 0.1)";
+    crSelection = "(BDT < 0.1)";
+  }
   naiveDD(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight);
 
   //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + baseSelection + "&&" + srSelection + "&&" + wjetsEnrich, mcWeight);
@@ -364,6 +364,10 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   std::string fakeSelection = "(isLoose == 1) && !(isTight == 1) && " + baseSelection + " && " + signalRegion + " && " + xEnrich;
   signalRegion += " && (isTight==1) && " + xEnrich + " && " + baseSelection;
   controlRegion += " && (isTight==1) && " + xEnrich + " && " + baseSelection;
+
+  printSel("CR selection", controlRegion);
+  printSel("SR selection", signalRegion);
+
   doubleUnc NinSR = toEstimate.getYield(signalRegion, mcWeight);
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
   doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
@@ -401,4 +405,12 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   std::cout << std::endl;
 
   return estimate;
+}
+
+void printSel(std::string name, std::string selection)
+{
+  std::cout << "The used " << name << ":" << std::endl;
+  std::cout << "  " << selection << std::endl;
+  std::cout << std::endl;
+  return;
 }
