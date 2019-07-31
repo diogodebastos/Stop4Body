@@ -26,7 +26,7 @@ doubleUnc methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, 
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
-void printSel(std::string, std::string)
+void printSel(std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -201,14 +201,14 @@ int main(int argc, char** argv)
   // srSelection += " && " + baseSelection;
   // wjetsEnrich += " && " + baseSelection;
   // ttbarEnrich += " && " + baseSelection;
-
+/*
   printSel("base selection", baseSelection);
   printSel("CR selection", crSelection);
   printSel("SR selection", srSelection);
   printSel("wjets enrichment", wjetsEnrich);
   printSel("ttbar enrichment", ttbarEnrich);
   printSel("WJets SR-VR", wjetsEnrich);
-
+*/
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
   auto MC = samples.getMCBkg();
@@ -251,7 +251,7 @@ int main(int argc, char** argv)
 
   for(auto& bkg : bkgMap)
   {
-    std::cout << bkg.first << "," << bkg.second << std::endl;
+    //std::cout << bkg.first << "," << bkg.second << std::endl;
     // if(!(bkg.first == "WJets"))
     // {
     // }
@@ -365,9 +365,6 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   signalRegion += " && (isTight==1) && " + xEnrich + " && " + baseSelection;
   controlRegion += " && (isTight==1) && " + xEnrich + " && " + baseSelection;
 
-  printSel("CR selection", controlRegion);
-  printSel("SR selection", signalRegion);
-
   doubleUnc NinSR = toEstimate.getYield(signalRegion, mcWeight);
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
   doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
@@ -392,7 +389,9 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   doubleUnc otherMCinSRwithFakesAndPrompt = otherMCinSRprompt + fakes;
 
   std::cout << std::endl;
-  std::cout << toEstimate.label() << std::endl;
+  std::cout << "==== " << toEstimate.label() << " ===="  <<std::endl;
+  printSel("CR selection", controlRegion);
+  printSel("SR selection", signalRegion);
   std::cout << "NinSR: " << NinSR << std::endl;
   std::cout << "NinCR: " << NinCR << std::endl;
   std::cout << "DatainCR: " << DatainCR << std::endl;
