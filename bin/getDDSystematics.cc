@@ -25,7 +25,7 @@ using json = nlohmann::json;
 doubleUnc methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
-doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
+doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 
 
 int main(int argc, char** argv)
@@ -282,14 +282,14 @@ int main(int argc, char** argv)
   auto wjets = MC.process(bkgMap["WJets"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
 
-  doubleUnc NaiveDD = naiveDD(wjets, Data, MC, tightSelection + " && " + baseSelection + "&&" + srSelection, tightSelection + " && " + baseSelection + "&&" + crSelection, wjetsEnrich, mcWeight);
-  doubleUnc NaiveDD = naiveDD(ttbar, Data, MC, tightSelection + " && " + baseSelection + "&&" + srSelection, tightSelection + " && " + baseSelection + "&&" + crSelection, ttbarEnrich, mcWeight);
+  naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
+  naiveDD(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight);
 
   //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + baseSelection + "&&" + srSelection + "&&" + wjetsEnrich, mcWeight);
   //std::cout << "fakes: " << fakes << std::endl;
 
-  if(verbose)
-    std::cout << "Naive DD: " << NaiveDD << std::endl;
+//  if(verbose)
+//    std::cout << "Naive DD: " << NaiveDD << std::endl;
 
   std::cout << std::endl;
   //doubleUnc SysDD = methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
@@ -359,16 +359,18 @@ doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalR
   return estimate;
 }
 
-doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight)
+doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight)
 {
-  signalRegion += " && " + xEnrich;
-  controlRegion += " && " + xEnrich;
+  std::string fakeSelection = "(isLoose == 1) && !(isTight == 1) && " + baseSelection + " && " + signalRegion + " && " + xEnrich;
+  signalRegion += " && (isTight==1) && " + xEnrich + " && " + baseSelection;
+  controlRegion += " && (isTight==1) && " + xEnrich + " && " + baseSelection;
   doubleUnc NinSR = toEstimate.getYield(signalRegion, mcWeight);
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
   doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
   doubleUnc DatainSR = Data.getYield(signalRegion, "1.0");
   doubleUnc otherMC (0,0);
   doubleUnc otherMCinSR (0,0);
+  doubleUnc otherMCinSRprompt (0,0);
   if(static_cast<double>(NinSR) == 0)
     NinSR = doubleUnc(4,2);
   for(auto &process: MC)
@@ -381,7 +383,6 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC);
 
-  std::string fakeSelection = "(isLoose == 1) && !(isTight == 1) && " + signalRegion + xEnrich;
   doubleUnc fakes = fakeDD(Data, MC, fakeSelection, mcWeight);
 
   doubleUnc otherMCinSRwithFakesAndPrompt = otherMCinSRprompt + fakes;
@@ -395,7 +396,7 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   std::cout << "otherMCinCR: " << otherMC << std::endl;
   std::cout << "otherMCinSR: " << otherMCinSR << std::endl;
   std::cout << "fakes: " << fakes << std::endl;
-  std::cout << "otherMCinSR - prompt + DD fakes: " << otherMCinSRwithFakesAndPrompt << std::endl;
+  std::cout << "otherMCinSR(prompt + DD fakes): " << otherMCinSRwithFakesAndPrompt << std::endl;
   std::cout << "estimate: " << estimate << std::endl;
   std::cout << std::endl;
 
