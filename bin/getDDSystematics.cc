@@ -282,6 +282,9 @@ int main(int argc, char** argv)
   auto wjets = MC.process(bkgMap["WJets"]);
   doubleUnc NaiveDD = naiveDD(wjets, Data, MC, tightSelection + " && " + baseSelection + "&&" + srSelection + "&&" + wjetsEnrich, tightSelection + " && " + baseSelection + "&&" + crSelection + "&&" + wjetsEnrich, mcWeight);
 
+  //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + baseSelection + "&&" + srSelection + "&&" + wjetsEnrich, mcWeight);
+  //std::cout << "fakes: " << fakes << std::endl;
+  
   if(verbose)
     std::cout << "Naive DD: " << NaiveDD << std::endl;
 
@@ -367,15 +370,17 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   {
     if(process.tag() != toEstimate.tag())
       otherMC += process.getYield(controlRegion, mcWeight);
-      otherMCinSR += process.getYield("(isPrompt) && " + signalRegion, mcWeight);
+      otherMCinSR += process.getYield("(isPrompt == 1) && " + signalRegion, mcWeight);
   }
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC);
+  
 
-  doubleUnc fakes = fakeDD(Data, MC, "(isLoose == 1) && !(isTight == 1) && " + controlRegion, mcWeight);
+  std::string fakeSelection = "(isLoose == 1) && !(isTight == 1) && (badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110) && (Met > 200) && (Met  < 280) && (LepPt < 30) && (BDT > 0.2) && (NbLoose == 0)";
+  doubleUnc fakes = fakeDD(Data, MC, fakeSelection, mcWeight);
 
 
-  doubleUnc otherMCinSRwithoutFakes = otherMCinSR - fakes;
+  doubleUnc otherMCinSRwithoutFakes = otherMCinSR + fakes;
 
 
   std::cout << std::endl;
@@ -385,8 +390,10 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   std::cout << "DatainCR: " << DatainCR << std::endl;
   std::cout << "DatainSR: " << DatainSR << std::endl;
   std::cout << "otherMCinCR: " << otherMC << std::endl;
+  std::cout << "fakes: " << fakes << std::endl;
   std::cout << "otherMCinSR: " << otherMCinSRwithoutFakes << std::endl;
   std::cout << "estimate: " << estimate << std::endl;
+  std::cout << std::endl;
 
   return estimate;
 }
