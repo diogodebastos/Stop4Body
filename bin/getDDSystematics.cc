@@ -284,7 +284,7 @@ int main(int argc, char** argv)
 
   if(verbose)
     std::cout << "Naive DD: " << NaiveDD << std::endl;
-  
+
   std::cout << std::endl;
   //doubleUnc SysDD = methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
 
@@ -367,10 +367,16 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   {
     if(process.tag() != toEstimate.tag())
       otherMC += process.getYield(controlRegion, mcWeight);
-      otherMCinSR += process.getYield(signalRegion + " && (isPrompt)", mcWeight);
+      otherMCinSR += process.getYield("(isPrompt) && " + signalRegion, mcWeight);
   }
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC);
+
+  doubleUnc fakes = fakeDD(Data, MC, "(isLoose == 1) && !(isTight == 1) && " + controlRegion, mcWeight);
+
+
+  doubleUnc otherMCinSRwithoutFakes = otherMCinSR - fakes;
+
 
   std::cout << std::endl;
   std::cout << toEstimate.label() << std::endl;
@@ -379,7 +385,7 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   std::cout << "DatainCR: " << DatainCR << std::endl;
   std::cout << "DatainSR: " << DatainSR << std::endl;
   std::cout << "otherMCinCR: " << otherMC << std::endl;
-  std::cout << "otherMCinSR: " << otherMCinSR << std::endl;
+  std::cout << "otherMCinSR: " << otherMCinSRwithoutFakes << std::endl;
   std::cout << "estimate: " << estimate << std::endl;
 
   return estimate;
