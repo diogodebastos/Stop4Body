@@ -307,9 +307,11 @@ int main(int argc, char** argv)
 
 doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight)
 {
-  doubleUnc DatainSR = Data.getYield(baseSelection + " && " + signalRegion + " && "  + xEnrich, "1.0");
+  doubleUnc DatainSR = Data.getYield(baseSelection + " && " + tightSelection + " && " + signalRegion + " && "  + xEnrich, "1.0");
 
-  doubleUnc NDDinSR = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + controlRegion + " && " + xEnrich, mcWeight);
+  doubleUnc NDDinSR = naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
+
+  //doubleUnc NDDinSR = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + controlRegion + " && " + xEnrich, mcWeight);
 
   doubleUnc otherMC (0,0);
   for(auto &process: MC)
@@ -370,6 +372,7 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
   doubleUnc DatainSR = Data.getYield(signalRegion, "1.0");
   doubleUnc otherMC (0,0);
+  doubleUnc otherSingleProcessMCinSR (0,0);
   doubleUnc otherMCinSR (0,0);
   doubleUnc otherMCinSRprompt (0,0);
   if(static_cast<double>(NinSR) == 0)
@@ -378,7 +381,11 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   {
     if(process.tag() != toEstimate.tag())
       otherMC += process.getYield(controlRegion, mcWeight);
-      otherMCinSR += process.getYield(signalRegion, mcWeight);
+
+      std::cout << "== Printing other MC processes Yield for debug: " << std::endl;
+      otherSingleProcessMCinSR = process.getYield(signalRegion, mcWeight);
+      std::std::cout << process.tag() << ": " << otherSingleProcessMCinSR << endl;
+      otherMCinSR += otherSingleProcessMCinSR;
       otherMCinSRprompt += process.getYield("(isPrompt == 1) && " + signalRegion, mcWeight);
   }
 
