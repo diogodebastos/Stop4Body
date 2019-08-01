@@ -309,9 +309,9 @@ doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sa
 {
   doubleUnc DatainSR = Data.getYield(baseSelection + " && " + tightSelection + " && " + signalRegion + " && "  + xEnrich, "1.0");
 
-  doubleUnc NDDinSR = naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
+  //doubleUnc NDDinSR = naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
 
-  //doubleUnc NDDinSR = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + controlRegion + " && " + xEnrich, mcWeight);
+  doubleUnc NDDinSR = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + controlRegion + " && " + xEnrich, mcWeight);
 
   doubleUnc otherMC (0,0);
   for(auto &process: MC)
@@ -377,16 +377,18 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   doubleUnc otherMCinSRprompt (0,0);
   if(static_cast<double>(NinSR) == 0)
     NinSR = doubleUnc(4,2);
+  
+  std::cout << "== Printing other MC processes Yield for debug: " << std::endl;
   for(auto &process: MC)
   {
-    if(process.tag() != toEstimate.tag())
+    if(process.tag() != toEstimate.tag()){
       otherMC += process.getYield(controlRegion, mcWeight);
 
-      std::cout << "== Printing other MC processes Yield for debug: " << std::endl;
       otherSingleProcessMCinSR = process.getYield(signalRegion, mcWeight);
-      std::std::cout << process.tag() << ": " << otherSingleProcessMCinSR << endl;
+      std::cout << process.tag() << ": " << otherSingleProcessMCinSR << std::endl;
       otherMCinSR += otherSingleProcessMCinSR;
       otherMCinSRprompt += process.getYield("(isPrompt == 1) && " + signalRegion, mcWeight);
+    }
   }
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC);
