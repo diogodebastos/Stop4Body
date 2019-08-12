@@ -279,7 +279,7 @@ int main(int argc, char** argv)
   auto ttbar = MC.process(bkgMap["ttbar"]);
 
   naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
-  methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
+  methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight, verbose);
   if (doLoosenBDT){
     srSelection = "(BDT > 0.1)";
     crSelection = "(BDT < 0.1)";
@@ -313,11 +313,11 @@ doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sa
   doubleUnc NinSR = toEstimate.getYield(SR, mcWeight);
   doubleUnc NinCR = toEstimate.getYield(CR, mcWeight);
   doubleUnc DatainSR = Data.getYield(SR, "1.0");
-  doubleUnc DatainSR = Data.getYield(CR, "1.0");
+  doubleUnc DatainCR = Data.getYield(CR, "1.0");
   doubleUnc otherMC (0,0);
   doubleUnc otherMCinSR (0,0);
   doubleUnc otherSingleProcessMCinSR (0,0);
-
+  doubleUnc NPredinSR (0,0);
   doubleUnc NDDinSR = naiveDD(toEstimate, Data, MC, baseSelection, signalRegion, controlRegion, xEnrich, mcWeight);
   //doubleUnc NDDinSR = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + controlRegion + " && " + xEnrich, mcWeight);
 
@@ -331,10 +331,10 @@ doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sa
   }
 
 //  std::cout << "DatainSR Unc : " << DatainSR. << std::endl;
+  NPredinSR = NDDinSR + otherMCinSR;  
 
   doubleUnc sysDD = DatainSR - (NDDinSR + otherMC);
 
-  return sysDD;
 
   if(verbose){
     std::cout << std::endl;
@@ -348,11 +348,12 @@ doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sa
     std::cout << "DatainSR: " << DatainSR << std::endl;
     std::cout << "otherMCinCR: " << otherMC << std::endl;
     std::cout << "otherMCinSR: " << otherMCinSR << std::endl;
-    std::cout << "fakes: " << fakes << std::endl;
-    std::cout << "otherMCinSR(prompt + DD fakes): " << otherMCinSRwithFakesAndPrompt << std::endl;
-    std::cout << "estimate: " << estimate << std::endl;
+    std::cout << "NDDinSR: " << NDDinSR  << std::endl;
+    std::cout << "NPredinSR: " << NPredinSR  << std::endl;
     std::cout << std::endl;
   }
+  
+  return sysDD;
 }
 
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
