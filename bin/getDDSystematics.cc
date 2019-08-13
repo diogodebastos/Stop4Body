@@ -23,6 +23,8 @@
 
 using json = nlohmann::json;
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
+double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool){
+
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
@@ -279,13 +281,14 @@ int main(int argc, char** argv)
   auto ttbar = MC.process(bkgMap["ttbar"]);
   //naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
   methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight, verbose);
+  methodTwoDDSystematics(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight, verbose);
   if (doLoosenBDT){
     srSelection = "(BDT > 0.1)";
     crSelection = "(BDT < 0.1)";
   }
   //naiveDD(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight);
   methodOneDDSystematics(ttbar, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, ttbarEnrich, mcWeight, verbose);
-
+  methodTwoDDSystematics(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight, verbose);
 
   //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + baseSelection + "&&" + srSelection + "&&" + wjetsEnrich, mcWeight);
   //std::cout << "fakes: " << fakes << std::endl;
