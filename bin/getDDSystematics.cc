@@ -277,14 +277,15 @@ int main(int argc, char** argv)
 
   auto wjets = MC.process(bkgMap["WJets"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
-
-  naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
+  //naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
   methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight, verbose);
   if (doLoosenBDT){
     srSelection = "(BDT > 0.1)";
     crSelection = "(BDT < 0.1)";
   }
-  naiveDD(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight);
+  //naiveDD(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight);
+  methodOneDDSystematics(ttbar, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, ttbarEnrich, mcWeight, verbose);
+
 
   //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + baseSelection + "&&" + srSelection + "&&" + wjetsEnrich, mcWeight);
   //std::cout << "fakes: " << fakes << std::endl;
@@ -331,10 +332,9 @@ doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sa
   }
 
 //  std::cout << "DatainSR Unc : " << DatainSR. << std::endl;
-  NPredinSR = NDDinSR + otherMCinSR;  
+  NPredinSR = NDDinSR + otherMCinSR;
 
   doubleUnc sysDD = DatainSR - (NDDinSR + otherMC);
-
 
   if(verbose){
     std::cout << std::endl;
@@ -352,7 +352,7 @@ doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sa
     std::cout << "NPredinSR: " << NPredinSR  << std::endl;
     std::cout << std::endl;
   }
-  
+
   return sysDD;
 }
 
@@ -395,31 +395,34 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   doubleUnc NinSR = toEstimate.getYield(signalRegion, mcWeight);
   doubleUnc NinCR = toEstimate.getYield(controlRegion, mcWeight);
   doubleUnc DatainCR = Data.getYield(controlRegion, "1.0");
-  doubleUnc DatainSR = Data.getYield(signalRegion, "1.0");
   doubleUnc otherMC (0,0);
+  // for debuggind
+  /*
+  doubleUnc DatainSR = Data.getYield(signalRegion, "1.0");
   doubleUnc otherSingleProcessMCinSR (0,0);
   doubleUnc otherMCinSR (0,0);
   doubleUnc otherMCinSRprompt (0,0);
+  */
   if(static_cast<double>(NinSR) == 0)
     NinSR = doubleUnc(4,2);
 
-  std::cout << "== Printing other MC processes Yield for debug: " << std::endl;
+  // std::cout << "== Printing other MC processes Yield for debug: " << std::endl;
   for(auto &process: MC)
   {
     if(process.tag() != toEstimate.tag()){
       otherMC += process.getYield(controlRegion, mcWeight);
-
+      /*
       otherSingleProcessMCinSR = process.getYield(signalRegion, mcWeight);
       std::cout << process.tag() << ": " << otherSingleProcessMCinSR << std::endl;
       otherMCinSR += otherSingleProcessMCinSR;
       otherMCinSRprompt += process.getYield("(isPrompt == 1) && " + signalRegion, mcWeight);
+      */
     }
   }
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC);
-
+  /*
   doubleUnc fakes = fakeDD(Data, MC, fakeSelection, mcWeight);
-
   doubleUnc otherMCinSRwithFakesAndPrompt = otherMCinSRprompt + fakes;
 
   std::cout << std::endl;
@@ -436,7 +439,7 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   std::cout << "otherMCinSR(prompt + DD fakes): " << otherMCinSRwithFakesAndPrompt << std::endl;
   std::cout << "estimate: " << estimate << std::endl;
   std::cout << std::endl;
-
+  */
   return estimate;
 }
 
