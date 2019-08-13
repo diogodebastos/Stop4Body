@@ -320,9 +320,6 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   doubleUnc NPredinSR (0,0);
   doubleUnc NDDinSR = naiveDD(toEstimate, Data, MC, baseSelection, signalRegion, controlRegion, xEnrich, mcWeight);
   //doubleUnc NDDinSR = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + controlRegion + " && " + xEnrich, mcWeight);
-  double val = trigEff.value();
-  double unc = trigEff.uncertainty();
-
   doubleUnc rareMC (0,0);
   doubleUnc contamMC (0,0);
 
@@ -347,8 +344,8 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   NPredinSR = NDDinSR + otherMCinSR;
 
   doubleUnc sysDD = DatainSR - NPredinSR;
-  doubleUnc precDD = std::pow(DatainSR.uncertainty(),2) + std::pow(0.5*rareMC,2) + std::pow(0.2*contamMC,2);
-  doubleUnc SysUnDD = std::sqrt(std::max(std::pow(sysDD,2),std::pow(precDD,2)));
+  doubleUnc precDD = std::pow(DatainSR.uncertainty(),2) + std::pow(0.5*rareMC.value(),2) + std::pow(0.2*contamMC.value(),2);
+  doubleUnc SysUnDD = std::sqrt(std::max(std::pow(sysDD.value(),2),std::pow(precDD.value(),2)));
   doubleUnc RelSysDD = SysUnDD/NDDinSR;
 
   if(verbose){
