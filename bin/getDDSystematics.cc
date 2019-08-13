@@ -22,7 +22,7 @@
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
-doubleUnc methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
+double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
@@ -306,7 +306,7 @@ int main(int argc, char** argv)
 
 // Ported from getDDEstimate.cc -> Might want to incorporate this function on commonFunctions.cc
 
-doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight, bool verbose)
+double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight, bool verbose)
 {
   std::string SR = signalRegion + " && " + tightSelection + " && " + xEnrich  + " && " + baseSelection;
   std::string CR = controlRegion + " && " + tightSelection + " && " + xEnrich  + " && " + baseSelection;
@@ -317,24 +317,39 @@ doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sa
   doubleUnc DatainCR = Data.getYield(CR, "1.0");
   doubleUnc otherMC (0,0);
   doubleUnc otherMCinSR (0,0);
-  doubleUnc otherSingleProcessMCinSR (0,0);
   doubleUnc NPredinSR (0,0);
   doubleUnc NDDinSR = naiveDD(toEstimate, Data, MC, baseSelection, signalRegion, controlRegion, xEnrich, mcWeight);
   //doubleUnc NDDinSR = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + controlRegion + " && " + xEnrich, mcWeight);
+  double val = trigEff.value();
+  double unc = trigEff.uncertainty();
+
+  doubleUnc rareMC (0,0);
+  doubleUnc contamMC (0,0);
 
   for(auto &process: MC)
   {
     if(process.tag() != toEstimate.tag()){
       otherMC += process.getYield(CR, mcWeight);
-      otherSingleProcessMCinSR = process.getYield(SR, mcWeight);
-      otherMCinSR += otherSingleProcessMCinSR;
+      otherMCinSR += process.getYield(SR, mcWeight);
+    }
+    if(process.tag() != "WJets" && process.tag() != "ttbar"){
+      rareMC += process.getYield(SR, mcWeight);
+    }
+    if(toEstimate.tag() == "WJets" && process.tag() == "ttbar"){
+      contamMC = process.getYield(SR, mcWeight);
+    }
+    if(toEstimate.tag() == "ttbar" && process.tag() == "WJets"){
+      contamMC = process.getYield(SR, mcWeight);
     }
   }
 
 //  std::cout << "DatainSR Unc : " << DatainSR. << std::endl;
   NPredinSR = NDDinSR + otherMCinSR;
 
-  doubleUnc sysDD = DatainSR - (NDDinSR + otherMC);
+  doubleUnc sysDD = DatainSR - NPredinSR;
+  doubleUnc precDD = std::pow(DatainSR.uncertainty(),2) + std::pow(0.5*rareMC,2) + std::pow(0.2*contamMC,2);
+  doubleUnc SysUnDD = std::sqrt(std::max(std::pow(sysDD,2),std::pow(precDD,2)));
+  doubleUnc RelSysDD = SysUnDD/NDDinSR;
 
   if(verbose){
     std::cout << std::endl;
@@ -342,18 +357,22 @@ doubleUnc methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sa
     std::cout << "==== " << toEstimate.label() << " ===="  <<std::endl;
     printSel("CR selection", controlRegion);
     printSel("SR selection", signalRegion);
-    std::cout << "NinSR: " << NinSR << std::endl;
     std::cout << "NinCR: " << NinCR << std::endl;
+    std::cout << "NinSR: " << NinSR << std::endl;
     std::cout << "DatainCR: " << DatainCR << std::endl;
     std::cout << "DatainSR: " << DatainSR << std::endl;
     std::cout << "otherMCinCR: " << otherMC << std::endl;
     std::cout << "otherMCinSR: " << otherMCinSR << std::endl;
-    std::cout << "NDDinSR: " << NDDinSR  << std::endl;
-    std::cout << "NPredinSR: " << NPredinSR  << std::endl;
+    std::cout << "NDDinSR: " << NDDinSR << std::endl;
+    std::cout << "NPredinSR: " << NPredinSR << std::endl;
+    std::cout << std::endl;
+    std::cout << "sysDD: " << sysDD << std::endl;
+    std::cout << "precDD: " << precDD << std::endl;
+    std::cout << "SysUnDD: " << SysUnDD << std::endl;
+    std::cout << "RelSysDD: " << RelSysDD.value()*100 << std::endl;
     std::cout << std::endl;
   }
-
-  return sysDD;
+  return RelSysDD.value();
 }
 
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
