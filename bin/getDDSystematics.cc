@@ -329,19 +329,19 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
       otherMC += process.getYield(CR, mcWeight);
       otherMCinSR += process.getYield(SR, mcWeight);
     }
-    if(process.tag() != "WJets" && process.tag() != "ttbar"){
-      std::cout << "Getting Rare Processes" << std::endl;
+    if((process.tag() != "WJets") && (process.tag().find("ttbar") == std::string::npos)){
       rareMC += process.getYield(SR, mcWeight);
-      std::cout << process.tag() << ": " << process.getYield(SR, mcWeight) << std::endl;
+      //std::cout << process.tag() << ": " << process.getYield(SR, mcWeight) << std::endl;
     }
-    std::cout << "Getting contamination Process" << std::endl;
-    if(toEstimate.tag() == "WJets" && process.tag() == "ttbar"){
+    if((toEstimate.tag() == "WJets") && (process.tag().find("ttbar") != std::string::npos)){
       contamMC = process.getYield(SR, mcWeight);
-      std::cout << process.tag() << ": " << contamMC << std::endl;
+      //std::cout << "Getting contamination Process" << std::endl;
+      //std::cout << process.tag() << ": " << contamMC << std::endl;
     }
-    if(toEstimate.tag() == "ttbar" && process.tag() == "WJets"){
+    if((toEstimate.tag().find("ttbar") != std::string::npos) && (process.tag() == "WJets")){
       contamMC = process.getYield(SR, mcWeight);
-      std::cout << process.tag() << ": " << contamMC << std::endl;
+      //std::cout << "Getting contamination Process" << std::endl;
+      //std::cout << process.tag() << ": " << contamMC << std::endl;
     }
   }
 
@@ -349,14 +349,14 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   NPredinSR = NDDinSR + otherMCinSR;
 
   doubleUnc sysDD = DatainSR - NPredinSR;
-  doubleUnc precDD = std::pow(DatainSR.uncertainty(),2) + std::pow(0.5*rareMC.value(),2) + std::pow(0.2*contamMC.value(),2);
+  doubleUnc precDD = std::sqrt(std::pow(DatainSR.uncertainty(),2) + std::pow(0.5*rareMC.value(),2) + std::pow(0.2*contamMC.value(),2));
   doubleUnc SysUnDD = std::sqrt(std::max(std::pow(sysDD.value(),2),std::pow(precDD.value(),2)));
   doubleUnc RelSysDD = SysUnDD/NDDinSR;
 
   if(verbose){
     std::cout << std::endl;
     std::cout << "/* Method 1 */" << std::endl;
-    std::cout << "==== " << toEstimate.label() << " ===="  <<std::endl;
+    std::cout << "==== " << toEstimate.label() << " ====" <<std::endl;
     printSel("CR selection", controlRegion);
     printSel("SR selection", signalRegion);
     std::cout << "NinCR: " << NinCR << std::endl;
