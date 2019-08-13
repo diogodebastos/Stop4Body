@@ -330,13 +330,18 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
       otherMCinSR += process.getYield(SR, mcWeight);
     }
     if(process.tag() != "WJets" && process.tag() != "ttbar"){
+      std::cout << "Getting Rare Processes" << std::endl;
       rareMC += process.getYield(SR, mcWeight);
+      std::cout << process.tag() << ": " << process.getYield(SR, mcWeight) << std::endl;
     }
+    std::cout << "Getting contamination Process" << std::endl;
     if(toEstimate.tag() == "WJets" && process.tag() == "ttbar"){
       contamMC = process.getYield(SR, mcWeight);
+      std::cout << process.tag() << ": " << contamMC << std::endl;
     }
     if(toEstimate.tag() == "ttbar" && process.tag() == "WJets"){
       contamMC = process.getYield(SR, mcWeight);
+      std::cout << process.tag() << ": " << contamMC << std::endl;
     }
   }
 
