@@ -374,7 +374,64 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
     std::cout << "RelSysDD: " << RelSysDD.value()*100 << std::endl;
     std::cout << std::endl;
   }
-  return RelSysDD.value();
+  return RelSysDD.value()*100;
+}
+
+double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight, bool verbose){
+  std::string SR = signalRegion + " && (isTight ==1) && " + xEnrich  + " && " + baseSelection;
+  std::string CR = controlRegion + " && (isTight ==1) && " + xEnrich  + " && " + baseSelection;
+
+  doubleUnc NinSR = toEstimate.getYield(SR, mcWeight);
+  doubleUnc NinCR = toEstimate.getYield(CR, mcWeight);
+  doubleUnc DatainSR = Data.getYield(SR, "1.0");
+  doubleUnc DatainCR = Data.getYield(CR, "1.0");
+  doubleUnc otherMCinSR (0,0);
+  doubleUnc otherMCinCR (0,0);
+
+  for(auto &process: MC)
+  {
+    if(process.tag() != toEstimate.tag()){
+      otherMCinSR += process.getYield(SR, mcWeight);
+      otherMCinCR += process.getYield(CR, mcWeight);
+    }
+  }
+
+  doubleUnc RinSR = (DatainSR - otherMCinSR) / NinSR;
+  doubleUnc RinCR = (DatainCR - otherMCinCR) / NinCR;
+
+  doubleUnc D = RinSR - RinCR;
+  doubleUnc NDDinSR = naiveDD(toEstimate, Data, MC, baseSelection, signalRegion, controlRegion, xEnrich, mcWeight);
+
+  double diffD = std::pow(D.value(),2) - std::pow(D.uncertainty(),2);
+  doubleUnc SysUnDD = std::sqrt(std::max(diffD, std::pow(NDDinSR.uncertainty(),2)));
+
+  doubleUnc RelSysDD = SysUnDD/NDDinSR;
+
+  if(verbose){
+    std::cout << std::endl;
+    std::cout << "/* Method 2 */" << std::endl;
+    std::cout << "==== " << toEstimate.label() << " ====" <<std::endl;
+    printSel("CR selection", CR);
+    printSel("SR selection", SR);
+    std::cout << "NinCR: " << NinCR << std::endl;
+    std::cout << "NinSR: " << NinSR << std::endl;
+    std::cout << "DatainCR: " << DatainCR << std::endl;
+    std::cout << "DatainSR: " << DatainSR << std::endl;
+    std::cout << "otherMCinCR: " << otherMCinCR << std::endl;
+    std::cout << "otherMCinSR: " << otherMCinSR << std::endl;
+    std::cout << std::endl;
+    std::cout << "RinCR: " << RinCR << std::endl;
+    std::cout << "RinSR: " << RinSR << std::endl;
+    std::cout << "D: " << D << std::endl;
+    std::cout << "diffD: " << diffD << std::endl;
+    std::cout << "NDDinSR: " << NDDinSR << std::endl;
+    std::cout << "NDDinSRUncPow2: " << std::pow(NDDinSR.uncertainty(),2) << std::endl;
+    std::cout << "SysUnDD: " << SysUnDD << std::endl;
+    std::cout << "RelSysDD: " << RelSysDD.value()*100 << std::endl;
+    std::cout << std::endl;
+  }
+
+  return RelSysDD.value()*100;
 }
 
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
