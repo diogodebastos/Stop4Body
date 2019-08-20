@@ -24,8 +24,8 @@ gStyle->SetPalette(1);
 std::string path16 = "/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt";
 //std::string path16 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
 
-/std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05_test_bdt";
-//std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
+//std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05_test_bdt";
+std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/CrisSamples-DM10-nTuples_v2017-10-19_test_bdt";
 
 std::string dm = std::to_string(delta);
@@ -178,7 +178,7 @@ if(doWjets){
   hs->Scale(1.0/hs->Integral());
 
   //----2017----///////////////////////////////////////////////
-/*  
+  
   TFile F1((path17+dm+"/Wjets_100to200_bdt.root").c_str(), "READ");
   TTree* z1 = static_cast<TTree*>(F1.Get("bdttree"));
   TFile F2((path17+dm+"/Wjets_200to400_bdt.root").c_str(), "READ");
@@ -193,7 +193,7 @@ if(doWjets){
   TTree* z6 = static_cast<TTree*>(F6.Get("bdttree"));
   TFile F7((path17+dm+"/Wjets_2500toInf_bdt.root").c_str(), "READ");
   TTree* z7 = static_cast<TTree*>(F7.Get("bdttree"));
-*/
+/*
   TFile F1((path17+dm+"/WJetsToLNu_HT100To200_bdt.root").c_str(), "READ");
   TTree* z1 = static_cast<TTree*>(F1.Get("bdttree"));
   TFile F2((path17+dm+"/WJetsToLNu_HT200To400_bdt.root").c_str(), "READ");
@@ -208,7 +208,7 @@ if(doWjets){
   TTree* z6 = static_cast<TTree*>(F6.Get("bdttree"));
   TFile F7((path17+dm+"/WJetsToLNu_HT2500ToInf_bdt.root").c_str(), "READ");
   TTree* z7 = static_cast<TTree*>(F7.Get("bdttree"));
-
+*/
   //THStack* hs = new THStack("hs","");
 
   TH1F *hz1 = new TH1F("hz1",variable.c_str(),Xbin,Xmin,Xmax);
@@ -255,7 +255,7 @@ if(doTTbar){
   tbdt->Add(htt);
   tbdt->Scale(1.0/tbdt->Integral());
   delete htt;
-/*  
+ 
   TFile TT2((path17+dm+"/TT_pow_bdt.root").c_str(), "READ");
   TTree* tt2 = static_cast<TTree*>(TT2.Get("bdttree"));
   TH1F *htt2 = new TH1F("htt2",variable.c_str(),Xbin,Xmin,Xmax);
@@ -263,7 +263,7 @@ if(doTTbar){
   tbdt2->Add(htt2);
   tbdt2->Scale(1.0/tbdt2->Integral());
   delete htt2;
-*/
+/*
   TFile TT2((path17+dm+"/TTJets_bdt.root").c_str(), "READ");
   TTree* tt2 = static_cast<TTree*>(TT2.Get("bdttree"));
   TH1F *htt2 = new TH1F("htt2",variable.c_str(),Xbin,Xmin,Xmax);
@@ -271,6 +271,7 @@ if(doTTbar){
   tbdt2->Add(htt2);
   tbdt2->Scale(1.0/tbdt2->Integral());
   delete htt2;
+*/
 }
 
 TH1F* sbdt = new TH1F("sbdt",variable.c_str(),Xbin,Xmin,Xmax);
@@ -302,10 +303,16 @@ c1->SetBorderSize(2);
 
 c1->SetGridx();
 c1->SetGridy();
+TLegend *lg = new TLegend(.85,.85,0.99,0.99);
+lg->SetFillColor(0);
+
 if(doWjets){
+  hs->SetTitle(("BDT_dm"+dm+title).c_str());
   hs->Draw();
   hs2->SetLineColor(kRed);
   hs2->Draw("same");
+  lg->AddEntry(hs,"2016","l");
+  lg->AddEntry(hs2,"new","l");
 }
 
 if(doTTbar){
@@ -315,8 +322,11 @@ if(doTTbar){
   else{
     tbdt->Draw();
   }
+  tbdt->SetTitle(("BDT_dm"+dm+title).c_str());
   tbdt2->SetLineColor(kRed);
   tbdt2->Draw("same");
+  lg->AddEntry(tbdt,"2016","l");
+  lg->AddEntry(tbdt2,"new","l");
 }
 
 if(doSignal){
@@ -326,18 +336,14 @@ if(doSignal){
   else{
     sbdt->Draw();
   }
+  sbdt->SetTitle(("BDT_dm"+dm+title).c_str());
   sbdt2->SetLineColor(kRed);
   sbdt2->Draw("same");
+  lg->AddEntry(sbdt,"2016","l");
+  lg->AddEntry(sbdt2,"new","l");
 }
 
-/*
-TLegend *lg = new TLegend(.65,.65,0.99,1.);
-lg->SetFillColor(0);
-lg->AddEntry(hw1,"Wjets 100<HT<200","l");
-lg->AddEntry(hw2,"Wjets 200<HT<400","l");
-lg->AddEntry(hw3,"Wjets 400<HT<600","l");
-lg->AddEntry(hw4,"Wjets 600<HT<800","l");
 lg->Draw();
-*/
+
 c1->SaveAs(("plots/BDTyears_dm"+dm+title+"_"+variable+".pdf").c_str());
 }
