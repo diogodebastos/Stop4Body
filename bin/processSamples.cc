@@ -261,11 +261,12 @@ int main(int argc, char** argv)
   ElectronISOSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017.Get("Run2017_MVAVLooseTightIP2DMini2")); //TODO: check this Hist
   TFile centralMuonSFFile2017("../data/MuonScaleFactors_ID_Run2017.root", "READ");
   centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017.Get("NUM_LooseID_DEN_genTracks_pt_abseta")); //TODO: check this Hist
+  TFile lowMuonSFFile2017("../data/RunBCDEF_SF_ID_JPsi_syst.root", "READ");
+  lowMuonSFHist2017 = static_cast<TH2D*>(lowMuonSFFile2017.Get("NUM_LooseID_DEN_genTracks_pt_abseta")); //TODO: check this Hist
   TFile MuonISOSFFile2017("../data/MuonScaleFactors_ISO_Run2017.root", "READ");
   MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017.Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta")); //TODO: check this Hist
   TFile L1prefiring_jetpt_2017BtoFFile("../data/L1prefiring_jetpt_2017BtoF.root");
   L1prefiring_jetpt_2017BtoFHist = static_cast<TH2D*>(L1prefiring_jetpt_2017BtoFFile.Get("L1prefiring_jetpt_2017BtoF"));
-
   TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
   electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_LowEta"));
   electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_HighEta"));

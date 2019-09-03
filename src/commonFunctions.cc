@@ -732,8 +732,7 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
     val = centralElectronSFHist2017->GetBinContent(bin);
     unc = centralElectronSFHist2017->GetBinError(bin);
   }
-  else {
-    //LepPt < 10;
+  else { //LepPt < 10;
     doubleUnc sfEl2016 = getLeptonIDSF(LepID, LepPt, LepEta);
     val = sfEl2016.value();
     unc = sfEl2016.uncertainty();
@@ -753,11 +752,16 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
     val = centralMuonSFHist2017->GetBinContent(bin);
     unc = centralMuonSFHist2017->GetBinError(bin);
   }
-  else {
-    //LepPt < 20;
-    doubleUnc sfMu2016 = getLeptonIDSF(LepID, LepPt, LepEta);
-    val = sfMu2016.value();
-    unc = sfMu2016.uncertainty();
+  else { //LepPt < 20;
+    // Use low sf from 2016
+    //doubleUnc sfMu2016 = getLeptonIDSF(LepID, LepPt, LepEta);
+    //val = sfMu2016.value();
+    //unc = sfMu2016.uncertainty();
+    if(lowMuonSFHist2017 == nullptr)
+      return doubleUnc(1,0);
+    auto bin = lowMuonSFHist2017->FindBin(LepPt, LepEta);
+    val = lowMuonSFHist2017->GetBinContent(bin);
+    unc = lowMuonSFHist2017->GetBinError(bin);
   }
  }
  doubleUnc retVal(val, unc);
