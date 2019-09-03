@@ -13,6 +13,7 @@ TH2D* centralElectronSFHist2017 = nullptr;
 TH2D* ElectronISOSFHist2017 = nullptr;
 TH2D* centralMuonSFHist2017 = nullptr;
 TH2D* MuonISOSFHist2017 = nullptr;
+TH2D* lowMuonSFHist2017 = nullptr;
 TH2D* L1prefiring_jetpt_2017BtoFHist = nullptr;
 
 TH1D* electronTightToLoose_2017_LowEta = nullptr;
