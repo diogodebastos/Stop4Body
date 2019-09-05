@@ -71,7 +71,7 @@
           "tag":"WJetsToLNu_HT1200To2500",
           "xsec":1.074,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":10,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/WJetsToLNu_HT1200To2500",
