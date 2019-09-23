@@ -13,6 +13,7 @@ TH2D* centralElectronSFHist2017 = nullptr;
 TH2D* ElectronISOSFHist2017 = nullptr;
 TH2D* centralMuonSFHist2017 = nullptr;
 TH2D* MuonISOSFHist2017 = nullptr;
+TH2D* lowMuonSFHist2017 = nullptr;
 TH2D* L1prefiring_jetpt_2017BtoFHist = nullptr;
 
 TH1D* electronTightToLoose_2017_LowEta = nullptr;
@@ -524,24 +525,26 @@ doubleUnc EWKISRweightFromISRpT(double ISRpT)
   if(ISRpT >= 0)
   {
     if(ISRpT < 50)
-      return doubleUnc(1, 0);
+      return doubleUnc(0.937, 0);
     if(ISRpT < 100)
-      return doubleUnc(1.052, 0);
+      return doubleUnc(1.244, 0);
     if(ISRpT < 150)
-      return doubleUnc(1.179, 0);
+      return doubleUnc(1.211, 0);
     if(ISRpT < 200)
-      return doubleUnc(1.150, 0);
+      return doubleUnc(1.140, 0);
     if(ISRpT < 300)
-      return doubleUnc(1.057, 0);
+      return doubleUnc(1.023, 0);
     if(ISRpT < 400)
-      return doubleUnc(1.000, 0);
+      return doubleUnc(1.940, 0);
     if(ISRpT < 600)
-      return doubleUnc(0.912, 0);
+      return doubleUnc(0.861, 0);
 
-    return doubleUnc(0.783, 0);
+    return doubleUnc(0.820, 0);
   }
   return doubleUnc(0, 0);
 }
+
+/* 2016 EWKISRweight - Solve commonFunctions for each data taking year
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
 {
   ValueWithSystematics<double> retVal(0.0);
@@ -629,6 +632,113 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
                 retVal.Systematic("EWKISRweight_Bin7_Down") = 0.783-0.217;
                 retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.783+0.217;
                 retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.783-0.217;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return retVal;
+}
+*/
+
+ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
+{
+  ValueWithSystematics<double> retVal(0.0);
+  retVal.Systematic("EWKISRweight_Bin0_Up");
+  retVal.Systematic("EWKISRweight_Bin0_Down");
+  retVal.Systematic("EWKISRweight_Bin1_Up");
+  retVal.Systematic("EWKISRweight_Bin1_Down");
+  retVal.Systematic("EWKISRweight_Bin2_Up");
+  retVal.Systematic("EWKISRweight_Bin2_Down");
+  retVal.Systematic("EWKISRweight_Bin3_Up");
+  retVal.Systematic("EWKISRweight_Bin3_Down");
+  retVal.Systematic("EWKISRweight_Bin4_Up");
+  retVal.Systematic("EWKISRweight_Bin4_Down");
+  retVal.Systematic("EWKISRweight_Bin5_Up");
+  retVal.Systematic("EWKISRweight_Bin5_Down");
+  retVal.Systematic("EWKISRweight_Bin6_Up");
+  retVal.Systematic("EWKISRweight_Bin6_Down");
+  retVal.Systematic("EWKISRweight_Bin7_Up");
+  retVal.Systematic("EWKISRweight_Bin7_Down");
+  retVal.Systematic("EWKISRweight_AltCorr_Up");
+  retVal.Systematic("EWKISRweight_AltCorr_Down");
+
+  if(ISRpT < 50)
+  {
+    retVal = 0.937;
+    retVal.Systematic("EWKISRweight_Bin0_Up") = 0.937+0.063;
+    retVal.Systematic("EWKISRweight_Bin0_Down") = 0.937-0.063;
+    retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.937+0.063;
+    retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.937-0.063;  }
+  else
+  {
+    if(ISRpT < 100)
+    {
+      retVal = 1.244;
+      retVal.Systematic("EWKISRweight_Bin1_Up") = 1.244+0.244;
+      retVal.Systematic("EWKISRweight_Bin1_Down") = 1.244-0.244;
+      retVal.Systematic("EWKISRweight_AltCorr_Up") = 1.244+0.244;
+      retVal.Systematic("EWKISRweight_AltCorr_Down") = 1.244-0.244;
+    }
+    else
+    {
+      if(ISRpT < 150)
+      {
+        retVal = 1.211;
+        retVal.Systematic("EWKISRweight_Bin2_Up") = 1.211+0.211;
+        retVal.Systematic("EWKISRweight_Bin2_Down") = 1.211-0.211;
+        retVal.Systematic("EWKISRweight_AltCorr_Up") = 1.211+0.211;
+        retVal.Systematic("EWKISRweight_AltCorr_Down") = 1.211-0.211;
+      }
+      else
+      {
+        if(ISRpT < 200)
+        {
+          retVal = 1.140;
+          retVal.Systematic("EWKISRweight_Bin3_Up") = 1.140+0.140;
+          retVal.Systematic("EWKISRweight_Bin3_Down") = 1.140-0.140;
+          retVal.Systematic("EWKISRweight_AltCorr_Up") = 1.140+0.140;
+          retVal.Systematic("EWKISRweight_AltCorr_Down") = 1.140-0.140;
+        }
+        else
+        {
+          if(ISRpT < 300)
+          {
+            retVal = 1.023;
+            retVal.Systematic("EWKISRweight_Bin4_Up") = 1.023+0.023;
+            retVal.Systematic("EWKISRweight_Bin4_Down") = 1.023-0.023;
+            retVal.Systematic("EWKISRweight_AltCorr_Up") = 1.023+0.023;
+            retVal.Systematic("EWKISRweight_AltCorr_Down") = 1.023-0.023;
+          }
+          else
+          {
+            if(ISRpT < 400)
+            {
+              retVal = 0.940;
+              retVal.Systematic("EWKISRweight_Bin5_Up") = 0.940+0.060;
+              retVal.Systematic("EWKISRweight_Bin5_Down") = 0.940-0.060;
+              retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.940+0.060;
+              retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.940-0.060;
+            }
+            else
+            {
+              if(ISRpT < 600)
+              {
+                retVal = 0.861;
+                retVal.Systematic("EWKISRweight_Bin6_Up") = 0.861+0.139;
+                retVal.Systematic("EWKISRweight_Bin6_Down") = 0.861-0.139;
+                retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.861+0.139;
+                retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.861-0.139;
+              }
+              else
+              {
+                retVal = 0.820;
+                retVal.Systematic("EWKISRweight_Bin7_Up") = 0.820+0.180;
+                retVal.Systematic("EWKISRweight_Bin7_Down") = 0.820-0.180;
+                retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.820+0.180;
+                retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.820-0.180;
               }
             }
           }
@@ -727,8 +837,7 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
     val = centralElectronSFHist2017->GetBinContent(bin);
     unc = centralElectronSFHist2017->GetBinError(bin);
   }
-  else {
-    //LepPt < 10;
+  else { //LepPt < 10;
     doubleUnc sfEl2016 = getLeptonIDSF(LepID, LepPt, LepEta);
     val = sfEl2016.value();
     unc = sfEl2016.uncertainty();
@@ -748,11 +857,16 @@ doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta)
     val = centralMuonSFHist2017->GetBinContent(bin);
     unc = centralMuonSFHist2017->GetBinError(bin);
   }
-  else {
-    //LepPt < 20;
-    doubleUnc sfMu2016 = getLeptonIDSF(LepID, LepPt, LepEta);
-    val = sfMu2016.value();
-    unc = sfMu2016.uncertainty();
+  else { //LepPt < 20;
+    // Use low sf from 2016
+    //doubleUnc sfMu2016 = getLeptonIDSF(LepID, LepPt, LepEta);
+    //val = sfMu2016.value();
+    //unc = sfMu2016.uncertainty();
+    if(lowMuonSFHist2017 == nullptr)
+      return doubleUnc(1,0);
+    auto bin = lowMuonSFHist2017->FindBin(LepPt, LepEta);
+    val = lowMuonSFHist2017->GetBinContent(bin);
+    unc = lowMuonSFHist2017->GetBinError(bin);
   }
  }
  doubleUnc retVal(val, unc);

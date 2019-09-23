@@ -81,6 +81,7 @@ extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronSFHist2017;
 extern TH2D* ElectronISOSFHist2017;
 extern TH2D* centralMuonSFHist2017;
+extern TH2D* lowMuonSFHist2017;
 extern TH2D* MuonISOSFHist2017;
 extern TH2D* L1prefiring_jetpt_2017BtoFHist;
 
@@ -261,11 +262,12 @@ int main(int argc, char** argv)
   ElectronISOSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017.Get("Run2017_MVAVLooseTightIP2DMini2")); //TODO: check this Hist
   TFile centralMuonSFFile2017("../data/MuonScaleFactors_ID_Run2017.root", "READ");
   centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017.Get("NUM_LooseID_DEN_genTracks_pt_abseta")); //TODO: check this Hist
+  TFile lowMuonSFFile2017("../data/RunBCDEF_SF_ID_JPsi_syst.root", "READ");
+  lowMuonSFHist2017 = static_cast<TH2D*>(lowMuonSFFile2017.Get("NUM_LooseID_DEN_genTracks_pt_abseta")); //TODO: check this Hist
   TFile MuonISOSFFile2017("../data/MuonScaleFactors_ISO_Run2017.root", "READ");
   MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017.Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta")); //TODO: check this Hist
   TFile L1prefiring_jetpt_2017BtoFFile("../data/L1prefiring_jetpt_2017BtoF.root");
   L1prefiring_jetpt_2017BtoFHist = static_cast<TH2D*>(L1prefiring_jetpt_2017BtoFFile.Get("L1prefiring_jetpt_2017BtoF"));
-
   TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
   electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_LowEta"));
   electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_HighEta"));
@@ -1310,15 +1312,18 @@ int main(int argc, char** argv)
         Int_t HLT_IsoMu27;
         //TODO: This should be updated for all samples after the next heppy run
         Int_t HLT_BIT_HLT_PFHT780_v;
-        Int_t HLT_BIT_HLT_PFHT1050_v;
+        Int_t HLT_BIT_HLT_PFHT1050_v = 0;
         Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v;
         Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
-        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v;
-        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v;
+        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v = 0;
+        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v = 0;
         Int_t HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v;
         Int_t HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v;
 
-        if(!(process.isdata() || process.issignal())){
+        bool skip = true;
+
+        //if(!skip || process.issignal()){
+        if(!skip){
          inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
          inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
          inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
@@ -1332,9 +1337,11 @@ int main(int argc, char** argv)
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v);
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v);
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v);
+         if(!process.issignal()){
+           inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v);
+           inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v);
+           inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v);
+         }
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT780_v", &HLT_BIT_HLT_PFHT780_v);
          inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);
         }
@@ -2186,7 +2193,8 @@ int main(int argc, char** argv)
 
           //TODO: This should be updated for all samples after the next heppy run
           //2016 HLT
-          if(!(process.isdata() || process.issignal())){
+          //if(!skip || process.issignal()){
+          if(!skip){
            HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
            HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
            HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
