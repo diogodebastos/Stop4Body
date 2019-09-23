@@ -546,6 +546,8 @@ doubleUnc EWKISRweightFromISRpT(double ISRpT)
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
 {
   ValueWithSystematics<double> retVal(0.0);
+  retVal.Systematic("EWKISRweight_Bin0_Up");
+  retVal.Systematic("EWKISRweight_Bin0_Down");
   retVal.Systematic("EWKISRweight_Bin1_Up");
   retVal.Systematic("EWKISRweight_Bin1_Down");
   retVal.Systematic("EWKISRweight_Bin2_Up");
@@ -566,8 +568,10 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
   if(ISRpT < 50)
   {
     retVal = 0.937;
-    //TODO: Do Systematic for bin0?
-  }
+    retVal.Systematic("EWKISRweight_Bin0_Up") = 0.937+0.063;
+    retVal.Systematic("EWKISRweight_Bin0_Down") = 0.937-0.063;
+    retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.937+0.063;
+    retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.937-0.063;  }
   else
   {
     if(ISRpT < 100)
@@ -613,28 +617,28 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
             if(ISRpT < 400)
             {
               retVal = 0.940;
-              retVal.Systematic("EWKISRweight_Bin5_Up") = 0.940+0.940;
-              retVal.Systematic("EWKISRweight_Bin5_Down") = 0.940-0.940;
-              retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.940+0.940;
-              retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.940-0.940;
+              retVal.Systematic("EWKISRweight_Bin5_Up") = 0.940+0.060;
+              retVal.Systematic("EWKISRweight_Bin5_Down") = 0.940-0.060;
+              retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.940+0.060;
+              retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.940-0.060;
             }
             else
             {
               if(ISRpT < 600)
               {
                 retVal = 0.861;
-                retVal.Systematic("EWKISRweight_Bin6_Up") = 0.861+0.861;
-                retVal.Systematic("EWKISRweight_Bin6_Down") = 0.861-0.861;
-                retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.861+0.861;
-                retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.861-0.861;
+                retVal.Systematic("EWKISRweight_Bin6_Up") = 0.861+0.139;
+                retVal.Systematic("EWKISRweight_Bin6_Down") = 0.861-0.139;
+                retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.861+0.139;
+                retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.861-0.139;
               }
               else
               {
                 retVal = 0.820;
-                retVal.Systematic("EWKISRweight_Bin7_Up") = 0.820+0.820;
-                retVal.Systematic("EWKISRweight_Bin7_Down") = 0.820-0.820;
-                retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.820+0.820;
-                retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.820-0.820;
+                retVal.Systematic("EWKISRweight_Bin7_Up") = 0.820+0.180;
+                retVal.Systematic("EWKISRweight_Bin7_Down") = 0.820-0.180;
+                retVal.Systematic("EWKISRweight_AltCorr_Up") = 0.820+0.180;
+                retVal.Systematic("EWKISRweight_AltCorr_Down") = 0.820-0.180;
               }
             }
           }
