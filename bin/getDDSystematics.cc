@@ -204,12 +204,14 @@ int main(int argc, char** argv)
   // wjetsEnrich += " && " + baseSelection;
   // ttbarEnrich += " && " + baseSelection;
 /*
-  printSel("base selection", baseSelection);
-  printSel("CR selection", crSelection);
-  printSel("SR selection", srSelection);
-  printSel("wjets enrichment", wjetsEnrich);
-  printSel("ttbar enrichment", ttbarEnrich);
-  printSel("WJets SR-VR", wjetsEnrich);
+  if(verbose) {
+    printSel("base selection", baseSelection);
+    printSel("CR selection", crSelection);
+    printSel("SR selection", srSelection);
+    printSel("wjets enrichment", wjetsEnrich);
+    printSel("ttbar enrichment", ttbarEnrich);
+    printSel("WJets SR-VR", wjetsEnrich);
+  }
 */
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
@@ -265,6 +267,8 @@ int main(int argc, char** argv)
     std::cout << "Retrieving luminosity" << std::endl;
   if(luminosity <= 0)
     luminosity = Data.getLumi();
+  // Comment this part for debugging of FRsys
+/*
   std::string mcWeight;
   {
     std::stringstream converter;
@@ -276,39 +280,86 @@ int main(int argc, char** argv)
     converter << "*" << luminosity;
     converter >> mcWeight;
   }
-
+*/
   auto wjets = MC.process(bkgMap["WJets"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
-  //naiveDD(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight);
+
+  // Load Systematics
+  std::vector<std::string> systBase;
+  {
+    systBase.push_back("ISRweight_Bin1");
+    systBase.push_back("ISRweight_Bin2");
+    systBase.push_back("ISRweight_Bin3");
+    systBase.push_back("ISRweight_Bin4");
+    systBase.push_back("ISRweight_Bin5");
+    systBase.push_back("ISRweight_Bin6");
+    systBase.push_back("EWKISRweight_Bin1");
+    systBase.push_back("EWKISRweight_Bin2");
+    systBase.push_back("EWKISRweight_Bin3");
+    systBase.push_back("EWKISRweight_Bin4");
+    systBase.push_back("EWKISRweight_Bin5");
+    systBase.push_back("EWKISRweight_Bin6");
+    systBase.push_back("EWKISRweight_Bin7");
+  }
+
+  std::vector<std::string> systematics;
+  for(auto& base: systBase)
+  {
+    systematics.push_back(base + "_Up");
+    systematics.push_back(base + "_Down");
+  }
+
+  if(verbose){
+    std::cout << "" << std::endl;
+  }
+
+  auto valueLoop = systematics;
+  valueLoop.push_back("CentralValue");
+
+  ValueWithSystematics<std::string> mcWeight = std::string("splitFactor*weight");
+  for(auto& syst: systematics)
+    mcWeight.Systematic(syst) = mcWeight.Value() + "_" + syst;
+  {
+    std::stringstream converter;
+    converter << "*" << luminosity;
+    mcWeight += converter.str();
+  }
+
+  std::cout << "Using mcWeight: " << mcWeight.Value() << std::endl;
+  std::cout << "With variations:" << std::endl;
+  for(auto& syst: systematics)
+    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+  std::cout << std::endl;
+
+  // SYS ISR
+
+  // SYS Fake-Rate
+  // SysFR 1)
+  // SysFR 2)
+  // SysFR 3)
+
+
+
+  //Systematics fir the DD methods of WJets and TTbar
+  // Comment this part for debugging of FRsys
+/*
   methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight, verbose);
   methodTwoDDSystematics(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight, verbose);
   if (doLoosenBDT){
     srSelection = "(BDT > 0.1)";
     crSelection = "(BDT < 0.1)";
   }
-  //naiveDD(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight);
   methodOneDDSystematics(ttbar, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, ttbarEnrich, mcWeight, verbose);
   methodTwoDDSystematics(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight, verbose);
-
-  //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + baseSelection + "&&" + srSelection + "&&" + wjetsEnrich, mcWeight);
-  //std::cout << "fakes: " << fakes << std::endl;
-
-//  if(verbose)
-//    std::cout << "Naive DD: " << NaiveDD << std::endl;
-
+*/
   std::cout << std::endl;
 
-  //doubleUnc nDD = fullDD(wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + srSelection, baseSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight); // Do this without setting any VR and you should get DD estiamtion for given process == to AN
-
-  //if(verbose)
-    //std::cout << "Estimate on DD method: " << SysDD << std::endl;
   if(unblind){
     std::cout<<"placeholder"<<std::endl;
   }
 }
 
 // Ported from getDDEstimate.cc -> Might want to incorporate this function on commonFunctions.cc
-
 double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight, bool verbose)
 {
   std::string SR = signalRegion + " && " + tightSelection + " && " + xEnrich  + " && " + baseSelection;
