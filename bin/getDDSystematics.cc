@@ -37,7 +37,7 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
   double luminosity = -1.0;
-  bool isPseudoData = false;
+  //bool isPseudoData = false;
   bool verbose = false;
   double SRCut = 0.4;
   double CRCut = 0.2;
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
   bool doVR1 = false; // Swap the Met and LepPt for this VR
   bool doVR2 = false; // Invert the Met for this VR
   bool doVR3 = false; // Invert the LepPt for this VR
-  bool doLoosenBDT = false; // SRCut and CRCut == 0.1 -> When BDTcut is too high of VR SR
+  //bool doLoosenBDT = false; // SRCut and CRCut == 0.1 -> When BDTcut is too high of VR SR
   bool unblind = false;
 
   if(argc < 2)
@@ -86,12 +86,12 @@ int main(int argc, char** argv)
       convert << argv[++i];
       convert >> luminosity;
     }
-
+/*
     if(argument == "--isPseudoData")
     {
       isPseudoData = true;
     }
-
+*/
     if(argument == "--signalRegionCut")
     {
       std::stringstream convert;
@@ -125,12 +125,12 @@ int main(int argc, char** argv)
     {
       doVR3 = true;
     }
-
+/*
     if(argument == "--doLoosenBDT")
     {
       doLoosenBDT = true;
     }
-
+*/
     if(argument == "--verbose")
     {
       verbose = true;
