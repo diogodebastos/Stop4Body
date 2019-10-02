@@ -333,6 +333,25 @@ int main(int argc, char** argv)
 
   // SYS ISR
 
+  doubleUnc ttbarDDCentral = fullDD(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight.Value());
+
+  doubleWithUncertainty ttbarDDUp = fullDD(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight.Systematic("ISRweight_Bin1_Up"));
+
+  std::cout << "ttbarDDCentral: " << ttbarDDCentral <<std::endl;
+  std::cout << "ttbarDDUp: " << ttbarDDUp <<std::endl;
+
+  doubleUnc diff = ttbarDDCentral-ttbarDDUp;
+  doubleUnc RelSys = diff/ttbarDDCentral;
+
+  std::cout << "RelSys: " << RelSys.value()*100 <<std::endl;
+
+/*
+  for(auto& syst: systematics)
+  {
+
+  }
+*/
+
   // SYS Fake-Rate
   // SysFR 1)
   // SysFR 2)
@@ -573,6 +592,18 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   std::cout << std::endl;
   */
   return estimate;
+}
+
+getISRsystematics(ttbar, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, ttbarEnrich, mcWeight, verbose););
+
+doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight){
+
+  doubleUnc DDCentral = fullDD(toEstimate, Data, MC, baseSelection, signalRegion, controlRegion, xEnrich, mcWeight);
+
+  double relSys = 0;
+
+  return relSys;
+
 }
 
 void printSel(std::string name, std::string selection)
