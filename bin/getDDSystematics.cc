@@ -333,9 +333,9 @@ int main(int argc, char** argv)
 
   // SYS ISR
 
-  doubleUnc ttbarDDCentral = fullDD(ttbar, Data, MC, preSelection, srSelection, crSelection, ttbarEnrich, mcWeight.Value());
+  doubleUnc ttbarDDCentral = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight.Value());
 
-  doubleUnc ttbarDDUp      = fullDD(ttbar, Data, MC, preSelection, srSelection, crSelection, ttbarEnrich, mcWeight.Systematic("ISRweight_Bin1_Up"));
+  doubleUnc ttbarDDUp      = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight.Systematic("ISRweight_Bin1_Up"));
 
   std::cout << "ttbarDDCentral: " << ttbarDDCentral <<std::endl;
   std::cout << "ttbarDDUp: " << ttbarDDUp <<std::endl;
