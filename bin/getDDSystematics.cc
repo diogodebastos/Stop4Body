@@ -310,7 +310,7 @@ int main(int argc, char** argv)
   }
 
   if(verbose){
-    std::cout << "" << std::endl;
+    std::cout << "Doing ISR sys variations" << std::endl;
   }
 
   auto valueLoop = systematics;
@@ -335,22 +335,24 @@ int main(int argc, char** argv)
 
   doubleUnc ttbarDDCentral = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight.Value());
 
-  doubleUnc ttbarDDUp      = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight.Systematic("ISRweight_Bin1_Up"));
-
   std::cout << "ttbarDDCentral: " << ttbarDDCentral <<std::endl;
-  std::cout << "ttbarDDUp: " << ttbarDDUp <<std::endl;
 
-  doubleUnc diff = ttbarDDCentral-ttbarDDUp;
-  doubleUnc RelSys = diff/ttbarDDCentral;
+  doubleUnc ttbarDDVar;
+  doubleUnc diff;
+  doubleUnc RelSys;
 
-  std::cout << "RelSys: " << RelSys.value()*100 <<std::endl;
-
-/*
   for(auto& syst: systematics)
   {
+    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+
+    ttbarDDVar = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight.Systematic(syst));
+    std::cout << "ttbarDDVar: " << ttbarDDVar <<std::endl;
+    diff = ttbarDDCentral-ttbarDDVar;
+    RelSys = diff/ttbarDDCentral;
+
+    std::cout << "RelSys: " << RelSys.value()*100 <<std::endl;
 
   }
-*/
 
   // SYS Fake-Rate
   // SysFR 1)
