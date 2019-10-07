@@ -309,10 +309,6 @@ int main(int argc, char** argv)
     systematics.push_back(base + "_Down");
   }
 
-  if(verbose){
-    std::cout << "Doing ISR sys variations" << std::endl;
-  }
-
   auto valueLoop = systematics;
   valueLoop.push_back("CentralValue");
 
@@ -328,31 +324,19 @@ int main(int argc, char** argv)
   std::cout << "Using mcWeight: " << mcWeight.Value() << std::endl;
   std::cout << "With variations:" << std::endl;
   for(auto& syst: systematics)
-    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
-  std::cout << std::endl;
-
-  // SYS ISR
-
-  doubleUnc ttbarDDCentral = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight.Value());
-
-  std::cout << "ttbarDDCentral: " << ttbarDDCentral <<std::endl;
-
-  doubleUnc ttbarDDVar;
-  doubleUnc diff;
-  doubleUnc RelSys;
-
-  for(auto& syst: systematics)
   {
     std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
-
-    ttbarDDVar = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight.Systematic(syst));
-    std::cout << "ttbarDDVar: " << ttbarDDVar <<std::endl;
-    diff = ttbarDDCentral-ttbarDDVar;
-    RelSys = diff/ttbarDDCentral;
-
-    std::cout << "RelSys: " << RelSys.value()*100 <<std::endl;
-
+  std::cout << std::endl;
   }
+
+  // SYS ISR
+  if(verbose){
+    std::cout << "Doing ISR sys variations" << std::endl;
+  }
+
+  getISRsystematics(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight);
+
+  getISRsystematics(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
 
   // SYS Fake-Rate
   // SysFR 1)
@@ -595,17 +579,32 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   */
   return estimate;
 }
-/*
-doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight){
 
-  doubleUnc DDCentral = fullDD(toEstimate, Data, MC, baseSelection, signalRegion, controlRegion, xEnrich, mcWeight);
+doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, ValueWithSystematics<std::string>& mcWeight){
 
-  double relSys = 0;
+  doubleUnc xDDCentral = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Value());
 
+  std::cout << "xDDCentral: " << xDDCentral <<std::endl;
+
+  doubleUnc xDDVar;
+  doubleUnc diff;
+  doubleUnc RelSys;
+
+  for(auto& syst: mcWeight.Systematics())
+  {
+    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+
+    xDDVar = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Systematic(syst));
+    std::cout << "  xDDVar: " << xDDVar <<std::endl;
+    diff = xDDCentral-xDDVar;
+    RelSys = diff/xDDCentral;
+
+    std::cout << "= RelSys: " << RelSys.value()*100 <<std::endl;
+  }
+  std::cout << "" <<std::endl;
   return relSys;
-
 }
-*/
+
 void printSel(std::string name, std::string selection)
 {
   std::cout << "The used " << name << ":" << std::endl;
