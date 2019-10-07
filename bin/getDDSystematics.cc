@@ -22,6 +22,8 @@
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
+doubleUnc getDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
+
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
 
@@ -588,7 +590,7 @@ doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleR
 
   doubleUnc xDDVar;
   doubleUnc diff;
-  doubleUnc RelSys;
+  doubleUnc relSys;
 
   for(auto& syst: mcWeight.Systematics())
   {
@@ -597,9 +599,9 @@ doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleR
     xDDVar = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Systematic(syst));
     std::cout << "  xDDVar: " << xDDVar <<std::endl;
     diff = xDDCentral-xDDVar;
-    RelSys = diff/xDDCentral;
+    relSys = diff/xDDCentral;
 
-    std::cout << "= RelSys: " << RelSys.value()*100 <<std::endl;
+    std::cout << "= relSys: " << RelSys.value()*100 <<std::endl;
   }
   std::cout << "" <<std::endl;
   return relSys;
