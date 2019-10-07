@@ -601,7 +601,7 @@ doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleR
 
     xDDVar = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Systematic(syst));
     std::cout << "  xDDVar: " << xDDVar <<std::endl;
-    diff = xDDCentral-xDDVar;
+    diff = xDDVar-xDDCentral;
     relSys = diff/xDDCentral;
 
     std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
