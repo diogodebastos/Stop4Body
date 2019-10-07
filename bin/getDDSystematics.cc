@@ -22,7 +22,7 @@
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
-doubleUnc getDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
+doubleUnc getISRsystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
@@ -601,7 +601,7 @@ doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleR
     diff = xDDCentral-xDDVar;
     relSys = diff/xDDCentral;
 
-    std::cout << "= relSys: " << RelSys.value()*100 <<std::endl;
+    std::cout << "= relSys: " << relSys.value()*100 <<std::endl;
   }
   std::cout << "" <<std::endl;
   return relSys;
