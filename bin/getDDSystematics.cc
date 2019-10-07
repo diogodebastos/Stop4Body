@@ -328,8 +328,8 @@ int main(int argc, char** argv)
   for(auto& syst: systematics)
   {
     std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
-  std::cout << std::endl;
   }
+  std::cout << std::endl;
 
   // SYS ISR
   if(verbose){
@@ -347,7 +347,7 @@ int main(int argc, char** argv)
 
 
 
-  //Systematics fir the DD methods of WJets and TTbar
+  //Systematics for the DD methods of WJets and TTbar
   // Comment this part for debugging of FRsys
 /*
   methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight, verbose);
@@ -584,6 +584,9 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
 
 doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight){
 
+  std::cout << "/* ISR Systematics */" << std::endl;
+  std::cout << "==== " << toEstimate.label() << " ====" <<std::endl;
+
   doubleUnc xDDCentral = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Value());
 
   std::cout << "xDDCentral: " << xDDCentral <<std::endl;
@@ -601,7 +604,7 @@ doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleR
     diff = xDDCentral-xDDVar;
     relSys = diff/xDDCentral;
 
-    std::cout << "= relSys: " << relSys.value()*100 <<std::endl;
+    std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
   }
   std::cout << "" <<std::endl;
   return relSys;
