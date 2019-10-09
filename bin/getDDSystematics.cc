@@ -22,7 +22,9 @@
 #include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
-doubleUnc getISRsystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
+
+doubleUnc getISRsystematicsSignal(SampleReader &, std::string, const ValueWithSystematics<std::string>&);
+doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
@@ -336,12 +338,15 @@ int main(int argc, char** argv)
     std::cout << "Doing ISR sys variations" << std::endl;
   }
 
-  getISRsystematics(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight);
+  getISRsystematicsSignal(Sig, preSelection + " && " + srSelection, mcWeight);
 
-  getISRsystematics(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
+  //getISRsystematicsDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight);
+
+  //getISRsystematicsDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
 
   // SYS Fake-Rate
-  // SysFR 1)
+  // SysFR 1) Closure test for the prediction of the background with a non-prompt lepton
+
   // SysFR 2)
   // SysFR 3)
 
@@ -582,7 +587,7 @@ doubleUnc naiveDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC,
   return estimate;
 }
 
-doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight){
+doubleUnc getISRsystematicsDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, const ValueWithSystematics<std::string>& mcWeight){
 
   std::cout << "/* ISR Systematics */" << std::endl;
   std::cout << "==== " << toEstimate.label() << " ====" <<std::endl;
@@ -607,6 +612,38 @@ doubleUnc getISRsystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleR
     std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
   }
   std::cout << "" <<std::endl;
+  return relSys;
+}
+
+doubleUnc getISRsystematicsSignal(SampleReader &Sig, std::string signalRegion, const ValueWithSystematics<std::string>& mcWeight)
+{
+  std::cout << "/* Signal ISR Systematics */" << std::endl;
+  for(auto& process : Sig)
+  {
+    std::cout << "==== " << process.label() << " ====" <<std::endl;
+
+    doubleUnc sigCentral = process.getYield(signalRegion, mcWeight.Value());
+
+    std::cout << "sigCentral: " << sigCentral <<std::endl;
+
+    doubleUnc sigVar;
+    doubleUnc diff;
+    doubleUnc relSys;
+
+    for(auto& syst: mcWeight.Systematics())
+    {
+      std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+      sigVar = process.getYield(signalRegion, mcWeight.Systematic(syst));
+      std::cout << "  sigVar: " << sigVar <<std::endl;
+      diff = sigVar-sigCentral;
+      relSys = diff/sigCentral;
+
+      // = sigVar/sigCentral
+
+      std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
+    }
+    std::cout << "" <<std::endl;
+  }
   return relSys;
 }
 
