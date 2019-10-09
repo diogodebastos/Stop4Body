@@ -26,6 +26,8 @@ using json = nlohmann::json;
 doubleUnc getISRsystematicsSignal(SampleReader &, std::string, const ValueWithSystematics<std::string>&);
 doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
+doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string)
+
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
 
@@ -338,7 +340,7 @@ int main(int argc, char** argv)
     std::cout << "Doing ISR sys variations" << std::endl;
   }
 
-  getISRsystematicsSignal(Sig, preSelection + " && " + srSelection, mcWeight);
+  //getISRsystematicsSignal(Sig, preSelection + " && " + srSelection, mcWeight);
 
   //getISRsystematicsDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight);
 
@@ -347,10 +349,10 @@ int main(int argc, char** argv)
   // SYS Fake-Rate
   // SysFR 1) Closure test for the prediction of the background with a non-prompt lepton
 
+  getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value());
+
   // SysFR 2)
   // SysFR 3)
-
-
 
   //Systematics for the DD methods of WJets and TTbar
   // Comment this part for debugging of FRsys
@@ -617,6 +619,7 @@ doubleUnc getISRsystematicsDD(ProcessInfo &toEstimate, SampleReader &Data, Sampl
 
 doubleUnc getISRsystematicsSignal(SampleReader &Sig, std::string signalRegion, const ValueWithSystematics<std::string>& mcWeight)
 {
+  doubleUnc relSys = 0;
   std::cout << "/* Signal ISR Systematics */" << std::endl;
   for(auto& process : Sig)
   {
@@ -628,7 +631,6 @@ doubleUnc getISRsystematicsSignal(SampleReader &Sig, std::string signalRegion, c
 
     doubleUnc sigVar;
     doubleUnc diff;
-    doubleUnc relSys;
 
     for(auto& syst: mcWeight.Systematics())
     {
@@ -644,6 +646,20 @@ doubleUnc getISRsystematicsSignal(SampleReader &Sig, std::string signalRegion, c
     }
     std::cout << "" <<std::endl;
   }
+  return relSys;
+}
+
+doubleUnc getFRsysClosure(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string nonPrompt, std::string signalRegion, std::string mcWeight)
+{
+  doubleUnc relSys = 0;
+  std::cout << "/* Fake-rate Systematics: Non-Closure */" << std::endl;
+
+  doubleUnc NTightNonPrompt = MC.getYield(tightSelection + "&&" + signalRegion + "&&" + "&&" + nonPrompt, mcWeight)
+  doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight);
+
+  std::cout << "NTightNonPrompt: " << NTightNonPrompt <<std::endl;
+  std::cout << "fakes: " << fakes <<std::endl;
+
   return relSys;
 }
 
