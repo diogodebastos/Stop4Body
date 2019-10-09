@@ -26,7 +26,7 @@ using json = nlohmann::json;
 doubleUnc getISRsystematicsSignal(SampleReader &, std::string, const ValueWithSystematics<std::string>&);
 doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
-doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string)
+doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
@@ -654,7 +654,7 @@ doubleUnc getFRsysClosure(SampleReader &Data, SampleReader &MC, std::string loos
   doubleUnc relSys = 0;
   std::cout << "/* Fake-rate Systematics: Non-Closure */" << std::endl;
 
-  doubleUnc NTightNonPrompt = MC.getYield(tightSelection + "&&" + signalRegion + "&&" + "&&" + nonPrompt, mcWeight)
+  doubleUnc NTightNonPrompt = MC.getYield(tightSelection + "&&" + signalRegion + "&&" + "&&" + nonPrompt, mcWeight);
   doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight);
 
   std::cout << "NTightNonPrompt: " << NTightNonPrompt <<std::endl;
