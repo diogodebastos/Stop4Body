@@ -654,7 +654,7 @@ doubleUnc getFRsysClosure(SampleReader &Data, SampleReader &MC, std::string loos
   doubleUnc relSys = 0;
   std::cout << "/* Fake-rate Systematics: Non-Closure */" << std::endl;
 
-  doubleUnc NTightNonPrompt = MC.getYield(tightSelection + "&&" + signalRegion + "&&" + "&&" + nonPrompt, mcWeight);
+  doubleUnc NTightNonPrompt = MC.getYield(tightSelection + "&&" + signalRegion + "&&" + nonPrompt, mcWeight);
   doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight);
 
   std::cout << "NTightNonPrompt: " << NTightNonPrompt <<std::endl;
