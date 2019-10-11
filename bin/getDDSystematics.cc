@@ -27,7 +27,7 @@ doubleUnc getISRsystematicsSignal(SampleReader &, std::string, const ValueWithSy
 doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
 doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
-doubleUnc getFRsysISR(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&)
+doubleUnc getFRsysISR(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
@@ -354,7 +354,7 @@ int main(int argc, char** argv)
 
   // SysFR 2) ISR on fakes prediction
 
-  getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight;
+  getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight);
 
   // SysFR 3)
 
@@ -678,7 +678,6 @@ doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSel
 
   doubleUnc fakesVar;
   doubleUnc diff;
-  doubleUnc relSys;
 
   for(auto& syst: mcWeight.Systematics())
   {
