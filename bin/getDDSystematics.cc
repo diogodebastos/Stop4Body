@@ -27,6 +27,7 @@ doubleUnc getISRsystematicsSignal(SampleReader &, std::string, const ValueWithSy
 doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 
 doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
+doubleUnc getFRsysISR(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&)
 
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
@@ -349,9 +350,12 @@ int main(int argc, char** argv)
   // SYS Fake-Rate
   // SysFR 1) Closure test for the prediction of the background with a non-prompt lepton
 
-  getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value());
+  //getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value());
 
-  // SysFR 2)
+  // SysFR 2) ISR on fakes prediction
+
+  getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight;
+
   // SysFR 3)
 
   //Systematics for the DD methods of WJets and TTbar
@@ -660,6 +664,34 @@ doubleUnc getFRsysClosure(SampleReader &Data, SampleReader &MC, std::string loos
   std::cout << "NTightNonPrompt: " << NTightNonPrompt <<std::endl;
   std::cout << "fakes: " << fakes <<std::endl;
 
+  return relSys;
+}
+
+doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string nonPrompt, std::string signalRegion, const ValueWithSystematics<std::string>& mcWeight)
+{
+  doubleUnc relSys = 0;
+  std::cout << "/* Fake-rate Systematics: ISR variations */" << std::endl;
+
+  doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight.Value());
+
+  std::cout << "fakesCentral: " << fakesCentral <<std::endl;
+
+  doubleUnc fakesVar;
+  doubleUnc diff;
+  doubleUnc relSys;
+
+  for(auto& syst: mcWeight.Systematics())
+  {
+    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+
+    fakesVar = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight.Systematic(syst));
+    std::cout << "  fakesVar: " << fakesVar <<std::endl;
+    diff = fakesVar-fakesCentral;
+    relSys = diff/fakesCentral;
+
+    std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
+  }
+  std::cout << "" <<std::endl;
   return relSys;
 }
 
