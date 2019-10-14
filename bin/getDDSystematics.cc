@@ -356,7 +356,7 @@ int main(int argc, char** argv)
 
   getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight);
 
-  // SysFR 3)
+  // SysFR 3) Non-universality
 
   //Systematics for the DD methods of WJets and TTbar
   // Comment this part for debugging of FRsys
@@ -659,10 +659,13 @@ doubleUnc getFRsysClosure(SampleReader &Data, SampleReader &MC, std::string loos
   std::cout << "/* Fake-rate Systematics: Non-Closure */" << std::endl;
 
   doubleUnc NTightNonPrompt = MC.getYield(tightSelection + "&&" + signalRegion + "&&" + nonPrompt, mcWeight);
-  doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight);
+
+  doubleUnc NDDnonPromptMC = MC.getYield(looseSelection + "&&" + signalRegion + "&&" + nonPrompt, mcWeight);
+
+  //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight);
 
   std::cout << "NTightNonPrompt: " << NTightNonPrompt <<std::endl;
-  std::cout << "fakes: " << fakes <<std::endl;
+  std::cout << "NDDnonPromptMC: " << NDDnonPromptMC <<std::endl;
 
   return relSys;
 }
