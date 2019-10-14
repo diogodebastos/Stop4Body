@@ -11,7 +11,7 @@ Calculate the eTL ratio:
 ```sh
 cd Macros/FakeRate
 getFakeRateRatio --variables ../variables2017-getRatio-electron.json --cuts ../variables2017-getRatio-electron.json
-getFakeRateRatio --variables ../variables2017-getRatio-muon.json --cuts ../variables2017-getRatio-muon.json
+getFakeRateRatio --variables ../variables2017-getRatio-muon.json --cuts ../variables2017-getRatio-muon.json 1> ./getFakeRateRatio.log 2> ./getFakeRateRatio.err
 ```
 
 Force ratios on the last bins of the muon channel
