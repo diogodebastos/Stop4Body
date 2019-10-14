@@ -54,7 +54,7 @@ int main(int argc, char** argv)
   std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
   std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/allMC.json";
   // Placeholder for ${INPUT}
-  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-04-02-fakeMCClosure";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/tuples-for-fake-rate/nTuples_v2019-04-02-fakeMCClosure";
   std::string suffix = "";
   // Placeholder for ${variables}
   // std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
@@ -262,32 +262,38 @@ int main(int argc, char** argv)
      delete mcClosureHighEta;
 */
      // Plot Fake Ratio in Data and MC non-prompt
-//     auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
-/*
-     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffWjetsLowEta = getFakeRate(name + "_LowEta", wjets, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffWjetsHighEta = getFakeRate(name + "_HighEta", wjets, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffTTbarLowEta = getFakeRate(name + "_LowEta", ttbar, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffTTbarHighEta = getFakeRate(name + "_HighEta", ttbar, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-*/
-     auto pEffZInv = getFakeRate(name, zinv, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffZInvLowEta = getFakeRate(name + "_LowEta", zinv, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto pEffZInvHighEta = getFakeRate(name + "_HighEta", zinv, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
 
-//     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, "weight");
-//     auto pEffQCD   = getFakeRate(name, qcd, variable, selection, mRegion_lep_tight, mRegion_lep_loose, "weight");
-/*
+     auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+
+//     auto pEffWjetsLowEta = getFakeRate(name + "_LowEta", wjets, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffWjetsHighEta = getFakeRate(name + "_HighEta", wjets, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffTTbarLowEta = getFakeRate(name + "_LowEta", ttbar, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffTTbarHighEta = getFakeRate(name + "_HighEta", ttbar, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+
+//     auto pEffZInv = getFakeRate(name, zinv, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffZInvLowEta = getFakeRate(name + "_LowEta", zinv, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffZInvHighEta = getFakeRate(name + "_HighEta", zinv, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+
+     auto pEffQCD = getFakeRate(name, qcd, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffQCDLowEta = getFakeRate(name + "_LowEta", qcd, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+//     auto pEffQCDHighEta = getFakeRate(name + "_HighEta", qcd, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+
      TCanvas c1("DEBUG", "", 1200, 1350);
      gStyle->SetOptStat(0);
      c1.cd();
      pEffWjets->SetLineColor(811);
+     pEffWjets->SetLineWidth(2.0);
      pEffTTbar->SetLineColor(614);
+     pEffTTbar->SetLineWidth(2.0);
      pEffQCD->SetLineColor(809);
+     pEffQCD->SetLineWidth(2.0);
      pEffWjets->SetTitle("WJets");
      pEffTTbar->SetTitle("TTbar");
      pEffQCD->SetTitle("QCD");
      pEff->SetTitle("Data");
+     pEff->SetLineWidth(2.0);
      pEff->Draw("");
      pEffWjets->Draw("same");
      pEffTTbar->Draw("same");
@@ -298,7 +304,7 @@ int main(int argc, char** argv)
      delete pEffTTbar;
      delete pEffQCD;
      delete pEff;
-*/
+
 /*
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
