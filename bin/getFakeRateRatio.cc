@@ -24,7 +24,7 @@
 
 using json = nlohmann::json;
 TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
-TH1D* getFakeRateMCClosure(std::string name, SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string);
+TH1D* getFakeRateMCClosure(std::string, SampleReader &, VariableInfo&, std::string, std::string, std::string, std::string);
 TH1D* getFakeRateRemovePrompt(std::string, ProcessInfo &, ProcessInfo &, SampleReader&,VariableInfo&, std::string, std::string, std::string, std::string, std::string);
 
 class CutInfo
@@ -244,7 +244,7 @@ int main(int argc, char** argv)
      }
 
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-/*
+
      // Fake Ratio in Data without the prompt contribution, estimated with MC
      auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
@@ -252,7 +252,7 @@ int main(int argc, char** argv)
      delete pEffRemovePrompt;
      delete pEffRemovePromptLowEta;
      delete pEffRemovePromptHightEta;
-
+/*
      // MC Closure
      auto mcClosure = getFakeRateMCClosure(name, MC, variable, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto mcClosureLowEta = getFakeRateMCClosure(name + "_LowEta", MC, variable, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
@@ -465,8 +465,8 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  gStyle->SetOptStat(0);
  c1.cd();
  // Data
- auto lT = Process.getHist(variable.name().c_str(), variable, "weight*( " + tightSelection + dataSelection + " )");
- auto lL = Process.getHist(variable.name().c_str(), variable, "weight*( " + looseSelection + dataSelection + " )");
+ auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + dataSelection + " )");
+ auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + dataSelection + " )");
  //auto lT = Process.getHist(variable.name().c_str(), variable, "( " + tightSelection + dataSelection + " )");
  //auto lL = Process.getHist(variable.name().c_str(), variable, "( " + looseSelection + dataSelection + " )");
  //DEBUG
@@ -476,7 +476,12 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  //prompt MC
  TH1D* allPromptT = nullptr;
  TH1D* allPromptL = nullptr;
-
+ /*
+ std::cout << "DataTight: " << tightSelection + dataSelection << std::endl;
+ std::cout << "DataLoose: " << looseSelection + dataSelection << std::endl;
+ std::cout << "MCtight: " <<  tightSelection + mcSelection + isPrompt << std::endl;
+ std::cout << "MCloose: " << looseSelection + mcSelection + isPrompt << std::endl;
+ */
  for(size_t i = 0; i < MC.nProcesses(); ++i){
   if(MC.process(i).tag() != "QCD" && MC.process(i).tag() != "ZInv" ){
   //if(MC.process(i).tag() == "WJets" || MC.process(i).tag() == "ttbar" ){
