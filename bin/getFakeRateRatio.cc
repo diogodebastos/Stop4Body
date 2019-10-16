@@ -269,7 +269,7 @@ int main(int argc, char** argv)
      eTLnoBjets->Draw("no Bs");
      eTLwithBjets->Draw("Bs");
      c1.SaveAs(("eff_" + name + "_sys.png").c_str());
-     eTl->SaveAs((name + "_sys.root").c_str());
+     eTL->SaveAs((name + "_sys.root").c_str());
 
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
