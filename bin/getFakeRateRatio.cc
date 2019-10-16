@@ -86,6 +86,8 @@ int main(int argc, char** argv)
   std::string lowEta  = " && ((LepEta < 1.5) && (LepEta > -1.5))";
   std::string highEta = " && ((LepEta >= 1.5) || (LepEta <= -1.5))";
   std::string nonPrompt = " && (isPrompt == 0)";
+  std::string wjetsEnrich = " && (NbLoose == 0)";
+  std::string ttbarEnrich = " && (NbTight > 0)";
 
   std::vector<CutInfo> cutFlow;
   json jsonFile;
@@ -246,7 +248,29 @@ int main(int argc, char** argv)
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
 
      // Fake Ratio in Data without the prompt contribution, estimated with MC
-     auto pEffRemovePrompt = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto eTL = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+
+     // Fake Ratio systematics
+     //getFakeRateSystematics();
+     auto eTLnoBjets = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection + wjetsEnrich, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto eTLwithBjets = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection + ttbarEnrich, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+
+     TCanvas c1("DEBUG", "", 1200, 1350);
+     gStyle->SetOptStat(0);
+     c1.cd();
+
+     eTL->Draw("");
+     eTL->SetLineColor();
+     eTLnoBjets->SetLineColor();
+     eTLwithBjets->SetLineColor();
+     eTLnoBjets->SetTitle("no Bs");
+     eTLwithBjets->SetTitle("Bs");
+     eTLnoBjets->Draw("no Bs");
+     eTLwithBjets->Draw("Bs");     
+     pEff->SetTitle((cut.name() + " efficiency sys").c_str());
+     c1.SaveAs(("eff_" + name + "_sys.png").c_str());
+     pEff->SaveAs((name + "_sys.root").c_str());
+
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      delete pEffRemovePrompt;
@@ -261,24 +285,25 @@ int main(int argc, char** argv)
      delete mcClosureLowEta;
      delete mcClosureHighEta;
 */
+/*
      // Plot Fake Ratio in Data and MC non-prompt
      auto pEff = getFakeRate(name, jetht, variable, dataSel, mRegion_lep_tight, mRegion_lep_loose, "weight");
 
      auto pEffWjets = getFakeRate(name, wjets, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffWjetsLowEta = getFakeRate(name + "_LowEta", wjets, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffWjetsHighEta = getFakeRate(name + "_HighEta", wjets, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
-//     auto pEffWjetsLowEta = getFakeRate(name + "_LowEta", wjets, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffWjetsHighEta = getFakeRate(name + "_HighEta", wjets, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffTTbar = getFakeRate(name, ttbar, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffTTbarLowEta = getFakeRate(name + "_LowEta", ttbar, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffTTbarHighEta = getFakeRate(name + "_HighEta", ttbar, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffTTbarLowEta = getFakeRate(name + "_LowEta", ttbar, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffTTbarHighEta = getFakeRate(name + "_HighEta", ttbar, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
-//     auto pEffZInv = getFakeRate(name, zinv, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffZInvLowEta = getFakeRate(name + "_LowEta", zinv, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffZInvHighEta = getFakeRate(name + "_HighEta", zinv, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffZInv = getFakeRate(name, zinv, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffZInvLowEta = getFakeRate(name + "_LowEta", zinv, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffZInvHighEta = getFakeRate(name + "_HighEta", zinv, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
      auto pEffQCD = getFakeRate(name, qcd, variable, selection + nonPrompt, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffQCDLowEta = getFakeRate(name + "_LowEta", qcd, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-//     auto pEffQCDHighEta = getFakeRate(name + "_HighEta", qcd, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffQCDLowEta = getFakeRate(name + "_LowEta", qcd, variable, selection + nonPrompt + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto pEffQCDHighEta = getFakeRate(name + "_HighEta", qcd, variable, selection + nonPrompt + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
      TCanvas c1("DEBUG", "", 1200, 1350);
      gStyle->SetOptStat(0);
@@ -304,7 +329,7 @@ int main(int argc, char** argv)
      delete pEffTTbar;
      delete pEffQCD;
      delete pEff;
-
+*/
 /*
      pEff->Draw("");
      pEff->SetTitle((cut.name() + " efficiency").c_str());
@@ -327,7 +352,7 @@ int main(int argc, char** argv)
      delete pEff;
      delete pEffLowEta;
      delete pEffHighEta;
-     */
+*/
     }
    }
 
@@ -539,3 +564,5 @@ TH1D* getFakeRateRemovePrompt(std::string name, ProcessInfo &Process, ProcessInf
  delete allPromptL;
  delete ratio;
 }
+
+//getFakeRateSystematics(){}
