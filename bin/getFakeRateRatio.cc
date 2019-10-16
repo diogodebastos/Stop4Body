@@ -252,29 +252,47 @@ int main(int argc, char** argv)
 
      // Fake Ratio systematics
      //getFakeRateSystematics();
-     auto eTLnoBjets = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection + wjetsEnrich, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     auto eTLwithBjets = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection + ttbarEnrich, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto eTLbVeto = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection + wjetsEnrich, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
+     auto eTLbTag = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection + ttbarEnrich, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
      TCanvas c1("DEBUG", "", 1200, 1350);
      gStyle->SetOptStat(0);
      c1.cd();
 
+     TFile *f = new TFile((name + "_sys.root").c_str(),"RECREATE")
+
      eTL->Draw("");
      eTL->SetLineColor(kBlue);
-     eTLnoBjets->SetLineColor(kRed);
-     eTLwithBjets->SetLineColor(kGreen+3);
+     eTLbVeto->SetLineColor(kRed);
+     eTLbTag->SetLineColor(kGreen+3);
      eTL->SetTitle((cut.name() + " efficiency sys").c_str());
-     eTLnoBjets->SetTitle("no Bs");
-     eTLwithBjets->SetTitle("Bs");
-     eTLnoBjets->Draw("same");
-     eTLwithBjets->Draw("same");
+     eTLbVeto->SetTitle("b veto");
+     eTLbTag->SetTitle("b tag");
+     eTLbVeto->Draw("same");
+     eTLbTag->Draw("same");
      c1.BuildLegend(0.75,0.95,0.95,0.80,"");
      c1.SaveAs(("eff_" + name + "_sys.png").c_str());
-     eTL->SaveAs((name + "_sys.root").c_str());
+     c1->Write();
+     //eTL->SaveAs((name + "_sys.root").c_str());
+
+     for(int i = 2; i <= eTL->GetNbinsX(); i++)
+     {
+       std::cout << "Bin: " << i <<std::endl;
+
+       Double_t eTLbin = eTL->GetBinContent(i);
+       Double_t eTLbVetobin = eTLbVeto->GetBinContent(i);
+       Double_t eTLbTagbin = eTLbTag->GetBinContent(i);
+
+       Double_t relDiffbVeto = std::abs(eTLbin - eTLbVetobin)/eTLbin;
+       Double_t relDiffbTag = std::abs(eTLbin - eTLbTagbin)/eTLbin;
+
+       std::cout << " relDiffbVeto: " << relDiffbVeto <<std::endl;
+       std::cout << " relDiffbTag: " << relDiffbTag <<std::endl;
+     }
 
      delete eTL;
-     delete eTLnoBjets;
-     delete eTLwithBjets;
+     delete eTLbVeto;
+     delete eTLbTag;
      /*
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
