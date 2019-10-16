@@ -260,16 +260,16 @@ int main(int argc, char** argv)
      c1.cd();
 
      eTL->Draw("");
-     eTL->SetLineColor();
+     eTL->SetLineColor(kBlue);
      eTLnoBjets->SetLineColor(kRed);
      eTLwithBjets->SetLineColor(kGreen+3);
+     eTl->SetTitle((cut.name() + " efficiency sys").c_str());
      eTLnoBjets->SetTitle("no Bs");
      eTLwithBjets->SetTitle("Bs");
      eTLnoBjets->Draw("no Bs");
      eTLwithBjets->Draw("Bs");
-     pEff->SetTitle((cut.name() + " efficiency sys").c_str());
      c1.SaveAs(("eff_" + name + "_sys.png").c_str());
-     pEff->SaveAs((name + "_sys.root").c_str());
+     eTl->SaveAs((name + "_sys.root").c_str());
 
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
