@@ -265,14 +265,17 @@ int main(int argc, char** argv)
      eTL->SetLineColor(kBlue);
      eTLbVeto->SetLineColor(kRed);
      eTLbTag->SetLineColor(kGreen+3);
-     eTL->SetTitle((cut.name() + " efficiency sys").c_str());
+     eTL->SetTitle((cut.name() + " eff").c_str());
      eTLbVeto->SetTitle("b veto");
      eTLbTag->SetTitle("b tag");
      eTLbVeto->Draw("same");
      eTLbTag->Draw("same");
      c1.BuildLegend(0.75,0.95,0.95,0.80,"");
      c1.SaveAs(("eff_" + name + "_sys.png").c_str());
-     c1.Write(); //f->WriteTObject(c1);
+     eTL->Write();
+     eTLbVeto->Write();
+     eTLbTag->Write();
+     //c1.Write(); //f->WriteTObject(c1);
      //eTL->SaveAs((name + "_sys.root").c_str());
 
      for(int i = 2; i <= eTL->GetNbinsX(); i++)
@@ -283,8 +286,8 @@ int main(int argc, char** argv)
        Double_t eTLbVetobin = eTLbVeto->GetBinContent(i);
        Double_t eTLbTagbin = eTLbTag->GetBinContent(i);
 
-       Double_t relDiffbVeto = std::abs(eTLbin - eTLbVetobin)/eTLbin;
-       Double_t relDiffbTag = std::abs(eTLbin - eTLbTagbin)/eTLbin;
+       Double_t relDiffbVeto = std::abs(eTLbin - eTLbVetobin)/eTLbin * 100;
+       Double_t relDiffbTag = std::abs(eTLbin - eTLbTagbin)/eTLbin * 100;
 
        std::cout << " relDiffbVeto: " << relDiffbVeto <<std::endl;
        std::cout << " relDiffbTag: " << relDiffbTag <<std::endl;
