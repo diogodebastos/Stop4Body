@@ -266,16 +266,21 @@ int main(int argc, char** argv)
      eTL->SetTitle((cut.name() + " efficiency sys").c_str());
      eTLnoBjets->SetTitle("no Bs");
      eTLwithBjets->SetTitle("Bs");
-     eTLnoBjets->Draw("no Bs");
-     eTLwithBjets->Draw("Bs");
+     eTLnoBjets->Draw("same");
+     eTLwithBjets->Draw("same");
+     c1.BuildLegend(0.75,0.95,0.95,0.80,"");
      c1.SaveAs(("eff_" + name + "_sys.png").c_str());
      eTL->SaveAs((name + "_sys.root").c_str());
 
+     delete eTL;
+     delete eTLnoBjets;
+     delete eTLwithBjets;
+     /*
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
-     delete eTL;
      delete pEffRemovePromptLowEta;
      delete pEffRemovePromptHightEta;
+     */
 /*
      // MC Closure
      auto mcClosure = getFakeRateMCClosure(name, MC, variable, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
