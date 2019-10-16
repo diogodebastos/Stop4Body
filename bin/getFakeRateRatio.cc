@@ -275,6 +275,7 @@ int main(int argc, char** argv)
      eTL->Write();
      eTLbVeto->Write();
      eTLbTag->Write();
+     f->Close();
      //c1.Write(); //f->WriteTObject(c1);
      //eTL->SaveAs((name + "_sys.root").c_str());
 
@@ -289,8 +290,8 @@ int main(int argc, char** argv)
        Double_t relDiffbVeto = std::abs(eTLbin - eTLbVetobin)/eTLbin * 100;
        Double_t relDiffbTag = std::abs(eTLbin - eTLbTagbin)/eTLbin * 100;
 
-       std::cout << " relDiffbVeto: " << relDiffbVeto <<std::endl;
-       std::cout << " relDiffbTag: " << relDiffbTag <<std::endl;
+       std::cout << " relDiffbVeto: " << relDiffbVeto << " %" << std::endl;
+       std::cout << " relDiffbTag: " << relDiffbTag << " %" << std::endl;
      }
 
      delete eTL;
