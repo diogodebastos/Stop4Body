@@ -263,7 +263,7 @@ int main(int argc, char** argv)
      eTL->SetLineColor(kBlue);
      eTLnoBjets->SetLineColor(kRed);
      eTLwithBjets->SetLineColor(kGreen+3);
-     eTl->SetTitle((cut.name() + " efficiency sys").c_str());
+     eTL->SetTitle((cut.name() + " efficiency sys").c_str());
      eTLnoBjets->SetTitle("no Bs");
      eTLwithBjets->SetTitle("Bs");
      eTLnoBjets->Draw("no Bs");
