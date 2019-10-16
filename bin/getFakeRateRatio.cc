@@ -259,7 +259,7 @@ int main(int argc, char** argv)
      gStyle->SetOptStat(0);
      c1.cd();
 
-     TFile *f = new TFile((name + "_sys.root").c_str(),"RECREATE")
+     TFile *f = new TFile((name + "_sys.root").c_str(),"RECREATE");
 
      eTL->Draw("");
      eTL->SetLineColor(kBlue);
@@ -272,7 +272,7 @@ int main(int argc, char** argv)
      eTLbTag->Draw("same");
      c1.BuildLegend(0.75,0.95,0.95,0.80,"");
      c1.SaveAs(("eff_" + name + "_sys.png").c_str());
-     c1->Write();
+     c1.Write(); //f->WriteTObject(c1);
      //eTL->SaveAs((name + "_sys.root").c_str());
 
      for(int i = 2; i <= eTL->GetNbinsX(); i++)
