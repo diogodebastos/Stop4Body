@@ -86,8 +86,8 @@ int main(int argc, char** argv)
   std::string lowEta  = " && ((LepEta < 1.5) && (LepEta > -1.5))";
   std::string highEta = " && ((LepEta >= 1.5) || (LepEta <= -1.5))";
   std::string nonPrompt = " && (isPrompt == 0)";
-  std::string wjetsEnrich = " && (NbLoose == 0)";
-  std::string ttbarEnrich = " && (NbTight > 0)";
+  std::string wjetsEnrich = " && (NbMedium50+NbMediumTo50 == 0)";
+  std::string ttbarEnrich = " && (NbMedium50+NbMediumTo50 > 0)";
 
   std::vector<CutInfo> cutFlow;
   json jsonFile;
