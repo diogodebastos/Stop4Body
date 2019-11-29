@@ -29,6 +29,7 @@ doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std
 doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 doubleUnc getFRsysISR(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 doubleUnc getFRsysNU(SampleReader &, SampleReader &, std::string, std::string, const double);
+doubleUnc getFRsysNUalt(SampleReader &, SampleReader &, std::string, std::string, std::string, const double);
 
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
@@ -363,6 +364,16 @@ int main(int argc, char** argv)
   // SysFR 3) Non-universality
 
   getFRsysNU(Data, MC, looseSelection, preSelection + "&&" + srSelection, luminosity);
+
+  std::cout << "\nalt b-Veto" << std::endl;
+  getFRsysNUalt(Data, MC, looseSelection, preSelection + "&&" + srSelection, "(NbMedium50+NbMediumTo50 == 0)", luminosity);
+  std::cout << "\nalt b-Tag" << std::endl;
+  getFRsysNUalt(Data, MC, looseSelection, preSelection + "&&" + srSelection, "(NbMedium50+NbMediumTo50 > 0", luminosity);
+
+  std::cout << "\nb-Veto" << std::endl;
+  getFRsysNU(Data, MC, looseSelection, preSelection + "&&" + srSelection + " && (NbMedium50+NbMediumTo50 == 0)", luminosity);
+  std::cout << "\nb-Tag" << std::endl;
+  getFRsysNU(Data, MC, looseSelection, preSelection + "&&" + srSelection + " && (NbMedium50+NbMediumTo50 > 0", luminosity);
 
   //Systematics for the DD methods of WJets and TTbar
   // Comment this part for debugging of FRsys
@@ -769,6 +780,75 @@ doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSele
   std::cout << "" <<std::endl;
   return relSys;
 }
+
+
+doubleUnc getFRsysNUalt(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string signalRegion, std::string altRegion,const double luminosity){
+  doubleUnc relSys = 0;
+
+  // Load Systematics
+  std::vector<std::string> systBase;
+  {
+    for(int i = 1; i <= 5; ++i)
+    {
+      std::stringstream converter;
+      std::string tmp;
+      converter << "TightLoose_NU_Bin" << i;
+      converter >> tmp;
+      systBase.push_back(tmp);
+    }
+    systBase.push_back("TightLoose_NU_AltCorr");
+  }
+
+  std::vector<std::string> systematics;
+  for(auto& base: systBase)
+  {
+    systematics.push_back(base + "_Up");
+    systematics.push_back(base + "_Down");
+  }
+
+  auto valueLoop = systematics;
+  valueLoop.push_back("CentralValue");
+
+  ValueWithSystematics<std::string> mcWeight = std::string("splitFactor*weight");
+
+  for(auto& syst: systematics)
+    mcWeight.Systematic(syst) = mcWeight.Value() + "_" + syst;
+  {
+    std::stringstream converter;
+    converter << "*" << luminosity;
+    mcWeight += converter.str();
+  }
+
+  std::cout << "Using mcWeight: " << mcWeight.Value() << std::endl;
+  std::cout << "With variations:" << std::endl;
+  for(auto& syst: systematics)
+  {
+    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+  }
+  std::cout << std::endl;
+
+  doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight.Value());
+
+  std::cout << "fakesCentral: " << fakesCentral <<std::endl;
+
+  doubleUnc fakesVar;
+  doubleUnc diff;
+
+  for(auto& syst: mcWeight.Systematics())
+  {
+    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+
+    fakesVar = fakeDD(Data, MC, looseSelection + " && " + signalRegion + " && " + altRegion, mcWeight.Systematic(syst));
+    std::cout << "  fakesVar: " << fakesVar <<std::endl;
+    diff = fakesVar-fakesCentral;
+    relSys = diff/fakesCentral;
+
+    std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
+  }
+  std::cout << "" <<std::endl;
+  return relSys;
+}
+
 
 void printSel(std::string name, std::string selection)
 {
