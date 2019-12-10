@@ -29,12 +29,12 @@ doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std
 doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 doubleUnc getFRsysISR(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&);
 doubleUnc getFRsysNU(SampleReader &, SampleReader &, std::string, std::string, const double);
-doubleUnc getFRsysNUalt(SampleReader &, SampleReader &, std::string, std::string, std::string, const double);
+//doubleUnc getFRsysNUalt(SampleReader &, SampleReader &, std::string, std::string, std::string, const double);
 
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
 
-doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
+doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 doubleUnc naiveDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 void printSel(std::string, std::string);
@@ -365,15 +365,10 @@ int main(int argc, char** argv)
 
   getFRsysNU(Data, MC, looseSelection, preSelection + "&&" + srSelection, luminosity);
 
-  std::cout << "\nalt b-Veto" << std::endl;
-  getFRsysNUalt(Data, MC, looseSelection, preSelection + "&&" + srSelection, "(NbMedium50+NbMediumTo50 == 0)", luminosity);
-  std::cout << "\nalt b-Tag" << std::endl;
-  getFRsysNUalt(Data, MC, looseSelection, preSelection + "&&" + srSelection, "(NbMedium50+NbMediumTo50 > 0", luminosity);
-
-  std::cout << "\nb-Veto" << std::endl;
-  getFRsysNU(Data, MC, looseSelection, preSelection + "&&" + srSelection + " && (NbMedium50+NbMediumTo50 == 0)", luminosity);
-  std::cout << "\nb-Tag" << std::endl;
-  getFRsysNU(Data, MC, looseSelection, preSelection + "&&" + srSelection + " && (NbMedium50+NbMediumTo50 > 0", luminosity);
+//  std::cout << "\nalt b-Veto" << std::endl;
+//  getFRsysNUalt(Data, MC, looseSelection, preSelection + "&&" + srSelection, "(NbMedium50+NbMediumTo50 == 0)", luminosity);
+//  std::cout << "\nalt b-Tag" << std::endl;
+//  getFRsysNUalt(Data, MC, looseSelection, preSelection + "&&" + srSelection, "(NbMedium50+NbMediumTo50 > 0", luminosity);
 
   //Systematics for the DD methods of WJets and TTbar
   // Comment this part for debugging of FRsys
@@ -536,16 +531,16 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
     if(process.tag() != toEstimate.tag())
       otherMC += process.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
   }
-  doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + controlRegion, mcWeight);
+  doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + controlRegion, "weight", mcWeight);
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
 
   return estimate;
 }
 
-doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string mcWeight)
+doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string dataWeight ,std::string mcWeight)
 {
-  doubleUnc LNTinSR = LNTData.getYield(signalRegion, "weight");
+  doubleUnc LNTinSR = LNTData.getYield(signalRegion, dataWeight);
   doubleUnc LNTMCinSR = LNTMC.getYield(signalRegion + " && isPrompt == 1", mcWeight);
 
   doubleUnc estimate = LNTinSR - LNTMCinSR;
@@ -692,7 +687,7 @@ doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSel
   doubleUnc relSys = 0;
   std::cout << "/* Fake-rate Systematics: ISR variations */" << std::endl;
 
-  doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight.Value());
+  doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + signalRegion, "weight",mcWeight.Value());
 
   std::cout << "fakesCentral: " << fakesCentral <<std::endl;
 
@@ -703,7 +698,7 @@ doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSel
   {
     std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
 
-    fakesVar = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight.Systematic(syst));
+    fakesVar = fakeDD(Data, MC, looseSelection + " && " + signalRegion,"weight", mcWeight.Systematic(syst));
     std::cout << "  fakesVar: " << fakesVar <<std::endl;
     diff = fakesVar-fakesCentral;
     relSys = diff/fakesCentral;
@@ -741,10 +736,14 @@ doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSele
   auto valueLoop = systematics;
   valueLoop.push_back("CentralValue");
 
+  ValueWithSystematics<std::string> dataWeight = std::string("weight")
+
   ValueWithSystematics<std::string> mcWeight = std::string("splitFactor*weight");
 
-  for(auto& syst: systematics)
+  for(auto& syst: systematics){
+    dataWeight.Systematic(syst) = dataWeight.Value() + "_" + syst;
     mcWeight.Systematic(syst) = mcWeight.Value() + "_" + syst;
+  }
   {
     std::stringstream converter;
     converter << "*" << luminosity;
@@ -755,11 +754,11 @@ doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSele
   std::cout << "With variations:" << std::endl;
   for(auto& syst: systematics)
   {
-    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+    std::cout << "  " << syst << " - " << dataWeight.Systematic(syst) << "  |  "<< mcWeight.Systematic(syst) << std::endl;
   }
   std::cout << std::endl;
 
-  doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight.Value());
+  doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + signalRegion, dataWeight.Value(),mcWeight.Value());
 
   std::cout << "fakesCentral: " << fakesCentral <<std::endl;
 
@@ -770,7 +769,7 @@ doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSele
   {
     std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
 
-    fakesVar = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight.Systematic(syst));
+    fakesVar = fakeDD(Data, MC, looseSelection + " && " + signalRegion,dataWeight.Systematic(syst) , mcWeight.Systematic(syst));
     std::cout << "  fakesVar: " << fakesVar <<std::endl;
     diff = fakesVar-fakesCentral;
     relSys = diff/fakesCentral;
@@ -781,7 +780,7 @@ doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSele
   return relSys;
 }
 
-
+/*
 doubleUnc getFRsysNUalt(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string signalRegion, std::string altRegion,const double luminosity){
   doubleUnc relSys = 0;
 
@@ -848,7 +847,7 @@ doubleUnc getFRsysNUalt(SampleReader &Data, SampleReader &MC, std::string looseS
   std::cout << "" <<std::endl;
   return relSys;
 }
-
+*/
 
 void printSel(std::string name, std::string selection)
 {
