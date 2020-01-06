@@ -15,7 +15,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt15to20_Mu5",
-              "split":120
+              "split":63
             }
           ]
         },
@@ -27,7 +27,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt20to30_Mu5",
-              "split":414
+              "split":319
             }
           ]
         },
@@ -39,7 +39,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt30to50_Mu5",
-              "split":488
+              "split":325
             }
           ]
         },
@@ -51,7 +51,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt50to80_Mu5",
-              "split":323
+              "split":288
             }
           ]
         },
@@ -63,7 +63,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt80to120_Mu5",
-              "split":351
+              "split":289
             }
           ]
         },
@@ -75,7 +75,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt120to170_Mu5",
-              "split":377
+              "split":342
             }
           ]
         },
@@ -87,7 +87,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt170to300_Mu5",
-              "split":796
+              "split":721
             }
           ]
         },
@@ -99,7 +99,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt300to470_Mu5",
-              "split":309
+              "split":374
             }
           ]
         },
@@ -111,7 +111,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt470to600_Mu5",
-              "split":614
+              "split":388
             }
           ]
         },
@@ -123,7 +123,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt600to800_Mu5",
-              "split":314
+              "split":391
             }
           ]
         },
@@ -135,7 +135,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt800to1000_Mu5",
-              "split":361
+              "split":389
             }
           ]
         },
@@ -147,7 +147,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_Pt1000toInf_Mu5",
-              "split":268
+              "split":257
             }
           ]
         }
