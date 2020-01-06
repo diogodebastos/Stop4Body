@@ -131,6 +131,8 @@ elif [ ${YEAR} == 2017 ]; then
 
  mergeJSONs $JSON_PATH/otherMC2_QCD_Mu_en.json                 $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/QCD_Mu.json $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTZToLLNuNu.json
 
+ mergeJSONs $JSON_PATH/allMC_QCD_Mu_en.json                 $JSON_PATH/Orig/QCD_Mu.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
+
  #Make a JSON with the samples that are to be processed:
  cp         $JSON_PATH/allMC.json                    $JSON_PATH/MC2Process.json
 
@@ -150,6 +152,7 @@ elif [ ${YEAR} == 2017 ]; then
  mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/DataJetHT.json
  # Make the JSONs for plotting
  mergeJSONs $JSON_PATH/plot2017.json           $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json
+ mergeJSONs $JSON_PATH/plot2017_QCD_Mu_en.json    $JSON_PATH/allMC_QCD_Mu_en.json $JSON_PATH/DataMetHT.json
  mergeJSONs $JSON_PATH/plot2017-QCD-en.json    $JSON_PATH/allMC-QCD-en.json $JSON_PATH/DataMetHT.json
  mergeJSONs $JSON_PATH/plot2017-inj.json       $JSON_PATH/plot2017.json $JSON_PATH/stop500.json
  mergeJSONs $JSON_PATH/plot2017-inj-quick.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/Wjets.json  $JSON_PATH/stop500.json
