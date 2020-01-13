@@ -4,15 +4,14 @@
       "tag":"signal_point_500_420",
       "isdata":false,
       "issignal":true,
-      "isfastsim":true,
+      "isfastsim":false,
       "spimpose":true,
-      "color":616,
+      "color":400,
       "lwidth":4,
       "lstyle":1,
       "fill":0,
       "marker":1,
       "label":"signal=(500,420)",
-      "selection":"(GenSusyMStop==500)&&(GenSusyMNeutralino==420)",
       "files":[
         {
           "tag":"T2DegStop_500_420",
@@ -21,12 +20,8 @@
           "filterEfficiencyFile":"../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root",
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1",
-              "split":348
-            },
-            {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1_ext1",
-              "split":442
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/SMS_T2_4bd_genMET_80_mStop_500_mLSP_420",
+              "split":52
             }
           ]
         }
