@@ -25,10 +25,10 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_VV.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_SingleTop.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_DY.sh
- 
+
  # Submit job for all Data
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_DataJob.sh
- 
+
  # Submit job for each group of signal points with a given stop mass
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop250Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop275Job.sh
@@ -62,11 +62,34 @@ elif [ ${YEAR} == 2017 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_ZInvJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC1Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC2Job.sh
+ #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_OtherMC2_QCD_Mu_en.sh
  # Submit job for all DATA
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_DataJob.sh
- # Submit job for each group of signal points with a given stop mass
- qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop500Job.sh
 
+ # Submit job for each group of signal points with a given stop mass
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop250Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop275Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop300Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop325Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop350Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop375Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop400Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop425Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop450Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop475Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop500Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop525Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop550Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop575Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop600Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop625Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop650Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop675Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop700Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop725Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop750Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop775Job.sh
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetPUWeights_Stop800Job.sh
 fi
 cd -
 
