@@ -1323,36 +1323,41 @@ int main(int argc, char** argv)
         bool skip = true;
 
         //if(!skip || process.issignal()){
-        if(!skip){
-         inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
-         inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
-         inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
-         inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
-         Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
-         Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
-         inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
-         inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
-        }
-        else { // 2017 HLT
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
-         if(!process.issignal()){
-           inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v);
-           inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v);
-           inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v);
-         }
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT780_v", &HLT_BIT_HLT_PFHT780_v);
-         inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);
+        if (!process.issignal()) {
+          if(!skip){
+            inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
+            inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
+            inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
+            inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
+            Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
+            Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
+            inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
+            inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
+          }
+          else { // 2017 HLT
+            inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
+            inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
+            inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
+            if(!process.issignal()){
+              inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v);
+              inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v);
+              inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v);
+            }
+            inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT780_v", &HLT_BIT_HLT_PFHT780_v);
+            inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);
+          }
         }
 
 //      Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
-        Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
-        Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
-        Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
-        Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
-        Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
-        Int_t Flag_globalTightHalo2016Filter; inputtree->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter);
+        if (skip && process.issignal()) {
+          /* code */
+          Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
+          Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
+          Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
+          Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
+          Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
+          Int_t Flag_globalTightHalo2016Filter; inputtree->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter);
+        }
         Int_t Flag_badMuonMoriond2017; inputtree->SetBranchAddress("Flag_badMuonMoriond2017", &Flag_badMuonMoriond2017);
         Int_t Flag_badCloneMuonMoriond2017; inputtree->SetBranchAddress("Flag_badCloneMuonMoriond2017", &Flag_badCloneMuonMoriond2017);
         Float_t Flag_badMuonFilter; inputtree->SetBranchAddress("Flag_badMuonFilter", &Flag_badMuonFilter);
@@ -1655,18 +1660,25 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
+            // TODO: UNCOMMENT AND IMPLEMENT IT FOR NanoAOD
+            //std::map<int, std::string>& lheNames = getNanoAODQ2ScaleMap();
+
             std::map<int, std::string>& lheNames = getLHEMap(nLHEweight);
 
             int refLHEKey = -1;
             int refQ2 = -1;
             for(int i = 0; i < nLHEweight; ++i)
             {
+              // TODO: UNCOMMENT AND IMPLEMENT IT FOR NanoAOD
+              //std::string name = lheNames[i];
               std::string name = lheNames[LHEweight_id[i]];
               if(name.substr(0, 2) == "Q2")
               {
                 if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
                 {
                   refQ2 = i;
+                  // TODO: UNCOMMENT AND IMPLEMENT IT FOR NanoAOD
+                  //refLHEKey = i;
                   refLHEKey = LHEweight_id[i];
                   break;
                 }
@@ -1684,7 +1696,10 @@ int main(int argc, char** argv)
                   if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
                     continue;
 
+                  // TODO: UNCOMMENT AND IMPLEMENT IT FOR NanoAOD
+                  //double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(i);
                   double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(LHEweight_id[i]);
+
                   Q2Var.Systematic(name) = norm * LHEweight_wgt[i]/LHEweight_wgt[refQ2];
                 }
               }
