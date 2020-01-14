@@ -1320,6 +1320,13 @@ int main(int argc, char** argv)
         Int_t HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v;
         Int_t HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v;
 
+        Int_t Flag_HBHENoiseFilter = 1;
+        Int_t Flag_HBHENoiseIsoFilter = 1;
+        Int_t Flag_eeBadScFilter = 1;
+        Int_t Flag_EcalDeadCellTriggerPrimitiveFilter = 1;
+        Int_t Flag_goodVertices = 1;
+        Int_t Flag_globalTightHalo2016Filter = 1;
+
         bool skip = true;
 
         //if(!skip || process.issignal()){
@@ -1349,13 +1356,13 @@ int main(int argc, char** argv)
         }
 
 //      Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
-        if (skip && process.issignal()) {
-          Int_t Flag_HBHENoiseFilter; inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
-          Int_t Flag_HBHENoiseIsoFilter; inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
-          Int_t Flag_eeBadScFilter; inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
-          Int_t Flag_EcalDeadCellTriggerPrimitiveFilter; inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
-          Int_t Flag_goodVertices; inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
-          Int_t Flag_globalTightHalo2016Filter; inputtree->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter);
+        if (skip && !process.issignal()) {
+          inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
+          inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
+          inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
+          inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
+          inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
+          inputtree->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter);
         }
         Int_t Flag_badMuonMoriond2017; inputtree->SetBranchAddress("Flag_badMuonMoriond2017", &Flag_badMuonMoriond2017);
         Int_t Flag_badCloneMuonMoriond2017; inputtree->SetBranchAddress("Flag_badCloneMuonMoriond2017", &Flag_badCloneMuonMoriond2017);
@@ -2208,38 +2215,35 @@ int main(int argc, char** argv)
           //TODO: This should be updated for all samples after the next heppy run
           //2016 HLT
           //if(!skip || process.issignal()){
-          if (!process.issignal()) {
-            if(!skip){
-              HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
-              HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
-              HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
-              HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
-              HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;
-              HLT_Mu                              = HLT_IsoMu27;
-            }
-            else //2017 HLT
-            {
-              HLT_PFMET100_PFMHT100               = HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v;
-              HLT_PFMET110_PFMHT110               = HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
-              HLT_PFMET120_PFMHT120               = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v;
-              HLT_PFMET120_PFMHT120_PFHT60        = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v;
-              HLT_PFMETNoMu120_PFMHTNoMu120       = HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v;
-              HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60= HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v;
-              HLT_PFHT780                         = HLT_BIT_HLT_PFHT780_v;
-              HLT_PFHT1050                        = HLT_BIT_HLT_PFHT1050_v;
-            }
+          if(!skip){
+           HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
+           HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
+           HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
+           HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
+           HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;
+           HLT_Mu                              = HLT_IsoMu27;
           }
-          else {
-            HBHENoiseFilter                     = Flag_HBHENoiseFilter;
-            HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
-            eeBadScFilter                       = Flag_eeBadScFilter;
-            EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
-            goodVertices                        = Flag_goodVertices;
-            globalTightHalo2016Filter           = Flag_globalTightHalo2016Filter;
+          else //2017 HLT
+          {
+           HLT_PFMET100_PFMHT100               = HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v;
+           HLT_PFMET110_PFMHT110               = HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
+           HLT_PFMET120_PFMHT120               = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v;
+           HLT_PFMET120_PFMHT120_PFHT60        = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v;
+           HLT_PFMETNoMu120_PFMHTNoMu120       = HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v;
+           HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60= HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v;
+           HLT_PFHT780                         = HLT_BIT_HLT_PFHT780_v;
+           HLT_PFHT1050                        = HLT_BIT_HLT_PFHT1050_v;
           }
+
           //HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
           //HLT_Mu                              = HLT_IsoMu24;
           //METFilters                          = Flag_METFilters;
+          HBHENoiseFilter                     = Flag_HBHENoiseFilter;
+          HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
+          eeBadScFilter                       = Flag_eeBadScFilter;
+          EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
+          goodVertices                        = Flag_goodVertices;
+          globalTightHalo2016Filter           = Flag_globalTightHalo2016Filter;
           badMuonMoriond2017                  = Flag_badMuonMoriond2017;
           badCloneMuonMoriond2017             = Flag_badCloneMuonMoriond2017;
           badMuonFilter                       = Flag_badMuonFilter;
