@@ -31,7 +31,7 @@ for DIR in "${NTUPLE_DIR}" "${TEST_DIR}" "${TRAIN_DIR}" ;do
 
   if [ ${YEAR} == 2017 ]; then
     hadd -f ${DIR}/Background_TTbar_WJets.root   ${DIR}/TTJets.root    ${DIR}/WJetsToLNu_HT100To200.root ${DIR}/WJetsToLNu_HT200To400.root ${DIR}/WJetsToLNu_HT400To600.root ${DIR}/WJetsToLNu_HT600To800.root ${DIR}/WJetsToLNu_HT800To1200.root ${DIR}/WJetsToLNu_HT1200To2500.root ${DIR}/WJetsToLNu_HT2500ToInf.root
-    hadd -f ${DIR}/Background_TTbar_WJets_Zinv.root   ${DIR}/Background_TTbar.root   ${DIR}/ZJetsToNuNu_HT100to200.root ${DIR}/ZJetsToNuNu_HT200to400.root ${DIR}/ZJetsToNuNu_HT400to600.root ${DIR}/ZJetsToNuNu_HT600to800.root ${DIR}/ZJetsToNuNu_HT800to1200.root ${DIR}/ZJetsToNuNu_HT1200to2500.root ${DIR}/ZJetsToNuNu_HT2500toInf.root    
+    hadd -f ${DIR}/Background_TTbar_WJets_Zinv.root   ${DIR}/Background_TTbar_WJets.root   ${DIR}/ZJetsToNuNu_HT100to200.root ${DIR}/ZJetsToNuNu_HT200to400.root ${DIR}/ZJetsToNuNu_HT400to600.root ${DIR}/ZJetsToNuNu_HT600to800.root ${DIR}/ZJetsToNuNu_HT800to1200.root ${DIR}/ZJetsToNuNu_HT1200to2500.root ${DIR}/ZJetsToNuNu_HT2500toInf.root    
   elif [ ${YEAR} == 2016 ]; then
     hadd -f ${DIR}/Background_TTbar.root   ${DIR}/TTJets.root    ${DIR}/Wjets_100to200.root ${DIR}/Wjets_200to400.root ${DIR}/Wjets_400to600.root ${DIR}/Wjets_600to800.root ${DIR}/Wjets_800to1200.root ${DIR}/Wjets_1200to2500.root ${DIR}/Wjets_2500toInf.root
     hadd -f ${DIR}/Background_TTbarLO.root ${DIR}/TTJets_LO.root ${DIR}/Wjets_100to200.root ${DIR}/Wjets_200to400.root ${DIR}/Wjets_400to600.root ${DIR}/Wjets_600to800.root ${DIR}/Wjets_800to1200.root ${DIR}/Wjets_1200to2500.root ${DIR}/Wjets_2500toInf.root
