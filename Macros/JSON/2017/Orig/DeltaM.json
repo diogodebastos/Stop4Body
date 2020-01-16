@@ -1,0 +1,220 @@
+{
+  "lines":[
+    {
+      "tag":"signal_deltaM10",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 10",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==10)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM10",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_deltaM10",
+              "split":1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM20",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 20",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==20)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM20",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_deltaM20",
+              "split":1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM30",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 30",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==30)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM30",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_deltaM30",
+              "split":1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM40",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 40",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==40)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM40",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_deltaM40",
+              "split":1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM50",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 50",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==50)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM50",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_deltaM50",
+              "split":1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM60",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 60",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==60)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM60",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_deltaM60",
+              "split":1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM70",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 70",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==70)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM70",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_deltaM70",
+              "split":1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag":"signal_deltaM80",
+      "isdata":false,
+      "issignal":true,
+      "spimpose":true,
+      "color":807,
+      "lcolor":1,
+      "lwidth":3,
+      "lstyle":3,
+      "fill":0,
+      "marker":1,
+      "label":"#Delta M = 80",
+      "selection":"((GenSusyMStop - GenSusyMNeutralino)==80)",
+      "files":[
+        {
+          "tag":"T2DegStop_deltaM80",
+          "xsec": 1.0,
+          "br": 1.0,
+          "paths":[
+            {
+              "path":"/home/t3cms/cbeiraod/local-area/Stop4Body/NodeSizeScan/SET9003/T2DegStop_deltaM80",
+              "split":1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

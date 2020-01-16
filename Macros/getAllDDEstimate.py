@@ -92,9 +92,9 @@ if __name__ == "__main__":
 
       thisScript.write("getDDEstimate ")
       if args.isSwap:
-        thisScript.write("--json ${JSON_PATH}/plot2016swap_lep.json ")
+        thisScript.write("--json ${JSON_PATH}/plot2017swap_lep.json ")
       else:
-        thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
+        thisScript.write("--json ${JSON_PATH}/plot2017_lep.json ")
       thisScript.write("--outDir " + outputDirectory + " ")
       thisScript.write("--inDir " + thisInputDirectory + " ")
       thisScript.write("--suffix bdt ")
@@ -168,9 +168,9 @@ if __name__ == "__main__":
 
       thisScript.write("makePlots ")
       if args.isSwap:
-        thisScript.write("--json ${JSON_PATH}/plot2016swap_lep.json ")
+        thisScript.write("--json ${JSON_PATH}/plot2017swap_lep.json ")
       else:
-        thisScript.write("--json ${JSON_PATH}/plot2016_lep.json ")
+        thisScript.write("--json ${JSON_PATH}/plot2017_lep.json ")
       thisScript.write("--outDir " + outputDirectory + " ")
       thisScript.write("--inDir " + thisInputDirectory + " ")
       thisScript.write("--suffix bdt ")
@@ -199,21 +199,3 @@ if __name__ == "__main__":
         while getNJobs() > 1000:
           time.sleep(5*60)
         print "Done waiting"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
