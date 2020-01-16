@@ -78,11 +78,13 @@ if __name__ == "__main__":
 
       thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
 
-      thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
-      thisScript.write(". setup.sh\n\n")
+      thisScript.write("export SCRAM_ARCH=slc6_amd64_gcc530\n")
+      thisScript.write("export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch\n")
+      thisScript.write("source $VO_CMS_SW_DIR/cmsset_default.sh\n")
+      thisScript.write("export CMS_PATH=$VO_CMS_SW_DIR\n")
+      thisScript.write("source /cvmfs/cms.cern.ch/crab3/crab.sh\n\n")
 
-      thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_0_14/src/\n")
-      thisScript.write("#cd $CMSSW_BASE/src/\n")
+      thisScript.write("cd $CMSSW_BASE/src/\n")
       thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
       thisScript.write("cd " + baseDirectory + "\n\n")
@@ -186,7 +188,7 @@ if __name__ == "__main__":
       os.fchmod(thisScript.fileno(), mode & 0o7777)
 
     job = outputDirectory + "/theJob.sh"
-    cmd = "qsub " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+    cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
     print cmd
     if not args.dryRun:
       p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
