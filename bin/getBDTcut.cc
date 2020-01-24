@@ -31,7 +31,10 @@ int main(int argc, char** argv)
   std::string inputDirectory = "";
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
+  bool verbose = false;
+  bool isHighDM = false;
   double luminosity = -1.0;
+  double bdtCut = 0.20;
 
   if(argc < 2)
   {
@@ -60,7 +63,13 @@ int main(int argc, char** argv)
     {
       isHighDM = true;
     }
-
+   
+    if(argument == "--bdtCut")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> bdtCut; 
+    }
     if(argument == "--verbose")
     {
       verbose = true;
@@ -70,9 +79,11 @@ int main(int argc, char** argv)
   std::cout << "Reading json files" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
-  std::string placeHolderSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl_cutId_veto + nGoodMu_cutId_loose == 1)";
+  std::string placeHolderSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (isTight == 1)";
 
-  double bdtCut = 0.44;
+  if(isHighDM)
+  {
+  }
 
   std::string srSelection = "(BDT > " + std::to_string(bdtCut) + " )";
 
@@ -97,12 +108,16 @@ int main(int argc, char** argv)
     converter >> mcWeight;
   }
 
+  std::cout << "mcWeight: " << mcWeight << std::endl;
+
   if(verbose)
     std::cout << "Building background process map" << std::endl;
   std::map<std::string, size_t> bkgMap;
   bool foundTTbar = false, foundWJets = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
   {
+  //  std::cout << MC.process(i).tag() << ": " << MC.process(i).getYield(selection, mcWeight) << std::endl;
+
     if(MC.process(i).tag().find("ttbar") != std::string::npos)
     {
       bkgMap["ttbar"] = i;
@@ -112,7 +127,10 @@ int main(int argc, char** argv)
       bkgMap[MC.process(i).tag()] = i;
 
     if(MC.process(i).tag() == "WJets")
+    {
+ //     bkgMap["WJets"] = i;
       foundWJets = true;
+    }
   }
   if(!foundTTbar)
   {
@@ -125,17 +143,55 @@ int main(int argc, char** argv)
     return 1;
   }
 
+  for(auto& bkg : bkgMap)
+  {
+   // std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(selection, mcWeight) << std::endl;
+    
+  }
+
+
   auto wjets = MC.process(bkgMap["WJets"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
+  auto zinv = MC.process(bkgMap["ZInv"]);
+  auto vv = MC.process(bkgMap["VV"]);
+  auto singleT = MC.process(bkgMap["SingleTop"]);
+  auto dy = MC.process(bkgMap["DYJets"]);
+  auto qcd = MC.process(bkgMap["QCD"]);
+  auto ttx = MC.process(bkgMap["ttx"]);
 
-  doubleUnc wjetsY = wjets.getYield(selection, mcWeight)
+  auto sig = Sig.process(0);
+  std::cout << "Sig tag : " <<  sig.tag() << std::endl;
+
+  printSel("sel", selection);
+  
+  doubleUnc wjetsY = wjets.getYield(selection, mcWeight);
+  doubleUnc ttbarY = ttbar.getYield(selection, mcWeight);
+  doubleUnc zinvY = zinv.getYield(selection, mcWeight);
+  doubleUnc vvY = vv.getYield(selection, mcWeight);
+  doubleUnc singleTY = singleT.getYield(selection, mcWeight);
+  doubleUnc dyY = dy.getYield(selection, mcWeight);
+  doubleUnc qcdY = qcd.getYield(selection, mcWeight);
+  doubleUnc ttxY = ttx.getYield(selection, mcWeight);
+  doubleUnc sigY = sig.getYield(selection, mcWeight);
+  doubleUnc totalMC = MC.getYield(selection, mcWeight);
+  doubleUnc dataY = Data.getYield(selection, "weight");
+
 
   // Get Yields
 
   if(verbose){
     std::cout << "/* Yields report */" << '\n';
-    std::cout << "WJets: " << wjetsY << '\n';
-    std::endl;
+    std::cout << "Wjets: " << wjetsY << std::endl;
+    std::cout << "tt: " << ttbarY << std::endl;
+    std::cout << "ZInv: " << zinvY << std::endl;
+    std::cout << "VV: " << vvY << std::endl;
+    std::cout << "Single tops: " << singleTY << std::endl;
+    std::cout << "DY: " << dyY << std::endl;
+    std::cout << "QCD: " << qcdY << std::endl;
+    std::cout << "ttX: " << ttxY << std::endl;
+    std::cout << "Signal: " << sigY << std::endl;
+    std::cout << "Total MC: " << totalMC << std::endl;
+    std::cout << "Data: " << dataY << std::endl;
   }
 
 
