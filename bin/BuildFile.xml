@@ -21,7 +21,7 @@
   <bin name="makeTwoDPlots"           file="makeTwoDPlots.cc"> </bin>
   <bin name="getPUWeight"             file="getPUWeight.cc"> </bin>
   <bin name="getDDEstimate"           file="getDDEstimate.cc"> </bin>
-  <bin name="getFakeRateRatio"     file="getFakeRateRatio.cc"> </bin>
+  <bin name="getFakeRateRatio"        file="getFakeRateRatio.cc"> </bin>
   <bin name="fakeRateClosure"         file="fakeRateClosure.cc"> </bin>
   <bin name="buildJobs"               file="buildJobs.cc"> </bin>
   <bin name="fakeSystematics"         file="fakeSystematics.cc"> </bin>
@@ -32,7 +32,8 @@
   <bin name="getEventList"            file="getEventList.cc"> </bin>
   <bin name="getEfficiencyMap"        file="getEfficiencyMap.cc"> </bin>
   <bin name="getYieldsWithSystematics" file="getYieldsWithSystematics.cc"> </bin>
-  <bin name="getDDSystematics" file="getDDSystematics.cc"> </bin>
+  <bin name="getDDSystematics"        file="getDDSystematics.cc"> </bin>
+  <bin name="getBDTcut"               file="getBDTcut.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
