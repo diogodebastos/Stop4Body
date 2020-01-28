@@ -1,8 +1,8 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <sstream>
 #include <map>
-#include <fstream>
 #include <math.h>
 
 #include <TROOT.h>
@@ -188,6 +188,13 @@ int main(int argc, char** argv)
   double effBckg = eff(totalMCinit, totalMC);
   // Get FOM
   double fom = FOM(sigY,totalMC,0.2);
+
+  string fileName = sig.tag() + "_eff_fom.csv";
+  ofstream efffomFile;
+  efffomFile.open(fileName);
+  efffomFile << "bdt,effSig,effBckg,fom\n";
+  efffomFile << bdtCut <<"," << effSig << "," << effBckg <<","<< fom <<"\n";
+  efffomFile.close();
 
   if(verbose){
     std::cout << "/* Yields report */" << '\n';
