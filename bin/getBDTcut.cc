@@ -164,6 +164,7 @@ int main(int argc, char** argv)
 
   auto sig = Sig.process(0);
   std::cout << "Sig tag : " <<  sig.tag() << std::endl;
+  
 
   printSel("sel", selection);
 
@@ -189,13 +190,21 @@ int main(int argc, char** argv)
   // Get FOM
   double fom = FOM(sigY,totalMC,0.2);
 
-  string fileName = sig.tag() + "_eff_fom.csv";
-  ofstream efffomFile;
-  efffomFile.open(fileName);
-  efffomFile << "bdt,effSig,effBckg,fom\n";
+
+  std::streampos size;
+  std::string fileName = sig.tag() + "_eff_fom.csv";
+  std::fstream efffomFile;
+  efffomFile.open(fileName, std::ios::app );
+  size = efffomFile.tellg();
+  if (size==0){
+    efffomFile << "bdt,effSig,effBckg,fom\n";
+  }
   efffomFile << bdtCut <<"," << effSig << "," << effBckg <<","<< fom <<"\n";
   efffomFile.close();
-
+  
+  // Make DataCards
+  // Run combine (send job?)
+  
   if(verbose){
     std::cout << "/* Yields report */" << '\n';
     std::cout << "Wjets: " << wjetsY << std::endl;
@@ -212,10 +221,8 @@ int main(int argc, char** argv)
     std::cout << "Signal efficiency: " << effSig << std::endl;
     std::cout << "Background efficiency: " << effBckg << std::endl;
     std::cout << "FOM: " << fom << std::endl;
+//    std::cout << "Size: " << size << std::endl;
   }
-
-  // Make DataCards
-  // Run combine (send job?)
 
 }
 
