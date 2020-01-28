@@ -3,6 +3,7 @@
 #include <sstream>
 #include <map>
 #include <fstream>
+#include <math.h>
 
 #include <TROOT.h>
 #include <TFile.h>
@@ -24,6 +25,7 @@
 using json = nlohmann::json;
 
 void printSel(std::string, std::string);
+double FOM(doubleUnc, doubleUnc, double);
 
 int main(int argc, char** argv)
 {
@@ -63,12 +65,12 @@ int main(int argc, char** argv)
     {
       isHighDM = true;
     }
-   
+
     if(argument == "--bdtCut")
     {
       std::stringstream convert;
       convert << argv[++i];
-      convert >> bdtCut; 
+      convert >> bdtCut;
     }
     if(argument == "--verbose")
     {
@@ -79,7 +81,7 @@ int main(int argc, char** argv)
   std::cout << "Reading json files" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
-  std::string placeHolderSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (isTight == 1)";
+  std::string preSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (isTight == 1)";
 
   if(isHighDM)
   {
@@ -87,7 +89,7 @@ int main(int argc, char** argv)
 
   std::string srSelection = "(BDT > " + std::to_string(bdtCut) + " )";
 
-  std::string selection = placeHolderSelection  + " && " + srSelection;
+  std::string selection = preSelection  + " && " + srSelection;
 
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
@@ -146,7 +148,7 @@ int main(int argc, char** argv)
   for(auto& bkg : bkgMap)
   {
    // std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(selection, mcWeight) << std::endl;
-    
+
   }
 
 
@@ -163,7 +165,10 @@ int main(int argc, char** argv)
   std::cout << "Sig tag : " <<  sig.tag() << std::endl;
 
   printSel("sel", selection);
-  
+
+  doubleUnc totalMCinit = MC.getYield(preSelection, mcWeight);
+  doubleUnc sigYinit = sig.getYield(preSelection, mcWeight);
+
   doubleUnc wjetsY = wjets.getYield(selection, mcWeight);
   doubleUnc ttbarY = ttbar.getYield(selection, mcWeight);
   doubleUnc zinvY = zinv.getYield(selection, mcWeight);
@@ -176,6 +181,9 @@ int main(int argc, char** argv)
   doubleUnc totalMC = MC.getYield(selection, mcWeight);
   doubleUnc dataY = Data.getYield(selection, "weight");
 
+  double fom = FOM(sigY,totalMC);
+  double effSig = eff(sigYinit, sigY);
+  double effBckg = eff(totalMCinit, totalMC);
 
   // Get Yields
 
@@ -192,6 +200,9 @@ int main(int argc, char** argv)
     std::cout << "Signal: " << sigY << std::endl;
     std::cout << "Total MC: " << totalMC << std::endl;
     std::cout << "Data: " << dataY << std::endl;
+    std::cout << "Signal efficiency: " << effSig << std::endl;
+    std::cout << "Background efficiency: " << effBckg << std::endl;
+    std::cout << "FOM: " << fom << std::endl;
   }
 
 
@@ -212,4 +223,34 @@ void printSel(std::string name, std::string selection)
   std::cout << "  " << selection << std::endl;
   std::cout << std::endl;
   return;
+}
+
+double FOM(doubleUnc signal, doubleUnc background, double f=0.2)
+{
+  double fom;
+  std::cout << "Signal yield: " << S << std::endl;
+  std::cout << "Background yield: " << S << std::endl;
+
+  double S = signal.value();
+  double B = background.value();
+
+  double sigmaB2 = pow(f*B, 2);
+
+  double term1=(S+B)*log(((S+B)*(B+sigmaB2))/(pow(B,2)+(S+B)*sigmaB2));
+  double term2=pow(B,2)/sigmaB2*log(1+(sigmaB2*S)/(B*(B+sigmaB2)));
+
+  fom = std::sqrt(2*term1-term2);
+
+  return fom;
+}
+
+double eff(doubleUnc yieldAtPreSel, doubleUnc yieldAtCut)
+{
+  double eff;
+  double yInit = yieldAtPreSel.value();
+  double yCut = yieldAtCut.value();
+
+  eff = yCut/yInit;
+
+  return eff;
 }
