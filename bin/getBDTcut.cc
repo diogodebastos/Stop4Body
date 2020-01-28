@@ -25,7 +25,8 @@
 using json = nlohmann::json;
 
 void printSel(std::string, std::string);
-double FOM(doubleUnc, doubleUnc, double);
+double FOM(doubleUnc, doubleUnc, float);
+double eff(doubleUnc, doubleUnc);
 
 int main(int argc, char** argv)
 {
@@ -166,6 +167,7 @@ int main(int argc, char** argv)
 
   printSel("sel", selection);
 
+  // Get Yields
   doubleUnc totalMCinit = MC.getYield(preSelection, mcWeight);
   doubleUnc sigYinit = sig.getYield(preSelection, mcWeight);
 
@@ -181,11 +183,11 @@ int main(int argc, char** argv)
   doubleUnc totalMC = MC.getYield(selection, mcWeight);
   doubleUnc dataY = Data.getYield(selection, "weight");
 
-  double fom = FOM(sigY,totalMC);
+  // Get Efficiency
   double effSig = eff(sigYinit, sigY);
   double effBckg = eff(totalMCinit, totalMC);
-
-  // Get Yields
+  // Get FOM
+  double fom = FOM(sigY,totalMC,0.2);
 
   if(verbose){
     std::cout << "/* Yields report */" << '\n';
@@ -205,13 +207,6 @@ int main(int argc, char** argv)
     std::cout << "FOM: " << fom << std::endl;
   }
 
-
-
-  //doubleUnc NinSR = toEstimate.getYield(SR, mcWeight);
-
-
-  // Get FOM
-  // Get Efficiency
   // Make DataCards
   // Run combine (send job?)
 
@@ -225,14 +220,14 @@ void printSel(std::string name, std::string selection)
   return;
 }
 
-double FOM(doubleUnc signal, doubleUnc background, double f=0.2)
+double FOM(doubleUnc signal, doubleUnc background, float f)
 {
   double fom;
-  std::cout << "Signal yield: " << S << std::endl;
-  std::cout << "Background yield: " << S << std::endl;
 
   double S = signal.value();
   double B = background.value();
+  std::cout << "Signal yield: " << S << std::endl;
+  std::cout << "Background yield: " << B << std::endl;
 
   double sigmaB2 = pow(f*B, 2);
 
