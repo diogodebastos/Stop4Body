@@ -27,6 +27,8 @@ using json = nlohmann::json;
 void printSel(std::string, std::string);
 double FOM(doubleUnc, doubleUnc, float);
 double eff(doubleUnc, doubleUnc);
+void saveCSV(std::string, double, double, double, double);
+void makeDataCard(std::string, doubleUnc);
 
 int main(int argc, char** argv)
 {
@@ -164,7 +166,7 @@ int main(int argc, char** argv)
 
   auto sig = Sig.process(0);
   std::cout << "Sig tag : " <<  sig.tag() << std::endl;
-  
+
 
   printSel("sel", selection);
 
@@ -190,21 +192,12 @@ int main(int argc, char** argv)
   // Get FOM
   double fom = FOM(sigY,totalMC,0.2);
 
-
-  std::streampos size;
-  std::string fileName = sig.tag() + "_eff_fom.csv";
-  std::fstream efffomFile;
-  efffomFile.open(fileName, std::ios::app );
-  size = efffomFile.tellg();
-  if (size==0){
-    efffomFile << "bdt,effSig,effBckg,fom\n";
-  }
-  efffomFile << bdtCut <<"," << effSig << "," << effBckg <<","<< fom <<"\n";
-  efffomFile.close();
-  
+  //Save CSV with FOM and EFFs
+  saveCSV(sig.tag(), bdtCut, effSig, effBckg, fom);
   // Make DataCards
+  makeDataCard(sig.tag(), sigY);
   // Run combine (send job?)
-  
+
   if(verbose){
     std::cout << "/* Yields report */" << '\n';
     std::cout << "Wjets: " << wjetsY << std::endl;
@@ -262,4 +255,43 @@ double eff(doubleUnc yieldAtPreSel, doubleUnc yieldAtCut)
   eff = yCut/yInit;
 
   return eff;
+}
+
+void saveCSV(std::string name, double bdtCut, double effSig, double effBckg, double fom){
+  std::streampos size;
+  std::string fileName = name + "_eff_fom.csv";
+  std::fstream efffomFile;
+  efffomFile.open(fileName, std::ios::app );
+  size = efffomFile.tellg();
+  if (size==0){
+    efffomFile << "bdt,effSig,effBckg,fom\n";
+  }
+  efffomFile << bdtCut <<"," << effSig << "," << effBckg <<","<< fom <<"\n";
+  efffomFile.close();
+}
+
+void makeDataCard(std::string bin, doubleUnc sigY){
+  std::ifstream dataCardIn("Templates/dataCardForCuts.txt");
+  std::ofstream dataCardOut("CLs/DataCards/"+bin+".txt");
+
+  if(!dataCardIn || !dataCardOut)
+  {
+    cout << "Error opening files!" << endl;
+    return 1;
+  }
+
+  std::string strReplace = "ST500N420";
+  std::string strNew = bin;
+
+  std::string strTemp;
+  while(filein >> strTemp)
+  {
+    if(strTemp == strReplace)
+    {
+      strTemp = strNew;
+    }
+    strTemp += "\n";
+    fileout << strTemp;
+  }
+  return;
 }
