@@ -28,7 +28,7 @@ void printSel(std::string, std::string);
 double FOM(doubleUnc, doubleUnc, float);
 double eff(doubleUnc, doubleUnc);
 void saveCSV(std::string, double, double, double, double);
-void makeDataCard(std::string, doubleUnc);
+void makeDataCard(std::string, double, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
 
 int main(int argc, char** argv)
 {
@@ -166,7 +166,9 @@ int main(int argc, char** argv)
 
   auto sig = Sig.process(0);
   std::cout << "Sig tag : " <<  sig.tag() << std::endl;
-
+  std::string name = sig.tag();
+  name.replace(0,13,"ST");
+  name.replace(5,1,"N");
 
   printSel("sel", selection);
 
@@ -193,13 +195,13 @@ int main(int argc, char** argv)
   double fom = FOM(sigY,totalMC,0.2);
 
   //Save CSV with FOM and EFFs
-  saveCSV(sig.tag(), bdtCut, effSig, effBckg, fom);
+  saveCSV(name, bdtCut, effSig, effBckg, fom);
   // Make DataCards
-  makeDataCard(sig.tag(), sigY);
+  makeDataCard(name, bdtCut, sigY, wjetsY, ttbarY, zinvY, vvY, singleTY, dyY);
   // Run combine (send job?)
 
   if(verbose){
-    std::cout << "/* Yields report */" << '\n';
+    std::cout << " Yields report " << '\n';
     std::cout << "Wjets: " << wjetsY << std::endl;
     std::cout << "tt: " << ttbarY << std::endl;
     std::cout << "ZInv: " << zinvY << std::endl;
@@ -216,7 +218,6 @@ int main(int argc, char** argv)
     std::cout << "FOM: " << fom << std::endl;
 //    std::cout << "Size: " << size << std::endl;
   }
-
 }
 
 void printSel(std::string name, std::string selection)
@@ -270,28 +271,61 @@ void saveCSV(std::string name, double bdtCut, double effSig, double effBckg, dou
   efffomFile.close();
 }
 
-void makeDataCard(std::string bin, doubleUnc sigY){
+std::string toDC(doubleUnc yield){
+  std::string toDC;
+  toDC = std::to_string(1 + yield.uncertainty()/yield.value());
+  return toDC;
+}
+
+void makeDataCard(std::string bin, double bdtCut, doubleUnc sigY, doubleUnc wjetsY, doubleUnc ttbarY, doubleUnc zinvY, doubleUnc vvY, doubleUnc singleTY, doubleUnc dyY){
   std::ifstream dataCardIn("Templates/dataCardForCuts.txt");
-  std::ofstream dataCardOut("CLs/DataCards/"+bin+".txt");
+  std::ofstream dataCardOut("CLs/DataCards/"+bin+"_BDT"+std::to_string(bdtCut)+".txt");
 
   if(!dataCardIn || !dataCardOut)
-  {
-    cout << "Error opening files!" << endl;
-    return 1;
+   {
+    std::cout << "Error opening files!" << std::endl;
+    return;
   }
 
-  std::string strReplace = "ST500N420";
-  std::string strNew = bin;
+  //std::string strReplace = "ST500N420";
+  //std::string strNew = bin;
 
   std::string strTemp;
-  while(filein >> strTemp)
+  int i = 0;
+  //while(dataCardIn >> strTemp)
+  while(getline(dataCardIn,strTemp))
   {
-    if(strTemp == strReplace)
-    {
-      strTemp = strNew;
+    i++;
+    if(i==7){
+      strTemp = "bin "+bin; 
     }
+    else if(i==8){
+      // TODO: Code the number of observations
+      strTemp = "observation " + std::to_string(i); 
+    }
+    else if(i==10){
+      strTemp = "bin "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+ bin;
+    }
+    else if(i==13){
+      strTemp = "rate "+std::to_string(sigY.value())+" "+std::to_string(wjetsY.value())+" "+std::to_string(ttbarY.value())+" "+std::to_string(zinvY.value())+" "+std::to_string(vvY.value())+" "+std::to_string(singleTY.value())+" "+std::to_string(dyY.value());
+
+    }
+    else if(i==15){
+      strTemp = "Stat_" + bin + " lnN " + toDC(sigY) + " - - - - - -"; 
+    }
+    else if(i==22){
+      strTemp = "SysBckg\t lnN - "+toDC(wjetsY)+" "+toDC(ttbarY)+" 1.50 1.50 1.50 1.50";
+                                //toDC(wjetsY)+" "+toDC(ttbarY)+" "+toDC(zinvY)+" "+toDC(vvY)+" "+toDC(singleTY)+" "+toDC(dyY);
+    }
+//    if(strTemp == strReplace)
+//    {
+//      strTemp = strNew;
+//    }
+
+    // std::cout << strTemp << std::endl;
+    //std::cout << strTemp << "\t " << i  <<std::endl;
     strTemp += "\n";
-    fileout << strTemp;
+    dataCardOut << strTemp;
   }
   return;
 }
