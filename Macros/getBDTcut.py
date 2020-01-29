@@ -63,9 +63,19 @@ if __name__ == "__main__":
     assure_path_exists(outputDirectory)
     outputDirectory = os.path.realpath(outputDirectory)
 
+    jobDir = outputDirectory + "/Jobs/"
+    assure_path_exists(jobDir)
+    jobDir = os.path.realpath(jobDir)
+
+    dataCardsDir = outputDirectory + "/DataCards/"
+    assure_path_exists(dataCardsDir)
+    dataCardsDir = os.path.realpath(dataCardsDir)
+    
+    cwd = os.getcwd()
     bdtCut = 0.0
-    while bdtCut < 6.5
-        with open(outputDirectory + "/theJob.sh", 'w') as thisScript:
+    while bdtCut < 0.7:
+        job = jobDir + "/Job_" + str(bdt["deltaM"]) + "_BDT" + str(bdtCut) + "_Job.sh"
+        with open(job, 'w') as thisScript:
             thisScript.write("#!/bin/bash\n\n")
 
             thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
@@ -86,22 +96,23 @@ if __name__ == "__main__":
             thisScript.write("#. setupJSONs.sh\n")
             thisScript.write(". setupPaths.sh\n\n")
 
-            thisScript.write("getBDTcut --verbose")
-            thisScript.write("--json $JSON_PATH/plot2017_DM" + str(bdt["deltaM"]) + "RP.json")
+            thisScript.write("getBDTcut --verbose ")
+            thisScript.write("--json $JSON_PATH/plot2017_DM" + str(bdt["deltaM"]) + "RP.json ")
             thisScript.write("--inDir " + thisInputDirectory + " ")
             thisScript.write("--outDir " + outputDirectory + " ")
             thisScript.write("--suffix bdt ")
             thisScript.write("--bdtCut " + str(bdtCut))
             thisScript.write("\n\n")
 
-        mode = os.fstat(thisScript.fileno()).st_mode
-        mode |= 0o111
-        os.fchmod(thisScript.fileno(), mode & 0o7777)
-
-        job = outputDirectory + "/theJob.sh"
+            mode = os.fstat(thisScript.fileno()).st_mode
+            mode |= 0o111
+            os.fchmod(thisScript.fileno(), mode & 0o7777)
+        
+        os.chdir(jobDir)
         cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
         print cmd
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
 
         bdtCut += 0.01
+    os.chdir(cwd)
