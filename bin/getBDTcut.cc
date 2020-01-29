@@ -27,8 +27,8 @@ using json = nlohmann::json;
 void printSel(std::string, std::string);
 double FOM(doubleUnc, doubleUnc, float);
 double eff(doubleUnc, doubleUnc);
-void saveCSV(std::string, double, double, double, double);
-void makeDataCard(std::string, double, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
+void saveCSV(std::string, std::string, double, double, double, double);
+void makeDataCard(std::string, std::string, double, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
 
 int main(int argc, char** argv)
 {
@@ -195,9 +195,9 @@ int main(int argc, char** argv)
   double fom = FOM(sigY,totalMC,0.2);
 
   //Save CSV with FOM and EFFs
-  saveCSV(name, bdtCut, effSig, effBckg, fom);
+  saveCSV(outputDirectory, name, bdtCut, effSig, effBckg, fom);
   // Make DataCards
-  makeDataCard(name, bdtCut, sigY, totalMC,wjetsY, ttbarY, zinvY, vvY, singleTY, dyY);
+  makeDataCard(outputDirectory, name, bdtCut, sigY, totalMC,wjetsY, ttbarY, zinvY, vvY, singleTY, dyY);
   // Run combine (send job?)
 
   if(verbose){
@@ -258,7 +258,7 @@ double eff(doubleUnc yieldAtPreSel, doubleUnc yieldAtCut)
   return eff;
 }
 
-void saveCSV(std::string name, double bdtCut, double effSig, double effBckg, double fom){
+void saveCSV(std::string outputDirectory, std::string name, double bdtCut, double effSig, double effBckg, double fom){
   std::streampos size;
   std::string fileName = outputDirectory+name + "_eff_fom.csv";
   std::fstream efffomFile;
@@ -277,7 +277,7 @@ std::string toDC(doubleUnc yield){
   return toDC;
 }
 
-void makeDataCard(std::string bin, double bdtCut, doubleUnc sigY,doubleUnc totalMC, doubleUnc wjetsY, doubleUnc ttbarY, doubleUnc zinvY, doubleUnc vvY, doubleUnc singleTY, doubleUnc dyY){
+void makeDataCard(std::string outputDirectory, std::string bin, double bdtCut, doubleUnc sigY,doubleUnc totalMC, doubleUnc wjetsY, doubleUnc ttbarY, doubleUnc zinvY, doubleUnc vvY, doubleUnc singleTY, doubleUnc dyY){
   std::ifstream dataCardIn("Templates/dataCardForCuts.txt");
   std::ofstream dataCardOut(outputDirectory+bin+"_BDT"+std::to_string(bdtCut)+".txt");
 
