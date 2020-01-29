@@ -190,13 +190,13 @@ elif [ ${YEAR} == 2017 ]; then
  mergeJSONs $JSON_PATH/plot2017_DM10RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_490_FullSim.json
  mergeJSONs $JSON_PATH/plot2017_DM80RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420_FullSim.json
 
- mergeJSONs $JSON_PATH/plot2017_DM10RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json
+ mergeJSONs $JSON_PATH/plot2017_DM10RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_450_440.json
  mergeJSONs $JSON_PATH/plot2017_DM20RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_480.json
  mergeJSONs $JSON_PATH/plot2017_DM30RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json
  mergeJSONs $JSON_PATH/plot2017_DM40RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_550_510.json
- mergeJSONs $JSON_PATH/plot2017_DM50RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_525_475.json
- mergeJSONs $JSON_PATH/plot2017_DM60RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_525_465.json
- mergeJSONs $JSON_PATH/plot2017_DM70RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_525_455.json
- mergeJSONs $JSON_PATH/plot2017_DM80RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
+ mergeJSONs $JSON_PATH/plot2017_DM50RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_575_525.json
+ mergeJSONs $JSON_PATH/plot2017_DM60RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_575_515.json
+ mergeJSONs $JSON_PATH/plot2017_DM70RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_600_530.json
+ mergeJSONs $JSON_PATH/plot2017_DM80RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_600_520.json
 
 fi

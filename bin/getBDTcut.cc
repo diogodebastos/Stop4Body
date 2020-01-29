@@ -260,7 +260,7 @@ double eff(doubleUnc yieldAtPreSel, doubleUnc yieldAtCut)
 
 void saveCSV(std::string name, double bdtCut, double effSig, double effBckg, double fom){
   std::streampos size;
-  std::string fileName = name + "_eff_fom.csv";
+  std::string fileName = outputDirectory+name + "_eff_fom.csv";
   std::fstream efffomFile;
   efffomFile.open(fileName, std::ios::app );
   size = efffomFile.tellg();
@@ -279,7 +279,7 @@ std::string toDC(doubleUnc yield){
 
 void makeDataCard(std::string bin, double bdtCut, doubleUnc sigY,doubleUnc totalMC, doubleUnc wjetsY, doubleUnc ttbarY, doubleUnc zinvY, doubleUnc vvY, doubleUnc singleTY, doubleUnc dyY){
   std::ifstream dataCardIn("Templates/dataCardForCuts.txt");
-  std::ofstream dataCardOut("CLs/DataCards/"+bin+"_BDT"+std::to_string(bdtCut)+".txt");
+  std::ofstream dataCardOut(outputDirectory+bin+"_BDT"+std::to_string(bdtCut)+".txt");
 
   if(!dataCardIn || !dataCardOut)
    {
