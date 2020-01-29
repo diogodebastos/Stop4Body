@@ -28,7 +28,7 @@ void printSel(std::string, std::string);
 double FOM(doubleUnc, doubleUnc, float);
 double eff(doubleUnc, doubleUnc);
 void saveCSV(std::string, double, double, double, double);
-void makeDataCard(std::string, double, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
+void makeDataCard(std::string, double, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
 
 int main(int argc, char** argv)
 {
@@ -197,7 +197,7 @@ int main(int argc, char** argv)
   //Save CSV with FOM and EFFs
   saveCSV(name, bdtCut, effSig, effBckg, fom);
   // Make DataCards
-  makeDataCard(name, bdtCut, sigY, wjetsY, ttbarY, zinvY, vvY, singleTY, dyY);
+  makeDataCard(name, bdtCut, sigY, totalMC,wjetsY, ttbarY, zinvY, vvY, singleTY, dyY);
   // Run combine (send job?)
 
   if(verbose){
@@ -277,7 +277,7 @@ std::string toDC(doubleUnc yield){
   return toDC;
 }
 
-void makeDataCard(std::string bin, double bdtCut, doubleUnc sigY, doubleUnc wjetsY, doubleUnc ttbarY, doubleUnc zinvY, doubleUnc vvY, doubleUnc singleTY, doubleUnc dyY){
+void makeDataCard(std::string bin, double bdtCut, doubleUnc sigY,doubleUnc totalMC, doubleUnc wjetsY, doubleUnc ttbarY, doubleUnc zinvY, doubleUnc vvY, doubleUnc singleTY, doubleUnc dyY){
   std::ifstream dataCardIn("Templates/dataCardForCuts.txt");
   std::ofstream dataCardOut("CLs/DataCards/"+bin+"_BDT"+std::to_string(bdtCut)+".txt");
 
@@ -297,11 +297,11 @@ void makeDataCard(std::string bin, double bdtCut, doubleUnc sigY, doubleUnc wjet
   {
     i++;
     if(i==7){
-      strTemp = "bin "+bin; 
+      strTemp = "bin "+bin;
     }
     else if(i==8){
       // TODO: Code the number of observations
-      strTemp = "observation " + std::to_string(i); 
+      strTemp = "observation " + std::to_string(std::round(totalMC.value()));
     }
     else if(i==10){
       strTemp = "bin "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+ bin;
@@ -311,7 +311,7 @@ void makeDataCard(std::string bin, double bdtCut, doubleUnc sigY, doubleUnc wjet
 
     }
     else if(i==15){
-      strTemp = "Stat_" + bin + " lnN " + toDC(sigY) + " - - - - - -"; 
+      strTemp = "Stat_" + bin + " lnN " + toDC(sigY) + " - - - - - -";
     }
     else if(i==22){
       strTemp = "SysBckg\t lnN - "+toDC(wjetsY)+" "+toDC(ttbarY)+" 1.50 1.50 1.50 1.50";
