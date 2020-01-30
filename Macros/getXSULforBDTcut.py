@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
   parser = argparse.ArgumentParser(description='Process the command line options')
   parser.add_argument('-i', '--inputDirectory', required=True, help='Name of the input directory')
-  parser.add_argument('-o', '--outputDirectory', required=True, help='Base name of the output directory for each BDT')
+#  parser.add_argument('-o', '--outputDirectory', required=True, help='Base name of the output directory for each BDT')
   #parser.add_argument('-j', '--jsonFile', required=True, help='The json file describing the samples to use')
   #parser.add_argument('-s', '--doSwap', action='store_true', help='Whether to process with the swapping of MET and LepPt variables')
   parser.add_argument('-d', '--dryRun', action='store_true', help='Do a dry run (i.e. do not actually run the potentially dangerous commands but print them to the screen)')
@@ -58,7 +58,8 @@ if __name__ == "__main__":
   for bdt in BDTs:
     thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"])
     #outputDirectory = args.outputDirectory + "_bdt" + bdt['name'] + "/"
-    outputDirectory = thisInputDirectory + "/" + args.outputDirectory + "/"
+    #outputDirectory = thisInputDirectory + "/" + args.outputDirectory + "/"
+    outputDirectory = thisInputDirectory + "/BdtCut/"
     print "Creating output directory for '" + bdt['name'] + "'"
     assure_path_exists(outputDirectory)
     outputDirectory = os.path.realpath(outputDirectory)
@@ -71,7 +72,7 @@ if __name__ == "__main__":
     assure_path_exists(jobDir)
     jobDir = os.path.realpath(jobDir)
 
-    dataCards = os.lisdir(dataCardsDir)
+    dataCards = os.listdir(dataCardsDir)
 
     cwd = os.getcwd()
 
@@ -92,10 +93,10 @@ if __name__ == "__main__":
             thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_1_0/src/\n")
             thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
-            thisScript.write("cd " + dataCardsDir "\n\n")
+            thisScript.write("cd " + dataCardsDir + "\n\n")
 
             thisScript.write("combine -M Asymptotic ")
-            thisScript.write(dataCard + " -n " + bin + " > " dataCard + "_asym.txt")
+            thisScript.write(dataCard + " -n " + bin + " > " + dataCard[:-4] + "_asym.txt")
             thisScript.write("\n\n")
 
             mode = os.fstat(thisScript.fileno()).st_mode
@@ -108,5 +109,4 @@ if __name__ == "__main__":
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
 
-        bdtCut += 0.01
     os.chdir(cwd)
