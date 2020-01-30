@@ -45,13 +45,13 @@ if __name__ == "__main__":
   inputDirectory = os.path.realpath(inputDirectory)
 
   BDTs = [
-#          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False},
-#          {'name': '20', 'deltaM': 20, 'cut': 0.39, 'highDeltaM': False},
-#          {'name': '30', 'deltaM': 30, 'cut': 0.47, 'highDeltaM': False},
-#          {'name': '40', 'deltaM': 40, 'cut': 0.48, 'highDeltaM': False},
-#          {'name': '50', 'deltaM': 50, 'cut': 0.45, 'highDeltaM': False},
-#          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False},
-#          {'name': '70', 'deltaM': 70, 'cut': 0.46, 'highDeltaM': True},
+          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False},
+          {'name': '20', 'deltaM': 20, 'cut': 0.39, 'highDeltaM': False},
+          {'name': '30', 'deltaM': 30, 'cut': 0.47, 'highDeltaM': False},
+          {'name': '40', 'deltaM': 40, 'cut': 0.48, 'highDeltaM': False},
+          {'name': '50', 'deltaM': 50, 'cut': 0.45, 'highDeltaM': False},
+          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False},
+          {'name': '70', 'deltaM': 70, 'cut': 0.46, 'highDeltaM': True},
           {'name': '80', 'deltaM': 80, 'cut': 0.44, 'highDeltaM': True},
   ]
 
