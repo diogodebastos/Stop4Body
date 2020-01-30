@@ -63,45 +63,39 @@ if __name__ == "__main__":
     assure_path_exists(outputDirectory)
     outputDirectory = os.path.realpath(outputDirectory)
 
-    jobDir = outputDirectory + "/Jobs/"
-    assure_path_exists(jobDir)
-    jobDir = os.path.realpath(jobDir)
-
     dataCardsDir = outputDirectory + "/DataCards/"
     assure_path_exists(dataCardsDir)
     dataCardsDir = os.path.realpath(dataCardsDir)
 
+    jobDir = dataCardsDir + "/Jobs/"
+    assure_path_exists(jobDir)
+    jobDir = os.path.realpath(jobDir)
+
+    dataCards = os.lisdir(dataCardsDir)
+
     cwd = os.getcwd()
-    bdtCut = 0.0
-    while bdtCut < 0.7:
-        job = jobDir + "/Job_" + str(bdt["deltaM"]) + "_BDT" + str(bdtCut) + ".sh"
+
+    for dataCard in dataCards:
+        bin = dataCard[0:9]
+        print bin
+
+        job = jobDir + "/Job_" + bin + ".sh"
         with open(job, 'w') as thisScript:
             thisScript.write("#!/bin/bash\n\n")
 
             thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
 
-            thisScript.write("export SCRAM_ARCH=slc6_amd64_gcc530\n")
-            thisScript.write("export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch\n")
-            thisScript.write("source $VO_CMS_SW_DIR/cmsset_default.sh\n")
-            thisScript.write("export CMS_PATH=$VO_CMS_SW_DIR\n")
-            thisScript.write("source /cvmfs/cms.cern.ch/crab3/crab.sh\n\n")
+            thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
+            thisScript.write(". setup.sh\n\n")
 
-            #cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/
             thisScript.write("cd $CMSSW_BASE/src/\n")
+            thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_1_0/src/\n")
             thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
-            #cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/
-            thisScript.write("cd UserCode/Stop4Body/Macros/\n\n")
+            thisScript.write("cd " + dataCardsDir "\n\n")
 
-            thisScript.write("#. setupJSONs.sh\n")
-            thisScript.write(". setupPaths.sh\n\n")
-
-            thisScript.write("getBDTcut --verbose ")
-            thisScript.write("--json $JSON_PATH/plot2017_DM" + str(bdt["deltaM"]) + "RP.json ")
-            thisScript.write("--inDir " + thisInputDirectory + " ")
-            thisScript.write("--outDir " + outputDirectory + " ")
-            thisScript.write("--suffix bdt ")
-            thisScript.write("--bdtCut " + str(bdtCut))
+            thisScript.write("combine -M Asymptotic ")
+            thisScript.write(dataCard + " -n " + bin + " > " dataCard + "_asym.txt")
             thisScript.write("\n\n")
 
             mode = os.fstat(thisScript.fileno()).st_mode
