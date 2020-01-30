@@ -78,7 +78,6 @@ if __name__ == "__main__":
 
     for dataCard in dataCards:
         bin = dataCard[0:9]
-        print bin
 
         job = jobDir + "/Job_" + bin + ".sh"
         with open(job, 'w') as thisScript:
