@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     for dataCard in dataCards:
         bin = dataCard[0:9]
-
+        if not (dataCard[-5:] == "0.txt" and dataCard[:2] == "ST"): continue
         job = jobDir + "/Job_" + bin + ".sh"
         with open(job, 'w') as thisScript:
             thisScript.write("#!/bin/bash\n\n")

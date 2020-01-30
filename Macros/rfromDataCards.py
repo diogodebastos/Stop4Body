@@ -69,7 +69,8 @@ if __name__ == "__main__":
     dataCards = os.listdir(dataCardsDir)
 
     for dataCard in dataCards:
-        if dataCard[-8:] == "asym.txt" and dataCard[:2] == "ST":
+        if dataCard[-10:] == "0_asym.txt" and dataCard[:2] == "ST":
+            #print dataCard
             bin = dataCard[0:9]
             bdtCut = dataCard[13:20]
             lines = []
