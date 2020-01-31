@@ -259,14 +259,16 @@ double eff(doubleUnc yieldAtPreSel, doubleUnc yieldAtCut)
 }
 
 void saveCSV(std::string outputDirectory, std::string name, double bdtCut, double effSig, double effBckg, double fom){
-  std::streampos size;
   std::string fileName = outputDirectory+"/"+name + "_eff_fom.csv";
   std::fstream efffomFile;
   efffomFile.open(fileName, std::ios::app );
+  /* TODO: Fix this
+  std::streampos size;
   size = efffomFile.tellg();
   if (size==0){
     efffomFile << "bdt,effSig,effBckg,fom\n";
   }
+  */
   efffomFile << bdtCut <<"," << effSig << "," << effBckg <<","<< fom <<"\n";
   efffomFile.close();
 }
