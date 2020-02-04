@@ -46,16 +46,29 @@ if __name__ == "__main__":
   baseDirectory = os.path.realpath(os.getcwd())
   inputDirectory = os.path.realpath(inputDirectory)
 
+### BDT Cuts for 2016
+#  BDTs = [
+#          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False},
+#          {'name': '10_alt', 'deltaM': 10, 'cut': 0.2, 'highDeltaM': False},
+#          {'name': '20', 'deltaM': 20, 'cut': 0.39, 'highDeltaM': False},
+#          {'name': '30', 'deltaM': 30, 'cut': 0.47, 'highDeltaM': False},
+#          {'name': '40', 'deltaM': 40, 'cut': 0.48, 'highDeltaM': False},
+#          {'name': '50', 'deltaM': 50, 'cut': 0.45, 'highDeltaM': False},
+#          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False},
+#          {'name': '70', 'deltaM': 70, 'cut': 0.46, 'highDeltaM': True},
+#          {'name': '80', 'deltaM': 80, 'cut': 0.44, 'highDeltaM': True},
+#  ]
+
+### BDT Cuts for 2017
   BDTs = [
-          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False},
-          {'name': '10_alt', 'deltaM': 10, 'cut': 0.2, 'highDeltaM': False},
-          {'name': '20', 'deltaM': 20, 'cut': 0.39, 'highDeltaM': False},
-          {'name': '30', 'deltaM': 30, 'cut': 0.47, 'highDeltaM': False},
-          {'name': '40', 'deltaM': 40, 'cut': 0.48, 'highDeltaM': False},
-          {'name': '50', 'deltaM': 50, 'cut': 0.45, 'highDeltaM': False},
-          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False},
-          {'name': '70', 'deltaM': 70, 'cut': 0.46, 'highDeltaM': True},
-          {'name': '80', 'deltaM': 80, 'cut': 0.44, 'highDeltaM': True},
+          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False,'doLoosenBDT': True},
+          {'name': '20', 'deltaM': 20, 'cut': 0.36, 'highDeltaM': False,'doLoosenBDT': True},
+          {'name': '30', 'deltaM': 30, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
+          {'name': '40', 'deltaM': 40, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
+          {'name': '50', 'deltaM': 50, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': False},
+          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False,'doLoosenBDT': False},
+          {'name': '70', 'deltaM': 70, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},
+          {'name': '80', 'deltaM': 80, 'cut': 0.46, 'highDeltaM': True,'doLoosenBDT': False},
   ]
 
   for bdt in BDTs:
@@ -96,7 +109,7 @@ if __name__ == "__main__":
       if args.isSwap:
         thisScript.write("--json ${JSON_PATH}/plot2017swap_lep.json ")
       else:
-        thisScript.write("--json ${JSON_PATH}/plot2017_lep.json ")
+        thisScript.write("--json ${JSON_PATH}/plot2017_DM"+bdt['name']+"RP.json ")
       thisScript.write("--outDir " + outputDirectory + " ")
       thisScript.write("--inDir " + thisInputDirectory + " ")
       thisScript.write("--suffix bdt ")
@@ -172,7 +185,7 @@ if __name__ == "__main__":
       if args.isSwap:
         thisScript.write("--json ${JSON_PATH}/plot2017swap_lep.json ")
       else:
-        thisScript.write("--json ${JSON_PATH}/plot2017_lep.json ")
+        thisScript.write("--json ${JSON_PATH}/plot2017_DM"+bdt['name']+"RP.json ")
       thisScript.write("--outDir " + outputDirectory + " ")
       thisScript.write("--inDir " + thisInputDirectory + " ")
       thisScript.write("--suffix bdt ")
