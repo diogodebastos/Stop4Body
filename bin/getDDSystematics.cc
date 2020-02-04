@@ -54,7 +54,7 @@ int main(int argc, char** argv)
   bool doVR1 = false; // Swap the Met and LepPt for this VR
   bool doVR2 = false; // Invert the Met for this VR
   bool doVR3 = false; // Invert the LepPt for this VR
-  //bool doLoosenBDT = false; // SRCut and CRCut == 0.1 -> When BDTcut is too high of VR SR
+  bool doLoosenBDT = false; // SRCut and CRCut == 0.1 -> When BDTcut is too high of VR SR
   bool unblind = false;
 
   if(argc < 2)
@@ -134,12 +134,12 @@ int main(int argc, char** argv)
     {
       doVR3 = true;
     }
-/*
+
     if(argument == "--doLoosenBDT")
     {
       doLoosenBDT = true;
     }
-*/
+
     if(argument == "--verbose")
     {
       verbose = true;
@@ -343,11 +343,11 @@ int main(int argc, char** argv)
     std::cout << "Doing ISR sys variations" << std::endl;
   }
 
-  //getISRsystematicsSignal(Sig, preSelection + " && " + srSelection, mcWeight);
+  getISRsystematicsSignal(Sig, preSelection + " && " + srSelection, mcWeight);
 
-  //getISRsystematicsDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight);
+  getISRsystematicsDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight);
 
-  //getISRsystematicsDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
+  getISRsystematicsDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
 
   // SYS Fake-Rate
   if(verbose){
@@ -355,11 +355,11 @@ int main(int argc, char** argv)
   }
   // SysFR 1) Closure test for the prediction of the background with a non-prompt lepton
 
-  //getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value());
+  getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value());
 
   // SysFR 2) ISR on fakes prediction
 
-  //getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight);
+  getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight);
 
   // SysFR 3) Non-universality
 
@@ -372,7 +372,7 @@ int main(int argc, char** argv)
 
   //Systematics for the DD methods of WJets and TTbar
   // Comment this part for debugging of FRsys
-/*
+
   methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
   methodTwoDDSystematics(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
   if (doLoosenBDT){
@@ -381,7 +381,7 @@ int main(int argc, char** argv)
   }
   methodOneDDSystematics(ttbar, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, ttbarEnrich, mcWeight.Value(), verbose);
   methodTwoDDSystematics(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight.Value(), verbose);
-*/
+
   std::cout << std::endl;
 
   if(unblind){
@@ -736,7 +736,7 @@ doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSele
   auto valueLoop = systematics;
   valueLoop.push_back("CentralValue");
 
-  ValueWithSystematics<std::string> dataWeight = std::string("weight")
+  ValueWithSystematics<std::string> dataWeight = std::string("weight");
 
   ValueWithSystematics<std::string> mcWeight = std::string("splitFactor*weight");
 
