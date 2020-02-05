@@ -625,15 +625,15 @@ doubleUnc getISRsystematicsDD(ProcessInfo &toEstimate, SampleReader &Data, Sampl
 
   for(auto& syst: mcWeight.Systematics())
   {
-//    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
-
     xDDVar = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight.Systematic(syst));
     diff = xDDVar-xDDCentral;
     relSys = diff/xDDCentral;
 
     if(verbose){
+//    std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+      std::cout << " > " << syst  << std::endl;
       std::cout << "  xDDVar: " << xDDVar <<std::endl;
-      std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
+      std::cout << "  = relSys: " << relSys.value()*100 <<std::endl;
     }
   }
   if(verbose){
@@ -662,14 +662,15 @@ doubleUnc getISRsystematicsSignal(SampleReader &Sig, std::string signalRegion, c
 
     for(auto& syst: mcWeight.Systematics())
     {
-      //std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
       sigVar = process.getYield(signalRegion, mcWeight.Systematic(syst));
       diff = sigVar-sigCentral;
       relSys = diff/sigCentral;
       // = sigVar/sigCentral
       if(verbose){
+        //std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+        std::cout << " > " << syst << std::endl;
         std::cout << "  sigVar: " << sigVar <<std::endl;
-        std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
+        std::cout << "  = relSys: " << relSys.value()*100 <<std::endl;
       }
     }
     if(verbose){
@@ -713,13 +714,14 @@ doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSel
 
   for(auto& syst: mcWeight.Systematics())
   {
-    //std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
     fakesVar = fakeDD(Data, MC, looseSelection + " && " + signalRegion,"weight", mcWeight.Systematic(syst));
     diff = fakesVar-fakesCentral;
     relSys = diff/fakesCentral;
     if(verbose){
+    //std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+      std::cout << " > " << syst << std::endl;
       std::cout << "  fakesVar: " << fakesVar <<std::endl;
-      std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
+      std::cout << "  = relSys: " << relSys.value()*100 <<std::endl;
     }
   }
   if(verbose){
@@ -790,14 +792,14 @@ doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSele
 
   for(auto& syst: mcWeight.Systematics())
   {
-    //std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
-
     fakesVar = fakeDD(Data, MC, looseSelection + " && " + signalRegion,dataWeight.Systematic(syst) , mcWeight.Systematic(syst));
     std::cout << "  fakesVar: " << fakesVar <<std::endl;
     diff = fakesVar-fakesCentral;
     relSys = diff/fakesCentral;
     if(verbose){
-      std::cout << " = relSys: " << relSys.value()*100 <<std::endl;
+    //std::cout << "  " << syst << " - " << mcWeight.Systematic(syst) << std::endl;
+      std::cout << " > " << syst << std::endl;
+      std::cout << "  = relSys: " << relSys.value()*100 <<std::endl;
     }
   }
   if(verbose){
