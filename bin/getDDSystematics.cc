@@ -361,11 +361,11 @@ int main(int argc, char** argv)
 
   // SysFR 2) ISR on fakes prediction
 
-  getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight);
+  getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight, verbose);
 
   // SysFR 3) Non-universality
 
-  getFRsysNU(Data, MC, looseSelection, preSelection + "&&" + srSelection, luminosity);
+  getFRsysNU(Data, MC, looseSelection, preSelection + "&&" + srSelection, luminosity, verbose);
 
 //  std::cout << "\nalt b-Veto" << std::endl;
 //  getFRsysNUalt(Data, MC, looseSelection, preSelection + "&&" + srSelection, "(NbMedium50+NbMediumTo50 == 0)", luminosity);
