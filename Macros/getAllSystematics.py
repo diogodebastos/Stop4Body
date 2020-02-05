@@ -99,10 +99,11 @@ if __name__ == "__main__":
 
       thisScript.write("cd " + baseDirectory + "\n\n")
 
-      thisScript.write("#. setupJSONs.sh\n")
+      thisScript.write(". setupJSONs.sh\n")
       thisScript.write(". setupPaths.sh\n\n")
 
       thisScript.write("getDDSystematics ")
+      thisScript.write("--verbose ")
       thisScript.write("--json ${JSON_PATH}/plot2017_DM"+bdt['name']+"RP.json ")
       thisScript.write("--inDir " + thisInputDirectory + " ")
       thisScript.write("--outDir " + outputDirectory + " ")
