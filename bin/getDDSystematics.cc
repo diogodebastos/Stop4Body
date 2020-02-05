@@ -345,11 +345,11 @@ int main(int argc, char** argv)
     std::cout << "Doing ISR sys variations" << std::endl;
   }
 
-  getISRsystematicsSignal(Sig, preSelection + " && " + srSelection, mcWeight);
+  getISRsystematicsSignal(Sig, preSelection + " && " + srSelection, mcWeight,verbose);
 
-  getISRsystematicsDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight);
+  getISRsystematicsDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + ttbarEnrich, mcWeight, verbose);
 
-  getISRsystematicsDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight);
+  getISRsystematicsDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + srSelection, preSelection + " && " + crSelection + " && " + wjetsEnrich, mcWeight, verbose);
 
   // SYS Fake-Rate
   if(verbose){
@@ -357,7 +357,7 @@ int main(int argc, char** argv)
   }
   // SysFR 1) Closure test for the prediction of the background with a non-prompt lepton
 
-  getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value());
+  getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value(), verbose);
 
   // SysFR 2) ISR on fakes prediction
 
