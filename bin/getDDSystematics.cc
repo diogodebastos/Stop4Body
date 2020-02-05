@@ -340,12 +340,13 @@ int main(int argc, char** argv)
     std::cout << std::endl;
   }
 
-  //Systematics for the DD methods of WJets and TTbar
-  if(verbose){
-    std::cout << "Doing DD sys" << std::endl;
-  }
 
   if(doVR2 || doVR3){
+  //Systematics for the DD methods of WJets and TTbar
+    if(verbose){
+      std::cout << "Doing DD sys" << std::endl;
+    }
+    
     srSelection = "(BDT > 0.2)";
     methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
     methodTwoDDSystematics(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
