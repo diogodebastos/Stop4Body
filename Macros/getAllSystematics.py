@@ -53,14 +53,14 @@ if __name__ == "__main__":
 
 ### BDT Cuts for 2017
   BDTs = [
-#          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False,'doLoosenBDT': True},
-#          {'name': '20', 'deltaM': 20, 'cut': 0.36, 'highDeltaM': False,'doLoosenBDT': True},
+          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False,'doLoosenBDT': True},
+          {'name': '20', 'deltaM': 20, 'cut': 0.36, 'highDeltaM': False,'doLoosenBDT': True},
           {'name': '30', 'deltaM': 30, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
-#          {'name': '40', 'deltaM': 40, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
-#          {'name': '50', 'deltaM': 50, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': False},
-#          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False,'doLoosenBDT': False},
-#          {'name': '70', 'deltaM': 70, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},
-#          {'name': '80', 'deltaM': 80, 'cut': 0.46, 'highDeltaM': True,'doLoosenBDT': False},
+          {'name': '40', 'deltaM': 40, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
+          {'name': '50', 'deltaM': 50, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': False},
+          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False,'doLoosenBDT': False},
+          {'name': '70', 'deltaM': 70, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},
+          {'name': '80', 'deltaM': 80, 'cut': 0.46, 'highDeltaM': True,'doLoosenBDT': False},
   ]
 
   for bdt in BDTs:
