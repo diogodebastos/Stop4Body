@@ -346,7 +346,6 @@ int main(int argc, char** argv)
     if(verbose){
       std::cout << "Doing DD sys" << std::endl;
     }
-    
     srSelection = "(BDT > 0.2)";
     methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
     methodTwoDDSystematics(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
@@ -696,6 +695,7 @@ doubleUnc getFRsysClosure(SampleReader &Data, SampleReader &MC, std::string loos
     std::cout << "/* Fake-rate Systematics: Non-Closure */" << std::endl;
     std::cout << "NTightNonPrompt: " << NTightNonPrompt <<std::endl;
     std::cout << "NDDnonPromptMC: " << NDDnonPromptMC <<std::endl;
+    std::cout << "" <<std::endl;
   }
   return relSys;
 }
@@ -733,6 +733,7 @@ doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSel
 }
 
 doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string signalRegion, const double luminosity, bool verbose){
+  std::cout << "/* Fake-rate Systematics: Non-universality */" << std::endl;
   doubleUnc relSys = 0;
 
   // Load Systematics
@@ -742,11 +743,16 @@ doubleUnc getFRsysNU(SampleReader &Data, SampleReader &MC, std::string looseSele
     {
       std::stringstream converter;
       std::string tmp;
-      converter << "TightLoose_NU_Bin" << i;
+      // 2016
+      //converter << "TightLoose_NU_Bin" << i;
+      // 2017
+      converter << "2017_TightLoose_NU_Bin" << i;
       converter >> tmp;
       systBase.push_back(tmp);
     }
-    systBase.push_back("TightLoose_NU_AltCorr");
+    // 2016
+    //systBase.push_back("TightLoose_NU_AltCorr");
+    systBase.push_back("2017_TightLoose_NU_AltCorr");
   }
 
   std::vector<std::string> systematics;
