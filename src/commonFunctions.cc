@@ -1462,28 +1462,28 @@ ValueWithSystematics<double> getLeptonTightLooseRatio2017Sys(double LepID, doubl
 
   if(LepPt < 5)
   {
-    retVal.Systematic("2017_TightLoose_NU_Bin1_Up") = retVal.Value() * (1 + 0.2);
-    retVal.Systematic("2017_TightLoose_NU_Bin1_Down") = retVal.Value() * (1 - 0.2);
-    retVal.Systematic("2017_TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.2);
-    retVal.Systematic("2017_TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.2);
+    retVal.Systematic("2017_TightLoose_NU_Bin1_Up") = retVal.Value() * (1 + 0.05);
+    retVal.Systematic("2017_TightLoose_NU_Bin1_Down") = retVal.Value() * (1 - 0.05);
+    retVal.Systematic("2017_TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.05);
+    retVal.Systematic("2017_TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.05);
   }
   else
   {
     if(LepPt < 12)
     {
-      retVal.Systematic("2017_TightLoose_NU_Bin2_Up") = retVal.Value() * (1 + 0.2);
-      retVal.Systematic("2017_TightLoose_NU_Bin2_Down") = retVal.Value() * (1 - 0.2);
-      retVal.Systematic("2017_TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.2);
-      retVal.Systematic("2017_TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.2);
+      retVal.Systematic("2017_TightLoose_NU_Bin2_Up") = retVal.Value() * (1 + 0.05);
+      retVal.Systematic("2017_TightLoose_NU_Bin2_Down") = retVal.Value() * (1 - 0.05);
+      retVal.Systematic("2017_TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.05);
+      retVal.Systematic("2017_TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.05);
     }
     else
     {
       if(LepPt < 20)
       {
-        retVal.Systematic("2017_TightLoose_NU_Bin3_Up") = retVal.Value() * (1 + 0.3);
-        retVal.Systematic("2017_TightLoose_NU_Bin3_Down") = retVal.Value() * (1 - 0.3);
-        retVal.Systematic("2017_TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.3);
-        retVal.Systematic("2017_TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.3);
+        retVal.Systematic("2017_TightLoose_NU_Bin3_Up") = retVal.Value() * (1 + 0.1);
+        retVal.Systematic("2017_TightLoose_NU_Bin3_Down") = retVal.Value() * (1 - 0.1);
+        retVal.Systematic("2017_TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.1);
+        retVal.Systematic("2017_TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.1);
       }
       else
       {
@@ -1496,10 +1496,10 @@ ValueWithSystematics<double> getLeptonTightLooseRatio2017Sys(double LepID, doubl
         }
         else
         {
-          retVal.Systematic("2017_TightLoose_NU_Bin5_Up") = retVal.Value() * (1 + 0.5);
-          retVal.Systematic("2017_TightLoose_NU_Bin5_Down") = retVal.Value() * (1 - 0.5);
-          retVal.Systematic("2017_TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.5);
-          retVal.Systematic("2017_TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.5);
+          retVal.Systematic("2017_TightLoose_NU_Bin5_Up") = retVal.Value() * (1 + 0.6);
+          retVal.Systematic("2017_TightLoose_NU_Bin5_Down") = retVal.Value() * (1 - 0.6);
+          retVal.Systematic("2017_TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.6);
+          retVal.Systematic("2017_TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.6);
         }
       }
     }
