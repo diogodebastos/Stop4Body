@@ -560,10 +560,14 @@ int main(int argc, char** argv)
       }
       if(dofakeratio)
       {
+        mcSel = mcWeight+"*("+selection+")";
        //mcSel = mcWeight+" / puWeight * ("+selection+")"; // / 3.0 or * 0.3
-       mcSel = mcWeight+"/(filterEfficiency*looseNotTightWeight*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*bTagSF*puWeight) * ("+selection+")";
+       //mcSel = mcWeight+"/(filterEfficiency*looseNotTightWeight*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*bTagSF*looseNotTightWeight2017MCClosure*l1prefireWeight) * ("+selection+")";
+    //   mcSel = mcWeight+"/(filterEfficiency*looseNotTightWeight*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*bTagSF*looseNotTightWeight2017MCClosure*l1prefireWeight*puWeight) * ("+selection+")";
+       //mcSel = mcWeight+"/(filterEfficiency*looseNotTightWeight*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*bTagSF*puWeight) * ("+selection+")";
        //dataSel = "weight * (" +selection+")";
-       dataSel = "( (HLT_PFHT1050) && " +selection+")";
+       dataSel = "((HLT_PFHT1050) && " +selection+")";
+       //dataSel = "weight*( (HLT_PFHT1050) && " +selection+")";
       }
 
       if(rawEvents)
@@ -1008,8 +1012,8 @@ int main(int argc, char** argv)
       bgUncH->Reset("ICE");
       bgUncH->Draw();
       bgUnc->Draw("3");
-      double minErr = 0.5;
-      double maxErr = 1.5;
+      double minErr = -0.1;
+      double maxErr = 2.1;
       double yscale = (1.0-0.2)/(0.18-0);
       bgUncH->GetYaxis()->SetTitle("Data/#Sigma MC");
       bgUncH->SetMinimum(minErr);
