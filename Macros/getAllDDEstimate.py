@@ -66,8 +66,8 @@ if __name__ == "__main__":
           {'name': '30', 'deltaM': 30, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
           {'name': '40', 'deltaM': 40, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
           {'name': '50', 'deltaM': 50, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': False},
-          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False,'doLoosenBDT': False},
-          {'name': '70', 'deltaM': 70, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},
+          {'name': '60', 'deltaM': 60, 'cut': 0.51, 'highDeltaM': False,'doLoosenBDT': False},
+          {'name': '70', 'deltaM': 70, 'cut': 0.43, 'highDeltaM': True,'doLoosenBDT': False},
           {'name': '80', 'deltaM': 80, 'cut': 0.46, 'highDeltaM': True,'doLoosenBDT': False},
   ]
 
@@ -86,6 +86,13 @@ if __name__ == "__main__":
 
     thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"])
 
+#    jobsDir = outputDirectory + "/Jobs/"
+#    assure_path_exists(jobsDir)
+#    jobsDir = os.path.realpath(jobsDir)
+
+#    job = jobsDir + "/theJob.sh"
+
+    #with open(jobsDir, 'w') as thisScript:
     with open(outputDirectory + "/theJob.sh", 'w') as thisScript:
       thisScript.write("#!/bin/bash\n\n")
 
@@ -201,6 +208,7 @@ if __name__ == "__main__":
       os.fchmod(thisScript.fileno(), mode & 0o7777)
 
     job = outputDirectory + "/theJob.sh"
+    #os.chdir(jobsDir)
     cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
     print cmd
     if not args.dryRun:
@@ -214,3 +222,4 @@ if __name__ == "__main__":
         while getNJobs() > 1000:
           time.sleep(5*60)
         print "Done waiting"
+ # os.chdir(baseDirectory)

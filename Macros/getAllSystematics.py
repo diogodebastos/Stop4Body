@@ -58,8 +58,8 @@ if __name__ == "__main__":
           {'name': '30', 'deltaM': 30, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
           {'name': '40', 'deltaM': 40, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
           {'name': '50', 'deltaM': 50, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': False},
-          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False,'doLoosenBDT': False},
-          {'name': '70', 'deltaM': 70, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},
+          {'name': '60', 'deltaM': 60, 'cut': 0.51, 'highDeltaM': False,'doLoosenBDT': False},
+          {'name': '70', 'deltaM': 70, 'cut': 0.43, 'highDeltaM': True,'doLoosenBDT': False},
           {'name': '80', 'deltaM': 80, 'cut': 0.46, 'highDeltaM': True,'doLoosenBDT': False},
   ]
 
