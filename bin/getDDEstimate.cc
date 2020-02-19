@@ -304,16 +304,28 @@ int main(int argc, char** argv)
     systVars.push_back("EWKISRweight_Bin6_Down");
     systVars.push_back("EWKISRweight_Bin7_Up");
     systVars.push_back("EWKISRweight_Bin7_Down");
-    systVars.push_back("TightLoose_NU_Bin1_Up");
-    systVars.push_back("TightLoose_NU_Bin1_Down");
-    systVars.push_back("TightLoose_NU_Bin2_Up");
-    systVars.push_back("TightLoose_NU_Bin2_Down");
-    systVars.push_back("TightLoose_NU_Bin3_Up");
-    systVars.push_back("TightLoose_NU_Bin3_Down");
-    systVars.push_back("TightLoose_NU_Bin4_Up");
-    systVars.push_back("TightLoose_NU_Bin4_Down");
-    systVars.push_back("TightLoose_NU_Bin5_Up");
-    systVars.push_back("TightLoose_NU_Bin5_Down");
+    // 2016
+//    systVars.push_back("TightLoose_NU_Bin1_Up");
+//    systVars.push_back("TightLoose_NU_Bin1_Down");
+//    systVars.push_back("TightLoose_NU_Bin2_Up");
+//    systVars.push_back("TightLoose_NU_Bin2_Down");
+//    systVars.push_back("TightLoose_NU_Bin3_Up");
+//    systVars.push_back("TightLoose_NU_Bin3_Down");
+//    systVars.push_back("TightLoose_NU_Bin4_Up");
+//    systVars.push_back("TightLoose_NU_Bin4_Down");
+//    systVars.push_back("TightLoose_NU_Bin5_Up");
+//    systVars.push_back("TightLoose_NU_Bin5_Down");
+    // 2017
+    systVars.push_back("2017_TightLoose_NU_Bin1_Up");
+    systVars.push_back("2017_TightLoose_NU_Bin1_Down");
+    systVars.push_back("2017_TightLoose_NU_Bin2_Up");
+    systVars.push_back("2017_TightLoose_NU_Bin2_Down");
+    systVars.push_back("2017_TightLoose_NU_Bin3_Up");
+    systVars.push_back("2017_TightLoose_NU_Bin3_Down");
+    systVars.push_back("2017_TightLoose_NU_Bin4_Up");
+    systVars.push_back("2017_TightLoose_NU_Bin4_Down");
+    systVars.push_back("2017_TightLoose_NU_Bin5_Up");
+    systVars.push_back("2017_TightLoose_NU_Bin5_Down");
     systVars.push_back("HF_Up");
     systVars.push_back("HF_Down");
     systVars.push_back("LF_Up");
