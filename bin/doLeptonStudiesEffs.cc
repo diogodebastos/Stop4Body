@@ -24,7 +24,7 @@
 
 using json = nlohmann::json;
 
-void getIDeffs(std::string, ProcessInfo&, VariableInfo&, std::string);
+void getIDeffs(std::string, std::string, ProcessInfo &, VariableInfo& , std::string, std::string, std::string);
 
 class CutInfo
 {
@@ -147,12 +147,13 @@ int main(int argc, char** argv)
       //bdttree->Draw("LepPt>>veto","nGoodEl_cutId_veto")
       //r = (TH1D*)veto->Clone()
       //
-      getIDeffs(cut.name(),sig,variable,selection);
+      std::string subName = cutString.expression().substr(0,5);
+      getIDeffs(cut.name(), sig.label(), sig, variable, selection, subName, outDir);
     }
   }
 }
 
-void getIDeffs(std::string name, ProcessInfo &Process, VariableInfo& variable, std::string selection)
+void getIDeffs(std::string name, std::string label, ProcessInfo &Process, VariableInfo& variable, std::string selection, std::string subName, std::string outputDirectory)
 {
   std::string step0lepID = "";
   std::string step1lepID = "";
@@ -195,13 +196,13 @@ void getIDeffs(std::string name, ProcessInfo &Process, VariableInfo& variable, s
   lg1->AddEntry(step0Lepton,"step0","l");
   lg1->AddEntry(step1Lepton,"step1","l");
 
-  c1.SaveAs((name+"_cutID_effs.png").c_str());
+  c1.SaveAs((outputDirectory+"/"+label+"_"+name+"_"+subName+"_cutID_effs.png").c_str());
 
   TCanvas c2("Ratio Lepton", "", 1200, 1350);
-  step0Lepton->SetTitle((name+"step0/step1").c_str());
+  step0Lepton->SetTitle((name+"_step0/step1").c_str());
   step0Lepton->Divide(step1Lepton);
   step0Lepton->Draw();
-  c2.SaveAs((name+"_ratio.png").c_str());
+  c2.SaveAs((outputDirectory+"/"+label+"_"+name+"_"+subName+"_ratio.png").c_str());
 
   return;
 }
