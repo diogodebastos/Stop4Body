@@ -147,8 +147,8 @@ int main(int argc, char** argv)
       //bdttree->Draw("LepPt>>veto","nGoodEl_cutId_veto")
       //r = (TH1D*)veto->Clone()
       //
-      std::string subName = cutString.expression().substr(0,5);
-      getIDeffs(cut.name(), sig.label(), sig, variable, selection, subName, outDir);
+      std::string subName = cut.expression().substr(0,5);
+      getIDeffs(cut.name(), sig.label(), sig, variable, selection, subName, outputDirectory);
     }
   }
 }
