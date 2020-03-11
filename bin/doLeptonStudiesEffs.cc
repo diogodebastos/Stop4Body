@@ -48,11 +48,14 @@ int main(int argc, char** argv)
   std::string cutsJson = "";
 
   std::string debug;
-  double luminosity = -1;
+  // double luminosity = -1;
   // Placeholder for ${JSON_PATH}
-  std::string jsonFileNamData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/plot2017_DM30RP.json";
+  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/plot2017_DM30RP.json";
   // Placeholder for ${INPUT}
   std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs";
+  std::string outputDirectory = "./OUT/";
+  bool verbose = false;
+
   std::string suffix = "";
 
   for(int i = 1; i < argc; ++i)
@@ -81,6 +84,7 @@ int main(int argc, char** argv)
   }
 
   std::cout << "Reading json files" << std::endl;
+  VariableJsonLoader variables(variablesJson);
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   if(verbose)
@@ -143,8 +147,9 @@ int main(int argc, char** argv)
       //bdttree->Draw("LepPt>>veto","nGoodEl_cutId_veto")
       //r = (TH1D*)veto->Clone()
       //
-      getIDeffs(cutName,sig,variable,selection);
+      getIDeffs(cut,sig,variable,selection);
     }
+  }
 }
 
 void getIDeffs(std::string name, ProcessInfo &Process, VariableInfo& variable, std::string selection)
