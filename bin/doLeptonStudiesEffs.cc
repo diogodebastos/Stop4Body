@@ -147,7 +147,7 @@ int main(int argc, char** argv)
       //bdttree->Draw("LepPt>>veto","nGoodEl_cutId_veto")
       //r = (TH1D*)veto->Clone()
       //
-      getIDeffs(cut,sig,variable,selection);
+      getIDeffs(cut.name(),sig,variable,selection);
     }
   }
 }
@@ -156,6 +156,8 @@ void getIDeffs(std::string name, ProcessInfo &Process, VariableInfo& variable, s
 {
   std::string step0lepID = "";
   std::string step1lepID = "";
+  TH1D* step0Lepton = nullptr;
+  TH1D* step1Lepton = nullptr;
 
   if(name == "electron") {
    //std::cout << "\nelectron" << std::endl;
@@ -181,8 +183,8 @@ void getIDeffs(std::string name, ProcessInfo &Process, VariableInfo& variable, s
   TCanvas c1("Efficiencies", "", 1200, 1350);
   c1.cd();
   gStyle->SetOptStat(0);
-  c1->SetGridx();
-  c1->SetGridy();
+  c1.SetGridx();
+  c1.SetGridy();
   TLegend *lg1 = new TLegend(.85,.85,0.99,0.99);
   lg1->SetFillColor(0);
 
