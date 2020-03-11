@@ -195,13 +195,13 @@ void getIDeffs(std::string name, ProcessInfo &Process, VariableInfo& variable, s
   lg1->AddEntry(step0Lepton,"step0","l");
   lg1->AddEntry(step1Lepton,"step1","l");
 
-  c1.SaveAs(("lepton_cutID_effs.png").c_str());
+  c1.SaveAs((name+"_cutID_effs.png").c_str());
 
   TCanvas c2("Ratio Lepton", "", 1200, 1350);
   step0Lepton->SetTitle((name+"step0/step1").c_str());
   step0Lepton->Divide(step1Lepton);
   step0Lepton->Draw();
-  c2.SaveAs(("lepton_ratio.png").c_str());
+  c2.SaveAs((name+"_ratio.png").c_str());
 
   return;
 }
