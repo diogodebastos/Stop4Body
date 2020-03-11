@@ -34,6 +34,7 @@
   <bin name="getYieldsWithSystematics" file="getYieldsWithSystematics.cc"> </bin>
   <bin name="getDDSystematics"        file="getDDSystematics.cc"> </bin>
   <bin name="getBDTcut"               file="getBDTcut.cc"> </bin>
+  <bin name="doLeptonStudiesEffs"     file="doLeptonStudiesEffs.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
