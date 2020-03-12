@@ -167,8 +167,8 @@ void getIDeffs(std::string name, std::string label, ProcessInfo &Process, Variab
   }
   else if(name == "muon"){
    //std::cout << "\nmuon" << std::endl;
-   step0lepID = selection + " && (nGoodMu_cutId_soft == 1)";
-   step1lepID = selection + " && (nGoodMu_cutId_loose == 1)";
+   step0lepID = selection + " && (nGoodMu_cutId_loose == 1)";
+   step1lepID = selection + " && (nGoodMu_cutId_medium == 1)";
   }
 
   auto pfLep = Process.getHist(variable.name().c_str(),variable,selection);
@@ -206,7 +206,7 @@ void getIDeffs(std::string name, std::string label, ProcessInfo &Process, Variab
   step1Lepton->Divide(step0Lepton);
   step1Lepton->Draw();
   c2.SaveAs((outputDirectory+"/"+label+"_"+name+"_"+subName+"_ratio.png").c_str());
-  
+
   delete pfLep;
   delete pfStep0lepID;
   delete pfStep1lepID;

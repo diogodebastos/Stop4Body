@@ -55,6 +55,7 @@ int main(int argc, char** argv)
   std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/allMC.json";
   // Placeholder for ${INPUT}
   std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/tuples-for-fake-rate/nTuples_v2019-04-02-fakeMCClosure";
+  std::string outputDirectory = "./OUT/";
   std::string suffix = "";
   // Placeholder for ${variables}
   // std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/variables2017-getRatio.json";
@@ -64,6 +65,9 @@ int main(int argc, char** argv)
   for(int i = 1; i < argc; ++i)
   {
     std::string argument = argv[i];
+
+    if(argument == "--outDir")
+      outputDirectory = argv[++i];
 
     if(argument == "--variables")
       variablesJson = argv[++i];
@@ -226,6 +230,8 @@ int main(int argc, char** argv)
   // Measurement Region
   std::string mRegion_lep_tight = "";
   std::string mRegion_lep_loose = "(isLoose) && ";
+  std::string mRegion_lep_tight_step1 = "";
+
 
   for(auto& cut : cutFlow)
   {
@@ -239,10 +245,12 @@ int main(int argc, char** argv)
      if(cut.name() == "electron") {
       std::cout << "\nelectron" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodEl_cutId_veto)";
+      mRegion_lep_tight_step1 = selection + " && (nGoodEl_cutId_loose)";
      }
      else if(cut.name() == "muon"){
       std::cout << "\nmuon" << std::endl;
       mRegion_lep_tight = selection + " && (nGoodMu_cutId_loose)";
+      mRegion_lep_tight_step1 = selection + " && (nGoodMu_cutId_medium)";
      }
 
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
@@ -250,7 +258,39 @@ int main(int argc, char** argv)
      // Fake Ratio in Data without the prompt contribution, estimated with MC
      auto eTL = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
+     // Lepton Studies
+     auto eTLstep1 = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight_step1, mRegion_lep_loose, mcWeight);
+
+     ratioLepStudies = static_cast<TH1D*>(eTLstep1->Clone("Step1 lepton eTL"));
+
+     TCanvas c1("Lepton Studies", "", 1200, 1350);
+     c1.cd();
+     gStyle->SetOptStat(0);
+     c1.SetGridx();
+     c1.SetGridy();
+     TLegend *lg1 = new TLegend(.85,.85,0.99,0.99);
+     lg1->SetFillColor(0);
+
+     eTL->SetTitle((name+"_eTL_cutIDs").c_str());
+     //eTL->GetYaxis()->SetRangeUser(0,1.01);
+     //eTLstep1->GetYaxis()->SetRangeUser(0,1.01);
+     eTL->Draw();
+     eTLstep1->SetLineColor(kRed);
+     eTLstep1->Draw("same");
+     lg1->AddEntry(eTL,"step0","l");
+     lg1->AddEntry(eTLstep1,"step1","l");
+     lg1->Draw();
+
+     c1.SaveAs((outputDirectory+"/"+name+"_eTL_cutIDs.png").c_str());
+
+     TCanvas c2("Ratio Lepton Studies", "", 1200, 1350);
+     step1Lepton->SetTitle((name+"_step1/step0").c_str());
+     ratioLepStudies->Divide(eTL);
+     step1Lepton->Draw();
+     c2.SaveAs((outputDirectory+"/"+name+"_eTL_ratio.png").c_str());
+
      // Fake Ratio systematics
+/*
      //getFakeRateSystematics();
      auto eTLbVeto = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection + wjetsEnrich, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto eTLbTag = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection + ttbarEnrich, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
@@ -297,6 +337,7 @@ int main(int argc, char** argv)
      delete eTL;
      delete eTLbVeto;
      delete eTLbTag;
+*/
      /*
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
