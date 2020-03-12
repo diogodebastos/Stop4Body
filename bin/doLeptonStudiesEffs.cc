@@ -147,7 +147,7 @@ int main(int argc, char** argv)
       //bdttree->Draw("LepPt>>veto","nGoodEl_cutId_veto")
       //r = (TH1D*)veto->Clone()
       //
-      std::string subName = cut.expression().substr(0,5);
+      std::string subName = cut.latex().substr(0,6);
       getIDeffs(cut.name(), sig.label(), sig, variable, selection, subName, outputDirectory);
     }
   }
@@ -190,19 +190,27 @@ void getIDeffs(std::string name, std::string label, ProcessInfo &Process, Variab
   lg1->SetFillColor(0);
 
   step0Lepton->SetTitle((name+"_IDs_effs").c_str());
+  step0Lepton->GetYaxis()->SetRangeUser(0,1.01);
+  step1Lepton->GetYaxis()->SetRangeUser(0,1.01);
   step0Lepton->Draw();
   step1Lepton->SetLineColor(kRed);
   step1Lepton->Draw("same");
   lg1->AddEntry(step0Lepton,"step0","l");
   lg1->AddEntry(step1Lepton,"step1","l");
+  lg1->Draw();
 
   c1.SaveAs((outputDirectory+"/"+label+"_"+name+"_"+subName+"_cutID_effs.png").c_str());
 
   TCanvas c2("Ratio Lepton", "", 1200, 1350);
-  step0Lepton->SetTitle((name+"_step0/step1").c_str());
-  step0Lepton->Divide(step1Lepton);
-  step0Lepton->Draw();
+  step1Lepton->SetTitle((name+"_step1/step0").c_str());
+  step1Lepton->Divide(step0Lepton);
+  step1Lepton->Draw();
   c2.SaveAs((outputDirectory+"/"+label+"_"+name+"_"+subName+"_ratio.png").c_str());
-
+  
+  delete pfLep;
+  delete pfStep0lepID;
+  delete pfStep1lepID;
+  delete step0Lepton;
+  delete step1Lepton;
   return;
 }
