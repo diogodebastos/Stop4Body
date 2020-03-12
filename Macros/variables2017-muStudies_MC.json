@@ -1,19 +1,9 @@
 {
  "cuts":[
    {
-     "name":"electron_step0",
-     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl_cutId_veto==1) && (nGoodMu==0)",
-     "latex":"Preselection ($e$ channel) step0"
-   },
-   {
      "name":"muon_step0",
      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl==0) && (nGoodMu_cutId_loose==1)",
      "latex":"Preselection ($#mu$ channel) step0"
-   },
-   {
-     "name":"electron_step1",
-     "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (nGoodEl_cutId_loose==1) && (nGoodMu==0)",
-     "latex":"Preselection ($e$ channel) step1"
    },
    {
      "name":"muon_step1",
@@ -34,7 +24,7 @@
       "label":"M_{T} [GeV]",
       "max":300.0,
       "bins":40
-    }    
+    }
   ],
   "2Dplots":[
    {
