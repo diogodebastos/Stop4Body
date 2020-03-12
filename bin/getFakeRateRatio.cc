@@ -261,7 +261,7 @@ int main(int argc, char** argv)
      // Lepton Studies
      auto eTLstep1 = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight_step1, mRegion_lep_loose, mcWeight);
 
-     ratioLepStudies = static_cast<TH1D*>(eTLstep1->Clone("Step1 lepton eTL"));
+     TH1D* ratioLepStudies = static_cast<TH1D*>(eTLstep1->Clone("Step1 lepton eTL"));
 
      TCanvas c1("Lepton Studies", "", 1200, 1350);
      c1.cd();
@@ -284,9 +284,9 @@ int main(int argc, char** argv)
      c1.SaveAs((outputDirectory+"/"+name+"_eTL_cutIDs.png").c_str());
 
      TCanvas c2("Ratio Lepton Studies", "", 1200, 1350);
-     step1Lepton->SetTitle((name+"_step1/step0").c_str());
+     ratioLepStudies->SetTitle((name+"_step1/step0").c_str());
      ratioLepStudies->Divide(eTL);
-     step1Lepton->Draw();
+     ratioLepStudies->Draw();
      c2.SaveAs((outputDirectory+"/"+name+"_eTL_ratio.png").c_str());
 
      // Fake Ratio systematics
