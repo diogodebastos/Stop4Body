@@ -279,7 +279,7 @@ int main(int argc, char** argv)
      //c1.Write(); //f->WriteTObject(c1);
      //eTL->SaveAs((name + "_sys.root").c_str());
 
-     for(int i = 2; i <= eTL->GetNbinsX(); i++)
+     for(int i = 1; i <= eTL->GetNbinsX(); i++)
      {
        std::cout << "Bin: " << i <<std::endl;
 
