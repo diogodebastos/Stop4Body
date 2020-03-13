@@ -110,6 +110,22 @@ int main(int argc, char** argv)
     if(MC.process(i).tag() == "ZInv")
       foundZInv = true;
   }
+  if(!foundTTbar)
+  {
+    std::cout << "There isn't a ttbar sample in the JSON file" << std::endl;
+    return 1;
+  }
+  if(!foundWJets)
+  {
+    std::cout << "There isn't a wjets sample in the JSON file" << std::endl;
+    return 1;
+  }
+  if(!foundZInv)
+  {
+    std::cout << "There isn't a wjets sample in the JSON file" << std::endl;
+    return 1;
+  }
+
   auto wjets = MC.process(bkgMap["WJets"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
   auto zinv = MC.process(bkgMap["ZInv"]);
