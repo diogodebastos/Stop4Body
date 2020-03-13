@@ -94,7 +94,7 @@ int main(int argc, char** argv)
   auto Data = samples.getData();
 
   std::map<std::string, size_t> bkgMap;
-  bool foundTTbar = false, foundWJets = false; foundZInv = false;
+  bool foundTTbar = false, foundWJets = false, foundZInv = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
   {
     if(MC.process(i).tag().find("ttbar") != std::string::npos)
