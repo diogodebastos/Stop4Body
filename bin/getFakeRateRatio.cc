@@ -285,6 +285,7 @@ int main(int argc, char** argv)
 
      TCanvas c2("Ratio Lepton Studies", "", 1200, 1350);
      ratioLepStudies->SetTitle((name+"_step1/step0").c_str());
+     ratioLepStudies->GetYaxis()->SetRangeUser(0,1.01);
      ratioLepStudies->Divide(eTL);
      ratioLepStudies->Draw();
      c2.SaveAs((outputDirectory+"/"+name+"_eTL_ratio.png").c_str());

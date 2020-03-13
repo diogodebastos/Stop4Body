@@ -93,6 +93,25 @@ int main(int argc, char** argv)
   auto Sig = samples.getMCSig();
   auto Data = samples.getData();
 
+  std::map<std::string, size_t> bkgMap;
+  bool foundTTbar = false, foundWJets = false; foundZInv = false;
+  for(size_t i = 0; i < MC.nProcesses(); ++i)
+  {
+    if(MC.process(i).tag().find("ttbar") != std::string::npos)
+    {
+      bkgMap["ttbar"] = i;
+      foundTTbar = true;
+    }
+    else
+      bkgMap[MC.process(i).tag()] = i;
+
+    if(MC.process(i).tag() == "WJets")
+      foundWJets = true;
+  }
+  auto wjets = MC.process(bkgMap["WJets"]);
+  auto ttbar = MC.process(bkgMap["ttbar"]);
+  auto zinv = MC.process(bkgMap["ZInv"]);
+
   std::string selection = "";
 
   std::vector<CutInfo> cutFlow;
@@ -149,6 +168,9 @@ int main(int argc, char** argv)
       //
       std::string subName = cut.latex().substr(0,6);
       getIDeffs(cut.name(), sig.label(), sig, variable, selection, subName, outputDirectory);
+      getIDeffs(cut.name(), sig.label(), zinv, variable, selection, subName, outputDirectory);
+      getIDeffs(cut.name(), sig.label(), ttbar, variable, selection, subName, outputDirectory);
+      getIDeffs(cut.name(), sig.label(), wjets, variable, selection, subName, outputDirectory);
     }
   }
 }
