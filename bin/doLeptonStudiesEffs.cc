@@ -107,6 +107,8 @@ int main(int argc, char** argv)
 
     if(MC.process(i).tag() == "WJets")
       foundWJets = true;
+    if(MC.process(i).tag() == "ZInv")
+      foundZInv = true;
   }
   auto wjets = MC.process(bkgMap["WJets"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
