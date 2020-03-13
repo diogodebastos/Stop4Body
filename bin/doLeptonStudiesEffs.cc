@@ -185,10 +185,10 @@ int main(int argc, char** argv)
       //r = (TH1D*)veto->Clone()
       //
       std::string subName = cut.latex().substr(0,6);
-      getIDeffs(cut.name(), sig.label(), sig, variable, selection, subName, outputDirectory);
-      getIDeffs(cut.name(), zinv.label(), zinv, variable, selection, subName, outputDirectory);
-      getIDeffs(cut.name(), ttbar.label(), ttbar, variable, selection, subName, outputDirectory);
-      getIDeffs(cut.name(), wjets.label(), wjets, variable, selection, subName, outputDirectory);
+      getIDeffs(cut.name(), sig.tag(), sig, variable, selection, subName, outputDirectory);
+      getIDeffs(cut.name(), zinv.tag(), zinv, variable, selection, subName, outputDirectory);
+      getIDeffs(cut.name(), ttbar.tag(), ttbar, variable, selection, subName, outputDirectory);
+      getIDeffs(cut.name(), wjets.tag(), wjets, variable, selection, subName, outputDirectory);
     }
   }
 }
