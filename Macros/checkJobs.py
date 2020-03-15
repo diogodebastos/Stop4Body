@@ -38,6 +38,14 @@ if __name__ == "__main__":
     sampleName = os.path.basename(os.path.normpath(sample))
     if sampleName[:6] == "DataMC":
       continue
+    if sampleName[:9] == "MCClosure":
+      continue
+    if sampleName[:4] == "Plot":
+      continue
+    if sampleName[:4] == "QCD-":
+      continue
+    if sampleName[:] == "ShapeComparison":
+      continue
     print "Sample:", sampleName
 
     jobInfo = {}

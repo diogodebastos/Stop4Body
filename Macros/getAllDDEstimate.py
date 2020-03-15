@@ -61,14 +61,14 @@ if __name__ == "__main__":
 
 ### BDT Cuts for 2017
   BDTs = [
-          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False,'doLoosenBDT': True},
-          {'name': '20', 'deltaM': 20, 'cut': 0.36, 'highDeltaM': False,'doLoosenBDT': True},
+#          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False,'doLoosenBDT': True},
+#          {'name': '20', 'deltaM': 20, 'cut': 0.36, 'highDeltaM': False,'doLoosenBDT': True},
           {'name': '30', 'deltaM': 30, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
-          {'name': '40', 'deltaM': 40, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
-          {'name': '50', 'deltaM': 50, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': False},
-          {'name': '60', 'deltaM': 60, 'cut': 0.51, 'highDeltaM': False,'doLoosenBDT': False},
-          {'name': '70', 'deltaM': 70, 'cut': 0.43, 'highDeltaM': True,'doLoosenBDT': False},
-          {'name': '80', 'deltaM': 80, 'cut': 0.46, 'highDeltaM': True,'doLoosenBDT': False},
+#          {'name': '40', 'deltaM': 40, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
+#          {'name': '50', 'deltaM': 50, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': False},
+#          {'name': '60', 'deltaM': 60, 'cut': 0.51, 'highDeltaM': False,'doLoosenBDT': False},
+#          {'name': '70', 'deltaM': 70, 'cut': 0.43, 'highDeltaM': True,'doLoosenBDT': False},
+#          {'name': '80', 'deltaM': 80, 'cut': 0.46, 'highDeltaM': True,'doLoosenBDT': False},
   ]
 
   for bdt in BDTs:
@@ -111,6 +111,21 @@ if __name__ == "__main__":
 
       thisScript.write("#. setupJSONs.sh\n")
       thisScript.write(". setupPaths.sh\n\n")
+
+      thisScript.write("makePlots ")
+      if args.isSwap:
+        thisScript.write("--json ${JSON_PATH}/plot2017swap_lep.json ")
+      else:
+        thisScript.write("--json ${JSON_PATH}/plot2017_DM"+bdt['name']+"RP.json ")
+      thisScript.write("--outDir " + outputDirectory + " ")
+      thisScript.write("--inDir " + thisInputDirectory + " ")
+      thisScript.write("--suffix bdt ")
+      thisScript.write("--variables " + outputDirectory + "/cutsJson_2017.json ")
+      thisScript.write("--cuts " + outputDirectory + "/cutsJson_2017.json ")
+      if args.isSwap or args.VR2 or args.VR3 or args.unblind:
+        thisScript.write("--unblind")
+      thisScript.write(" 1> " + outputDirectory + "/makePlotsLog.log 2> " + outputDirectory + "/makePlotsLog.err")
+      thisScript.write("\n\n")
 
       thisScript.write("getDDEstimate ")
       if args.isSwap:
@@ -188,20 +203,7 @@ if __name__ == "__main__":
         for line in fin:
           fout.write(regex.sub(replfunc,line))
 
-      thisScript.write("makePlots ")
-      if args.isSwap:
-        thisScript.write("--json ${JSON_PATH}/plot2017swap_lep.json ")
-      else:
-        thisScript.write("--json ${JSON_PATH}/plot2017_DM"+bdt['name']+"RP.json ")
-      thisScript.write("--outDir " + outputDirectory + " ")
-      thisScript.write("--inDir " + thisInputDirectory + " ")
-      thisScript.write("--suffix bdt ")
-      thisScript.write("--variables " + outputDirectory + "/cutsJson_2017.json ")
-      thisScript.write("--cuts " + outputDirectory + "/cutsJson_2017.json ")
-      if args.isSwap or args.VR2 or args.VR3 or args.unblind:
-        thisScript.write("--unblind")
-      thisScript.write(" 1> " + outputDirectory + "/makePlotsLog.log 2> " + outputDirectory + "/makePlotsLog.err")
-      thisScript.write("\n\n")
+        thisScript.write("\n\n")
 
       mode = os.fstat(thisScript.fileno()).st_mode
       mode |= 0o111

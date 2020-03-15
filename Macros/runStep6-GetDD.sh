@@ -5,7 +5,7 @@
 
 BASE_OUT_DIR=/lstore/cms/dbastos/Stop4Body/DDEstimate
 
-python getAllDDEstimate.py -i ${TEST_DIR} -o ${BASE_OUT_DIR}
+python getAllDDEstimate.py -i ${TEST_DIR} -o ${BASE_OUT_DIR} -u
 python getAllDDEstimate.py -i ${TEST_DIR} -o ${BASE_OUT_DIR} --VR2
 python getAllDDEstimate.py -i ${TEST_DIR} -o ${BASE_OUT_DIR} --VR3
 
