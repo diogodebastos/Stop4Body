@@ -27,7 +27,7 @@ int main(int argc, char** argv){
   {
     std::string argument = argv[i];
 
-    if(argument == "--json")
+    if(argument == "--inDir")
       inputDirectory = argv[++i];
 
     if(argument == "--outDir")
@@ -38,13 +38,13 @@ int main(int argc, char** argv){
   TTree* lumiTree = static_cast<TTree*>(file.Get("LuminosityBlocks"));
 
   size_t nentries = static_cast<size_t>(lumiTree->GetEntries());
-  std::cout << "The file has " << nentries << " events." << std::endl;
+  std::cout << inputDirectory  <<" has:  " << nentries << " events." << std::endl;
 
   UInt_t run;
   UInt_t luminosityBlock;
   lumiTree->SetBranchAddress("run", &run);
   lumiTree->SetBranchAddress("luminosityBlock", &luminosityBlock);
-
+/*
   std::cout << "For DEBUG" << std::endl;
   UInt_t debugBegin = 0;
   UInt_t debugLength = nentries;//nentries;
@@ -54,17 +54,16 @@ int main(int argc, char** argv){
     std::cout << " Entry: " << i << "  " << run << " : " << luminosityBlock << std::endl;
   }
   std::cout << std::endl;
-
+*/
   lumiTree->GetEntry(0);
 
   UInt_t lastRun = run;
   UInt_t lastLumiBlock = luminosityBlock-1;
   UInt_t lastLastLumiBlock = luminosityBlock-2;
   UInt_t firstLumi = 1;
-  UInt_t singleLumiInRun=0;
 
   std::ofstream jsonFile;
-  jsonFile.open (outputDirectory+"/lumiSummary.json");
+  jsonFile.open ((outputDirectory+"/lumiSummary.json").c_str());
   jsonFile << "{" << '"' << lastRun << '"' << ": [[" << luminosityBlock << ",";
 
   for(size_t i = 0; i < nentries; i++)
@@ -111,7 +110,7 @@ int main(int argc, char** argv){
   }
   jsonFile << std::endl;
   jsonFile.close();
-  eraseFileLine(outputDirectory+"/lumiSummary.json",": [],");
+  eraseFileLine(outputDirectory,": [],");
 }
 
 
@@ -120,9 +119,9 @@ void eraseFileLine(std::string path, std::string eraseLine) {
   std::string line;
   std::ifstream fin;
 
-  fin.open(path);
-  std::ofstream temp; // contents of path must be copied to a temp file then renamed back to the path file
-  temp.open("temp.txt");
+  fin.open(path+"/lumiSummary.json");
+  std::ofstream temp;
+  temp.open(path+"/temp.json");
 
   while (getline(fin, line)) {
       if (line.substr( line.length()-5) != eraseLine){
@@ -133,8 +132,8 @@ void eraseFileLine(std::string path, std::string eraseLine) {
   temp.close();
   fin.close();
 
-  const char * p = path.c_str(); // required conversion for remove and rename functions
+  std::string phStr = path+"/lumiSummary.json";
+  const char * p = phStr.c_str(); // required conversion for remove and rename functions
   remove(p);
-  rename("temp.txt", p);
-  return 1;
+  rename((path+"/temp.json").c_str(), p);
 }
