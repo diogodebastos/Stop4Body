@@ -35,6 +35,7 @@
   <bin name="getDDSystematics"        file="getDDSystematics.cc"> </bin>
   <bin name="getBDTcut"               file="getBDTcut.cc"> </bin>
   <bin name="doLeptonStudiesEffs"     file="doLeptonStudiesEffs.cc"> </bin>
+  <bin name="getJSONlumis"     file="getJSONlumis.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
