@@ -2,16 +2,17 @@
 
 source localUserSetup.sh
 
-export YEAR=2017
+export YEAR=2018
 
-export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body
+export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD
 export JSON_PATH=$BASE_PATH/Macros/JSON/${YEAR}
 
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-06-05
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-03-20
 export TRAIN_DIR=${NTUPLE_DIR}_train
 export TEST_DIR=${NTUPLE_DIR}_test
 
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs
+# USED DIRS FOR 2017 AN
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs
 #export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-06-05-FastSim
 #export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-06-05-QCD-Mu
 #export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-16-updated
@@ -54,6 +55,6 @@ export PUWEIGHT_DIR=${BASE_NTUPLE_PATH}/puWeights/${YEAR}
 export LIMIT_DIR=${BASE_NTUPLE_PATH}/Limits/
 
 #export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"
-export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents --doPromptTagging --doLooseLeptons"
+export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents --doPromptTagging --doLooseLeptons --year ${YEAR}"
 export PROCESS_SAMPLES_CMD_LNT="${PROCESS_SAMPLES_CMD} --looseNotTight"
 export PROCESS_SAMPLES_CMD_LOOSE="processSamples --preemptiveDropEvents --doLooseLeptons"

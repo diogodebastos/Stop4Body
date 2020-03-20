@@ -127,6 +127,7 @@ int main(int argc, char** argv)
   bool doJetHT = false;
   bool noTrim = false;
   int part = -1;
+  int year = 0;
   std::string bTagCalibrationFile = "";
 
   if(argc < 2)
@@ -211,6 +212,12 @@ int main(int argc, char** argv)
       std::stringstream converter;
       converter << argv[++i];
       converter >> part;
+    }
+    if(argument == "--year")
+    {
+      std::stringstream converter;
+      converter << argv[++i];
+      converter >> year;
     }
   }
 

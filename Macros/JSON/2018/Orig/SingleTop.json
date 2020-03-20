@@ -1,0 +1,73 @@
+{
+  "lines":[
+    {
+      "tag":"SingleTop",
+      "isdata":false,
+      "color":592,
+      "lcolor":1,
+      "label":"Single Top",
+      "files":[
+       {
+         "tag":"T_sch_lep",
+         "xsec": 1.0,
+         "br": 1.0,
+         "filesPerPart":5,
+         "paths":[
+           {
+             "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/T_sch_lep",
+             "split":20
+           }
+         ]
+       },
+       {
+         "tag":"T_tch",
+         "xsec": 1.0,
+         "br": 1.0,
+         "filesPerPart":5,
+         "paths":[
+           {
+             "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/T_tch",
+             "split":87
+           }
+         ]
+       },
+       {
+          "tag":"TBar_tch",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/TBar_tch",
+              "split":90
+            }
+          ]
+        },
+        {
+          "tag":"T_tWch_noFullyHad",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/T_tWch_noFullyHad",
+              "split":1
+            }
+          ]
+        },
+        {
+          "tag":"TBar_tWch_noFullyHad",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/TBar_tWch_noFullyHad",
+              "split":1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

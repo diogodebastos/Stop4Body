@@ -1,0 +1,49 @@
+{
+  "lines":[
+    {
+      "tag":"VV",
+      "isdata":false,
+      "color":824,
+      "lcolor":1,
+      "label":"Multiboson",
+      "files":[
+        {
+          "tag":"WW",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/WW",
+              "split":6
+            }
+          ]
+        },
+        {
+          "tag":"ZZ",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZZ",
+              "split":2
+            }
+          ]
+        },
+        {
+          "tag":"WZ",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/WZ",
+              "split":4
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
