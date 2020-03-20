@@ -5,7 +5,8 @@ source localUserSetup.sh
 export YEAR=2018
 
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD
-export JSON_PATH=$BASE_PATH/Macros/JSON/${YEAR}
+export MACROS_PATH=$BASE_PATH/Macros
+export JSON_PATH=$MACROS_PATH/JSON/${YEAR}
 
 export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-03-20
 export TRAIN_DIR=${NTUPLE_DIR}_train
