@@ -1,4 +1,4 @@
-#include "UserCode/Stop4Body/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
 
 #include <fstream>
 #include <sstream>

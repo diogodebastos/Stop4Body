@@ -6,7 +6,7 @@
 #include "TTree.h"
 #include "TH1D.h"
 
-#include "UserCode/Stop4Body/interface/commonFunctions.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/commonFunctions.h"
 
 int main(int argc, char** argv)
 {

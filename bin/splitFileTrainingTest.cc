@@ -6,8 +6,8 @@
 #include <TFile.h>
 #include <TTree.h>
 
-#include "UserCode/Stop4Body/interface/json.hpp"
-#include "UserCode/Stop4Body/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
 
 struct EventID
 {

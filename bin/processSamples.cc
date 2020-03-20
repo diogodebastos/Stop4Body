@@ -37,12 +37,12 @@
 #include "TLorentzVector.h"
 #include "TVectorD.h"
 
-#include "UserCode/Stop4Body/interface/json.hpp"
-#include "UserCode/Stop4Body/interface/SampleReader.h"
-#include "UserCode/Stop4Body/interface/commonFunctions.h"
-#include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
-#include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
-#include "UserCode/Stop4Body/interface/LHEweightMAPs.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/commonFunctions.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/LHEweightMAPs.h"
 
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"

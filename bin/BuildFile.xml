@@ -3,7 +3,7 @@
 <use name="rootrflx"/>
 <use name="roofit"/>
 <use name="roostats"/>
-<use name="UserCode/Stop4Body"/>
+<use name="UserCode/Stop4Body-nanoAOD/"/>
 <use name="CondFormats/BTauObjects"/>
 <use name="CondTools/BTau"/>
 <environment>

@@ -37,10 +37,10 @@
 #include "TLorentzVector.h"
 #include "TVectorD.h"
 
-#include "UserCode/Stop4Body/interface/json.hpp"
-#include "UserCode/Stop4Body/interface/SampleReader.h"
-#include "UserCode/Stop4Body/interface/commonFunctions.h"
-#include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/commonFunctions.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
 
 #define LHEWEIGHT_LIMIT  1000
 
@@ -123,10 +123,12 @@ int main(int argc, char** argv)
         {
           inputtree->GetEntry(i);
 
-          for(int i = 0; i < nLHEweight; ++i)
+          for(int i = 0; i < nLHEweight; ++i) //nLHEScaleWeight
           {
             //std::cout << "\t\t\tLHEweight_id[" << i << "]: " << LHEweight_id[i] << std::endl;
 
+            //Integral of weight per variation
+            //fileSum[i] += LHEScaleWeight[i];
             fileSum[LHEweight_id[i]] += LHEweight_wgt[i];
           }
         }

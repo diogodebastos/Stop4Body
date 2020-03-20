@@ -1,8 +1,8 @@
 #ifndef MY_COMMON_FUNCTION
 #define MY_COMMON_FUNCTION
 
-#include "UserCode/Stop4Body/interface/doubleWithUncertainty.h"
-#include "UserCode/Stop4Body/interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD//interface/ValueWithSystematics.h"
 
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"

@@ -1,7 +1,21 @@
 
 std::map<int,std::string>& getLHEMap(int);
 
+std::map<int,std::string>& getNanoAODQ2ScaleMap();
+
 std::map<int,std::string> emptyMap = {};
+
+std::map<int,std::string> LHEweightMAPnanoAOD = {
+  {4, "Q2_0"},
+  {5, "Q2_1"},
+  {3, "Q2_2"},
+  {7, "Q2_3"},
+  {8, "Q2_4"},
+  {6, "Q2_5"},
+  {1, "Q2_6"},
+  {2, "Q2_7"},
+  {0, "Q2_8"}
+};
 
 std::map<int,std::string> LHEweightMAP446 = {
   {1, "Q2_0"},
@@ -1153,6 +1167,11 @@ std::map<int,std::string> LHEweightMAP9 = {
   {10008, "Q2_7"},
   {10009, "Q2_8"}
 };
+
+std::map<int,std::string>& getNanoAODQ2ScaleMap()
+{
+  return LHEweightMAPnanoAOD;
+}
 
 std::map<int,std::string>& getLHEMap(int numWeights)
 {
