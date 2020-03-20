@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $CMSSW_BASE/src/UserCode/Stop4Body/Macros/setupPaths.sh
+. $CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD/Macros/setupPaths.sh
 
 touch $JSON_PATH/tmp.json
 rm    $JSON_PATH/*.json

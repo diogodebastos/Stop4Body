@@ -93,5 +93,5 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
 fi
 cd -
 
-python processFilterEfficiencies.py -i $CMSSW_BASE/src/UserCode/Stop4Body/data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.pkl -o $CMSSW_BASE/src/UserCode/Stop4Body/data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root
-python processLeptonEfficiencies.py -i $CMSSW_BASE/src/UserCode/Stop4Body/data/tightToLooseRatios_MR14_data-EWK_val.pkl -u $CMSSW_BASE/src/UserCode/Stop4Body/data/tightToLooseRatios_MR14_data-EWK_err.pkl -o $CMSSW_BASE/src/UserCode/Stop4Body/data/tightToLooseRatios.root
+python processFilterEfficiencies.py -i $CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD/data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.pkl -o $CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD/data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root
+python processLeptonEfficiencies.py -i $CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD/data/tightToLooseRatios_MR14_data-EWK_val.pkl -u $CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD/data/tightToLooseRatios_MR14_data-EWK_err.pkl -o $CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD/data/tightToLooseRatios.root
