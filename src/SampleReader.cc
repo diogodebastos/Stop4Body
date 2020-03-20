@@ -116,7 +116,7 @@ SampleInfo::SampleInfo(json jsonInfo, std::string baseDir, std::string suffix):
       {
         std::stringstream converter;
         std::string file;
-        converter << basePath << "/Chunk" << i << "/treeProducerStop4Body/tree.root";
+        converter << basePath << "/Chunk" << i << "/tree.root";
         converter >> file;
 
         allPaths.push_back(file);
