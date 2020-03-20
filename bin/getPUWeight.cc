@@ -161,9 +161,9 @@ int main(int argc, char** argv)
         foutput.cd();
         TTree *inputtree;
         if(process.selection() != "")
-          inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
+          inputtree = static_cast<TTree*>(finput.Get("Events"))->CopyTree(process.selection().c_str());
         else
-          inputtree = static_cast<TTree*>(finput.Get("tree"));
+          inputtree = static_cast<TTree*>(finput.Get("Events"));
 
         Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
         Nevt += thisNevt;
@@ -173,7 +173,7 @@ int main(int argc, char** argv)
         Int_t nvtx = 0;
         Float_t nTrueInt = 0;
         Float_t xsec = 1;
-        inputtree->SetBranchAddress("nVert", &nvtx);
+        inputtree->SetBranchAddress("Pileup_nPU", &nvtx);
         if(process.isdata())
         {
           thisGenWeight = 1;
@@ -186,8 +186,8 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("xsec", &xsec);
           inputtree->SetBranchAddress("nIsr", &nIsr);
         }
-        Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
-        Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
+        Float_t met_pt;      inputtree->SetBranchAddress("MET_pt"    , &met_pt);
+        Float_t met_phi;     inputtree->SetBranchAddress("MET_phi",   &met_phi);
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
         Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
