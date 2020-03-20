@@ -1,5 +1,5 @@
-#include "UserCode/Stop4Body-nanoAOD//interface/VariableReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/VariableReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
 
 #include <iostream>
 #include <fstream>

@@ -20,9 +20,9 @@
 #include <map>
 #include <fstream>
 
-#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
 //#include "FWCore/PythonParameterSet/interface/MakeParameterSets.h"
 //#include "FWCore/ParameterSet/interface/ParameterSet.h"

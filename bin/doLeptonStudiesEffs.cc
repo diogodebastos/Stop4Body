@@ -17,10 +17,10 @@
 #include <TEfficiency.h>
 #include <TGraphAsymmErrors.h>
 
-#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
 
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
   std::string debug;
   // double luminosity = -1;
   // Placeholder for ${JSON_PATH}
-  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD//Macros/JSON/2017/plot2017_DM30RP.json";
+  std::string jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2017/plot2017_DM30RP.json";
   // Placeholder for ${INPUT}
   std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs";
   std::string outputDirectory = "./OUT/";

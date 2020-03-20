@@ -19,7 +19,7 @@
 
 #include "TTree.h"
 
-#include "UserCode/Stop4Body-nanoAOD//interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
 class AnalyserException: public std::exception
 {
@@ -104,6 +104,6 @@ class EventInfo
     void AddBranch(TTree* const tree, ValueWithSystematics<T>& val, std::string name);
 };
 
-#include "UserCode/Stop4Body-nanoAOD//interface/EventAnalyser.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/EventAnalyser.hpp"
 
 #endif

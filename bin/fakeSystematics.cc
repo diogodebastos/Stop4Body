@@ -15,10 +15,10 @@
 #include <TPaveText.h>
 #include <TGraphErrors.h>
 
-#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
 

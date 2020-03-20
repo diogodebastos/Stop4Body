@@ -21,11 +21,11 @@
 #include <stdexcept>
 #include <regex>
 
-#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/VariableReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/VariableReader.h"
 #define _USE_CERN_ROOT
-#include "UserCode/Stop4Body-nanoAOD//interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
 

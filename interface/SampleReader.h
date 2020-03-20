@@ -12,9 +12,9 @@
 #include "TH1D.h"
 #include "TH2D.h"
 
-#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
-#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/VariableReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/VariableReader.h"
 
 using json = nlohmann::json;
 

@@ -37,10 +37,10 @@
 #include "TLorentzVector.h"
 #include "TVectorD.h"
 
-#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/commonFunctions.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/commonFunctions.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/doubleWithUncertainty.h"
 
 #define LEPCOLL_LIMIT  40
 

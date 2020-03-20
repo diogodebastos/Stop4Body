@@ -18,7 +18,7 @@
 #include "TF1.h"
 #include "TPaveText.h"
 
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
 
 void printHelp();
 

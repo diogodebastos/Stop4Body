@@ -17,10 +17,10 @@
 #include <TEfficiency.h>
 #include <TGraphAsymmErrors.h>
 
-#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/ValueWithSystematics.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
 using json = nlohmann::json;
 TEfficiency* getFakeRate(std::string, ProcessInfo &, VariableInfo&, std::string, std::string, std::string, std::string);
@@ -51,15 +51,15 @@ int main(int argc, char** argv)
   std::string debug;
   double luminosity = -1;
   // Placeholder for ${JSON_PATH}
-  std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD//Macros/JSON/2017/DataJetHT.json";
-  std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD//Macros/JSON/2017/allMC.json";
+  std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2017/DataJetHT.json";
+  std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2017/allMC.json";
   // Placeholder for ${INPUT}
   std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/tuples-for-fake-rate/nTuples_v2019-04-02-fakeMCClosure";
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
   // Placeholder for ${variables}
-  // std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD//Macros/variables2017-getRatio.json";
-  // std::string cutsJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD//Macros/variables2017-getRatio.json";
+  // std::string variablesJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/variables2017-getRatio.json";
+  // std::string cutsJson = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/variables2017-getRatio.json";
   // getFakeRateRatio --variables ../Macros/variables2017-getRatio-muon.json --cuts ../Macros/variables2017-getRatio-muon.json
 
   for(int i = 1; i < argc; ++i)

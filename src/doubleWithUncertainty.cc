@@ -3,7 +3,7 @@
 // <date>2014-11-24</date>
 // <summary>Definition of a simple class that defines a double with an associated uncertainty</summary>
 
-#include "UserCode/Stop4Body-nanoAOD//interface/doubleWithUncertainty.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/doubleWithUncertainty.h"
 
 std::ostream& operator << (std::ostream &o, const doubleUnc& val)
 {

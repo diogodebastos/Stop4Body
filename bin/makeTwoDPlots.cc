@@ -20,10 +20,10 @@
 #include <fstream>
 #include <stdexcept>
 
-#include "UserCode/Stop4Body-nanoAOD//interface/json.hpp"
-#include "UserCode/Stop4Body-nanoAOD//interface/SampleReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/VariableReader.h"
-#include "UserCode/Stop4Body-nanoAOD//interface/commonFunctions.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/json.hpp"
+#include "UserCode/Stop4Body-nanoAOD/interface/SampleReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/VariableReader.h"
+#include "UserCode/Stop4Body-nanoAOD/interface/commonFunctions.h"
 
 using json = nlohmann::json;
 
