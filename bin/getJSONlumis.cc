@@ -50,7 +50,7 @@ int main(int argc, char** argv){
   lumiTree->SetBranchAddress("run", &run);
   lumiTree->SetBranchAddress("luminosityBlock", &luminosityBlock);
   UInt_t debugBegin = 0;
-  UInt_t debugEnd = 1000;
+  UInt_t debugEnd = nentries;
 
   if (debug) {
     std::cout << "For DEBUG" << std::endl;
@@ -92,12 +92,16 @@ int main(int argc, char** argv){
         }
         else if ((luminosityBlock-lastLumiBlock)!=1 && lastLastRun == lastRun) {
           jsonFile << lastLumiBlock << "]";
+          ++firstLumi;
         }
+      }
+      else if ((luminosityBlock-lastLumiBlock)==1 && (lastLumiBlock-lastLastLumiBlock)==1 && lastRun != lastLastRun) {
+        jsonFile << "["  <<lastLumiBlock << ",";
       }
     }
     else{
       if ((lastLumiBlock-lastLastLumiBlock)==1) {
-        jsonFile << lastLumiBlock << "]], ";
+        jsonFile << lastLumiBlock << "]],";
       }
       else if ((luminosityBlock-lastLumiBlock)!=1) {
         jsonFile << "],";
@@ -122,11 +126,10 @@ int main(int argc, char** argv){
   }
   jsonFile.close();
   bool removeLastLine = cleanFile(outputDirectory);
-  
+
   if (removeLastLine){
     fixFile(outputDirectory);
   }
-
 }
 
 void fixFile(std::string path) {
@@ -149,7 +152,7 @@ void fixFile(std::string path) {
   while (getline(fin, line)) {
     ++counter;
     if (counter == nLines - 1) {
-      temp << line.substr(0, line.length()-2) << "}" << std::endl; 
+      temp << line.substr(0, line.length()-1) << "}" << std::endl; 
     }
     else if (counter == nLines){
       temp << "";
