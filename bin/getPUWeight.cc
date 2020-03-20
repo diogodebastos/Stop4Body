@@ -182,13 +182,13 @@ int main(int argc, char** argv)
         else
         {
           inputtree->SetBranchAddress("genWeight", &thisGenWeight);
-          inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
+          inputtree->SetBranchAddress("Pileup_nTrueInt", &nTrueInt);
           inputtree->SetBranchAddress("xsec", &xsec);
           inputtree->SetBranchAddress("nIsr", &nIsr);
         }
         Float_t met_pt;      inputtree->SetBranchAddress("MET_pt"    , &met_pt);
         Float_t met_phi;     inputtree->SetBranchAddress("MET_phi",   &met_phi);
-        Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+        UInt_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
         Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
         double smallCounter = 0;
