@@ -1232,7 +1232,7 @@ int main(int argc, char** argv)
         UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
         Int_t nVert_i; inputtree->SetBranchAddress("nVert", &nVert_i);
 
-        int nLHEScaleWeight;
+        UInt_t nLHEScaleWeight;
         float LHEScaleWeight[LHEWEIGHT_LIMIT];
         Int_t Jet_hadronFlavour[JETCOLL_LIMIT];
 

@@ -109,7 +109,7 @@ int main(int argc, char** argv)
 
         std::map<int,double> fileSum;
 
-        int nLHEScaleWeight;
+        UInt_t nLHEScaleWeight;
         float LHEScaleWeight[LHEWEIGHT_LIMIT];
 
         inputtree->SetBranchAddress("nLHEScaleWeight" , &nLHEScaleWeight);
