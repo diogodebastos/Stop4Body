@@ -121,7 +121,7 @@ int main(int argc, char** argv)
         {
           inputtree->GetEntry(i);
 
-          for(int i = 0; i < nLHEScaleWeight; ++i)
+          for(UInt_t i = 0; i < nLHEScaleWeight; ++i)
           {
             //Integral of weight per variation
             fileSum[i] += LHEScaleWeight[i];

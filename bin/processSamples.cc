@@ -1675,7 +1675,7 @@ int main(int argc, char** argv)
 
             int refLHEKey = -1;
             int refQ2 = -1;
-            for(int i = 0; i < nLHEScaleWeight; ++i)
+            for(UInt_t i = 0; i < nLHEScaleWeight; ++i)
             {
               std::string name = lheNames[i];
               if(name.substr(0, 2) == "Q2")
@@ -1692,7 +1692,7 @@ int main(int argc, char** argv)
             Q2Var = 1;
             if(refQ2 >= 0)
             {
-              for(int i = 0; i < nLHEScaleWeight; ++i)
+              for(UInt_t i = 0; i < nLHEScaleWeight; ++i)
               {
                 std::string name = lheNames[i];
                 if(name.substr(0, 2) == "Q2")
