@@ -103,19 +103,17 @@ int main(int argc, char** argv)
         foutput.cd();
         TTree *inputtree;
         if(process.selection() != "")
-          inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
+          inputtree = static_cast<TTree*>(finput.Get("Events"))->CopyTree(process.selection().c_str());
         else
-          inputtree = static_cast<TTree*>(finput.Get("tree"));
+          inputtree = static_cast<TTree*>(finput.Get("Events"));
 
         std::map<int,double> fileSum;
 
-        int nLHEweight;
-        int LHEweight_id[LHEWEIGHT_LIMIT];
-        float LHEweight_wgt[LHEWEIGHT_LIMIT];
+        int nLHEScaleWeight;
+        float LHEScaleWeight[LHEWEIGHT_LIMIT];
 
-        inputtree->SetBranchAddress("nLHEweight"   , &nLHEweight);
-        inputtree->SetBranchAddress("LHEweight_id" , &LHEweight_id);
-        inputtree->SetBranchAddress("LHEweight_wgt", &LHEweight_wgt);
+        inputtree->SetBranchAddress("nLHEScaleWeight" , &nLHEScaleWeight);
+        inputtree->SetBranchAddress("LHEScaleWeight", &LHEScaleWeight);
 
         Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
 
@@ -123,13 +121,10 @@ int main(int argc, char** argv)
         {
           inputtree->GetEntry(i);
 
-          for(int i = 0; i < nLHEweight; ++i) //nLHEScaleWeight
+          for(int i = 0; i < nLHEScaleWeight; ++i)
           {
-            //std::cout << "\t\t\tLHEweight_id[" << i << "]: " << LHEweight_id[i] << std::endl;
-
             //Integral of weight per variation
-            //fileSum[i] += LHEScaleWeight[i];
-            fileSum[LHEweight_id[i]] += LHEweight_wgt[i];
+            fileSum[i] += LHEScaleWeight[i];
           }
         }
 

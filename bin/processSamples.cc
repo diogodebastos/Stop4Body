@@ -1189,9 +1189,9 @@ int main(int argc, char** argv)
         foutput.cd();
         TTree *inputtree;
         if(process.selection() != "")
-          inputtree = static_cast<TTree*>(finput.Get("tree"))->CopyTree(process.selection().c_str());
+          inputtree = static_cast<TTree*>(finput.Get("Events"))->CopyTree(process.selection().c_str());
         else
-          inputtree = static_cast<TTree*>(finput.Get("tree"));
+          inputtree = static_cast<TTree*>(finput.Get("Events"));
 
         // Read Branches you are interested in from the input tree
 //        Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
@@ -1232,16 +1232,14 @@ int main(int argc, char** argv)
         UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
         Int_t nVert_i; inputtree->SetBranchAddress("nVert", &nVert_i);
 
-        int nLHEweight;
-        int LHEweight_id[LHEWEIGHT_LIMIT];
-        float LHEweight_wgt[LHEWEIGHT_LIMIT];
+        int nLHEScaleWeight;
+        float LHEScaleWeight[LHEWEIGHT_LIMIT];
         Int_t Jet_hadronFlavour[JETCOLL_LIMIT];
 
         if(!process.isdata())
         {
-          inputtree->SetBranchAddress("nLHEweight"   , &nLHEweight);
-          inputtree->SetBranchAddress("LHEweight_id" , &LHEweight_id);
-          inputtree->SetBranchAddress("LHEweight_wgt", &LHEweight_wgt);
+          inputtree->SetBranchAddress("nLHEScaleWeight"   , &nLHEScaleWeight);
+          inputtree->SetBranchAddress("LHEScaleWeight", &LHEScaleWeight);
           inputtree->SetBranchAddress("Jet_hadronFlavour", &Jet_hadronFlavour);
         }
 
@@ -1673,26 +1671,19 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
-            // TODO: UNCOMMENT AND IMPLEMENT IT FOR NanoAOD
-            //std::map<int, std::string>& lheNames = getNanoAODQ2ScaleMap();
-
-            std::map<int, std::string>& lheNames = getLHEMap(nLHEweight);
+            std::map<int, std::string>& lheNames = getNanoAODQ2ScaleMap();
 
             int refLHEKey = -1;
             int refQ2 = -1;
-            for(int i = 0; i < nLHEweight; ++i)
+            for(int i = 0; i < nLHEScaleWeight; ++i)
             {
-              // TODO: UNCOMMENT AND IMPLEMENT IT FOR NanoAOD
-              //std::string name = lheNames[i];
-              std::string name = lheNames[LHEweight_id[i]];
+              std::string name = lheNames[i];
               if(name.substr(0, 2) == "Q2")
               {
                 if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
                 {
                   refQ2 = i;
-                  // TODO: UNCOMMENT AND IMPLEMENT IT FOR NanoAOD
-                  //refLHEKey = i;
-                  refLHEKey = LHEweight_id[i];
+                  refLHEKey = i;
                   break;
                 }
               }
@@ -1701,19 +1692,17 @@ int main(int argc, char** argv)
             Q2Var = 1;
             if(refQ2 >= 0)
             {
-              for(int i = 0; i < nLHEweight; ++i)
+              for(int i = 0; i < nLHEScaleWeight; ++i)
               {
-                std::string name = lheNames[LHEweight_id[i]];
+                std::string name = lheNames[i];
                 if(name.substr(0, 2) == "Q2")
                 {
                   if(name.substr(3,1) == "0") // If it is the reference Q^2 variation
                     continue;
 
-                  // TODO: UNCOMMENT AND IMPLEMENT IT FOR NanoAOD
-                  //double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(i);
-                  double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(LHEweight_id[i]);
+                  double norm = lheScaleMap->at(refLHEKey)/lheScaleMap->at(i);
 
-                  Q2Var.Systematic(name) = norm * LHEweight_wgt[i]/LHEweight_wgt[refQ2];
+                  Q2Var.Systematic(name) = norm * LHEScaleWeight[i]/LHEScaleWeight[refQ2];
                 }
               }
             }
