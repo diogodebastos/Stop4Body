@@ -13,14 +13,14 @@ cd $CMSSW_BASE/src/
 eval `scramv1 runtime -sh`
 
 #cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/
-cd UserCode/Stop4Body/Macros/
+cd UserCode/Stop4Body-nanoAOD/Macros/
 
 . setupPaths.sh
 
 if [[ -d ${PUWEIGHT_DIR} ]]; then
  if [ ${YEAR} == 2016 ]; then
   getPUWeight --json ${JSON_PATH}/Data.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
- elif [ ${YEAR} == 2017 ]; then
+ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
   getPUWeight --json ${JSON_PATH}/DataMetHT.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
 #  getPUWeight --json ${JSON_PATH}/analysisData.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
 #  getPUWeight --json ${JSON_PATH}/allData.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root

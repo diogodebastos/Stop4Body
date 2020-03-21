@@ -13,14 +13,14 @@ cd $CMSSW_BASE/src/
 eval `scramv1 runtime -sh`
 
 #cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/
-cd UserCode/Stop4Body/Macros/
+cd UserCode/Stop4Body-nanoAOD/Macros/
 
 . setupPaths.sh
 
 if [[ -d ${NTUPLE_DIR} ]]; then
  if [ ${YEAR} == 2016 ]; then
   getLHEweightScales --json ${JSON_PATH}/otherMC2.json  --outDir ${LHESCALE_DIR}
- elif [ ${YEAR} == 2017 ]; then
+ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
   getLHEweightScales --json ${JSON_PATH}/ZInv.json  --outDir ${LHESCALE_DIR}
  fi
 fi

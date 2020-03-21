@@ -13,11 +13,10 @@ cd $CMSSW_BASE/src/
 eval `scramv1 runtime -sh`
 
 #cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/
-cd UserCode/Stop4Body/Macros/
+cd UserCode/Stop4Body-nanoAOD/Macros/
 
 . setupPaths.sh
 
 if [[ -d ${PUWEIGHT_DIR} ]]; then
   getPUWeight --json ${JSON_PATH}/otherMC1.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
 fi
-
