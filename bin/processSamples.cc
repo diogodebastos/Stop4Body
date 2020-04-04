@@ -2326,10 +2326,11 @@ int main(int argc, char** argv)
               SyFile << "   Njet: " << Njet.Value() << std::endl;
               for(size_t i = 0; i < validJets.Value().size(); ++i)
               {
-                Float_t Jet_rawPt[JETCOLL_LIMIT];
-                Jet_rawPt[jet] = (1-Jet_rawFactor[jet])*Jet_pt[jet]
+//                Float_t Jet_rawPt[JETCOLL_LIMIT];
+//                Jet_rawPt[jet] = (1-Jet_rawFactor[jet])*Jet_pt[jet]
                 auto jet = validJets.Value()[i];
-                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_pt[jet] << "; ID: " << Jet_jetId[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
+  //              SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_jetId[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
+                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; ID: " << Jet_jetId[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
               }
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepRelIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
