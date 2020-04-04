@@ -419,9 +419,7 @@ int main(int argc, char** argv)
       Float_t nVert; bdttree->Branch("nVert", &nVert, "nVert/F");
 
       std::cout << "\t    Creating signal gen info" << std::endl;
-      Float_t genGravitinoM; bdttree->Branch("genGravitinoM", &genGravitinoM, "genGravitinoM/F");
       Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
-      Float_t genSbottomM; bdttree->Branch("genSbottomM", &genSbottomM, "genSbottomM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
 
       std::cout << "\t    Creating branches for systematic variations:" << std::endl;
@@ -1099,6 +1097,7 @@ int main(int argc, char** argv)
 
       Float_t HLT_PFMET90_PFMHT90;           bdttree->Branch("HLT_PFMET90_PFMHT90",   &HLT_PFMET90_PFMHT90,   "HLT_PFMET90_PFMHT90/F"  );
       Float_t HLT_PFMET100_PFMHT100;         bdttree->Branch("HLT_PFMET100_PFMHT100", &HLT_PFMET100_PFMHT100, "HLT_PFMET100_PFMHT100/F");
+      Float_t HLT_PFMET100_PFMHT100_PFHT60;         bdttree->Branch("HLT_PFMET100_PFMHT100_PFHT60", &HLT_PFMET100_PFMHT100_PFHT60, "HLT_PFMET100_PFMHT100_PFHT60/F");
       Float_t HLT_PFMET110_PFMHT110;         bdttree->Branch("HLT_PFMET110_PFMHT110", &HLT_PFMET110_PFMHT110, "HLT_PFMET110_PFMHT110/F");
       Float_t HLT_PFMET120_PFMHT120;         bdttree->Branch("HLT_PFMET120_PFMHT120", &HLT_PFMET120_PFMHT120, "HLT_PFMET120_PFMHT120/F");
       Float_t HLT_PFMET120_PFMHT120_PFHT60;  bdttree->Branch("HLT_PFMET120_PFMHT120_PFHT60", &HLT_PFMET120_PFMHT120_PFHT60, "HLT_PFMET120_PFMHT120_PFHT60/F");
@@ -1121,10 +1120,10 @@ int main(int argc, char** argv)
       Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
       Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
       Float_t globalTightHalo2016Filter; bdttree->Branch("globalTightHalo2016Filter", &globalTightHalo2016Filter, "globalTightHalo2016Filter/F");
-      Float_t badMuonMoriond2017; bdttree->Branch("badMuonMoriond2017", &badMuonMoriond2017, "badMuonMoriond2017/F");
-      Float_t badCloneMuonMoriond2017; bdttree->Branch("badCloneMuonMoriond2017", &badCloneMuonMoriond2017, "badCloneMuonMoriond2017/F");
-      Float_t badMuonFilter; bdttree->Branch("badMuonFilter", &badMuonFilter, "badMuonFilter/F");
-      Float_t badChargedHadronFilter; bdttree->Branch("badChargedHadronFilter", &badChargedHadronFilter, "badChargedHadronFilter/F");
+//      Float_t badMuonMoriond2017; bdttree->Branch("badMuonMoriond2017", &badMuonMoriond2017, "badMuonMoriond2017/F");
+//      Float_t badCloneMuonMoriond2017; bdttree->Branch("badCloneMuonMoriond2017", &badCloneMuonMoriond2017, "badCloneMuonMoriond2017/F");
+      Float_t BadPFMuonFilter; bdttree->Branch("BadPFMuonFilter", &BadPFMuonFilter, "BadPFMuonFilter/F");
+      Float_t BadChargedCandidateFilter; bdttree->Branch("BadChargedCandidateFilter", &BadChargedCandidateFilter, "BadChargedCandidateFilter/F");
 
       std::cout << "\t  Finished creating branches in output tree" << std::endl;
 
@@ -1193,44 +1192,50 @@ int main(int argc, char** argv)
         else
           inputtree = static_cast<TTree*>(finput.Get("Events"));
 
+        Float_t autoPUweight; inputtree->SetBranchAddress("puWeight",&autoPUweight);
+        Float_t autoPUweightUp; inputtree->SetBranchAddress("puWeightUp",&autoPUweightUp);
+        Float_t autoPUweightDown; inputtree->SetBranchAddress("puWeightDown",&autoPUweightDown);
+
         // Read Branches you are interested in from the input tree
 //        Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
 //        Float_t mtw2;        inputtree->SetBranchAddress("event_mtw2"       , &mtw2);
 //        Float_t mtw;         inputtree->SetBranchAddress("event_mtw"       , &mtw);
-        Float_t met_pt;      inputtree->SetBranchAddress("met_pt"    , &met_pt);
-        Float_t met_phi;     inputtree->SetBranchAddress("met_phi",   &met_phi);
+        Float_t MET_pt;      inputtree->SetBranchAddress("MET_pt"    , &MET_pt);
+        Float_t MET_phi;     inputtree->SetBranchAddress("MET_phi",   &MET_phi);
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
-        Int_t LepGood_mediumMuonId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mediumMuonId",&LepGood_mediumMuonId);
-        Int_t LepGood_eleCutIdPog2017[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eleCutIdPog2017", &LepGood_eleCutIdPog2017); //0=none, 1=veto, 2=loose, 3=medium, 4=tight
-        Int_t LepGood_eleMVAId2017[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eleMVAId2017", &LepGood_eleMVAId2017); //0=none, 1=wp90, 2=wp80
-        //LepGood_SOSTightID2017_wp80
-        //LepGood_SOSTightID2017_wp90
-        Int_t LepGood_muCutIdPog2017[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_muCutIdPog2017", &LepGood_muCutIdPog2017); //0=none, 1=soft, 2=loose, 3=medium, 4=tight
+        Int_t LepGood_mediumId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mediumId",&LepGood_mediumId);
+        Int_t LepGood_cutBased[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_cutBased", &LepGood_cutBased); //0=fail, 1=veto, 2=loose, 3=medium, 4=tight
+        Float_t LepGood_mvaFall17V1Iso[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_mvaFall17V1Iso", &LepGood_mvaFall17V1Iso); //MVA Iso ID V1 score
+        Bool_t LepGood_looseId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_looseId", &LepGood_looseId);
+        Bool_t LepGood_mediumId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_mediumId", &LepGood_mediumId);
+        Bool_t LepGood_tightId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_tightId", &LepGood_tightId);
+        Bool_t LepGood_softId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_softId", &LepGood_softId);
         Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
         Float_t LepGood_eta[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_eta", &LepGood_eta);
         Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
-        Float_t LepGood_relIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_relIso03",&LepGood_relIso03);
-        Float_t LepGood_absIso03[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_absIso03",&LepGood_absIso03);
+        Float_t LepGood_pfRelIso03_all[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_pfRelIso03_all",&LepGood_pfRelIso03_all);
+        Float_t LepGood_pfAbsIso03_all[LEPCOLL_LIMIT];
+        //inputtree->SetBranchAddress("LepGood_pfAbsIso03_all",&LepGood_pfAbsIso03_all); // TODO: Fix this at getting samples level (lxplus)
         Float_t LepGood_dxy[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_dxy",&LepGood_dxy);
         Float_t LepGood_dz[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_dz",&LepGood_dz);
         Float_t LepGood_mass[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mass",&LepGood_mass);
-        Float_t LepGood_mt[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mt", &LepGood_mt);
-        Float_t LepGood_Q80[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_Q80", &LepGood_Q80);
-        Float_t LepGood_cosPhiLepMet[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_cosPhiLepMet", &LepGood_cosPhiLepMet);
+// UNUSED   Float_t LepGood_mt[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mt", &LepGood_mt);
+// UNUSED           Float_t LepGood_Q80[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_Q80", &LepGood_Q80);
+// UNUSED           Float_t LepGood_cosPhiLepMet[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_cosPhiLepMet", &LepGood_cosPhiLepMet);
         Int_t LepGood_charge[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
         Int_t nJetIn;  inputtree->SetBranchAddress("nJet", &nJetIn);
         Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
-        Int_t Jet_id[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_id", &Jet_id);
+        Int_t Jet_jetId[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_jetId", &Jet_jetId);  // Jet ID flags bit1 is loose (always false in 2017 since it does not exist), bit2 is tight, bit3 is tightLepVeto --> This flag represents: passlooseID*1+passtightID*2+passtightLepVetoID*4
         Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
         Float_t Jet_phi[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
-        Float_t Jet_btagCSV[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
+        Float_t Jet_btagCSVV2[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSVV2", &Jet_btagCSVV2);
         Float_t Jet_mass[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
-        Float_t Jet_rawPt[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawPt", &Jet_rawPt);
+        Float_t Jet_rawFactor[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawFactor", &Jet_rawFactor);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
-        ULong64_t evt;  inputtree->SetBranchAddress("evt", &evt);
-        UInt_t lumi;  inputtree->SetBranchAddress("lumi", &lumi);
-        Int_t nVert_i; inputtree->SetBranchAddress("nVert", &nVert_i);
+        ULong64_t event;  inputtree->SetBranchAddress("event", &event);
+        UInt_t luminosityBlock;  inputtree->SetBranchAddress("luminosityBlock", &luminosityBlock);
+        Int_t Pileup_nPU; inputtree->SetBranchAddress("Pileup_nPU", &Pileup_nPU);
 
         UInt_t nLHEScaleWeight;
         float LHEScaleWeight[LHEWEIGHT_LIMIT];
@@ -1245,55 +1250,60 @@ int main(int argc, char** argv)
 
         Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
 
-        Float_t met_JetEnUp_Pt;      inputtree->SetBranchAddress("met_JetEnUp_Pt"    , &met_JetEnUp_Pt);
-        Float_t met_JetEnUp_Phi;     inputtree->SetBranchAddress("met_JetEnUp_Phi",   &met_JetEnUp_Phi);
-        Float_t met_JetEnDown_Pt;      inputtree->SetBranchAddress("met_JetEnDown_Pt"    , &met_JetEnDown_Pt);
-        Float_t met_JetEnDown_Phi;     inputtree->SetBranchAddress("met_JetEnDown_Phi",   &met_JetEnDown_Phi);
-        Float_t met_JetResUp_Pt;
-        Float_t met_JetResUp_Phi;
-        Float_t met_JetResDown_Pt;
-        Float_t met_JetResDown_Phi;
-        Float_t Jet_corr[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr", &Jet_corr);
-        Float_t Jet_corr_JECUp[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr_JECUp", &Jet_corr_JECUp);
-        Float_t Jet_corr_JECDown[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr_JECDown", &Jet_corr_JECDown);
+        Float_t MET_pt_jesTotalUp;      inputtree->SetBranchAddress("MET_pt_jesTotalUp"    , &MET_pt_jesTotalUp);
+        Float_t MET_phi_jesTotalUp;     inputtree->SetBranchAddress("MET_phi_jesTotalUp",   &MET_phi_jesTotalUp);
+        Float_t MET_pt_jesTotalDown;      inputtree->SetBranchAddress("MET_pt_jesTotalDown"    , &MET_pt_jesTotalDown);
+        Float_t MET_phi_jesTotalDown;     inputtree->SetBranchAddress("MET_phi_jesTotalDown",   &MET_phi_jesTotalDown);
+        Float_t MET_pt_jerUp;
+        Float_t MET_phi_jerUp;
+        Float_t MET_pt_jerDow;
+        Float_t MET_phi_jerDown;
+        Float_t Jet_pt_nom[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_pt_nom", &Jet_pt_nom);
+
+        Float_t Jet_corr_JEC[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr_JEC", &Jet_corr_JEC);
+        Float_t Jet_corr_JECUp[JETCOLL_LIMIT];
+        Float_t Jet_pt_jesTotalUp[JETCOLL_LIMIT];
+        inputtree->SetBranchAddress("Jet_pt_jesTotalUp", &Jet_pt_jesTotalUp);
+        Float_t Jet_corr_JECDown[JETCOLL_LIMIT];
+        Float_t Jet_pt_jesTotalDown[JETCOLL_LIMIT];
+        inputtree->SetBranchAddress("Jet_pt_jesTotalDown", &Jet_pt_jesTotalDown);
+
         Float_t Jet_corr_JER[JETCOLL_LIMIT];
         Float_t Jet_corr_JERUp[JETCOLL_LIMIT];
+        Float_t Jet_pt_jerUp[JETCOLL_LIMIT];
         Float_t Jet_corr_JERDown[JETCOLL_LIMIT];
+        Float_t Jet_pt_jerDown[JETCOLL_LIMIT];
 
         if(!process.isdata())
         {
-          inputtree->SetBranchAddress("met_JetResUp_Pt"    , &met_JetResUp_Pt);
-          inputtree->SetBranchAddress("met_JetResUp_Phi",   &met_JetResUp_Phi);
-          inputtree->SetBranchAddress("met_JetResDown_Pt"    , &met_JetResDown_Pt);
-          inputtree->SetBranchAddress("met_JetResDown_Phi",   &met_JetResDown_Phi);
+          inputtree->SetBranchAddress("MET_pt_jerUp"    , &MET_pt_jerUp);
+          inputtree->SetBranchAddress("MET_phi_jerUp",   &MET_phi_jerUp);
+          inputtree->SetBranchAddress("MET_pt_jerDow"    , &MET_pt_jerDow);
+          inputtree->SetBranchAddress("MET_phi_jerDown",   &MET_phi_jerDown);
           inputtree->SetBranchAddress("Jet_corr_JER", &Jet_corr_JER);
-          inputtree->SetBranchAddress("Jet_corr_JERUp", &Jet_corr_JERUp);
-          inputtree->SetBranchAddress("Jet_corr_JERDown", &Jet_corr_JERDown);
+          inputtree->SetBranchAddress("Jet_pt_jerUp", &Jet_pt_jerUp);
+          inputtree->SetBranchAddress("Jet_pt_jerDown", &Jet_pt_jerDown);
         }
 
-        Int_t   LepGood_mcMatchId[LEPCOLL_LIMIT];
+        Int_t LepGood_genPartFlav[LEPCOLL_LIMIT];
         Int_t nGenPart = 0;
         Int_t GenPart_motherId[GENPART_LIMIT];
-        Int_t GenPart_grandmotherId[GENPART_LIMIT];
-        Int_t GenPart_sourceId[GENPART_LIMIT];
         Int_t GenPart_status[GENPART_LIMIT];
         Int_t GenPart_pdgId[GENPART_LIMIT];
         Float_t GenPart_pt[GENPART_LIMIT];
         Float_t GenPart_eta[GENPART_LIMIT];
         Float_t GenPart_phi[GENPART_LIMIT];
         Float_t xsec = 1;
-        Float_t nTrueInt = 1;
+        Float_t Pileup_nTrueInt = 1;
         if(!process.isdata())
         {
           inputtree->SetBranchAddress("genWeight", &genWeight);
           inputtree->SetBranchAddress("xsec", &xsec);
-          inputtree->SetBranchAddress("nTrueInt", &nTrueInt);
-          inputtree->SetBranchAddress("LepGood_mcMatchId", &LepGood_mcMatchId);
+          inputtree->SetBranchAddress("Pileup_nTrueInt", &Pileup_nTrueInt);
+          inputtree->SetBranchAddress("LepGood_genPartFlav", &LepGood_genPartFlav);
 
           inputtree->SetBranchAddress("nGenPart", &nGenPart);
-          inputtree->SetBranchAddress("GenPart_motherId", &GenPart_motherId);
-          inputtree->SetBranchAddress("GenPart_grandmotherId", &GenPart_grandmotherId);
-          inputtree->SetBranchAddress("GenPart_sourceId", &GenPart_sourceId);
+          inputtree->SetBranchAddress("GenPart_genPartIdxMother", &GenPart_motherId);
           inputtree->SetBranchAddress("GenPart_status", &GenPart_status);
           inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
           inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
@@ -1309,58 +1319,52 @@ int main(int argc, char** argv)
         //TODO: This should be updated for all samples after the next heppy run
         // Remove the "if's" for both data bool
         // 2016 HLT
-        Int_t HLT_PFMET90_PFMHT90_IDTight;
-        Int_t HLT_PFMET100_PFMHT100_IDTight;
-        Int_t HLT_PFMET110_PFMHT110_IDTight;
-        Int_t HLT_PFMET120_PFMHT120_IDTight;
-        Int_t HLT_Ele25_eta2p1_WPLoose_Gsf;
-        Int_t HLT_IsoMu27;
+        Bool_t HLT_PFMET90_PFMHT90_IDTight;
+        Bool_t HLT_PFMET100_PFMHT100_IDTight;
+        Bool_t HLT_PFMET110_PFMHT110_IDTight;
+        Bool_t HLT_PFMET120_PFMHT120_IDTight;
+        Bool_t HLT_IsoMu24;
+        Bool_t HLT_IsoMu27;
         //TODO: This should be updated for all samples after the next heppy run
-        Int_t HLT_BIT_HLT_PFHT780_v;
-        Int_t HLT_BIT_HLT_PFHT1050_v = 0;
-        Int_t HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v;
-        Int_t HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
-        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v = 0;
-        Int_t HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v = 0;
-        Int_t HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v;
-        Int_t HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v;
+        Bool_t HLT_PFHT780_input;
+        Bool_t HLT_PFHT1050_input;
+        Bool_t HLT_PFMET100_PFMHT100_IDTight_PFHT60;
+        Bool_t HLT_PFMET120_PFMHT120_IDTight_PFHT60;
+        Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;
+        Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;
 
-        Int_t Flag_HBHENoiseFilter = 1;
-        Int_t Flag_HBHENoiseIsoFilter = 1;
-        Int_t Flag_eeBadScFilter = 1;
-        Int_t Flag_EcalDeadCellTriggerPrimitiveFilter = 1;
-        Int_t Flag_goodVertices = 1;
-        Int_t Flag_globalTightHalo2016Filter = 1;
+        Bool_t Flag_HBHENoiseFilter = 1;
+        Bool_t Flag_HBHENoiseIsoFilter = 1;
+        Bool_t Flag_eeBadScFilter = 1;
+        Bool_t Flag_EcalDeadCellTriggerPrimitiveFilter = 1;
+        Bool_t Flag_goodVertices = 1;
+        Bool_t Flag_globalTightHalo2016Filter = 1;
 
         bool skip = true;
 
         //if(!skip || process.issignal()){
         if (!process.issignal()) {
           if(!skip){
-            inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight"  , &HLT_PFMET90_PFMHT90_IDTight  );
+            inputtree->SetBranchAddress("HLT_PFMET90_PFMHT90_IDTight", &HLT_PFMET90_PFMHT90_IDTight);
             inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight", &HLT_PFMET100_PFMHT100_IDTight);
+            Bool_t HLT_Ele24_eta2p1_WPLoose_Gsf; inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf", &HLT_Ele24_eta2p1_WPLoose_Gsf);
+            Bool_t HLT_Ele25_eta2p1_WPLoose_Gsf; inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf", &HLT_Ele25_eta2p1_WPLoose_Gsf );
+          }
+          else { // 2017 && 2018 HLT
+            inputtree->SetBranchAddress("HLT_IsoMu24", &HLT_IsoMu24);
+            inputtree->SetBranchAddress("HLT_IsoMu27", &HLT_IsoMu27);
+            inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight_PFHT60", &HLT_PFMET100_PFMHT100_IDTight_PFHT60);
             inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
             inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
-            Int_t HLT_Ele24_eta2p1_WPLoose_Gsf;  inputtree->SetBranchAddress("HLT_Ele24_eta2p1_WPLoose_Gsf" , &HLT_Ele24_eta2p1_WPLoose_Gsf );
-            Int_t HLT_IsoMu24;                   inputtree->SetBranchAddress("HLT_IsoMu24"                  , &HLT_IsoMu24                  );
-            inputtree->SetBranchAddress("HLT_Ele25_eta2p1_WPLoose_Gsf" , &HLT_Ele25_eta2p1_WPLoose_Gsf );
-            inputtree->SetBranchAddress("HLT_IsoMu27"                  , &HLT_IsoMu27                  );
-          }
-          else { // 2017 HLT
-            inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v);
-            inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v", &HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v);
-            inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v);
-            if(!process.issignal()){
-              inputtree->SetBranchAddress("HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v);
-              inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v);
-              inputtree->SetBranchAddress("HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v", &HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v);
-            }
-            inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT780_v", &HLT_BIT_HLT_PFHT780_v);
-            inputtree->SetBranchAddress("HLT_BIT_HLT_PFHT1050_v", &HLT_BIT_HLT_PFHT1050_v);
+            inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60", &HLT_PFMET120_PFMHT120_IDTight_PFHT60);
+            inputtree->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight);
+            inputtree->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60);
+            inputtree->SetBranchAddress("HLT_PFHT780_input", &HLT_PFHT780_input);
+            inputtree->SetBranchAddress("HLT_PFHT1050_input", &HLT_PFHT1050_input);
           }
         }
 
-//      Int_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
+//      Bool_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
         if (skip && !process.issignal()) {
           inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
           inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
@@ -1369,20 +1373,16 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
           inputtree->SetBranchAddress("Flag_globalTightHalo2016Filter", &Flag_globalTightHalo2016Filter);
         }
-        Int_t Flag_badMuonMoriond2017; inputtree->SetBranchAddress("Flag_badMuonMoriond2017", &Flag_badMuonMoriond2017);
-        Int_t Flag_badCloneMuonMoriond2017; inputtree->SetBranchAddress("Flag_badCloneMuonMoriond2017", &Flag_badCloneMuonMoriond2017);
-        Float_t Flag_badMuonFilter; inputtree->SetBranchAddress("Flag_badMuonFilter", &Flag_badMuonFilter);
-        Float_t Flag_badChargedHadronFilter; inputtree->SetBranchAddress("Flag_badChargedHadronFilter", &Flag_badChargedHadronFilter);
+//        Int_t Flag_badMuonMoriond2017; inputtree->SetBranchAddress("Flag_badMuonMoriond2017", &Flag_badMuonMoriond2017);
+//        Int_t Flag_badCloneMuonMoriond2017; inputtree->SetBranchAddress("Flag_badCloneMuonMoriond2017", &Flag_badCloneMuonMoriond2017);
+        Float_t Flag_BadPFMuonFilter; inputtree->SetBranchAddress("Flag_BadPFMuonFilter", &Flag_BadPFMuonFilter);
+        Float_t Flag_BadChargedCandidateFilter; inputtree->SetBranchAddress("Flag_BadChargedCandidateFilter", &Flag_BadChargedCandidateFilter);
 
-        Int_t GenSusyMGravitino=0;
         Int_t GenSusyMStop=0;
-        Int_t GenSusyMSbottom=0;
         Int_t GenSusyMNeutralino=0;
-        if(!process.isdata())
+        if(process.issignal())
         {
-          inputtree->SetBranchAddress("GenSusyMGravitino", &GenSusyMGravitino);
           inputtree->SetBranchAddress("GenSusyMStop", &GenSusyMStop);
-          inputtree->SetBranchAddress("GenSusyMSbottom", &GenSusyMSbottom);
           inputtree->SetBranchAddress("GenSusyMNeutralino", &GenSusyMNeutralino);
         }
 
@@ -1409,16 +1409,22 @@ int main(int argc, char** argv)
             break;
 
           inputtree->GetEntry(i);
-          nVert = nVert_i;
+          nVert = Pileup_nPU;
           nIsr_out = nIsr;
           if(!process.isdata())
           {
+            puWeight = autoPUweight;
+            //TODO: Check if this is correctly implemented
+            puWeight.Systematic("PU_Up") = autoPUweightUp;
+            puWeight.Systematic("PU_Down") = autoPUweightDown;
+            /*
             puWeight = static_cast<float>(puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt)));
             if(puWeightDistribUp != nullptr)
             {
               puWeight.Systematic("PU_Up")   = puWeightDistribUp->GetBinContent(puWeightDistribUp->FindBin(nTrueInt));
               puWeight.Systematic("PU_Down") = puWeightDistribDown->GetBinContent(puWeightDistribDown->FindBin(nTrueInt));
             }
+            */
           }
           else
             puWeight = 1.0f;
@@ -1436,13 +1442,18 @@ int main(int argc, char** argv)
           validLeptons.clear();
           looseLeptons.clear();
 
+          //TODO: Check if the correct thing to do is actually divide by Jet_pt. If so, when getting Sys the nominal correction value for the other correction factor (JER when doing JEC and vice versa) is included. Shouldn't it be remove?
+
           for(Int_t i = 0; i < nJetIn; ++i)
           {
             jetPt.Value().push_back(Jet_pt[i]);
             if(!process.isdata())
             {
-              jetPt.Systematic("JES_Up").push_back(Jet_pt[i]/Jet_corr[i]*Jet_corr_JECUp[i]);
-              jetPt.Systematic("JES_Down").push_back(Jet_pt[i]/Jet_corr[i]*Jet_corr_JECDown[i]);
+              // TOFO: validate this - Jet_pt => is jet_pt or jet_nom?
+              Jet_corr_JECUp[i] = Jet_pt_jesTotalUp[i] / Jet_pt[i];
+              Jet_corr_JECDown[i] = Jet_pt_jesTotalDown[i] / Jet_pt[i];
+              jetPt.Systematic("JES_Up").push_back(Jet_pt[i]/Jet_corr_JEC[i]*Jet_corr_JECUp[i]);
+              jetPt.Systematic("JES_Down").push_back(Jet_pt[i]/Jet_corr_JEC[i]*Jet_corr_JECDown[i]);
 
               if(Jet_corr_JER[i] < 0)
               {
@@ -1451,6 +1462,8 @@ int main(int argc, char** argv)
               }
               else
               {
+                Jet_corr_JERUp[i] = Jet_pt_jerUp[i]/Jet_pt[i];
+                Jet_corr_JERDown[i] = Jet_pt_jerDown[i]/Jet_pt[i];
                 jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
                 jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
               }
@@ -1474,7 +1487,7 @@ int main(int argc, char** argv)
             for(Int_t i = 0; i < nJetIn; ++i)
             { // Jet selection >> ID=tight and abs(eta) < 2.4
               allJets.GetSystematicOrValue(syst).push_back(i);
-              if(Jet_id[i] == 1 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
+              if(Jet_jetId[i] >= 2  && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
                 validJets.GetSystematicOrValue(syst).push_back(i);
                 bjetList.GetSystematicOrValue(syst).push_back(i);
@@ -1490,8 +1503,8 @@ int main(int argc, char** argv)
             std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
               return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
             });
-            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagCSV] (const int &left, const int &right) {
-              return Jet_btagCSV[left] > Jet_btagCSV[right];
+            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagCSVV2] (const int &left, const int &right) {
+              return Jet_btagCSVV2[left] > Jet_btagCSVV2[right];
             });
           }
 
@@ -1534,6 +1547,8 @@ int main(int argc, char** argv)
           nGoodMu_cutId_tight = 0;
           for(int i = 0; i < nLepGood; ++i)
           {
+            LepGood_pfAbsIso03_all[i] = LepGood_pfRelIso03_all[i] * LepGood_pt[i];
+
             bool lPTETA = false;
             if(std::abs(LepGood_pdgId[i]) == 13) // If a muon
             {
@@ -1552,8 +1567,8 @@ int main(int argc, char** argv)
                           && (std::abs(LepGood_dz[i]) < 0.1);
             bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
                           && (std::abs(LepGood_dz[i]) < 0.5);
-            bool lIS       = LepGood_relIso03[i] < 0.2 || LepGood_absIso03[i] < 5.0;
-            bool lIS_loose = LepGood_relIso03[i] < 0.8 || LepGood_absIso03[i] < 20.0;
+            bool lIS       = LepGood_pfRelIso03_all[i] < 0.2 || LepGood_pfAbsIso03_all[i] < 5.0;
+            bool lIS_loose = LepGood_pfRelIso03_all[i] < 0.8 || LepGood_pfAbsIso03_all[i] < 20.0;
 
             if(lPTETA && lID && lIS)
             {
@@ -1578,16 +1593,16 @@ int main(int argc, char** argv)
                 }
               else
                 nGoodEl++;
-                if(LepGood_eleCutIdPog2017[i] > 0)
+                if(LepGood_cutBased[i] > 0)
                 {
                  nGoodEl_cutId_veto++;
-                 if(LepGood_eleCutIdPog2017[i] > 1)
+                 if(LepGood_cutBased[i] > 1)
                  {
                   nGoodEl_cutId_loose++;
-                  if(LepGood_eleCutIdPog2017[i] > 2)
+                  if(LepGood_cutBased[i] > 2)
                   {
                    nGoodEl_cutId_medium++;
-                   if(LepGood_eleCutIdPog2017[i] > 3)
+                   if(LepGood_cutBased[i] > 3)
                    {
                     nGoodEl_cutId_tight++;
                    }
@@ -1647,18 +1662,18 @@ int main(int argc, char** argv)
             continue;
 
           // Setting the values to be saved in the output tree
-          ValueWithSystematics<double> MetDou = met_pt;
-          ValueWithSystematics<double> MetPhi = met_phi;
+          ValueWithSystematics<double> MetDou = MET_pt;
+          ValueWithSystematics<double> MetPhi = MET_phi;
           if(!process.isdata())
           {
-            MetDou.Systematic("JES_Up") = met_JetEnUp_Pt;
-            MetDou.Systematic("JES_Down") = met_JetEnDown_Pt;
-            MetDou.Systematic("JER_Up") = met_JetResUp_Pt;
-            MetDou.Systematic("JER_Down") = met_JetResDown_Pt;
-            MetPhi.Systematic("JES_Up") = met_JetEnUp_Phi;
-            MetPhi.Systematic("JES_Down") = met_JetEnDown_Phi;
-            MetPhi.Systematic("JER_Up") = met_JetResUp_Phi;
-            MetPhi.Systematic("JER_Down") = met_JetResDown_Phi;
+            MetDou.Systematic("JES_Up") = MET_pt_jesTotalUp;
+            MetDou.Systematic("JES_Down") = MET_pt_jesTotalDown;
+            MetDou.Systematic("JER_Up") = MET_pt_jerUp;
+            MetDou.Systematic("JER_Down") = MET_pt_jerDow;
+            MetPhi.Systematic("JES_Up") = MET_phi_jesTotalUp;
+            MetPhi.Systematic("JES_Down") = MET_phi_jesTotalDown;
+            MetPhi.Systematic("JER_Up") = MET_phi_jerUp;
+            MetPhi.Systematic("JER_Down") = MET_phi_jerDown;
           }
           Met = MetDou;
 
@@ -1767,9 +1782,9 @@ int main(int argc, char** argv)
           Jet2Pt     = loadSysQuantity(jetPt,    validJets, 1);
           JetB2pt    = loadSysQuantity(jetPt,    bjetList,  1);
           Jet2EtaDou = loadQuantity(Jet_eta,     validJets, 1);
-          Jet2CSV    = loadQuantity(Jet_btagCSV, validJets, 1);
+          Jet2CSV    = loadQuantity(Jet_btagCSVV2, validJets, 1);
           JetB2eta   = loadQuantity(Jet_eta,     bjetList,  1);
-          JetB2CSV   = loadQuantity(Jet_btagCSV, bjetList,  1);
+          JetB2CSV   = loadQuantity(Jet_btagCSVV2, bjetList,  1);
           JetB2index = loadQuantity(identity,    bjetList,  1);
           Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
 
@@ -1878,9 +1893,9 @@ int main(int argc, char** argv)
             LepEta      = LepGood_eta[leptonIndex];
             LepDxy      = LepGood_dxy[leptonIndex];
             LepDz       = LepGood_dz[leptonIndex];
-            LepAbsIso03 = LepGood_absIso03[leptonIndex];
-            LepRelIso03 = LepGood_relIso03[leptonIndex];
-            LepMT       = LepGood_mt[leptonIndex];
+            LepAbsIso03 = LepGood_pfAbsIso03_all[leptonIndex];
+            LepRelIso03 = LepGood_pfRelIso03_all[leptonIndex];
+// UNUSED   LepMT       = LepGood_mt[leptonIndex];
             Float_t minPt = 25.;
             LepHybIso03 = LepRelIso03*std::min(LepPt, minPt);
             VLep.SetPtEtaPhiM(LepPt, LepEta, lep_phi, LepGood_mass[leptonIndex]);
@@ -1905,8 +1920,11 @@ int main(int argc, char** argv)
 
             if(!process.isdata() && doPromptTagging)
             {
-              auto mcMatchId = LepGood_mcMatchId[leptonIndex];
-              bool isPromptFlag = !(mcMatchId == 0 || mcMatchId == 99 || mcMatchId == 100);
+              auto genPartFlav = LepGood_genPartFlav[leptonIndex];
+//              bool isPromptFlag = !(genPartFlav == 0 || genPartFlav == 99 || genPartFlav == 100);
+              // 1 = prompt electron (including gamma*->mu mu), 15 = electron from prompt tau, 22 = prompt photon (likely conversion), 5 = electron from b, 4 = electron from c, 3 = electron from light or unknown, 0 = unmatched
+              // 1 = prompt muon (including gamma*->mu mu), 15 = muon from prompt tau, 5 = muon from b, 4 = muon from c, 3 = muon from light or unknown, 0 = unmatched
+              bool isPromptFlag = !(genPartFlav == 0 || genPartFlav == 3 || genPartFlav == 4 || genPartFlav == 5 || genPartFlav == 15 || genPartFlav == 22 || genPartFlav == 15);
               if(!isPromptFlag)
               {
                 for(int genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
@@ -1962,7 +1980,7 @@ int main(int argc, char** argv)
             Lep2Eta      = LepGood_eta[leptonIndex];
             Lep2Dxy      = LepGood_dxy[leptonIndex];
             Lep2Dz       = LepGood_dz[leptonIndex];
-            Lep2Iso03    = LepGood_relIso03[leptonIndex];
+            Lep2Iso03    = LepGood_pfRelIso03_all[leptonIndex];
           }
           else
           {
@@ -1977,7 +1995,7 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
           {
-            bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagCSV, Jet_hadronFlavour);
+            bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagCSVV2, Jet_hadronFlavour);
             triggerEfficiency = triggerEfficiencyFromMETSys(MetDou);
             // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets")
@@ -1991,9 +2009,9 @@ int main(int argc, char** argv)
           ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
           Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
-          Jet1CSV    = loadQuantity(Jet_btagCSV, validJets, 0);
+          Jet1CSV    = loadQuantity(Jet_btagCSVV2, validJets, 0);
           JetB1EtaDou= loadQuantity(Jet_eta,     bjetList,  0);
-          JetHBCSV   = loadQuantity(Jet_btagCSV, bjetList,  0);
+          JetHBCSV   = loadQuantity(Jet_btagCSVV2, bjetList,  0);
           JetHBindex = loadQuantity(identity,    bjetList,  0);
           JetB1Phi   = loadQuantity(Jet_phi,     bjetList,  0);
 
@@ -2065,7 +2083,7 @@ int main(int argc, char** argv)
 
           Jet3Pt     = loadSysQuantity(jetPt,    validJets, 2);
           Jet3Eta    = loadQuantity(Jet_eta,     validJets, 2);
-          Jet3CSV    = loadQuantity(Jet_btagCSV, validJets, 2);
+          Jet3CSV    = loadQuantity(Jet_btagCSVV2, validJets, 2);
 
           list.clear();
           list.push_back("Value");
@@ -2083,7 +2101,7 @@ int main(int argc, char** argv)
           {
             for(auto& bjet: bjetList.GetSystematicOrValue(syst))
             {
-              const auto &csv = Jet_btagCSV[bjet];
+              const auto &csv = Jet_btagCSVV2[bjet];
               const auto &pt = jetPt.GetSystematicOrValue(syst)[bjet];
 
               if(csv > CSV_Loose)
@@ -2193,14 +2211,12 @@ int main(int argc, char** argv)
             }
           }
 
-          genGravitinoM  = GenSusyMGravitino;
           genStopM       = GenSusyMStop;
-          genSbottomM    = GenSusyMSbottom;
           genNeutralinoM = GenSusyMNeutralino;
 
           Run = run;
-          Event = evt;
-          LumiSec = lumi;
+          Event = event;
+          LumiSec = luminosityBlock;
           if(overrideXSec)
             XS = sample.crossSection();
           else
@@ -2214,21 +2230,19 @@ int main(int argc, char** argv)
           if(!skip){
            HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
            HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
-           HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
-           HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
            HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;
            HLT_Mu                              = HLT_IsoMu27;
           }
           else //2017 HLT
           {
-           HLT_PFMET100_PFMHT100               = HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v;
-           HLT_PFMET110_PFMHT110               = HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v;
-           HLT_PFMET120_PFMHT120               = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v;
-           HLT_PFMET120_PFMHT120_PFHT60        = HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v;
-           HLT_PFMETNoMu120_PFMHTNoMu120       = HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_v;
-           HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60= HLT_BIT_HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60_v;
-           HLT_PFHT780                         = HLT_BIT_HLT_PFHT780_v;
-           HLT_PFHT1050                        = HLT_BIT_HLT_PFHT1050_v;
+           HLT_PFMET100_PFMHT100_PFHT60        = HLT_PFMET100_PFMHT100_IDTight_PFHT60;
+           HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
+           HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
+           HLT_PFMET120_PFMHT120_PFHT60        = HLT_PFMET120_PFMHT120_IDTight_PFHT60;
+           HLT_PFMETNoMu120_PFMHTNoMu120       = HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;
+           HLT_PFMETNoMu120_PFMHTNoMu120_PFHT60= HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;
+           HLT_PFHT780                         = HLT_PFHT780_input;
+           HLT_PFHT1050                        = HLT_PFHT1050_input;
           }
 
           //HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
@@ -2240,10 +2254,10 @@ int main(int argc, char** argv)
           EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
           goodVertices                        = Flag_goodVertices;
           globalTightHalo2016Filter           = Flag_globalTightHalo2016Filter;
-          badMuonMoriond2017                  = Flag_badMuonMoriond2017;
-          badCloneMuonMoriond2017             = Flag_badCloneMuonMoriond2017;
-          badMuonFilter                       = Flag_badMuonFilter;
-          badChargedHadronFilter              = Flag_badChargedHadronFilter;
+//          badMuonMoriond2017                  = Flag_badMuonMoriond2017;
+//          badCloneMuonMoriond2017             = Flag_badCloneMuonMoriond2017;
+          BadPFMuonFilter                       = Flag_BadPFMuonFilter;
+          BadChargedCandidateFilter              = Flag_BadChargedCandidateFilter;
 
           // Filter Efficiency
           if(filterEfficiencyH != nullptr)
@@ -2305,14 +2319,16 @@ int main(int argc, char** argv)
           {
             if(sync_count < max_sync_count)
             {
-              SyFile << "Run:LS:Ev " << run << ":" << lumi << ":" << evt << std::endl;
+              SyFile << "Run:LS:Ev " << run << ":" << luminosityBlock << ":" << event << std::endl;
               SyFile << "   Mstop: " << genStopM << "; Mlsp: " << genNeutralinoM << std::endl;
               SyFile << "   HT: " << HT.Value() << "; MET: " << Met.Value() << std::endl;
               SyFile << "   Njet: " << Njet.Value() << std::endl;
               for(size_t i = 0; i < validJets.Value().size(); ++i)
               {
+                Float_t Jet_rawPt[JETCOLL_LIMIT];
+                Jet_rawPt[jet] = (1-Jet_rawFactor[jet])*Jet_pt[jet]
                 auto jet = validJets.Value()[i];
-                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_id[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
+                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_jetId[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
               }
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepRelIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
@@ -2353,16 +2369,16 @@ int main(int argc, char** argv)
                 SyFile << "None";
 
               //Printout detailed info (for a specific event for instance)
-              //if(lumi == 91151 && evt == 195485531)
+              //if(luminosityBlock == 91151 && event == 195485531)
               if(true)
               {
                 SyFile << std::endl << "nLepGood: " << nLepGood << std::endl;
                 SyFile << "LepGood:" << std::endl;
                 for(int i = 0; i < nLepGood; ++i)
-                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; phi: " << LepGood_phi[i] << "; relIso03: " << LepGood_relIso03[i] << "; pdgID: " << LepGood_pdgId[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << std::endl;
+                  SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; phi: " << LepGood_phi[i] << "; relIso03: " << LepGood_pfRelIso03_all[i] << "; pdgID: " << LepGood_pdgId[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << std::endl;
                 SyFile << "nJetGood: " << nJetIn << std::endl;
                 for(int i = 0; i < nJetIn; ++i)
-                  SyFile << "   jet " << i+1 << ": pt: " << Jet_pt[i] << "; eta: " << Jet_eta[i] << "; phi: " << Jet_phi[i] << "; mass: " << Jet_mass[i] << "; ID: " << Jet_id[i] << std::endl;
+                  SyFile << "   jet " << i+1 << ": pt: " << Jet_pt[i] << "; eta: " << Jet_eta[i] << "; phi: " << Jet_phi[i] << "; mass: " << Jet_mass[i] << "; ID: " << Jet_jetId[i] << std::endl;
               }
 
               SyFile << std::endl << std::endl;
@@ -2452,10 +2468,10 @@ int main(int argc, char** argv)
               if ( eeBadScFilter                      != 1 ) continue;
             if (!process.issignal())
               if ( globalTightHalo2016Filter          != 1 ) continue;
-            if ( badMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
+            if ( BadPFMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
             //if ( badMuonMoriond2017                 != 1 ) continue;
-            if ( badCloneMuonMoriond2017            != 1 ) continue; // This one removes some of the spikes in QCD for some reason
-            if ( badChargedHadronFilter             != 1 ) continue;
+//            if ( badCloneMuonMoriond2017            != 1 ) continue; // This one removes some of the spikes in QCD for some reason
+            if ( BadChargedCandidateFilter             != 1 ) continue;
 
             bool passHLT = false;
             if(!swap) // Normally use the MET triggers, but only for data
@@ -2466,18 +2482,18 @@ int main(int argc, char** argv)
                 /* Using onlu Unprescaled triggers for 2017 Data
                 if(HLT_PFMET90_PFMHT90_IDTight != 0)
                   passHLT = true;
-                if(HLT_BIT_HLT_PFMET100_PFMHT100_IDTight_PFHT60_v != 0)
+                if(HLT_PFMET100_PFMHT100_IDTight_PFHT60 != 0)
                   passHLT = true;
-                if(HLT_BIT_HLT_PFMET110_PFMHT110_IDTight_v != 0)
+                if(HLT_PFMET110_PFMHT110_IDTight != 0)
                   passHLT = true;
                 */
-                if(HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_v != 0)
+                if(HLT_PFMET120_PFMHT120_IDTight != 0)
                   passHLT = true;
-                if(HLT_BIT_HLT_PFMET120_PFMHT120_IDTight_PFHT60_v != 0)
+                if(HLT_PFMET120_PFMHT120_IDTight_PFHT60 != 0)
                   passHLT = true;
               }
               else if (process.isdata() && doJetHT) {
-                if(HLT_BIT_HLT_PFHT1050_v != 0)
+                if(HLT_PFHT1050 != 0)
                   passHLT = true;
               }
               else
