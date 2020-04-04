@@ -1204,9 +1204,11 @@ int main(int argc, char** argv)
         Float_t MET_phi;     inputtree->SetBranchAddress("MET_phi",   &MET_phi);
         Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
-        Int_t LepGood_mediumId[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_mediumId",&LepGood_mediumId);
-        Int_t LepGood_cutBased[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_cutBased", &LepGood_cutBased); //0=fail, 1=veto, 2=loose, 3=medium, 4=tight
+        Int_t LepGood_cutBased[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_cutBased", &LepGood_cutBased); //only for Electron: 0=fail, 1=veto, 2=loose, 3=medium, 4=tight
         Float_t LepGood_mvaFall17V1Iso[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_mvaFall17V1Iso", &LepGood_mvaFall17V1Iso); //MVA Iso ID V1 score
+        Bool_t LepGood_isGlobal[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_isGlobal", &LepGood_isGlobal);
+        Bool_t LepGood_isPFcand[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_isPFcand", &LepGood_isPFcand);
+        Bool_t LepGood_isTracker[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_isTracker", &LepGood_isTracker);
         Bool_t LepGood_looseId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_looseId", &LepGood_looseId);
         Bool_t LepGood_mediumId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_mediumId", &LepGood_mediumId);
         Bool_t LepGood_tightId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_tightId", &LepGood_tightId);
@@ -1573,42 +1575,41 @@ int main(int argc, char** argv)
             if(lPTETA && lID && lIS)
             {
               validLeptons.push_back(i);
-              if(std::abs(LepGood_pdgId[i]) == 13)
+              if(std::abs(LepGood_pdgId[i]) == 13){
                 nGoodMu++;
-                if(LepGood_muCutIdPog2017[i] > 0)
-                {
-                 nGoodMu_cutId_soft++;
-                 if(LepGood_muCutIdPog2017[i] > 1)
-                 {
+                if(LepGood_tightId[i]){
+                  nGoodMu_cutId_tight++;
+                  nGoodMu_cutId_medium++;
                   nGoodMu_cutId_loose++;
-                  if(LepGood_muCutIdPog2017[i] > 2)
-                  {
-                   nGoodMu_cutId_medium++;
-                   if(LepGood_muCutIdPog2017[i] > 3)
-                   {
-                    nGoodMu_cutId_tight++;
-                   }
-                  }
-                 }
                 }
-              else
+                else if(LepGood_mediumId[i]){
+                  nGoodMu_cutId_medium++;
+                  nGoodMu_cutId_loose++;
+                }
+                else if(LepGood_looseId[i]){
+                //else if(LepGood_isPFcand[i] && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
+                  nGoodMu_cutId_loose++;
+                }
+              }
+              else{
                 nGoodEl++;
                 if(LepGood_cutBased[i] > 0)
                 {
-                 nGoodEl_cutId_veto++;
-                 if(LepGood_cutBased[i] > 1)
-                 {
-                  nGoodEl_cutId_loose++;
-                  if(LepGood_cutBased[i] > 2)
+                  nGoodEl_cutId_veto++;
+                  if(LepGood_cutBased[i] > 1)
                   {
-                   nGoodEl_cutId_medium++;
-                   if(LepGood_cutBased[i] > 3)
-                   {
-                    nGoodEl_cutId_tight++;
-                   }
+                    nGoodEl_cutId_loose++;
+                    if(LepGood_cutBased[i] > 2)
+                    {
+                      nGoodEl_cutId_medium++;
+                      if(LepGood_cutBased[i] > 3)
+                      {
+                        nGoodEl_cutId_tight++;
+                      }
+                    }
                   }
-                 }
                 }
+              }
             }
             if(lPTETA && lID_loose && lIS_loose)
             {
@@ -2230,7 +2231,7 @@ int main(int argc, char** argv)
           if(!skip){
            HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
            HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
-           HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;
+//           HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;
            HLT_Mu                              = HLT_IsoMu27;
           }
           else //2017 HLT
@@ -2328,7 +2329,7 @@ int main(int argc, char** argv)
                 Float_t Jet_rawPt[JETCOLL_LIMIT];
                 Jet_rawPt[jet] = (1-Jet_rawFactor[jet])*Jet_pt[jet]
                 auto jet = validJets.Value()[i];
-                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_rawPt[jet] << "; ID: " << Jet_jetId[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
+                SyFile << "   jet " << i+1 << ":  pT: " << Jet_pt[jet] << "; eta: " << Jet_eta[jet] << "; raw pT: " << Jet_pt[jet] << "; ID: " << Jet_jetId[jet] << "; abs(eta): " << std::abs(Jet_eta[jet]) << std::endl;
               }
               SyFile << "   Nlep: " << validLeptons.size() << " ( e - " << nGoodEl << "; mu - " << nGoodMu << ")" << std::endl;
               SyFile << "   leading lepton:  pT: " << LepPt << "; eta: " << LepEta << "; phi: " << lep_phi << "; PDG ID: " << LepID << "; RelIso: " << LepRelIso03 << "; dxy: " << LepDxy << "; dz: " << LepDz << std::endl;
