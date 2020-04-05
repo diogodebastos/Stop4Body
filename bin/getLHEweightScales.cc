@@ -42,7 +42,7 @@
 #include "UserCode/Stop4Body-nanoAOD/interface/commonFunctions.h"
 #include "UserCode/Stop4Body-nanoAOD/interface/doubleWithUncertainty.h"
 
-#define LHEWEIGHT_LIMIT  1000
+#define LHEWEIGHT_LIMIT 9
 
 using json = nlohmann::json;
 
