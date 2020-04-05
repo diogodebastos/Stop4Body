@@ -1202,14 +1202,14 @@ int main(int argc, char** argv)
 //        Float_t mtw;         inputtree->SetBranchAddress("event_mtw"       , &mtw);
         Float_t MET_pt;      inputtree->SetBranchAddress("MET_pt"    , &MET_pt);
         Float_t MET_phi;     inputtree->SetBranchAddress("MET_phi",   &MET_phi);
-        Int_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+        UInt_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
         Int_t LepGood_cutBased[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_cutBased", &LepGood_cutBased); //only for Electron: 0=fail, 1=veto, 2=loose, 3=medium, 4=tight
         Float_t LepGood_mvaFall17V1Iso[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_mvaFall17V1Iso", &LepGood_mvaFall17V1Iso); //MVA Iso ID V1 score
         Bool_t LepGood_isGlobal[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_isGlobal", &LepGood_isGlobal);
         Bool_t LepGood_isPFcand[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_isPFcand", &LepGood_isPFcand);
         Bool_t LepGood_isTracker[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_isTracker", &LepGood_isTracker);
-        Bool_t LepGood_looseId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_looseId", &LepGood_looseId);
+        //Bool_t LepGood_looseId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_looseId", &LepGood_looseId);
         Bool_t LepGood_mediumId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_mediumId", &LepGood_mediumId);
         Bool_t LepGood_tightId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_tightId", &LepGood_tightId);
         Bool_t LepGood_softId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_softId", &LepGood_softId);
@@ -1226,7 +1226,7 @@ int main(int argc, char** argv)
 // UNUSED           Float_t LepGood_Q80[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_Q80", &LepGood_Q80);
 // UNUSED           Float_t LepGood_cosPhiLepMet[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_cosPhiLepMet", &LepGood_cosPhiLepMet);
         Int_t LepGood_charge[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
-        Int_t nJetIn;  inputtree->SetBranchAddress("nJet", &nJetIn);
+        UInt_t nJetIn;  inputtree->SetBranchAddress("nJet", &nJetIn);
         Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
         Int_t Jet_jetId[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_jetId", &Jet_jetId);  // Jet ID flags bit1 is loose (always false in 2017 since it does not exist), bit2 is tight, bit3 is tightLepVeto --> This flag represents: passlooseID*1+passtightID*2+passtightLepVetoID*4
         Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
@@ -1258,7 +1258,7 @@ int main(int argc, char** argv)
         Float_t MET_phi_jesTotalDown;     inputtree->SetBranchAddress("MET_phi_jesTotalDown",   &MET_phi_jesTotalDown);
         Float_t MET_pt_jerUp;
         Float_t MET_phi_jerUp;
-        Float_t MET_pt_jerDow;
+        Float_t MET_pt_jerDown;
         Float_t MET_phi_jerDown;
         Float_t Jet_pt_nom[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_pt_nom", &Jet_pt_nom);
 
@@ -1280,7 +1280,7 @@ int main(int argc, char** argv)
         {
           inputtree->SetBranchAddress("MET_pt_jerUp"    , &MET_pt_jerUp);
           inputtree->SetBranchAddress("MET_phi_jerUp",   &MET_phi_jerUp);
-          inputtree->SetBranchAddress("MET_pt_jerDow"    , &MET_pt_jerDow);
+          inputtree->SetBranchAddress("MET_pt_jerDown"    , &MET_pt_jerDown);
           inputtree->SetBranchAddress("MET_phi_jerDown",   &MET_phi_jerDown);
           inputtree->SetBranchAddress("Jet_corr_JER", &Jet_corr_JER);
           inputtree->SetBranchAddress("Jet_pt_jerUp", &Jet_pt_jerUp);
@@ -1288,7 +1288,7 @@ int main(int argc, char** argv)
         }
 
         Int_t LepGood_genPartFlav[LEPCOLL_LIMIT];
-        Int_t nGenPart = 0;
+        UInt_t nGenPart = 0;
         Int_t GenPart_motherId[GENPART_LIMIT];
         Int_t GenPart_status[GENPART_LIMIT];
         Int_t GenPart_pdgId[GENPART_LIMIT];
@@ -1361,8 +1361,8 @@ int main(int argc, char** argv)
             inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60", &HLT_PFMET120_PFMHT120_IDTight_PFHT60);
             inputtree->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight);
             inputtree->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60);
-            inputtree->SetBranchAddress("HLT_PFHT780_input", &HLT_PFHT780_input);
-            inputtree->SetBranchAddress("HLT_PFHT1050_input", &HLT_PFHT1050_input);
+            inputtree->SetBranchAddress("HLT_PFHT780", &HLT_PFHT780_input);
+            inputtree->SetBranchAddress("HLT_PFHT1050", &HLT_PFHT1050_input);
           }
         }
 
@@ -1377,8 +1377,8 @@ int main(int argc, char** argv)
         }
 //        Int_t Flag_badMuonMoriond2017; inputtree->SetBranchAddress("Flag_badMuonMoriond2017", &Flag_badMuonMoriond2017);
 //        Int_t Flag_badCloneMuonMoriond2017; inputtree->SetBranchAddress("Flag_badCloneMuonMoriond2017", &Flag_badCloneMuonMoriond2017);
-        Float_t Flag_BadPFMuonFilter; inputtree->SetBranchAddress("Flag_BadPFMuonFilter", &Flag_BadPFMuonFilter);
-        Float_t Flag_BadChargedCandidateFilter; inputtree->SetBranchAddress("Flag_BadChargedCandidateFilter", &Flag_BadChargedCandidateFilter);
+        Bool_t Flag_BadPFMuonFilter; inputtree->SetBranchAddress("Flag_BadPFMuonFilter", &Flag_BadPFMuonFilter);
+        Bool_t Flag_BadChargedCandidateFilter; inputtree->SetBranchAddress("Flag_BadChargedCandidateFilter", &Flag_BadChargedCandidateFilter);
 
         Int_t GenSusyMStop=0;
         Int_t GenSusyMNeutralino=0;
@@ -1586,8 +1586,8 @@ int main(int argc, char** argv)
                   nGoodMu_cutId_medium++;
                   nGoodMu_cutId_loose++;
                 }
-                else if(LepGood_looseId[i]){
-                //else if(LepGood_isPFcand[i] && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
+                //else if(LepGood_looseId[i]){
+                else if(LepGood_isPFcand[i] && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
                   nGoodMu_cutId_loose++;
                 }
               }
@@ -1670,7 +1670,7 @@ int main(int argc, char** argv)
             MetDou.Systematic("JES_Up") = MET_pt_jesTotalUp;
             MetDou.Systematic("JES_Down") = MET_pt_jesTotalDown;
             MetDou.Systematic("JER_Up") = MET_pt_jerUp;
-            MetDou.Systematic("JER_Down") = MET_pt_jerDow;
+            MetDou.Systematic("JER_Down") = MET_pt_jerDown;
             MetPhi.Systematic("JES_Up") = MET_phi_jesTotalUp;
             MetPhi.Systematic("JES_Down") = MET_phi_jesTotalDown;
             MetPhi.Systematic("JER_Up") = MET_phi_jerUp;
@@ -2473,7 +2473,7 @@ int main(int argc, char** argv)
             if ( BadPFMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
             //if ( badMuonMoriond2017                 != 1 ) continue;
 //            if ( badCloneMuonMoriond2017            != 1 ) continue; // This one removes some of the spikes in QCD for some reason
-            if ( BadChargedCandidateFilter             != 1 ) continue;
+            if ( BadChargedCandidateFilter             != 0 ) continue;
 
             bool passHLT = false;
             if(!swap) // Normally use the MET triggers, but only for data
