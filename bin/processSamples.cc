@@ -1446,7 +1446,7 @@ int main(int argc, char** argv)
 
           //TODO: Check if the correct thing to do is actually divide by Jet_pt. If so, when getting Sys the nominal correction value for the other correction factor (JER when doing JEC and vice versa) is included. Shouldn't it be remove?
 
-          for(Int_t i = 0; i < nJetIn; ++i)
+          for(UInt_t i = 0; i < nJetIn; ++i)
           {
             jetPt.Value().push_back(Jet_pt[i]);
             if(!process.isdata())
@@ -1486,7 +1486,7 @@ int main(int argc, char** argv)
               //l1PreFiringList.Systematic(syst) = empty;
             }
 
-            for(Int_t i = 0; i < nJetIn; ++i)
+            for(UInt_t i = 0; i < nJetIn; ++i)
             { // Jet selection >> ID=tight and abs(eta) < 2.4
               allJets.GetSystematicOrValue(syst).push_back(i);
               if(Jet_jetId[i] >= 2  && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
@@ -1547,7 +1547,7 @@ int main(int argc, char** argv)
           nGoodMu_cutId_loose = 0;
           nGoodMu_cutId_medium = 0;
           nGoodMu_cutId_tight = 0;
-          for(int i = 0; i < nLepGood; ++i)
+          for(UInt_t i = 0; i < nLepGood; ++i)
           {
             LepGood_pfAbsIso03_all[i] = LepGood_pfRelIso03_all[i] * LepGood_pt[i];
 
@@ -1928,7 +1928,7 @@ int main(int argc, char** argv)
               bool isPromptFlag = !(genPartFlav == 0 || genPartFlav == 3 || genPartFlav == 4 || genPartFlav == 5 || genPartFlav == 15 || genPartFlav == 22 || genPartFlav == 15);
               if(!isPromptFlag)
               {
-                for(int genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
+                for(UInt_t genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
                 {
                   if(std::abs(GenPart_pdgId[genPartIndex]) == 15)
                   {
@@ -2376,10 +2376,10 @@ int main(int argc, char** argv)
               {
                 SyFile << std::endl << "nLepGood: " << nLepGood << std::endl;
                 SyFile << "LepGood:" << std::endl;
-                for(int i = 0; i < nLepGood; ++i)
+                for(UInt_t i = 0; i < nLepGood; ++i)
                   SyFile << "   lep " << i+1 << ": ID: " << LepGood_pdgId[i] << "; pt: " << LepGood_pt[i] << "; eta:" << LepGood_eta[i] << "; phi: " << LepGood_phi[i] << "; relIso03: " << LepGood_pfRelIso03_all[i] << "; pdgID: " << LepGood_pdgId[i] << "; dxy: " << LepGood_dxy[i] << "; dz: " << LepGood_dz[i] << std::endl;
                 SyFile << "nJetGood: " << nJetIn << std::endl;
-                for(int i = 0; i < nJetIn; ++i)
+                for(UInt_t i = 0; i < nJetIn; ++i)
                   SyFile << "   jet " << i+1 << ": pt: " << Jet_pt[i] << "; eta: " << Jet_eta[i] << "; phi: " << Jet_phi[i] << "; mass: " << Jet_mass[i] << "; ID: " << Jet_jetId[i] << std::endl;
               }
 
