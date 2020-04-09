@@ -355,7 +355,7 @@ int main(int argc, char** argv)
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
-
+/*
     TH1D* puWeightDistrib     = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
     TH1D* puWeightDistribUp   = nullptr;
     TH1D* puWeightDistribDown = nullptr;
@@ -368,7 +368,7 @@ int main(int argc, char** argv)
         puWeightDistribDown = static_cast<TH1D*>(tmp->Clone("puWeightDistribDown"));
       }
     }
-
+*/
     if(!process.isdata())
     {
       lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
@@ -2473,7 +2473,7 @@ int main(int argc, char** argv)
             if ( BadPFMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
             //if ( badMuonMoriond2017                 != 1 ) continue;
 //            if ( badCloneMuonMoriond2017            != 1 ) continue; // This one removes some of the spikes in QCD for some reason
-            if ( BadChargedCandidateFilter             != 0 ) continue;
+            if ( BadChargedCandidateFilter             != 1 ) continue;
 
             bool passHLT = false;
             if(!swap) // Normally use the MET triggers, but only for data
@@ -2544,13 +2544,14 @@ int main(int argc, char** argv)
       if(filterEfficiencyH != nullptr)
         delete filterEfficiencyH;
     }
-
+/*
     delete puWeightDistrib;
     if(puWeightDistribUp != nullptr)
     {
       delete puWeightDistribUp;
       delete puWeightDistribDown;
     }
+*/
   }
 
   std::cout << "Done!" << std::endl << std::endl;
