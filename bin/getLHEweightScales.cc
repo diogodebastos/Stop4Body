@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 
   for(auto &process : samples)
   {
-    if(!process.tag()=="VV"){
+    if(process.tag()!="VV"){
       std::cout << "Processing process: " << process.tag() << std::endl;
 
       std::map<int,double> processSum;
