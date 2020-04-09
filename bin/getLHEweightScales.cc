@@ -86,68 +86,69 @@ int main(int argc, char** argv)
 
   for(auto &process : samples)
   {
-    std::cout << "Processing process: " << process.tag() << std::endl;
+    if(!process.tag()=="VV"){
+      std::cout << "Processing process: " << process.tag() << std::endl;
 
-    std::map<int,double> processSum;
+      std::map<int,double> processSum;
 
-    for(auto &sample : process)
-    {
-      std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
-
-      std::map<int,double> sampleSum;
-
-      for(auto &file : sample)
+      for(auto &sample : process)
       {
-        TFile finput(file.c_str(), "READ");
-        std::cout << "\t\tProcessing file: " << file.c_str() << std::endl;
-        foutput.cd();
-        TTree *inputtree;
-        if(process.selection() != "")
+        std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
+
+        std::map<int,double> sampleSum;
+
+        for(auto &file : sample)
+        {
+          TFile finput(file.c_str(), "READ");
+          std::cout << "\t\tProcessing file: " << file.c_str() << std::endl;
+          foutput.cd();
+          TTree *inputtree;
+          if(process.selection() != "")
           inputtree = static_cast<TTree*>(finput.Get("Events"))->CopyTree(process.selection().c_str());
-        else
+          else
           inputtree = static_cast<TTree*>(finput.Get("Events"));
 
-        std::map<int,double> fileSum;
+          std::map<int,double> fileSum;
 
-        UInt_t nLHEScaleWeight;
-        float LHEScaleWeight[LHEWEIGHT_LIMIT];
+          UInt_t nLHEScaleWeight;
+          float LHEScaleWeight[LHEWEIGHT_LIMIT];
 
-        inputtree->SetBranchAddress("nLHEScaleWeight" , &nLHEScaleWeight);
-        inputtree->SetBranchAddress("LHEScaleWeight", &LHEScaleWeight);
+          inputtree->SetBranchAddress("nLHEScaleWeight" , &nLHEScaleWeight);
+          inputtree->SetBranchAddress("LHEScaleWeight", &LHEScaleWeight);
 
-        Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
+          Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
 
-        for(Int_t i = 0; i < thisNevt; ++i)
-        {
-          inputtree->GetEntry(i);
-
-          for(UInt_t i = 0; i < nLHEScaleWeight; ++i)
+          for(Int_t i = 0; i < thisNevt; ++i)
           {
-            //Integral of weight per variation
-            fileSum[i] += LHEScaleWeight[i];
+            inputtree->GetEntry(i);
+
+            for(UInt_t i = 0; i < nLHEScaleWeight; ++i)
+            {
+              //Integral of weight per variation
+              fileSum[i] += LHEScaleWeight[i];
+            }
           }
-        }
 
-        for(auto& kv: fileSum)
-        {
-          sampleSum[kv.first] += kv.second;
-        }
+          for(auto& kv: fileSum)
+          {
+            sampleSum[kv.first] += kv.second;
+          }
 
-        if(process.selection() != "")
+          if(process.selection() != "")
           delete inputtree;
+        }
+
+        foutput.WriteObjectAny(&sampleSum, mapClass, ("sample_"+sample.tag()+"_lhemap").c_str());
+
+        for(auto& kv: sampleSum)
+        {
+          processSum[kv.first] += kv.second;
+        }
       }
 
-      foutput.WriteObjectAny(&sampleSum, mapClass, ("sample_"+sample.tag()+"_lhemap").c_str());
-
-      for(auto& kv: sampleSum)
-      {
-        processSum[kv.first] += kv.second;
-      }
+      foutput.WriteObjectAny(&processSum, mapClass, ("process_"+process.tag()+"_lhemap").c_str());
     }
-
-    foutput.WriteObjectAny(&processSum, mapClass, ("process_"+process.tag()+"_lhemap").c_str());
   }
-
   std::cout << "Done!" << std::endl << std::endl;
 
   return 0;
