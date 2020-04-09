@@ -355,6 +355,7 @@ int main(int argc, char** argv)
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
+    //Commented until it's fixed for nanoAOD properly
 /*
     TH1D* puWeightDistrib     = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
     TH1D* puWeightDistribUp   = nullptr;
@@ -1192,9 +1193,15 @@ int main(int argc, char** argv)
         else
           inputtree = static_cast<TTree*>(finput.Get("Events"));
 
-        Float_t autoPUweight; inputtree->SetBranchAddress("puWeight",&autoPUweight);
-        Float_t autoPUweightUp; inputtree->SetBranchAddress("puWeightUp",&autoPUweightUp);
-        Float_t autoPUweightDown; inputtree->SetBranchAddress("puWeightDown",&autoPUweightDown);
+        Float_t autoPUweight;
+        Float_t autoPUweightUp;
+        Float_t autoPUweightDown;
+        if(!process.isdata())
+        {
+          inputtree->SetBranchAddress("puWeight",&autoPUweight);
+          inputtree->SetBranchAddress("puWeightUp",&autoPUweightUp);
+          inputtree->SetBranchAddress("puWeightDown",&autoPUweightDown);
+        }
 
         // Read Branches you are interested in from the input tree
 //        Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
@@ -1237,38 +1244,41 @@ int main(int argc, char** argv)
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
         ULong64_t event;  inputtree->SetBranchAddress("event", &event);
         UInt_t luminosityBlock;  inputtree->SetBranchAddress("luminosityBlock", &luminosityBlock);
-        Int_t Pileup_nPU; inputtree->SetBranchAddress("Pileup_nPU", &Pileup_nPU);
+
+        Int_t Pileup_nPU;
+        if(!process.isdata()){
+          inputtree->SetBranchAddress("Pileup_nPU", &Pileup_nPU);
+        }
 
         UInt_t nLHEScaleWeight;
         float LHEScaleWeight[LHEWEIGHT_LIMIT];
         Int_t Jet_hadronFlavour[JETCOLL_LIMIT];
 
-        if(!process.isdata())
+        if(!(process.isdata() || process.issignal()))
         {
           inputtree->SetBranchAddress("nLHEScaleWeight"   , &nLHEScaleWeight);
           inputtree->SetBranchAddress("LHEScaleWeight", &LHEScaleWeight);
           inputtree->SetBranchAddress("Jet_hadronFlavour", &Jet_hadronFlavour);
         }
 
-        Float_t nIsr; inputtree->SetBranchAddress("nIsr", &nIsr);
+        Float_t nIsr;
+        Float_t MET_pt_jesTotalUp;
+        Float_t MET_phi_jesTotalUp;
+        Float_t MET_pt_jesTotalDown;
+        Float_t MET_phi_jesTotalDown;
 
-        Float_t MET_pt_jesTotalUp;      inputtree->SetBranchAddress("MET_pt_jesTotalUp"    , &MET_pt_jesTotalUp);
-        Float_t MET_phi_jesTotalUp;     inputtree->SetBranchAddress("MET_phi_jesTotalUp",   &MET_phi_jesTotalUp);
-        Float_t MET_pt_jesTotalDown;      inputtree->SetBranchAddress("MET_pt_jesTotalDown"    , &MET_pt_jesTotalDown);
-        Float_t MET_phi_jesTotalDown;     inputtree->SetBranchAddress("MET_phi_jesTotalDown",   &MET_phi_jesTotalDown);
         Float_t MET_pt_jerUp;
         Float_t MET_phi_jerUp;
         Float_t MET_pt_jerDown;
         Float_t MET_phi_jerDown;
-        Float_t Jet_pt_nom[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_pt_nom", &Jet_pt_nom);
+        Float_t Jet_pt_nom[JETCOLL_LIMIT];
 
-        Float_t Jet_corr_JEC[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_corr_JEC", &Jet_corr_JEC);
+        Float_t Jet_corr_JEC[JETCOLL_LIMIT];
         Float_t Jet_corr_JECUp[JETCOLL_LIMIT];
         Float_t Jet_pt_jesTotalUp[JETCOLL_LIMIT];
-        inputtree->SetBranchAddress("Jet_pt_jesTotalUp", &Jet_pt_jesTotalUp);
+
         Float_t Jet_corr_JECDown[JETCOLL_LIMIT];
         Float_t Jet_pt_jesTotalDown[JETCOLL_LIMIT];
-        inputtree->SetBranchAddress("Jet_pt_jesTotalDown", &Jet_pt_jesTotalDown);
 
         Float_t Jet_corr_JER[JETCOLL_LIMIT];
         Float_t Jet_corr_JERUp[JETCOLL_LIMIT];
@@ -1278,10 +1288,19 @@ int main(int argc, char** argv)
 
         if(!process.isdata())
         {
+          inputtree->SetBranchAddress("nIsr", &nIsr);
+          inputtree->SetBranchAddress("MET_pt_jesTotalUp", &MET_pt_jesTotalUp);
+          inputtree->SetBranchAddress("MET_phi_jesTotalUp", &MET_phi_jesTotalUp);
+          inputtree->SetBranchAddress("MET_pt_jesTotalDown", &MET_pt_jesTotalDown);
+          inputtree->SetBranchAddress("MET_phi_jesTotalDown", &MET_phi_jesTotalDown);
           inputtree->SetBranchAddress("MET_pt_jerUp"    , &MET_pt_jerUp);
           inputtree->SetBranchAddress("MET_phi_jerUp",   &MET_phi_jerUp);
           inputtree->SetBranchAddress("MET_pt_jerDown"    , &MET_pt_jerDown);
           inputtree->SetBranchAddress("MET_phi_jerDown",   &MET_phi_jerDown);
+          inputtree->SetBranchAddress("Jet_pt_nom", &Jet_pt_nom);
+          inputtree->SetBranchAddress("Jet_corr_JEC", &Jet_corr_JEC);
+          inputtree->SetBranchAddress("Jet_pt_jesTotalUp", &Jet_pt_jesTotalUp);
+          inputtree->SetBranchAddress("Jet_pt_jesTotalDown", &Jet_pt_jesTotalDown);
           inputtree->SetBranchAddress("Jet_corr_JER", &Jet_corr_JER);
           inputtree->SetBranchAddress("Jet_pt_jerUp", &Jet_pt_jerUp);
           inputtree->SetBranchAddress("Jet_pt_jerDown", &Jet_pt_jerDown);
@@ -1419,6 +1438,7 @@ int main(int argc, char** argv)
             //TODO: Check if this is correctly implemented
             puWeight.Systematic("PU_Up") = autoPUweightUp;
             puWeight.Systematic("PU_Down") = autoPUweightDown;
+            //Commented until it's fixed for nanoAOD properly
             /*
             puWeight = static_cast<float>(puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt)));
             if(puWeightDistribUp != nullptr)
@@ -2544,6 +2564,8 @@ int main(int argc, char** argv)
       if(filterEfficiencyH != nullptr)
         delete filterEfficiencyH;
     }
+
+    //Commented until it's fixed for nanoAOD properly
 /*
     delete puWeightDistrib;
     if(puWeightDistribUp != nullptr)
