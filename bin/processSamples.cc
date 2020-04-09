@@ -370,7 +370,7 @@ int main(int argc, char** argv)
       }
     }
 */
-    if(!process.isdata())
+    if(!(process.isdata() || process.issignal() || process.tag()=="VV"))
     {
       lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
       std::cout << "Loaded LHEScaleMap with " << lheScaleMap->size() << " entries:" << std::endl;
@@ -1254,7 +1254,7 @@ int main(int argc, char** argv)
         float LHEScaleWeight[LHEWEIGHT_LIMIT];
         Int_t Jet_hadronFlavour[JETCOLL_LIMIT];
 
-        if(!(process.isdata() || process.issignal()))
+        if(!(process.isdata() || process.issignal() || process.tag()=="VV"))
         {
           inputtree->SetBranchAddress("nLHEScaleWeight"   , &nLHEScaleWeight);
           inputtree->SetBranchAddress("LHEScaleWeight", &LHEScaleWeight);
@@ -1399,8 +1399,8 @@ int main(int argc, char** argv)
         Bool_t Flag_BadPFMuonFilter; inputtree->SetBranchAddress("Flag_BadPFMuonFilter", &Flag_BadPFMuonFilter);
         Bool_t Flag_BadChargedCandidateFilter; inputtree->SetBranchAddress("Flag_BadChargedCandidateFilter", &Flag_BadChargedCandidateFilter);
 
-        Int_t GenSusyMStop=0;
-        Int_t GenSusyMNeutralino=0;
+        Float_t GenSusyMStop=0;
+        Float_t GenSusyMNeutralino=0;
         if(process.issignal())
         {
           inputtree->SetBranchAddress("GenSusyMStop", &GenSusyMStop);
@@ -1705,7 +1705,7 @@ int main(int argc, char** argv)
           }
 
 
-          if(!process.isdata())
+          if(!(process.isdata() || process.issignal() || process.tag()=="VV"))
           {
             std::map<int, std::string>& lheNames = getNanoAODQ2ScaleMap();
 
