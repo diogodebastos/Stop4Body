@@ -36,6 +36,7 @@
   <bin name="getBDTcut"               file="getBDTcut.cc"> </bin>
   <bin name="doLeptonStudiesEffs"     file="doLeptonStudiesEffs.cc"> </bin>
   <bin name="getJSONlumis"     file="getJSONlumis.cc"> </bin>
+  <bin name="preProcessSamples"     file="preProcessSamples.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
