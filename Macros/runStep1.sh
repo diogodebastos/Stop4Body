@@ -10,7 +10,7 @@ if [[ ! -d ${NTUPLE_DIR} ]] ; then
     exit 1
   fi
   if [[ ! -f ${PREPROCESSSAMPLES_DIR}/preProcessSamples.root ]] ; then
-    echo "Please run runStep0-preProcessSamples first"
+    echo "Please run Step0-preProcessSamples first"
     exit 1
   fi
   cp ${PREPROCESSSAMPLES_DIR}/preProcessSamples.root ${NTUPLE_DIR}

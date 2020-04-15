@@ -64,7 +64,8 @@ if __name__ == "__main__":
 
       if os.path.isfile(outFile) and os.path.isfile(errFile):
         if 'Done' in open(outFile).read():
-          if os.stat(errFile).st_size == 0: # if the job completed successfully, the error file will be empty
+          #if os.stat(errFile).st_size == 0: # if the job completed successfully, the error file will be empty
+          if os.stat(errFile).st_size == 82: # if the job completed successfully, there will be the following error: Warning in <TClass::Init>: no dictionary for class ROOT::TIOFeatures is available -> 82 bytes
             resubmitJob = False
             complete = complete + 1
           else:
@@ -102,7 +103,7 @@ if __name__ == "__main__":
           out, err = p.communicate()
 
         fullJob = sample + "/" + job
-        cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + fullJob + " -e " + fullJob + ".e$JOB_ID -o " + fullJob + ".o$JOB_ID"
+        cmd = "qsub -q lipq  -v CMSSW_BASE=$CMSSW_BASE " + fullJob + " -e " + fullJob + ".e$JOB_ID -o " + fullJob + ".o$JOB_ID"
         if args.dryRun:
           print "\t", cmd
         else:

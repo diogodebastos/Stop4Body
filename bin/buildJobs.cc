@@ -91,7 +91,7 @@ int main(int argc, char** argv)
         continue;
       }
 
-      system(("cp " + outputDirectory + "/puWeights.root " + sampleDirectory).c_str());
+      system(("cp " + outputDirectory + "/preProcessSamples.root " + sampleDirectory).c_str());
 
       for(int thisPart = 0; thisPart < sample.nParts(); ++thisPart)
       {

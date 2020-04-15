@@ -52,6 +52,7 @@ int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
+  std::string suffix = "";
 
   if(argc < 2)
   {
