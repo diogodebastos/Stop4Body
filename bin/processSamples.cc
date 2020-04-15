@@ -236,9 +236,9 @@ int main(int argc, char** argv)
   if(bTagCalibrationFile == "")
     bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
 
-  if(!fileExists(outputDirectory+"/puWeights.root"))
+  if(!fileExists(outputDirectory+"/preProcessSamples.root"))
   {
-    std::cout << "You must first obtain the PU weights before trying to process the samples" << std::endl;
+    std::cout << "You must first obtain the preProcessSamples file before trying to process the samples" << std::endl;
     return 1;
   }
 
@@ -257,7 +257,7 @@ int main(int argc, char** argv)
   gInterpreter->GenerateDictionary("map<int, double>","map");
 
   TDirectory* cwd = gDirectory;
-  TFile puWeightFile((outputDirectory + "/puWeights.root").c_str(), "READ");
+  TFile preProcessSamplesFile((outputDirectory + "/preProcessSamples.root").c_str(), "READ");
   TFile lheScaleFile((lheScaleDir + "/lheWeights.root").c_str(), "READ");
 
   TFile centralElectronRecoSFFile2017_lowEt("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
@@ -357,15 +357,15 @@ int main(int argc, char** argv)
     std::cout << "Processing process: " << process.tag() << std::endl;
     //Commented until it's fixed for nanoAOD properly
 /*
-    TH1D* puWeightDistrib     = static_cast<TH1D*>(puWeightFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+    TH1D* puWeightDistrib     = static_cast<TH1D*>(preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
     TH1D* puWeightDistribUp   = nullptr;
     TH1D* puWeightDistribDown = nullptr;
     {
-      auto tmp = puWeightFile.Get( ("process_"+process.tag()+"_puWeight_Up").c_str());
+      auto tmp = preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight_Up").c_str());
       if(tmp != nullptr)
       {
         puWeightDistribUp   = static_cast<TH1D*>(tmp->Clone("puWeightDistribUp"));
-        tmp = puWeightFile.Get( ("process_"+process.tag()+"_puWeight_Down").c_str());
+        tmp = preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight_Down").c_str());
         puWeightDistribDown = static_cast<TH1D*>(tmp->Clone("puWeightDistribDown"));
       }
     }
@@ -1163,16 +1163,13 @@ int main(int argc, char** argv)
       {
         std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
 
-        TVectorD* sampleSumGenWeight = static_cast<TVectorD*>(lheScaleFile.Get(("sample_"+sample.tag()+"_sumGenWeight").c_str())->Clone("sampleSumGenWeight"));
+        TVectorD* sampleSumGenWeight = static_cast<TVectorD*>(preProcessSamplesFile.Get(("sample_"+sample.tag()+"_sumGenWeight").c_str())->Clone("sampleSumGenWeight"));
         sumGenWeight = (*sampleSumGenWeight)[0];
 
-        TVectorD* sampleNevt = static_cast<TVectorD*>(puWeightFile.Get(("sample_"+sample.tag()+"_Nevt").c_str())->Clone("sampleNevt"));
-        Nevt = (*sampleNevt)[0];
-        TVectorD* processISRWeights = static_cast<TVectorD*>(puWeightFile.Get(("process_"+process.tag()+"_ISRCParams").c_str())->Clone("processISRWeights"));
+        TVectorD* processISRWeights = static_cast<TVectorD*>(preProcessSamplesFile.Get(("process_"+process.tag()+"_ISRCParams").c_str())->Clone("processISRWeights"));
         ISRCParam =    (*processISRWeights)[0];
         EWKISRCParam = (*processISRWeights)[1];
 
-        delete sampleNevt;
         delete sampleSumGenWeight;
         delete processISRWeights;
 

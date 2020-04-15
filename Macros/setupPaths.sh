@@ -52,6 +52,7 @@ export LNTBDT_DIR=${LNT_DIR}_${CURRENT_BDT}
 
 export LHESCALE_DIR=${BASE_NTUPLE_PATH}/lheWeightScale/${YEAR}
 export PUWEIGHT_DIR=${BASE_NTUPLE_PATH}/puWeights/${YEAR}
+export PREPROCESSSAMPLES_DIR=${BASE_NTUPLE_PATH}/preProcessSamples/${YEAR}
 
 export LIMIT_DIR=${BASE_NTUPLE_PATH}/Limits/
 

@@ -5,15 +5,15 @@
 
 if [[ ! -d ${NTUPLE_DIR} ]] ; then
   mkdir -p ${NTUPLE_DIR}
-  if [[ ! -d ${PUWEIGHT_DIR} ]] ; then
-    echo "Please run Step0 first"
+  if [[ ! -d ${PREPROCESSSAMPLES_DIR} ]] ; then
+    echo "Please run Step0-preProcessSamples first"
     exit 1
   fi
-  if [[ ! -f ${PUWEIGHT_DIR}/puWeights.root ]] ; then
-    echo "Please run Step0 first"
+  if [[ ! -f ${PREPROCESSSAMPLES_DIR}/preProcessSamples.root ]] ; then
+    echo "Please run runStep0-preProcessSamples first"
     exit 1
   fi
-  cp ${PUWEIGHT_DIR}/puWeights.root ${NTUPLE_DIR}
+  cp ${PREPROCESSSAMPLES_DIR}/preProcessSamples.root ${NTUPLE_DIR}
   if [[ ! -d ${LHESCALE_DIR} ]] ; then
     echo "Please run Step0-LHEWeight first"
     exit 1
