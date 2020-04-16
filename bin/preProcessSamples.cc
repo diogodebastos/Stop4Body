@@ -118,12 +118,20 @@ int main(int argc, char** argv)
         inputruntree = static_cast<TTree*>(finput.Get("Runs"));
 
         Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
+        Int_t thisNentries = static_cast<Int_t>(inputruntree->GetEntries());
 
         // Get sumGenWeight
         thisSumGenWeight = 0;
+        double smallCounter = 0;
         inputruntree->SetBranchAddress("genEventSumw", &thisSumGenWeight);
-        inputruntree->GetEntry(0);
-        sampleSumGenWeight += thisSumGenWeight;
+
+        for(Int_t k = 0; k < thisNevt; ++k)
+        {
+          inputruntree->GetEntry(k);
+          smallCounter += thisSumGenWeight;
+        }
+
+        sampleSumGenWeight += smallCounter;
 
         //Get ISR Params
         Float_t nIsr;        inputtree->SetBranchAddress("nIsr", &nIsr);

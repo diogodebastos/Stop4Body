@@ -129,8 +129,6 @@ int main(int argc, char** argv)
   gStyle->SetOptStat(000000);
   gStyle->SetOptTitle(0);
 
-  TFile puWeightFile((inputDirectory + "/puWeights.root").c_str(), "READ");
-
   std::cout << "Reading json files" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
