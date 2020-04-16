@@ -125,7 +125,7 @@ int main(int argc, char** argv)
         double smallCounter = 0;
         inputruntree->SetBranchAddress("genEventSumw", &thisSumGenWeight);
 
-        for(Int_t k = 0; k < thisNevt; ++k)
+        for(Int_t k = 0; k < thisNentries; ++k)
         {
           inputruntree->GetEntry(k);
           smallCounter += thisSumGenWeight;
