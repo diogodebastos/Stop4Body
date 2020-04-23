@@ -109,12 +109,13 @@ int main(int argc, char** argv)
         std::cout << "\t\tProcessing file: " << file.c_str() << std::endl;
         foutput.cd();
         TTree *inputtree;
-        if(process.selection() != "")
-        inputtree = static_cast<TTree*>(finput.Get("Events"))->CopyTree(process.selection().c_str());
-        else
-        inputtree = static_cast<TTree*>(finput.Get("Events"));
-
         TTree *inputruntree;
+        if(process.selection() != ""){
+          inputtree = static_cast<TTree*>(finput.Get("Events"))->CopyTree(process.selection().c_str());
+        }
+        else{
+          inputtree = static_cast<TTree*>(finput.Get("Events"));
+        }
         inputruntree = static_cast<TTree*>(finput.Get("Runs"));
 
         Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
@@ -122,28 +123,31 @@ int main(int argc, char** argv)
 
         // Get sumGenWeight
         thisSumGenWeight = 0;
-        double smallCounter = 0;
+        double counter = 0;
         inputruntree->SetBranchAddress("genEventSumw", &thisSumGenWeight);
-
-        for(Int_t k = 0; k < thisNentries; ++k)
-        {
-          inputruntree->GetEntry(k);
-          smallCounter += thisSumGenWeight;
+        if(process.selection() == ""){
+          for(Int_t k = 0; k < thisNentries; ++k)
+          {
+            inputruntree->GetEntry(k);
+            counter += thisSumGenWeight;
+          }
+          sampleSumGenWeight += counter;
         }
-
-        sampleSumGenWeight += smallCounter;
-
         //Get ISR Params
-        Float_t nIsr;        inputtree->SetBranchAddress("nIsr", &nIsr);
-        Float_t met_pt;      inputtree->SetBranchAddress("MET_pt"    , &met_pt);
-        Float_t met_phi;     inputtree->SetBranchAddress("MET_phi",   &met_phi);
-        UInt_t nLepGood;     inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+        Float_t nIsr;          inputtree->SetBranchAddress("nIsr", &nIsr);
+        Float_t thisGenWeight; inputtree->SetBranchAddress("genWeight", &thisGenWeight);
+        Float_t met_pt;        inputtree->SetBranchAddress("MET_pt"    , &met_pt);
+        Float_t met_phi;       inputtree->SetBranchAddress("MET_phi",   &met_phi);
+        UInt_t nLepGood;       inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Float_t LepGood_pt[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pt", &LepGood_pt);
         Float_t LepGood_phi[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_phi", &LepGood_phi);
+        double smallCounter = 0;
 
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
+
+          smallCounter += thisGenWeight;
 
           //Get ISR Params
           Int_t nIsr_switch = nIsr;
@@ -181,11 +185,13 @@ int main(int argc, char** argv)
             EWKpTBin_process[EWKindex]++;
           }
         }
+
         if(process.selection() != "")
         {
+          sampleSumGenWeight += smallCounter;
           delete inputtree;
-          delete inputruntree;
         }
+        delete inputruntree;
       }
 
       TVectorD sumGenWeight(1);
