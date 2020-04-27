@@ -1596,7 +1596,14 @@ int main(int argc, char** argv)
 
             if(lPTETA && lID && lIS)
             {
-              validLeptons.push_back(i);
+              if (year==2018) { // Veto events in HEM 15/16
+                if(!(LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67)) {
+                  validLeptons.push_back(i);
+                }
+              }
+              else {
+                validLeptons.push_back(i);
+              }
               if(std::abs(LepGood_pdgId[i]) == 13){
                 nGoodMu++;
                 if(LepGood_tightId[i]){
@@ -2325,7 +2332,7 @@ int main(int argc, char** argv)
           {
             looseNotTightWeight = 1;
           }
-          if(isL1PreFiring)
+          if(isL1PreFiring && year==2017)
           {
             //loop over jets?
             //auto l1map = getL1preFiringMapsSys(Jet_eta, jetPt);
