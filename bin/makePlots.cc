@@ -86,6 +86,7 @@ int main(int argc, char** argv)
   bool unblind = false;
   bool dofakeclosure = false;
   bool dofakeratio = false;
+  bool skipSyst = false;
   bool doSummary = false;
   bool quick = false;
   bool final = false;
@@ -174,9 +175,15 @@ int main(int argc, char** argv)
     {
       dofakeratio = true;
     }
+
+    if(argument == "--skipSyst")
+    {
+      skipSyst = true;
+    }
+
     if(argument == "--doSummary")
       doSummary = true;
-      
+
     if(argument == "--quick") //Don't load all the systematics for quicker plots. Use when debuggind or want to check small code iterations
       quick = true;
   }
@@ -229,9 +236,9 @@ int main(int argc, char** argv)
       }
       return;
     };
-    
+
     systematics.push_back("PU");
-    
+
     if(!quick){
      systematics.push_back("Q2");
      //loadSystName("Q2_", 8);
@@ -243,7 +250,7 @@ int main(int argc, char** argv)
      //systematics.push_back("Q2_6");
      ////systematics.push_back("Q2_7");
      //systematics.push_back("Q2_8");
-     
+
      systematics.push_back("CFErr1");
      systematics.push_back("CFErr2");
      systematics.push_back("HF");
@@ -252,7 +259,7 @@ int main(int argc, char** argv)
      systematics.push_back("LF");
      systematics.push_back("LFStats1");
      systematics.push_back("LFStats2");
-     
+
      //systematics.push_back("FullFast");
      systematics.push_back("FullFast_HIIP_AltCorr");
      systematics.push_back("FullFast_ID_AltCorr");
@@ -260,7 +267,7 @@ int main(int argc, char** argv)
      //loadSystName("FullFast_HIIP_Muon_Bin", 48);
      //loadSystName("FullFast_ID_Electron_Bin", 35);
      //loadSystName("FullFast_ID_Muon_Bin", 42);
-     
+
      //systematics.push_back("LeptonIDSF_AltCorr");
      //systematics.push_back("LeptonISOSF_AltCorr");
      systematics.push_back("LeptonIDSF2017_AltCorr");
@@ -269,13 +276,13 @@ int main(int argc, char** argv)
      //loadSystName("LeptonIDSF_Muon_Bin", 56);
      //loadSystName("LeptonISOSF_Electron_Bin", 12);
      //loadSystName("LeptonISOSF_Muon_Bin", 6);
-     
+
      //systematics.push_back("ISRweight_AltCorr");
      loadSystName("ISRweight_Bin", 6);
-     
+
      //systematics.push_back("EWKISRweight_AltCorr");
      loadSystName("EWKISRweight_Bin", 7);
-     
+
      //systematics.push_back("TightLoose_AltCorr");
      loadSystName("TightLoose_Electron_Bin", 16);
      loadSystName("TightLoose_Muon_Bin", 18);
@@ -283,13 +290,13 @@ int main(int argc, char** argv)
 
      //systematics.push_back("TightLoose_NU_AltCorr");
      loadSystName("TightLoose_NU_Bin", 5);
-     
+
      systematics.push_back("triggerEfficiency");
-     
+
      //systematics.push_back("triggerEfficiency_stat");
     }
   }
-  
+
   std::vector<std::string> variations;
   {
     for(auto& syst : systematics)
@@ -580,9 +587,9 @@ int main(int argc, char** argv)
 
       //auto dataH = Data.getHist(cut.name()+"_"+variable.name()+"_Data",   variable.expression(), variable.label()+";Evt.", dataSel    , variable.bins(), variable.min(), variable.max());
       auto dataH = Data.process(0).getHist(cut.name(), variable, dataSel);
-      
-      THStack* sigS = new THStack((cut.name() + "_" + variable.name()).c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str()); 
-      TH1D* sigH = nullptr;       
+
+      THStack* sigS = new THStack((cut.name() + "_" + variable.name()).c_str(), (variable.expression() + ";" + variable.label() + ";Events").c_str());
+      TH1D* sigH = nullptr;
 
       if(dofakeclosure)
         dataH->SetTitle(("DD" + std::string(dataH->GetTitle())).c_str());
@@ -608,13 +615,13 @@ int main(int argc, char** argv)
         syncPlot.cd();
         //std::cout << "Process: " << process.tag().c_str() << std::endl;
         tmpHist->Write(Sanitize(process.label()).c_str());
-        
-        sigS->Add(tmpHist);       
+
+        sigS->Add(tmpHist);
         sigH = tmpHist;
       }
-      
+
       sigS->Write("sigStack");
-      
+
       for(auto& process : MC)
       {
         cwd->cd();
@@ -667,153 +674,153 @@ int main(int argc, char** argv)
         systUncEnv->SetBinError(xbin, std::sqrt(unc + constantUncertainties));
         systUnc->SetBinError(xbin, std::sqrt(unc + 0.025*0.025)); //Only add lumi
       }
-
-      TDirectory *systDir = syncPlot.mkdir("SystematicVariations");
-      auto replaceSyst = [&](std::string orig, std::string target, std::string with) -> std::string
-      {
-        std::string retVal;
-        retVal = std::regex_replace(orig, std::regex(target), with);
-        return retVal;
-      };
-      auto getVarHist = [&](std::string name, VariableInfo variable, std::string selection, std::string systematic) -> TH1D*
-      {
-        std::string innerName = name + "_" + systematic;
-
-        selection = replaceSyst(selection, Met         .Value(), Met         .GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, DPhiJet1Jet2.Value(), DPhiJet1Jet2.GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, Jet1Pt      .Value(), Jet1Pt      .GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, Jet2Pt      .Value(), Jet2Pt      .GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, HT          .Value(), HT          .GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, NbLoose     .Value(), NbLoose     .GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, NbTight     .Value(), NbTight     .GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, BDT         .Value(), BDT         .GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, LepPt       .Value(), LepPt       .GetSystematicOrValue(systematic));
-        selection = replaceSyst(selection, weight      .Value(), weight      .GetSystematicOrValue(systematic));
-
-        variable.expression(replaceSyst(variable.expression(), Met         .Value(), Met         .GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), DPhiJet1Jet2.Value(), DPhiJet1Jet2.GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), Jet1Pt      .Value(), Jet1Pt      .GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), Jet2Pt      .Value(), Jet2Pt      .GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), HT          .Value(), HT          .GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), NbLoose     .Value(), NbLoose     .GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), NbTight     .Value(), NbTight     .GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), BDT         .Value(), BDT         .GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), LepPt       .Value(), LepPt       .GetSystematicOrValue(systematic)));
-        variable.expression(replaceSyst(variable.expression(), weight      .Value(), weight      .GetSystematicOrValue(systematic)));
-
-        auto retVal = MC.getHist(innerName, variable, selection);
-
-        systDir->cd();
-        retVal->Write(systematic.c_str());
-        syncPlot.cd();
-        return retVal;
-      };
-      auto getSyst = [&](std::string systematic) -> TH1D*
-      {
-        TH1D* retVal = nullptr;
-
-        std::vector<std::string> myVariations;
-        if(systematic == "Q2")
+      if (!skipSyst) {
+        TDirectory *systDir = syncPlot.mkdir("SystematicVariations");
+        auto replaceSyst = [&](std::string orig, std::string target, std::string with) -> std::string
         {
-          myVariations.push_back(systematic + "_1");
-          myVariations.push_back(systematic + "_2");
-          myVariations.push_back(systematic + "_3");
-          myVariations.push_back(systematic + "_4");
-          //myVariations.push_back(systematic + "_5");
-          myVariations.push_back(systematic + "_6");
-          //myVariations.push_back(systematic + "_7");
-          myVariations.push_back(systematic + "_8");
-        }
-        else
+          std::string retVal;
+          retVal = std::regex_replace(orig, std::regex(target), with);
+          return retVal;
+        };
+        auto getVarHist = [&](std::string name, VariableInfo variable, std::string selection, std::string systematic) -> TH1D*
         {
-          myVariations.push_back(systematic + "_Up");
-          myVariations.push_back(systematic + "_Down");
-        }
+          std::string innerName = name + "_" + systematic;
 
-        for(auto& variation : myVariations)
+          selection = replaceSyst(selection, Met         .Value(), Met         .GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, DPhiJet1Jet2.Value(), DPhiJet1Jet2.GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, Jet1Pt      .Value(), Jet1Pt      .GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, Jet2Pt      .Value(), Jet2Pt      .GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, HT          .Value(), HT          .GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, NbLoose     .Value(), NbLoose     .GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, NbTight     .Value(), NbTight     .GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, BDT         .Value(), BDT         .GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, LepPt       .Value(), LepPt       .GetSystematicOrValue(systematic));
+          selection = replaceSyst(selection, weight      .Value(), weight      .GetSystematicOrValue(systematic));
+
+          variable.expression(replaceSyst(variable.expression(), Met         .Value(), Met         .GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), DPhiJet1Jet2.Value(), DPhiJet1Jet2.GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), Jet1Pt      .Value(), Jet1Pt      .GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), Jet2Pt      .Value(), Jet2Pt      .GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), HT          .Value(), HT          .GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), NbLoose     .Value(), NbLoose     .GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), NbTight     .Value(), NbTight     .GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), BDT         .Value(), BDT         .GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), LepPt       .Value(), LepPt       .GetSystematicOrValue(systematic)));
+          variable.expression(replaceSyst(variable.expression(), weight      .Value(), weight      .GetSystematicOrValue(systematic)));
+
+          auto retVal = MC.getHist(innerName, variable, selection);
+
+          systDir->cd();
+          retVal->Write(systematic.c_str());
+          syncPlot.cd();
+          return retVal;
+        };
+        auto getSyst = [&](std::string systematic) -> TH1D*
         {
-          auto varHist = getVarHist(cut.name(), variable, mcSel, variation);
-          varHist->Add(mcH, -1);
+          TH1D* retVal = nullptr;
 
-          if(retVal == nullptr)
+          std::vector<std::string> myVariations;
+          if(systematic == "Q2")
           {
-            retVal = varHist;
-
-            for(int xbin=0; xbin <= retVal->GetXaxis()->GetNbins(); xbin++)
-            {
-              double unc = std::abs(retVal->GetBinContent(xbin));
-              double binValue = mcH->GetBinContent(xbin);
-
-              if(binValue == 0)
-                unc = 0;
-              else
-                unc = unc/binValue;
-
-              retVal->SetBinContent(xbin, 0);
-              retVal->SetBinError(xbin, unc);
-            }
+            myVariations.push_back(systematic + "_1");
+            myVariations.push_back(systematic + "_2");
+            myVariations.push_back(systematic + "_3");
+            myVariations.push_back(systematic + "_4");
+            //myVariations.push_back(systematic + "_5");
+            myVariations.push_back(systematic + "_6");
+            //myVariations.push_back(systematic + "_7");
+            myVariations.push_back(systematic + "_8");
           }
           else
           {
-            for(int xbin=0; xbin <= varHist->GetXaxis()->GetNbins(); xbin++)
+            myVariations.push_back(systematic + "_Up");
+            myVariations.push_back(systematic + "_Down");
+          }
+
+          for(auto& variation : myVariations)
+          {
+            auto varHist = getVarHist(cut.name(), variable, mcSel, variation);
+            varHist->Add(mcH, -1);
+
+            if(retVal == nullptr)
             {
-              double prevUnc = retVal->GetBinError(xbin);
+              retVal = varHist;
 
-              double newUnc = std::abs(varHist->GetBinContent(xbin));
-              double binValue = mcH->GetBinContent(xbin);
+              for(int xbin=0; xbin <= retVal->GetXaxis()->GetNbins(); xbin++)
+              {
+                double unc = std::abs(retVal->GetBinContent(xbin));
+                double binValue = mcH->GetBinContent(xbin);
 
-              if(binValue == 0)
-                newUnc = 0;
-              else
-                newUnc = newUnc/binValue;
+                if(binValue == 0)
+                  unc = 0;
+                else
+                  unc = unc/binValue;
 
-              if(newUnc > prevUnc)
-                retVal->SetBinError(xbin, newUnc);
+                retVal->SetBinContent(xbin, 0);
+                retVal->SetBinError(xbin, unc);
+              }
             }
+            else
+            {
+              for(int xbin=0; xbin <= varHist->GetXaxis()->GetNbins(); xbin++)
+              {
+                double prevUnc = retVal->GetBinError(xbin);
 
-            delete varHist;
+                double newUnc = std::abs(varHist->GetBinContent(xbin));
+                double binValue = mcH->GetBinContent(xbin);
+
+                if(binValue == 0)
+                  newUnc = 0;
+                else
+                  newUnc = newUnc/binValue;
+
+                if(newUnc > prevUnc)
+                  retVal->SetBinError(xbin, newUnc);
+              }
+
+              delete varHist;
+            }
           }
-        }
 
-        systDir->cd();
-        retVal->Write(systematic.c_str());
-        syncPlot.cd();
-        return retVal;
-      };
-      auto getTotalSyst = [&]() -> TH1D*
-      {
-        TH1D* retVal = nullptr;
-
-        for(auto & systematic : systematics)
+          systDir->cd();
+          retVal->Write(systematic.c_str());
+          syncPlot.cd();
+          return retVal;
+        };
+        auto getTotalSyst = [&]() -> TH1D*
         {
-          std::cout << "    " << systematic << std::endl;
-          auto tmpHist = getSyst(systematic);
-          if(retVal == nullptr)
+          TH1D* retVal = nullptr;
+
+          for(auto & systematic : systematics)
           {
-            retVal = tmpHist;
-            retVal->Sumw2();
+            std::cout << "    " << systematic << std::endl;
+            auto tmpHist = getSyst(systematic);
+            if(retVal == nullptr)
+            {
+              retVal = tmpHist;
+              retVal->Sumw2();
+            }
+            else
+            {
+              retVal->Add(tmpHist);
+              delete tmpHist;
+            }
           }
-          else
-          {
-            retVal->Add(tmpHist);
-            delete tmpHist;
-          }
-        }
 
-        return retVal;
-      };
+          return retVal;
+        };
 
-      auto otherSyst = getTotalSyst();
-      systUnc->Add(otherSyst);
-      delete otherSyst;
+        auto otherSyst = getTotalSyst();
+        systUnc->Add(otherSyst);
+        delete otherSyst;
 
-      systUncEnv->Write();
-      systUnc->Write();
+        systUncEnv->Write();
+        systUnc->Write();
 
-      delete systUncEnv;
-      delete systUnc;
-      cwd->cd();
-
+        delete systUncEnv;
+        delete systUnc;
+        cwd->cd();
+      }
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
       ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
       ratio->Divide(mcH);

@@ -606,6 +606,7 @@ int main(int argc, char** argv)
       Float_t LepChg;    bdttree->Branch("LepChg",    &LepChg,    "LepChg/F");
       Float_t LepPt;     bdttree->Branch("LepPt",     &LepPt,     "LepPt/F");
       Float_t LepEta;    bdttree->Branch("LepEta",    &LepEta,    "LepEta/F");
+      Float_t LepPhi;    bdttree->Branch("LepPhi",    &LepPhi,    "LepPhi/F");
       Float_t LepDxy;    bdttree->Branch("LepDxy",    &LepDxy,    "LepDxy/F");
       Float_t LepDz;     bdttree->Branch("LepDz",     &LepDz,     "LepDz/F");
       Float_t LepMT;     bdttree->Branch("LepMT",     &LepMT,     "LepMT/F");
@@ -1245,7 +1246,7 @@ int main(int argc, char** argv)
 
         Int_t Pileup_nPU;
         if(!process.isdata()){
-          inputtree->SetBranchAddress("Pileup_nPU", &Pileup_nPU);
+          inputtree->SetBranchAddress("PV_npvs", &Pileup_nPU); //"Pileup_nPU" ?
         }
         else {
           inputtree->SetBranchAddress("PV_npvs", &Pileup_nPU);
@@ -1913,6 +1914,7 @@ int main(int argc, char** argv)
             LepID       = LepGood_pdgId[leptonIndex];
             LepPt       = LepGood_pt[leptonIndex];
             LepEta      = LepGood_eta[leptonIndex];
+            LepPhi      = LepGood_phi[leptonIndex];
             LepDxy      = LepGood_dxy[leptonIndex];
             LepDz       = LepGood_dz[leptonIndex];
             LepAbsIso03 = LepGood_pfAbsIso03_all[leptonIndex];
