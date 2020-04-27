@@ -1247,6 +1247,9 @@ int main(int argc, char** argv)
         if(!process.isdata()){
           inputtree->SetBranchAddress("Pileup_nPU", &Pileup_nPU);
         }
+        else {
+          inputtree->SetBranchAddress("PV_npvs", &Pileup_nPU);
+        }
 
         UInt_t nLHEScaleWeight;
         float LHEScaleWeight[LHEWEIGHT_LIMIT];
