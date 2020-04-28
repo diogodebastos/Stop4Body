@@ -968,11 +968,11 @@ int main(int argc, char** argv)
       //bdttree->Branch("JetValidEta",&JetValidEta.Value(),"JetValidEta/F");
       bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
       bdttree->Branch("Jet1Eta",&Jet1Eta.Value(),"Jet1Eta/F");
-      bdttree->Branch("Jet1Phi",&Jet1Phi.Value(),"Jet1Phi/F");
+      bdttree->Branch("Jet1Phi",&Jet1Phi.Value(),"Jet1Phi/D");
       bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
       bdttree->Branch("Jet2Pt",&Jet2Pt.Value(),"Jet2Pt/F");
       bdttree->Branch("Jet2Eta",&Jet2Eta.Value(),"Jet2Eta/F");
-      bdttree->Branch("Jet2Phi",&Jet2Phi.Value(),"Jet2Phi/F");
+      bdttree->Branch("Jet2Phi",&Jet2Phi.Value(),"Jet2Phi/D");
       bdttree->Branch("Jet2CSV",&Jet2CSV.Value(),"Jet2CSV/F");
       bdttree->Branch("Jet3Pt",&Jet3Pt.Value(),"Jet3Pt/F");
       bdttree->Branch("Jet3Eta",&Jet3Eta.Value(),"Jet3Eta/F");
