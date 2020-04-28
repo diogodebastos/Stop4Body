@@ -1510,6 +1510,10 @@ int main(int argc, char** argv)
 
             for(UInt_t i = 0; i < nJetIn; ++i)
             { // Jet selection >> ID=tight and abs(eta) < 2.4
+              //DeltaPhi(jet, HT,miss) < 0.5, -3.2 <eta< -1.2, and -1.77 < phi < -0.67
+              if (preemptiveDropEvents && year==2018 && (Jet_eta[i] > -3.2 && Jet_eta[i] < -1.2 && Jet_phi[i] > -1.77 && Jet_phi[i] < -0.67))
+                continue;  // Veto events in HEM 15/16
+
               allJets.GetSystematicOrValue(syst).push_back(i);
               if(Jet_jetId[i] >= 2  && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
@@ -1573,8 +1577,8 @@ int main(int argc, char** argv)
           {
             LepGood_pfAbsIso03_all[i] = LepGood_pfRelIso03_all[i] * LepGood_pt[i];
 
-	    if (preemptiveDropEvents && year==2018 && (LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67))
-	      continue;  // Veto events in HEM 15/16
+            if (preemptiveDropEvents && year==2018 && (LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67))
+              continue;  // Veto events in HEM 15/16
 
             bool lPTETA = false;
             if(std::abs(LepGood_pdgId[i]) == 13) // If a muon
