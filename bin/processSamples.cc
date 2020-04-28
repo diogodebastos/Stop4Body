@@ -654,6 +654,7 @@ int main(int argc, char** argv)
       */
       ValueWithSystematics<float> Jet1Pt;
       ValueWithSystematics<float> Jet1Eta;
+      ValueWithSystematics<float> Jet1Phi;
       ValueWithSystematics<float> Jet1CSV;
       ValueWithSystematics<float> Jet2Pt;
       ValueWithSystematics<float> Jet2Eta;
@@ -753,6 +754,10 @@ int main(int argc, char** argv)
         Jet1Eta.Systematic("JES_Down");
         Jet1Eta.Systematic("JER_Up");
         Jet1Eta.Systematic("JER_Down");
+        Jet1Phi.Systematic("JES_Up");
+        Jet1Phi.Systematic("JES_Down");
+        Jet1Phi.Systematic("JER_Up");
+        Jet1Phi.Systematic("JER_Down");
         Jet1CSV.Systematic("JES_Up");
         Jet1CSV.Systematic("JES_Down");
         Jet1CSV.Systematic("JER_Up");
@@ -900,6 +905,7 @@ int main(int argc, char** argv)
         */
         Jet1Pt.Lock();
         Jet1Eta.Lock();
+        Jet1Phi.Lock();
         Jet1CSV.Lock();
         Jet2Pt.Lock();
         Jet2Eta.Lock();
@@ -956,6 +962,7 @@ int main(int argc, char** argv)
       //bdttree->Branch("JetValidEta",&JetValidEta.Value(),"JetValidEta/F");
       bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
       bdttree->Branch("Jet1Eta",&Jet1Eta.Value(),"Jet1Eta/F");
+      bdttree->Branch("Jet1Phi",&Jet1Phi.Value(),"Jet1Phi/F");
       bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
       bdttree->Branch("Jet2Pt",&Jet2Pt.Value(),"Jet2Pt/F");
       bdttree->Branch("Jet2Eta",&Jet2Eta.Value(),"Jet2Eta/F");
@@ -1031,6 +1038,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("Jet1Pt_"+systematic).c_str(), &(Jet1Pt.Systematic(systematic)));
         for(auto& systematic: Jet1Eta.Systematics())
           bdttree->Branch(("Jet1Eta_"+systematic).c_str(), &(Jet1Eta.Systematic(systematic)));
+        for(auto& systematic: Jet1Phi.Systematics())
+          bdttree->Branch(("Jet1Phi_"+systematic).c_str(), &(Jet1Phi.Systematic(systematic)));
         for(auto& systematic: Jet1CSV.Systematics())
           bdttree->Branch(("Jet1CSV_"+systematic).c_str(), &(Jet1CSV.Systematic(systematic)));
         for(auto& systematic: Jet2Pt.Systematics())
@@ -1821,7 +1830,7 @@ int main(int argc, char** argv)
             return retVal;
           };
 
-          ValueWithSystematics<double> Jet2EtaDou, Jet1EtaDou;
+          ValueWithSystematics<double> Jet2EtaDou, Jet1EtaDou, Jet1PhiDou;
           Jet2Pt     = loadSysQuantity(jetPt,    validJets, 1);
           JetB2pt    = loadSysQuantity(jetPt,    bjetList,  1);
           Jet2EtaDou = loadQuantity(Jet_eta,     validJets, 1);
@@ -1830,11 +1839,13 @@ int main(int argc, char** argv)
           JetB2CSV   = loadQuantity(Jet_btagCSVV2, bjetList,  1);
           JetB2index = loadQuantity(identity,    bjetList,  1);
           Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
+          Jet1PhiDou = loadQuantity(Jet_phi,     validJets, 0);
 
           Jet2Eta = Jet2EtaDou;
           Jet1Eta = Jet1EtaDou;
+          Jet1Phi = Jet1PhiDou;
 
-          ValueWithSystematics<double> Jet1Phi = loadQuantity(Jet_phi, validJets, 0);
+          //ValueWithSystematics<double> Jet1Phi = loadQuantity(Jet_phi, validJets, 0);
           ValueWithSystematics<double> Jet2Phi = loadQuantity(Jet_phi, validJets, 1);
 
           auto DeltaPhiSys = [] (const ValueWithSystematics<double>& phi1, const ValueWithSystematics<double>& phi2, double defaultValue = -9999) -> ValueWithSystematics<double>
