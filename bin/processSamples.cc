@@ -1246,10 +1246,10 @@ int main(int argc, char** argv)
 
         Int_t Pileup_nPU;
         if(!process.isdata()){
-          inputtree->SetBranchAddress("PV_npvs", &Pileup_nPU); //"Pileup_nPU" ?
+          inputtree->SetBranchAddress("PV_npvsGood", &Pileup_nPU); //"Pileup_nPU" ?
         }
         else {
-          inputtree->SetBranchAddress("PV_npvs", &Pileup_nPU);
+          inputtree->SetBranchAddress("PV_npvsGood", &Pileup_nPU);
         }
 
         UInt_t nLHEScaleWeight;
@@ -1573,6 +1573,9 @@ int main(int argc, char** argv)
           {
             LepGood_pfAbsIso03_all[i] = LepGood_pfRelIso03_all[i] * LepGood_pt[i];
 
+	    if (preemptiveDropEvents && year==2018 && (LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67))
+	      continue;  // Veto events in HEM 15/16
+
             bool lPTETA = false;
             if(std::abs(LepGood_pdgId[i]) == 13) // If a muon
             {
@@ -1596,14 +1599,20 @@ int main(int argc, char** argv)
 
             if(lPTETA && lID && lIS)
             {
+/*
               if (year==2018) { // Veto events in HEM 15/16
                 if(!(LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67)) {
                   validLeptons.push_back(i);
                 }
+		else {
+		  std::cout << "HEM event rejected" << std::endl;
+		}
               }
               else {
                 validLeptons.push_back(i);
               }
+*/
+              validLeptons.push_back(i);
               if(std::abs(LepGood_pdgId[i]) == 13){
                 nGoodMu++;
                 if(LepGood_tightId[i]){
