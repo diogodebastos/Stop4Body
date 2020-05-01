@@ -174,7 +174,7 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/stop800.json            $JSON_PATH/Orig/SignalPoints/Sig_800_720.json $JSON_PATH/Orig/SignalPoints/Sig_800_730.json $JSON_PATH/Orig/SignalPoints/Sig_800_740.json $JSON_PATH/Orig/SignalPoints/Sig_800_750.json $JSON_PATH/Orig/SignalPoints/Sig_800_760.json $JSON_PATH/Orig/SignalPoints/Sig_800_770.json $JSON_PATH/Orig/SignalPoints/Sig_800_780.json $JSON_PATH/Orig/SignalPoints/Sig_800_790.json
 
  # Make a JSON for each group of signal points with the same stop mass for FullSim
- mergeJSONs $JSON_PATH/stop500_FullSim.json            $JSON_PATH/Orig/SignalPoints/Sig_500_420_FullSim.json $JSON_PATH/Orig/SignalPoints/Sig_500_490_FullSim.json
+# mergeJSONs $JSON_PATH/stop500_FullSim.json            $JSON_PATH/Orig/SignalPoints/Sig_500_420_FullSim.json $JSON_PATH/Orig/SignalPoints/Sig_500_490_FullSim.json
 
  # Make a JSON for the PU tests
  mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/DataJetHT.json
@@ -191,19 +191,19 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
 
  mergeJSONs $JSON_PATH/plot${YEAR}-fake.json      $JSON_PATH/DataJetHT.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Wjets.json $JSON_PATH/Orig/VV.json  $JSON_PATH/ttX.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/QCD.json
  #mergeJSONs $JSON_PATH/plot${YEAR}-fake.json      $JSON_PATH/DataJetHT.json $JSON_PATH/Wjets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/QCD.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM10RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_490_FullSim.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420_FullSim.json
+# mergeJSONs $JSON_PATH/plot${YEAR}_DM10RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_490_FullSim.json
+# mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420_FullSim.json
 
  mergeJSONs $JSON_PATH/plot${YEAR}_DM10RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json
  mergeJSONs $JSON_PATH/plot${YEAR}_DM20RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_480.json
  mergeJSONs $JSON_PATH/plot${YEAR}_DM30RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json
  mergeJSONs $JSON_PATH/plot${YEAR}_DM40RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_550_510.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM50RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_476.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM60RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_466.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM70RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_456.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM50RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_475.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM60RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_465.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM70RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_455.json
  mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
 
  # For Lepton Studies
- mergeJSONs $JSON_PATH/lepStudies.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json $JSON_PATH/Orig/SignalPoints/Sig_526_466.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/DataMetHT.json
+ mergeJSONs $JSON_PATH/lepStudies.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json $JSON_PATH/Orig/SignalPoints/Sig_526_465.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/DataMetHT.json
 
 fi
