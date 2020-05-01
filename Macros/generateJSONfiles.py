@@ -54,33 +54,37 @@ def createJSON(stop,neutralino):
 
 
 for stop in range(250, 1101, 25):
-    if stop == 525:
-      stop = 526
-    elif stop == 575:
-      stop = 576
-    elif stop == 625:
-      stop = 626
-    elif stop == 675:
-      stop = 676
-    elif stop == 725:
-      stop = 726
-    elif stop == 775:
-      stop = 776
-    elif stop == 825:
-      stop = 826
-    elif stop == 875:
-      stop = 876
-    elif stop == 925:
-      stop = 926
-    elif stop == 975:
-      stop = 976
-    elif stop == 1025:
-      stop = 1024
-    elif stop == 1050:
-      stop = 1052
-    elif stop == 1075:
-      stop = 1076
-
     for dm in range(80,0,-10):
+        if stop == 525:
+            stop = 526
+            if dm > 10:
+                dm = dm + 1
+        elif stop == 575:
+            stop = 576
+            if dm > 60:
+                dm = dm + 1
+        elif stop == 625:
+            stop = 626
+        elif stop == 675:
+            stop = 676
+        elif stop == 725:
+            stop = 726
+        elif stop == 775:
+            stop = 776
+        elif stop == 825:
+            stop = 826
+        elif stop == 875:
+            stop = 876
+        elif stop == 925:
+            stop = 926
+        elif stop == 975:
+            stop = 976
+        elif stop == 1025:
+            stop = 1024
+        elif stop == 1050:
+            stop = 1052
+        elif stop == 1075:
+            stop = 1076
+            
         neutralino = stop-dm
         createJSON(stop,neutralino)
