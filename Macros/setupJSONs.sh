@@ -204,6 +204,6 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
 
  # For Lepton Studies
- mergeJSONs $JSON_PATH/lepStudies.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json $JSON_PATH/Orig/SignalPoints/Sig_525_465.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/DataMetHT.json
+ mergeJSONs $JSON_PATH/lepStudies.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json $JSON_PATH/Orig/SignalPoints/Sig_526_466.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/DataMetHT.json
 
 fi
