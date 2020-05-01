@@ -1,0 +1,32 @@
+{
+  "lines":[
+    {
+      "tag":"signal_point_676_656",
+      "isdata":false,
+      "issignal":true,
+      "isfastsim":true,
+      "spimpose":true,
+      "color":616,
+      "lwidth":4,
+      "lstyle":1,
+      "fill":0,
+      "marker":1,
+      "label":"signal=(676,656)",
+      "selection":"(GenSusyMStop==676)&&(GenSusyMNeutralino==656)",
+      "files":[
+        {
+          "tag":"T2DegStop_676_656",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filterEfficiencyFile":"../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root",
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1",
+              "split":99
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
