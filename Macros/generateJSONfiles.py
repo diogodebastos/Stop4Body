@@ -52,39 +52,42 @@ def createJSON(stop,neutralino):
         thisJSON.write("  ]\n")
         thisJSON.write("}\n")
 
-
+fixStop = 0
+dixDM = 0
 for stop in range(250, 1101, 25):
+    fixStop = stop
     for dm in range(80,0,-10):
+        fixDM = dm
         if stop == 525:
-            stop = 526
             if dm > 10:
-                dm = dm + 1
+                fixDM = dm + 1
+            fixStop = 526
         elif stop == 575:
-            stop = 576
             if dm > 60:
-                dm = dm + 1
+                fixDM = dm + 1
+            fixStop = 576
         elif stop == 625:
-            stop = 626
+            fixStop = 626
         elif stop == 675:
-            stop = 676
+            fixStop = 676
         elif stop == 725:
-            stop = 726
+            fixStop = 726
         elif stop == 775:
-            stop = 776
+            fixStop = 776
         elif stop == 825:
-            stop = 826
+            fixStop = 826
         elif stop == 875:
-            stop = 876
+            fixStop = 876
         elif stop == 925:
-            stop = 926
+            fixStop = 926
         elif stop == 975:
-            stop = 976
+            fixStop = 976
         elif stop == 1025:
-            stop = 1024
+            fixStop = 1024
         elif stop == 1050:
-            stop = 1052
+            fixStop = 1052
         elif stop == 1075:
-            stop = 1076
+            fixStop = 1076
             
-        neutralino = stop-dm
-        createJSON(stop,neutralino)
+        neutralino = fixStop-fixDM
+        createJSON(fixStop,neutralino)
