@@ -13,7 +13,7 @@
             }
           ],
           "tag":"W1JetsToLNu_LO",
-          "xsec":1
+          "xsec":8123
         },
         {
           "br":1,
@@ -25,7 +25,7 @@
             }
           ],
           "tag":"W2JetsToLNu_LO",
-          "xsec":1
+          "xsec":2785
         },
         {
           "br":1,
@@ -37,7 +37,7 @@
             }
           ],
           "tag":"W3JetsToLNu_LO",
-          "xsec":1
+          "xsec":993.4
         },
         {
           "br":1,
@@ -49,7 +49,7 @@
             }
           ],
           "tag":"W4JetsToLNu_LO",
-          "xsec":1
+          "xsec":542.4
         }
       ],
       "isdata":false,
