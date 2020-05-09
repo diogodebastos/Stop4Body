@@ -79,7 +79,7 @@ int main(int argc, char** argv){
     if (lastRun==run) {
       if ((luminosityBlock-lastLumiBlock)!=1 || (lastLumiBlock-lastLastLumiBlock)!=1) {
         if ((luminosityBlock-lastLumiBlock)!=1 && (lastLumiBlock-lastLastLumiBlock)!=1) {
-          //jsonFile << "[" << lastLumiBlock << "],";
+          jsonFile << "[" << lastLumiBlock << "," << lastLumiBlock << "]";
         }
         else if ((lastLumiBlock-lastLastLumiBlock)!=1) {
           if (firstLumi==0) {
