@@ -12,7 +12,7 @@
           "tag":"Data_2018A_MetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":6607,
+          "recordedLumi":10723,
           "filesPerPart":10,
           "paths":[
             {
@@ -25,7 +25,7 @@
           "tag":"Data_2018B_MetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":3069,
+          "recordedLumi":5964,
           "filesPerPart":10,
           "paths":[
             {
@@ -38,7 +38,7 @@
           "tag":"Data_2018C_MetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":2884,
+          "recordedLumi":6382,
           "filesPerPart":10,
           "paths":[
             {
@@ -51,7 +51,7 @@
           "tag":"Data_2018D_MetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":29480,
+          "recordedLumi":29181,
           "filesPerPart":10,
           "paths":[
             {
