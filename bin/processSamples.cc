@@ -1595,7 +1595,7 @@ int main(int argc, char** argv)
           {
             LepGood_pfAbsIso03_all[i] = LepGood_pfRelIso03_all[i] * LepGood_pt[i];
 
-            if (preemptiveDropEvents && year==2018 && (LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67))
+            if (preemptiveDropEvents && year==2018 && (std::abs(LepGood_pdgId[i]) == 11 && LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67))
               continue;  // Veto events in HEM 15/16
 
             bool lPTETA = false;

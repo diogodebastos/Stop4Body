@@ -11,7 +11,7 @@
           "tag":"ZJetsToNuNu_HT100to200",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT100to200",
@@ -23,7 +23,7 @@
           "tag":"ZJetsToNuNu_HT200to400",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT200to400",
@@ -35,7 +35,7 @@
           "tag":"ZJetsToNuNu_HT400to600",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT400to600",
@@ -47,7 +47,7 @@
           "tag":"ZJetsToNuNu_HT600to800",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT600to800",
@@ -59,7 +59,7 @@
           "tag":"ZJetsToNuNu_HT800to1200",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT800to1200",
@@ -71,7 +71,7 @@
           "tag":"ZJetsToNuNu_HT1200to2500",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT1200to2500",
@@ -83,7 +83,7 @@
           "tag":"ZJetsToNuNu_HT2500toInf",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT2500toInf",
