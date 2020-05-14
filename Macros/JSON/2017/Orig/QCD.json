@@ -9,97 +9,97 @@
       "files":[
         {
           "tag":"QCD_HT100to200",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":10,
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":6,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_HT100to200",
-              "split":1089
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/QCD_HT100to200",
+              "split":59
             }
           ]
         },
         {
           "tag":"QCD_HT200to300",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":10,
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_HT200to300",
-              "split":863
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/QCD_HT200to300",
+              "split":31
             }
           ]
         },
         {
           "tag":"QCD_HT300to500",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":10,
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_HT300to500",
-              "split":1004
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/QCD_HT300to500",
+              "split":32
             }
           ]
         },
         {
           "tag":"QCD_HT500to700",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":10,
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_HT500to700",
-              "split":984
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/QCD_HT500to700",
+              "split":42
             }
           ]
         },
         {
           "tag":"QCD_HT700to1000",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":10,
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_HT700to1000",
-              "split":930
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/QCD_HT700to1000",
+              "split":39
             }
           ]
         },
         {
           "tag":"QCD_HT1000to1500",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":10,
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":3,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_HT1000to1500",
-              "split":366
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/QCD_HT1000to1500",
+              "split":15
             }
           ]
         },
         {
           "tag":"QCD_HT1500to2000",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":10,
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":2,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_HT1500to2000",
-              "split":253
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/QCD_HT1500to2000",
+              "split":10
             }
           ]
         },
         {
           "tag":"QCD_HT2000toInf",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":10,
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":2,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/QCD_HT2000toInf",
-              "split":170
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/QCD_HT2000toInf",
+              "split":7
             }
           ]
         }

@@ -14,8 +14,8 @@
           "filesPerPart":3,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTGJets",
-              "split":138
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/TTGJets",
+              "split":14
             }
           ]
         }

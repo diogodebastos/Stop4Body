@@ -1,0 +1,73 @@
+{
+  "lines":[
+    {
+      "tag":"SingleTop",
+      "isdata":false,
+      "color":592,
+      "lcolor":1,
+      "label":"Single Top",
+      "files":[
+       {
+         "tag":"T_sch_lep",
+         "xsec": 1.0,
+         "br": 1.0,
+         "filesPerPart":5,
+         "paths":[
+           {
+             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_sch_lep",
+             "split":194
+           }
+         ]
+       },
+       {
+         "tag":"T_tch",
+         "xsec": 1.0,
+         "br": 1.0,
+         "filesPerPart":5,
+         "paths":[
+           {
+             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_tch",
+             "split":186
+           }
+         ]
+       },
+       {
+          "tag":"TBar_tch",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TBar_tch",
+              "split":116
+            }
+          ]
+        },
+        {
+          "tag":"T_tWch_noFullyHad",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_tWch_noFullyHad",
+              "split":130
+            }
+          ]
+        },
+        {
+          "tag":"TBar_tWch_noFullyHad",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TBar_tWch_noFullyHad",
+              "split":137
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

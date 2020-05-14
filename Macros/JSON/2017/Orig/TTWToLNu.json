@@ -11,11 +11,11 @@
           "tag":"TTWToLNu",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":3,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTWToLNu_fxfx",
-              "split":122
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/TTWToLNu_fxfx",
+              "split":6
             }
           ]
         }

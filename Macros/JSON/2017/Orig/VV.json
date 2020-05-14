@@ -11,11 +11,11 @@
           "tag":"WW",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":5,
+          "filesPerPart":2,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WW",
-              "split":114
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WW",
+              "split":8
             }
           ]
         },
@@ -23,11 +23,11 @@
           "tag":"ZZ",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/ZZ",
-              "split":47
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/ZZ",
+              "split":2
             }
           ]
         },
@@ -35,11 +35,11 @@
           "tag":"WZ",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WZ",
-              "split":73
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WZ",
+              "split":5
             }
           ]
         }

@@ -1,0 +1,37 @@
+{
+  "lines":[
+    {
+      "tag":"ttx",
+      "isdata":false,
+      "color":620,
+      "lcolor":1,
+      "label":"t#bar{t}X",
+      "files":[
+        {
+          "tag":"TTZToLLNuNu_amc",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":3,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTZToLLNuNu_amc",
+              "split":199
+            }
+          ]
+        },
+        {
+          "tag":"TTZToLLNuNu_amc_psw",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":3,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTZToLLNuNu_amc_psw",
+              "split":87
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

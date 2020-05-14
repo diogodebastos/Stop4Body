@@ -1,0 +1,25 @@
+{
+  "lines":[
+    {
+      "tag":"ttbar",
+      "isdata":false,
+      "color":614,
+      "lcolor":1,
+      "label":"t#bar{t}",
+      "files":[
+        {
+          "tag":"TTJets",
+          "xsec": 1.0,
+          "br": 1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTJets_madgraph",
+              "split":260
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

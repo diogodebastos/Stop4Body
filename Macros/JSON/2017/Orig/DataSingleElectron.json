@@ -16,8 +16,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017B_17Nov2017/",
-              "split":634
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017B_17Nov2017/",
+              "split":317
             }
           ]
         },
@@ -29,8 +29,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017C_17Nov2017",
-              "split":1705
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017C_17Nov2017",
+              "split":427
             }
           ]
         },
@@ -42,8 +42,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017D_17Nov2017",
-              "split":693
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017D_17Nov2017",
+              "split":347
             }
           ]
         },
@@ -55,8 +55,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017E_17Nov2017",
-              "split":1280
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017E_17Nov2017",
+              "split":427
             }
           ]
         },
@@ -68,8 +68,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleElectron_Run2017F_17Nov2017",
-              "split":1583
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017F_17Nov2017",
+              "split":396
             }
           ]
         }

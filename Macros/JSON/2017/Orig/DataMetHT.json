@@ -13,11 +13,11 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4793,
-          "filesPerPart":25,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017B_17Nov2017",
-              "split":579
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/MET_Run2017B_1June2019",
+              "split":32
             }
           ]
         },
@@ -25,12 +25,12 @@
           "tag":"Data_2017C_MetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":9406,
-          "filesPerPart":25,
+          "recordedLumi":6812,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017C_17Nov2017",
-              "split":1058
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/MET_Run2017C_1June2019",
+              "split":65
             }
           ]
         },
@@ -39,11 +39,11 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4248,
-          "filesPerPart":25,
+          "filesPerPart":2,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017D_17Nov2017",
-              "split":281
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/MET_Run2017D_1June2019",
+              "split":10
             }
           ]
         },
@@ -52,11 +52,11 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":9314,
-          "filesPerPart":25,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017E_17Nov2017",
-              "split":890
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/MET_Run2017E_1June2019",
+              "split":27
             }
           ]
         },
@@ -64,12 +64,12 @@
           "tag":"Data_2017F_MetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":13406,
-          "filesPerPart":25,
+          "recordedLumi":13499,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/MET_Run2017F_17Nov2017",
-              "split":1967
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/MET_Run2017F_1June2019",
+              "split":63
             }
           ]
         }

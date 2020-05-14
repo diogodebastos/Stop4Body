@@ -16,8 +16,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017B_17Nov2017",
-              "split":1146
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleMuon_Run2017B_17Nov2017",
+              "split":382
             }
           ]
         },
@@ -29,8 +29,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017C_17Nov2017",
-              "split":1510
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleMuon_Run2017C_17Nov2017",
+              "split":378
             }
           ]
         },
@@ -42,8 +42,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017D_17Nov2017",
-              "split":823
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleMuon_Run2017D_17Nov2017",
+              "split":412
             }
           ]
         },
@@ -55,8 +55,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017E_17Nov2017",
-              "split":1669
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleMuon_Run2017E_17Nov2017",
+              "split":418
             }
           ]
         },
@@ -68,8 +68,8 @@
           "filesPerPart":25,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdMay9/ProdMay9/SingleMuon_Run2017F_17Nov2017",
-              "split":2737
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleMuon_Run2017F_17Nov2017",
+              "split":457
             }
           ]
         }

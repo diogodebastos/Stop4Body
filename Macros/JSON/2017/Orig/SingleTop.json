@@ -11,11 +11,11 @@
          "tag":"T_sch_lep",
          "xsec": 1.0,
          "br": 1.0,
-         "filesPerPart":5,
+         "filesPerPart":2,
          "paths":[
            {
-             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_sch_lep",
-             "split":194
+             "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/T_sch_lep",
+             "split":9
            }
          ]
        },
@@ -23,11 +23,11 @@
          "tag":"T_tch",
          "xsec": 1.0,
          "br": 1.0,
-         "filesPerPart":5,
+         "filesPerPart":2,
          "paths":[
            {
-             "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_tch",
-             "split":186
+             "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/T_tch",
+             "split":6
            }
          ]
        },
@@ -35,11 +35,11 @@
           "tag":"TBar_tch",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":5,
+          "filesPerPart":3,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TBar_tch",
-              "split":116
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/TBar_tch",
+              "split":3
             }
           ]
         },
@@ -47,11 +47,11 @@
           "tag":"T_tWch_noFullyHad",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/T_tWch_noFullyHad",
-              "split":130
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/T_tWch_noFullyHad",
+              "split":5
             }
           ]
         },
@@ -59,11 +59,11 @@
           "tag":"TBar_tWch_noFullyHad",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":5,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TBar_tWch_noFullyHad",
-              "split":137
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/TBar_tWch_noFullyHad",
+              "split":5
             }
           ]
         }
