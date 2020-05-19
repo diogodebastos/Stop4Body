@@ -8,6 +8,18 @@
       "label":"W + Jets",
       "files":[
         {
+          "tag":"WJetsToLNu_HT70to100",
+          "xsec":1394,
+          "br":1.0,
+          "filesPerPart":1,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020May12/WJetsToLNu_HT70to100/",
+              "split":29
+            }
+          ]
+        },
+        {
           "tag":"WJetsToLNu_HT100to200",
           "xsec":1394,
           "br":1.0,
