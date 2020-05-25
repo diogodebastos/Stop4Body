@@ -43,7 +43,7 @@ int main(int argc, char** argv){
   TTree* lumiTree = static_cast<TTree*>(file.Get("LuminosityBlocks"));
 
   size_t nentries = static_cast<size_t>(lumiTree->GetEntries());
-  std::cout << inputDirectory  <<" has:  " << nentries << " events." << std::endl;
+  std::cout << inputDirectory  <<" has:  " << nentries << " entries." << std::endl;
 
   UInt_t run;
   UInt_t luminosityBlock;

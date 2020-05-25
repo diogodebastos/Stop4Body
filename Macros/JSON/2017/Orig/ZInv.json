@@ -23,7 +23,7 @@
           "tag":"ZJetsToNuNu_HT200to400",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":2,
+          "filesPerPart":1,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/ZJetsToNuNu_HT200to400",
@@ -56,13 +56,13 @@
           ]
         },
         {
-          "tag":"ZJetsToNuNu_HT800t1200",
+          "tag":"ZJetsToNuNu_HT800to1200",
           "xsec":1.0,
           "br":1.0,
           "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/ZJetsToNuNu_HT800t1200",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/ZJetsToNuNu_HT800to1200",
               "split":2
             }
           ]

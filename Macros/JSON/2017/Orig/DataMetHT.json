@@ -25,7 +25,7 @@
           "tag":"Data_2017C_MetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":6812,
+          "recordedLumi":9406,
           "filesPerPart":5,
           "paths":[
             {
@@ -64,7 +64,7 @@
           "tag":"Data_2017F_MetHT",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":13499,
+          "recordedLumi":13406,
           "filesPerPart":5,
           "paths":[
             {

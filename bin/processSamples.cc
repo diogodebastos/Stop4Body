@@ -1369,8 +1369,8 @@ int main(int argc, char** argv)
         //TODO: This should be updated for all samples after the next heppy run
         Bool_t HLT_PFHT780_input;
         Bool_t HLT_PFHT1050_input;
-        Bool_t HLT_PFMET100_PFMHT100_IDTight_PFHT60;
-        Bool_t HLT_PFMET120_PFMHT120_IDTight_PFHT60;
+//        Bool_t HLT_PFMET100_PFMHT100_IDTight_PFHT60;
+        Bool_t HLT_PFMET120_PFMHT120_IDTight_PFHT60 = 1;
         Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;
         Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;
 
@@ -1394,12 +1394,15 @@ int main(int argc, char** argv)
           else { // 2017 && 2018 HLT
             inputtree->SetBranchAddress("HLT_IsoMu24", &HLT_IsoMu24);
             inputtree->SetBranchAddress("HLT_IsoMu27", &HLT_IsoMu27);
-            inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight_PFHT60", &HLT_PFMET100_PFMHT100_IDTight_PFHT60);
+            //inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight_PFHT60", &HLT_PFMET100_PFMHT100_IDTight_PFHT60);
             inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
             inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
-            inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60", &HLT_PFMET120_PFMHT120_IDTight_PFHT60);
+
+            if (year == 2018){
+              inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight_PFHT60", &HLT_PFMET120_PFMHT120_IDTight_PFHT60);
+              inputtree->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60);
+            }
             inputtree->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight);
-            inputtree->SetBranchAddress("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60", &HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60);
             inputtree->SetBranchAddress("HLT_PFHT780", &HLT_PFHT780_input);
             inputtree->SetBranchAddress("HLT_PFHT1050", &HLT_PFHT1050_input);
           }
@@ -2301,7 +2304,7 @@ int main(int argc, char** argv)
           }
           else //2017 HLT
           {
-           HLT_PFMET100_PFMHT100_PFHT60        = HLT_PFMET100_PFMHT100_IDTight_PFHT60;
+//           HLT_PFMET100_PFMHT100_PFHT60        = HLT_PFMET100_PFMHT100_IDTight_PFHT60;
            HLT_PFMET110_PFMHT110               = HLT_PFMET110_PFMHT110_IDTight;
            HLT_PFMET120_PFMHT120               = HLT_PFMET120_PFMHT120_IDTight;
            HLT_PFMET120_PFMHT120_PFHT60        = HLT_PFMET120_PFMHT120_IDTight_PFHT60;
@@ -2556,7 +2559,7 @@ int main(int argc, char** argv)
                 */
                 if(HLT_PFMET120_PFMHT120_IDTight != 0)
                   passHLT = true;
-                if(HLT_PFMET120_PFMHT120_IDTight_PFHT60 != 0)
+                if((year == 2018 && HLT_PFMET120_PFMHT120_IDTight_PFHT60) != 0)
                   passHLT = true;
               }
               else if (process.isdata() && doJetHT) {
