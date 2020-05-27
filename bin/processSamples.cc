@@ -117,6 +117,7 @@ int main(int argc, char** argv)
   std::string suffix = "";
   size_t max_sync_count = 0;
   double jetPtThreshold = 30;
+  double genJetPtThreshold = 20;
   bool overrideXSec = false;
   bool swap = false;
   bool looseNotTight = false;
@@ -666,6 +667,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> DPhiJet1Jet2;
       ValueWithSystematics<float> HT;
       ValueWithSystematics<float> HT_raw;
+      ValueWithSystematics<float> genHT;
 
       ValueWithSystematics<float> NbLoose;
       ValueWithSystematics<float> NbTight;
@@ -922,6 +924,7 @@ int main(int argc, char** argv)
         DPhiJet1Jet2.Lock();
         HT.Lock();
         HT_raw.Lock();
+        genHT.Lock();
         NbLoose.Lock();
         NbTight.Lock();
         NbLooseTo50.Lock();
@@ -980,6 +983,7 @@ int main(int argc, char** argv)
       bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
       bdttree->Branch("HT",&HT.Value(),"HT/F");
       bdttree->Branch("HT_raw",&HT_raw.Value(),"HT_raw/F");
+      bdttree->Branch("genHT",&genHT.Value(),"genHT/F");
 
       bdttree->Branch("NbLoose",&NbLoose.Value(),"NbLoose/F");
       bdttree->Branch("NbTight",&NbTight.Value(),"NbTight/F");
@@ -1069,6 +1073,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("HT_"+systematic).c_str(), &(HT.Systematic(systematic)));
         for(auto& systematic: HT_raw.Systematics())
           bdttree->Branch(("HT_raw_"+systematic).c_str(), &(HT_raw.Systematic(systematic)));
+        for(auto& systematic: genHT.Systematics())
+          bdttree->Branch(("genHT_"+systematic).c_str(), &(genHT.Systematic(systematic)));
         for(auto& systematic: NbLoose.Systematics())
           bdttree->Branch(("NbLoose_"+systematic).c_str(), &(NbLoose.Systematic(systematic)));
         for(auto& systematic: NbTight.Systematics())
@@ -1258,6 +1264,8 @@ int main(int argc, char** argv)
         Float_t Jet_btagCSVV2[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSVV2", &Jet_btagCSVV2);
         Float_t Jet_mass[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
         Float_t Jet_rawFactor[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawFactor", &Jet_rawFactor);
+        UInt_t nGenJet;  inputtree->SetBranchAddress("nGenJet", &nGenJet);
+        Float_t genJet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("genJet_pt", &genJet_pt);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
         ULong64_t event;  inputtree->SetBranchAddress("event", &event);
         UInt_t luminosityBlock;  inputtree->SetBranchAddress("luminosityBlock", &luminosityBlock);
@@ -1479,8 +1487,10 @@ int main(int argc, char** argv)
           std::vector<int> looseLeptons;
           //std::vector<int> l1PreFiringJets;
           ValueWithSystematics<std::vector<double>> jetPt;
+          ValueWithSystematics<std::vector<double>> genJetPt;
           ValueWithSystematics<std::vector<int>> allJets;
           ValueWithSystematics<std::vector<int>> validJets;
+          ValueWithSystematics<std::vector<int>> genJets;
           ValueWithSystematics<std::vector<int>> bjetList; // Same as validJets, but sorted by CSV value
           //ValueWithSystematics<std::vector<int>> l1PreFiringList;
 
@@ -1514,6 +1524,10 @@ int main(int argc, char** argv)
               }
             }
           }
+          for(UInt_t i = 0; i < nGenJet; ++i)
+          {
+            genJetPt.Value().push_back(genJet_pt[i]);
+          }
           std::vector<std::string> list;
           list.push_back("Value");
           loadSystematics(list, jetPt);
@@ -1526,6 +1540,7 @@ int main(int argc, char** argv)
               allJets.Systematic(syst) = empty;
               validJets.Systematic(syst) = empty;
               bjetList.Systematic(syst) = empty;
+              genJets.Systematic(syst) = empty;
               //l1PreFiringList.Systematic(syst) = empty;
             }
 
@@ -1556,7 +1571,12 @@ int main(int argc, char** argv)
               return Jet_btagCSVV2[left] > Jet_btagCSVV2[right];
             });
           }
+/*
+          for(UInt_t i = 0; i < nGenJet; ++i)
+          {
 
+          }
+*/
           auto jetThreshold = [&jetPt, &validJets] (const std::string& syst = "Value") -> bool
           {
             if(validJets.GetSystematicOrValue(syst).size() == 0)
@@ -2277,6 +2297,20 @@ int main(int argc, char** argv)
               const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
 
               HT_raw.GetSystematicOrValue(syst) += pt;
+            }
+          }
+          genHT = 0;
+
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, genJets);
+          for(auto& syst: list)
+          {
+            for(auto &jet : genJets.GetSystematicOrValue(syst))
+            {
+              const auto &pt = genJetPt.GetSystematicOrValue(syst)[jet];
+
+              genHT.GetSystematicOrValue(syst) += pt;
             }
           }
 
