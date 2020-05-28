@@ -1,61 +1,97 @@
 {
   "lines":[
     {
+      "tag":"WJets",
+      "isdata":false,
       "color":811,
+      "lcolor":1,
+      "label":"W + Jets",
       "files":[
         {
-          "br":1,
+          "tag":"WJetsToLNu_HT100to200",
+          "xsec":1395,
+          "br":1.0,
           "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/W1JetsToLNu_LO",
-              "split":36
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT100to200",
+              "split":23
             }
-          ],
-          "tag":"W1JetsToLNu_LO",
-          "xsec":8123
+          ]
         },
         {
-          "br":1,
-          "filesPerPart":2,
-          "paths":[
-            {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/W2JetsToLNu_LO",
-              "split":6
-            }
-          ],
-          "tag":"W2JetsToLNu_LO",
-          "xsec":2785
-        },
-        {
-          "br":1,
+          "tag":"WJetsToLNu_HT200to400",
+          "xsec":407.9,
+          "br":1.0,
           "filesPerPart":3,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/W3JetsToLNu_LO",
-              "split":15
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT200to400",
+              "split":18
             }
-          ],
-          "tag":"W3JetsToLNu_LO",
-          "xsec":993.4
+          ]
         },
         {
-          "br":1,
+          "tag":"WJetsToLNu_HT400to600",
+          "xsec":57.48,
+          "br":1.0,
           "filesPerPart":2,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/W4JetsToLNu_LO",
-              "split":7
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT400to600",
+              "split":13
             }
-          ],
-          "tag":"W4JetsToLNu_LO",
-          "xsec":542.4
+          ]
+        },
+        {
+          "tag":"WJetsToLNu_HT600to800",
+          "xsec":12.87,
+          "br":1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT600to800",
+              "split":25
+            }
+          ]
+        },
+        {
+          "tag":"WJetsToLNu_HT800to1200",
+          "xsec":5.366,
+          "br":1.0,
+          "filesPerPart":4,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT800to1200",
+              "split":22
+            }
+          ]
+        },
+        {
+          "tag":"WJetsToLNu_HT1200to2500",
+          "xsec":1.074,
+          "br":1.0,
+          "filesPerPart":4,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT1200to2500",
+              "split":22
+            }
+          ]
+        },
+        {
+          "tag":"WJetsToLNu_HT2500toInf",
+          "xsec":0.008001,
+          "br":1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT2500toInf",
+              "split":26
+            }
+          ]
         }
-      ],
-      "isdata":false,
-      "label":"W + Jets",
-      "lcolor":1,
-      "tag":"WJets"
+      ]
     }
   ]
 }

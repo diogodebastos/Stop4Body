@@ -1265,7 +1265,7 @@ int main(int argc, char** argv)
         Float_t Jet_mass[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
         Float_t Jet_rawFactor[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawFactor", &Jet_rawFactor);
         UInt_t nGenJet;  inputtree->SetBranchAddress("nGenJet", &nGenJet);
-        Float_t genJet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("genJet_pt", &genJet_pt);
+        Float_t GenJet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("GenJet_pt", &GenJet_pt);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
         ULong64_t event;  inputtree->SetBranchAddress("event", &event);
         UInt_t luminosityBlock;  inputtree->SetBranchAddress("luminosityBlock", &luminosityBlock);
@@ -1524,13 +1524,19 @@ int main(int argc, char** argv)
               }
             }
           }
+          //genHT = 0;
           for(UInt_t i = 0; i < nGenJet; ++i)
           {
-            genJetPt.Value().push_back(genJet_pt[i]);
+            genJetPt.Value().push_back(GenJet_pt[i]);
           }
+
           std::vector<std::string> list;
           list.push_back("Value");
           loadSystematics(list, jetPt);
+
+          std::vector<std::string> genList;
+          genList.push_back("Value");
+          loadSystematics(genList, genJetPt);
 
           for(auto & syst : list)
           {
@@ -1540,7 +1546,6 @@ int main(int argc, char** argv)
               allJets.Systematic(syst) = empty;
               validJets.Systematic(syst) = empty;
               bjetList.Systematic(syst) = empty;
-              genJets.Systematic(syst) = empty;
               //l1PreFiringList.Systematic(syst) = empty;
             }
 
@@ -1571,12 +1576,23 @@ int main(int argc, char** argv)
               return Jet_btagCSVV2[left] > Jet_btagCSVV2[right];
             });
           }
-/*
-          for(UInt_t i = 0; i < nGenJet; ++i)
-          {
 
+          for(auto & syst : genList)
+          {
+            if(syst != "Value")
+            {
+              std::vector<int> empty;
+              genJets.Systematic(syst) = empty;
+            }
+
+            for(UInt_t i = 0; i < nGenJet; ++i)
+            {
+              if(genJetPt.GetSystematicOrValue(syst)[i] > genJetPtThreshold){
+                genJets.GetSystematicOrValue(syst).push_back(i);
+              }
+            }
           }
-*/
+
           auto jetThreshold = [&jetPt, &validJets] (const std::string& syst = "Value") -> bool
           {
             if(validJets.GetSystematicOrValue(syst).size() == 0)
@@ -2235,7 +2251,6 @@ int main(int argc, char** argv)
              if (std::abs(Jet_eta[jet]) >= 2 && std::abs(Jet_eta[jet]) < 3.5 && pt >= 40)
              {
               isL1PreFiring = true;
-
              }
              else
              {
@@ -2299,18 +2314,22 @@ int main(int argc, char** argv)
               HT_raw.GetSystematicOrValue(syst) += pt;
             }
           }
+        
           genHT = 0;
 
           list.clear();
           list.push_back("Value");
+
           loadSystematics(list, genJets);
           for(auto& syst: list)
           {
             for(auto &jet : genJets.GetSystematicOrValue(syst))
             {
               const auto &pt = genJetPt.GetSystematicOrValue(syst)[jet];
-
               genHT.GetSystematicOrValue(syst) += pt;
+          //    if(pt  > genJetPtThreshold) {
+           //     genHT.GetSystematicOrValue(syst) += pt;
+            //  }
             }
           }
 
