@@ -14,7 +14,7 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WJetsToLNu_HT100To200",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/WJetsToLNu_HT100To200",
               "split":368
             }
           ]
@@ -26,7 +26,7 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WJetsToLNu_HT200To400",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/WJetsToLNu_HT200To400",
               "split":400
             }
           ]
@@ -38,7 +38,7 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WJetsToLNu_HT400To600",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/WJetsToLNu_HT400To600",
               "split":314
             }
           ]
@@ -50,7 +50,7 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WJetsToLNu_HT600To800",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/WJetsToLNu_HT600To800",
               "split":488
             }
           ]
@@ -62,7 +62,7 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WJetsToLNu_HT800To1200",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/WJetsToLNu_HT800To1200",
               "split":487
             }
           ]
@@ -74,7 +74,7 @@
           "filesPerPart":10,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WJetsToLNu_HT1200To2500",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/WJetsToLNu_HT1200To2500",
               "split":276
             }
           ]
@@ -86,7 +86,7 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/WJetsToLNu_HT2500ToInf",
+              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17_Prod2019Mar19/Prod2019Mar19/WJetsToLNu_HT2500ToInf",
               "split":308
             }
           ]
