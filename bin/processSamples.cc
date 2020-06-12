@@ -2317,11 +2317,11 @@ int main(int argc, char** argv)
         
           genHT = 0;
 
-          list.clear();
-          list.push_back("Value");
+          genList.clear();
+          genList.push_back("Value");
 
-          loadSystematics(list, genJets);
-          for(auto& syst: list)
+          loadSystematics(genList, genJets);
+          for(auto& syst: genList)
           {
             for(auto &jet : genJets.GetSystematicOrValue(syst))
             {
