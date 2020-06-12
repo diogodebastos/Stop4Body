@@ -14,7 +14,7 @@
           "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT100to200",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020June10/WJetsToLNu_HT100to200",
               "split":23
             }
           ]
@@ -26,7 +26,7 @@
           "filesPerPart":3,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT200to400",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020June10/WJetsToLNu_HT200to400",
               "split":18
             }
           ]
@@ -38,7 +38,7 @@
           "filesPerPart":2,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT400to600",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020June10/WJetsToLNu_HT400to600",
               "split":13
             }
           ]
@@ -50,7 +50,7 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT600to800",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020June10/WJetsToLNu_HT600to800",
               "split":25
             }
           ]
@@ -62,7 +62,7 @@
           "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT800to1200",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020June10/WJetsToLNu_HT800to1200",
               "split":22
             }
           ]
@@ -74,7 +74,7 @@
           "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT1200to2500",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020June10/WJetsToLNu_HT1200to2500",
               "split":22
             }
           ]
@@ -86,7 +86,7 @@
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/WJetsToLNu_HT2500toInf",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020June10/WJetsToLNu_HT2500toInf",
               "split":26
             }
           ]
