@@ -83,7 +83,7 @@
           "tag":"WJetsToLNu_HT2500toInf",
           "xsec":0.008001,
           "br":1.0,
-          "filesPerPart":5,
+          "filesPerPart":1ß,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020June10/WJetsToLNu_HT2500toInf",
