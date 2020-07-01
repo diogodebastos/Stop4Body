@@ -1504,11 +1504,14 @@ int main(int argc, char** argv)
             jetPt.Value().push_back(Jet_pt[i]);
             if(!process.isdata())
             {
-              // TOFO: validate this - Jet_pt => is jet_pt or jet_nom?
-              Jet_corr_JECUp[i] = Jet_pt_jesTotalUp[i] / Jet_pt[i];
-              Jet_corr_JECDown[i] = Jet_pt_jesTotalDown[i] / Jet_pt[i];
+              /* This is the old way but it's an unecessary complication
+              Jet_corr_JECUp[i] = Jet_pt_jesTotalUp[i] / Jet_pt_raw[i];
+              Jet_corr_JECDown[i] = Jet_pt_jesTotalDown[i] / Jet_pt_raw[i];
               jetPt.Systematic("JES_Up").push_back(Jet_pt[i]/Jet_corr_JEC[i]*Jet_corr_JECUp[i]);
               jetPt.Systematic("JES_Down").push_back(Jet_pt[i]/Jet_corr_JEC[i]*Jet_corr_JECDown[i]);
+              */
+              jetPt.Systematic("JES_Up").push_back(Jet_pt_jesTotalUp[i]);
+              jetPt.Systematic("JES_Down").push_back(Jet_pt_jesTotalDown[i]);
 
               if(Jet_corr_JER[i] < 0)
               {
@@ -1517,10 +1520,20 @@ int main(int argc, char** argv)
               }
               else
               {
-                Jet_corr_JERUp[i] = Jet_pt_jerUp[i]/Jet_pt[i];
-                Jet_corr_JERDown[i] = Jet_pt_jerDown[i]/Jet_pt[i];
+                // Almost sure this is wrong
+                //Jet_corr_JERUp[i] = Jet_pt_jerUp[i]/Jet_pt[i];
+                //Jet_corr_JERDown[i] = Jet_pt_jerDown[i]/Jet_pt[i];
+                //jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
+                //jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
+
+                /* This is the old way but it's an unecessary complication
+                Jet_corr_JERUp[i] = Jet_pt_jerUp[i] / Jet_pt_nom[i];
+                Jet_corr_JERDown[i] = Jet_pt_jerDown[i] / Jet_pt_nom[i];
                 jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
                 jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
+                */
+                jetPt.Systematic("JER_Up").push_back(Jet_pt_jerUp[i]);
+                jetPt.Systematic("JER_Down").push_back(Jet_pt_jerDown[i]);
               }
             }
           }
@@ -1556,7 +1569,7 @@ int main(int argc, char** argv)
                 continue;  // Veto events in HEM 15/16
 
               allJets.GetSystematicOrValue(syst).push_back(i);
-              if(Jet_jetId[i] >= 2  && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
+              if(Jet_jetId[i] >= 2 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
                 validJets.GetSystematicOrValue(syst).push_back(i);
                 bjetList.GetSystematicOrValue(syst).push_back(i);
@@ -2314,7 +2327,7 @@ int main(int argc, char** argv)
               HT_raw.GetSystematicOrValue(syst) += pt;
             }
           }
-        
+
           genHT = 0;
 
           genList.clear();
@@ -2583,18 +2596,19 @@ int main(int argc, char** argv)
 
             // MET filters
             //if ( METFilters                         != 1 ) continue;
+            if ( goodVertices                       != 1 ) continue;
+            if (!process.issignal())
+              if ( globalSuperTightHalo2016Filter          != 1 ) continue;
             if ( HBHENoiseFilter                    != 1 ) continue;
             if ( HBHENoiseIsoFilter                 != 1 ) continue;
             if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
-            if ( goodVertices                       != 1 ) continue;
-            if (process.isdata())
-              if ( eeBadScFilter                      != 1 ) continue;
-            if (!process.issignal())
-              if ( globalSuperTightHalo2016Filter          != 1 ) continue;
-            if ( BadPFMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
+            if ( BadPFMuonFilter                      != 1 ) continue;
+            //if (process.isdata())
+              //if ( eeBadScFilter                      != 1 ) continue;
+            // Should probably only use 1 of these two
             //if ( badMuonMoriond2017                 != 1 ) continue;
 //            if ( badCloneMuonMoriond2017            != 1 ) continue; // This one removes some of the spikes in QCD for some reason
-            if ( BadChargedCandidateFilter             != 1 ) continue;
+            //if ( BadChargedCandidateFilter             != 1 ) continue;
 
             bool passHLT = false;
             if(!swap) // Normally use the MET triggers, but only for data
