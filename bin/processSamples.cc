@@ -1224,7 +1224,7 @@ int main(int argc, char** argv)
         Float_t Jet_btagCSV[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSV", &Jet_btagCSV);
         Float_t Jet_mass[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
         Float_t Jet_rawPt[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawPt", &Jet_rawPt);
-        UInt_t nGenJet;  inputtree->SetBranchAddress("nGenJet", &nGenJet);
+        Int_t nGenJet;  inputtree->SetBranchAddress("nGenJet", &nGenJet);
         Float_t GenJet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("GenJet_pt", &GenJet_pt);
 
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
@@ -1461,6 +1461,11 @@ int main(int argc, char** argv)
             }
           }
 
+          for(Int_t i = 0; i < nGenJet; ++i)
+          {
+            genJetPt.Value().push_back(GenJet_pt[i]);
+          }
+
           std::vector<std::string> list;
           list.push_back("Value");
           loadSystematics(list, jetPt);
@@ -1512,7 +1517,7 @@ int main(int argc, char** argv)
               genJets.Systematic(syst) = empty;
             }
 
-            for(UInt_t i = 0; i < nGenJet; ++i)
+            for(Int_t i = 0; i < nGenJet; ++i)
             {
               if(genJetPt.GetSystematicOrValue(syst)[i] > genJetPtThreshold){
                 genJets.GetSystematicOrValue(syst).push_back(i);
