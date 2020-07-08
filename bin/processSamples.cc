@@ -658,6 +658,10 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> DPhiJet1Jet2;
       ValueWithSystematics<float> HT;
       ValueWithSystematics<float> HT_raw;
+
+      ValueWithSystematics<float> Ngenjet;
+      ValueWithSystematics<float> genJet1Pt;
+      ValueWithSystematics<float> genJet2Pt;
       ValueWithSystematics<float> genHT;
 
       ValueWithSystematics<float> NbLoose;
@@ -905,6 +909,9 @@ int main(int argc, char** argv)
         DPhiJet1Jet2.Lock();
         HT.Lock();
         HT_raw.Lock();
+        Ngenjet.Lock();
+        genJet1Pt.Lock();
+        genJet2Pt.Lock();
         genHT.Lock();
         NbLoose.Lock();
         NbTight.Lock();
@@ -962,6 +969,10 @@ int main(int argc, char** argv)
       bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
       bdttree->Branch("HT",&HT.Value(),"HT/F");
       bdttree->Branch("HT_raw",&HT_raw.Value(),"HT_raw/F");
+
+      bdttree->Branch("Ngenjet",&Ngenjet.Value(),"Ngenjet/F");
+      bdttree->Branch("genJet1Pt",&genJet1Pt.Value(),"genJet1Pt/F");
+      bdttree->Branch("genJet2Pt",&genJet2Pt.Value(),"genJet2Pt/F");
       bdttree->Branch("genHT",&genHT.Value(),"genHT/F");
 
       bdttree->Branch("NbLoose",&NbLoose.Value(),"NbLoose/F");
@@ -1806,6 +1817,7 @@ int main(int argc, char** argv)
           JetB2CSV   = loadQuantity(Jet_btagCSV, bjetList,  1);
           JetB2index = loadQuantity(identity,    bjetList,  1);
           Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
+          genJet2Pt  = loadSysQuantity(genJetPt, genJets, 1);
 
           Jet2Eta = Jet2EtaDou;
           Jet1Eta = Jet1EtaDou;
@@ -2030,6 +2042,7 @@ int main(int argc, char** argv)
           JetHBCSV   = loadQuantity(Jet_btagCSV, bjetList,  0);
           JetHBindex = loadQuantity(identity,    bjetList,  0);
           JetB1Phi   = loadQuantity(Jet_phi,     bjetList,  0);
+          genJet1Pt  = loadSysQuantity(genJetPt, genJets, 0);
 
           JetHBeta = JetB1EtaDou;
 
@@ -2228,6 +2241,7 @@ int main(int argc, char** argv)
           }
 
           genHT = 0;
+          Ngenjet = genJets.size();
 
           list.clear();
           list.push_back("Value");
@@ -2493,15 +2507,16 @@ int main(int argc, char** argv)
 
             // MET filters
             //if ( METFilters                         != 1 ) continue;
+            if ( goodVertices                       != 1 ) continue;
+            if (!process.issignal())
+              if ( globalTightHalo2016Filter          != 1 ) continue;
             if ( HBHENoiseFilter                    != 1 ) continue;
             if ( HBHENoiseIsoFilter                 != 1 ) continue;
             if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
-            if ( goodVertices                       != 1 ) continue;
+            if ( badMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
+
             if (process.isdata())
               if ( eeBadScFilter                      != 1 ) continue;
-            if (!process.issignal())
-              if ( globalTightHalo2016Filter          != 1 ) continue;
-            if ( badMuonFilter                      != 1 ) continue; // Should probably only use 1 of these two
             //if ( badMuonMoriond2017                 != 1 ) continue;
             if ( badCloneMuonMoriond2017            != 1 ) continue; // This one removes some of the spikes in QCD for some reason
             if ( badChargedHadronFilter             != 1 ) continue;
