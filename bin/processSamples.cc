@@ -1913,7 +1913,7 @@ int main(int argc, char** argv)
           JetB2index = loadQuantity(identity,    bjetList,  1);
           Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
           Jet1PhiDou = loadQuantity(Jet_phi,     validJets, 0);
-          Jet2Pt     = loadSysQuantity(genJetPt, genJets, 1);
+          genJet2Pt  = loadSysQuantity(genJetPt, genJets, 1);
 
           Jet2Eta = Jet2EtaDou;
           Jet2Phi = Jet2PhiDou;
