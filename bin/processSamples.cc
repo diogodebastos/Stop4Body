@@ -667,6 +667,10 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> DPhiJet1Jet2;
       ValueWithSystematics<float> HT;
       ValueWithSystematics<float> HT_raw;
+
+      ValueWithSystematics<float> Ngenjet;
+      ValueWithSystematics<float> genJet1Pt;
+      ValueWithSystematics<float> genJet2Pt;
       ValueWithSystematics<float> genHT;
 
       ValueWithSystematics<float> NbLoose;
@@ -924,6 +928,9 @@ int main(int argc, char** argv)
         DPhiJet1Jet2.Lock();
         HT.Lock();
         HT_raw.Lock();
+        Ngenjet.Lock();
+        genJet1Pt.Lock();
+        genJet2Pt.Lock();
         genHT.Lock();
         NbLoose.Lock();
         NbTight.Lock();
@@ -983,6 +990,10 @@ int main(int argc, char** argv)
       bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
       bdttree->Branch("HT",&HT.Value(),"HT/F");
       bdttree->Branch("HT_raw",&HT_raw.Value(),"HT_raw/F");
+
+      bdttree->Branch("Ngenjet",&Ngenjet.Value(),"Ngenjet/F");
+      bdttree->Branch("genJet1Pt",&genJet1Pt.Value(),"genJet1Pt/F");
+      bdttree->Branch("genJet2Pt",&genJet2Pt.Value(),"genJet2Pt/F");
       bdttree->Branch("genHT",&genHT.Value(),"genHT/F");
 
       bdttree->Branch("NbLoose",&NbLoose.Value(),"NbLoose/F");
@@ -1302,16 +1313,16 @@ int main(int argc, char** argv)
         Float_t Jet_pt_nom[JETCOLL_LIMIT];
 
         Float_t Jet_corr_JEC[JETCOLL_LIMIT];
-        Float_t Jet_corr_JECUp[JETCOLL_LIMIT];
+        //Float_t Jet_corr_JECUp[JETCOLL_LIMIT];
         Float_t Jet_pt_jesTotalUp[JETCOLL_LIMIT];
 
-        Float_t Jet_corr_JECDown[JETCOLL_LIMIT];
+        //Float_t Jet_corr_JECDown[JETCOLL_LIMIT];
         Float_t Jet_pt_jesTotalDown[JETCOLL_LIMIT];
 
         Float_t Jet_corr_JER[JETCOLL_LIMIT];
-        Float_t Jet_corr_JERUp[JETCOLL_LIMIT];
+        //Float_t Jet_corr_JERUp[JETCOLL_LIMIT];
         Float_t Jet_pt_jerUp[JETCOLL_LIMIT];
-        Float_t Jet_corr_JERDown[JETCOLL_LIMIT];
+        //Float_t Jet_corr_JERDown[JETCOLL_LIMIT];
         Float_t Jet_pt_jerDown[JETCOLL_LIMIT];
 
         if(!process.isdata())
@@ -1902,6 +1913,7 @@ int main(int argc, char** argv)
           JetB2index = loadQuantity(identity,    bjetList,  1);
           Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
           Jet1PhiDou = loadQuantity(Jet_phi,     validJets, 0);
+          Jet2Pt     = loadSysQuantity(genJetPt, genJets, 1);
 
           Jet2Eta = Jet2EtaDou;
           Jet2Phi = Jet2PhiDou;
@@ -2132,6 +2144,7 @@ int main(int argc, char** argv)
           JetHBCSV   = loadQuantity(Jet_btagCSVV2, bjetList,  0);
           JetHBindex = loadQuantity(identity,    bjetList,  0);
           JetB1Phi   = loadQuantity(Jet_phi,     bjetList,  0);
+          genJet1Pt  = loadSysQuantity(genJetPt, genJets, 0);
 
           JetHBeta = JetB1EtaDou;
 
@@ -2329,6 +2342,7 @@ int main(int argc, char** argv)
           }
 
           genHT = 0;
+          Ngenjet = genJets.size();
 
           genList.clear();
           genList.push_back("Value");
