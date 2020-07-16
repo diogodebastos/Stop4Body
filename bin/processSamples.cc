@@ -1244,6 +1244,7 @@ int main(int argc, char** argv)
         Float_t MET_pt;      inputtree->SetBranchAddress("MET_pt"    , &MET_pt);
         Float_t MET_phi;     inputtree->SetBranchAddress("MET_phi",   &MET_phi);
         UInt_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+        Int_t LepGood_jetIdx[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_jetIdx", &LepGood_jetIdx);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
         Int_t LepGood_cutBased[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_cutBased", &LepGood_cutBased); //only for Electron: 0=fail, 1=veto, 2=loose, 3=medium, 4=tight
         Float_t LepGood_mvaFall17V1Iso[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_mvaFall17V1Iso", &LepGood_mvaFall17V1Iso); //MVA Iso ID V1 score
@@ -1510,6 +1511,158 @@ int main(int argc, char** argv)
 
           //TODO: Check if the correct thing to do is actually divide by Jet_pt. If so, when getting Sys the nominal correction value for the other correction factor (JER when doing JEC and vice versa) is included. Shouldn't it be remove?
 
+// ***** LEPTONS ******
+
+          nGoodEl = 0;
+          nGoodEl_loose = 0;
+          nGoodEl_cutId_veto = 0;
+          nGoodEl_cutId_loose = 0;
+          nGoodEl_cutId_medium = 0;
+          nGoodEl_cutId_tight = 0;
+
+          nGoodMu = 0;
+          nGoodMu_loose = 0;
+          nGoodMu_cutId_soft = 0;
+          nGoodMu_cutId_loose = 0;
+          nGoodMu_cutId_medium = 0;
+          nGoodMu_cutId_tight = 0;
+
+          for(UInt_t i = 0; i < nLepGood; ++i)
+          {
+            LepGood_pfAbsIso03_all[i] = LepGood_pfRelIso03_all[i] * LepGood_pt[i];
+
+            if (preemptiveDropEvents && year==2018 && (std::abs(LepGood_pdgId[i]) == 11 && LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.57 && LepGood_phi[i] < -0.87))
+              continue;  // Veto events in HEM 15/16
+
+            bool lPTETA = false;
+            if(std::abs(LepGood_pdgId[i]) == 13) // If a muon
+            {
+              lPTETA = LepGood_pt[i] > 3.5;
+              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.4);
+            }
+            else // If an electron
+            {
+              lPTETA = LepGood_pt[i] > 5.0;
+              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.5);
+              // Also veto the gap in the ECAL
+              lPTETA = lPTETA && ( (std::abs(LepGood_eta[i]) > ECALGap_MaxEta)
+                                || (std::abs(LepGood_eta[i]) < ECALGap_MinEta) );
+            }
+            bool lID       = (std::abs(LepGood_dxy[i]) < 0.02)
+                          && (std::abs(LepGood_dz[i]) < 0.1);
+            bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
+                          && (std::abs(LepGood_dz[i]) < 0.5);
+            bool lIS       = LepGood_pfRelIso03_all[i] < 0.2 || LepGood_pfAbsIso03_all[i] < 5.0;
+            bool lIS_loose = LepGood_pfRelIso03_all[i] < 0.8 || LepGood_pfAbsIso03_all[i] < 20.0;
+
+            if(lPTETA && lID && lIS)
+            {
+/*
+              if (year==2018) { // Veto events in HEM 15/16
+                if(!(LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67)) {
+                  validLeptons.push_back(i);
+                }
+		else {
+		  std::cout << "HEM event rejected" << std::endl;
+		}
+              }
+              else {
+                validLeptons.push_back(i);
+              }
+*/
+              validLeptons.push_back(i);
+              if(std::abs(LepGood_pdgId[i]) == 13){
+                nGoodMu++;
+                if(LepGood_tightId[i]){
+                  nGoodMu_cutId_tight++;
+                  nGoodMu_cutId_medium++;
+                  nGoodMu_cutId_loose++;
+                }
+                else if(LepGood_mediumId[i]){
+                  nGoodMu_cutId_medium++;
+                  nGoodMu_cutId_loose++;
+                }
+                //else if(LepGood_looseId[i]){
+                else if(LepGood_isPFcand[i] && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
+                  nGoodMu_cutId_loose++;
+                }
+              }
+              else{
+                nGoodEl++;
+                if(LepGood_cutBased[i] > 0)
+                {
+                  nGoodEl_cutId_veto++;
+                  if(LepGood_cutBased[i] > 1)
+                  {
+                    nGoodEl_cutId_loose++;
+                    if(LepGood_cutBased[i] > 2)
+                    {
+                      nGoodEl_cutId_medium++;
+                      if(LepGood_cutBased[i] > 3)
+                      {
+                        nGoodEl_cutId_tight++;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            if(lPTETA && lID_loose && lIS_loose)
+            {
+              looseLeptons.push_back(i);
+              if(std::abs(LepGood_pdgId[i]) == 13)
+                nGoodMu_loose++;
+              else
+                nGoodEl_loose++;
+            }
+          }
+
+          std::sort(validLeptons.begin(), validLeptons.end(), [&LepGood_pt] (const int &left, const int &right){
+            return LepGood_pt[left] > LepGood_pt[right];
+          });
+
+          std::sort(looseLeptons.begin(), looseLeptons.end(), [&LepGood_pt] (const int &left, const int &right){
+            return LepGood_pt[left] > LepGood_pt[right];
+          });
+
+          auto lepSel = [&LepGood_pt] (std::vector<int> &leptons) -> bool
+          {
+            if(leptons.size() > 0)
+            {
+              if(leptons.size() > 1)
+              {
+                if(LepGood_pt[leptons[1]] > SECOND_LEPTON_PT)
+                  return false;
+              }
+              return true;
+            }
+            return false;
+          };
+
+          isTight = lepSel(validLeptons);
+
+          isLoose = lepSel(looseLeptons);
+
+          isLooseNotTight = isLoose && !isTight;
+
+          if(isLooseNotTight)
+          {
+            validLeptons = looseLeptons;
+            nGoodMu = nGoodMu_loose;
+            nGoodEl = nGoodEl_loose;
+          }
+
+          if(preemptiveDropEvents && looseNotTight && !isLooseNotTight)
+            continue;
+
+          if(preemptiveDropEvents && !doLooseLeptons && isLooseNotTight)
+            continue;
+
+          if(preemptiveDropEvents && !(isLoose || isTight))
+            continue;
+
+// ***** JETS ******
+
           for(UInt_t i = 0; i < nJetIn; ++i)
           {
             jetPt.Value().push_back(Jet_pt[i]);
@@ -1641,149 +1794,7 @@ int main(int argc, char** argv)
               continue;
           }
 
-          nGoodEl = 0;
-          nGoodEl_loose = 0;
-          nGoodEl_cutId_veto = 0;
-          nGoodEl_cutId_loose = 0;
-          nGoodEl_cutId_medium = 0;
-          nGoodEl_cutId_tight = 0;
-
-          nGoodMu = 0;
-          nGoodMu_loose = 0;
-          nGoodMu_cutId_soft = 0;
-          nGoodMu_cutId_loose = 0;
-          nGoodMu_cutId_medium = 0;
-          nGoodMu_cutId_tight = 0;
-          for(UInt_t i = 0; i < nLepGood; ++i)
-          {
-            LepGood_pfAbsIso03_all[i] = LepGood_pfRelIso03_all[i] * LepGood_pt[i];
-
-            if (preemptiveDropEvents && year==2018 && (std::abs(LepGood_pdgId[i]) == 11 && LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.57 && LepGood_phi[i] < -0.87))
-              continue;  // Veto events in HEM 15/16
-
-            bool lPTETA = false;
-            if(std::abs(LepGood_pdgId[i]) == 13) // If a muon
-            {
-              lPTETA = LepGood_pt[i] > 3.5;
-              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.4);
-            }
-            else // If an electron
-            {
-              lPTETA = LepGood_pt[i] > 5.0;
-              lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.5);
-              // Also veto the gap in the ECAL
-              lPTETA = lPTETA && ( (std::abs(LepGood_eta[i]) > ECALGap_MaxEta)
-                                || (std::abs(LepGood_eta[i]) < ECALGap_MinEta) );
-            }
-            bool lID       = (std::abs(LepGood_dxy[i]) < 0.02)
-                          && (std::abs(LepGood_dz[i]) < 0.1);
-            bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
-                          && (std::abs(LepGood_dz[i]) < 0.5);
-            bool lIS       = LepGood_pfRelIso03_all[i] < 0.2 || LepGood_pfAbsIso03_all[i] < 5.0;
-            bool lIS_loose = LepGood_pfRelIso03_all[i] < 0.8 || LepGood_pfAbsIso03_all[i] < 20.0;
-
-            if(lPTETA && lID && lIS)
-            {
-/*
-              if (year==2018) { // Veto events in HEM 15/16
-                if(!(LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67)) {
-                  validLeptons.push_back(i);
-                }
-		else {
-		  std::cout << "HEM event rejected" << std::endl;
-		}
-              }
-              else {
-                validLeptons.push_back(i);
-              }
-*/
-              validLeptons.push_back(i);
-              if(std::abs(LepGood_pdgId[i]) == 13){
-                nGoodMu++;
-                if(LepGood_tightId[i]){
-                  nGoodMu_cutId_tight++;
-                  nGoodMu_cutId_medium++;
-                  nGoodMu_cutId_loose++;
-                }
-                else if(LepGood_mediumId[i]){
-                  nGoodMu_cutId_medium++;
-                  nGoodMu_cutId_loose++;
-                }
-                //else if(LepGood_looseId[i]){
-                else if(LepGood_isPFcand[i] && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
-                  nGoodMu_cutId_loose++;
-                }
-              }
-              else{
-                nGoodEl++;
-                if(LepGood_cutBased[i] > 0)
-                {
-                  nGoodEl_cutId_veto++;
-                  if(LepGood_cutBased[i] > 1)
-                  {
-                    nGoodEl_cutId_loose++;
-                    if(LepGood_cutBased[i] > 2)
-                    {
-                      nGoodEl_cutId_medium++;
-                      if(LepGood_cutBased[i] > 3)
-                      {
-                        nGoodEl_cutId_tight++;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-            if(lPTETA && lID_loose && lIS_loose)
-            {
-              looseLeptons.push_back(i);
-              if(std::abs(LepGood_pdgId[i]) == 13)
-                nGoodMu_loose++;
-              else
-                nGoodEl_loose++;
-            }
-          }
-          std::sort(validLeptons.begin(), validLeptons.end(), [&LepGood_pt] (const int &left, const int &right) {
-            return LepGood_pt[left] > LepGood_pt[right];
-            });
-          std::sort(looseLeptons.begin(), looseLeptons.end(), [&LepGood_pt] (const int &left, const int &right) {
-            return LepGood_pt[left] > LepGood_pt[right];
-            });
-
-          auto lepSel = [&LepGood_pt] (std::vector<int> &leptons) -> bool
-          {
-            if(leptons.size() > 0)
-            {
-              if(leptons.size() > 1)
-              {
-                if(LepGood_pt[leptons[1]] > SECOND_LEPTON_PT)
-                  return false;
-              }
-              return true;
-            }
-            return false;
-          };
-
-          isTight = lepSel(validLeptons);
-
-          isLoose = lepSel(looseLeptons);
-
-          isLooseNotTight = isLoose && !isTight;
-          if(isLooseNotTight)
-          {
-            validLeptons = looseLeptons;
-            nGoodMu = nGoodMu_loose;
-            nGoodEl = nGoodEl_loose;
-          }
-
-          if(preemptiveDropEvents && looseNotTight && !isLooseNotTight)
-            continue;
-
-          if(preemptiveDropEvents && !doLooseLeptons && isLooseNotTight)
-            continue;
-
-          if(preemptiveDropEvents && !(isLoose || isTight))
-            continue;
+// ***** MET ******
 
           // Setting the values to be saved in the output tree
           ValueWithSystematics<double> MetDou = MET_pt;
