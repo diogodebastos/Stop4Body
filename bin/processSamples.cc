@@ -552,6 +552,7 @@ int main(int argc, char** argv)
       Float_t filterEfficiency=1;
       Float_t splitFactor=1;
       bool isLooseNotTight=false;
+      bool dropJet=false;
 
       std::cout << "\t      Creating the base branches" << std::endl;
       bdttree->Branch("genWeight", &genWeight, "genWeight/F");
@@ -1661,6 +1662,29 @@ int main(int argc, char** argv)
           if(preemptiveDropEvents && !(isLoose || isTight))
             continue;
 
+/* FOR DEBUGGING
+          if(nLepGood>3){
+            std::cout << "nLepGood: " << nLepGood << std::endl;
+            std::cout << "nJet: " << nJetIn << std::endl;
+            std::cout << "validLeptons: ";
+            for(size_t lep = 0; lep < validLeptons.size(); lep++){
+              std::cout << validLeptons.at(lep) << " ";
+            }
+            std::cout << std::endl;
+            std::cout << "looseLeptons: ";
+            for(size_t lep = 0; lep < looseLeptons.size(); lep++){
+              std::cout << looseLeptons.at(lep) << " ";
+            }
+            std::cout << std::endl;
+            std::cout << "jetIdx: ";
+            for(size_t lep = 0; lep < looseLeptons.size(); lep++){
+              std::cout << LepGood_jetIdx[looseLeptons.at(lep)] << " ";
+            }
+            std::cout << std::endl;
+            std::cout << std::endl;
+          }
+*/
+
 // ***** JETS ******
 
           for(UInt_t i = 0; i < nJetIn; ++i)
@@ -1735,8 +1759,16 @@ int main(int argc, char** argv)
               allJets.GetSystematicOrValue(syst).push_back(i);
               if(Jet_jetId[i] >= 2 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
-                validJets.GetSystematicOrValue(syst).push_back(i);
-                bjetList.GetSystematicOrValue(syst).push_back(i);
+                dropJet=false;
+                for (size_t j = 0; j < looseLeptons.size(); j++) {
+                  if (i == LepGood_jetIdx[looseLeptons.at(j)]) {
+                    dropJet = true;
+                  }
+                }
+                if (!dropJet) {
+                  validJets.GetSystematicOrValue(syst).push_back(i);
+                  bjetList.GetSystematicOrValue(syst).push_back(i);
+                }
                 // if (std::abs(Jet_eta[i]) > 2.25 && (jetPt.GetSystematicOrValue(syst))[i] > 100)
                 // {
                 //  l1PreFiringList(syst).push_back(i);
