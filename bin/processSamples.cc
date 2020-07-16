@@ -1761,7 +1761,7 @@ int main(int argc, char** argv)
               {
                 dropJet=false;
                 for (size_t j = 0; j < looseLeptons.size(); j++) {
-                  if (i == LepGood_jetIdx[looseLeptons.at(j)]) {
+                  if (i == (unsigned)LepGood_jetIdx[looseLeptons.at(j)]) {
                     dropJet = true;
                   }
                 }
