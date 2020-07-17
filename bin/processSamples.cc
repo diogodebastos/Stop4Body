@@ -1277,19 +1277,19 @@ int main(int argc, char** argv)
         Float_t Jet_btagCSVV2[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSVV2", &Jet_btagCSVV2);
         Float_t Jet_mass[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
         Float_t Jet_rawFactor[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawFactor", &Jet_rawFactor);
-        UInt_t nGenJet;  inputtree->SetBranchAddress("nGenJet", &nGenJet);
-        Float_t GenJet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("GenJet_pt", &GenJet_pt);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
         ULong64_t event;  inputtree->SetBranchAddress("event", &event);
         UInt_t luminosityBlock;  inputtree->SetBranchAddress("luminosityBlock", &luminosityBlock);
 
-        Int_t Pileup_nPU;
-        if(!process.isdata()){
-          inputtree->SetBranchAddress("PV_npvsGood", &Pileup_nPU); //"Pileup_nPU" ?
+        UInt_t nGenJet;
+        Float_t GenJet_pt[JETCOLL_LIMIT];
+        if(!process.isdata())
+        {
+          inputtree->SetBranchAddress("nGenJet", &nGenJet);
+          inputtree->SetBranchAddress("GenJet_pt", &GenJet_pt);
         }
-        else {
-          inputtree->SetBranchAddress("PV_npvsGood", &Pileup_nPU);
-        }
+
+        Int_t Pileup_nPU; inputtree->SetBranchAddress("PV_npvsGood", &Pileup_nPU);
 
         UInt_t nLHEScaleWeight;
         float LHEScaleWeight[LHEWEIGHT_LIMIT];
