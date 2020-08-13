@@ -58,6 +58,10 @@ TH2D* electronFullFastSFHIIPHist = nullptr;
 TH2D* muonFullFastSFIDHist = nullptr;
 TH2D* muonFullFastSFHIIPHist = nullptr;
 
+// To remove
+TH2D* ElectronISOSFHist2017 = nullptr;
+TH2D* MuonISOSFHist2017 = nullptr;
+
 bool fileExists(std::string fileName)
 {
   std::ifstream infile(fileName);
@@ -881,14 +885,14 @@ doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta, int year)
     //val = sfEl2016.value();
     //unc = sfEl2016.uncertainty();
     if(year == 2017){
-      auto bin = TnPlowPtIDSFFile2017->FindBin(LepEta, LepPt);
-      val = TnPlowPtIDSFFile2017->GetBinContent(bin);
-      unc = TnPlowPtIDSFFile2017->GetBinError(bin);
+      auto bin = TnPlowPtIDSFHist2017->FindBin(LepEta, LepPt);
+      val = TnPlowPtIDSFHist2017->GetBinContent(bin);
+      unc = TnPlowPtIDSFHist2017->GetBinError(bin);
     }
     else if(year == 2018){
-      auto bin = TnPlowPtIDSFFile2018->FindBin(LepEta, LepPt);
-      val = TnPlowPtIDSFFile2018->GetBinContent(bin);
-      unc = TnPlowPtIDSFFile2018->GetBinError(bin);
+      auto bin = TnPlowPtIDSFHist2018->FindBin(LepEta, LepPt);
+      val = TnPlowPtIDSFHist2018->GetBinContent(bin);
+      unc = TnPlowPtIDSFHist2018->GetBinError(bin);
     }
   }
  }
@@ -1940,19 +1944,19 @@ ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, doub
   LepID = std::abs(LepID);
   LepEta = std::abs(LepEta);
   ValueWithSystematics<double> retVal(1.0);
-  if(elFullFastSFFile2017 == nullptr || elFullFastSFFile2018 == nullptr || muFullFastSFFile2017 == nullptr || muFullFastSFFile2018 == nullptr)
+  if(elFullFastIDSFHist2017 == nullptr || elFullFastIDSFHist2018 == nullptr || muFullFastIDSFHist2017 == nullptr || muFullFastIDSFHist2018 == nullptr)
     return retVal = 1.0;
 
   int electronBins;
   int muonBins;
 
   if(year == 2017){
-    electronBins = elFullFastSFFile2017->GetSize();
-    muonBins = muFullFastSFFile2017->GetSize();
+    electronBins = elFullFastIDSFHist2017->GetSize();
+    muonBins = muFullFastIDSFHist2017->GetSize();
   }
   else if(year == 2018){
-    electronBins = elFullFastSFFile2018->GetSize();
-    muonBins = muFullFastSFFile2018->GetSize();
+    electronBins = elFullFastIDSFHist2018->GetSize();
+    muonBins = muFullFastIDSFHist2018->GetSize();
   }
 
   for(int i = 1; i <= electronBins; ++i)
@@ -1992,16 +1996,17 @@ ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, doub
   if(std::abs(LepID) == 11)
   {
     if(year == 2017){
-      auto bin = elFullFastSFFile2017->FindBin(LepEta, LepPt);
-      val = elFullFastSFFile2017->GetBinContent(bin);
-      unc = elFullFastSFFile2017->GetBinError(bin);
+      auto bin = elFullFastIDSFHist2017->FindBin(LepEta, LepPt);
+      val = elFullFastIDSFHist2017->GetBinContent(bin);
+      unc = elFullFastIDSFHist2017->GetBinError(bin);
+      theBin = bin;
     }
     else if(year == 2018){
-      auto bin = elFullFastSFFile2018->FindBin(LepEta, LepPt);
-      val = elFullFastSFFile2018->GetBinContent(bin);
-      unc = elFullFastSFFile2018->GetBinError(bin);
+      auto bin = elFullFastIDSFHist2018->FindBin(LepEta, LepPt);
+      val = elFullFastIDSFHist2018->GetBinContent(bin);
+      unc = elFullFastIDSFHist2018->GetBinError(bin);
+      theBin = bin;
     }
-    theBin = bin;
 
     std::stringstream converter;
     converter << "FullFast_ID_Electron_Bin" << theBin;
@@ -2014,16 +2019,17 @@ ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, doub
   else if(std::abs(LepID) == 13)
   {
     if(year == 2017){
-      auto bin = muFullFastSFFile2017->FindBin(LepEta, LepPt);
-      val = muFullFastSFFile2017->GetBinContent(bin);
-      unc = muFullFastSFFile2017->GetBinError(bin);
+      auto bin = muFullFastIDSFHist2017->FindBin(LepEta, LepPt);
+      val = muFullFastIDSFHist2017->GetBinContent(bin);
+      unc = muFullFastIDSFHist2017->GetBinError(bin);
+      theBin = bin;
     }
     else if(year == 2018){
-      auto bin = muFullFastSFFile2018->FindBin(LepEta, LepPt);
-      val = muFullFastSFFile2018->GetBinContent(bin);
-      unc = muFullFastSFFile2018->GetBinError(bin);
+      auto bin = muFullFastIDSFHist2018->FindBin(LepEta, LepPt);
+      val = muFullFastIDSFHist2018->GetBinContent(bin);
+      unc = muFullFastIDSFHist2018->GetBinError(bin);
+      theBin = bin;
     }
-    theBin = bin;
 
     std::stringstream converter;
     converter << "FullFast_ID_Muon_Bin" << theBin;
@@ -2269,8 +2275,8 @@ ValueWithSystematics<double> getFullFastSF2016Sys(double LepID, double LepPt, do
 {
   ValueWithSystematics<double> retVal(1.0);
 
-  retVal  = getFullFastIDSFSys(LepID, LepPt, LepEta);
-  retVal *= getFullFastHIIPSFSys(LepID, LepPt, LepEta);
+  retVal  = getFullFastIDSF2016Sys(LepID, LepPt, LepEta);
+  retVal *= getFullFastHIIPSF2016Sys(LepID, LepPt, LepEta);
 
   retVal.Systematic("FullFast_Up")   = retVal.Value() * (1 + 0.02);
   retVal.Systematic("FullFast_Down") = retVal.Value() * (1 - 0.02);
