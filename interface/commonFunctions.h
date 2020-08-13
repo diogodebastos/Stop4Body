@@ -12,21 +12,36 @@
 #include "TStyle.h"
 #include <string>
 
-extern TH2D* centralElectronRecoSFHist2017_lowEt;
-extern TH2D* centralElectronRecoSFHist2017;
-extern TH2D* centralElectronSFHist2017;
-extern TH2D* ElectronISOSFHist2017;
-extern TH2D* centralMuonSFHist2017;
-extern TH2D* MuonISOSFHist2017;
+extern TH2D* centralElectronRecoSFHist2018;
+extern TH2D* centralElectronSFHist2018;
+extern TH2D* TnPlowPtIDSFHist2018;
+extern TH2D* elFullFastIDSFHist2018;
+//extern TH2D* elFullFastHIIPSFHist2018;
+extern TH2D* centralMuonSFHist2018;
+extern TH2D* lowMuonSFHist2018;
+extern TH2D* muFullFastIDSFHist2018;
+//extern TH2D* muFullFastHIIPSFHist2018;
 
-extern TH1D* electronTightToLoose_2017_LowEta;
-extern TH1D* electronTightToLoose_2017_HighEta;
-extern TH1D* muonTightToLoose_2017_LowEta;
-extern TH1D* muonTightToLoose_2017_HighEta;
-extern TH1D* mcClosure_electronTightToLoose_2017_LowEta;
-extern TH1D* mcClosure_electronTightToLoose_2017_HighEta;
-extern TH1D* mcClosure_muonTightToLoose_2017_LowEta;
-extern TH1D* mcClosure_muonTightToLoose_2017_HighEta;
+extern TH2D* centralElectronRecoSFHist2017;
+extern TH2D* centralElectronRecoSFHist2017_lowEt;
+extern TH2D* centralElectronSFHist2017;
+extern TH2D* TnPlowPtIDSFHist2017;
+extern TH2D* elFullFastIDSFHist2017;
+// extern TH2D* elFullFastHIIPSFHist2017;
+extern TH2D* centralMuonSFHist2017;
+extern TH2D* lowMuonSFHist2017;
+extern TH2D* muFullFastIDSFHist2017;
+// extern TH2D* muFullFastHIIPSFHist2017;
+extern TH2D* L1prefiring_jetpt_2017BtoFHist;
+
+extern TH1F* electronTightToLoose_2017_LowEta;
+extern TH1F* electronTightToLoose_2017_HighEta;
+extern TH1F* muonTightToLoose_2017_LowEta;
+extern TH1F* muonTightToLoose_2017_HighEta;
+extern TH1F* mcClosure_electronTightToLoose_2017_LowEta;
+extern TH1F* mcClosure_electronTightToLoose_2017_HighEta;
+extern TH1F* mcClosure_muonTightToLoose_2017_LowEta;
+extern TH1F* mcClosure_muonTightToLoose_2017_HighEta;
 
 extern TH2D* centralElectronSFHist;
 extern TH2D* centralMuonSFHist;
@@ -40,10 +55,6 @@ extern TH1F* electronTightToLooseLowEta;
 extern TH1F* electronTightToLooseHighEta;
 extern TH1F* muonTightToLooseLowEta;
 extern TH1F* muonTightToLooseHighEta;
-extern TH2D* electronFullFastSFIDHist;
-extern TH2D* electronFullFastSFHIIPHist;
-extern TH2D* muonFullFastSFIDHist;
-extern TH2D* muonFullFastSFHIIPHist;
 
 bool fileExists(std::string);
 std::string getBaseName(const std::string&);
@@ -59,13 +70,11 @@ doubleUnc getLeptonRecoSF(double LepID, double LepPt, double LepEta, int year);
 doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta, int year);
 doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonIDSF2016(double LepID, double LepPt, double LepEta);
-doubleUnc getLeptonISOSF2016(double LepID, double LepPt, double LepEta)
+doubleUnc getLeptonISOSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta);
 doubleUnc getL1preFiringMaps(double JetEta, double JetPt);
 doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
 doubleUnc stopCrossSection(double stopM, double lspM);
-
-
 
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(double);
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double>);
