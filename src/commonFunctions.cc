@@ -801,9 +801,9 @@ doubleUnc getLeptonRecoSF(double LepID, double LepPt, double LepEta, int year)
      unc = centralElectronRecoSFHist2017_lowEt->GetBinError(bin);
    }
    else if(year == 2018){
-     auto bin = centralElectronRecoSFHist2018_lowEt->FindBin(LepEta, LepPt);
-     val = centralElectronRecoSFHist2018_lowEt->GetBinContent(bin);
-     unc = centralElectronRecoSFHist2018_lowEt->GetBinError(bin);
+     auto bin = centralElectronRecoSFHist2018->FindBin(LepEta, LepPt);
+     val = centralElectronRecoSFHist2018->GetBinContent(bin);
+     unc = centralElectronRecoSFHist2018->GetBinError(bin);
    }
   }
   else {
