@@ -1947,8 +1947,8 @@ ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, doub
   if(elFullFastIDSFHist2017 == nullptr || elFullFastIDSFHist2018 == nullptr || muFullFastIDSFHist2017 == nullptr || muFullFastIDSFHist2018 == nullptr)
     return retVal = 1.0;
 
-  int electronBins;
-  int muonBins;
+  int electronBins = 1;
+  int muonBins = 1;
 
   if(year == 2017){
     electronBins = elFullFastIDSFHist2017->GetSize();
