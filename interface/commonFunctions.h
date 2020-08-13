@@ -55,16 +55,14 @@ doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt
 doubleUnc ISRweightFromNISRJet(int nISRJet);
 doubleUnc EWKISRweightFromISRpT(double ISRpT);
 doubleUnc EWKISRweightFromISRpT(double lep_pt, double lep_phi, double met_pt, double met_phi);
-doubleUnc getLeptonRecoSF2017(double LepID, double LepPt, double LepEta);
-doubleUnc getLeptonIDSF2017(double LepID, double LepPt, double LepEta);
-doubleUnc getLeptonISOSF2017(double LepID, double LepPt, double LepEta);
+doubleUnc getLeptonRecoSF(double LepID, double LepPt, double LepEta, int year);
+doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta, int year);
+doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
+doubleUnc getLeptonIDSF2016(double LepID, double LepPt, double LepEta);
+doubleUnc getLeptonISOSF2016(double LepID, double LepPt, double LepEta)
 doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta);
 doubleUnc getL1preFiringMaps(double JetEta, double JetPt);
-doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta);
-doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
-
 doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
-
 doubleUnc stopCrossSection(double stopM, double lspM);
 
 
@@ -77,16 +75,18 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT);
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, double met_pt, double met_phi);
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(ValueWithSystematics<double> ISRpT);
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, ValueWithSystematics<double> met_pt, ValueWithSystematics<double> met_phi);
-ValueWithSystematics<double> getLeptonRecoSF2017Sys(double LepID, double LepPt, double LepEta);
-ValueWithSystematics<double> getLeptonIDSF2017Sys(double LepID, double LepPt, double LepEta);
-ValueWithSystematics<double> getLeptonISOSF2017Sys(double LepID, double LepPt, double LepEta);
-ValueWithSystematics<double> getL1preFiringMapsSys(double JetEta, double JetPt);
+ValueWithSystematics<double> getLeptonRecoSFSys(double LepID, double LepPt, double LepEta, int year);
+ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta, int year);
+ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
+ValueWithSystematics<double> getLeptonIDSFSys2016(double LepID, double LepPt, double LepEta);
+ValueWithSystematics<double> getLeptonISOSF2016Sys(double LepID, double LepPt, double LepEta)
+;
 ValueWithSystematics<double> getLeptonTightLooseRatio2017Sys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonTightLooseRatio2017MCClosureSys(double LepID, double LepPt, double LepEta);
+ValueWithSystematics<double> getL1preFiringMapsSys(double JetEta, double JetPt);
 ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
-ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double LepEta);
-
+ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double LepEta, int year);
 ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double LepPt, double LepEta);
 
 ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta, Float_t* Jet_btagCSV, Int_t* Jet_hadronFlavour);

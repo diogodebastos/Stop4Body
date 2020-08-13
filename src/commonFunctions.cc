@@ -2265,7 +2265,7 @@ ValueWithSystematics<double> getFullFastHIIPSF2016Sys(double LepID, double LepPt
 
   return retVal;
 }
-ValueWithSystematics<double> getFullFastSFS2016ys(double LepID, double LepPt, double LepEta)
+ValueWithSystematics<double> getFullFastSF2016Sys(double LepID, double LepPt, double LepEta)
 {
   ValueWithSystematics<double> retVal(1.0);
 
