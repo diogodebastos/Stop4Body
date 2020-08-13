@@ -34,14 +34,14 @@ extern TH2D* muFullFastIDSFHist2017;
 // extern TH2D* muFullFastHIIPSFHist2017;
 extern TH2D* L1prefiring_jetpt_2017BtoFHist;
 
-extern TH1F* electronTightToLoose_2017_LowEta;
-extern TH1F* electronTightToLoose_2017_HighEta;
-extern TH1F* muonTightToLoose_2017_LowEta;
-extern TH1F* muonTightToLoose_2017_HighEta;
-extern TH1F* mcClosure_electronTightToLoose_2017_LowEta;
-extern TH1F* mcClosure_electronTightToLoose_2017_HighEta;
-extern TH1F* mcClosure_muonTightToLoose_2017_LowEta;
-extern TH1F* mcClosure_muonTightToLoose_2017_HighEta;
+extern TH1D* electronTightToLoose_2017_LowEta;
+extern TH1D* electronTightToLoose_2017_HighEta;
+extern TH1D* muonTightToLoose_2017_LowEta;
+extern TH1D* muonTightToLoose_2017_HighEta;
+extern TH1D* mcClosure_electronTightToLoose_2017_LowEta;
+extern TH1D* mcClosure_electronTightToLoose_2017_HighEta;
+extern TH1D* mcClosure_muonTightToLoose_2017_LowEta;
+extern TH1D* mcClosure_muonTightToLoose_2017_HighEta;
 
 extern TH2D* centralElectronSFHist;
 extern TH2D* centralMuonSFHist;
@@ -55,6 +55,10 @@ extern TH1F* electronTightToLooseLowEta;
 extern TH1F* electronTightToLooseHighEta;
 extern TH1F* muonTightToLooseLowEta;
 extern TH1F* muonTightToLooseHighEta;
+extern TH2D* electronFullFastSFIDHist;
+extern TH2D* electronFullFastSFHIIPHist;
+extern TH2D* muonFullFastSFIDHist;
+extern TH2D* muonFullFastSFHIIPHist;
 
 bool fileExists(std::string);
 std::string getBaseName(const std::string&);

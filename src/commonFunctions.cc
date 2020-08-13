@@ -31,14 +31,14 @@ TH2D* muFullFastIDSFHist2017 = nullptr;
 // TH2D* muFullFastHIIPSFHist2017 = nullptr;
 TH2D* L1prefiring_jetpt_2017BtoFHist = nullptr;
 
-TH1F* electronTightToLoose_2017_LowEta = nullptr;
-TH1F* electronTightToLoose_2017_HighEta = nullptr;
-TH1F* muonTightToLoose_2017_LowEta = nullptr;
-TH1F* muonTightToLoose_2017_HighEta = nullptr;
-TH1F* mcClosure_electronTightToLoose_2017_LowEta = nullptr;
-TH1F* mcClosure_electronTightToLoose_2017_HighEta = nullptr;
-TH1F* mcClosure_muonTightToLoose_2017_LowEta = nullptr;
-TH1F* mcClosure_muonTightToLoose_2017_HighEta = nullptr;
+TH1D* electronTightToLoose_2017_LowEta = nullptr;
+TH1D* electronTightToLoose_2017_HighEta = nullptr;
+TH1D* muonTightToLoose_2017_LowEta = nullptr;
+TH1D* muonTightToLoose_2017_HighEta = nullptr;
+TH1D* mcClosure_electronTightToLoose_2017_LowEta = nullptr;
+TH1D* mcClosure_electronTightToLoose_2017_HighEta = nullptr;
+TH1D* mcClosure_muonTightToLoose_2017_LowEta = nullptr;
+TH1D* mcClosure_muonTightToLoose_2017_HighEta = nullptr;
 
 // 2016
 TH2D* centralElectronSFHist = nullptr;
