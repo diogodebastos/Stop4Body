@@ -47,16 +47,16 @@
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
-#define GENPART_LIMIT  40
-#define JETCOLL_LIMIT  40
-#define LEPCOLL_LIMIT  40
-#define TAUCOLL_LIMIT  40
-#define TRACOLL_LIMIT 200
-#define LHEWEIGHT_LIMIT 9
+#define GENPART_LIMIT    40
+#define JETCOLL_LIMIT    200
+#define LEPCOLL_LIMIT    40
+#define TAUCOLL_LIMIT    40
+#define TRACOLL_LIMIT    200
+#define LHEWEIGHT_LIMIT  9
 
-#define ISR_JET_PT 90
+#define ISR_JET_PT       90
 #define SECOND_LEPTON_PT 20
-#define MIN_MET 0
+#define MIN_MET          0
 
 using json = nlohmann::json;
 
@@ -1701,13 +1701,17 @@ int main(int argc, char** argv)
               jetPt.Systematic("JES_Up").push_back(Jet_pt_jesTotalUp[i]);
               jetPt.Systematic("JES_Down").push_back(Jet_pt_jesTotalDown[i]);
 
-              if(Jet_corr_JER[i] < 0)
-              {
-                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]);
-                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]);
-              }
-              else
-              {
+              jetPt.Systematic("JER_Up").push_back(Jet_pt_jerUp[i]);
+              jetPt.Systematic("JER_Down").push_back(Jet_pt_jerDown[i]);
+
+
+//              if(Jet_corr_JER[i] < 0)
+//              {
+//                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]);
+//                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]);
+//              }
+//              else
+//              {
                 // Almost sure this is wrong
                 //Jet_corr_JERUp[i] = Jet_pt_jerUp[i]/Jet_pt[i];
                 //Jet_corr_JERDown[i] = Jet_pt_jerDown[i]/Jet_pt[i];
@@ -1720,9 +1724,10 @@ int main(int argc, char** argv)
                 jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
                 jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
                 */
-                jetPt.Systematic("JER_Up").push_back(Jet_pt_jerUp[i]);
-                jetPt.Systematic("JER_Down").push_back(Jet_pt_jerDown[i]);
-              }
+//                jetPt.Systematic("JER_Up").push_back(Jet_pt_jerUp[i]);
+//                jetPt.Systematic("JER_Down").push_back(Jet_pt_jerDown[i]);
+//              }
+
             }
           }
           //genHT = 0;
@@ -1760,8 +1765,10 @@ int main(int argc, char** argv)
               if(Jet_jetId[i] >= 2 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
                 dropJet=false;
+                //for (UInt_t j = 0; j < nLepGood; j++) {
                 for (size_t j = 0; j < looseLeptons.size(); j++) {
                   if (i == (unsigned)LepGood_jetIdx[looseLeptons.at(j)]) {
+                  //if (i == (unsigned)LepGood_jetIdx[j]) {
                     dropJet = true;
                   }
                 }
@@ -1769,18 +1776,39 @@ int main(int argc, char** argv)
                   validJets.GetSystematicOrValue(syst).push_back(i);
                   bjetList.GetSystematicOrValue(syst).push_back(i);
                 }
-                // if (std::abs(Jet_eta[i]) > 2.25 && (jetPt.GetSystematicOrValue(syst))[i] > 100)
-                // {
-                //  l1PreFiringList(syst).push_back(i);
-                // }
               }
             }
+// DEBUG
+/*
+	    if (syst == "JER_Down"){
+	      std::cout << "syst: " << syst << std::endl;
+              std::cout << "allJets.size: " << allJets.GetSystematicOrValue(syst).size() << std::endl;
+              std::cout << "allJets: ";
+              for(size_t jet = 0; jet < allJets.GetSystematicOrValue(syst).size(); jet++){
+                std::cout << allJets.GetSystematicOrValue(syst).at(jet) << " ";
+              }
+              std::cout << std::endl;
+              std::cout << "validJets.size: " << validJets.GetSystematicOrValue(syst).size() << std::endl;
+              std::cout << "validJets: ";
+              for(size_t jet = 0; jet < validJets.GetSystematicOrValue(syst).size(); jet++){
+                std::cout << validJets.GetSystematicOrValue(syst).at(jet) << " ";
+		if(validJets.GetSystematicOrValue(syst).size() > 39){
+                  std::cout << std::endl;
+                  std::cout << " idx: " << jet << " - " << jetPt.GetSystematicOrValue(syst).at(jet) ;
+                }
+              }
+              std::cout << std::endl;
+              std::cout << std::endl;
+	    }
+*/
             std::sort(allJets.GetSystematicOrValue(syst).begin(), allJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
               return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
             });
+
             std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
               return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
             });
+
             std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagCSVV2] (const int &left, const int &right) {
               return Jet_btagCSVV2[left] > Jet_btagCSVV2[right];
             });
