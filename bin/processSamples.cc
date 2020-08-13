@@ -76,23 +76,36 @@ const double CSV_Loose = 0.5426;
 const double CSV_Medium = 0.800; // TODO: Update
 const double CSV_Tight = 0.935;
 
-extern TH2D* centralElectronRecoSFHist2017_lowEt;
+extern TH2D* centralElectronRecoSFHist2018;
+extern TH2D* centralElectronSFHist2018;
+extern TH2D* TnPlowPtIDSFHist2018;
+extern TH2D* elFullFastIDSFHist2018;
+//extern TH2D* elFullFastHIIPSFHist2018;
+extern TH2D* centralMuonSFHist2018;
+extern TH2D* lowMuonSFHist2018;
+extern TH2D* muFullFastIDSFHist2018;
+//extern TH2D* muFullFastHIIPSFHist2018;
+
 extern TH2D* centralElectronRecoSFHist2017;
+extern TH2D* centralElectronRecoSFHist2017_lowEt;
 extern TH2D* centralElectronSFHist2017;
-extern TH2D* ElectronISOSFHist2017;
+extern TH2D* TnPlowPtIDSFHist2017;
+extern TH2D* elFullFastIDSFHist2017;
+// extern TH2D* elFullFastHIIPSFHist2017;
 extern TH2D* centralMuonSFHist2017;
 extern TH2D* lowMuonSFHist2017;
-extern TH2D* MuonISOSFHist2017;
+extern TH2D* muFullFastIDSFHist2017;
+// extern TH2D* muFullFastHIIPSFHist2017;
 extern TH2D* L1prefiring_jetpt_2017BtoFHist;
 
-extern TH1D* electronTightToLoose_2017_LowEta;
-extern TH1D* electronTightToLoose_2017_HighEta;
-extern TH1D* muonTightToLoose_2017_LowEta;
-extern TH1D* muonTightToLoose_2017_HighEta;
-extern TH1D* mcClosure_electronTightToLoose_2017_LowEta;
-extern TH1D* mcClosure_electronTightToLoose_2017_HighEta;
-extern TH1D* mcClosure_muonTightToLoose_2017_LowEta;
-extern TH1D* mcClosure_muonTightToLoose_2017_HighEta;
+extern TH1F* electronTightToLoose_2017_LowEta;
+extern TH1F* electronTightToLoose_2017_HighEta;
+extern TH1F* muonTightToLoose_2017_LowEta;
+extern TH1F* muonTightToLoose_2017_HighEta;
+extern TH1F* mcClosure_electronTightToLoose_2017_LowEta;
+extern TH1F* mcClosure_electronTightToLoose_2017_HighEta;
+extern TH1F* mcClosure_muonTightToLoose_2017_LowEta;
+extern TH1F* mcClosure_muonTightToLoose_2017_HighEta;
 
 extern TH2D* centralElectronSFHist;
 extern TH2D* centralMuonSFHist;
@@ -261,21 +274,100 @@ int main(int argc, char** argv)
   TFile preProcessSamplesFile((outputDirectory + "/preProcessSamples.root").c_str(), "READ");
   TFile lheScaleFile((lheScaleDir + "/lheWeights.root").c_str(), "READ");
 
-  TFile centralElectronRecoSFFile2017_lowEt("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
-  centralElectronRecoSFHist2017_lowEt = static_cast<TH2D*>(centralElectronRecoSFFile2017_lowEt.Get("EGamma_SF2D"));
+  // HISTS FOR 2018
+
+  // - RECO SFs Et 10-500
+  TFile centralElectronRecoSFFile2018("../data/egammaEffi.txt_EGM2D_updatedAll.root", "READ");
+  centralElectronRecoSFHist2018 = static_cast<TH2D*>(centralElectronRecoSFFile2018.Get("EGamma_SF2D"));
+
+  // - Centraly produced SFs for Ele ID 10-500 GeV
+  TFile centralElectronSFFile2018("../data/ElectronScaleFactors_Run2018.root", "READ");
+  centralElectronSFHist2018 = static_cast<TH2D*>(centralElectronSFFile2018.Get("Run2018_CutBasedLooseNoIso94XV2"));
+
+  // - Analysis specific SFs for Ele ID low-pt 5-20 GeV
+  TFile TnPlowPtIDSFFile2018("../data/egammaEffi.txt_EGM2D_2018_TnP_lowPt_ID.root", "READ");
+  TnPlowPtIDSFHist2018 = static_cast<TH2D*>(TnPlowPtIDSFFile2018.Get("EGamma_SF2D"));
+
+  // - Analysis specific SFs for Ele ISO/IP 5-500 GeV TODO
+
+  // El Full/Fast Sim SFs
+  TFile elFullFastSFFile2018("../data/detailed_ele_full_fast_sf_18.root", "READ");
+  elFullFastIDSFHist2018 = static_cast<TH2D*>(elFullFastSFFile2018.Get("CutBasedLooseNoIso94XV2_sf"));
+  //elFullFastHIIPSFHist2018 = static_cast<TH2D*>(elFullFastSFFile2018.Get(""));
+
+  // - Centraly produced SFs for Mu ID 20-120 GeV
+  TFile centralMuonSFFile2018("../data/MuonScaleFactors_ID_Run2018.root", "READ");
+  centralMuonSFHist2018 = static_cast<TH2D*>(centralMuonSFFile2018.Get("NUM_MediumID_DEN_TrackerMuons_pt_abseta"));
+
+  // - Centraly produced SFs for Mu ID low-pt 2-50 GeV
+  TFile lowMuonSFFile2018("../data/RunABCD_SF_ID_JPsi_syst.root", "READ");
+  lowMuonSFHist2018 = static_cast<TH2D*>(lowMuonSFFile2018.Get("NUM_MediumID_DEN_genTracks_pt_abseta"));
+
+  // - Analysis specific SFs for Mu ISO/IP 3.5-500 GeV TODO
+
+  // Mu Full/Fast Sim SFs
+  TFile muFullFastSFFile2018("../data/detailed_mu_full_fast_sf_18.root", "READ");
+  muFullFastIDSFHist2018 = static_cast<TH2D*>(muFullFastSFFile2018.Get("miniIso02_MediumId_sf"));
+  //muFullFastHIIPSFHist2018 = static_cast<TH2D*>(muFullFastSFFile2018.Get(""));
+
+  // Tight to Loose ratio weight for the fake lepton method prediction TODO
+  /*
+  TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
+  electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_LowEta"));
+  electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_HighEta"));
+  muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_LowEta"));
+  muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_HighEta"));
+  mcClosure_electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_LowEta"));
+  mcClosure_electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_HighEta"));
+  mcClosure_muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_LowEta"));
+  mcClosure_muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_HighEta"));
+*/
+
+  // HISTS FOR 2017
+
+  // - El RECO SFs Et 20-500
   TFile centralElectronRecoSFFile2017("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO.root", "READ");
   centralElectronRecoSFHist2017 = static_cast<TH2D*>(centralElectronRecoSFFile2017.Get("EGamma_SF2D"));
+
+  // - El RECO SFs Et 10-20
+  TFile centralElectronRecoSFFile2017_lowEt("../data/egammaEffi.txt_EGM2D_runBCDEF_passingRECO_lowEt.root", "READ");
+  centralElectronRecoSFHist2017_lowEt = static_cast<TH2D*>(centralElectronRecoSFFile2017_lowEt.Get("EGamma_SF2D"));
+
+  // - Centraly produced SFs for Ele ID 10-500 GeV
   TFile centralElectronSFFile2017("../data/ElectronScaleFactors_Run2017.root", "READ");
-  centralElectronSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017.Get("Run2017_CutBasedVetoNoIso94X"));
-  ElectronISOSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017.Get("Run2017_MVAVLooseTightIP2DMini2")); //TODO: check this Hist
+  centralElectronSFHist2017 = static_cast<TH2D*>(centralElectronSFFile2017.Get("Run2017_CutBasedLooseNoIso94XV2"));
+
+  // - Analysis specific SFs for Ele ID low-pt 5-20 GeV
+  TFile TnPlowPtIDSFFile2017("../data/egammaEffi.txt_EGM2D_2017_TnP_lowPt_ID.root", "READ");
+  TnPlowPtIDSFHist2017 = static_cast<TH2D*>(TnPlowPtIDSFFile2017.Get("EGamma_SF2D"));
+
+  // - Analysis specific SFs for Ele ISO/IP 5-500 GeV TODO
+
+  // El Full/Fast Sim SFs
+  TFile elFullFastSFFile2017("../data/detailed_ele_full_fast_sf_17.root", "READ");
+  elFullFastIDSFHist2017 = static_cast<TH2D*>(elFullFastSFFile2017.Get("CutBasedLooseNoIso94XV2_sf"));
+  //elFullFastHIIPSFHist2017 = static_cast<TH2D*>(elFullFastSFFile2017.Get(""));
+
+  // - Centraly produced SFs for Mu ID 20-120 GeV
   TFile centralMuonSFFile2017("../data/MuonScaleFactors_ID_Run2017.root", "READ");
-  centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017.Get("NUM_LooseID_DEN_genTracks_pt_abseta")); //TODO: check this Hist
+  centralMuonSFHist2017 = static_cast<TH2D*>(centralMuonSFFile2017.Get("NUM_MediumID_DEN_genTracks_pt_abseta"));
+
+  // - Centraly produced SFs for Mu ID low-pt 2-50 GeV
   TFile lowMuonSFFile2017("../data/RunBCDEF_SF_ID_JPsi_syst.root", "READ");
-  lowMuonSFHist2017 = static_cast<TH2D*>(lowMuonSFFile2017.Get("NUM_LooseID_DEN_genTracks_pt_abseta")); //TODO: check this Hist
-  TFile MuonISOSFFile2017("../data/MuonScaleFactors_ISO_Run2017.root", "READ");
-  MuonISOSFHist2017 = static_cast<TH2D*>(MuonISOSFFile2017.Get("NUM_LooseRelIso_DEN_MediumID_pt_abseta")); //TODO: check this Hist
+  lowMuonSFHist2017 = static_cast<TH2D*>(lowMuonSFFile2017.Get("NUM_MediumID_DEN_genTracks_pt_abseta"));
+
+  // - Analysis specific SFs for Mu ISO/IP 3.5-500 GeV TODO
+
+  // Mu Full/Fast Sim SFs
+  TFile muFullFastSFFile2017("../data/detailed_mu_full_fast_sf_17.root", "READ");
+  muFullFastIDSFHist2017 = static_cast<TH2D*>(muFullFastSFFile2017.Get("miniIso02_MediumId_sf"));
+  //muFullFastHIIPSFHist2017 = static_cast<TH2D*>(muFullFastSFFile2017.Get(""));
+
+  // L1prefire issue on 2017 Data
   TFile L1prefiring_jetpt_2017BtoFFile("../data/L1prefiring_jetpt_2017BtoF.root");
   L1prefiring_jetpt_2017BtoFHist = static_cast<TH2D*>(L1prefiring_jetpt_2017BtoFFile.Get("L1prefiring_jetpt_2017BtoF"));
+
+  // Tight to Loose ratio weight for the fake lepton method prediction
   TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
   electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_LowEta"));
   electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_HighEta"));
@@ -286,6 +378,7 @@ int main(int argc, char** argv)
   mcClosure_muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_LowEta"));
   mcClosure_muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_HighEta"));
 
+  // HISTS FOR 2016
   TFile centralElectronSFFile("../data/scaleFactors.root", "READ");
   centralElectronSFHist = static_cast<TH2D*>(centralElectronSFFile.Get("GsfElectronToCutBasedSpring15V"));
   TFile centralMuonSFFile("../data/TnP_NUM_LooseID_DENOM_generalTracks_VAR_map_pt_eta.root", "READ");
@@ -302,6 +395,7 @@ int main(int argc, char** argv)
   electronTightToLooseHighEta = static_cast<TH1F*>(tightToLooseRatios.Get("electronEfficiencyHighEta"));
   muonTightToLooseLowEta = static_cast<TH1F*>(tightToLooseRatios.Get("muonEfficiencyLowEta"));
   muonTightToLooseHighEta = static_cast<TH1F*>(tightToLooseRatios.Get("muonEfficiencyHighEta"));
+
   TFile FullFastElVeto("../data/sf_el_vetoCB.root", "READ");
   electronFullFastSFIDHist = static_cast<TH2D*>(FullFastElVeto.Get("histo2D"));
   TFile FullFastMuLoose("../data/sf_mu_looseID.root", "READ");
@@ -313,6 +407,8 @@ int main(int argc, char** argv)
   TCanvas* muc5 = static_cast<TCanvas*>(FullFastMuHIIP.Get("c5"));
   muonFullFastSFHIIPHist = static_cast<TH2D*>(muc5->GetPrimitive("Full-Fast_ratios_2D"));
   cwd->cd();
+
+  // B-tagging calibration
 
   BTagCalibration bCalib("csvv2", bTagCalibrationFile);
   BTagCalibrationReader bReader (BTagEntry::OP_RESHAPING,  // operating point
@@ -430,6 +526,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> EWKISRweight;
       ValueWithSystematics<float> ISRweight;
       ValueWithSystematics<float> puWeight;
+      ValueWithSystematics<float> leptonRecoSF;
       ValueWithSystematics<float> leptonIDSF;
       ValueWithSystematics<float> leptonISOSF;
       ValueWithSystematics<float> leptonFullFastSF;
@@ -462,14 +559,16 @@ int main(int argc, char** argv)
         puWeight = 1.0f;
         puWeight.Systematic("PU_Up");
         puWeight.Systematic("PU_Down");
+        std::cout << "\t        lRECO" << std::endl;
+        leptonRecoSF = getLeptonRecoSFSys(13, 7.5, 1.1, 2017);
         std::cout << "\t        lID" << std::endl;
-        leptonIDSF = getLeptonIDSF2017Sys(13, 7.5, 1.1);
+        leptonIDSF = getLeptonIDSFSys(13, 7.5, 1.1, 2017);
         std::cout << "\t        lISO" << std::endl;
         //leptonISOSF = getLeptonISOSF2017Sys(13, 20, 1.1);
         // Using 2016 ISO SFs
         leptonISOSF = getLeptonISOSFSys(13, 7.5, 1.1);
         std::cout << "\t        FullFastSim" << std::endl;
-        leptonFullFastSF = getFullFastSFSys(11, 20, 1.1);
+        leptonFullFastSF = getFullFastSFSys(11, 20, 1.1, 2017);
         std::cout << "\t        Q^2" << std::endl;
         Q2Var = 1;
         Q2Var.Systematic("Q2_1");
@@ -511,7 +610,8 @@ int main(int argc, char** argv)
       looseNotTightWeight2017MCClosure = getLeptonTightLooseRatio2017MCClosureSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
+      // weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -521,6 +621,7 @@ int main(int argc, char** argv)
         EWKISRweight.Lock();
         ISRweight.Lock();
         puWeight.Lock();
+        leptonRecoSF.Lock();
         leptonIDSF.Lock();
         leptonISOSF.Lock();
         leptonFullFastSF.Lock();
@@ -537,6 +638,7 @@ int main(int argc, char** argv)
       EWKISRweight = 1.0;
       ISRweight = 1.0;
       puWeight = 1.0;
+      leptonRecoSF = 1.0;
       leptonIDSF = 1.0;
       leptonISOSF = 1.0;
       leptonFullFastSF = 1.0;
@@ -563,6 +665,7 @@ int main(int argc, char** argv)
       bdttree->Branch("EWKISRweight", &(EWKISRweight.Value()), "EWKISRweight/F");
       bdttree->Branch("ISRweight", &(ISRweight.Value()), "ISRweight/F");
       bdttree->Branch("puWeight", &(puWeight.Value()), "puWeight/F");
+      bdttree->Branch("leptonRecoSF", &(leptonRecoSF.Value()), "leptonRecoSF/F");
       bdttree->Branch("leptonIDSF", &(leptonIDSF.Value()), "leptonIDSF/F");
       bdttree->Branch("leptonISOSF", &(leptonISOSF.Value()), "leptonISOSF/F");
       bdttree->Branch("leptonFullFastSF", &(leptonFullFastSF.Value()), "leptonFullFastSF/F");
@@ -583,6 +686,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("ISRweight_"+systematic).c_str(), &(ISRweight.Systematic(systematic)));
         for(auto& systematic: puWeight.Systematics())
           bdttree->Branch(("puWeight_"+systematic).c_str(), &(puWeight.Systematic(systematic)));
+        for(auto& systematic: leptonRecoSF.Systematics())
+          bdttree->Branch(("leptonRecoSF_"+systematic).c_str(), &(leptonRecoSF.Systematic(systematic)));
         for(auto& systematic: leptonIDSF.Systematics())
           bdttree->Branch(("leptonIDSF_"+systematic).c_str(), &(leptonIDSF.Systematic(systematic)));
         for(auto& systematic: leptonISOSF.Systematics())
@@ -2107,14 +2212,13 @@ int main(int argc, char** argv)
             Q80 = 1.0 - 80.*80./(2.0 * LepPt * Met);
 
             if(!process.isdata())
-            { // 2016
-              //leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta);
-              leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
-              // 2017
-              leptonIDSF = getLeptonIDSF2017Sys(LepID, LepPt, LepEta);
+            {
+              leptonRecoSF = getLeptonRecoSFSys(LepID, LepPt, LepEta, year);
+              //leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
+              leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta, year);
               //leptonISOSF = getLeptonISOSF2017Sys(LepID, LepPt, LepEta);
               if(sample.isFastsim() || process.isfastsim()) // Maybe need to add some more conditions here
-                leptonFullFastSF = getFullFastSFSys(LepID, LepPt, LepEta);
+                leptonFullFastSF = getFullFastSFSys(LepID, LepPt, LepEta, year);
               else
                 leptonFullFastSF = 1.0;
             }
@@ -2497,7 +2601,7 @@ int main(int argc, char** argv)
           }
 
           if(!process.isdata())
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
           else
             weight = 1.0f;
 
