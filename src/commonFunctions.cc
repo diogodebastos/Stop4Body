@@ -2018,14 +2018,15 @@ ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, doub
   }
   else if(std::abs(LepID) == 13)
   {
+    LepEta = std::abs(LepEta);
     if(year == 2017){
-      auto bin = muFullFastIDSFHist2017->FindBin(LepEta, LepPt);
+      auto bin = muFullFastIDSFHist2017->FindBin(LepPt, LepEta);
       val = muFullFastIDSFHist2017->GetBinContent(bin);
       unc = muFullFastIDSFHist2017->GetBinError(bin);
       theBin = bin;
     }
     else if(year == 2018){
-      auto bin = muFullFastIDSFHist2018->FindBin(LepEta, LepPt);
+      auto bin = muFullFastIDSFHist2018->FindBin(LepPt, LepEta);
       val = muFullFastIDSFHist2018->GetBinContent(bin);
       unc = muFullFastIDSFHist2018->GetBinError(bin);
       theBin = bin;
