@@ -539,6 +539,9 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_
 
   return EWKISRweightFromISRpTSys(w_pt);
 }
+
+// 2017 EWKISR
+/*
 doubleUnc EWKISRweightFromISRpT(double ISRpT)
 {
   if(ISRpT >= 0)
@@ -562,8 +565,31 @@ doubleUnc EWKISRweightFromISRpT(double ISRpT)
   }
   return doubleUnc(0, 0);
 }
+*/
+doubleUnc EWKISRweightFromISRpT(double ISRpT)
+{
+  if(ISRpT >= 0)
+  {
+    if(ISRpT < 50)
+      return doubleUnc(1, 0);
+    if(ISRpT < 100)
+      return doubleUnc(1.052, 0);
+    if(ISRpT < 150)
+      return doubleUnc(1.179, 0);
+    if(ISRpT < 200)
+      return doubleUnc(1.150, 0);
+    if(ISRpT < 300)
+      return doubleUnc(1.057, 0);
+    if(ISRpT < 400)
+      return doubleUnc(1.000, 0);
+    if(ISRpT < 600)
+      return doubleUnc(0.912, 0);
 
-/* 2016 EWKISRweight - Solve commonFunctions for each data taking year
+    return doubleUnc(0.783, 0);
+  }
+  return doubleUnc(0, 0);
+}
+// 2016 EWKISRweight - Solve commonFunctions for each data taking year
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
 {
   ValueWithSystematics<double> retVal(0.0);
@@ -660,8 +686,9 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
   }
   return retVal;
 }
-*/
 
+// 2017 ISR
+/*
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
 {
   ValueWithSystematics<double> retVal(0.0);
@@ -767,6 +794,7 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
   }
   return retVal;
 }
+*/
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(ValueWithSystematics<double> ISRpT)
 {
   ValueWithSystematics<double> retVal = EWKISRweightFromISRpTSys(ISRpT.Value());
