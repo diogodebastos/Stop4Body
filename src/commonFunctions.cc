@@ -540,32 +540,8 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_
   return EWKISRweightFromISRpTSys(w_pt);
 }
 
-// 2017 EWKISR
+// 2016 EWKISR
 /*
-doubleUnc EWKISRweightFromISRpT(double ISRpT)
-{
-  if(ISRpT >= 0)
-  {
-    if(ISRpT < 50)
-      return doubleUnc(0.937, 0);
-    if(ISRpT < 100)
-      return doubleUnc(1.244, 0);
-    if(ISRpT < 150)
-      return doubleUnc(1.211, 0);
-    if(ISRpT < 200)
-      return doubleUnc(1.140, 0);
-    if(ISRpT < 300)
-      return doubleUnc(1.023, 0);
-    if(ISRpT < 400)
-      return doubleUnc(1.940, 0);
-    if(ISRpT < 600)
-      return doubleUnc(0.861, 0);
-
-    return doubleUnc(0.820, 0);
-  }
-  return doubleUnc(0, 0);
-}
-*/
 doubleUnc EWKISRweightFromISRpT(double ISRpT)
 {
   if(ISRpT >= 0)
@@ -589,7 +565,6 @@ doubleUnc EWKISRweightFromISRpT(double ISRpT)
   }
   return doubleUnc(0, 0);
 }
-// 2016 EWKISRweight - Solve commonFunctions for each data taking year
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
 {
   ValueWithSystematics<double> retVal(0.0);
@@ -686,9 +661,31 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
   }
   return retVal;
 }
+*/
+// 2017/2018 EWKISR
+doubleUnc EWKISRweightFromISRpT(double ISRpT)
+{
+  if(ISRpT >= 0)
+  {
+    if(ISRpT < 50)
+      return doubleUnc(0.937, 0);
+    if(ISRpT < 100)
+      return doubleUnc(1.244, 0);
+    if(ISRpT < 150)
+      return doubleUnc(1.211, 0);
+    if(ISRpT < 200)
+      return doubleUnc(1.140, 0);
+    if(ISRpT < 300)
+      return doubleUnc(1.023, 0);
+    if(ISRpT < 400)
+      return doubleUnc(1.940, 0);
+    if(ISRpT < 600)
+      return doubleUnc(0.861, 0);
 
-// 2017 ISR
-/*
+    return doubleUnc(0.820, 0);
+  }
+  return doubleUnc(0, 0);
+}
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
 {
   ValueWithSystematics<double> retVal(0.0);
@@ -794,7 +791,7 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
   }
   return retVal;
 }
-*/
+
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(ValueWithSystematics<double> ISRpT)
 {
   ValueWithSystematics<double> retVal = EWKISRweightFromISRpTSys(ISRpT.Value());
