@@ -19,10 +19,10 @@ cd UserCode/Stop4Body-nanoAOD/Macros/
 
 if [[ -d ${PREPROCESSSAMPLES_DIR} ]]; then
  if [ ${YEAR} == 2016 ]; then
-  preProcessSamples --json ${JSON_PATH}/Data.json  --outDir ${PREPROCESSSAMPLES_DIR}
+  preProcessSamples --json ${JSON_PATH}/Data.json  --outDir ${PREPROCESSSAMPLES_DIR} --dataPU DataPileupHistogram_${YEAR}.root
  elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
-  preProcessSamples --json ${JSON_PATH}/DataMetHT.json  --outDir ${PREPROCESSSAMPLES_DIR}
-#  preProcessSamples --json ${JSON_PATH}/analysisData.json  --outDir ${PREPROCESSSAMPLES_DIR}
-#  preProcessSamples --json ${JSON_PATH}/allData.json  --outDir ${PREPROCESSSAMPLES_DIR}
+  preProcessSamples --json ${JSON_PATH}/DataMetHT.json  --outDir ${PREPROCESSSAMPLES_DIR} --dataPU DataPileupHistogram_${YEAR}.root
+#  preProcessSamples --json ${JSON_PATH}/analysisData.json  --outDir ${PREPROCESSSAMPLES_DIR} --dataPU DataPileupHistogram_${YEAR}.root
+#  preProcessSamples --json ${JSON_PATH}/allData.json  --outDir ${PREPROCESSSAMPLES_DIR} --dataPU DataPileupHistogram_${YEAR}.root
  fi
 fi

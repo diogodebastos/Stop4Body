@@ -18,5 +18,5 @@ cd UserCode/Stop4Body-nanoAOD/Macros/
 . setupPaths.sh
 
 if [[ -d ${PREPROCESSSAMPLES_DIR} ]]; then
-  preProcessSamples --json ${JSON_PATH}/otherMC2_QCD_Mu_en.json  --outDir ${PREPROCESSSAMPLES_DIR} 
+  preProcessSamples --json ${JSON_PATH}/otherMC2_QCD_Mu_en.json  --outDir ${PREPROCESSSAMPLES_DIR} --dataPU DataPileupHistogram_${YEAR}.root 
 fi
