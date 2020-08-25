@@ -53,6 +53,8 @@ int main(int argc, char** argv)
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
+  std::string dataPUFileName = "";
+  int nBins = 100;
 
   if(argc < 2)
   {
@@ -73,6 +75,9 @@ int main(int argc, char** argv)
 
     if(argument == "--suffix")
       suffix = argv[++i];
+
+    if(argument == "--dataPU")
+      dataPUFileName = argv[++i];
   }
 
   if(jsonFileName == "")
@@ -81,14 +86,43 @@ int main(int argc, char** argv)
     return 1;
   }
 
+  if(dataPUFileName == "")
+  {
+    std::cout << "You must define a root file with the data PU distribution" << std::endl;
+    return 1;
+  }
+
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName);
+
+  TFile finput(dataPUFileName.c_str(), "READ");
+  TH1D* dataPU = static_cast<TH1D*>(finput.Get("pileup"));
+  dataPU->Scale(1/dataPU->Integral());
+  TH1D* dataPUUp = nullptr;
+  TH1D* dataPUDown = nullptr;
+
+  std::string fileUp = dataPUFileName;
+  replace(fileUp, ".root", "Up.root");
+  TFile finputUp(fileUp.c_str(), "READ");
+  dataPUUp = static_cast<TH1D*>(finputUp.Get("pileup"));
+  dataPUUp->Scale(1/dataPUUp->Integral());
+
+  std::string fileDown = dataPUFileName;
+  replace(fileDown, ".root", "Down.root");
+  TFile finputDown(fileDown.c_str(), "READ");
+  dataPUDown = static_cast<TH1D*>(finputDown.Get("pileup"));
+  dataPUDown->Scale(1/dataPUDown->Integral());
 
   TFile foutput((outputDirectory + "/preProcessSamples_" + getBaseName(jsonFileName) + ".root").c_str(), "RECREATE");
 
   for(auto &process : samples)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
+
+    TH1D processNVTX(("process_"+process.tag()+"_nvtx").c_str(), "nvtx;Evt.", nBins, 0, nBins);
+    processNVTX.Sumw2();
+    TH1D processNTrue(("process_"+process.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", nBins, 0, nBins);
+    processNTrue.Sumw2();
 
     int nIsrBin_process[7]{0, 0, 0, 0, 0, 0, 0};
     int EWKpTBin_process[8]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -97,11 +131,17 @@ int main(int argc, char** argv)
     {
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
 
+      TH1D sampleNVTX(("sample_"+sample.tag()+"_nvtx").c_str(), "nvtx;Evt.", nBins, 0, nBins);
+      sampleNVTX.Sumw2();
+      TH1D sampleNTrue(("sample_"+sample.tag()+"_nTrueInt").c_str(), "nvtx;Evt.", nBins, 0, nBins);
+      sampleNTrue.Sumw2();
+
       int nIsrBin_sample[7]{0, 0, 0, 0, 0, 0, 0};
       int EWKpTBin_sample[8]{0, 0, 0, 0, 0, 0, 0, 0};
 
       double sampleSumGenWeight = 0;
       Double_t thisSumGenWeight = 0;
+      double Nevt = 0;
 
       for(auto &file : sample)
       {
@@ -118,8 +158,18 @@ int main(int argc, char** argv)
         }
         inputruntree = static_cast<TTree*>(finput.Get("Runs"));
 
-        Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
         Int_t thisNentries = static_cast<Int_t>(inputruntree->GetEntries());
+        Int_t thisNevt = static_cast<Int_t>(inputtree->GetEntries());
+        Nevt += thisNevt;
+
+        //PU
+        Int_t nvtx = 0;
+        Float_t nTrueInt = 0;
+        Float_t xsec = 1;
+
+        inputtree->SetBranchAddress("PV_npvsGood", &nvtx);
+        inputtree->SetBranchAddress("Pileup_nTrueInt", &nTrueInt);
+        inputtree->SetBranchAddress("xsec", &xsec);
 
         // Get sumGenWeight
         thisSumGenWeight = 0;
@@ -146,6 +196,12 @@ int main(int argc, char** argv)
         for(Int_t i = 0; i < thisNevt; ++i)
         {
           inputtree->GetEntry(i);
+
+          //PU
+          sampleNVTX.Fill(nvtx, thisGenWeight*xsec);
+          processNVTX.Fill(nvtx, thisGenWeight*xsec);
+          sampleNTrue.Fill(nTrueInt, thisGenWeight*xsec);
+          processNTrue.Fill(nTrueInt, thisGenWeight*xsec);
 
           smallCounter += thisGenWeight;
 
@@ -194,6 +250,10 @@ int main(int argc, char** argv)
         delete inputruntree;
       }
 
+      TVectorD sampleNevt(1);
+      sampleNevt[0] = Nevt;
+      sampleNevt.Write(("sample_"+sample.tag()+"_Nevt").c_str());
+
       TVectorD sumGenWeight(1);
       sumGenWeight[0] = sampleSumGenWeight;
       sumGenWeight.Write(("sample_"+sample.tag()+"_sumGenWeight").c_str());
@@ -232,6 +292,18 @@ int main(int argc, char** argv)
       ISRCParams[0] = ISRCParam_sample;
       ISRCParams[1] = EWKISRCParam_sample;
       ISRCParams.Write(("sample_"+sample.tag()+"_ISRCParams").c_str());
+
+      sampleNVTX.Write();
+      sampleNTrue.Write();
+
+      TH1D* samplePUweight = static_cast<TH1D*>(dataPU->Clone(("sample_"+sample.tag()+"_puWeight").c_str()));
+
+      sampleNTrue.Scale(1/sampleNTrue.Integral());
+      sampleNVTX.Scale(1/sampleNVTX.Integral());
+      samplePUweight->Divide(&sampleNTrue); // This is the recommended, but for some reason it is giving weird results
+      //samplePUweight->Divide(&sampleNVTX); // Trying this one instead
+      samplePUweight->Write();
+
     }
     double ISRCParam_process = (                nIsrBin_process[0] +
                                                 nIsrBin_process[1] +
@@ -267,6 +339,28 @@ int main(int argc, char** argv)
     ISRCParams[0] = ISRCParam_process;
     ISRCParams[1] = EWKISRCParam_process;
     ISRCParams.Write(("process_"+process.tag()+"_ISRCParams").c_str());
+
+    processNVTX.Write();
+    processNTrue.Write();
+
+    TH1D* processPUweight = static_cast<TH1D*>(dataPU->Clone(("process_"+process.tag()+"_puWeight").c_str()));
+    processNTrue.Scale(1/processNTrue.Integral());
+    processNVTX.Scale(1/processNVTX.Integral());
+    processPUweight->Divide(&processNTrue);
+    //processPUweight->Divide(&processNVTX);
+    processPUweight->Write();
+
+    if(dataPUUp != nullptr)
+    {
+      TH1D* processPUweightUp = static_cast<TH1D*>(dataPUUp->Clone(("process_"+process.tag()+"_puWeight_Up").c_str()));
+      TH1D* processPUweightDown = static_cast<TH1D*>(dataPUDown->Clone(("process_"+process.tag()+"_puWeight_Down").c_str()));
+
+      processPUweightUp->Divide(&processNTrue);
+      processPUweightDown->Divide(&processNTrue);
+
+      processPUweightUp->Write();
+      processPUweightDown->Write();
+    }
   }
   std::cout << "Done!" << std::endl << std::endl;
   return 0;
