@@ -453,7 +453,7 @@ int main(int argc, char** argv)
   {
     std::cout << "Processing process: " << process.tag() << std::endl;
     //Commented until it's fixed for nanoAOD properly
-/*
+
     TH1D* puWeightDistrib     = static_cast<TH1D*>(preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
     TH1D* puWeightDistribUp   = nullptr;
     TH1D* puWeightDistribDown = nullptr;
@@ -466,7 +466,7 @@ int main(int argc, char** argv)
         puWeightDistribDown = static_cast<TH1D*>(tmp->Clone("puWeightDistribDown"));
       }
     }
-*/
+
     if(!(process.isdata() || process.issignal() || process.tag()=="VV"))
     {
       lheScaleFile.GetObject(("process_"+process.tag()+"_lhemap").c_str(), lheScaleMap);
@@ -1305,6 +1305,8 @@ int main(int argc, char** argv)
       {
         std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
 
+        TVectorD* sampleNevt = static_cast<TVectorD*>(puWeightFile.Get(("sample_"+sample.tag()+"_Nevt").c_str())->Clone("sampleNevt"));
+
         TVectorD* sampleSumGenWeight = static_cast<TVectorD*>(preProcessSamplesFile.Get(("sample_"+sample.tag()+"_sumGenWeight").c_str())->Clone("sampleSumGenWeight"));
         sumGenWeight = (*sampleSumGenWeight)[0];
 
@@ -1332,7 +1334,8 @@ int main(int argc, char** argv)
           inputtree = static_cast<TTree*>(finput.Get("Events"))->CopyTree(process.selection().c_str());
         else
           inputtree = static_cast<TTree*>(finput.Get("Events"));
-
+        // PU weight from nanoAOD
+        /*
         Float_t autoPUweight;
         Float_t autoPUweightUp;
         Float_t autoPUweightDown;
@@ -1342,7 +1345,7 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("puWeightUp",&autoPUweightUp);
           inputtree->SetBranchAddress("puWeightDown",&autoPUweightDown);
         }
-
+        */
         // Read Branches you are interested in from the input tree
 //        Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
 //        Float_t mtw2;        inputtree->SetBranchAddress("event_mtw2"       , &mtw2);
@@ -1584,19 +1587,18 @@ int main(int argc, char** argv)
           nIsr_out = nIsr;
           if(!process.isdata())
           {
+            // PU from nanoAOD
+            /*
             puWeight = autoPUweight;
-            //TODO: Check if this is correctly implemented
             puWeight.Systematic("PU_Up") = autoPUweightUp;
             puWeight.Systematic("PU_Down") = autoPUweightDown;
-            //Commented until it's fixed for nanoAOD properly
-            /*
+            */
             puWeight = static_cast<float>(puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt)));
             if(puWeightDistribUp != nullptr)
             {
               puWeight.Systematic("PU_Up")   = puWeightDistribUp->GetBinContent(puWeightDistribUp->FindBin(nTrueInt));
               puWeight.Systematic("PU_Down") = puWeightDistribDown->GetBinContent(puWeightDistribDown->FindBin(nTrueInt));
             }
-            */
           }
           else
             puWeight = 1.0f;
@@ -2871,15 +2873,12 @@ int main(int argc, char** argv)
         delete filterEfficiencyH;
     }
 
-    //Commented until it's fixed for nanoAOD properly
-/*
     delete puWeightDistrib;
     if(puWeightDistribUp != nullptr)
     {
       delete puWeightDistribUp;
       delete puWeightDistribDown;
     }
-*/
   }
 
   std::cout << "Done!" << std::endl << std::endl;
