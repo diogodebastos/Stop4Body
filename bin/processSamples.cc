@@ -454,16 +454,20 @@ int main(int argc, char** argv)
     std::cout << "Processing process: " << process.tag() << std::endl;
     //Commented until it's fixed for nanoAOD properly
 
-    TH1D* puWeightDistrib     = static_cast<TH1D*>(preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
+    TH1D* puWeightDistrib = nullptr;
     TH1D* puWeightDistribUp   = nullptr;
     TH1D* puWeightDistribDown = nullptr;
-    {
-      auto tmp = preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight_Up").c_str());
-      if(tmp != nullptr)
+
+    if(!process.isdata()){
+      puWeightDistrib = static_cast<TH1D*>(preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight").c_str())->Clone("puWeightDistrib"));
       {
-        puWeightDistribUp   = static_cast<TH1D*>(tmp->Clone("puWeightDistribUp"));
-        tmp = preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight_Down").c_str());
-        puWeightDistribDown = static_cast<TH1D*>(tmp->Clone("puWeightDistribDown"));
+        auto tmp = preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight_Up").c_str());
+        if(tmp != nullptr)
+        {
+          puWeightDistribUp   = static_cast<TH1D*>(tmp->Clone("puWeightDistribUp"));
+          tmp = preProcessSamplesFile.Get( ("process_"+process.tag()+"_puWeight_Down").c_str());
+          puWeightDistribDown = static_cast<TH1D*>(tmp->Clone("puWeightDistribDown"));
+        }
       }
     }
 
