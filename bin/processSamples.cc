@@ -1305,7 +1305,9 @@ int main(int argc, char** argv)
       {
         std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
 
-        TVectorD* sampleNevt = static_cast<TVectorD*>(puWeightFile.Get(("sample_"+sample.tag()+"_Nevt").c_str())->Clone("sampleNevt"));
+        //TVectorD* sampleNevt = static_cast<TVectorD*>(preProcessSamplesFile.Get(("sample_"+sample.tag()+"_Nevt").c_str())->Clone("sampleNevt"));
+        //Nevt = (*sampleNevt)[0];
+
 
         TVectorD* sampleSumGenWeight = static_cast<TVectorD*>(preProcessSamplesFile.Get(("sample_"+sample.tag()+"_sumGenWeight").c_str())->Clone("sampleSumGenWeight"));
         sumGenWeight = (*sampleSumGenWeight)[0];
@@ -1593,11 +1595,11 @@ int main(int argc, char** argv)
             puWeight.Systematic("PU_Up") = autoPUweightUp;
             puWeight.Systematic("PU_Down") = autoPUweightDown;
             */
-            puWeight = static_cast<float>(puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(nTrueInt)));
+            puWeight = static_cast<float>(puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(Pileup_nTrueInt)));
             if(puWeightDistribUp != nullptr)
             {
-              puWeight.Systematic("PU_Up")   = puWeightDistribUp->GetBinContent(puWeightDistribUp->FindBin(nTrueInt));
-              puWeight.Systematic("PU_Down") = puWeightDistribDown->GetBinContent(puWeightDistribDown->FindBin(nTrueInt));
+              puWeight.Systematic("PU_Up")   = puWeightDistribUp->GetBinContent(puWeightDistribUp->FindBin(Pileup_nTrueInt));
+              puWeight.Systematic("PU_Down") = puWeightDistribDown->GetBinContent(puWeightDistribDown->FindBin(Pileup_nTrueInt));
             }
           }
           else
