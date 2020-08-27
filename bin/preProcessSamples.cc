@@ -54,8 +54,8 @@ int main(int argc, char** argv)
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
   std::string dataPUFileName = "";
-  //int nBins = 100; //100 bins in 2017
-  int nBins = 200;  // 200 bins in 2018
+  int nBins = 100; //100 bins in 2017
+  //int nBins = 200;  // 200 bins in 2018
 
   if(argc < 2)
   {
