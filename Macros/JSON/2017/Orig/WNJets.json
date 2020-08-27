@@ -53,9 +53,9 @@
         }
       ],
       "isdata":false,
-      "label":"W + Jets",
+      "label":"W + NJets",
       "lcolor":1,
-      "tag":"WJets"
+      "tag":"WNJets"
     }
   ]
 }

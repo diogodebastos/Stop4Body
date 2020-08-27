@@ -62,6 +62,8 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC1Job.sh
  qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC2Job.sh
 
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WNJetsJob.sh
+ 
  qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_FastSim.sh
 
  #qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_SingleTop.sh
