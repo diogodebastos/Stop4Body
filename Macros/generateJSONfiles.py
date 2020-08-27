@@ -9,7 +9,8 @@ def assure_path_exists(path):
 def createJSON(stop,neutralino):
     stop = str(stop)
     neutralino = str(neutralino)
-    outputDirectory = "JSON/2018/Orig/SignalPoints/"
+    outputDirectory = "JSON/2017/Orig/SignalPoints/"
+    #outputDirectory = "JSON/2018/Orig/SignalPoints/"
     assure_path_exists(outputDirectory)
     outputDirectory = os.path.realpath(outputDirectory)
 
@@ -37,8 +38,10 @@ def createJSON(stop,neutralino):
         thisJSON.write("          \"filterEfficiencyFile\":\"../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root\",\n")
         thisJSON.write("          \"paths\":[\n")
         thisJSON.write("            {\n")
-        thisJSON.write("              \"path\":\"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1\",\n")
-        thisJSON.write("              \"split\":99\n")
+#        thisJSON.write("              \"path\":\"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1\",\n")
+#        thisJSON.write("              \"split\":99\n")
+        thisJSON.write("              \"path\":\"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1\",\n")
+        thisJSON.write("              \"split\":60\n")
 #        thisJSON.write("            },\n")
         thisJSON.write("            }\n")
 #        thisJSON.write("            {\n")

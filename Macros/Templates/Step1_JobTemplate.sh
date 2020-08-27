@@ -20,10 +20,26 @@ OUTDIR=!!OUTPUT_DIRECTORY!!
 #OUTDIR=./
 #cd !!OUTPUT_DIRECTORY!!
 
-MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doPromptTagging --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
+# Default process samples command
+MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --preemptiveDropEvents --doPromptTagging --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
+#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --preemptiveDropEvents --doPromptTagging --jetPtThreshold 45 --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
+
+#No skim whatsoever
+#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --noSkim --doPromptTagging --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
+#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --noSkim --jetPtThreshold 45 --doPromptTagging --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
+
+
+# NoSkim
+#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --preemptiveDropEvents --doPromptTagging --noSkim --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!" 
+
+# No preemptiveDropEvents
+#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doPromptTagging --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
 
 # Override XS for WJetsHT
 #MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doPromptTagging --overrideXSec --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
+
+# Default process samples command with JetPtThreshold
+#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doPromptTagging --jetPtThreshold 45 --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
 
 # Closure test
 #MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doFakeClosure --doPromptTagging --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
@@ -32,7 +48,7 @@ MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doPromptTagging --json $JSONFILE 
 #MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doFakeClosure --noSkim --doPromptTagging --doJetHT --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
 
 # Override XS for WJetsHT
+#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doPromptTagging --overrideXSec --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
 #MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doFakeClosure --doPromptTagging --doJetHT --overrideXSec --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
-#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --doPromptTagging --noSkim --overrideXSec --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
 
 eval $MY_PROCESS_SAMPLES_CMD

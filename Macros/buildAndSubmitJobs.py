@@ -43,17 +43,24 @@ if __name__ == "__main__":
     #jsonFiles.append("Data.json")
     #jsonFiles.append("analysisData.json")
     jsonFiles.append("DataMetHT.json")
-    #jsonFiles.append("DataJetHT.json")
+#    jsonFiles.append("DataJetHT.json")
   if not args.onlyData:
     print "MC"
     jsonFiles.append("MC2Process.json")
-    #jsonFiles.append("TTbar.json")
+#    jsonFiles.append("TTbar.json")
+    #jsonFiles.append("Wjets.json")
+#    jsonFiles.append("ZInv.json")
+#    jsonFiles.append("otherMC1.json")
+#    jsonFiles.append("otherMC2.json")
+    #jsonFiles.append("Orig/SingleTop.json")
     #jsonFiles.append("Orig/QCD.json")
     #jsonFiles.append("Orig/QCD_Mu.json")
-    #jsonFiles.append("otherMC2.json")
-    #jsonFiles.append("Wjets.json")
+    #jsonFiles.append("Orig/VV.json")
+    #jsonFiles.append("Orig/WJetsHT.json")
+    #jsonFiles.append("Orig/WNJets.json")
     #jsonFiles.append("Orig/Wjets-HT1200To2500.json")
-    #jsonFiles.append("ZInv.json")
+    #jsonFiles.append("Orig/TTWToLNu.json")
+    #jsonFiles.append("Orig/TTZToLLNuNu.json")
     #jsonFiles.append("tmpMC.json")
 #    jsonFiles.append("stop250.json")
 #    jsonFiles.append("stop275.json")
@@ -65,8 +72,8 @@ if __name__ == "__main__":
 #    jsonFiles.append("stop425.json")
 #    jsonFiles.append("stop450.json")
 #    jsonFiles.append("stop475.json")
-#    jsonFiles.append("stop500.json")
-#    #jsonFiles.append("stop500_FullSim.json")
+    jsonFiles.append("stop500.json")
+    #jsonFiles.append("stop500_FullSim.json")
 #    jsonFiles.append("stop525.json")
 #    jsonFiles.append("stop550.json")
 #    jsonFiles.append("stop575.json")
@@ -112,7 +119,7 @@ if __name__ == "__main__":
     jobInfo = {}
     for job in jobs:
       jobName = os.path.basename(job)
-      cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+      cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
       if args.dryRun:
         print "Going to run command:", cmd
       if not args.dryRun:

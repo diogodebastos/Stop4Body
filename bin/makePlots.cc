@@ -394,6 +394,11 @@ int main(int argc, char** argv)
     if(!noSF)
     {
       converter << "splitFactor*weight"; // Full
+      
+      //converter << "splitFactor*weight/(EWKISRweight*ISRweight)"; // noISR
+      //converter << "splitFactor*weight/(EWKISRweight)"; // noEWKISR
+      //converter << "splitFactor*weight/0.925337*0.865516"; // noEWKISR
+      //converter << "splitFactor*weight/(bTagSF)"; // noBTag
       //converter << "weight/(triggerEfficiency*WISRSF*ISRweight)"; // Incrementally adding new tests
       //converter << "weight/puWeight"; // Full no PU
       //converter << "weight/l1prefireWeight"; // Full no PU
@@ -405,6 +410,8 @@ int main(int argc, char** argv)
     {
      //weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
      //converter << "XS*filterEfficiency*(genWeight/sumGenWeight)";
+      //converter << "XS*(genWeight/sumGenWeight)*puWeight*EWKISRweight*ISRweight";
+      //converter << "XS*(genWeight/sumGenWeight)*puWeight*triggerEfficiency";
       converter << "XS*(genWeight/sumGenWeight)*puWeight";
     }
     converter << "*" << luminosity;

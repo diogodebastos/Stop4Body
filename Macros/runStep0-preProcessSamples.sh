@@ -56,15 +56,15 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  # Test MC samples
  #qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_VV.sh
  # Submit job for all MC
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_TTbarJob.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WjetsJob.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_ZInvJob.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC1Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC2Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_TTbarJob.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WjetsJob.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_ZInvJob.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC1Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC2Job.sh
 
  qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WNJetsJob.sh
  
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_FastSim.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_FastSim.sh
 
  #qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_SingleTop.sh
  #qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC2_QCD_Mu_en.sh

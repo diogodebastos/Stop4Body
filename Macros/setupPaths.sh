@@ -2,28 +2,34 @@
 
 source localUserSetup.sh
 
+export YEAR=2017
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-newPU
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13_npvs
+
 export YEAR=2018
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-08-13-newPU
 
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD
 export MACROS_PATH=$BASE_PATH/Macros
 export JSON_PATH=$MACROS_PATH/JSON/${YEAR}
 
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-03-20
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-05-12
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-05-12-WJets-HT_v7
+
+
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-05-14
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-05-14-jetClean
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-05-14-jetClean-pt45
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-05-14-jetClean-isTight
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-05-14-jetClean-atLepGood
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-05-14-jetClean-atLepGood-WNJets
+
 export TRAIN_DIR=${NTUPLE_DIR}_train
 export TEST_DIR=${NTUPLE_DIR}_test
 
 # USED DIRS FOR 2017 AN
 #export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-06-05-FastSim
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-06-05-QCD-Mu
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-16-updated
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-06-skimmed
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-02-07-noSkim
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-04-02-fakeMCClosure
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-04-30-skimmed
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-10-WJets-closure
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-10-TTbar-closure
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples_v2019-05-10-ZInv-QCDratio-closure
 
 export SYNC_DIR=${BASE_NTUPLE_PATH}/nTuples_sync
 export PU_TEST_DIR=${BASE_NTUPLE_PATH}/nTuples_PU_test
@@ -57,6 +63,9 @@ export PREPROCESSSAMPLES_DIR=${BASE_NTUPLE_PATH}/preProcessSamples/${YEAR}
 export LIMIT_DIR=${BASE_NTUPLE_PATH}/Limits/
 
 #export PROCESS_SAMPLES_CMD="processSamples --jetPtThreshold 20"
-export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents --doPromptTagging --doLooseLeptons --year ${YEAR}"
+#export PROCESS_SAMPLES_CMD="processSamples --preemptiveDropEvents --doPromptTagging --doLooseLeptons --year ${YEAR}"
+
+export PROCESS_SAMPLES_CMD="processSamples --doPromptTagging --doLooseLeptons --year ${YEAR}"
+#export PROCESS_SAMPLES_CMD="processSamples --doPromptTagging --year ${YEAR}"
 export PROCESS_SAMPLES_CMD_LNT="${PROCESS_SAMPLES_CMD} --looseNotTight"
 export PROCESS_SAMPLES_CMD_LOOSE="processSamples --preemptiveDropEvents --doLooseLeptons"
