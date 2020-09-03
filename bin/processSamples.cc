@@ -2312,7 +2312,7 @@ int main(int argc, char** argv)
             bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagCSVV2, Jet_hadronFlavour);
             triggerEfficiency = triggerEfficiencyFromMETSys(MetDou);
             // For EWK ISR, assume syst 100%
-            if(process.tag() == "WJets")
+            if(process.tag() == "WJets" || process.tag() == "WNJets")
               EWKISRweight = EWKISRCParam * EWKISRweightFromISRpTSys(LepPt, lep_phi, MetDou, MetPhi);
             // For ISR, assume syst 50%
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lep" || process.tag() == "ttbar_lo" || process.issignal())
