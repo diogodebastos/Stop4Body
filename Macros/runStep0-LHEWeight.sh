@@ -22,6 +22,8 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_SingleTop.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DY.sh
 
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WNJetsJob.sh
+
  # Submit job for all Data
  #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DataJob.sh
  #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_DataSingleElectronJob.sh

@@ -38,6 +38,10 @@ if __name__ == "__main__":
     sampleName = os.path.basename(os.path.normpath(sample))
     if sampleName[:6] == "DataMC":
       continue
+    if sampleName[:8] == "WJetsHT_":
+      continue
+    if sampleName[:7] == "WNJets_":
+      continue
     if sampleName[:9] == "MCClosure":
       continue
     if sampleName[:4] == "Plot":
@@ -65,7 +69,8 @@ if __name__ == "__main__":
       if os.path.isfile(outFile) and os.path.isfile(errFile):
         if 'Done' in open(outFile).read():
           #if os.stat(errFile).st_size == 0: # if the job completed successfully, the error file will be empty
-          if os.stat(errFile).st_size == 82: # if the job completed successfully, there will be the following error: Warning in <TClass::Init>: no dictionary for class ROOT::TIOFeatures is available -> 82 bytes
+          #if os.stat(errFile).st_size == 82: # if the job completed successfully, there will be the following error: Warning in <TClass::Init>: no dictionary for class ROOT::TIOFeatures is available -> 82 bytes
+          if os.stat(errFile).st_size <= 520: # if the job completed successfully, there will be the following error: Warning in <TClass::Init>: no dictionary for class ROOT::TIOFeatures is available -> 82 bytes
             resubmitJob = False
             complete = complete + 1
           else:

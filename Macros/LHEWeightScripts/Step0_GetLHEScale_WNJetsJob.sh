@@ -17,7 +17,6 @@ cd UserCode/Stop4Body-nanoAOD/Macros/
 
 . setupPaths.sh
 
-if [[ -d ${PREPROCESSSAMPLES_DIR} ]]; then
-  preProcessSamples --json ${JSON_PATH}/ttx.json  --outDir ${PREPROCESSSAMPLES_DIR} --dataPU DataPileupHistogram_${YEAR}.root 
+if [[ -d ${NTUPLE_DIR} ]]; then
+  getLHEweightScales --json ${JSON_PATH}/WNJets.json  --outDir ${LHESCALE_DIR}
 fi
-
