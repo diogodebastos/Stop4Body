@@ -20,4 +20,3 @@ cd UserCode/Stop4Body-nanoAOD/Macros/
 if [[ -d ${PUWEIGHT_DIR} ]]; then
   getPUWeight --json ${JSON_PATH}/Wjets.json  --outDir ${PUWEIGHT_DIR} --dataPU DataPileupHistogram.root --otherMCPU MCPileupHistogram.root
 fi
-

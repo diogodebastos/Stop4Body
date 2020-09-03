@@ -62,6 +62,8 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_ZInvJob.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC1Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC2Job.sh
+
+ qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_WNJetsJob.sh
  #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_OtherMC2_QCD_Mu_en.sh
 fi
 cd -
