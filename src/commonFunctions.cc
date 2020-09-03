@@ -97,6 +97,11 @@ float DeltaPhi(double p1, double p2)
   //return std::abs(x);
 }
 
+float DeltaR(double eta1, double phi1, double eta2, double phi2)
+{
+  return std::hypot(eta1-eta2,DeltaPhi(phi1, phi2));
+}
+
 bool replace(std::string& str, const std::string& from, const std::string& to)
 {
     size_t start_pos = str.find(from);

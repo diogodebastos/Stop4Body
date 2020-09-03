@@ -75,6 +75,7 @@ const double ECALGap_MaxEta =  1.5660;
 const double CSV_Loose = 0.5426;
 const double CSV_Medium = 0.800; // TODO: Update
 const double CSV_Tight = 0.935;
+const double DR_CutOff = 0.3;
 
 extern TH2D* centralElectronRecoSFHist2018;
 extern TH2D* centralElectronSFHist2018;
@@ -1879,10 +1880,19 @@ int main(int argc, char** argv)
               if(Jet_jetId[i] >= 2 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
               {
                 dropJet=false;
-                //for (UInt_t j = 0; j < nLepGood; j++) {
+                // Clean jets based on jetIdx => DR < 0.3
+                /*
                 for (size_t j = 0; j < looseLeptons.size(); j++) {
                   if (i == (unsigned)LepGood_jetIdx[looseLeptons.at(j)]) {
-                  //if (i == (unsigned)LepGood_jetIdx[j]) {
+                    dropJet = true;
+                  }
+                }
+                */
+                // Clean jets based on DR => DR_CutOff
+                float deltaR;
+                for (size_t j = 0; j < looseLeptons.size(); j++) {
+                  deltaR = DeltaR(LepGood_eta[looseLeptons.at(j)], LepGood_phi[looseLeptons.at(j)], Jet_eta[i],Jet_phi[i]);
+                  if (deltaR < DR_CutOff) {
                     dropJet = true;
                   }
                 }

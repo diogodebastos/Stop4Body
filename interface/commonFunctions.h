@@ -63,6 +63,8 @@ extern TH2D* muonFullFastSFHIIPHist;
 bool fileExists(std::string);
 std::string getBaseName(const std::string&);
 float DeltaPhi(double, double);
+float DeltaR(double, double ,double ,double );
+
 bool replace(std::string&, const std::string&, const std::string&);
 
 doubleUnc triggerEfficiencyFromMET(double);
