@@ -1870,14 +1870,14 @@ int main(int argc, char** argv)
               //l1PreFiringList.Systematic(syst) = empty;
             }
 
-            for(UInt_t i = 0; i < nJetIn; ++i)
+            for(UInt_t jet = 0; jet < nJetIn; ++jet)
             { // Jet selection >> ID=tight and abs(eta) < 2.4
               //DeltaPhi(jet, HT,miss) < 0.5, -3.2 <eta< -1.2, and -1.77 < phi < -0.67
-              if (preemptiveDropEvents && year==2018 && (Jet_eta[i] > -3.2 && Jet_eta[i] < -1.2 && Jet_phi[i] > -1.77 && Jet_phi[i] < -0.67))
+              if (preemptiveDropEvents && year==2018 && (Jet_eta[jet] > -3.2 && Jet_eta[jet] < -1.2 && Jet_phi[jet] > -1.77 && Jet_phi[jet] < -0.67))
                 continue;  // Veto events in HEM 15/16
 
-              allJets.GetSystematicOrValue(syst).push_back(i);
-              if(Jet_jetId[i] >= 2 && std::abs(Jet_eta[i]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[i] > jetPtThreshold)
+              allJets.GetSystematicOrValue(syst).push_back(jet);
+              if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)
               {
                 dropJet=false;
                 // Clean jets based on jetIdx => DR < 0.3
@@ -1889,11 +1889,17 @@ int main(int argc, char** argv)
                 }
                 */
                 // Clean jets based on DR => DR_CutOff
+                UInt_t looseLep;
                 float deltaR;
-                for (size_t j = 0; j < looseLeptons.size(); j++) {
-                  deltaR = DeltaR(LepGood_eta[looseLeptons.at(j)], LepGood_phi[looseLeptons.at(j)], Jet_eta[i],Jet_phi[i]);
+                float lep_jet_ratio;
+                for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
+                  looseLep = looseLeptons.at(lep);
+                  deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
                   if (deltaR < DR_CutOff) {
-                    dropJet = true;
+                    lep_jet_ratio = LepGood_pt[looseLep]/Jet_pt[jet];
+                    if (lep_jet_ratio >= 0.5) {
+                      dropJet = true;
+                    }
                   }
                 }
                 if (!dropJet) {
