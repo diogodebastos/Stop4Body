@@ -75,7 +75,7 @@ const double ECALGap_MaxEta =  1.5660;
 const double CSV_Loose = 0.5426;
 const double CSV_Medium = 0.800; // TODO: Update
 const double CSV_Tight = 0.935;
-const double DR_CutOff = 0.3;
+const double DR_CutOff = 0.4;
 
 extern TH2D* centralElectronRecoSFHist2018;
 extern TH2D* centralElectronSFHist2018;
@@ -2835,7 +2835,7 @@ int main(int argc, char** argv)
                 */
                 if(HLT_PFMET120_PFMHT120_IDTight != 0)
                   passHLT = true;
-                if((year == 2018 && HLT_PFMET120_PFMHT120_IDTight_PFHT60) != 0)
+                if(HLT_PFMET120_PFMHT120_IDTight_PFHT60 != 0)
                   passHLT = true;
               }
               else if (process.isdata() && doJetHT) {
