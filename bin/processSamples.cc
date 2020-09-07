@@ -1889,7 +1889,7 @@ int main(int argc, char** argv)
                 }
                 */
                 // Clean jets based on DR => DR_CutOff
-                UInt_t looseLep;
+                Int_t looseLep;
                 float deltaR;
                 float lep_jet_ratio;
                 for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
@@ -1903,8 +1903,8 @@ int main(int argc, char** argv)
                   }
                 }
                 if (!dropJet) {
-                  validJets.GetSystematicOrValue(syst).push_back(i);
-                  bjetList.GetSystematicOrValue(syst).push_back(i);
+                  validJets.GetSystematicOrValue(syst).push_back(jet);
+                  bjetList.GetSystematicOrValue(syst).push_back(jet);
                 }
               }
             }
