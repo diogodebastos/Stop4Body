@@ -56,7 +56,7 @@
 
 #define ISR_JET_PT       90
 #define SECOND_LEPTON_PT 20
-#define MIN_MET          0
+#define MIN_MET          100
 
 using json = nlohmann::json;
 
@@ -130,7 +130,7 @@ int main(int argc, char** argv)
   bool noSkim = false;
   std::string suffix = "";
   size_t max_sync_count = 0;
-  double jetPtThreshold = 30;
+  double jetPtThreshold = 15;
   double genJetPtThreshold = 20;
   bool overrideXSec = false;
   bool swap = false;
@@ -1801,8 +1801,8 @@ int main(int argc, char** argv)
 */
 
 // ***** JETS ******
-
-          for(UInt_t i = 0; i < nJetIn; ++i)
+          
+   	  for(UInt_t i = 0; i < nJetIn; ++i)
           {
             jetPt.Value().push_back(Jet_pt[i]);
             if(!process.isdata())
@@ -1880,18 +1880,40 @@ int main(int argc, char** argv)
               if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)
               {
                 dropJet=false;
-                // Clean jets based on jetIdx => DR < 0.3
-                /*
-                for (size_t j = 0; j < looseLeptons.size(); j++) {
-                  if (i == (unsigned)LepGood_jetIdx[looseLeptons.at(j)]) {
-                    dropJet = true;
-                  }
-                }
-                */
-                // Clean jets based on DR => DR_CutOff
-                Int_t looseLep;
                 float deltaR;
-                float lep_jet_ratio;
+                //float lep_jet_ratio;
+                // Clean jets based on jetIdx => DR < 0.3
+                //
+                Int_t looseLep;
+                for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
+                  looseLep = looseLeptons.at(lep);
+                  //lep_jet_ratio = LepGood_pt[lep]/Jet_pt[jet];
+                  //if (jet == (unsigned)LepGood_jetIdx[looseLep]) {
+                   // dropJet = true;
+                   //lep_jet_ratio = LepGood_pt[looseLep]/Jet_pt[jet];
+                   // if (lep_jet_ratio >= 0.5) {
+                   //   dropJet = true;
+		   // }
+                  //}
+                  //if (lep_jet_ratio >= 0.5) {
+                  //  dropJet = true;
+		  //}
+                  deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
+                  if (deltaR < DR_CutOff) {
+                    dropJet = true;
+                    //lep_jet_ratio = LepGood_pt[looseLep]/Jet_pt[jet];
+                    //if (lep_jet_ratio >= 0.5) {
+                    //  dropJet = true;
+                    //}
+                    }
+                  }
+                //
+                // Clean jets based on DR => DR_CutOff
+                //UInt_t bestJ = 999;
+                //float bestDeltaR;
+		// Clean on Loose Leptons
+		/*
+                Int_t looseLep;
                 for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
                   looseLep = looseLeptons.at(lep);
                   deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
@@ -1902,6 +1924,20 @@ int main(int argc, char** argv)
                     }
                   }
                 }
+		*/
+		// Clean on leptons
+		/*
+		for (UInt_t lep = 0; lep < nLepGood; lep++) {
+                  deltaR = DeltaR(LepGood_eta[lep], LepGood_phi[lep], Jet_eta[jet], Jet_phi[jet]);
+                  if (deltaR < DR_CutOff) {
+		    //dropJet = true;
+		    lep_jet_ratio = LepGood_pt[lep]/Jet_pt[jet];
+                    if (lep_jet_ratio >= 0.5) {
+                      dropJet = true;
+                    }
+		  }
+                }
+                */
                 if (!dropJet) {
                   validJets.GetSystematicOrValue(syst).push_back(jet);
                   bjetList.GetSystematicOrValue(syst).push_back(jet);
@@ -1910,8 +1946,12 @@ int main(int argc, char** argv)
             }
 // DEBUG
 /*
-	    if (syst == "JER_Down"){
+	    //if (syst == "JER_Down"){
+	    if (syst == "Value" && nJetIn > 10){
 	      std::cout << "syst: " << syst << std::endl;
+              std::cout << "Njet: " << Njet.Value() << std::endl;
+              //std::cout << "VJ size: " << validJets.size() << std::endl;
+              std::cout << "nJetIn: " << nJetIn << std::endl;
               std::cout << "allJets.size: " << allJets.GetSystematicOrValue(syst).size() << std::endl;
               std::cout << "allJets: ";
               for(size_t jet = 0; jet < allJets.GetSystematicOrValue(syst).size(); jet++){
@@ -1922,7 +1962,7 @@ int main(int argc, char** argv)
               std::cout << "validJets: ";
               for(size_t jet = 0; jet < validJets.GetSystematicOrValue(syst).size(); jet++){
                 std::cout << validJets.GetSystematicOrValue(syst).at(jet) << " ";
-		if(validJets.GetSystematicOrValue(syst).size() > 39){
+		if(validJets.GetSystematicOrValue(syst).size() > 10){
                   std::cout << std::endl;
                   std::cout << " idx: " << jet << " - " << jetPt.GetSystematicOrValue(syst).at(jet) ;
                 }
