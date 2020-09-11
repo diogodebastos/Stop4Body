@@ -1801,7 +1801,7 @@ int main(int argc, char** argv)
 */
 
 // ***** JETS ******
-          
+
    	  for(UInt_t i = 0; i < nJetIn; ++i)
           {
             jetPt.Value().push_back(Jet_pt[i]);
@@ -1870,75 +1870,34 @@ int main(int argc, char** argv)
               //l1PreFiringList.Systematic(syst) = empty;
             }
 
+            float deltaR;
+            UInt_t jetMask[nJetIn];
+            for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
+              looseLep = looseLeptons.at(lep);
+              float bestDR = DR_CutOff;
+              UInt_t closestJet == 999;
+              for(UInt_t jet = 0; jet < nJetIn; ++jet)
+              {
+                deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
+                if (deltaR < bestDR) {
+                  closestJet = jet;
+                  bestDR = deltaR;
+                }
+              }
+              if(closestJet < 999){
+                jetMask[closestJet] = 1;
+              }
+            }
+
             for(UInt_t jet = 0; jet < nJetIn; ++jet)
-            { // Jet selection >> ID=tight and abs(eta) < 2.4
-              //DeltaPhi(jet, HT,miss) < 0.5, -3.2 <eta< -1.2, and -1.77 < phi < -0.67
+            {
               if (preemptiveDropEvents && year==2018 && (Jet_eta[jet] > -3.2 && Jet_eta[jet] < -1.2 && Jet_phi[jet] > -1.77 && Jet_phi[jet] < -0.67))
                 continue;  // Veto events in HEM 15/16
 
               allJets.GetSystematicOrValue(syst).push_back(jet);
               if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)
               {
-                dropJet=false;
-                float deltaR;
-                //float lep_jet_ratio;
-                // Clean jets based on jetIdx => DR < 0.3
-                //
-                Int_t looseLep;
-                for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
-                  looseLep = looseLeptons.at(lep);
-                  //lep_jet_ratio = LepGood_pt[lep]/Jet_pt[jet];
-                  //if (jet == (unsigned)LepGood_jetIdx[looseLep]) {
-                   // dropJet = true;
-                   //lep_jet_ratio = LepGood_pt[looseLep]/Jet_pt[jet];
-                   // if (lep_jet_ratio >= 0.5) {
-                   //   dropJet = true;
-		   // }
-                  //}
-                  //if (lep_jet_ratio >= 0.5) {
-                  //  dropJet = true;
-		  //}
-                  deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
-                  if (deltaR < DR_CutOff) {
-                    dropJet = true;
-                    //lep_jet_ratio = LepGood_pt[looseLep]/Jet_pt[jet];
-                    //if (lep_jet_ratio >= 0.5) {
-                    //  dropJet = true;
-                    //}
-                    }
-                  }
-                //
-                // Clean jets based on DR => DR_CutOff
-                //UInt_t bestJ = 999;
-                //float bestDeltaR;
-		// Clean on Loose Leptons
-		/*
-                Int_t looseLep;
-                for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
-                  looseLep = looseLeptons.at(lep);
-                  deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
-                  if (deltaR < DR_CutOff) {
-                    lep_jet_ratio = LepGood_pt[looseLep]/Jet_pt[jet];
-                    if (lep_jet_ratio >= 0.5) {
-                      dropJet = true;
-                    }
-                  }
-                }
-		*/
-		// Clean on leptons
-		/*
-		for (UInt_t lep = 0; lep < nLepGood; lep++) {
-                  deltaR = DeltaR(LepGood_eta[lep], LepGood_phi[lep], Jet_eta[jet], Jet_phi[jet]);
-                  if (deltaR < DR_CutOff) {
-		    //dropJet = true;
-		    lep_jet_ratio = LepGood_pt[lep]/Jet_pt[jet];
-                    if (lep_jet_ratio >= 0.5) {
-                      dropJet = true;
-                    }
-		  }
-                }
-                */
-                if (!dropJet) {
+                if (jetMask[jet] != 1) {
                   validJets.GetSystematicOrValue(syst).push_back(jet);
                   bjetList.GetSystematicOrValue(syst).push_back(jet);
                 }
