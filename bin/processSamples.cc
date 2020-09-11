@@ -659,7 +659,6 @@ int main(int argc, char** argv)
       Float_t filterEfficiency=1;
       Float_t splitFactor=1;
       bool isLooseNotTight=false;
-      bool dropJet=false;
 
       std::cout << "\t      Creating the base branches" << std::endl;
       bdttree->Branch("genWeight", &genWeight, "genWeight/F");
@@ -1871,11 +1870,12 @@ int main(int argc, char** argv)
             }
 
             float deltaR;
+	    Int_t looseLep;
             UInt_t jetMask[nJetIn];
             for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
               looseLep = looseLeptons.at(lep);
               float bestDR = DR_CutOff;
-              UInt_t closestJet == 999;
+              UInt_t closestJet = 999;
               for(UInt_t jet = 0; jet < nJetIn; ++jet)
               {
                 deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
