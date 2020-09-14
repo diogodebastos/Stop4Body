@@ -22,7 +22,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1",
-              "split":99
+              "split":107
             }
           ]
         }
