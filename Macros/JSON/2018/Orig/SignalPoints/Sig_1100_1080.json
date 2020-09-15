@@ -1,7 +1,7 @@
 {
   "lines":[
     {
-      "tag":"signal_point_1076_1034",
+      "tag":"signal_point_1100_1080",
       "isdata":false,
       "issignal":true,
       "isfastsim":true,
@@ -11,11 +11,11 @@
       "lstyle":1,
       "fill":0,
       "marker":1,
-      "label":"signal=(1076,1034)",
-      "selection":"(GenSusyMStop==1076)&&(GenSusyMNeutralino==1034)",
+      "label":"signal=(1100,1080)",
+      "selection":"(GenSusyMStop==1100)&&(GenSusyMNeutralino==1080)",
       "files":[
         {
-          "tag":"T2DegStop_1076_1034",
+          "tag":"T2DegStop_1100_1080",
           "xsec": 1.0,
           "br": 1.0,
           "filterEfficiencyFile":"../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root",
