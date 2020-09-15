@@ -6,11 +6,14 @@ def assure_path_exists(path):
   if not os.path.exists(dir):
     os.makedirs(dir)
 
-def createJSON(stop,neutralino):
+def createJSON(stop,neutralino,year):
     stop = str(stop)
     neutralino = str(neutralino)
-    outputDirectory = "JSON/2017/Orig/SignalPoints/"
-    #outputDirectory = "JSON/2018/Orig/SignalPoints/"
+    outputDirectory = "tmp/"
+    if year == "2017":
+        outputDirectory = "JSON/2017/Orig/SignalPoints/"
+    elif year == "2018":
+        outputDirectory = "JSON/2018/Orig/SignalPoints/"
     assure_path_exists(outputDirectory)
     outputDirectory = os.path.realpath(outputDirectory)
 
@@ -38,16 +41,13 @@ def createJSON(stop,neutralino):
         thisJSON.write("          \"filterEfficiencyFile\":\"../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root\",\n")
         thisJSON.write("          \"paths\":[\n")
         thisJSON.write("            {\n")
-#        thisJSON.write("              \"path\":\"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1\",\n")
-#        thisJSON.write("              \"split\":99\n")
-        thisJSON.write("              \"path\":\"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1\",\n")
-        thisJSON.write("              \"split\":60\n")
-#        thisJSON.write("            },\n")
+        if year == "2017":
+            thisJSON.write("              \"path\":\"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1\",\n")
+            thisJSON.write("              \"split\":60\n")
+        elif year == "2018":
+            thisJSON.write("              \"path\":\"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1\",\n")
+            thisJSON.write("              \"split\":107\n")
         thisJSON.write("            }\n")
-#        thisJSON.write("            {\n")
-#        thisJSON.write("              \"path\":\"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1_ext1\",\n")
-#        thisJSON.write("              \"split\":442\n")
-#        thisJSON.write("            }\n")
         thisJSON.write("          ]\n")
         thisJSON.write("        }\n")
         thisJSON.write("      ]\n")
@@ -55,6 +55,7 @@ def createJSON(stop,neutralino):
         thisJSON.write("  ]\n")
         thisJSON.write("}\n")
 
+YEAR = os.getenv("YEAR")
 fixStop = 0
 dixDM = 0
 for stop in range(250, 1101, 25):
@@ -86,11 +87,19 @@ for stop in range(250, 1101, 25):
         elif stop == 975:
             fixStop = 976
         elif stop == 1025:
+            fixDM = dm - 2
             fixStop = 1024
         elif stop == 1050:
+            if dm != 20:
+                fixDM = dm + 2
             fixStop = 1052
         elif stop == 1075:
+            if dm == 10 or dm == 30 or dm == 50:
+                fixDM = dm + 2
             fixStop = 1076
-            
+        elif stop == 1100:
+            if dm == 10 or dm == 30 or dm == 50 or dm == 70:
+                fixDM = dm - 2
+
         neutralino = fixStop-fixDM
-        createJSON(fixStop,neutralino)
+        createJSON(fixStop,neutralino,YEAR)
