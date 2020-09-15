@@ -62,10 +62,8 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC1Job.sh
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC2Job.sh
 
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WNJetsJob.sh
- 
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WNJetsJob.sh
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_FastSim.sh
-
  #qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_SingleTop.sh
  #qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC2_QCD_Mu_en.sh
 
@@ -93,6 +91,18 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop750Job.sh
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop775Job.sh
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop800Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop825Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop850Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop875Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop900Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop925Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop950Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop975Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1000Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1025Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1050Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1075Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1100Job.sh
 fi
 cd -
 
