@@ -67,7 +67,19 @@ if __name__ == "__main__":
                "stop725.json",
                "stop750.json",
                "stop775.json",
-               "stop800.json"]
+               "stop800.json",
+               "stop825.json",
+               "stop850.json",
+               "stop875.json",
+               "stop900.json",
+               "stop925.json",
+               "stop950.json",
+               "stop975.json",
+               "stop1000.json",
+               "stop1025.json",
+               "stop1050.json",
+               "stop1075.json",
+               "stop1100.json"]
   #jsonFiles = ["otherMC2.json"] # AKA: ZInv.json
   #if args.doSwap:
   #  jsonFiles.append("DataSingleLepton.json")
