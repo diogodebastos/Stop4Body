@@ -5,6 +5,6 @@
 
 cd Step1Scripts
 
-qsub -v CMSSW_BASE=$CMSSW_BASE Step1_Part2.sh
+qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step1_Part2.sh
 
 cd -
