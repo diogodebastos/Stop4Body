@@ -1309,9 +1309,8 @@ int main(int argc, char** argv)
       {
         std::cout << "\t  Getting Initial number of events, nvtx distribution and sum of gen weights: " << std::flush;
 
-        //TVectorD* sampleNevt = static_cast<TVectorD*>(preProcessSamplesFile.Get(("sample_"+sample.tag()+"_Nevt").c_str())->Clone("sampleNevt"));
-        //Nevt = (*sampleNevt)[0];
-
+        TVectorD* sampleNevt = static_cast<TVectorD*>(preProcessSamplesFile.Get(("sample_"+sample.tag()+"_Nevt").c_str())->Clone("sampleNevt"));
+        Nevt = (*sampleNevt)[0];
 
         TVectorD* sampleSumGenWeight = static_cast<TVectorD*>(preProcessSamplesFile.Get(("sample_"+sample.tag()+"_sumGenWeight").c_str())->Clone("sampleSumGenWeight"));
         sumGenWeight = (*sampleSumGenWeight)[0];
