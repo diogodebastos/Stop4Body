@@ -4,7 +4,7 @@
 . setupPaths.sh
 
 #SIGNAL=T2DegStop_500_420.root
-SIGNAL=T2DegStop_deltaM50.root
+SIGNAL=T2DegStop_deltaM${CURRENT_DM}.root
 BACKGROUND=Background_TTbar_WJets.root
 
 SIGNAL_TRAIN=${TRAIN_DIR}/${SIGNAL}
@@ -16,11 +16,15 @@ BACKGROUND_TEST=${TEST_DIR}/${BACKGROUND}
 
 #trainMVA --method BDT --signalFile ${SIGNAL} --backgroundFile ${BACKGROUND} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST}
 
-
-
 if [[ -f ${SIGNAL_TRAIN} && -f ${BACKGROUND_TRAIN} ]] ; then
-  echo "Training BDT..."
+  echo "Training BDT for DM${CURRENT_DM}..."
   # Use isHighDeltaM for dm=70;80
-  trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST} # --isHighDeltaM
-  root runTMVAGui.C
+  if [ ${CURRENT_DM} -gt "60" ] ; then
+    trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST} --weightsDir weights${YEAR}_bdt${CURRENT_DM} --isHighDeltaM
+  else
+    trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST} --weightsDir weights${YEAR}_bdt${CURRENT_DM}
+  fi
+  cd weights${YEAR}_bdt${CURRENT_DM}
+  cp ../runTMVAGui.C .
+  root -l runTMVAGui.C
 fi

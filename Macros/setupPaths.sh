@@ -44,7 +44,8 @@ export TEST_DIR=${NTUPLE_DIR}_test
 export SYNC_DIR=${BASE_NTUPLE_PATH}/nTuples_sync
 export PU_TEST_DIR=${BASE_NTUPLE_PATH}/nTuples_PU_test
 
-export CURRENT_BDT=bdt80
+export CURRENT_DM=80
+export CURRENT_BDT=bdt${CURRENT_DM}
 
 export TRAIN_DIR=${NTUPLE_DIR}_train
 export TEST_DIR=${NTUPLE_DIR}_test

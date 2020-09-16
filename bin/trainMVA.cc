@@ -9,6 +9,7 @@
 #include <TRandom3.h>
 #include <TDirectory.h>
 
+#include "TMVA/Config.h"
 #include "TMVA/Factory.h"
 #include "TMVA/Tools.h"
 
@@ -27,6 +28,7 @@ int main(int argc, char** argv)
   std::string backgroundFileName = "background.root";
   std::string signalFileName_test = "";
   std::string backgroundFileName_test = "";
+  std::string weights_dir = "";
   std::vector<std::string> methods;
   methods.clear();
   bool isHighDeltaM = false;
@@ -73,12 +75,17 @@ int main(int argc, char** argv)
     if(argument == "--testBackgroundFile")
       backgroundFileName_test = argv[++i];
 
+    if(argument == "--weightsDir")
+      weights_dir = argv[++i];
+
     if(argument == "--method")
       methods.push_back(argv[++i]);
 
     if(argument == "--isHighDeltaM")
       isHighDeltaM = true;
   }
+
+  (TMVA::gConfig().GetIONames()).fWeightFileDir = weights_dir;
 
   for(auto & method : methods)
   {
@@ -102,7 +109,7 @@ int main(int argc, char** argv)
     std::cout << "\t  - Background(train): " << backgroundFileName << "   Background(test): " << backgroundFileName_test << std::endl;
 
   // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
-  TString outfileName( "TMVA.root" );
+  TString outfileName( (weights_dir+"/TMVA.root").c_str() );
   TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
 
   TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
@@ -186,6 +193,8 @@ int main(int argc, char** argv)
   }
   TCut preSel = "(Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
 
+  TCut singlep = "(nGoodEl + nGoodMu == 1)" ;
+  TCut dphij1j2 = "(DPhiJet1Jet2 < 2.5)||(Jet2Pt<60.)";
   TCut mycuts  = lepBase+preSel;
   TCut mycutb  = lepBase+preSel;
 
