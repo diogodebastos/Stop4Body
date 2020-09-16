@@ -5,10 +5,20 @@ source localUserSetup.sh
 export YEAR=2017
 export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13
 export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-newPU
-#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13_npvs
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-newPU-DR40
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-newPU-DR40-extraSamples
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-dev
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-dev-pt45
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-newPU-DR40-onGoodLep
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-newPU-DR40-jlr-onGoodLep
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-dev-pt15
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-newPU-DR40-pt15
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-DR40cl-pt15
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples17_nanoAOD_v2020-08-13-DR40cl-pt15-signals
 
 export YEAR=2018
-export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-08-13-newPU
+export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-08-13-DR40cl-pt15
+#export NTUPLE_DIR=${BASE_NTUPLE_PATH}/nTuples18_nanoAOD_v2020-08-13-DR40cl-pt15-signals
 
 export BASE_PATH=$CMSSW_BASE/src/UserCode/Stop4Body-nanoAOD
 export MACROS_PATH=$BASE_PATH/Macros
