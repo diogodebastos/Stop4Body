@@ -16,15 +16,21 @@ BACKGROUND_TEST=${TEST_DIR}/${BACKGROUND}
 
 #trainMVA --method BDT --signalFile ${SIGNAL} --backgroundFile ${BACKGROUND} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST}
 
+WEIGHTS_DIR=weights${YEAR}_bdt${CURRENT_DM}
+
+if [[ ! -d ${WEIGHTS_DIR} ]] ; then
+  mkdir -p ${WEIGHTS_DIR}
+fi
+
 if [[ -f ${SIGNAL_TRAIN} && -f ${BACKGROUND_TRAIN} ]] ; then
   echo "Training BDT for DM${CURRENT_DM}..."
   # Use isHighDeltaM for dm=70;80
   if [ ${CURRENT_DM} -gt "60" ] ; then
-    trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST} --weightsDir weights${YEAR}_bdt${CURRENT_DM} --isHighDeltaM
+    trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST} --weightsDir ${WEIGHTS_DIR} --isHighDeltaM
   else
-    trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST} --weightsDir weights${YEAR}_bdt${CURRENT_DM}
+    trainMVA --method BDT --signalFile ${SIGNAL_TRAIN} --backgroundFile ${BACKGROUND_TRAIN} --testSignalFile ${SIGNAL_TEST} --testBackgroundFile ${BACKGROUND_TEST} --weightsDir ${WEIGHTS_DIR}
   fi
-  cd weights${YEAR}_bdt${CURRENT_DM}
+  cd ${WEIGHTS_DIR}
   cp ../runTMVAGui.C .
   root -l runTMVAGui.C
 fi
