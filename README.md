@@ -63,8 +63,8 @@ And then, add the signal samples and the background samples to be used to train 
 
 To train the BDTs use Signal full DM to use the kinematic similarity between all the signal points with the same DM and for background use **TTbar** and **WJets** only. From here, you can build your BDT (or other classification methods) on `trainiMVA.cc`. To start the training do:
 
-`./runStep3_TrainMVA.sh`
+`$./runStep3_TrainMVA.sh`
 
 and apply it to your samples by:
 
-`./runStep4.sh`
+`$./runStep4.sh`
