@@ -130,7 +130,7 @@ int main(int argc, char** argv)
   bool noSkim = false;
   std::string suffix = "";
   size_t max_sync_count = 0;
-  double jetPtThreshold = 15;
+  double jetPtThreshold = 30;
   double genJetPtThreshold = 20;
   bool overrideXSec = false;
   bool swap = false;
@@ -1877,10 +1877,13 @@ int main(int argc, char** argv)
               UInt_t closestJet = 999;
               for(UInt_t jet = 0; jet < nJetIn; ++jet)
               {
-                deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
-                if (deltaR < bestDR) {
-                  closestJet = jet;
-                  bestDR = deltaR;
+                if(Jet_pt[jet] > jetPtThreshold){
+                //if(Jet_pt[jet] > 25.0){
+                  deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
+                  if (deltaR < bestDR) {
+                    closestJet = jet;
+                    bestDR = deltaR;
+                  }
                 }
               }
               if(closestJet < 999){
