@@ -20,22 +20,22 @@ void ShapeProcVarYears(int delta=80, bool doWjets = false, bool doTTbar = false,
 gStyle->SetOptStat(000000);
 gStyle->SetPalette(1);
 
+std::string dm = std::to_string(delta);
+std::string signalPoint;
+std::string title = "";
+TCut lept;
+int dmInt = std::stoi(dm);
+
 //std::string path16 = "/home/t3cms/bargassa/STORE/Stop4body/SET2102_DM";
 std::string path16 = "/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt";
 //std::string path16 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
 
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs_test_bdt";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt10_HT200";
-std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt80_HT200_Jet1Pt110";
+std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT200_Jet1Pt110";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05_test_bdt";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/CrisSamples-DM10-nTuples_v2017-10-19_test_bdt";
-
-std::string dm = std::to_string(delta);
-std::string signalPoint;
-std::string title = "";
-TCut lept;
-int dmInt = std::stoi(dm);
 
 if(dmInt >  60) {
   lept = "LepPt<10000.";
@@ -150,25 +150,25 @@ if(doWjets){
   //THStack* hs = new THStack("hs","");
 
   TH1F *hw1 = new TH1F("hw1",variable.c_str(),Xbin,Xmin,Xmax);
-  t1->Draw((variable+">>hw1").c_str(),"weight*splitFactor*36416.8"*region);
+  t1->Draw((variable+">>hw1").c_str(),region);
   hs->Add(hw1);
   TH1F *hw2 = new TH1F("hw2",variable.c_str(),Xbin,Xmin,Xmax);
-  t2->Draw((variable+">>hw2").c_str(),"weight*splitFactor*36416.8"*region);
+  t2->Draw((variable+">>hw2").c_str(),region);
   hs->Add(hw2);
   TH1F *hw3 = new TH1F("hw3",variable.c_str(),Xbin,Xmin,Xmax);
-  t3->Draw((variable+">>hw3").c_str(),"weight*splitFactor*36416.8"*region);
+  t3->Draw((variable+">>hw3").c_str(),region);
   hs->Add(hw3);
   TH1F *hw4 = new TH1F("hw4",variable.c_str(),Xbin,Xmin,Xmax);
-  t4->Draw((variable+">>hw4").c_str(),"weight*splitFactor*36416.8"*region);
+  t4->Draw((variable+">>hw4").c_str(),region);
   hs->Add(hw4);
   TH1F *hw5 = new TH1F("hw5",variable.c_str(),Xbin,Xmin,Xmax);
-  t5->Draw((variable+">>hw5").c_str(),"weight*splitFactor*36416.8"*region);
+  t5->Draw((variable+">>hw5").c_str(),region);
   hs->Add(hw5);
   TH1F *hw6 = new TH1F("hw6",variable.c_str(),Xbin,Xmin,Xmax);
-  t6->Draw((variable+">>hw6").c_str(),"weight*splitFactor*36416.8"*region);
+  t6->Draw((variable+">>hw6").c_str(),region);
   hs->Add(hw6);
   TH1F *hw7 = new TH1F("hw7",variable.c_str(),Xbin,Xmin,Xmax);
-  t7->Draw((variable+">>hw7").c_str(),"weight*splitFactor*36416.8"*region);
+  t7->Draw((variable+">>hw7").c_str(),region);
   hs->Add(hw7);
 
   delete t1;
@@ -231,25 +231,25 @@ if(doWjets){
   //THStack* hs = new THStack("hs","");
 
   TH1F *hz1 = new TH1F("hz1",variable.c_str(),Xbin,Xmin,Xmax);
-  z1->Draw((variable+">>hz1").c_str(),"weight*splitFactor*41167"*region);
+  z1->Draw((variable+">>hz1").c_str(),region);
   hs2->Add(hz1);
   TH1F *hz2 = new TH1F("hz2",variable.c_str(),Xbin,Xmin,Xmax);
-  z2->Draw((variable+">>hz2").c_str(),"weight*splitFactor*41167"*region);
+  z2->Draw((variable+">>hz2").c_str(),region);
   hs2->Add(hz2);
   TH1F *hz3 = new TH1F("hz3",variable.c_str(),Xbin,Xmin,Xmax);
-  z3->Draw((variable+">>hz3").c_str(),"weight*splitFactor*41167"*region);
+  z3->Draw((variable+">>hz3").c_str(),region);
   hs2->Add(hz3);
   TH1F *hz4 = new TH1F("hz4",variable.c_str(),Xbin,Xmin,Xmax);
-  z4->Draw((variable+">>hz4").c_str(),"weight*splitFactor*41167"*region);
+  z4->Draw((variable+">>hz4").c_str(),region);
   hs2->Add(hz4);
   TH1F *hz5 = new TH1F("hz5",variable.c_str(),Xbin,Xmin,Xmax);
-  z5->Draw((variable+">>hz5").c_str(),"weight*splitFactor*41167"*region);
+  z5->Draw((variable+">>hz5").c_str(),region);
   hs2->Add(hz5);
   TH1F *hz6 = new TH1F("hz6",variable.c_str(),Xbin,Xmin,Xmax);
-  z6->Draw((variable+">>hz6").c_str(),"weight*splitFactor*41167"*region);
+  z6->Draw((variable+">>hz6").c_str(),region);
   hs2->Add(hz6);
   TH1F *hz7 = new TH1F("hz7",variable.c_str(),Xbin,Xmin,Xmax);
-  z7->Draw((variable+">>hz7").c_str(),"weight*splitFactor*41167"*region);
+  z7->Draw((variable+">>hz7").c_str(),region);
   hs2->Add(hz7);
 
   delete z1;
@@ -270,7 +270,7 @@ if(doTTbar){
   TFile TT((path16+dm+"/TT_pow_bdt.root").c_str(), "READ");
   TTree* tt = static_cast<TTree*>(TT.Get("bdttree"));
   TH1F *htt = new TH1F("htt",variable.c_str(),Xbin,Xmin,Xmax);
-  tt->Draw((variable+">>htt").c_str(),"weight*splitFactor*36416.8"*region);
+  tt->Draw((variable+">>htt").c_str(),region);
   tbdt->Add(htt);
   tbdt->Scale(1.0/tbdt->Integral());
   delete htt;
@@ -287,7 +287,7 @@ if(doTTbar){
   TFile TT2((path17+"/TTJets_bdt.root").c_str(), "READ");
   TTree* tt2 = static_cast<TTree*>(TT2.Get("bdttree"));
   TH1F *htt2 = new TH1F("htt2",variable.c_str(),Xbin,Xmin,Xmax);
-  tt2->Draw((variable+">>htt2").c_str(),"weight*splitFactor*41167"*region);
+  tt2->Draw((variable+">>htt2").c_str(),region);
   tbdt2->Add(htt2);
   tbdt2->Scale(1.0/tbdt2->Integral());
   delete htt2;
@@ -301,7 +301,7 @@ if(doSignal){
   TFile SGN((path16+dm+signalPoint).c_str(), "READ");
   TTree* tsgn = static_cast<TTree*>(SGN.Get("bdttree"));
   TH1F *hsgn = new TH1F("hsgn",variable.c_str(),Xbin,Xmin,Xmax);
-  tsgn->Draw((variable+">>hsgn").c_str(),"weight*splitFactor*36416.8"*region);
+  tsgn->Draw((variable+">>hsgn").c_str(),region);
   sbdt->Add(hsgn);
   sbdt->Scale(1.0/sbdt->Integral());
   delete hsgn;
@@ -310,7 +310,7 @@ if(doSignal){
   TFile SGN2((path17+signalPoint).c_str(), "READ");
   TTree* tsgn2 = static_cast<TTree*>(SGN2.Get("bdttree"));
   TH1F *hsgn2 = new TH1F("hsgn2",variable.c_str(),Xbin,Xmin,Xmax);
-  tsgn2->Draw((variable+">>hsgn2").c_str(),"weight*splitFactor*41167"*region);
+  tsgn2->Draw((variable+">>hsgn2").c_str(),region);
   sbdt2->Add(hsgn2);
   sbdt2->Scale(1.0/sbdt2->Integral());
   delete hsgn2;
