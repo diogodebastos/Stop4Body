@@ -39,6 +39,8 @@ int main(int argc, char** argv)
   bool verbose = false;
   bool isHighDM = false;
   double luminosity = -1.0;
+  double HTCUT = 200;
+  double Jet1PtCUT=110;
   double bdtCut = 0.20;
 
   if(argc < 2)
@@ -69,6 +71,19 @@ int main(int argc, char** argv)
       isHighDM = true;
     }
 
+    if(argument == "--htCut")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> HTCUT;
+    }
+    if(argument == "--jet1ptCut")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> Jet1PtCUT;
+    }
+
     if(argument == "--bdtCut")
     {
       std::stringstream convert;
@@ -84,7 +99,10 @@ int main(int argc, char** argv)
   std::cout << "Reading json files" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
-  std::string preSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (Jet1Pt > 110) && (isTight == 1)";
+  std::string htSelection = "(HT > " + std::to_string(HTCUT) + " )";
+  std::string jet1ptSelection = "(Jet1Pt > " + std::to_string(Jet1PtCUT) + " )";
+
+  std::string preSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && " + htSelection  + " && (Met > 280) && " + jet1ptSelection + " && (isTight == 1)";
 
   if(isHighDM)
   {
@@ -186,6 +204,7 @@ int main(int argc, char** argv)
   doubleUnc ttxY = ttx.getYield(selection, mcWeight);
   doubleUnc sigY = sig.getYield(selection, mcWeight);
   doubleUnc totalMC = MC.getYield(selection, mcWeight);
+  totalMC = wjetsY + ttbarY + zinvY + vvY + singleTY + dyY;
   doubleUnc dataY = Data.getYield(selection, "weight");
 
   // Get Efficiency

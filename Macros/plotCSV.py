@@ -33,6 +33,9 @@ if __name__ == "__main__":
           ]
 
     for bdt in BDTs:
+#        thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"]) + "_HT250"
+        thisInputDirectory = inputDirectory
+        #thisInputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs_test_bdt10"
         thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"])
         outputDirectory = thisInputDirectory + "/BdtCut/"
 
@@ -67,6 +70,7 @@ if __name__ == "__main__":
                 plt.ylabel("$\sigma$ [pb]", fontsize = 16)
                 plt.tick_params(axis = 'both', which = 'major' , labelsize = 16)
                 plt.savefig(outputDirectory+"/"+file[:9]+"_xsecUL.pdf")
+                plt.savefig(outputDirectory+"/"+file[:9]+"_xsecUL.png")
                 if args.preview: plt.show()
 
         if args.efficiencyAndFOM or args.plotAll:
@@ -104,6 +108,7 @@ if __name__ == "__main__":
                 plt.ylabel("Efficiency", fontsize = 16)
                 plt.tick_params(axis = 'both', which = 'major' , labelsize = 16)
                 plt.savefig(outputDirectory+"/"+file[:9]+"_effs.pdf")
+                plt.savefig(outputDirectory+"/"+file[:9]+"_effs.png")
                 if args.preview: plt.show()
 
                 #Plot Data
@@ -117,4 +122,5 @@ if __name__ == "__main__":
                 plt.ylabel("FOM", fontsize = 16)
                 plt.tick_params(axis = 'both', which = 'major' , labelsize = 16)
                 plt.savefig(outputDirectory+"/"+file[:9]+"_fom.pdf")
+                plt.savefig(outputDirectory+"/"+file[:9]+"_fom.png")
                 if args.preview: plt.show()

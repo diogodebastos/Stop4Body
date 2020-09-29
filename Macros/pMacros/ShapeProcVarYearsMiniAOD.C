@@ -15,7 +15,7 @@
 #include "string"
 #include "vector"
 
-void ShapeProcVarYears(int delta=80, bool doWjets = false, bool doTTbar = false, bool doSignal = false, std::string variable = "BDT"){
+void ShapeProcVarYearsMiniAOD(int delta=80, bool doWjets = false, bool doTTbar = false, bool doSignal = false, std::string variable = "BDT"){
 
 gStyle->SetOptStat(000000);
 gStyle->SetPalette(1);
@@ -31,12 +31,9 @@ int dmInt = std::stoi(dm);
 std::string path16 = "/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt";
 //std::string path16 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
 
-//std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs_test_bdt";
+std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05-EWK_IRS-low-Mu-SFs_test_bdt";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt10_HT200";
-std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT200_Jet1Pt110";
-if(dmInt==10){
-  path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt10_HT200";
-}
+//std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT200_Jet1Pt110";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples_v2019-06-05_test_bdt";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples16_v2017-10-19_test_bdt";
 //std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/CrisSamples-DM10-nTuples_v2017-10-19_test_bdt";
@@ -50,7 +47,7 @@ if(dmInt >  60) {
   }
   else if(dm == "70"){
     signalPoint = "/T2DegStop_525_455_bdt.root";
-    signalPointNanoAOD = "/T2DegStop_526_455_bdt.root";
+    signalPointNanoAOD = signalPoint;
   }
 }
 else if(dmInt <= 60){
@@ -74,11 +71,11 @@ else if(dmInt <= 60){
   }
   else if(dm == "50"){
     signalPoint = "/T2DegStop_525_475_bdt.root";
-    signalPointNanoAOD = "/T2DegStop_526_475_bdt.root";
+    signalPointNanoAOD = signalPoint;
   }
   else if(dm == "60"){
     signalPoint = "/T2DegStop_525_465_bdt.root";
-    signalPointNanoAOD = "/T2DegStop_526_465_bdt.root";
+    signalPointNanoAOD = signalPoint;
   }
 }
 
@@ -240,7 +237,6 @@ if(doWjets){
   TFile F7((path17+dm+"/Wjets_2500toInf_bdt.root").c_str(), "READ");
   TTree* z7 = static_cast<TTree*>(F7.Get("bdttree"));
 */
-/*
   TFile F1((path17+dm+"/WJetsToLNu_HT100To200_bdt.root").c_str(), "READ");
   TTree* z1 = static_cast<TTree*>(F1.Get("bdttree"));
   TFile F2((path17+dm+"/WJetsToLNu_HT200To400_bdt.root").c_str(), "READ");
@@ -254,21 +250,6 @@ if(doWjets){
   TFile F6((path17+dm+"/WJetsToLNu_HT1200To2500_bdt.root").c_str(), "READ");
   TTree* z6 = static_cast<TTree*>(F6.Get("bdttree"));
   TFile F7((path17+dm+"/WJetsToLNu_HT2500ToInf_bdt.root").c_str(), "READ");
-  TTree* z7 = static_cast<TTree*>(F7.Get("bdttree"));
-*/
-  TFile F1((path17+"/WJetsToLNu_HT100to200_bdt.root").c_str(), "READ");
-  TTree* z1 = static_cast<TTree*>(F1.Get("bdttree"));
-  TFile F2((path17+"/WJetsToLNu_HT200to400_bdt.root").c_str(), "READ");
-  TTree* z2 = static_cast<TTree*>(F2.Get("bdttree"));
-  TFile F3((path17+"/WJetsToLNu_HT400to600_bdt.root").c_str(), "READ");
-  TTree* z3 = static_cast<TTree*>(F3.Get("bdttree"));
-  TFile F4((path17+"/WJetsToLNu_HT600to800_bdt.root").c_str(), "READ");
-  TTree* z4 = static_cast<TTree*>(F4.Get("bdttree"));
-  TFile F5((path17+"/WJetsToLNu_HT800to1200_bdt.root").c_str(), "READ");
-  TTree* z5 = static_cast<TTree*>(F5.Get("bdttree"));
-  TFile F6((path17+"/WJetsToLNu_HT1200to2500_bdt.root").c_str(), "READ");
-  TTree* z6 = static_cast<TTree*>(F6.Get("bdttree"));
-  TFile F7((path17+"/WJetsToLNu_HT2500toInf_bdt.root").c_str(), "READ");
   TTree* z7 = static_cast<TTree*>(F7.Get("bdttree"));
   //THStack* hs = new THStack("hs","");
 
@@ -325,8 +306,7 @@ if(doTTbar){
   tbdt2->Scale(1.0/tbdt2->Integral());
   delete htt2;
 */
-//  TFile TT2((path17+dm+"/TTJets_bdt.root").c_str(), "READ");
-  TFile TT2((path17+"/TTJets_bdt.root").c_str(), "READ");
+  TFile TT2((path17+dm+"/TTJets_bdt.root").c_str(), "READ");
   TTree* tt2 = static_cast<TTree*>(TT2.Get("bdttree"));
   TH1F *htt2 = new TH1F("htt2",variable.c_str(),Xbin,Xmin,Xmax);
   tt2->Draw((variable+">>htt2").c_str(),region);
@@ -348,8 +328,7 @@ if(doSignal){
   sbdt->Scale(1.0/sbdt->Integral());
   delete hsgn;
 
-  //TFile SGN2((path17+dm+signalPoint).c_str(), "READ");
-  TFile SGN2((path17+signalPointNanoAOD).c_str(), "READ");
+  TFile SGN2((path17+dm+signalPoint).c_str(), "READ");
   TTree* tsgn2 = static_cast<TTree*>(SGN2.Get("bdttree"));
   TH1F *hsgn2 = new TH1F("hsgn2",variable.c_str(),Xbin,Xmin,Xmax);
   tsgn2->Draw((variable+">>hsgn2").c_str(),region);
@@ -408,5 +387,5 @@ if(doSignal){
 
 lg->Draw();
 
-c1->SaveAs(("plots/dm"+dm+title+"_"+variable+".pdf").c_str());
+c1->SaveAs(("plotsMiniAOD/dm"+dm+title+"_"+variable+".pdf").c_str());
 }

@@ -29,12 +29,12 @@ LSTORE = "/lstore/cms/dbastos/Stop4Body/"
 
 dirHT200 = LSTORE + "nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT200_Jet1Pt110/BdtCut/"
 dirHT250 = LSTORE + "nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT250_Jet1Pt110/BdtCut/"
-dirHT300 = LSTORE + "nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT300_Jet1Pt110/BdtCut/"
+dirHT300 = LSTORE + "nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"/BdtCut/"
 
 if dm == "10":
   dirHT200 = LSTORE + "nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT200/BdtCut/"
   dirHT250 = LSTORE + "nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT250/BdtCut/"
-  dirHT300 = LSTORE + "nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"_HT300/BdtCut/"
+  dirHT300 = LSTORE + "nTuples17_nanoAOD_v2020-09-17-Cl30-DR40-pt30_test_bdt"+dm+"/BdtCut/"
 
 bdt200, fom200 = fomFromFile(dirHT200)
 bdt250, fom250 = fomFromFile(dirHT250)
@@ -51,7 +51,8 @@ plt.legend(loc='best')
 #Format Plot
 plt.title("DM="+dm, fontsize = 24)
 plt.grid()
-plt.ylim(0, 3.5)
+plt.xlim(0, 0.5)
+plt.ylim(0.5, 3)
 plt.xlabel('BDT >',fontsize = 16)
 plt.ylabel("FOM", fontsize = 16)
 plt.tick_params(axis = 'both', which = 'major' , labelsize = 16)

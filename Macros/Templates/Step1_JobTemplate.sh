@@ -22,6 +22,7 @@ OUTDIR=!!OUTPUT_DIRECTORY!!
 
 # Default process samples command
 MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --preemptiveDropEvents --doPromptTagging --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
+#MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --preemptiveDropEvents --doPromptTagging --jetPtThreshold 15 --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
 #MY_PROCESS_SAMPLES_CMD="$PROCESS_SAMPLES_CMD --preemptiveDropEvents --doPromptTagging --jetPtThreshold 45 --json $JSONFILE --lheScaleDir $LHESCALE_DIR --outDir $OUTDIR --part !!PART!! !!DO_SWAP!!"
 
 #No skim whatsoever

@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     jobInfo = {}
     #cmd = "qsub theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
-    cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
+    cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
 
     print cmd
     if not args.dryRun:
@@ -100,8 +100,8 @@ if __name__ == "__main__":
     with open(baseDir + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    if getNJobs() > 1700:
-      print "Waiting for some jobs to complete..."
-      while getNJobs() > 1000:
-        time.sleep(5*60)
-      print "Done waiting"
+#    if getNJobs() > 1700:
+#      print "Waiting for some jobs to complete..."
+#      while getNJobs() > 1000:
+#        time.sleep(5*60)
+#      print "Done waiting"

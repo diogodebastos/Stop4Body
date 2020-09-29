@@ -32,6 +32,8 @@ int main(int argc, char** argv)
   std::vector<std::string> methods;
   methods.clear();
   bool isHighDeltaM = false;
+  double HTCUT = 300;
+  double Jet1PtCUT=110;
 
   // Default MVA methods to be trained + tested
   std::map<std::string,int> Use;
@@ -83,6 +85,18 @@ int main(int argc, char** argv)
 
     if(argument == "--isHighDeltaM")
       isHighDeltaM = true;
+    if(argument == "--htCut")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> HTCUT;
+    }
+    if(argument == "--jet1ptCut")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> Jet1PtCUT;
+    }
   }
 
   (TMVA::gConfig().GetIONames()).fWeightFileDir = weights_dir;
@@ -191,12 +205,18 @@ int main(int argc, char** argv)
   else{
     lepBase = "(LepPt < 30)";
   }
-  TCut preSel = "(Jet1Pt > 110.) && (Met > 280) && (HT > 200.)";
+
+  std::string htSelectioin = "(HT > " + std::to_string(HTCUT) + " )";
+  std::string jet1ptSelection = "(Jet1Pt > " + std::to_string(Jet1PtCUT) + " )";
+
+  TCut htCut = htSelectioin.c_str();
+  TCut jet1ptCut = jet1ptSelection.c_str();
+  TCut metCut = "(Met > 280)"; 
 
   TCut singlep = "(nGoodEl + nGoodMu == 1)" ;
   TCut dphij1j2 = "(DPhiJet1Jet2 < 2.5)||(Jet2Pt<60.)";
-  TCut mycuts  = lepBase+preSel;
-  TCut mycutb  = lepBase+preSel;
+  TCut mycuts  = lepBase+htCut+jet1ptCut+metCut;
+  TCut mycutb  = lepBase+htCut+jet1ptCut+metCut;
 
   factory->PrepareTrainingAndTestTree( mycuts, mycutb, "nTrain_Signal=0:nTrain_Background=0:nTest_Signal=0:nTest_Background=0:SplitMode=Random:NormMode=EqualNumEvents" );
 
