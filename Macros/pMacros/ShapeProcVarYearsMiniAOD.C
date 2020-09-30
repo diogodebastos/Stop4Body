@@ -189,25 +189,25 @@ if(doWjets){
   //THStack* hs = new THStack("hs","");
 
   TH1F *hw1 = new TH1F("hw1",variable.c_str(),Xbin,Xmin,Xmax);
-  t1->Draw((variable+">>hw1").c_str(),"weight"*region);
+  t1->Draw((variable+">>hw1").c_str(),"XS"*region);
   hs->Add(hw1);
   TH1F *hw2 = new TH1F("hw2",variable.c_str(),Xbin,Xmin,Xmax);
-  t2->Draw((variable+">>hw2").c_str(),"weight"*region);
+  t2->Draw((variable+">>hw2").c_str(),"XS"*region);
   hs->Add(hw2);
   TH1F *hw3 = new TH1F("hw3",variable.c_str(),Xbin,Xmin,Xmax);
-  t3->Draw((variable+">>hw3").c_str(),"weight"*region);
+  t3->Draw((variable+">>hw3").c_str(),"XS"*region);
   hs->Add(hw3);
   TH1F *hw4 = new TH1F("hw4",variable.c_str(),Xbin,Xmin,Xmax);
-  t4->Draw((variable+">>hw4").c_str(),"weight"*region);
+  t4->Draw((variable+">>hw4").c_str(),"XS"*region);
   hs->Add(hw4);
   TH1F *hw5 = new TH1F("hw5",variable.c_str(),Xbin,Xmin,Xmax);
-  t5->Draw((variable+">>hw5").c_str(),"weight"*region);
+  t5->Draw((variable+">>hw5").c_str(),"XS"*region);
   hs->Add(hw5);
   TH1F *hw6 = new TH1F("hw6",variable.c_str(),Xbin,Xmin,Xmax);
-  t6->Draw((variable+">>hw6").c_str(),"weight"*region);
+  t6->Draw((variable+">>hw6").c_str(),"XS"*region);
   hs->Add(hw6);
   TH1F *hw7 = new TH1F("hw7",variable.c_str(),Xbin,Xmin,Xmax);
-  t7->Draw((variable+">>hw7").c_str(),"weight"*region);
+  t7->Draw((variable+">>hw7").c_str(),"XS"*region);
   hs->Add(hw7);
 
   delete t1;
@@ -254,25 +254,25 @@ if(doWjets){
   //THStack* hs = new THStack("hs","");
 
   TH1F *hz1 = new TH1F("hz1",variable.c_str(),Xbin,Xmin,Xmax);
-  z1->Draw((variable+">>hz1").c_str(),"weight"*region);
+  z1->Draw((variable+">>hz1").c_str(),"XS"*region);
   hs2->Add(hz1);
   TH1F *hz2 = new TH1F("hz2",variable.c_str(),Xbin,Xmin,Xmax);
-  z2->Draw((variable+">>hz2").c_str(),"weight"*region);
+  z2->Draw((variable+">>hz2").c_str(),"XS"*region);
   hs2->Add(hz2);
   TH1F *hz3 = new TH1F("hz3",variable.c_str(),Xbin,Xmin,Xmax);
-  z3->Draw((variable+">>hz3").c_str(),"weight"*region);
+  z3->Draw((variable+">>hz3").c_str(),"XS"*region);
   hs2->Add(hz3);
   TH1F *hz4 = new TH1F("hz4",variable.c_str(),Xbin,Xmin,Xmax);
-  z4->Draw((variable+">>hz4").c_str(),"weight"*region);
+  z4->Draw((variable+">>hz4").c_str(),"XS"*region);
   hs2->Add(hz4);
   TH1F *hz5 = new TH1F("hz5",variable.c_str(),Xbin,Xmin,Xmax);
-  z5->Draw((variable+">>hz5").c_str(),"weight"*region);
+  z5->Draw((variable+">>hz5").c_str(),"XS"*region);
   hs2->Add(hz5);
   TH1F *hz6 = new TH1F("hz6",variable.c_str(),Xbin,Xmin,Xmax);
-  z6->Draw((variable+">>hz6").c_str(),"weight"*region);
+  z6->Draw((variable+">>hz6").c_str(),"XS"*region);
   hs2->Add(hz6);
   TH1F *hz7 = new TH1F("hz7",variable.c_str(),Xbin,Xmin,Xmax);
-  z7->Draw((variable+">>hz7").c_str(),"weight"*region);
+  z7->Draw((variable+">>hz7").c_str(),"XS"*region);
   hs2->Add(hz7);
 
   delete z1;
