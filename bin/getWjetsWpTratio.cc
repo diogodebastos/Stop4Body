@@ -43,7 +43,7 @@
 #include "UserCode/Stop4Body-nanoAOD/interface/doubleWithUncertainty.h"
 #include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
-#define GENPART_LIMIT    40
+#define GENPART_LIMIT 400
 
 using json = nlohmann::json;
 
@@ -58,14 +58,14 @@ struct FileInfo
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
-  std::string outputDirectory = "./OUT/";
-  std::string jsonFileNameWJets16 = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2016/WJets.json";
-
+  std::string outputDirectory = "OUT/";
+  //std::string jsonFileNameWJets16 = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2016/Orig/WJetsHT100To200.json";
+  std::string jsonFileNameWJets16 = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2016/Orig/WJetsHT.json";
 
   if(argc < 2)
   {
     std::cout << "You did not pass enough parameters" << std::endl;
-    printHelp();
+ //   printHelp();
     return 0;
   }
 
@@ -87,10 +87,14 @@ int main(int argc, char** argv)
   }
 
   std::cout << "Reading JSON file" << std::endl;
-  SampleReader samples(jsonFileName);
+  //SampleReader samples(jsonFileName);
   SampleReader samples(jsonFileNameWJets16);
   std::string selection = "";
 
+  //TFile foutput((outputDirectory + getBaseName(jsonFileNameWJets16) + ".root").c_str(), "RECREATE");
+  TFile foutput("test2.root", "RECREATE");
+  TTree *wjetstree= new TTree("wjetstree","wjetstree");
+  Float_t gen_Wpt;  wjetstree->Branch("gen_Wpt",&gen_Wpt,"gen_Wpt/F");
 
   for(auto &process : samples)
   {
@@ -100,25 +104,37 @@ int main(int argc, char** argv)
       std::cout << "\tProcessing sample: " << sample.tag() << std::endl;
       for(auto &file : sample)
       {
+        std::cout << "\t\tProcessing file: " << file.c_str() << std::endl;
       	TFile finput(file.c_str(), "READ");
-      	TTree *inputtree;
-      	inputtree = static_cast<TTree*>(finput.Get("Events"));
-      	UInt_t nGenPart = Events->SetBranchAddress("nGenPart", &nGenPart);
-      	Int_t GenPart_pdgId[40] = Events->SetBranchAddress("GenPart_pdgId", GenPart_pdgId);
-      	size_t nentries = static_cast<size_t>(inputtree->GetEntries());
+        TTree *inputtree;
+        foutput.cd();
+        inputtree = static_cast<TTree*>(finput.Get("Events"));	
+	
+        Int_t nentries = static_cast<Int_t>(inputtree->GetEntries());
       	std::cout << "\t    The file has " << nentries << " events." << std::endl;
-      	/*
-      	for(size_t i = 0; i < nentries; i++)
+
+      	UInt_t nGenPart; inputtree->SetBranchAddress("nGenPart", &nGenPart);
+        Int_t GenPart_pdgId[GENPART_LIMIT]; inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
+        Float_t GenPart_pt[GENPART_LIMIT]; inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
+  
+        for(Int_t i = 0; i < 5; ++i)
+      	//for(Int_t i = 0; i < nentries; i++)
       	{
-      		inputtree->GetEntry(i);
-      	}
-      	*/
-      	inputtree->GetEntry(1);
-		for(UInt_t genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
-		{
-			std::cout << "pdgId: " << GenPart_pdgId[genPartIndex] << std::endl;
-		}
+     	  inputtree->GetEntry(i);
+          
+	  for(UInt_t genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
+	  {
+            if(std::abs(GenPart_pdgId[genPartIndex])==24)
+            {
+              //std::cout << "pdgId: " << GenPart_pdgId[genPartIndex] << "  W pt: " << GenPart_pt[genPartIndex] << std::endl;
+              gen_Wpt = GenPart_pt[genPartIndex];
+            }
+	  }
+          wjetstree->Fill();
+        }
+        delete inputtree;
       }
-  	}
+      wjetstree->Write(("sample_"+sample.tag()+"_gen_Wpt").c_str(),TObject::kOverwrite);
+    }
   }
 }
