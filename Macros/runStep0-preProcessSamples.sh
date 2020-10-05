@@ -9,7 +9,7 @@ fi
 
 cd Step0PreProcessSamplesScripts
 
-if [ ${YEAR} == 2016 ]; then
+if [ ${YEAR} == 2015 ]; then
  # Submit job for all MC
  qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_TTbarJob.sh
  #qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_TTbarLOJob.sh
@@ -52,15 +52,15 @@ if [ ${YEAR} == 2016 ]; then
  qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop750Job.sh
  qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop775Job.sh
  qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop800Job.sh
-elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
+elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  # Test MC samples
  #qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_VV.sh
  # Submit job for all MC
-# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_TTbarJob.sh
-# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WjetsJob.sh
-# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_ZInvJob.sh
-# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC1Job.sh
-# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC2Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_TTbarJob.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WjetsJob.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_ZInvJob.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC1Job.sh
+ qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_OtherMC2Job.sh
 
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_WNJetsJob.sh
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_FastSim.sh
@@ -91,18 +91,18 @@ elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop750Job.sh
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop775Job.sh
 # qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop800Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop825Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop850Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop875Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop900Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop925Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop950Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop975Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1000Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1025Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1050Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1075Job.sh
- qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1100Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop825Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop850Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop875Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop900Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop925Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop950Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop975Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1000Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1025Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1050Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1075Job.sh
+# qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE Step0_preProcessSamples_Stop1100Job.sh
 fi
 cd -
 

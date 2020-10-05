@@ -8,7 +8,7 @@ if [[ ! -d ${LHESCALE_DIR} ]] ; then
 fi
 
 cd LHEWeightScripts
-if [ ${YEAR} == 2016 ]; then
+if [ ${YEAR} == 2015 ]; then
  # Submit job for all MC
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarJob.sh
  #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_TTbarLOJob.sh
@@ -53,7 +53,7 @@ if [ ${YEAR} == 2016 ]; then
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_Stop750Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_Stop775Job.sh
  qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_Stop800Job.sh
-elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
+elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  # Test MC samples
  #qsub -v CMSSW_BASE=$CMSSW_BASE Step0_GetLHEScale_VV.sh
  # Submit job for all MC

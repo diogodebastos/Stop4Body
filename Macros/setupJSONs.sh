@@ -5,7 +5,7 @@
 touch $JSON_PATH/tmp.json
 rm    $JSON_PATH/*.json
 
-if [ ${YEAR} == 2016 ]; then
+if [ ${YEAR} == 2015 ]; then
  # Make a JSON for all MC except signal
  mergeJSONs $JSON_PATH/Orig/Wjets.json         $JSON_PATH/Orig/Wjets_*.json
  mergeJSONs $JSON_PATH/backgroundMC.json       $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/Wjets.json
@@ -110,7 +110,7 @@ if [ ${YEAR} == 2016 ]; then
 
  mergeJSONs $JSON_PATH/4Pedrame.json  $JSON_PATH/Orig/SignalPoints/Sig_300_270.json $JSON_PATH/TTLep.json
 
-elif [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
+elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  # Test VV process with new heppy tuples
  #cp         $JSON_PATH/Orig/VV.json               $JSON_PATH/VV.json
  # Make a JSON for all MC except signal
