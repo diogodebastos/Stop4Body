@@ -59,6 +59,7 @@ int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
   std::string outputDirectory = "./OUT/";
+  std::string year = "";
   //std::string jsonFileNameWJets16 = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2016/Orig/WJetsHT100To200.json";
 
   if(argc < 2)
@@ -74,16 +75,14 @@ int main(int argc, char** argv)
 
     if(argument == "--year")
     {
-      std::stringstream converter;
-      converter << argv[++i];
-      converter >> year;
+      year = argv[++i];
     }
 
     if(argument == "--outDir")
       outputDirectory = argv[++i];
   }
 
-  jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/"+year+"/Orig/WJets.json";
+  jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/" + year + "/Orig/WJets.json";
 
   std::cout << "Reading JSON file" << std::endl;
   SampleReader samples(jsonFileName);
@@ -115,8 +114,8 @@ int main(int argc, char** argv)
         Int_t GenPart_pdgId[GENPART_LIMIT]; inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
         Float_t GenPart_pt[GENPART_LIMIT]; inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
   
-        for(Int_t i = 0; i < 5; ++i)
-      	//for(Int_t i = 0; i < nentries; i++)
+        //for(Int_t i = 0; i < 5; ++i)
+      	for(Int_t i = 0; i < nentries; i++)
       	{
      	  inputtree->GetEntry(i);
           
