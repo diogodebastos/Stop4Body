@@ -58,9 +58,8 @@ struct FileInfo
 int main(int argc, char** argv)
 {
   std::string jsonFileName = "";
-  std::string outputDirectory = "OUT/";
+  std::string outputDirectory = "./OUT/";
   //std::string jsonFileNameWJets16 = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2016/Orig/WJetsHT100To200.json";
-  std::string jsonFileNameWJets16 = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2016/Orig/WJetsHT.json";
 
   if(argc < 2)
   {
@@ -73,26 +72,25 @@ int main(int argc, char** argv)
   {
     std::string argument = argv[i];
 
-    if(argument == "--json")
-      jsonFileName = argv[++i];
+    if(argument == "--year")
+    {
+      std::stringstream converter;
+      converter << argv[++i];
+      converter >> year;
+    }
 
     if(argument == "--outDir")
       outputDirectory = argv[++i];
   }
 
-  if(jsonFileName == "")
-  {
-    std::cout << "You must define a json file" << std::endl;
-    return 1;
-  }
+  jsonFileName = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/"+year+"/Orig/WJets.json";
 
   std::cout << "Reading JSON file" << std::endl;
-  //SampleReader samples(jsonFileName);
-  SampleReader samples(jsonFileNameWJets16);
+  SampleReader samples(jsonFileName);
   std::string selection = "";
 
   //TFile foutput((outputDirectory + getBaseName(jsonFileNameWJets16) + ".root").c_str(), "RECREATE");
-  TFile foutput("test2.root", "RECREATE");
+  TFile foutput((outputDirectory + "/genWpt_" + year + ".root").c_str(), "RECREATE");
   TTree *wjetstree= new TTree("wjetstree","wjetstree");
   Float_t gen_Wpt;  wjetstree->Branch("gen_Wpt",&gen_Wpt,"gen_Wpt/F");
 

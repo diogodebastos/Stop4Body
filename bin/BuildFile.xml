@@ -37,7 +37,7 @@
   <bin name="doLeptonStudiesEffs"     file="doLeptonStudiesEffs.cc"> </bin>
   <bin name="getJSONlumis"     file="getJSONlumis.cc"> </bin>
   <bin name="preProcessSamples"     file="preProcessSamples.cc"> </bin>
-  <bin name="getWjetsWpTratio"     file="getWjetsWpTratio.cc"> </bin>
+  <bin name="getWjetsGenWpT"     file="getWjetsGenWpT.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
