@@ -112,6 +112,7 @@ int main(int argc, char** argv)
 
       	UInt_t nGenPart; inputtree->SetBranchAddress("nGenPart", &nGenPart);
         Int_t GenPart_pdgId[GENPART_LIMIT]; inputtree->SetBranchAddress("GenPart_pdgId", &GenPart_pdgId);
+        Int_t GenPart_status[GENPART_LIMIT]; inputtree->SetBranchAddress("GenPart_status", &GenPart_status);
         Float_t GenPart_pt[GENPART_LIMIT]; inputtree->SetBranchAddress("GenPart_pt", &GenPart_pt);
   
         //for(Int_t i = 0; i < 5; ++i)
@@ -121,7 +122,7 @@ int main(int argc, char** argv)
           
 	  for(UInt_t genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
 	  {
-            if(std::abs(GenPart_pdgId[genPartIndex])==24)
+            if(std::abs(GenPart_pdgId[genPartIndex])==24 && GenPart_status[genPartIndex] == 22)
             {
               //std::cout << "pdgId: " << GenPart_pdgId[genPartIndex] << "  W pt: " << GenPart_pt[genPartIndex] << std::endl;
               gen_Wpt = GenPart_pt[genPartIndex];
