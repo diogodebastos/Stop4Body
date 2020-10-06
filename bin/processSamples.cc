@@ -47,7 +47,7 @@
 #include "CondFormats/BTauObjects/interface/BTagCalibration.h"
 #include "CondTools/BTau/interface/BTagCalibrationReader.h"
 
-#define GENPART_LIMIT    40
+#define GENPART_LIMIT    400
 #define JETCOLL_LIMIT    200
 #define LEPCOLL_LIMIT    40
 #define TAUCOLL_LIMIT    40
@@ -524,11 +524,14 @@ int main(int argc, char** argv)
       std::cout << "\t    Creating signal gen info" << std::endl;
       Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
+      Float_t gen_Wpt;  wjetstree->Branch("gen_Wpt",&gen_Wpt,"gen_Wpt/F");
+
 
       std::cout << "\t    Creating branches for systematic variations:" << std::endl;
       std::cout << "\t      Creating systematic variation variables" << std::endl;
       ValueWithSystematics<float> triggerEfficiency;
       ValueWithSystematics<float> EWKISRweight;
+      ValueWithSystematics<float> GENWweight;
       ValueWithSystematics<float> ISRweight;
       ValueWithSystematics<float> puWeight;
       ValueWithSystematics<float> leptonRecoSF;
@@ -560,6 +563,8 @@ int main(int argc, char** argv)
         EWKISRweight.Systematic("JER_Down");
         std::cout << "\t        ISR" << std::endl;
         ISRweight = ISRweightFromNISRJetSys(2);
+        EWKISRweight = EWKISRweightFromISRpTSys(20, 1.0, 40, 0.7);
+        GENWweight = getGenWptWeight(20, 2017);
         std::cout << "\t        pu" << std::endl;
         puWeight = 1.0f;
         puWeight.Systematic("PU_Up");
@@ -616,7 +621,7 @@ int main(int argc, char** argv)
 
       std::cout << "\t        weight" << std::endl;
       // weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure * GENWweight;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -624,6 +629,7 @@ int main(int argc, char** argv)
         // Then lock the variables so that the placeholders are not removed or new ones are created
         triggerEfficiency.Lock();
         EWKISRweight.Lock();
+        GENWweight.Lock();
         ISRweight.Lock();
         puWeight.Lock();
         leptonRecoSF.Lock();
@@ -641,6 +647,7 @@ int main(int argc, char** argv)
 
       triggerEfficiency = 1.0;
       EWKISRweight = 1.0;
+      GENWweight = 1.0;
       ISRweight = 1.0;
       puWeight = 1.0;
       leptonRecoSF = 1.0;
@@ -667,6 +674,7 @@ int main(int argc, char** argv)
       bdttree->Branch("splitFactor", &splitFactor, "splitFactor/F");
       bdttree->Branch("triggerEfficiency", &(triggerEfficiency.Value()), "triggerEfficiency/F");
       bdttree->Branch("EWKISRweight", &(EWKISRweight.Value()), "EWKISRweight/F");
+      bdttree->Branch("GENWweight", &(GENWweight.Value()), "GENWweight/F");
       bdttree->Branch("ISRweight", &(ISRweight.Value()), "ISRweight/F");
       bdttree->Branch("puWeight", &(puWeight.Value()), "puWeight/F");
       bdttree->Branch("leptonRecoSF", &(leptonRecoSF.Value()), "leptonRecoSF/F");
@@ -686,6 +694,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("triggerEfficiency_"+systematic).c_str(), &(triggerEfficiency.Systematic(systematic)));
         for(auto& systematic: EWKISRweight.Systematics())
           bdttree->Branch(("EWKISRweight_"+systematic).c_str(), &(EWKISRweight.Systematic(systematic)));
+        for(auto& systematic: GENWweight.Systematics())
+          bdttree->Branch(("GENWweight_"+systematic).c_str(), &(GENWweight.Systematic(systematic)));
         for(auto& systematic: ISRweight.Systematics())
           bdttree->Branch(("ISRweight_"+systematic).c_str(), &(ISRweight.Systematic(systematic)));
         for(auto& systematic: puWeight.Systematics())
@@ -2337,6 +2347,24 @@ int main(int argc, char** argv)
             // TODO: missing tt_pow reweighting https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
           }
 
+          if(!process.isdata())
+          {
+            if(process.tag() == "WJets")
+            {
+              for(UInt_t genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
+              {
+                if(std::abs(GenPart_pdgId[genPartIndex])==24 && GenPart_status[genPartIndex] == 22) // W in the intermidiate process
+                  {
+                    gen_Wpt = GenPart_pt[genPartIndex];
+                    //GENWweight = getGenWptWeight(gen_Wpt, year);
+                  }
+              }
+            }
+            else{
+              GENWweight = 1 ;
+            }
+          }
+
           ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
           Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
@@ -2628,7 +2656,7 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
             //weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonFullFastSF*Q2Var*bTagSF;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonFullFastSF*Q2Var*bTagSF*GENWweight;
           else
             weight = 1.0f;
 

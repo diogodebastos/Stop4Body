@@ -409,6 +409,17 @@ ValueWithSystematics<double> WISRScaleFactorFromLepMetSys(double lep_pt, double 
   return retVal;
 }
 
+ValueWithSystematics<double> getGenWptWeight(double genW_pt, int year)
+{
+  auto bin = ratio->FindBin(genW_pt);
+  val = ratio->GetBinContent(bin);
+  unc = ratio->GetBinError(bin);
+  
+  ValueWithSystematics<double> retVal(1);
+
+  return retVal;
+}
+
 // https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
 // Taken from: https://indico.cern.ch/event/592621/contributions/2398559/attachments/1383909/2105089/16-12-05_ana_manuelf_isr.pdf
 doubleUnc ISRweightFromNISRJet(int nISRJet)
