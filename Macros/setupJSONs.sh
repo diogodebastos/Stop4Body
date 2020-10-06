@@ -126,6 +126,7 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/tmpMC.json                    $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json $JSON_PATH/ZInv.json $JSON_PATH/otherMC1.json
  mergeJSONs $JSON_PATH/QCD_en.json                   $JSON_PATH/Orig/QCD_EM.json $JSON_PATH/Orig/QCD_Mu.json
  cp         $JSON_PATH/Orig/WNJets.json               $JSON_PATH/WNJets.json
+ cp         $JSON_PATH/Orig/WJetsNLO.json               $JSON_PATH/WJetsNLO.json
 
  mergeJSONs $JSON_PATH/allMC.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
  mergeJSONs $JSON_PATH/allMC-QCD-en.json             $JSON_PATH/QCD_en.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
@@ -202,6 +203,8 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/plot${YEAR}-inj-2SPs.json       $JSON_PATH/plot${YEAR}.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
 
  mergeJSONs $JSON_PATH/plot${YEAR}-inj-2SPs-WNJets.json       $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/WNJets.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
+
+ mergeJSONs $JSON_PATH/plot${YEAR}-inj-2SPs-WJetsNLO.json       $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/WJetsNLO.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
 
  mergeJSONs $JSON_PATH/plot${YEAR}-inj-2SPs-noST.json $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
 
