@@ -524,7 +524,7 @@ int main(int argc, char** argv)
       std::cout << "\t    Creating signal gen info" << std::endl;
       Float_t genStopM; bdttree->Branch("genStopM", &genStopM, "genStopM/F");
       Float_t genNeutralinoM; bdttree->Branch("genNeutralinoM", &genNeutralinoM, "genNeutralinoM/F");
-      Float_t gen_Wpt;  wjetstree->Branch("gen_Wpt",&gen_Wpt,"gen_Wpt/F");
+      Float_t gen_Wpt; bdttree->Branch("gen_Wpt",&gen_Wpt,"gen_Wpt/F");
 
 
       std::cout << "\t    Creating branches for systematic variations:" << std::endl;
@@ -563,7 +563,6 @@ int main(int argc, char** argv)
         EWKISRweight.Systematic("JER_Down");
         std::cout << "\t        ISR" << std::endl;
         ISRweight = ISRweightFromNISRJetSys(2);
-        EWKISRweight = EWKISRweightFromISRpTSys(20, 1.0, 40, 0.7);
         GENWweight = getGenWptWeight(20, 2017);
         std::cout << "\t        pu" << std::endl;
         puWeight = 1.0f;

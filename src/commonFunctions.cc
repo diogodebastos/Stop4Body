@@ -411,9 +411,9 @@ ValueWithSystematics<double> WISRScaleFactorFromLepMetSys(double lep_pt, double 
 
 ValueWithSystematics<double> getGenWptWeight(double genW_pt, int year)
 {
-  auto bin = ratio->FindBin(genW_pt);
-  val = ratio->GetBinContent(bin);
-  unc = ratio->GetBinError(bin);
+//  auto bin = ratio->FindBin(genW_pt);
+//  val = ratio->GetBinContent(bin);
+//  unc = ratio->GetBinError(bin);
   
   ValueWithSystematics<double> retVal(1);
 
