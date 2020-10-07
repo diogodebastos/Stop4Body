@@ -22,6 +22,14 @@ extern TH2D* lowMuonSFHist2018;
 extern TH2D* muFullFastIDSFHist2018;
 //extern TH2D* muFullFastHIIPSFHist2018;
 
+extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT200to400_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT400to600_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT600to800_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT800to1200_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT1200to2500_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT2500toInf_gen_WptHist2018;
+
 extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronRecoSFHist2017_lowEt;
 extern TH2D* centralElectronSFHist2017;
@@ -85,7 +93,7 @@ doubleUnc stopCrossSection(double stopM, double lspM);
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(double);
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double>);
 ValueWithSystematics<double> WISRScaleFactorFromLepMetSys(double lep_pt, double lep_phi, double met_pt, double met_phi);
-ValueWithSystematics<double> getGenWptWeight(double genW_pt, int year);
+ValueWithSystematics<double> getGenWptWeight(double genW_pt, std::string sample, int year);
 ValueWithSystematics<double> ISRweightFromNISRJetSys(int nISRJet);
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT);
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, double met_pt, double met_phi);

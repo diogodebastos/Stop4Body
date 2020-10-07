@@ -87,6 +87,14 @@ extern TH2D* lowMuonSFHist2018;
 extern TH2D* muFullFastIDSFHist2018;
 //extern TH2D* muFullFastHIIPSFHist2018;
 
+extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT200to400_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT400to600_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT600to800_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT800to1200_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT1200to2500_gen_WptHist2018;
+extern TH1D* WJetsToLNu_HT2500toInf_gen_WptHist2018;
+
 extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronRecoSFHist2017_lowEt;
 extern TH2D* centralElectronSFHist2017;
@@ -323,6 +331,21 @@ int main(int argc, char** argv)
   mcClosure_muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_LowEta"));
   mcClosure_muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_HighEta"));
 */
+  
+  TFile WJetsToLNu_HT100to200_gen_WptFile2018("../data/2018_sample_WJetsToLNu_HT100to200_gen_Wpt.root","READ");
+  WJetsToLNu_HT100to200_gen_WptHist2018 = static_cast<TH1D*>(WJetsToLNu_HT100to200_gen_WptFile2018.Get("wrat"));  
+  TFile WJetsToLNu_HT200to400_gen_WptFile2018("../data/2018_sample_WJetsToLNu_HT200to400_gen_Wpt.root","READ");
+  WJetsToLNu_HT200to400_gen_WptHist2018 = static_cast<TH1D*>(WJetsToLNu_HT200to400_gen_WptFile2018.Get("wrat"));  
+  TFile WJetsToLNu_HT400to600_gen_WptFile2018("../data/2018_sample_WJetsToLNu_HT400to600_gen_Wpt.root","READ");
+  WJetsToLNu_HT400to600_gen_WptHist2018 = static_cast<TH1D*>(WJetsToLNu_HT400to600_gen_WptFile2018.Get("wrat"));  
+  TFile WJetsToLNu_HT600to800_gen_WptFile2018("../data/2018_sample_WJetsToLNu_HT600to800_gen_Wpt.root","READ");
+  WJetsToLNu_HT600to800_gen_WptHist2018 = static_cast<TH1D*>(WJetsToLNu_HT600to800_gen_WptFile2018.Get("wrat"));  
+  TFile WJetsToLNu_HT800to1200_gen_WptFile2018("../data/2018_sample_WJetsToLNu_HT800to1200_gen_Wpt.root","READ");
+  WJetsToLNu_HT800to1200_gen_WptHist2018 = static_cast<TH1D*>(WJetsToLNu_HT800to1200_gen_WptFile2018.Get("wrat"));  
+  TFile WJetsToLNu_HT1200to2500_gen_WptFile2018("../data/2018_sample_WJetsToLNu_HT1200to2500_gen_Wpt.root","READ");
+  WJetsToLNu_HT1200to2500_gen_WptHist2018 = static_cast<TH1D*>(WJetsToLNu_HT1200to2500_gen_WptFile2018.Get("wrat"));  
+  TFile WJetsToLNu_HT2500toInf_gen_WptFile2018("../data/2018_sample_WJetsToLNu_HT2500toInf_gen_Wpt.root","READ");
+  WJetsToLNu_HT2500toInf_gen_WptHist2018 = static_cast<TH1D*>(WJetsToLNu_HT2500toInf_gen_WptFile2018.Get("wrat"));
 
   // HISTS FOR 2017
 
@@ -563,7 +586,7 @@ int main(int argc, char** argv)
         EWKISRweight.Systematic("JER_Down");
         std::cout << "\t        ISR" << std::endl;
         ISRweight = ISRweightFromNISRJetSys(2);
-        GENWweight = getGenWptWeight(20, 2017);
+        GENWweight = getGenWptWeight(20, "WJetsToLNu_HT100to200", 2017);
         std::cout << "\t        pu" << std::endl;
         puWeight = 1.0f;
         puWeight.Systematic("PU_Up");
@@ -2355,7 +2378,7 @@ int main(int argc, char** argv)
                 if(std::abs(GenPart_pdgId[genPartIndex])==24 && GenPart_status[genPartIndex] == 22) // W in the intermidiate process
                   {
                     gen_Wpt = GenPart_pt[genPartIndex];
-                    //GENWweight = getGenWptWeight(gen_Wpt, year);
+                    GENWweight = getGenWptWeight(gen_Wpt, sample.tag() ,year);
                   }
               }
             }

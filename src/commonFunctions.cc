@@ -18,6 +18,14 @@ TH2D* lowMuonSFHist2018 = nullptr;
 TH2D* muFullFastIDSFHist2018 = nullptr;
 //TH2D* muFullFastHIIPSFHist2018 = nullptr;
 
+TH1D* WJetsToLNu_HT100to200_gen_WptHist2018 = nullptr;
+TH1D* WJetsToLNu_HT200to400_gen_WptHist2018 = nullptr;
+TH1D* WJetsToLNu_HT400to600_gen_WptHist2018 = nullptr;
+TH1D* WJetsToLNu_HT600to800_gen_WptHist2018 = nullptr;
+TH1D* WJetsToLNu_HT800to1200_gen_WptHist2018 = nullptr;
+TH1D* WJetsToLNu_HT1200to2500_gen_WptHist2018 = nullptr;
+TH1D* WJetsToLNu_HT2500toInf_gen_WptHist2018 = nullptr;
+
 // 2017
 TH2D* centralElectronRecoSFHist2017 = nullptr;
 TH2D* centralElectronRecoSFHist2017_lowEt = nullptr;
@@ -409,13 +417,56 @@ ValueWithSystematics<double> WISRScaleFactorFromLepMetSys(double lep_pt, double 
   return retVal;
 }
 
-ValueWithSystematics<double> getGenWptWeight(double genW_pt, int year)
+ValueWithSystematics<double> getGenWptWeight(double genW_pt, std::string sample, int year)
 {
-//  auto bin = ratio->FindBin(genW_pt);
-//  val = ratio->GetBinContent(bin);
-//  unc = ratio->GetBinError(bin);
-  
   ValueWithSystematics<double> retVal(1);
+  retVal.Systematic("GENWweight_Up");
+  retVal.Systematic("GENWweight_Down");
+
+  retVal.Lock();
+
+  if(WJetsToLNu_HT100to200_gen_WptHist2018 == nullptr || WJetsToLNu_HT200to400_gen_WptHist2018 == nullptr || WJetsToLNu_HT400to600_gen_WptHist2018 == nullptr || WJetsToLNu_HT600to800_gen_WptHist2018 == nullptr || WJetsToLNu_HT800to1200_gen_WptHist2018 == nullptr || WJetsToLNu_HT1200to2500_gen_WptHist2018 == nullptr || WJetsToLNu_HT2500toInf_gen_WptHist2018 == nullptr) 
+    return retVal = 1.0;
+
+  if(sample=="WJetsToLNu_HT100to200"){
+    auto bin = WJetsToLNu_HT100to200_gen_WptHist2018->FindBin(genW_pt);
+    val = WJetsToLNu_HT100to200_gen_WptHist2018->GetBinContent(bin);
+    unc = WJetsToLNu_HT100to200_gen_WptHist2018->GetBinError(bin);
+  }
+  else if(sample=="WJetsToLNu_HT200to400"){
+    auto bin = WJetsToLNu_HT200to400_gen_WptHist2018->FindBin(genW_pt);
+    val = WJetsToLNu_HT200to400_gen_WptHist2018->GetBinContent(bin);
+    unc = WJetsToLNu_HT200to400_gen_WptHist2018->GetBinError(bin);
+  }
+  else if(sample=="WJetsToLNu_HT400to600"){
+    auto bin = WJetsToLNu_HT400to600_gen_WptHist2018->FindBin(genW_pt);
+    val = WJetsToLNu_HT400to600_gen_WptHist2018->GetBinContent(bin);
+    unc = WJetsToLNu_HT400to600_gen_WptHist2018->GetBinError(bin);
+  }
+  else if(sample=="WJetsToLNu_HT600to800"){
+    auto bin = WJetsToLNu_HT600to800_gen_WptHist2018->FindBin(genW_pt);
+    val = WJetsToLNu_HT600to800_gen_WptHist2018->GetBinContent(bin);
+    unc = WJetsToLNu_HT600to800_gen_WptHist2018->GetBinError(bin);
+  }
+  else if(sample=="WJetsToLNu_HT800to1200"){
+    auto bin = WJetsToLNu_HT800to1200_gen_WptHist2018->FindBin(genW_pt);
+    val = WJetsToLNu_HT800to1200_gen_WptHist2018->GetBinContent(bin);
+    unc = WJetsToLNu_HT800to1200_gen_WptHist2018->GetBinError(bin);
+  }
+  else if(sample=="WJetsToLNu_HT1200to2500"){
+    auto bin = WJetsToLNu_HT1200to2500_gen_WptHist2018->FindBin(genW_pt);
+    val = WJetsToLNu_HT1200to2500_gen_WptHist2018->GetBinContent(bin);
+    unc = WJetsToLNu_HT1200to2500_gen_WptHist2018->GetBinError(bin);
+  }
+  else if(sample=="WJetsToLNu_HT2500toInf"){
+    auto bin = WJetsToLNu_HT2500toInf_gen_WptHist2018->FindBin(genW_pt);
+    val = WJetsToLNu_HT2500toInf_gen_WptHist2018->GetBinContent(bin);
+    unc = WJetsToLNu_HT2500toInf_gen_WptHist2018->GetBinError(bin);
+  }
+
+  retVal = val;
+  retVal.Systematic("GENWweight_Up") = val+unc;
+  retVal.Systematic("GENWweight_Down") = val-unc;
 
   return retVal;
 }
