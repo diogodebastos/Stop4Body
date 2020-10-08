@@ -1909,7 +1909,9 @@ int main(int argc, char** argv)
               UInt_t closestJet = 999;
               for(UInt_t jet = 0; jet < nJetIn; ++jet)
               {
-                if(Jet_pt[jet] > jetPtThreshold){
+                //if(Jet_pt[jet] > jetPtThreshold){
+                //if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && Jet_pt[jet] > jetPtThreshold){
+                if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold){
                 //if(Jet_pt[jet] > 25.0){
                   deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
                   if (deltaR < bestDR) {
