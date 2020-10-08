@@ -1937,8 +1937,7 @@ int main(int argc, char** argv)
               {
                 //if(Jet_pt[jet] > jetPtThreshold){
                 //if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && Jet_pt[jet] > jetPtThreshold){
-                if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold){
-                //if(Jet_pt[jet] > 25.0){
+                if((Jet_jetId[jet] >= 2) && (std::abs(Jet_eta[jet]) < 2.4) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)){
                   deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
                   if (deltaR < bestDR) {
                     closestJet = jet;
@@ -1953,16 +1952,14 @@ int main(int argc, char** argv)
 
             for(UInt_t jet = 0; jet < nJetIn; ++jet)
             {
-              if (preemptiveDropEvents && year==2018 && (Jet_eta[jet] > -3.2 && Jet_eta[jet] < -1.2 && Jet_phi[jet] > -1.77 && Jet_phi[jet] < -0.67))
+              if ((year==2018) && ((Jet_eta[jet] > -3.2) && (Jet_eta[jet] < -1.2) && (Jet_phi[jet] > -1.77) && (Jet_phi[jet] < -0.67)))
                 continue;  // Veto events in HEM 15/16
 
               allJets.GetSystematicOrValue(syst).push_back(jet);
-              if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)
+              if((Jet_jetId[jet] >= 2) && (std::abs(Jet_eta[jet]) < 2.4) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold) && (jetMask[jet] != 1))
               {
-                if (jetMask[jet] != 1) {
-                  validJets.GetSystematicOrValue(syst).push_back(jet);
-                  bjetList.GetSystematicOrValue(syst).push_back(jet);
-                }
+                validJets.GetSystematicOrValue(syst).push_back(jet);
+                bjetList.GetSystematicOrValue(syst).push_back(jet);
               }
             }
 // DEBUG
