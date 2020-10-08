@@ -440,6 +440,9 @@ ValueWithSystematics<double> getGenWptWeight(double genW_pt, std::string sample,
   if(WJetsToLNu_HT100to200_gen_WptHist2018 == nullptr || WJetsToLNu_HT200to400_gen_WptHist2018 == nullptr || WJetsToLNu_HT400to600_gen_WptHist2018 == nullptr || WJetsToLNu_HT600to800_gen_WptHist2018 == nullptr || WJetsToLNu_HT800to1200_gen_WptHist2018 == nullptr || WJetsToLNu_HT1200to2500_gen_WptHist2018 == nullptr || WJetsToLNu_HT2500toInf_gen_WptHist2018 == nullptr) 
     return retVal = 1.0;
 
+  double val = 1.0;
+  double unc = 0.0;
+
   if(year==2017){
     if(sample=="WJetsToLNu_HT100to200"){
       auto bin = WJetsToLNu_HT100to200_gen_WptHist2017->FindBin(genW_pt);
