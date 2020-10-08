@@ -21,7 +21,6 @@
 #include "TMath.h"
 #include "TLegend.h"
 #include "TGraph.h"
-#include "TH1.h"
 #include "TH2.h"
 #include "TH3.h"
 #include "TTree.h"
@@ -1316,7 +1315,7 @@ int main(int argc, char** argv)
       Float_t HLT_Ele;               bdttree->Branch("HLT_Ele",               &HLT_Ele,               "HLT_Ele/F"              );
       Float_t HLT_Mu;                bdttree->Branch("HLT_Mu",                &HLT_Mu,                "HLT_Mu/F"               );
 
-//      Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
+      Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
       Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
       Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
@@ -1565,6 +1564,7 @@ int main(int argc, char** argv)
         Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;
         Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;
 
+        Bool_t Flag_METFilters = 1;
         Bool_t Flag_HBHENoiseFilter = 1;
         Bool_t Flag_HBHENoiseIsoFilter = 1;
         Bool_t Flag_eeBadScFilter = 1;
@@ -1598,9 +1598,9 @@ int main(int argc, char** argv)
             inputtree->SetBranchAddress("HLT_PFHT1050", &HLT_PFHT1050_input);
           }
         }
-
-//      Bool_t Flag_METFilters; inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
+      
         if (skip && !process.issignal()) {
+          inputtree->SetBranchAddress("Flag_METFilters", &Flag_METFilters);
           inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
           inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
           inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
@@ -1681,6 +1681,170 @@ int main(int argc, char** argv)
 
           //TODO: Check if the correct thing to do is actually divide by Jet_pt. If so, when getting Sys the nominal correction value for the other correction factor (JER when doing JEC and vice versa) is included. Shouldn't it be remove?
 
+// ***** JETS ******
+
+      for(UInt_t i = 0; i < nJetIn; ++i)
+          {
+            jetPt.Value().push_back(Jet_pt[i]);
+            if(!process.isdata())
+            {
+              /* This is the old way but it's an unecessary complication
+              Jet_corr_JECUp[i] = Jet_pt_jesTotalUp[i] / Jet_pt_raw[i];
+              Jet_corr_JECDown[i] = Jet_pt_jesTotalDown[i] / Jet_pt_raw[i];
+              jetPt.Systematic("JES_Up").push_back(Jet_pt[i]/Jet_corr_JEC[i]*Jet_corr_JECUp[i]);
+              jetPt.Systematic("JES_Down").push_back(Jet_pt[i]/Jet_corr_JEC[i]*Jet_corr_JECDown[i]);
+              */
+              jetPt.Systematic("JES_Up").push_back(Jet_pt_jesTotalUp[i]);
+              jetPt.Systematic("JES_Down").push_back(Jet_pt_jesTotalDown[i]);
+
+              jetPt.Systematic("JER_Up").push_back(Jet_pt_jerUp[i]);
+              jetPt.Systematic("JER_Down").push_back(Jet_pt_jerDown[i]);
+
+
+//              if(Jet_corr_JER[i] < 0)
+//              {
+//                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]);
+//                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]);
+//              }
+//              else
+//              {
+                // Almost sure this is wrong
+                //Jet_corr_JERUp[i] = Jet_pt_jerUp[i]/Jet_pt[i];
+                //Jet_corr_JERDown[i] = Jet_pt_jerDown[i]/Jet_pt[i];
+                //jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
+                //jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
+
+                /* This is the old way but it's an unecessary complication
+                Jet_corr_JERUp[i] = Jet_pt_jerUp[i] / Jet_pt_nom[i];
+                Jet_corr_JERDown[i] = Jet_pt_jerDown[i] / Jet_pt_nom[i];
+                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
+                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
+                */
+//                jetPt.Systematic("JER_Up").push_back(Jet_pt_jerUp[i]);
+//                jetPt.Systematic("JER_Down").push_back(Jet_pt_jerDown[i]);
+//              }
+
+            }
+          }
+          //genHT = 0;
+          for(UInt_t i = 0; i < nGenJet; ++i)
+          {
+            genJetPt.Value().push_back(GenJet_pt[i]);
+          }
+
+          std::vector<std::string> list;
+          list.push_back("Value");
+          loadSystematics(list, jetPt);
+
+          std::vector<std::string> genList;
+          genList.push_back("Value");
+          loadSystematics(genList, genJetPt);
+
+          for(auto & syst : list)
+          {
+            if(syst != "Value")
+            {
+              std::vector<int> empty;
+              allJets.Systematic(syst) = empty;
+              validJets.Systematic(syst) = empty;
+              bjetList.Systematic(syst) = empty;
+              //l1PreFiringList.Systematic(syst) = empty;
+            }
+
+
+
+            for(UInt_t jet = 0; jet < nJetIn; ++jet)
+            {
+              if (preemptiveDropEvents && year==2018 && (Jet_eta[jet] > -3.2 && Jet_eta[jet] < -1.2 && Jet_phi[jet] > -1.77 && Jet_phi[jet] < -0.67))
+                continue;  // Veto events in HEM 15/16
+
+              allJets.GetSystematicOrValue(syst).push_back(jet);
+              if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)
+              {
+                validJets.GetSystematicOrValue(syst).push_back(jet);
+                bjetList.GetSystematicOrValue(syst).push_back(jet);
+              }
+            }
+// DEBUG
+/*
+      //if (syst == "JER_Down"){
+      if (syst == "Value" && nJetIn > 10){
+        std::cout << "syst: " << syst << std::endl;
+              std::cout << "Njet: " << Njet.Value() << std::endl;
+              //std::cout << "VJ size: " << validJets.size() << std::endl;
+              std::cout << "nJetIn: " << nJetIn << std::endl;
+              std::cout << "allJets.size: " << allJets.GetSystematicOrValue(syst).size() << std::endl;
+              std::cout << "allJets: ";
+              for(size_t jet = 0; jet < allJets.GetSystematicOrValue(syst).size(); jet++){
+                std::cout << allJets.GetSystematicOrValue(syst).at(jet) << " ";
+              }
+              std::cout << std::endl;
+              std::cout << "validJets.size: " << validJets.GetSystematicOrValue(syst).size() << std::endl;
+              std::cout << "validJets: ";
+              for(size_t jet = 0; jet < validJets.GetSystematicOrValue(syst).size(); jet++){
+                std::cout << validJets.GetSystematicOrValue(syst).at(jet) << " ";
+    if(validJets.GetSystematicOrValue(syst).size() > 10){
+                  std::cout << std::endl;
+                  std::cout << " idx: " << jet << " - " << jetPt.GetSystematicOrValue(syst).at(jet) ;
+                }
+              }
+              std::cout << std::endl;
+              std::cout << std::endl;
+      }
+*/
+            std::sort(allJets.GetSystematicOrValue(syst).begin(), allJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
+              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
+            });
+
+            std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
+              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
+            });
+
+            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagCSVV2] (const int &left, const int &right) {
+              return Jet_btagCSVV2[left] > Jet_btagCSVV2[right];
+            });
+          }
+
+          for(auto & syst : genList)
+          {
+            if(syst != "Value")
+            {
+              std::vector<int> empty;
+              genJets.Systematic(syst) = empty;
+            }
+
+            for(UInt_t i = 0; i < nGenJet; ++i)
+            {
+              if(genJetPt.GetSystematicOrValue(syst)[i] > genJetPtThreshold){
+                genJets.GetSystematicOrValue(syst).push_back(i);
+              }
+            }
+          }
+
+          auto jetThreshold = [&jetPt, &validJets] (const std::string& syst = "Value") -> bool
+          {
+            if(validJets.GetSystematicOrValue(syst).size() == 0)
+              return false;
+            return (jetPt.GetSystematicOrValue(syst))[validJets.GetSystematicOrValue(syst)[0]] > ISR_JET_PT;
+          };
+
+          if(preemptiveDropEvents)
+          {
+            if(static_cast<bool>(validJets.size() > 0))
+            {
+              ValueWithSystematics<bool> jetPass = jetThreshold();
+              for(auto& syst: validJets.Systematics())
+              {
+                jetPass.Systematic(syst) = jetThreshold(syst);
+              }
+
+              if(!static_cast<bool>(jetPass))
+                continue;
+            }
+            else
+              continue;
+          }
+
 // ***** LEPTONS ******
 
           nGoodEl = 0;
@@ -1696,6 +1860,26 @@ int main(int argc, char** argv)
           nGoodMu_cutId_loose = 0;
           nGoodMu_cutId_medium = 0;
           nGoodMu_cutId_tight = 0;
+
+          float deltaR;
+          Int_t validJet;
+          UInt_t lepMask[nLepGood];
+          for (size_t jet = 0; jet < validJets.size(); jet++) {
+            validJet = validJets.at(jet);
+            float bestDR = DR_CutOff;
+            UInt_t closestLep = 999;
+            for(UInt_t lep = 0; lep < nLepGood; ++lep)
+            {
+              deltaR = DeltaR(LepGood_eta[lep], LepGood_phi[lep], Jet_eta[validJet],Jet_phi[validJet]);
+              if (deltaR < bestDR) {
+                closestLep = lep;
+                bestDR = deltaR;
+              }
+            }
+            if(closestLep < 999){
+              lepMask[closestLep] = 1;
+            }
+          }
 
           for(UInt_t i = 0; i < nLepGood; ++i)
           {
@@ -1740,37 +1924,40 @@ int main(int argc, char** argv)
                 validLeptons.push_back(i);
               }
 */
-              validLeptons.push_back(i);
-              if(std::abs(LepGood_pdgId[i]) == 13){
-                nGoodMu++;
-                if(LepGood_tightId[i]){
-                  nGoodMu_cutId_tight++;
-                  nGoodMu_cutId_medium++;
-                  nGoodMu_cutId_loose++;
+              if (lepMask[i] != 1) {
+                validLeptons.push_back(i);
+
+                if(std::abs(LepGood_pdgId[i]) == 13){
+                  nGoodMu++;
+                  if(LepGood_tightId[i]){
+                    nGoodMu_cutId_tight++;
+                    nGoodMu_cutId_medium++;
+                    nGoodMu_cutId_loose++;
+                  }
+                  else if(LepGood_mediumId[i]){
+                    nGoodMu_cutId_medium++;
+                    nGoodMu_cutId_loose++;
+                  }
+                  //else if(LepGood_looseId[i]){
+                  else if(LepGood_isPFcand[i] && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
+                    nGoodMu_cutId_loose++;
+                  }
                 }
-                else if(LepGood_mediumId[i]){
-                  nGoodMu_cutId_medium++;
-                  nGoodMu_cutId_loose++;
-                }
-                //else if(LepGood_looseId[i]){
-                else if(LepGood_isPFcand[i] && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
-                  nGoodMu_cutId_loose++;
-                }
-              }
-              else{
-                nGoodEl++;
-                if(LepGood_cutBased[i] > 0)
-                {
-                  nGoodEl_cutId_veto++;
-                  if(LepGood_cutBased[i] > 1)
+                else{
+                  nGoodEl++;
+                  if(LepGood_cutBased[i] > 0)
                   {
-                    nGoodEl_cutId_loose++;
-                    if(LepGood_cutBased[i] > 2)
+                    nGoodEl_cutId_veto++;
+                    if(LepGood_cutBased[i] > 1)
                     {
-                      nGoodEl_cutId_medium++;
-                      if(LepGood_cutBased[i] > 3)
+                      nGoodEl_cutId_loose++;
+                      if(LepGood_cutBased[i] > 2)
                       {
-                        nGoodEl_cutId_tight++;
+                        nGoodEl_cutId_medium++;
+                        if(LepGood_cutBased[i] > 3)
+                        {
+                          nGoodEl_cutId_tight++;
+                        }
                       }
                     }
                   }
@@ -1779,11 +1966,13 @@ int main(int argc, char** argv)
             }
             if(lPTETA && lID_loose && lIS_loose)
             {
-              looseLeptons.push_back(i);
-              if(std::abs(LepGood_pdgId[i]) == 13)
-                nGoodMu_loose++;
-              else
-                nGoodEl_loose++;
+              if (lepMask[i] != 1) {
+                looseLeptons.push_back(i);
+                if(std::abs(LepGood_pdgId[i]) == 13)
+                  nGoodMu_loose++;
+                else
+                  nGoodEl_loose++;
+              }
             }
           }
 
@@ -1854,194 +2043,7 @@ int main(int argc, char** argv)
           }
 */
 
-// ***** JETS ******
 
-   	  for(UInt_t i = 0; i < nJetIn; ++i)
-          {
-            jetPt.Value().push_back(Jet_pt[i]);
-            if(!process.isdata())
-            {
-              /* This is the old way but it's an unecessary complication
-              Jet_corr_JECUp[i] = Jet_pt_jesTotalUp[i] / Jet_pt_raw[i];
-              Jet_corr_JECDown[i] = Jet_pt_jesTotalDown[i] / Jet_pt_raw[i];
-              jetPt.Systematic("JES_Up").push_back(Jet_pt[i]/Jet_corr_JEC[i]*Jet_corr_JECUp[i]);
-              jetPt.Systematic("JES_Down").push_back(Jet_pt[i]/Jet_corr_JEC[i]*Jet_corr_JECDown[i]);
-              */
-              jetPt.Systematic("JES_Up").push_back(Jet_pt_jesTotalUp[i]);
-              jetPt.Systematic("JES_Down").push_back(Jet_pt_jesTotalDown[i]);
-
-              jetPt.Systematic("JER_Up").push_back(Jet_pt_jerUp[i]);
-              jetPt.Systematic("JER_Down").push_back(Jet_pt_jerDown[i]);
-
-
-//              if(Jet_corr_JER[i] < 0)
-//              {
-//                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]);
-//                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]);
-//              }
-//              else
-//              {
-                // Almost sure this is wrong
-                //Jet_corr_JERUp[i] = Jet_pt_jerUp[i]/Jet_pt[i];
-                //Jet_corr_JERDown[i] = Jet_pt_jerDown[i]/Jet_pt[i];
-                //jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
-                //jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
-
-                /* This is the old way but it's an unecessary complication
-                Jet_corr_JERUp[i] = Jet_pt_jerUp[i] / Jet_pt_nom[i];
-                Jet_corr_JERDown[i] = Jet_pt_jerDown[i] / Jet_pt_nom[i];
-                jetPt.Systematic("JER_Up").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERUp[i]);
-                jetPt.Systematic("JER_Down").push_back(Jet_pt[i]/Jet_corr_JER[i]*Jet_corr_JERDown[i]);
-                */
-//                jetPt.Systematic("JER_Up").push_back(Jet_pt_jerUp[i]);
-//                jetPt.Systematic("JER_Down").push_back(Jet_pt_jerDown[i]);
-//              }
-
-            }
-          }
-          //genHT = 0;
-          for(UInt_t i = 0; i < nGenJet; ++i)
-          {
-            genJetPt.Value().push_back(GenJet_pt[i]);
-          }
-
-          std::vector<std::string> list;
-          list.push_back("Value");
-          loadSystematics(list, jetPt);
-
-          std::vector<std::string> genList;
-          genList.push_back("Value");
-          loadSystematics(genList, genJetPt);
-
-          for(auto & syst : list)
-          {
-            if(syst != "Value")
-            {
-              std::vector<int> empty;
-              allJets.Systematic(syst) = empty;
-              validJets.Systematic(syst) = empty;
-              bjetList.Systematic(syst) = empty;
-              //l1PreFiringList.Systematic(syst) = empty;
-            }
-
-            float deltaR;
-            Int_t looseLep;
-            UInt_t jetMask[nJetIn];
-            for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
-              looseLep = looseLeptons.at(lep);
-              float bestDR = DR_CutOff;
-              UInt_t closestJet = 999;
-              for(UInt_t jet = 0; jet < nJetIn; ++jet)
-              {
-                //if(Jet_pt[jet] > jetPtThreshold){
-                //if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && Jet_pt[jet] > jetPtThreshold){
-                if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold){
-                //if(Jet_pt[jet] > 25.0){
-                  deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
-                  if (deltaR < bestDR) {
-                    closestJet = jet;
-                    bestDR = deltaR;
-                  }
-                }
-              }
-              if(closestJet < 999){
-                jetMask[closestJet] = 1;
-              }
-            }
-
-            for(UInt_t jet = 0; jet < nJetIn; ++jet)
-            {
-              if (preemptiveDropEvents && year==2018 && (Jet_eta[jet] > -3.2 && Jet_eta[jet] < -1.2 && Jet_phi[jet] > -1.77 && Jet_phi[jet] < -0.67))
-                continue;  // Veto events in HEM 15/16
-
-              allJets.GetSystematicOrValue(syst).push_back(jet);
-              if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && (jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)
-              {
-                if (jetMask[jet] != 1) {
-                  validJets.GetSystematicOrValue(syst).push_back(jet);
-                  bjetList.GetSystematicOrValue(syst).push_back(jet);
-                }
-              }
-            }
-// DEBUG
-/*
-	    //if (syst == "JER_Down"){
-	    if (syst == "Value" && nJetIn > 10){
-	      std::cout << "syst: " << syst << std::endl;
-              std::cout << "Njet: " << Njet.Value() << std::endl;
-              //std::cout << "VJ size: " << validJets.size() << std::endl;
-              std::cout << "nJetIn: " << nJetIn << std::endl;
-              std::cout << "allJets.size: " << allJets.GetSystematicOrValue(syst).size() << std::endl;
-              std::cout << "allJets: ";
-              for(size_t jet = 0; jet < allJets.GetSystematicOrValue(syst).size(); jet++){
-                std::cout << allJets.GetSystematicOrValue(syst).at(jet) << " ";
-              }
-              std::cout << std::endl;
-              std::cout << "validJets.size: " << validJets.GetSystematicOrValue(syst).size() << std::endl;
-              std::cout << "validJets: ";
-              for(size_t jet = 0; jet < validJets.GetSystematicOrValue(syst).size(); jet++){
-                std::cout << validJets.GetSystematicOrValue(syst).at(jet) << " ";
-		if(validJets.GetSystematicOrValue(syst).size() > 10){
-                  std::cout << std::endl;
-                  std::cout << " idx: " << jet << " - " << jetPt.GetSystematicOrValue(syst).at(jet) ;
-                }
-              }
-              std::cout << std::endl;
-              std::cout << std::endl;
-	    }
-*/
-            std::sort(allJets.GetSystematicOrValue(syst).begin(), allJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
-              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
-            });
-
-            std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
-              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
-            });
-
-            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagCSVV2] (const int &left, const int &right) {
-              return Jet_btagCSVV2[left] > Jet_btagCSVV2[right];
-            });
-          }
-
-          for(auto & syst : genList)
-          {
-            if(syst != "Value")
-            {
-              std::vector<int> empty;
-              genJets.Systematic(syst) = empty;
-            }
-
-            for(UInt_t i = 0; i < nGenJet; ++i)
-            {
-              if(genJetPt.GetSystematicOrValue(syst)[i] > genJetPtThreshold){
-                genJets.GetSystematicOrValue(syst).push_back(i);
-              }
-            }
-          }
-
-          auto jetThreshold = [&jetPt, &validJets] (const std::string& syst = "Value") -> bool
-          {
-            if(validJets.GetSystematicOrValue(syst).size() == 0)
-              return false;
-            return (jetPt.GetSystematicOrValue(syst))[validJets.GetSystematicOrValue(syst)[0]] > ISR_JET_PT;
-          };
-
-          if(preemptiveDropEvents)
-          {
-            if(static_cast<bool>(validJets.size() > 0))
-            {
-              ValueWithSystematics<bool> jetPass = jetThreshold();
-              for(auto& syst: validJets.Systematics())
-              {
-                jetPass.Systematic(syst) = jetThreshold(syst);
-              }
-
-              if(!static_cast<bool>(jetPass))
-                continue;
-            }
-            else
-              continue;
-          }
 
 // ***** MET ******
 
@@ -2673,7 +2675,7 @@ int main(int argc, char** argv)
 
           //HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
           //HLT_Mu                              = HLT_IsoMu24;
-          //METFilters                          = Flag_METFilters;
+          METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
           eeBadScFilter                       = Flag_eeBadScFilter;
