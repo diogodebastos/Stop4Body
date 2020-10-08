@@ -1,0 +1,25 @@
+{
+  "lines":[
+    {
+      "tag":"WJetsNLO",
+      "isdata":false,
+      "color":811,
+      "lcolor":1,
+      "label":"W + Jets NLO",
+      "files":[
+        {
+          "tag":"WJetsToLNu_Wpt_0To50",
+          "xsec":61850,
+          "br":1.0,
+          "filesPerPart":2,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/WJetsToLNu_Wpt_0To50",
+              "split":93
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

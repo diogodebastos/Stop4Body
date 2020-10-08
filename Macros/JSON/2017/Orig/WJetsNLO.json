@@ -8,14 +8,62 @@
       "label":"W + Jets NLO",
       "files":[
         {
-          "tag":"WJetsToLNu_Wpt_0To50",
-          "xsec":61850,
+          "tag":"WJetsToLNu_Pt_50To100",
+          "xsec":3570,
           "br":1.0,
-          "filesPerPart":2,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/WJetsToLNu_Wpt_0To50",
-              "split":93
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/WJetsToLNu_Pt_50To100",
+              "split":14
+            }
+          ]
+        },
+        {
+          "tag":"WJetsToLNu_Pt_100To250",
+          "xsec":779.1,
+          "br":1.0,
+          "filesPerPart":1,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/WJetsToLNu_Pt_100To250",
+              "split":78
+            }
+          ]
+        },
+        {
+          "tag":"WJetsToLNu_Pt_250To400",
+          "xsec":27.98,
+          "br":1.0,
+          "filesPerPart":1,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/WJetsToLNu_Pt_250To400",
+              "split":7
+            }
+          ]
+        },
+        {
+          "tag":"WJetsToLNu_Pt_400To600",
+          "xsec":3.604,
+          "br":1.0,
+          "filesPerPart":1,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/WJetsToLNu_Pt_400To600",
+              "split":2
+            }
+          ]
+        },
+        {
+          "tag":"WJetsToLNu_Pt_600ToInf",
+          "xsec":0.5545,
+          "br":1.0,
+          "filesPerPart":1,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/WJetsToLNu_Pt_600ToInf",
+              "split":2
             }
           ]
         }
