@@ -105,6 +105,15 @@ extern TH2D* centralMuonSFHist2017;
 extern TH2D* lowMuonSFHist2017;
 extern TH2D* muFullFastIDSFHist2017;
 // extern TH2D* muFullFastHIIPSFHist2017;
+
+extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2017;
+extern TH1D* WJetsToLNu_HT200to400_gen_WptHist2017;
+extern TH1D* WJetsToLNu_HT400to600_gen_WptHist2017;
+extern TH1D* WJetsToLNu_HT600to800_gen_WptHist2017;
+extern TH1D* WJetsToLNu_HT800to1200_gen_WptHist2017;
+extern TH1D* WJetsToLNu_HT1200to2500_gen_WptHist2017;
+extern TH1D* WJetsToLNu_HT2500toInf_gen_WptHist2017;
+
 extern TH2D* L1prefiring_jetpt_2017BtoFHist;
 
 extern TH1D* electronTightToLoose_2017_LowEta;

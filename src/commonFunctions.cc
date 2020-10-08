@@ -37,6 +37,15 @@ TH2D* centralMuonSFHist2017 = nullptr;
 TH2D* lowMuonSFHist2017 = nullptr;
 TH2D* muFullFastIDSFHist2017 = nullptr;
 // TH2D* muFullFastHIIPSFHist2017 = nullptr;
+
+TH1D* WJetsToLNu_HT100to200_gen_WptHist2017 = nullptr;
+TH1D* WJetsToLNu_HT200to400_gen_WptHist2017 = nullptr;
+TH1D* WJetsToLNu_HT400to600_gen_WptHist2017 = nullptr;
+TH1D* WJetsToLNu_HT600to800_gen_WptHist2017 = nullptr;
+TH1D* WJetsToLNu_HT800to1200_gen_WptHist2017 = nullptr;
+TH1D* WJetsToLNu_HT1200to2500_gen_WptHist2017 = nullptr;
+TH1D* WJetsToLNu_HT2500toInf_gen_WptHist2017 = nullptr;
+
 TH2D* L1prefiring_jetpt_2017BtoFHist = nullptr;
 
 TH1D* electronTightToLoose_2017_LowEta = nullptr;
@@ -425,43 +434,85 @@ ValueWithSystematics<double> getGenWptWeight(double genW_pt, std::string sample,
 
   retVal.Lock();
 
+  if(WJetsToLNu_HT100to200_gen_WptHist2017 == nullptr || WJetsToLNu_HT200to400_gen_WptHist2017 == nullptr || WJetsToLNu_HT400to600_gen_WptHist2017 == nullptr || WJetsToLNu_HT600to800_gen_WptHist2017 == nullptr || WJetsToLNu_HT800to1200_gen_WptHist2017 == nullptr || WJetsToLNu_HT1200to2500_gen_WptHist2017 == nullptr || WJetsToLNu_HT2500toInf_gen_WptHist2017 == nullptr) 
+    return retVal = 1.0;
+
   if(WJetsToLNu_HT100to200_gen_WptHist2018 == nullptr || WJetsToLNu_HT200to400_gen_WptHist2018 == nullptr || WJetsToLNu_HT400to600_gen_WptHist2018 == nullptr || WJetsToLNu_HT600to800_gen_WptHist2018 == nullptr || WJetsToLNu_HT800to1200_gen_WptHist2018 == nullptr || WJetsToLNu_HT1200to2500_gen_WptHist2018 == nullptr || WJetsToLNu_HT2500toInf_gen_WptHist2018 == nullptr) 
     return retVal = 1.0;
 
-  if(sample=="WJetsToLNu_HT100to200"){
-    auto bin = WJetsToLNu_HT100to200_gen_WptHist2018->FindBin(genW_pt);
-    val = WJetsToLNu_HT100to200_gen_WptHist2018->GetBinContent(bin);
-    unc = WJetsToLNu_HT100to200_gen_WptHist2018->GetBinError(bin);
+  if(year==2017){
+    if(sample=="WJetsToLNu_HT100to200"){
+      auto bin = WJetsToLNu_HT100to200_gen_WptHist2017->FindBin(genW_pt);
+      val = WJetsToLNu_HT100to200_gen_WptHist2017->GetBinContent(bin);
+      unc = WJetsToLNu_HT100to200_gen_WptHist2017->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT200to400"){
+      auto bin = WJetsToLNu_HT200to400_gen_WptHist2017->FindBin(genW_pt);
+      val = WJetsToLNu_HT200to400_gen_WptHist2017->GetBinContent(bin);
+      unc = WJetsToLNu_HT200to400_gen_WptHist2017->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT400to600"){
+      auto bin = WJetsToLNu_HT400to600_gen_WptHist2017->FindBin(genW_pt);
+      val = WJetsToLNu_HT400to600_gen_WptHist2017->GetBinContent(bin);
+      unc = WJetsToLNu_HT400to600_gen_WptHist2017->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT600to800"){
+      auto bin = WJetsToLNu_HT600to800_gen_WptHist2017->FindBin(genW_pt);
+      val = WJetsToLNu_HT600to800_gen_WptHist2017->GetBinContent(bin);
+      unc = WJetsToLNu_HT600to800_gen_WptHist2017->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT800to1200"){
+      auto bin = WJetsToLNu_HT800to1200_gen_WptHist2017->FindBin(genW_pt);
+      val = WJetsToLNu_HT800to1200_gen_WptHist2017->GetBinContent(bin);
+      unc = WJetsToLNu_HT800to1200_gen_WptHist2017->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT1200to2500"){
+      auto bin = WJetsToLNu_HT1200to2500_gen_WptHist2017->FindBin(genW_pt);
+      val = WJetsToLNu_HT1200to2500_gen_WptHist2017->GetBinContent(bin);
+      unc = WJetsToLNu_HT1200to2500_gen_WptHist2017->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT2500toInf"){
+      auto bin = WJetsToLNu_HT2500toInf_gen_WptHist2017->FindBin(genW_pt);
+      val = WJetsToLNu_HT2500toInf_gen_WptHist2017->GetBinContent(bin);
+      unc = WJetsToLNu_HT2500toInf_gen_WptHist2017->GetBinError(bin);
+    }
   }
-  else if(sample=="WJetsToLNu_HT200to400"){
-    auto bin = WJetsToLNu_HT200to400_gen_WptHist2018->FindBin(genW_pt);
-    val = WJetsToLNu_HT200to400_gen_WptHist2018->GetBinContent(bin);
-    unc = WJetsToLNu_HT200to400_gen_WptHist2018->GetBinError(bin);
-  }
-  else if(sample=="WJetsToLNu_HT400to600"){
-    auto bin = WJetsToLNu_HT400to600_gen_WptHist2018->FindBin(genW_pt);
-    val = WJetsToLNu_HT400to600_gen_WptHist2018->GetBinContent(bin);
-    unc = WJetsToLNu_HT400to600_gen_WptHist2018->GetBinError(bin);
-  }
-  else if(sample=="WJetsToLNu_HT600to800"){
-    auto bin = WJetsToLNu_HT600to800_gen_WptHist2018->FindBin(genW_pt);
-    val = WJetsToLNu_HT600to800_gen_WptHist2018->GetBinContent(bin);
-    unc = WJetsToLNu_HT600to800_gen_WptHist2018->GetBinError(bin);
-  }
-  else if(sample=="WJetsToLNu_HT800to1200"){
-    auto bin = WJetsToLNu_HT800to1200_gen_WptHist2018->FindBin(genW_pt);
-    val = WJetsToLNu_HT800to1200_gen_WptHist2018->GetBinContent(bin);
-    unc = WJetsToLNu_HT800to1200_gen_WptHist2018->GetBinError(bin);
-  }
-  else if(sample=="WJetsToLNu_HT1200to2500"){
-    auto bin = WJetsToLNu_HT1200to2500_gen_WptHist2018->FindBin(genW_pt);
-    val = WJetsToLNu_HT1200to2500_gen_WptHist2018->GetBinContent(bin);
-    unc = WJetsToLNu_HT1200to2500_gen_WptHist2018->GetBinError(bin);
-  }
-  else if(sample=="WJetsToLNu_HT2500toInf"){
-    auto bin = WJetsToLNu_HT2500toInf_gen_WptHist2018->FindBin(genW_pt);
-    val = WJetsToLNu_HT2500toInf_gen_WptHist2018->GetBinContent(bin);
-    unc = WJetsToLNu_HT2500toInf_gen_WptHist2018->GetBinError(bin);
+  else if(year==2018){
+    if(sample=="WJetsToLNu_HT100to200"){
+      auto bin = WJetsToLNu_HT100to200_gen_WptHist2018->FindBin(genW_pt);
+      val = WJetsToLNu_HT100to200_gen_WptHist2018->GetBinContent(bin);
+      unc = WJetsToLNu_HT100to200_gen_WptHist2018->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT200to400"){
+      auto bin = WJetsToLNu_HT200to400_gen_WptHist2018->FindBin(genW_pt);
+      val = WJetsToLNu_HT200to400_gen_WptHist2018->GetBinContent(bin);
+      unc = WJetsToLNu_HT200to400_gen_WptHist2018->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT400to600"){
+      auto bin = WJetsToLNu_HT400to600_gen_WptHist2018->FindBin(genW_pt);
+      val = WJetsToLNu_HT400to600_gen_WptHist2018->GetBinContent(bin);
+      unc = WJetsToLNu_HT400to600_gen_WptHist2018->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT600to800"){
+      auto bin = WJetsToLNu_HT600to800_gen_WptHist2018->FindBin(genW_pt);
+      val = WJetsToLNu_HT600to800_gen_WptHist2018->GetBinContent(bin);
+      unc = WJetsToLNu_HT600to800_gen_WptHist2018->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT800to1200"){
+      auto bin = WJetsToLNu_HT800to1200_gen_WptHist2018->FindBin(genW_pt);
+      val = WJetsToLNu_HT800to1200_gen_WptHist2018->GetBinContent(bin);
+      unc = WJetsToLNu_HT800to1200_gen_WptHist2018->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT1200to2500"){
+      auto bin = WJetsToLNu_HT1200to2500_gen_WptHist2018->FindBin(genW_pt);
+      val = WJetsToLNu_HT1200to2500_gen_WptHist2018->GetBinContent(bin);
+      unc = WJetsToLNu_HT1200to2500_gen_WptHist2018->GetBinError(bin);
+    }
+    else if(sample=="WJetsToLNu_HT2500toInf"){
+      auto bin = WJetsToLNu_HT2500toInf_gen_WptHist2018->FindBin(genW_pt);
+      val = WJetsToLNu_HT2500toInf_gen_WptHist2018->GetBinContent(bin);
+      unc = WJetsToLNu_HT2500toInf_gen_WptHist2018->GetBinError(bin);
+    }
   }
 
   retVal = val;
