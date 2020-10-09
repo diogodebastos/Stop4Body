@@ -1421,7 +1421,8 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("MET_pt"    , &MET_pt);
           inputtree->SetBranchAddress("MET_phi",   &MET_phi);   
         }
-        
+
+        UInt_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_jetIdx[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_jetIdx", &LepGood_jetIdx);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
         Int_t LepGood_cutBased[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_cutBased", &LepGood_cutBased); //only for Electron: 0=fail, 1=veto, 2=loose, 3=medium, 4=tight
