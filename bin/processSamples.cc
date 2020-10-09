@@ -1411,9 +1411,17 @@ int main(int argc, char** argv)
 //        Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
 //        Float_t mtw2;        inputtree->SetBranchAddress("event_mtw2"       , &mtw2);
 //        Float_t mtw;         inputtree->SetBranchAddress("event_mtw"       , &mtw);
-        Float_t MET_pt;      inputtree->SetBranchAddress("MET_pt"    , &MET_pt);
-        Float_t MET_phi;     inputtree->SetBranchAddress("MET_phi",   &MET_phi);
-        UInt_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
+        Float_t MET_pt;      
+        Float_t MET_phi;
+        if(year==2017){
+          inputtree->SetBranchAddress("METFixEE2017_pt"    , &MET_pt);
+          inputtree->SetBranchAddress("METFixEE2017_phi",   &MET_phi);
+        }
+        else{
+          inputtree->SetBranchAddress("MET_pt"    , &MET_pt);
+          inputtree->SetBranchAddress("MET_phi",   &MET_phi);   
+        }
+        
         Int_t LepGood_jetIdx[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_jetIdx", &LepGood_jetIdx);
         Int_t LepGood_pdgId[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_pdgId", &LepGood_pdgId);
         Int_t LepGood_cutBased[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_cutBased", &LepGood_cutBased); //only for Electron: 0=fail, 1=veto, 2=loose, 3=medium, 4=tight
