@@ -847,6 +847,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> eta1p5HT;
       ValueWithSystematics<float> eta5HT;
       ValueWithSystematics<float> HT_raw;
+      ValueWithSystematics<float> DPhiJet1HTmiss;
 
       ValueWithSystematics<float> Ngenjet;
       ValueWithSystematics<float> genJet1Pt;
@@ -1041,6 +1042,10 @@ int main(int argc, char** argv)
         HT_raw.Systematic("JES_Down");
         HT_raw.Systematic("JER_Up");
         HT_raw.Systematic("JER_Down");
+        DPhiJet1HTmiss.Systematic("JES_Up");
+        DPhiJet1HTmiss.Systematic("JES_Down");
+        DPhiJet1HTmiss.Systematic("JER_Up");
+        DPhiJet1HTmiss.Systematic("JER_Down");
         NbLoose.Systematic("JES_Up");
         NbLoose.Systematic("JES_Down");
         NbLoose.Systematic("JER_Up");
@@ -1174,6 +1179,7 @@ int main(int argc, char** argv)
         eta1p5HT.Lock();
         eta5HT.Lock();
         HT_raw.Lock();
+        DPhiJet1HTmiss.Lock();
         Ngenjet.Lock();
         genJet1Pt.Lock();
         genJet2Pt.Lock();
@@ -1250,6 +1256,7 @@ int main(int argc, char** argv)
       bdttree->Branch("eta1p5HT",&eta1p5HT.Value(),"eta1p5HT/F");
       bdttree->Branch("eta5HT",&eta5HT.Value(),"eta5HT/F");
       bdttree->Branch("HT_raw",&HT_raw.Value(),"HT_raw/F");
+      bdttree->Branch("DPhiJet1HTmiss",&DPhiJet1HTmiss.Value(),"DPhiJet1HTmiss/F");
       bdttree->Branch("Ngenjet",&Ngenjet.Value(),"Ngenjet/F");
       bdttree->Branch("genJet1Pt",&genJet1Pt.Value(),"genJet1Pt/F");
       bdttree->Branch("genJet2Pt",&genJet2Pt.Value(),"genJet2Pt/F");
@@ -2759,6 +2766,9 @@ int main(int argc, char** argv)
             HTmissEta.GetSystematicOrValue(syst) = vHTmiss.Eta();
             HTmissPhi.GetSystematicOrValue(syst) = vHTmiss.Phi();
           }
+
+          ValueWithSystematics<double> dphijhtmiss = DeltaPhiSys(Jet1Phi, HTmissPhi);
+          DPhiJet1HTmiss = dphijhtmiss;
 
           eta1p5HT = 0;
 
