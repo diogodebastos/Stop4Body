@@ -824,7 +824,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Jet1Pt;
       ValueWithSystematics<float> Jet1Eta;
       ValueWithSystematics<double> Jet1Phi;
-      ValueWithSystematics<float> Jet1neEmEF;
+      ValueWithSystematics<double> Jet1neEmEF;
       ValueWithSystematics<float> Jet1CSV;
       ValueWithSystematics<float> Jet2Pt;
       ValueWithSystematics<float> Jet2Eta;
@@ -1241,7 +1241,7 @@ int main(int argc, char** argv)
       bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
       bdttree->Branch("Jet1Eta",&Jet1Eta.Value(),"Jet1Eta/F");
       bdttree->Branch("Jet1Phi",&Jet1Phi.Value(),"Jet1Phi/D");
-      bdttree->Branch("Jet1neEmEF",&Jet1neEmEF.Value(),"Jet1neEmEF/F");
+      bdttree->Branch("Jet1neEmEF",&Jet1neEmEF.Value(),"Jet1neEmEF/D");
       bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
       bdttree->Branch("Jet2Pt",&Jet2Pt.Value(),"Jet2Pt/F");
       bdttree->Branch("Jet2Eta",&Jet2Eta.Value(),"Jet2Eta/F");
@@ -2564,12 +2564,12 @@ int main(int argc, char** argv)
             }
           }
 
-          ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
+          ValueWithSystematics<double> JetB1EtaDou, JetB1Phi, Jet1neEmEFDou;
           Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
           eta1p5Jet1Pt = loadSysQuantity(jetPt,  eta1p5Jets,0);
           eta5Jet1Pt   = loadSysQuantity(jetPt,  eta5Jets,  0);
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
-          Jet1neEmEF = loadSysQuantity(Jet_neEmEF, validJets, 0);
+          Jet1neEmEFDou = loadQuantity(Jet_neEmEF, validJets, 0);
           Jet1CSV    = loadQuantity(Jet_btagCSVV2, validJets, 0);
           JetB1EtaDou= loadQuantity(Jet_eta,     bjetList,  0);
           JetHBCSV   = loadQuantity(Jet_btagCSVV2, bjetList,  0);
@@ -2578,6 +2578,7 @@ int main(int argc, char** argv)
           genJet1Pt  = loadSysQuantity(genJetPt, genJets, 0);
 
           JetHBeta = JetB1EtaDou;
+          Jet1neEmEF = Jet1neEmEFDou;
 
           dphi = DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
           deta = DeltaEtaSys(Jet1EtaDou, ValueWithSystematics<double>(lep_eta));
