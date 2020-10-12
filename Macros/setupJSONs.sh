@@ -189,6 +189,11 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/stop1075.json $JSON_PATH/Orig/SignalPoints/Sig_1076_1006.json $JSON_PATH/Orig/SignalPoints/Sig_1076_1024.json $JSON_PATH/Orig/SignalPoints/Sig_1076_1044.json $JSON_PATH/Orig/SignalPoints/Sig_1076_1064.json $JSON_PATH/Orig/SignalPoints/Sig_1076_1016.json $JSON_PATH/Orig/SignalPoints/Sig_1076_1036.json $JSON_PATH/Orig/SignalPoints/Sig_1076_1056.json $JSON_PATH/Orig/SignalPoints/Sig_1076_996.json
  mergeJSONs $JSON_PATH/stop1100.json $JSON_PATH/Orig/SignalPoints/Sig_1100_1020.json $JSON_PATH/Orig/SignalPoints/Sig_1100_1040.json $JSON_PATH/Orig/SignalPoints/Sig_1100_1060.json $JSON_PATH/Orig/SignalPoints/Sig_1100_1080.json $JSON_PATH/Orig/SignalPoints/Sig_1100_1032.json $JSON_PATH/Orig/SignalPoints/Sig_1100_1052.json $JSON_PATH/Orig/SignalPoints/Sig_1100_1072.json $JSON_PATH/Orig/SignalPoints/Sig_1100_1092.json
 
+mergeJSONs $JSON_PATH/AllSignals.json $JSON_PATH/stop250.json $JSON_PATH/stop275.json $JSON_PATH/stop300.json $JSON_PATH/stop325.json $JSON_PATH/stop350.json $JSON_PATH/stop375.json $JSON_PATH/stop400.json $JSON_PATH/stop425.json $JSON_PATH/stop450.json $JSON_PATH/stop475.json $JSON_PATH/stop500.json $JSON_PATH/stop525.json $JSON_PATH/stop550.json $JSON_PATH/stop575.json $JSON_PATH/stop600.json $JSON_PATH/stop625.json $JSON_PATH/stop650.json $JSON_PATH/stop675.json $JSON_PATH/stop700.json $JSON_PATH/stop725.json $JSON_PATH/stop750.json $JSON_PATH/stop775.json $JSON_PATH/stop800.json $JSON_PATH/stop825.json $JSON_PATH/stop850.json $JSON_PATH/stop875.json $JSON_PATH/stop900.json $JSON_PATH/stop925.json $JSON_PATH/stop950.json $JSON_PATH/stop975.json $JSON_PATH/stop1000.json $JSON_PATH/stop1025.json $JSON_PATH/stop1050.json $JSON_PATH/stop1075.json $JSON_PATH/stop1100.json
+
+
+
+
  # Make a JSON for each group of signal points with the same stop mass for FullSim
 # mergeJSONs $JSON_PATH/stop500_FullSim.json            $JSON_PATH/Orig/SignalPoints/Sig_500_420_FullSim.json $JSON_PATH/Orig/SignalPoints/Sig_500_490_FullSim.json
 
