@@ -843,7 +843,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> HTmiss;
       ValueWithSystematics<float> HTmissPt;
       ValueWithSystematics<float> HTmissEta;
-      ValueWithSystematics<float> HTmissPhi;
+      ValueWithSystematics<double> HTmissPhi;
       ValueWithSystematics<float> eta1p5HT;
       ValueWithSystematics<float> eta5HT;
       ValueWithSystematics<float> HT_raw;
@@ -1252,7 +1252,7 @@ int main(int argc, char** argv)
       bdttree->Branch("HTmiss",&HTmiss.Value(),"HTmiss/F");
       bdttree->Branch("HTmissPt",&HTmissPt.Value(),"HTmissPt/F");
       bdttree->Branch("HTmissEta",&HTmissEta.Value(),"HTmissEta/F");
-      bdttree->Branch("HTmissPhi",&HTmissPhi.Value(),"HTmissPhi/F");
+      bdttree->Branch("HTmissPhi",&HTmissPhi.Value(),"HTmissPhi/D");
       bdttree->Branch("eta1p5HT",&eta1p5HT.Value(),"eta1p5HT/F");
       bdttree->Branch("eta5HT",&eta5HT.Value(),"eta5HT/F");
       bdttree->Branch("HT_raw",&HT_raw.Value(),"HT_raw/F");
@@ -2728,8 +2728,8 @@ int main(int argc, char** argv)
             for(auto &jet : validJets.GetSystematicOrValue(syst))
             {
               const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
-              const auto &eta = Jet_eta[jet];
-              const auto &phi = Jet_phi[jet];
+              //const auto &eta = Jet_eta[jet];
+              //const auto &phi = Jet_phi[jet];
 
               vJet.SetPtEtaPhiM(pt, Jet_eta[jet], Jet_phi[jet], Jet_mass[jet]);
 
