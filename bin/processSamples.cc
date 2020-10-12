@@ -804,6 +804,7 @@ int main(int argc, char** argv)
 
 
       ValueWithSystematics<float> Met;
+      ValueWithSystematics<float> Met_phi;
       ValueWithSystematics<float> CaloMet;
       ValueWithSystematics<float> mt;
       ValueWithSystematics<float> Q80;
@@ -823,6 +824,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Jet1Pt;
       ValueWithSystematics<float> Jet1Eta;
       ValueWithSystematics<double> Jet1Phi;
+      ValueWithSystematics<float> Jet1neEmEF;
       ValueWithSystematics<float> Jet1CSV;
       ValueWithSystematics<float> Jet2Pt;
       ValueWithSystematics<float> Jet2Eta;
@@ -946,6 +948,10 @@ int main(int argc, char** argv)
         Jet1Phi.Systematic("JES_Down");
         Jet1Phi.Systematic("JER_Up");
         Jet1Phi.Systematic("JER_Down");
+        Jet1neEmEF.Systematic("JES_Up");
+        Jet1neEmEF.Systematic("JES_Down");
+        Jet1neEmEF.Systematic("JER_Up");
+        Jet1neEmEF.Systematic("JER_Down");
         Jet1CSV.Systematic("JES_Up");
         Jet1CSV.Systematic("JES_Down");
         Jet1CSV.Systematic("JER_Up");
@@ -1136,6 +1142,7 @@ int main(int argc, char** argv)
         J3Mass.Systematic("JER_Down");
 
         Met.Lock();
+        Met_phi.Lock();
         CaloMet.Lock();
         mt.Lock();
         Q80.Lock();
@@ -1155,6 +1162,7 @@ int main(int argc, char** argv)
         Jet1Pt.Lock();
         Jet1Eta.Lock();
         Jet1Phi.Lock();
+        Jet1neEmEF.Lock();
         Jet1CSV.Lock();
         Jet2Pt.Lock();
         Jet2Eta.Lock();
@@ -1210,6 +1218,7 @@ int main(int argc, char** argv)
 
 
       bdttree->Branch("Met",&Met.Value(),"Met/F");
+      bdttree->Branch("Met_phi",&Met_phi.Value(),"Met_phi/F");
       bdttree->Branch("CaloMet",&CaloMet.Value(),"CaloMet/F");
       bdttree->Branch("mt",&mt.Value(),"mt/F");
       bdttree-> Branch("Q80",&Q80.Value(),"Q80/F");
@@ -1232,6 +1241,7 @@ int main(int argc, char** argv)
       bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
       bdttree->Branch("Jet1Eta",&Jet1Eta.Value(),"Jet1Eta/F");
       bdttree->Branch("Jet1Phi",&Jet1Phi.Value(),"Jet1Phi/D");
+      bdttree->Branch("Jet1neEmEF",&Jet1neEmEF.Value(),"Jet1neEmEF/F");
       bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
       bdttree->Branch("Jet2Pt",&Jet2Pt.Value(),"Jet2Pt/F");
       bdttree->Branch("Jet2Eta",&Jet2Eta.Value(),"Jet2Eta/F");
@@ -1552,6 +1562,7 @@ int main(int argc, char** argv)
         Int_t LepGood_charge[LEPCOLL_LIMIT]; inputtree->SetBranchAddress("LepGood_charge",&LepGood_charge);
         UInt_t nJetIn;  inputtree->SetBranchAddress("nJet", &nJetIn);
         Float_t Jet_pt[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_pt", &Jet_pt);
+        Float_t Jet_neEmEF[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_neEmEF", &Jet_neEmEF);
         Int_t Jet_jetId[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_jetId", &Jet_jetId);  // Jet ID flags bit1 is loose (always false in 2017 since it does not exist), bit2 is tight, bit3 is tightLepVeto --> This flag represents: passlooseID*1+passtightID*2+passtightLepVetoID*4
         Float_t Jet_eta[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_eta", &Jet_eta);
         Float_t Jet_phi[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
@@ -2194,6 +2205,7 @@ int main(int argc, char** argv)
             MetPhi.Systematic("JER_Down") = MET_phi_jerDown;
           }
           Met = MetDou;
+          Met_phi = MET_phi;
           CaloMet = CaloMetDou;
 
           if(preemptiveDropEvents)
@@ -2557,6 +2569,7 @@ int main(int argc, char** argv)
           eta1p5Jet1Pt = loadSysQuantity(jetPt,  eta1p5Jets,0);
           eta5Jet1Pt   = loadSysQuantity(jetPt,  eta5Jets,  0);
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
+          Jet1neEmEF = loadSysQuantity(Jet_neEmEF, validJets, 0);
           Jet1CSV    = loadQuantity(Jet_btagCSVV2, validJets, 0);
           JetB1EtaDou= loadQuantity(Jet_eta,     bjetList,  0);
           JetHBCSV   = loadQuantity(Jet_btagCSVV2, bjetList,  0);
