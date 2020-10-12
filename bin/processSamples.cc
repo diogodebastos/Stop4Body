@@ -831,7 +831,13 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Jet3Eta;
       ValueWithSystematics<float> Jet3CSV;
       ValueWithSystematics<float> DPhiJet1Jet2;
+      ValueWithSystematics<float> eta1p5Jet1Pt;
+      ValueWithSystematics<float> eta1p5Jet1Eta;
+      ValueWithSystematics<float> eta5Jet1Pt;
+      ValueWithSystematics<float> eta5Jet1Eta;
       ValueWithSystematics<float> HT;
+      ValueWithSystematics<float> eta1p5HT;
+      ValueWithSystematics<float> eta5HT;
       ValueWithSystematics<float> HT_raw;
 
       ValueWithSystematics<float> Ngenjet;
@@ -1092,7 +1098,13 @@ int main(int argc, char** argv)
         Jet3Eta.Lock();
         Jet3CSV.Lock();
         DPhiJet1Jet2.Lock();
+        eta1p5Jet1Pt.Lock();
+        eta1p5Jet1Eta.Lock();
+        eta5Jet1Pt.Lock();
+        eta5Jet1Eta.Lock();
         HT.Lock();
+        eta1p5HT.Lock();
+        eta5HT.Lock();
         HT_raw.Lock();
         Ngenjet.Lock();
         genJet1Pt.Lock();
@@ -1124,6 +1136,7 @@ int main(int argc, char** argv)
 
 
       bdttree->Branch("Met",&Met.Value(),"Met/F");
+      bdttree->Branch("CaloMet",&CaloMet.Value(),"CaloMet/F");
       bdttree->Branch("mt",&mt.Value(),"mt/F");
       bdttree-> Branch("Q80",&Q80.Value(),"Q80/F");
       bdttree->Branch("CosDeltaPhi",&CosDeltaPhi.Value(),"CosDeltaPhi/F");
@@ -1154,9 +1167,14 @@ int main(int argc, char** argv)
       bdttree->Branch("Jet3Eta",&Jet3Eta.Value(),"Jet3Eta/F");
       bdttree->Branch("Jet3CSV",&Jet3CSV.Value(),"Jet3CSV/F");
       bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
+      bdttree->Branch("eta1p5Jet1Pt",&eta1p5Jet1Pt.Value(),"eta1p5Jet1Pt/F");
+      bdttree->Branch("eta1p5Jet1Eta",&eta1p5Jet1Eta.Value(),"eta1p5Jet1Eta/F");
+      bdttree->Branch("eta5Jet1Pt",&eta5Jet1Pt.Value(),"eta5Jet1Pt/F");
+      bdttree->Branch("eta5Jet1Eta",&eta5Jet1Eta.Value(),"eta5Jet1Eta/F");
       bdttree->Branch("HT",&HT.Value(),"HT/F");
+      bdttree->Branch("eta1p5HT",&eta1p5HT.Value(),"eta1p5HT/F");
+      bdttree->Branch("eta5HT",&eta5HT.Value(),"eta5HT/F");
       bdttree->Branch("HT_raw",&HT_raw.Value(),"HT_raw/F");
-
       bdttree->Branch("Ngenjet",&Ngenjet.Value(),"Ngenjet/F");
       bdttree->Branch("genJet1Pt",&genJet1Pt.Value(),"genJet1Pt/F");
       bdttree->Branch("genJet2Pt",&genJet2Pt.Value(),"genJet2Pt/F");
@@ -1414,13 +1432,16 @@ int main(int argc, char** argv)
         Float_t MET_pt;      
         Float_t MET_phi;
         if(year==2017){
-          inputtree->SetBranchAddress("METFixEE2017_pt"    , &MET_pt);
-          inputtree->SetBranchAddress("METFixEE2017_phi",   &MET_phi);
+          inputtree->SetBranchAddress("METFixEE2017_pt", &MET_pt);
+          inputtree->SetBranchAddress("METFixEE2017_phi", &MET_phi);
         }
         else{
           inputtree->SetBranchAddress("MET_pt"    , &MET_pt);
           inputtree->SetBranchAddress("MET_phi",   &MET_phi);   
         }
+
+        Float_t CaloMET_pt; inputtree->SetBranchAddress("CaloMET_pt", &CaloMET_pt);
+        Float_t CaloMET_phi inputtree->SetBranchAddress("CaloMET_phi", &CaloMET_phi);
 
         UInt_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_jetIdx[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_jetIdx", &LepGood_jetIdx);
@@ -1683,6 +1704,8 @@ int main(int argc, char** argv)
           ValueWithSystematics<std::vector<double>> genJetPt;
           ValueWithSystematics<std::vector<int>> allJets;
           ValueWithSystematics<std::vector<int>> validJets;
+          ValueWithSystematics<std::vector<int>> eta1p5Jets;
+          ValueWithSystematics<std::vector<int>> eta5Jets;
           ValueWithSystematics<std::vector<int>> genJets;
           ValueWithSystematics<std::vector<int>> bjetList; // Same as validJets, but sorted by CSV value
           //ValueWithSystematics<std::vector<int>> l1PreFiringList;
@@ -1931,6 +1954,8 @@ int main(int argc, char** argv)
               std::vector<int> empty;
               allJets.Systematic(syst) = empty;
               validJets.Systematic(syst) = empty;
+              eta1p5Jets.Systematic(syst) = empty;
+              eta5Jets.Systematic(syst) = empty;
               bjetList.Systematic(syst) = empty;
               //l1PreFiringList.Systematic(syst) = empty;
             }
@@ -1946,7 +1971,8 @@ int main(int argc, char** argv)
               {
                 //if(Jet_pt[jet] > jetPtThreshold){
                 //if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && Jet_pt[jet] > jetPtThreshold){
-                if((Jet_jetId[jet] >= 2) && (std::abs(Jet_eta[jet]) < 2.4) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)){
+                //if((Jet_jetId[jet] >= 2) && (std::abs(Jet_eta[jet]) < 2.4) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)){
+                if((Jet_jetId[jet] >= 2) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)){
                   deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
                   if (deltaR < bestDR) {
                     closestJet = jet;
@@ -1965,10 +1991,18 @@ int main(int argc, char** argv)
                 continue;  // Veto events in HEM 15/16
 
               allJets.GetSystematicOrValue(syst).push_back(jet);
-              if((Jet_jetId[jet] >= 2) && (std::abs(Jet_eta[jet]) < 2.4) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold) && (jetMask[jet] != 1))
+              if((Jet_jetId[jet] >= 2) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold) && (jetMask[jet] != 1))
               {
-                validJets.GetSystematicOrValue(syst).push_back(jet);
-                bjetList.GetSystematicOrValue(syst).push_back(jet);
+                if(std::abs(Jet_eta[jet]) < 2.4){
+                  validJets.GetSystematicOrValue(syst).push_back(jet);
+                  bjetList.GetSystematicOrValue(syst).push_back(jet);
+                }
+                if(std::abs(Jet_eta[jet]) < 1.5){
+                  eta1p5Jets.GetSystematicOrValue(syst).push_back(jet);
+                }
+                if(std::abs(Jet_eta[jet]) < 5){
+                  eta5Jets.GetSystematicOrValue(syst).push_back(jet);
+                }
               }
             }
 // DEBUG
@@ -2003,6 +2037,14 @@ int main(int argc, char** argv)
             });
 
             std::sort(validJets.GetSystematicOrValue(syst).begin(), validJets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
+              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
+            });
+
+            std::sort(eta1p5Jets.GetSystematicOrValue(syst).begin(), eta1p5Jets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
+              return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
+            });
+
+            std::sort(eta5Jets.GetSystematicOrValue(syst).begin(), eta5Jets.GetSystematicOrValue(syst).end(), [&jetPt, &syst] (const int &left, const int &right) {
               return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
             });
 
@@ -2056,6 +2098,8 @@ int main(int argc, char** argv)
           // Setting the values to be saved in the output tree
           ValueWithSystematics<double> MetDou = MET_pt;
           ValueWithSystematics<double> MetPhi = MET_phi;
+          ValueWithSystematics<double> CaloMetDou = CaloMET_pt;
+          ValueWithSystematics<double> CaloMetPhi = CaloMetPhi;
           if(!process.isdata())
           {
             MetDou.Systematic("JES_Up") = MET_pt_jesTotalUp;
@@ -2068,6 +2112,7 @@ int main(int argc, char** argv)
             MetPhi.Systematic("JER_Down") = MET_phi_jerDown;
           }
           Met = MetDou;
+          CaloMet = CaloMetDou;
 
           if(preemptiveDropEvents)
           {
@@ -2423,6 +2468,8 @@ int main(int argc, char** argv)
 
           ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
           Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
+          eta1p5Jet1Pt = loadSysQuantity(jetPt,  eta1p5Jets,0);
+          eta5Jet1Pt   = loadSysQuantity(jetPt,  eta5Jets,  0);
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
           Jet1CSV    = loadQuantity(Jet_btagCSVV2, validJets, 0);
           JetB1EtaDou= loadQuantity(Jet_eta,     bjetList,  0);
@@ -2608,6 +2655,36 @@ int main(int argc, char** argv)
               if(pt > 100)
                 ++(Njet100.GetSystematicOrValue(syst));
               */
+            }
+          }
+
+          eta1p5HT = 0;
+
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, eta1p5Jets);
+          for(auto& syst: list)
+          {
+            for(auto &jet : eta1p5Jets.GetSystematicOrValue(syst))
+            {
+              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
+
+              eta1p5HT.GetSystematicOrValue(syst) += pt;
+            }
+          }
+
+          eta5HT = 0;
+
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, eta5Jets);
+          for(auto& syst: list)
+          {
+            for(auto &jet : eta5Jets.GetSystematicOrValue(syst))
+            {
+              const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
+
+              eta5HT.GetSystematicOrValue(syst) += pt;
             }
           }
 
