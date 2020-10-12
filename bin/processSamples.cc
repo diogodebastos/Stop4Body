@@ -804,6 +804,7 @@ int main(int argc, char** argv)
 
 
       ValueWithSystematics<float> Met;
+      ValueWithSystematics<float> CaloMet;
       ValueWithSystematics<float> mt;
       ValueWithSystematics<float> Q80;
       ValueWithSystematics<float> CosDeltaPhi;
@@ -973,10 +974,34 @@ int main(int argc, char** argv)
         DPhiJet1Jet2.Systematic("JES_Down");
         DPhiJet1Jet2.Systematic("JER_Up");
         DPhiJet1Jet2.Systematic("JER_Down");
+        eta1p5Jet1Pt.Systematic("JES_Up");
+        eta1p5Jet1Pt.Systematic("JES_Down");
+        eta1p5Jet1Pt.Systematic("JER_Up");
+        eta1p5Jet1Pt.Systematic("JER_Down");
+        eta1p5Jet1Eta.Systematic("JES_Up");
+        eta1p5Jet1Eta.Systematic("JES_Down");
+        eta1p5Jet1Eta.Systematic("JER_Up");
+        eta1p5Jet1Eta.Systematic("JER_Down");
+        eta5Jet1Pt.Systematic("JES_Up");
+        eta5Jet1Pt.Systematic("JES_Down");
+        eta5Jet1Pt.Systematic("JER_Up");
+        eta5Jet1Pt.Systematic("JER_Down");
+        eta5Jet1Eta.Systematic("JES_Up");
+        eta5Jet1Eta.Systematic("JES_Down");
+        eta5Jet1Eta.Systematic("JER_Up");
+        eta5Jet1Eta.Systematic("JER_Down");
         HT.Systematic("JES_Up");
         HT.Systematic("JES_Down");
         HT.Systematic("JER_Up");
         HT.Systematic("JER_Down");
+        eta1p5HT.Systematic("JES_Up");
+        eta1p5HT.Systematic("JES_Down");
+        eta1p5HT.Systematic("JER_Up");
+        eta1p5HT.Systematic("JER_Down");
+        eta5HT.Systematic("JES_Up");
+        eta5HT.Systematic("JES_Down");
+        eta5HT.Systematic("JER_Up");
+        eta5HT.Systematic("JER_Down");
         HT_raw.Systematic("JES_Up");
         HT_raw.Systematic("JES_Down");
         HT_raw.Systematic("JER_Up");
@@ -1071,6 +1096,7 @@ int main(int argc, char** argv)
         J3Mass.Systematic("JER_Down");
 
         Met.Lock();
+        CaloMet.Lock();
         mt.Lock();
         Q80.Lock();
         CosDeltaPhi.Lock();
@@ -1441,7 +1467,7 @@ int main(int argc, char** argv)
         }
 
         Float_t CaloMET_pt; inputtree->SetBranchAddress("CaloMET_pt", &CaloMET_pt);
-        Float_t CaloMET_phi inputtree->SetBranchAddress("CaloMET_phi", &CaloMET_phi);
+        Float_t CaloMET_phi; inputtree->SetBranchAddress("CaloMET_phi", &CaloMET_phi);
 
         UInt_t nLepGood;      inputtree->SetBranchAddress("nLepGood"   , &nLepGood);
         Int_t LepGood_jetIdx[LEPCOLL_LIMIT];  inputtree->SetBranchAddress("LepGood_jetIdx", &LepGood_jetIdx);
@@ -2215,7 +2241,7 @@ int main(int argc, char** argv)
             return retVal;
           };
 
-          ValueWithSystematics<double> Jet2EtaDou, Jet2PhiDou, Jet1EtaDou, Jet1PhiDou;
+          ValueWithSystematics<double> Jet2EtaDou, Jet2PhiDou, Jet1EtaDou, Jet1PhiDou, eta1p5Jet1EtaDou, eta5Jet1EtaDou;
           Jet2Pt     = loadSysQuantity(jetPt,    validJets, 1);
           JetB2pt    = loadSysQuantity(jetPt,    bjetList,  1);
           Jet2EtaDou = loadQuantity(Jet_eta,     validJets, 1);
@@ -2226,12 +2252,16 @@ int main(int argc, char** argv)
           JetB2index = loadQuantity(identity,    bjetList,  1);
           Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
           Jet1PhiDou = loadQuantity(Jet_phi,     validJets, 0);
+          eta1p5Jet1EtaDou = loadQuantity(Jet_eta, eta1p5Jets, 0);
+          eta5Jet1EtaDou   = loadQuantity(Jet_eta, eta5Jets, 0);
           genJet2Pt  = loadSysQuantity(genJetPt, genJets, 1);
 
           Jet2Eta = Jet2EtaDou;
           Jet2Phi = Jet2PhiDou;
           Jet1Eta = Jet1EtaDou;
           Jet1Phi = Jet1PhiDou;
+          eta1p5Jet1Eta = eta1p5Jet1EtaDou;
+          eta5Jet1Eta = eta5Jet1EtaDou;
 
           //ValueWithSystematics<double> Jet1Phi = loadQuantity(Jet_phi, validJets, 0);
           //ValueWithSystematics<double> Jet2Phi = loadQuantity(Jet_phi, validJets, 1);
