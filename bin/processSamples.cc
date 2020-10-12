@@ -837,6 +837,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> eta5Jet1Pt;
       ValueWithSystematics<float> eta5Jet1Eta;
       ValueWithSystematics<float> HT;
+      ValueWithSystematics<float> HTpt;
       ValueWithSystematics<float> HTeta;
       ValueWithSystematics<float> HTphi;
       ValueWithSystematics<float> HTmiss;
@@ -999,10 +1000,14 @@ int main(int argc, char** argv)
         HT.Systematic("JES_Down");
         HT.Systematic("JER_Up");
         HT.Systematic("JER_Down");
-        HTeta.Systematic("JES_Up");
-        HTeta.Systematic("JES_Down");
-        HTeta.Systematic("JER_Up");
-        HTeta.Systematic("JER_Down");
+        HTpt.Systematic("JES_Up");
+        HTpt.Systematic("JES_Down");
+        HTpt.Systematic("JER_Up");
+        HTpt.Systematic("JER_Down");
+        HTpt.Systematic("JES_Up");
+        HTpt.Systematic("JES_Down");
+        HTpt.Systematic("JER_Up");
+        HTpt.Systematic("JER_Down");
         HTphi.Systematic("JES_Up");
         HTphi.Systematic("JES_Down");
         HTphi.Systematic("JER_Up");
@@ -1154,6 +1159,7 @@ int main(int argc, char** argv)
         eta5Jet1Pt.Lock();
         eta5Jet1Eta.Lock();
         HT.Lock();
+        HTpt.Lock();
         HTeta.Lock();
         HTphi.Lock();
         HTmiss.Lock();
@@ -1228,6 +1234,7 @@ int main(int argc, char** argv)
       bdttree->Branch("eta5Jet1Pt",&eta5Jet1Pt.Value(),"eta5Jet1Pt/F");
       bdttree->Branch("eta5Jet1Eta",&eta5Jet1Eta.Value(),"eta5Jet1Eta/F");
       bdttree->Branch("HT",&HT.Value(),"HT/F");
+      bdttree->Branch("HTpt",&HTpt.Value(),"HTpt/F");
       bdttree->Branch("HTeta",&HTeta.Value(),"HTeta/F");
       bdttree->Branch("HTphi",&HTphi.Value(),"HTphi/F");
       bdttree->Branch("HTmiss",&HTmiss.Value(),"HTmiss/F");
@@ -2682,7 +2689,11 @@ int main(int argc, char** argv)
             }
           }
 
+	  TLorentzVector vJet;
           HT = 0;
+          HTpt = 0;
+          HTeta = 0;
+          HTphi = 0;
           Njet = validJets.size();
           /*
           Njet30 = 0;
@@ -2697,15 +2708,22 @@ int main(int argc, char** argv)
 
           for(auto& syst: list)
           {
+            //std::cout << "syst: " << syst << std::endl;
+	    TLorentzVector vHT;
             for(auto &jet : validJets.GetSystematicOrValue(syst))
             {
               const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
               const auto &eta = Jet_eta[jet];
               const auto &phi = Jet_phi[jet];
 
+	      vJet.SetPtEtaPhiM(pt, Jet_eta[jet], Jet_phi[jet], Jet_mass[jet]);
+
+	      vHT += vJet;
+
               HT.GetSystematicOrValue(syst) += pt;
-              HTeta.GetSystematicOrValue(syst) += eta;
-              HTphi.GetSystematicOrValue(syst) += phi;
+              //HTeta.GetSystematicOrValue(syst) += eta;
+              //HTphi.GetSystematicOrValue(syst) += phi;
+	      //std::cout << "  eta: " << eta << std::endl;
               /*
               if(pt > 30)
                 ++(Njet30.GetSystematicOrValue(syst));
@@ -2725,6 +2743,10 @@ int main(int argc, char** argv)
                 ++(Njet100.GetSystematicOrValue(syst));
               */
             }
+            HTeta.GetSystematicOrValue(syst) = vHT.Eta();
+	    HTphi.GetSystematicOrValue(syst) = vHT.Phi();
+	    HTpt.GetSystematicOrValue(syst) = vHT.Pt();
+	    //std::cout << " Sum eta: " << HTeta.GetSystematicOrValue(syst) << std::endl;
             HTmiss.GetSystematicOrValue(syst) = -1 * HT.GetSystematicOrValue(syst);
             HTmissEta.GetSystematicOrValue(syst) = -1 * HTeta.GetSystematicOrValue(syst);
             HTmissPhi.GetSystematicOrValue(syst) = -1 * HTphi.GetSystematicOrValue(syst);
