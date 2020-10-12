@@ -25,7 +25,7 @@
     },
     {
      "expression":"eta1p5Jet1Pt",
-     "label":"p_{T}^{1.5}(jet 1) [GeV]",
+     "label":"p_{T}(jet 1)^{1.5} [GeV]",
      "legPos":"top",
       "min":100.0,
       "max":1000.0,
@@ -33,11 +33,11 @@
     },
     {
      "expression":"eta1p5Jet1Eta",
-     "label":"#eta^{1.5}(jet 1)",
+     "label":"#eta(jet 1)^{1.5}",
      "legPos":"top",
-      "min":-1.5,
-      "max":1.5,
-      "bins":25
+     "min":-1.5,
+     "max":1.5,
+     "bins":25
     },
     {
       "expression":"eta1p5HT",
@@ -49,19 +49,19 @@
     },
     {
      "expression":"eta5Jet1Pt",
-     "label":"p_{T}^{5}(jet 1)",
+     "label":"p_{T}(jet 1)^{5}",
      "legPos":"top",
-      "min":-5,
-      "max":5,
-      "bins":50
+     "min":100.0,
+     "max":1000.0,
+     "bins":84
     },
     {
      "expression":"eta5Jet1Eta",
-     "label":"#eta^{5}(jet 1) [GeV]",
+     "label":"#eta(jet 1)^{5} [GeV]",
      "legPos":"top",
-      "min":100.0,
-      "max":1000.0,
-      "bins":84
+     "min":-5,
+     "max":5,
+     "bins":50
     },
     {
       "expression":"eta5HT",

@@ -24,6 +24,77 @@
       "bins":50
     },
     {
+     "expression":"eta1p5Jet1Pt",
+     "label":"p_{T}(jet 1)^{1.5} [GeV]",
+     "legPos":"top",
+      "min":100.0,
+      "max":1000.0,
+      "bins":50
+    },
+    {
+     "expression":"eta1p5Jet1Eta",
+     "label":"#eta(jet 1)^{1.5}",
+     "legPos":"top",
+     "min":-1.5,
+     "max":1.5,
+     "bins":25
+    },
+    {
+      "expression":"eta1p5HT",
+      "label":"H_{T}^{1.5} [GeV]",
+      "legPos":"top",
+      "min":200.0,
+      "max":1000.0,
+      "bins":40
+    },
+    {
+     "expression":"eta5Jet1Pt",
+     "label":"p_{T}(jet 1)^{5}",
+     "legPos":"top",
+     "min":100.0,
+     "max":1000.0,
+     "bins":84
+    },
+    {
+     "expression":"eta5Jet1Eta",
+     "label":"#eta(jet 1)^{5} [GeV]",
+     "legPos":"top",
+     "min":-5,
+     "max":5,
+     "bins":50
+    },
+    {
+      "expression":"eta5HT",
+      "label":"H_{T}^{5} [GeV]",
+      "legPos":"top",
+      "min":200.0,
+      "max":1000.0,
+      "bins":40
+    },
+    {
+      "expression":"HTmissEta",
+      "label":"#eta(HT^{miss})",
+      "legPos":"top",
+      "min":-3,
+      "max":3,
+      "bins":50
+    },
+    {
+      "expression":"HTmissPhi",
+      "label":"#phi(HT^{miss})",
+      "legPos":"top",
+      "min":-3,
+      "max":3,
+      "bins":50
+    },
+    {
+      "expression":"DPhiJet1HTmiss",
+      "label":"#Delta #phi (jet 1,HT^{miss})",
+      "min":0.0,
+      "max":3,
+      "bins":25
+    },
+    {
       "expression":"LepPt",
       "label":"p_{T}(l) [GeV]",
       "legPos":"top",
@@ -37,6 +108,22 @@
       "min":250.0,
       "max":1000.0,
       "bins":35
+    },
+    {
+     "expression":"Met_phi",
+     "label":"#phi(E_{T}^{miss})",
+     "legPos":"top",
+      "min":-3,
+      "max":3,
+      "bins":50
+    },
+    {
+      "expression":"CaloMet",
+      "label":"CaloE_{T}^{miss}[GeV]",
+      "legPos":"top",
+      "min":200.0,
+      "max":1000.0,
+      "bins":40
     },
     {
       "expression":"LepEta",
@@ -77,6 +164,14 @@
       "label":"#phi(jet 1)",
       "min":-3,
       "max":3,
+      "bins":50
+    },
+    {
+     "expression":"Jet1neEmEF",
+     "label":"jet 1 neEMEF",
+     "legPos":"top",
+      "min":0.0,
+      "max":1.0,
       "bins":50
     },
     {
