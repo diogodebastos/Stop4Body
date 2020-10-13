@@ -1506,7 +1506,7 @@ int main(int argc, char** argv)
         else
           inputtree = static_cast<TTree*>(finput.Get("Events"));
         // PU weight from nanoAOD
-        /*
+        
         Float_t autoPUweight;
         Float_t autoPUweightUp;
         Float_t autoPUweightDown;
@@ -1516,7 +1516,7 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("puWeightUp",&autoPUweightUp);
           inputtree->SetBranchAddress("puWeightDown",&autoPUweightDown);
         }
-        */
+        
         // Read Branches you are interested in from the input tree
 //        Float_t mtw1;        inputtree->SetBranchAddress("event_mtw1"       , &mtw1);
 //        Float_t mtw2;        inputtree->SetBranchAddress("event_mtw2"       , &mtw2);
@@ -1779,12 +1779,15 @@ int main(int argc, char** argv)
             puWeight.Systematic("PU_Up") = autoPUweightUp;
             puWeight.Systematic("PU_Down") = autoPUweightDown;
             */
+            // PU from root file
+            
             puWeight = static_cast<float>(puWeightDistrib->GetBinContent(puWeightDistrib->FindBin(Pileup_nTrueInt)));
             if(puWeightDistribUp != nullptr)
             {
               puWeight.Systematic("PU_Up")   = puWeightDistribUp->GetBinContent(puWeightDistribUp->FindBin(Pileup_nTrueInt));
               puWeight.Systematic("PU_Down") = puWeightDistribDown->GetBinContent(puWeightDistribDown->FindBin(Pileup_nTrueInt));
             }
+            
           }
           else
             puWeight = 1.0f;
