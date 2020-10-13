@@ -269,17 +269,20 @@ int main(int argc, char** argv)
   if(bTagCalibrationFile == ""){
     if (year==2017)
     {
-      //bTagCalibrationFile = "../data/CSVv2_94XSF_V2_B_F.csv";
       // CSVv2 for 2017
       /*
+      bTagCalibrationFile = "../data/CSVv2_94XSF_V2_B_F.csv";
       CSV_Loose = 0.5803;
       CSV_Medium = 0.8838;
       CSV_Tight = 0.9693;
       */
+      // DeepCSV for 2017
+      //
       bTagCalibrationFile = "../data/DeepCSV_94XSF_V5_B_F.csv";
       CSV_Loose = 0.1522;
       CSV_Medium = 0.4941;
       CSV_Tight = 0.8001;
+      //
     }
     else if (year==2018)
     {
@@ -485,7 +488,8 @@ int main(int argc, char** argv)
 
   // B-tagging calibration
 
-  BTagCalibration bCalib("csvv2", bTagCalibrationFile);
+  //BTagCalibration bCalib("csvv2", bTagCalibrationFile);
+  BTagCalibration bCalib("deepcsv", bTagCalibrationFile);
   BTagCalibrationReader bReader (BTagEntry::OP_RESHAPING,  // operating point
                                   "central",               // central sys type
                                   {                        // other sys types
@@ -512,6 +516,8 @@ int main(int argc, char** argv)
   bReader.load(bCalib, BTagEntry::FLAV_B, "iterativefit");
   bReader.load(bCalib, BTagEntry::FLAV_C, "iterativefit");
   bReader.load(bCalib, BTagEntry::FLAV_UDSG, "iterativefit");
+
+  std::cout << "b-tag file loaded!" << std::endl;
 
   Float_t identity[100];
   for(int i = 0; i < 100; ++i)
@@ -851,7 +857,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Jet1Pt;
       ValueWithSystematics<float> Jet1Eta;
       ValueWithSystematics<double> Jet1Phi;
-      ValueWithSystematics<float> Jet1neEmEF;
+      ValueWithSystematics<double> Jet1neEmEF;
       //ValueWithSystematics<float> Jet1CSV;
       ValueWithSystematics<float> Jet1DeepCSV;
       ValueWithSystematics<float> Jet2Pt;
@@ -1308,7 +1314,7 @@ int main(int argc, char** argv)
       bdttree->Branch("Jet1Pt",&Jet1Pt.Value(),"Jet1Pt/F");
       bdttree->Branch("Jet1Eta",&Jet1Eta.Value(),"Jet1Eta/F");
       bdttree->Branch("Jet1Phi",&Jet1Phi.Value(),"Jet1Phi/D");
-      bdttree->Branch("Jet1neEmEF",&Jet1neEmEF.Value(),"Jet1neEmEF/F");
+      bdttree->Branch("Jet1neEmEF",&Jet1neEmEF.Value(),"Jet1neEmEF/D");
       //bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
       bdttree->Branch("Jet1DeepCSV",&Jet1DeepCSV.Value(),"Jet1DeepCSV/F");
       bdttree->Branch("Jet2Pt",&Jet2Pt.Value(),"Jet2Pt/F");
@@ -2655,12 +2661,12 @@ int main(int argc, char** argv)
             }
           }
 
-          ValueWithSystematics<double> JetB1EtaDou, JetB1Phi;
+          ValueWithSystematics<double> JetB1EtaDou, JetB1Phi, Jet1neEmEFDou;
           Jet1Pt     = loadSysQuantity(jetPt,    validJets, 0);
           eta1p5Jet1Pt = loadSysQuantity(jetPt,  eta1p5Jets,0);
           eta5Jet1Pt   = loadSysQuantity(jetPt,  eta5Jets,  0);
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
-          Jet1neEmEF = loadSysQuantity(Jet_neEmEF, validJets, 0);
+          Jet1neEmEFDou = loadQuantity(Jet_neEmEF, validJets, 0);
           //Jet1CSV    = loadQuantity(Jet_btagCSVV2, validJets, 0);
           Jet1DeepCSV    = loadQuantity(Jet_btagDeepB, validJets, 0);
           JetB1EtaDou= loadQuantity(Jet_eta,     bjetList,  0);
@@ -2671,6 +2677,7 @@ int main(int argc, char** argv)
           genJet1Pt  = loadSysQuantity(genJetPt, genJets, 0);
 
           JetHBeta = JetB1EtaDou;
+          Jet1neEmEF = Jet1neEmEFDou;
 
           dphi = DeltaPhiSys(Jet1Phi, ValueWithSystematics<double>(lep_phi));
           deta = DeltaEtaSys(Jet1EtaDou, ValueWithSystematics<double>(lep_eta));
