@@ -5,6 +5,32 @@ Repository for the analysis code of the stop four body decay analysis
 First step is to get the nanoAOD samples at T3-cms: https://github.com/diogodebastos/cmgtools-lite/tree/104X_dev_nano_lip
 When this step is finished it's time to process samples locally.
 
+To do so, connect to the **lxplus** machines and start the environment:
+
+```$. initS4B-10_4_0.sh```
+
+Then, you want to look into `run_susyStop4Body_nanoAOD_cfg.py` for the configurations, modules and skims on the nanoAOD samples. When you've choose which samples you want to get, to a test to assure everything is ok and as expected by:
+
+```$nanopy.py test18_WjetsPT_NLO run_susyStop4Body_nanoAOD_cfg.py -N 5000 -o year=2018 -o runWJets```
+
+At this step, is also good to look into how long each event takes to run, you're aiming for the ms mark. Then, you can send jobs to **condor** to get your samples by:
+
+```$nanopy_batch.py -o 18_WJetsPT_NLO run_susyStop4Body_nanoAOD_cfg.py --option year=2018 --option runWJets=True -b 'run_condor_simple.sh -t 480 ./batchScript.sh'```
+
+Now, that jobs are running, you can use `submitFailedJobs.py` to see jobs that have failed or have other errors by:
+
+```$python submitFailedJobs.py -i 18_WJetsPT_NLO/ -t 960```
+
+In case a large amount of jobs have failed, use `submitList.py` to submit failed jobs. At the same time, you want to open another lxplus session that checks every interval for jobs that have finished and their respective output root file and moves them to *EOS*:
+
+```$while true; do date; echo ""; source cpSamplesFromAFStoEOS.sh 16 16_WJetsHT; sleep 1800; done```
+
+TODO: save directly to EOS.
+
+The final step is to move the samples to t3cms by:
+
+```$gfal-copy -rv nanoAOD/Stop4Body18/Autumn18_Prod2020Sep29/ srm://srm01.ncg.ingrid.pt:8444/srm/managerv2?SFN=/cmst3/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Sep29```
+
 ## Setup analysis and compiling
 
 In this repo you find 2 setup scripts `initNanoS4B.sh` and `initNanoS4B-forScram.sh`. The first one to setup and run, the latter for compiling the framework. You should copy these 2 files to your home. This framework runs on **SCRAM_ARCH=slc7_amd64_gcc820** so, if using ncg machines, you should connect to **pauli**. I suggest having 2 shell sessions in one you do `$. initNanoS4B.sh` and run your analysis and in the other one do `$. initNanoS4B-forScram.sh` and just use it to compile like `$scram b`.
@@ -34,7 +60,7 @@ You should have `preProcessSamples.root` in `$PREPROCESSSAMPLES_DIR`.
 
 For **LHE weights** do:
 
-`$./runStep0-LHEWeight.sh.``
+`$./runStep0-LHEWeight.sh.`
 
 When jobs are done:
 
@@ -68,3 +94,14 @@ To train the BDTs use Signal full DM to use the kinematic similarity between all
 and apply it to your samples by:
 
 `$./runStep4.sh`
+
+After this step, if you want, you can compare the BDT (and other variables) shape distribution between different years. The idea is to compare between the samples of 2016 and if you want, compare with miniAOD 2017 too. To do so, you have to go to the **pMacros** directory and run `root` interactively from there:
+
+`$cd pMacros`
+
+`$root -l`
+
+`$.x ShapeProcVarYears.C(30,false,false,true,"BDT")`
+
+After training and applying the BDTs it's time to determinate the cut to apply on the BDT output in order so maximize the signal background separation. 
+
