@@ -837,7 +837,7 @@ int main(int argc, char** argv)
 
 
       ValueWithSystematics<float> Met;
-      ValueWithSystematics<float> Met_phi;
+      ValueWithSystematics<double> Met_phi;
       ValueWithSystematics<float> CaloMet;
       ValueWithSystematics<float> mt;
       ValueWithSystematics<float> Q80;
@@ -867,7 +867,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Jet2DeepCSV;
       ValueWithSystematics<float> Jet3Pt;
       ValueWithSystematics<float> Jet3Eta;
-      ValueWithSystematics<float> Jet3Phi;
+      ValueWithSystematics<double> Jet3Phi;
       //ValueWithSystematics<float> Jet3CSV;
       ValueWithSystematics<float> Jet3DeepCSV;
       ValueWithSystematics<float> DPhiJet1Jet2;
@@ -1327,7 +1327,7 @@ int main(int argc, char** argv)
 
 
       bdttree->Branch("Met",&Met.Value(),"Met/F");
-      bdttree->Branch("Met_phi",&Met_phi.Value(),"Met_phi/F");
+      bdttree->Branch("Met_phi",&Met_phi.Value(),"Met_phi/D");
       bdttree->Branch("CaloMet",&CaloMet.Value(),"CaloMet/F");
       bdttree->Branch("mt",&mt.Value(),"mt/F");
       bdttree-> Branch("Q80",&Q80.Value(),"Q80/F");
@@ -1360,7 +1360,7 @@ int main(int argc, char** argv)
       bdttree->Branch("Jet2DeepCSV",&Jet2DeepCSV.Value(),"Jet2DeepCSV/F");
       bdttree->Branch("Jet3Pt",&Jet3Pt.Value(),"Jet3Pt/F");
       bdttree->Branch("Jet3Eta",&Jet3Eta.Value(),"Jet3Eta/F");
-      bdttree->Branch("Jet3Phi",&Jet3Phi.Value(),"Jet3Phi/F");
+      bdttree->Branch("Jet3Phi",&Jet3Phi.Value(),"Jet3Phi/D");
       //bdttree->Branch("Jet3CSV",&Jet3CSV.Value(),"Jet3CSV/F");
       bdttree->Branch("Jet3DeepCSV",&Jet3DeepCSV.Value(),"Jet3DeepCSV/F");
       bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
