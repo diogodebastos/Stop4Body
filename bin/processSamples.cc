@@ -691,7 +691,7 @@ int main(int argc, char** argv)
       }
 
       std::cout << "\t        l1preFire" << std::endl;
-      l1prefireWeight = getL1preFiringMapsSys(2.5, 225);
+      l1prefireWeight = (1 - getL1preFiringMapsSys(0.5, 100));
 
       std::cout << "\t        looseNotTight" << std::endl;
       //looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
@@ -700,7 +700,7 @@ int main(int argc, char** argv)
 
       std::cout << "\t        weight" << std::endl;
       // weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure * GENWweight;
+      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * looseNotTightWeight2017MCClosure * GENWweight * l1prefireWeight;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -799,7 +799,6 @@ int main(int argc, char** argv)
         bdttree->Branch(("weight_"+systematic).c_str(), &(weight.Systematic(systematic)));
       std::cout << "\t      Finished." << std::endl;
 
-      bool isL1PreFiring; bdttree->Branch("isL1PreFiring",   &isL1PreFiring);
       bool isTight;      bdttree->Branch("isTight",   &isTight);
       bool isLoose;      bdttree->Branch("isLoose",   &isLoose);
       Float_t LepID;     bdttree->Branch("LepID",     &LepID,     "LepID/F");
@@ -2802,20 +2801,20 @@ int main(int argc, char** argv)
           list.push_back("Value");
           loadSystematics(list, validJets);
 
-          for(auto& syst: list)
+          // L1 prefire issue
+          l1prefireWeight = 1;
+          if (year==2017)
           {
-            for(auto &jet : validJets.GetSystematicOrValue(syst))
+            for(auto &jet : validJets.GetSystematicOrValue("Value"))
             {
-             const auto &pt = jetPt.GetSystematicOrValue(syst)[jet];
-             if (std::abs(Jet_eta[jet]) >= 2 && std::abs(Jet_eta[jet]) < 3.5 && pt >= 40)
-             {
-              isL1PreFiring = true;
-             }
-             else
-             {
-              isL1PreFiring = false;
-             }
+              const auto &pt = jetPt.GetSystematicOrValue("Value")[jet];
+              auto l1map = getL1preFiringMapsSys(Jet_eta[jet], pt);
+
+              l1prefireWeight *= (1-l1map);
             }
+          }
+          else{
+            l1prefireWeight = 1;
           }
 
           TLorentzVector vJet;
@@ -3016,7 +3015,7 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
             //weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonFullFastSF*Q2Var*bTagSF*GENWweight;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonFullFastSF*Q2Var*bTagSF*GENWweight*l1prefireWeight;
           else
             weight = 1.0f;
 
@@ -3039,18 +3038,6 @@ int main(int argc, char** argv)
           else
           {
             looseNotTightWeight = 1;
-          }
-          if(isL1PreFiring && year==2017)
-          {
-            //loop over jets?
-            //auto l1map = getL1preFiringMapsSys(Jet_eta, jetPt);
-            auto l1map = getL1preFiringMapsSys(Jet1Eta.Value(), Jet1Pt.Value());
-            l1prefireWeight = 1 - l1map;
-            weight *= l1prefireWeight;
-          }
-          else
-          {
-            l1prefireWeight = 1;
           }
 
           //if(doSync)
