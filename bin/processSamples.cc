@@ -688,11 +688,12 @@ int main(int argc, char** argv)
         bTagSF.Systematic("CFErr1_Down");
         bTagSF.Systematic("CFErr2_Up");
         bTagSF.Systematic("CFErr2_Down");
+        std::cout << "\t        l1preFire" << std::endl;
+        l1prefireWeight = 1;
+        l1prefireWeight.Systematic("L1prefireWeight_Up");
+        l1prefireWeight.Systematic("L1prefireWeight_Down");
       }
-
-      std::cout << "\t        l1preFire" << std::endl;
-      l1prefireWeight = (1 - getL1preFiringMapsSys(0.5, 100));
-
+      
       std::cout << "\t        looseNotTight" << std::endl;
       //looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
       looseNotTightWeight = getLeptonTightLooseRatio2017Sys(11, 20, 1.1);
@@ -2640,6 +2641,13 @@ int main(int argc, char** argv)
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lep" || process.tag() == "ttbar_lo" || process.issignal())
               ISRweight = ISRCParam * ISRweightFromNISRJetSys(nIsr);
             // TODO: missing tt_pow reweighting https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
+            if (year==2017)
+            {
+              l1prefireWeight = getL1preFiringMapsSys(validJets, jetPt, Jet_eta);
+            }
+            else{
+              l1prefireWeight = 1.0
+            }
           }
 
           if(!process.isdata())
@@ -2800,22 +2808,6 @@ int main(int argc, char** argv)
           list.clear();
           list.push_back("Value");
           loadSystematics(list, validJets);
-
-          // L1 prefire issue
-          l1prefireWeight = 1;
-          if (year==2017)
-          {
-            for(auto &jet : validJets.GetSystematicOrValue("Value"))
-            {
-              const auto &pt = jetPt.GetSystematicOrValue("Value")[jet];
-              auto l1map = getL1preFiringMapsSys(Jet_eta[jet], pt);
-
-              l1prefireWeight *= (1-l1map);
-            }
-          }
-          else{
-            l1prefireWeight = 1;
-          }
 
           TLorentzVector vJet;
           HT = 0;

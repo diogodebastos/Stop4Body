@@ -2053,36 +2053,43 @@ ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double Le
   return retVal;
 }
 
-doubleUnc getL1preFiringMaps(double JetEta, double JetPt)
+ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta)
 {
- double val = 1, unc = 0;
- if(L1prefiring_jetpt_2017BtoFHist == nullptr)
-   return doubleUnc(1,0);
+  ValueWithSystematics<double> retVal = 1.0;
 
- auto bin = L1prefiring_jetpt_2017BtoFHist->FindBin(JetEta,JetPt);
- val = L1prefiring_jetpt_2017BtoFHist->GetBinContent(bin);
- unc = L1prefiring_jetpt_2017BtoFHist->GetBinError(bin);
+  std::vector<std::string> list;
+  list.push_back("Value");
+  list.Systematic("L1prefireWeight_Up");
+  list.Systematic("L1prefireWeight_Down");
 
- doubleUnc retVal(val, unc);
- return retVal;
-}
+  if(L1prefiring_jetpt_2017BtoFHist == nullptr)
+   return retVal = 1.0;
 
-ValueWithSystematics<double> getL1preFiringMapsSys(double JetEta, double JetPt)
-{
- doubleUnc jetMap = getL1preFiringMaps(JetEta, JetPt);
- double val = jetMap.value();
- double unc = jetMap.uncertainty();
+  double val = 1.0;
+  double unc = 0.0;
 
- ValueWithSystematics<double> retVal(val);
- retVal.Systematic("L1prefireWeight_Up");
- retVal.Systematic("L1prefireWeight_Down");
+  doubleUnc unit(1,0)
+  doubleUnc l1preFiringSF(1,0);
+  for(int jet : validJets.GetSystematicOrValue("Value"))
+  {
+    double pt = jetPt.GetSystematicOrValue("Value")[jet];
+    double eta = Jet_eta[jet];
 
- retVal.Lock();
+    auto bin = L1prefiring_jetpt_2017BtoFHist->FindBin(eta,pt);
+    val = L1prefiring_jetpt_2017BtoFHist->GetBinContent(bin);
+    unc = L1prefiring_jetpt_2017BtoFHist->GetBinError(bin);
 
- retVal.Systematic("L1prefireWeight_Up") = val+unc;
- retVal.Systematic("L1prefireWeight_Down") = val-unc;
+    doubleUnc jetW(val, unc);
 
- return retVal;
+    l1preFiringSF *= (unit-jetW);
+  }
+
+  retVal.Value() = l1preFiringSF.value();
+
+  retVal.Systematic("L1prefireWeight_Up") = l1preFiringSF.value()+l1preFiringSF.uncertainty();
+  retVal.Systematic("L1prefireWeight_Down") = l1preFiringSF.value()-l1preFiringSF.uncertainty();
+
+  return retVal;
 }
 
 ValueWithSystematics<double> getFullFastIDSFSys(double LepID, double LepPt, double LepEta, int year)

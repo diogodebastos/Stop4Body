@@ -95,7 +95,6 @@ doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonIDSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta);
-doubleUnc getL1preFiringMaps(double JetEta, double JetPt);
 doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
 doubleUnc stopCrossSection(double stopM, double lspM);
 
@@ -116,7 +115,7 @@ ValueWithSystematics<double> getLeptonISOSF2016Sys(double LepID, double LepPt, d
 ;
 ValueWithSystematics<double> getLeptonTightLooseRatio2017Sys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonTightLooseRatio2017MCClosureSys(double LepID, double LepPt, double LepEta);
-ValueWithSystematics<double> getL1preFiringMapsSys(double JetEta, double JetPt);
+ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta);
 ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double LepEta, int year);
