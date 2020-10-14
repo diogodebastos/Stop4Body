@@ -867,6 +867,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Jet2DeepCSV;
       ValueWithSystematics<float> Jet3Pt;
       ValueWithSystematics<float> Jet3Eta;
+      ValueWithSystematics<float> Jet3Phi;
       //ValueWithSystematics<float> Jet3CSV;
       ValueWithSystematics<float> Jet3DeepCSV;
       ValueWithSystematics<float> DPhiJet1Jet2;
@@ -886,6 +887,11 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> eta5HT;
       ValueWithSystematics<float> HT_raw;
       ValueWithSystematics<float> DPhiJet1HTmiss;
+      ValueWithSystematics<float> DPhiJet1Met;
+      ValueWithSystematics<float> DPhiJet2HTmiss;
+      ValueWithSystematics<float> DPhiJet2Met;
+      ValueWithSystematics<float> DPhiJet3HTmiss;
+      ValueWithSystematics<float> DPhiJet3Met;
 
       ValueWithSystematics<float> Ngenjet;
       ValueWithSystematics<float> genJet1Pt;
@@ -1030,6 +1036,10 @@ int main(int argc, char** argv)
         Jet3Eta.Systematic("JES_Down");
         Jet3Eta.Systematic("JER_Up");
         Jet3Eta.Systematic("JER_Down");
+        Jet3Phi.Systematic("JES_Up");
+        Jet3Phi.Systematic("JES_Down");
+        Jet3Phi.Systematic("JER_Up");
+        Jet3Phi.Systematic("JER_Down");
         /*
         Jet3CSV.Systematic("JES_Up");
         Jet3CSV.Systematic("JES_Down");
@@ -1108,6 +1118,26 @@ int main(int argc, char** argv)
         DPhiJet1HTmiss.Systematic("JES_Down");
         DPhiJet1HTmiss.Systematic("JER_Up");
         DPhiJet1HTmiss.Systematic("JER_Down");
+        DPhiJet1Met.Systematic("JES_Up");
+        DPhiJet1Met.Systematic("JES_Down");
+        DPhiJet1Met.Systematic("JER_Up");
+        DPhiJet1Met.Systematic("JER_Down");
+        DPhiJet2HTmiss.Systematic("JES_Up");
+        DPhiJet2HTmiss.Systematic("JES_Down");
+        DPhiJet2HTmiss.Systematic("JER_Up");
+        DPhiJet2HTmiss.Systematic("JER_Down");
+        DPhiJet2Met.Systematic("JES_Up");
+        DPhiJet2Met.Systematic("JES_Down");
+        DPhiJet2Met.Systematic("JER_Up");
+        DPhiJet2Met.Systematic("JER_Down");
+        DPhiJet3HTmiss.Systematic("JES_Up");
+        DPhiJet3HTmiss.Systematic("JES_Down");
+        DPhiJet3HTmiss.Systematic("JER_Up");
+        DPhiJet3HTmiss.Systematic("JER_Down");
+        DPhiJet3Met.Systematic("JES_Up");
+        DPhiJet3Met.Systematic("JES_Down");
+        DPhiJet3Met.Systematic("JER_Up");
+        DPhiJet3Met.Systematic("JER_Down");
         NbLoose.Systematic("JES_Up");
         NbLoose.Systematic("JES_Down");
         NbLoose.Systematic("JER_Up");
@@ -1240,6 +1270,7 @@ int main(int argc, char** argv)
         Jet2DeepCSV.Lock();
         Jet3Pt.Lock();
         Jet3Eta.Lock();
+        Jet3Phi.Lock();
         //Jet3CSV.Lock();
         Jet3DeepCSV.Lock();
         DPhiJet1Jet2.Lock();
@@ -1259,6 +1290,11 @@ int main(int argc, char** argv)
         eta5HT.Lock();
         HT_raw.Lock();
         DPhiJet1HTmiss.Lock();
+        DPhiJet1Met.Lock();
+        DPhiJet2HTmiss.Lock();
+        DPhiJet2Met.Lock();
+        DPhiJet3HTmiss.Lock();
+        DPhiJet3Met.Lock();
         Ngenjet.Lock();
         genJet1Pt.Lock();
         genJet2Pt.Lock();
@@ -1324,6 +1360,7 @@ int main(int argc, char** argv)
       bdttree->Branch("Jet2DeepCSV",&Jet2DeepCSV.Value(),"Jet2DeepCSV/F");
       bdttree->Branch("Jet3Pt",&Jet3Pt.Value(),"Jet3Pt/F");
       bdttree->Branch("Jet3Eta",&Jet3Eta.Value(),"Jet3Eta/F");
+      bdttree->Branch("Jet3Phi",&Jet3Phi.Value(),"Jet3Phi/F");
       //bdttree->Branch("Jet3CSV",&Jet3CSV.Value(),"Jet3CSV/F");
       bdttree->Branch("Jet3DeepCSV",&Jet3DeepCSV.Value(),"Jet3DeepCSV/F");
       bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
@@ -1343,6 +1380,11 @@ int main(int argc, char** argv)
       bdttree->Branch("eta5HT",&eta5HT.Value(),"eta5HT/F");
       bdttree->Branch("HT_raw",&HT_raw.Value(),"HT_raw/F");
       bdttree->Branch("DPhiJet1HTmiss",&DPhiJet1HTmiss.Value(),"DPhiJet1HTmiss/F");
+      bdttree->Branch("DPhiJet1Met",&DPhiJet1Met.Value(),"DPhiJet1Met/F");
+      bdttree->Branch("DPhiJet2HTmiss",&DPhiJet2HTmiss.Value(),"DPhiJet2HTmiss/F");
+      bdttree->Branch("DPhiJet2Met",&DPhiJet2Met.Value(),"DPhiJet2Met/F");
+      bdttree->Branch("DPhiJet3HTmiss",&DPhiJet3HTmiss.Value(),"DPhiJet3HTmiss/F");
+      bdttree->Branch("DPhiJet3Met",&DPhiJet3Met.Value(),"DPhiJet3Met/F");
       bdttree->Branch("Ngenjet",&Ngenjet.Value(),"Ngenjet/F");
       bdttree->Branch("genJet1Pt",&genJet1Pt.Value(),"genJet1Pt/F");
       bdttree->Branch("genJet2Pt",&genJet2Pt.Value(),"genJet2Pt/F");
@@ -1434,6 +1476,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("Jet3Pt_"+systematic).c_str(), &(Jet3Pt.Systematic(systematic)));
         for(auto& systematic: Jet3Eta.Systematics())
           bdttree->Branch(("Jet3Eta_"+systematic).c_str(), &(Jet3Eta.Systematic(systematic)));
+        for(auto& systematic: Jet3Phi.Systematics())
+          bdttree->Branch(("Jet3Phi_"+systematic).c_str(), &(Jet3Phi.Systematic(systematic)));
         //for(auto& systematic: Jet3CSV.Systematics())
           //bdttree->Branch(("Jet3CSV_"+systematic).c_str(), &(Jet3CSV.Systematic(systematic)));
         for(auto& systematic: Jet3DeepCSV.Systematics())
@@ -2752,6 +2796,7 @@ int main(int argc, char** argv)
 
           Jet3Pt     = loadSysQuantity(jetPt,    validJets, 2);
           Jet3Eta    = loadQuantity(Jet_eta,     validJets, 2);
+          Jet3Phi    = loadQuantity(Jet_phi,     validJets, 2);
           //Jet3CSV    = loadQuantity(Jet_btagCSVV2, validJets, 2);
           Jet3DeepCSV    = loadQuantity(Jet_btagDeepB, validJets, 2);
 
@@ -2875,6 +2920,18 @@ int main(int argc, char** argv)
 
           ValueWithSystematics<double> dphijhtmiss = DeltaPhiSys(Jet1Phi, HTmissPhi);
           DPhiJet1HTmiss = dphijhtmiss;
+          ValueWithSystematics<double> dphijmet = DeltaPhiSys(Jet1Phi, Met_phi);
+          DPhiJet1Met = dphijmet;
+
+          ValueWithSystematics<double> dphij2htmiss = DeltaPhiSys(Jet2Phi, HTmissPhi);
+          DPhiJet2HTmiss = dphij2htmiss;
+          ValueWithSystematics<double> dphij2met = DeltaPhiSys(Jet2Phi, Met_phi);
+          DPhiJet2Met = dphij2met;
+
+          ValueWithSystematics<double> dphij3htmiss = DeltaPhiSys(Jet3Phi, HTmissPhi);
+          DPhiJet3HTmiss = dphij3htmiss;
+          ValueWithSystematics<double> dphij3met = DeltaPhiSys(Jet3Phi, Met_phi);
+          DPhiJet3Met = dphij3met;
 
           eta1p5HT = 0;
 
