@@ -2690,7 +2690,7 @@ int main(int argc, char** argv)
               l1prefireWeight = getL1preFiringMapsSys(validJets, jetPt, Jet_eta);
             }
             else{
-              l1prefireWeight = 1.0
+              l1prefireWeight = 1.0;
             }
           }
 
