@@ -553,7 +553,7 @@ int main(int argc, char** argv)
       std::string plotBaseName = cut.name()+"_"+variable.name();
       std::cout << "  Variable: " << variable.name() << std::endl;
 
-      selection = selectionJSON "&& ( " + variable.name() +" > -9999)";
+      selection = selectionJSON + " && (" + variable.name() +">-9999)";
 
       if(doSummary)
       {
