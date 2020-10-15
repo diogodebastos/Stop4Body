@@ -551,6 +551,8 @@ int main(int argc, char** argv)
       std::string plotBaseName = cut.name()+"_"+variable.name();
       std::cout << "  Variable: " << variable.name() << std::endl;
 
+      selection += "&& ( " + variable.name() +" > -9999)"
+
       if(doSummary)
       {
         outSummary << "Cut: " << cut.name() << std::endl;
