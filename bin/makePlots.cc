@@ -546,12 +546,14 @@ int main(int argc, char** argv)
 
     std::cout << "Getting variables and yields with selection (" << selection << ") and weight (" << mcWeight << ")" << std::endl;
 
+    std::string selectionJSON = selection;
+
     for(auto & variable : variables)
     {
       std::string plotBaseName = cut.name()+"_"+variable.name();
       std::cout << "  Variable: " << variable.name() << std::endl;
 
-      selection += "&& ( " + variable.name() +" > -9999)"
+      selection = selectionJSON "&& ( " + variable.name() +" > -9999)";
 
       if(doSummary)
       {
