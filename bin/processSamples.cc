@@ -842,6 +842,8 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> mt;
       ValueWithSystematics<float> Q80;
       ValueWithSystematics<float> CosDeltaPhi;
+      ValueWithSystematics<float> DPhiLepMet;
+      ValueWithSystematics<float> DPhiLepHTmiss;
       ValueWithSystematics<float> nIsr_out;
       ValueWithSystematics<float> Njet;
       /*
@@ -942,6 +944,14 @@ int main(int argc, char** argv)
         CosDeltaPhi.Systematic("JES_Down");
         CosDeltaPhi.Systematic("JER_Up");
         CosDeltaPhi.Systematic("JER_Down");
+        DPhiLepMet.Systematic("JES_Up");
+        DPhiLepMet.Systematic("JES_Down");
+        DPhiLepMet.Systematic("JER_Up");
+        DPhiLepMet.Systematic("JER_Down");
+        DPhiLepHTmiss.Systematic("JES_Up");
+        DPhiLepHTmiss.Systematic("JES_Down");
+        DPhiLepHTmiss.Systematic("JER_Up");
+        DPhiLepHTmiss.Systematic("JER_Down");
         Njet.Systematic("JES_Up");
         Njet.Systematic("JES_Down");
         Njet.Systematic("JER_Up");
@@ -1245,6 +1255,8 @@ int main(int argc, char** argv)
         mt.Lock();
         Q80.Lock();
         CosDeltaPhi.Lock();
+        DPhiLepMet.Lock();
+        DPhiLepHTmiss.Lock();
         nIsr_out.Lock();
         Njet.Lock();
         /*
@@ -1332,7 +1344,8 @@ int main(int argc, char** argv)
       bdttree->Branch("mt",&mt.Value(),"mt/F");
       bdttree-> Branch("Q80",&Q80.Value(),"Q80/F");
       bdttree->Branch("CosDeltaPhi",&CosDeltaPhi.Value(),"CosDeltaPhi/F");
-
+      bdttree->Branch("DPhiLepMet",&DPhiLepMet.Value(),"DPhiLepMet/F");
+      bdttree->Branch("DPhiLepHTmiss",&DPhiLepHTmiss.Value(),"DPhiLepHTmiss/F");
       bdttree->Branch("nIsr", &nIsr_out.Value(), "nIsr/F");
       bdttree->Branch("Njet",&Njet.Value(),"Njet/F");
       /*
@@ -2917,6 +2930,11 @@ int main(int argc, char** argv)
             HTmissEta.GetSystematicOrValue(syst) = vHTmiss.Eta();
             HTmissPhi.GetSystematicOrValue(syst) = vHTmiss.Phi();
           }
+
+          ValueWithSystematics<double> dphilepmet = DeltaPhiSys(ValueWithSystematics<double>(lep_phi), Met_phi);
+          DPhiLepMet = dphilepmet;         
+          ValueWithSystematics<double> dphilephtmiss = DeltaPhiSys(ValueWithSystematics<double>(lep_phi), HTmissPhi);
+          DPhiLepHTmiss = dphilephtmiss;
 
           ValueWithSystematics<double> dphijhtmiss = DeltaPhiSys(Jet1Phi, HTmissPhi);
           DPhiJet1HTmiss = dphijhtmiss;
