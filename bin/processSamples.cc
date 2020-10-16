@@ -1954,6 +1954,34 @@ int main(int argc, char** argv)
 
           //TODO: Check if the correct thing to do is actually divide by Jet_pt. If so, when getting Sys the nominal correction value for the other correction factor (JER when doing JEC and vice versa) is included. Shouldn't it be remove?
 
+// ***** MET ******
+
+          // Setting the values to be saved in the output tree
+          ValueWithSystematics<double> MetDou = MET_pt;
+          ValueWithSystematics<double> MetPhi = MET_phi;
+          ValueWithSystematics<double> CaloMetDou = CaloMET_pt;
+          ValueWithSystematics<double> CaloMetPhi = CaloMetPhi;
+          if(!process.isdata())
+          {
+            MetDou.Systematic("JES_Up") = MET_pt_jesTotalUp;
+            MetDou.Systematic("JES_Down") = MET_pt_jesTotalDown;
+            MetDou.Systematic("JER_Up") = MET_pt_jerUp;
+            MetDou.Systematic("JER_Down") = MET_pt_jerDown;
+            MetPhi.Systematic("JES_Up") = MET_phi_jesTotalUp;
+            MetPhi.Systematic("JES_Down") = MET_phi_jesTotalDown;
+            MetPhi.Systematic("JER_Up") = MET_phi_jerUp;
+            MetPhi.Systematic("JER_Down") = MET_phi_jerDown;
+          }
+          Met = MetDou;
+          Met_phi = MET_phi;
+          CaloMet = CaloMetDou;
+
+          if(preemptiveDropEvents)
+          {
+            if(!swap && !static_cast<bool>(Met > MIN_MET))
+              continue;
+          }
+
 // ***** LEPTONS ******
 
           nGoodEl = 0;
@@ -1974,7 +2002,7 @@ int main(int argc, char** argv)
           {
             LepGood_pfAbsIso03_all[i] = LepGood_pfRelIso03_all[i] * LepGood_pt[i];
 
-            if (preemptiveDropEvents && year==2018 && (std::abs(LepGood_pdgId[i]) == 11 && LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.57 && LepGood_phi[i] < -0.87))
+            if ((year==2018) && ( (std::abs(LepGood_pdgId[i]) == 11) && (LepGood_pt[i] > 30) && (LepGood_eta[i] > -3.0) && (LepGood_eta[i] < -1.4) && (LepGood_phi[i] > -1.57) && (LepGood_phi[i] < -0.87) ) )
               continue;  // Veto events in HEM 15/16
 
             bool lPTETA = false;
@@ -2129,7 +2157,7 @@ int main(int argc, char** argv)
 
 // ***** JETS ******
 
-   	  for(UInt_t i = 0; i < nJetIn; ++i)
+          for(UInt_t i = 0; i < nJetIn; ++i)
           {
             jetPt.Value().push_back(Jet_pt[i]);
             if(!process.isdata())
@@ -2226,11 +2254,16 @@ int main(int argc, char** argv)
 
             for(UInt_t jet = 0; jet < nJetIn; ++jet)
             {
-              if ((year==2018) && ((Jet_eta[jet] > -3.2) && (Jet_eta[jet] < -1.2) && (Jet_phi[jet] > -1.77) && (Jet_phi[jet] < -0.67)))
-                continue;  // Veto events in HEM 15/16
+              //if ((year==2018) && ((Jet_eta[jet] > -3.2) && (Jet_eta[jet] < -1.2) && (Jet_phi[jet] > -1.77) && (Jet_phi[jet] < -0.67)))
+              //  continue;  // Veto events in HEM 15/16
 
               allJets.GetSystematicOrValue(syst).push_back(jet);
-              if((Jet_jetId[jet] >= 2) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold) && (jetMask[jet] != 1))
+
+              // Don't consider Jets with DPhiJetMet < 1.5
+
+              double dphiJetMet = DeltaPhi(Jet_phi[jet], Met_phi);
+
+              if((Jet_jetId[jet] >= 2) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold) && (jetMask[jet] != 1) && (dphiJetMet > 1.5))
               {
                 if(std::abs(Jet_eta[jet]) < 2.4){
                   validJets.GetSystematicOrValue(syst).push_back(jet);
@@ -2336,35 +2369,6 @@ int main(int argc, char** argv)
             else
               continue;
           }
-
-// ***** MET ******
-
-          // Setting the values to be saved in the output tree
-          ValueWithSystematics<double> MetDou = MET_pt;
-          ValueWithSystematics<double> MetPhi = MET_phi;
-          ValueWithSystematics<double> CaloMetDou = CaloMET_pt;
-          ValueWithSystematics<double> CaloMetPhi = CaloMetPhi;
-          if(!process.isdata())
-          {
-            MetDou.Systematic("JES_Up") = MET_pt_jesTotalUp;
-            MetDou.Systematic("JES_Down") = MET_pt_jesTotalDown;
-            MetDou.Systematic("JER_Up") = MET_pt_jerUp;
-            MetDou.Systematic("JER_Down") = MET_pt_jerDown;
-            MetPhi.Systematic("JES_Up") = MET_phi_jesTotalUp;
-            MetPhi.Systematic("JES_Down") = MET_phi_jesTotalDown;
-            MetPhi.Systematic("JER_Up") = MET_phi_jerUp;
-            MetPhi.Systematic("JER_Down") = MET_phi_jerDown;
-          }
-          Met = MetDou;
-          Met_phi = MET_phi;
-          CaloMet = CaloMetDou;
-
-          if(preemptiveDropEvents)
-          {
-            if(!swap && !static_cast<bool>(Met > MIN_MET))
-              continue;
-          }
-
 
           if(!(process.isdata() || process.issignal() || process.tag()=="VV"))
           {
@@ -2950,6 +2954,23 @@ int main(int argc, char** argv)
           DPhiJet3HTmiss = dphij3htmiss;
           ValueWithSystematics<double> dphij3met = DeltaPhiSys(Jet3Phi, Met_phi);
           DPhiJet3Met = dphij3met;
+
+          if(year==2018){ // Veto events in HEM 15/16
+            for(int jet : validJets.GetSystematicOrValue("Value"))
+            {
+              double pt = jetPt.GetSystematicOrValue("Value")[jet];
+              float eta = Jet_eta[jet];
+              float phi = Jet_phi[jet];
+
+              ValueWithSystematics<double> dphijethtmiss = DeltaPhiSys(ValueWithSystematics<double>(phi), HTmissPhi);
+              if(dphijethtmiss <  0.5){
+                if((eta > -3.2) && (eta < -1.2) && (phi > -1.77) && (phi < -0.67))
+                {
+                  continue;
+                }
+              }
+            }
+          }
 
           eta1p5HT = 0;
 
