@@ -277,19 +277,36 @@ int main(int argc, char** argv)
       CSV_Tight = 0.9693;
       */
       // DeepCSV for 2017
-      //
+      /*
       bTagCalibrationFile = "../data/DeepCSV_94XSF_V5_B_F.csv";
       CSV_Loose = 0.1522;
       CSV_Medium = 0.4941;
       CSV_Tight = 0.8001;
+      */ 
+      // DeepFlavour for 2017
+      //
+      bTagCalibrationFile = "../data/DeepFlavour_94XSF_V4_B_F.csv";
+      CSV_Loose = 0.0521;
+      CSV_Medium = 0.3033;
+      CSV_Tight = 0.7489;
       //
     }
     else if (year==2018)
     {
+      // DeepCSV for 2018
+      /*
       bTagCalibrationFile = "../data/DeepCSV_102XSF_V2.csv";
       CSV_Loose = 0.1241;
       CSV_Medium = 0.4184;
       CSV_Tight = 0.7527;
+      */
+      // DeepFlavour for 2018
+      //
+      bTagCalibrationFile = "../data/DeepJet_102XSF_V2.csv";
+      CSV_Loose = 0.0494;
+      CSV_Medium = 0.2770;
+      CSV_Tight = 0.7264;
+      //
     }
     else{
       bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
@@ -489,7 +506,8 @@ int main(int argc, char** argv)
   // B-tagging calibration
 
   //BTagCalibration bCalib("csvv2", bTagCalibrationFile);
-  BTagCalibration bCalib("deepcsv", bTagCalibrationFile);
+  //BTagCalibration bCalib("deepcsv", bTagCalibrationFile);
+  BTagCalibration bCalib("deepjet", bTagCalibrationFile);
   BTagCalibrationReader bReader (BTagEntry::OP_RESHAPING,  // operating point
                                   "central",               // central sys type
                                   {                        // other sys types
@@ -861,17 +879,20 @@ int main(int argc, char** argv)
       ValueWithSystematics<double> Jet1Phi;
       ValueWithSystematics<double> Jet1neEmEF;
       //ValueWithSystematics<float> Jet1CSV;
-      ValueWithSystematics<float> Jet1DeepCSV;
+      //ValueWithSystematics<float> Jet1DeepCSV;
+      ValueWithSystematics<float> Jet1DeepJet;
       ValueWithSystematics<float> Jet2Pt;
       ValueWithSystematics<float> Jet2Eta;
       ValueWithSystematics<double> Jet2Phi;
 //      ValueWithSystematics<float> Jet2CSV;
-      ValueWithSystematics<float> Jet2DeepCSV;
+      //ValueWithSystematics<float> Jet2DeepCSV;
+      ValueWithSystematics<float> Jet2DeepJet;
       ValueWithSystematics<float> Jet3Pt;
       ValueWithSystematics<float> Jet3Eta;
       ValueWithSystematics<double> Jet3Phi;
       //ValueWithSystematics<float> Jet3CSV;
-      ValueWithSystematics<float> Jet3DeepCSV;
+      //ValueWithSystematics<float> Jet3DeepCSV;
+      ValueWithSystematics<float> Jet3DeepJet;
       ValueWithSystematics<float> DPhiJet1Jet2;
       ValueWithSystematics<float> eta1p5Jet1Pt;
       ValueWithSystematics<float> eta1p5Jet1Eta;
@@ -912,12 +933,14 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> JetHBeta;
       ValueWithSystematics<float> JetHBindex;
       //ValueWithSystematics<float> JetHBCSV;
-      ValueWithSystematics<float> JetHBDeepCSV;
+      //ValueWithSystematics<float> JetHBDeepCSV;
+      ValueWithSystematics<float> JetHBDeepJet;
       ValueWithSystematics<float> JetB2pt;
       ValueWithSystematics<float> JetB2eta;
       ValueWithSystematics<float> JetB2index;
       //ValueWithSystematics<float> JetB2CSV;
-      ValueWithSystematics<float> JetB2DeepCSV;
+      //ValueWithSystematics<float> JetB2DeepCSV;
+      ValueWithSystematics<float> JetB2DeepJet;
 
       ValueWithSystematics<float> DrJet1Lep;
       ValueWithSystematics<float> DrJet2Lep;
@@ -1011,11 +1034,15 @@ int main(int argc, char** argv)
         Jet1CSV.Systematic("JES_Down");
         Jet1CSV.Systematic("JER_Up");
         Jet1CSV.Systematic("JER_Down");
-        */
         Jet1DeepCSV.Systematic("JES_Up");
         Jet1DeepCSV.Systematic("JES_Down");
         Jet1DeepCSV.Systematic("JER_Up");
         Jet1DeepCSV.Systematic("JER_Down");
+        */
+        Jet1DeepJet.Systematic("JES_Up");
+        Jet1DeepJet.Systematic("JES_Down");
+        Jet1DeepJet.Systematic("JER_Up");
+        Jet1DeepJet.Systematic("JER_Down");
         Jet2Pt.Systematic("JES_Up");
         Jet2Pt.Systematic("JES_Down");
         Jet2Pt.Systematic("JER_Up");
@@ -1033,11 +1060,15 @@ int main(int argc, char** argv)
         Jet2CSV.Systematic("JES_Down");
         Jet2CSV.Systematic("JER_Up");
         Jet2CSV.Systematic("JER_Down");
-        */
         Jet2DeepCSV.Systematic("JES_Up");
         Jet2DeepCSV.Systematic("JES_Down");
         Jet2DeepCSV.Systematic("JER_Up");
         Jet2DeepCSV.Systematic("JER_Down");
+        */
+        Jet2DeepJet.Systematic("JES_Up");
+        Jet2DeepJet.Systematic("JES_Down");
+        Jet2DeepJet.Systematic("JER_Up");
+        Jet2DeepJet.Systematic("JER_Down");
         Jet3Pt.Systematic("JES_Up");
         Jet3Pt.Systematic("JES_Down");
         Jet3Pt.Systematic("JER_Up");
@@ -1055,11 +1086,15 @@ int main(int argc, char** argv)
         Jet3CSV.Systematic("JES_Down");
         Jet3CSV.Systematic("JER_Up");
         Jet3CSV.Systematic("JER_Down");
-        */
         Jet3DeepCSV.Systematic("JES_Up");
         Jet3DeepCSV.Systematic("JES_Down");
         Jet3DeepCSV.Systematic("JER_Up");
         Jet3DeepCSV.Systematic("JER_Down");
+        */
+        Jet3DeepJet.Systematic("JES_Up");
+        Jet3DeepJet.Systematic("JES_Down");
+        Jet3DeepJet.Systematic("JER_Up");
+        Jet3DeepJet.Systematic("JER_Down");
         DPhiJet1Jet2.Systematic("JES_Up");
         DPhiJet1Jet2.Systematic("JES_Down");
         DPhiJet1Jet2.Systematic("JER_Up");
@@ -1197,11 +1232,15 @@ int main(int argc, char** argv)
         JetHBCSV.Systematic("JES_Down");
         JetHBCSV.Systematic("JER_Up");
         JetHBCSV.Systematic("JER_Down");
-        */
         JetHBDeepCSV.Systematic("JES_Up");
         JetHBDeepCSV.Systematic("JES_Down");
         JetHBDeepCSV.Systematic("JER_Up");
         JetHBDeepCSV.Systematic("JER_Down");
+        */
+        JetHBDeepJet.Systematic("JES_Up");
+        JetHBDeepJet.Systematic("JES_Down");
+        JetHBDeepJet.Systematic("JER_Up");
+        JetHBDeepJet.Systematic("JER_Down");
         JetB2pt.Systematic("JES_Up");
         JetB2pt.Systematic("JES_Down");
         JetB2pt.Systematic("JER_Up");
@@ -1219,11 +1258,15 @@ int main(int argc, char** argv)
         JetB2CSV.Systematic("JES_Down");
         JetB2CSV.Systematic("JER_Up");
         JetB2CSV.Systematic("JER_Down");
-        */
         JetB2DeepCSV.Systematic("JES_Up");
         JetB2DeepCSV.Systematic("JES_Down");
         JetB2DeepCSV.Systematic("JER_Up");
         JetB2DeepCSV.Systematic("JER_Down");
+        */
+        JetB2DeepJet.Systematic("JES_Up");
+        JetB2DeepJet.Systematic("JES_Down");
+        JetB2DeepJet.Systematic("JER_Up");
+        JetB2DeepJet.Systematic("JER_Down");
         DrJet1Lep.Systematic("JES_Up");
         DrJet1Lep.Systematic("JES_Down");
         DrJet1Lep.Systematic("JER_Up");
@@ -1274,17 +1317,20 @@ int main(int argc, char** argv)
         Jet1Phi.Lock();
         Jet1neEmEF.Lock();
         //Jet1CSV.Lock();
-        Jet1DeepCSV.Lock();
+        //Jet1DeepCSV.Lock();
+        Jet1DeepJet.Lock();
         Jet2Pt.Lock();
         Jet2Eta.Lock();
         Jet2Phi.Lock();
         //Jet2CSV.Lock();
-        Jet2DeepCSV.Lock();
+        //Jet2DeepCSV.Lock();
+        Jet2DeepJet.Lock();
         Jet3Pt.Lock();
         Jet3Eta.Lock();
         Jet3Phi.Lock();
         //Jet3CSV.Lock();
-        Jet3DeepCSV.Lock();
+        //Jet3DeepCSV.Lock();
+        Jet3DeepJet.Lock();
         DPhiJet1Jet2.Lock();
         eta1p5Jet1Pt.Lock();
         eta1p5Jet1Eta.Lock();
@@ -1323,12 +1369,14 @@ int main(int argc, char** argv)
         JetHBeta.Lock();
         JetHBindex.Lock();
         //JetHBCSV.Lock();
-        JetHBDeepCSV.Lock();
+        //JetHBDeepCSV.Lock();
+        JetHBDeepJet.Lock();
         JetB2pt.Lock();
         JetB2eta.Lock();
         JetB2index.Lock();
         //JetB2CSV.Lock();
-        JetB2DeepCSV.Lock();
+        //JetB2DeepCSV.Lock();
+        JetB2DeepJet.Lock();
         DrJet1Lep.Lock();
         DrJet2Lep.Lock();
         DrJetHBLep.Lock();
@@ -1365,17 +1413,20 @@ int main(int argc, char** argv)
       bdttree->Branch("Jet1Phi",&Jet1Phi.Value(),"Jet1Phi/D");
       bdttree->Branch("Jet1neEmEF",&Jet1neEmEF.Value(),"Jet1neEmEF/D");
       //bdttree->Branch("Jet1CSV",&Jet1CSV.Value(),"Jet1CSV/F");
-      bdttree->Branch("Jet1DeepCSV",&Jet1DeepCSV.Value(),"Jet1DeepCSV/F");
+      //bdttree->Branch("Jet1DeepCSV",&Jet1DeepCSV.Value(),"Jet1DeepCSV/F");
+      bdttree->Branch("Jet1DeepJet",&Jet1DeepJet.Value(),"Jet1DeepJet/F");
       bdttree->Branch("Jet2Pt",&Jet2Pt.Value(),"Jet2Pt/F");
       bdttree->Branch("Jet2Eta",&Jet2Eta.Value(),"Jet2Eta/F");
       bdttree->Branch("Jet2Phi",&Jet2Phi.Value(),"Jet2Phi/D");
       //bdttree->Branch("Jet2CSV",&Jet2CSV.Value(),"Jet2CSV/F");
-      bdttree->Branch("Jet2DeepCSV",&Jet2DeepCSV.Value(),"Jet2DeepCSV/F");
+      //bdttree->Branch("Jet2DeepCSV",&Jet2DeepCSV.Value(),"Jet2DeepCSV/F");
+      bdttree->Branch("Jet2DeepJet",&Jet2DeepJet.Value(),"Jet2DeepJet/F");
       bdttree->Branch("Jet3Pt",&Jet3Pt.Value(),"Jet3Pt/F");
       bdttree->Branch("Jet3Eta",&Jet3Eta.Value(),"Jet3Eta/F");
       bdttree->Branch("Jet3Phi",&Jet3Phi.Value(),"Jet3Phi/D");
       //bdttree->Branch("Jet3CSV",&Jet3CSV.Value(),"Jet3CSV/F");
-      bdttree->Branch("Jet3DeepCSV",&Jet3DeepCSV.Value(),"Jet3DeepCSV/F");
+      //bdttree->Branch("Jet3DeepCSV",&Jet3DeepCSV.Value(),"Jet3DeepCSV/F");
+      bdttree->Branch("Jet3DeepJet",&Jet3DeepJet.Value(),"Jet3DeepJet/F");
       bdttree->Branch("DPhiJet1Jet2",&DPhiJet1Jet2.Value(),"DPhiJet1Jet2/F");
       bdttree->Branch("eta1p5Jet1Pt",&eta1p5Jet1Pt.Value(),"eta1p5Jet1Pt/F");
       bdttree->Branch("eta1p5Jet1Eta",&eta1p5Jet1Eta.Value(),"eta1p5Jet1Eta/F");
@@ -1415,12 +1466,15 @@ int main(int argc, char** argv)
       bdttree->Branch("JetHBeta",&JetHBeta.Value(),"JetHBeta/F");
       bdttree->Branch("JetHBindex", &JetHBindex.Value(), "JetHBindex/F");
       //bdttree->Branch("JetHBCSV", &JetHBCSV.Value(), "JetHBCSV/F");
-      bdttree->Branch("JetHBDeepCSV", &JetHBDeepCSV.Value(), "JetHBDeepCSV/F");
+      //bdttree->Branch("JetHBDeepCSV", &JetHBDeepCSV.Value(), "JetHBDeepCSV/F");
+      bdttree->Branch("JetHBDeepJet", &JetHBDeepJet.Value(), "JetHBDeepJet/F");
+
       bdttree->Branch("JetB2pt",&JetB2pt.Value(),"JetB2pt/F");
       bdttree->Branch("JetB2eta",&JetB2eta.Value(),"JetB2eta/F");
       bdttree->Branch("JetB2index", &JetB2index.Value(), "JetB2index/F");
       //bdttree->Branch("JetB2CSV", &JetB2CSV.Value(), "JetB2CSV/F");
-      bdttree->Branch("JetB2DeepCSV", &JetB2DeepCSV.Value(), "JetB2DeepCSV/F");
+      //bdttree->Branch("JetB2DeepCSV", &JetB2DeepCSV.Value(), "JetB2DeepCSV/F");
+      bdttree->Branch("JetB2DeepJet", &JetB2DeepJet.Value(), "JetB2DeepJet/F");
 
       bdttree->Branch("DrJet1Lep",&DrJet1Lep.Value(),"DrJet1Lep/F");
       bdttree->Branch("DrJet2Lep",&DrJet2Lep.Value(),"DrJet2Lep/F");
@@ -1473,8 +1527,10 @@ int main(int argc, char** argv)
           bdttree->Branch(("Jet1Phi_"+systematic).c_str(), &(Jet1Phi.Systematic(systematic)));
         //for(auto& systematic: Jet1CSV.Systematics())
           //bdttree->Branch(("Jet1CSV_"+systematic).c_str(), &(Jet1CSV.Systematic(systematic)));
-        for(auto& systematic: Jet1DeepCSV.Systematics())
-          bdttree->Branch(("Jet1DeepCSV_"+systematic).c_str(), &(Jet1DeepCSV.Systematic(systematic)));
+        //for(auto& systematic: Jet1DeepCSV.Systematics())
+          //bdttree->Branch(("Jet1DeepCSV_"+systematic).c_str(), &(Jet1DeepCSV.Systematic(systematic)));
+        for(auto& systematic: Jet1DeepJet.Systematics())
+          bdttree->Branch(("Jet1DeepJet_"+systematic).c_str(), &(Jet1DeepJet.Systematic(systematic)));
         for(auto& systematic: Jet2Pt.Systematics())
           bdttree->Branch(("Jet2Pt_"+systematic).c_str(), &(Jet2Pt.Systematic(systematic)));
         for(auto& systematic: Jet2Eta.Systematics())
@@ -1483,8 +1539,10 @@ int main(int argc, char** argv)
           bdttree->Branch(("Jet2Phi_"+systematic).c_str(), &(Jet2Phi.Systematic(systematic)));
         //for(auto& systematic: Jet2CSV.Systematics())
         //  bdttree->Branch(("Jet2CSV_"+systematic).c_str(), &(Jet2CSV.Systematic(systematic)));
-        for(auto& systematic: Jet2DeepCSV.Systematics())
-          bdttree->Branch(("Jet2DeepCSV_"+systematic).c_str(), &(Jet2DeepCSV.Systematic(systematic)));
+        //for(auto& systematic: Jet2DeepCSV.Systematics())
+          //bdttree->Branch(("Jet2DeepCSV_"+systematic).c_str(), &(Jet2DeepCSV.Systematic(systematic)));
+        for(auto& systematic: Jet2DeepJet.Systematics())
+          bdttree->Branch(("Jet2DeepJet_"+systematic).c_str(), &(Jet2DeepJet.Systematic(systematic)));
         for(auto& systematic: Jet3Pt.Systematics())
           bdttree->Branch(("Jet3Pt_"+systematic).c_str(), &(Jet3Pt.Systematic(systematic)));
         for(auto& systematic: Jet3Eta.Systematics())
@@ -1493,8 +1551,10 @@ int main(int argc, char** argv)
           bdttree->Branch(("Jet3Phi_"+systematic).c_str(), &(Jet3Phi.Systematic(systematic)));
         //for(auto& systematic: Jet3CSV.Systematics())
           //bdttree->Branch(("Jet3CSV_"+systematic).c_str(), &(Jet3CSV.Systematic(systematic)));
-        for(auto& systematic: Jet3DeepCSV.Systematics())
-          bdttree->Branch(("Jet3DeepCSV_"+systematic).c_str(), &(Jet3DeepCSV.Systematic(systematic)));
+        //for(auto& systematic: Jet3DeepCSV.Systematics())
+          //bdttree->Branch(("Jet3DeepCSV_"+systematic).c_str(), &(Jet3DeepCSV.Systematic(systematic)));
+        for(auto& systematic: Jet3DeepJet.Systematics())
+          bdttree->Branch(("Jet3DeepJet_"+systematic).c_str(), &(Jet3DeepJet.Systematic(systematic)));
         for(auto& systematic: DPhiJet1Jet2.Systematics())
           bdttree->Branch(("DPhiJet1Jet2_"+systematic).c_str(), &(DPhiJet1Jet2.Systematic(systematic)));
         for(auto& systematic: HT.Systematics())
@@ -1527,8 +1587,10 @@ int main(int argc, char** argv)
           bdttree->Branch(("JetHBindex_"+systematic).c_str(), &(JetHBindex.Systematic(systematic)));
         //for(auto& systematic: JetHBCSV.Systematics())
           //bdttree->Branch(("JetHBCSV_"+systematic).c_str(), &(JetHBCSV.Systematic(systematic)));
-        for(auto& systematic: JetHBDeepCSV.Systematics())
-          bdttree->Branch(("JetHBDeepCSV_"+systematic).c_str(), &(JetHBDeepCSV.Systematic(systematic)));
+        //for(auto& systematic: JetHBDeepCSV.Systematics())
+          //bdttree->Branch(("JetHBDeepCSV_"+systematic).c_str(), &(JetHBDeepCSV.Systematic(systematic)));
+        for(auto& systematic: JetHBDeepJet.Systematics())
+          bdttree->Branch(("JetHBDeepJet_"+systematic).c_str(), &(JetHBDeepJet.Systematic(systematic)));
         for(auto& systematic: JetB2pt.Systematics())
           bdttree->Branch(("JetB2pt_"+systematic).c_str(), &(JetB2pt.Systematic(systematic)));
         for(auto& systematic: JetB2eta.Systematics())
@@ -1537,8 +1599,10 @@ int main(int argc, char** argv)
           bdttree->Branch(("JetB2index_"+systematic).c_str(), &(JetB2index.Systematic(systematic)));
         //for(auto& systematic: JetB2CSV.Systematics())
           //bdttree->Branch(("JetB2CSV_"+systematic).c_str(), &(JetB2CSV.Systematic(systematic)));
-        for(auto& systematic: JetB2DeepCSV.Systematics())
-          bdttree->Branch(("JetB2DeepCSV_"+systematic).c_str(), &(JetB2DeepCSV.Systematic(systematic)));
+        //for(auto& systematic: JetB2DeepCSV.Systematics())
+          //bdttree->Branch(("JetB2DeepCSV_"+systematic).c_str(), &(JetB2DeepCSV.Systematic(systematic)));
+        for(auto& systematic: JetB2DeepJet.Systematics())
+          bdttree->Branch(("JetB2DeepJet_"+systematic).c_str(), &(JetB2DeepJet.Systematic(systematic)));
         for(auto& systematic: DrJet1Lep.Systematics())
           bdttree->Branch(("DrJet1Lep_"+systematic).c_str(), &(DrJet1Lep.Systematic(systematic)));
         for(auto& systematic: DrJet2Lep.Systematics())
@@ -1713,6 +1777,7 @@ int main(int argc, char** argv)
         Float_t Jet_phi[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_phi", &Jet_phi);
         Float_t Jet_btagCSVV2[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagCSVV2", &Jet_btagCSVV2);
         Float_t Jet_btagDeepB[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagDeepB", &Jet_btagDeepB);
+        Float_t Jet_btagDeepFlavB[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_btagDeepFlavB", &Jet_btagDeepFlavB);
         Float_t Jet_mass[JETCOLL_LIMIT];  inputtree->SetBranchAddress("Jet_mass", &Jet_mass);
         Float_t Jet_rawFactor[JETCOLL_LIMIT]; inputtree->SetBranchAddress("Jet_rawFactor", &Jet_rawFactor);
         UInt_t run;  inputtree->SetBranchAddress("run", &run);
@@ -2320,10 +2385,14 @@ int main(int argc, char** argv)
               return (jetPt.GetSystematicOrValue(syst))[left] > (jetPt.GetSystematicOrValue(syst))[right];
             });
 
+            std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagDeepFlavB] (const int &left, const int &right) {
+              return Jet_btagDeepFlavB[left] > Jet_btagDeepFlavB[right];
+            });
+            /*
             std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagDeepB] (const int &left, const int &right) {
               return Jet_btagDeepB[left] > Jet_btagDeepB[right];
             });
-            /*
+            
             std::sort(bjetList.GetSystematicOrValue(syst).begin(), bjetList.GetSystematicOrValue(syst).end(), [Jet_btagCSVV2] (const int &left, const int &right) {
               return Jet_btagCSVV2[left] > Jet_btagCSVV2[right];
             });
@@ -2470,10 +2539,12 @@ int main(int argc, char** argv)
           Jet2EtaDou = loadQuantity(Jet_eta,     validJets, 1);
           Jet2PhiDou = loadQuantity(Jet_phi,     validJets, 1);
           //Jet2CSV    = loadQuantity(Jet_btagCSVV2, validJets, 1);
-          Jet2DeepCSV = loadQuantity(Jet_btagDeepB, validJets, 1);
+          //Jet2DeepCSV = loadQuantity(Jet_btagDeepB, validJets, 1);
+          Jet2DeepJet = loadQuantity(Jet_btagDeepFlavB, validJets, 1);
           JetB2eta   = loadQuantity(Jet_eta,     bjetList,  1);
           //JetB2CSV   = loadQuantity(Jet_btagCSVV2, bjetList,  1);
-          JetB2DeepCSV   = loadQuantity(Jet_btagDeepB, bjetList,  1);
+          //JetB2DeepCSV   = loadQuantity(Jet_btagDeepB, bjetList,  1);
+          JetB2DeepJet   = loadQuantity(Jet_btagDeepFlavB, bjetList,  1);
           JetB2index = loadQuantity(identity,    bjetList,  1);
           Jet1EtaDou = loadQuantity(Jet_eta,     validJets, 0);
           Jet1PhiDou = loadQuantity(Jet_phi,     validJets, 0);
@@ -2693,7 +2764,8 @@ int main(int argc, char** argv)
           if(!process.isdata())
           {
             //bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagCSVV2, Jet_hadronFlavour);
-            bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagDeepB, Jet_hadronFlavour);
+            //bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagDeepB, Jet_hadronFlavour);
+            bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagDeepFlavB, Jet_hadronFlavour);
             triggerEfficiency = triggerEfficiencyFromMETSys(MetDou);
             // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets" || process.tag() == "WNJets")
@@ -2736,10 +2808,12 @@ int main(int argc, char** argv)
           JetHBpt    = loadSysQuantity(jetPt,    bjetList,  0);
           Jet1neEmEFDou = loadQuantity(Jet_neEmEF, validJets, 0);
           //Jet1CSV    = loadQuantity(Jet_btagCSVV2, validJets, 0);
-          Jet1DeepCSV    = loadQuantity(Jet_btagDeepB, validJets, 0);
+          //Jet1DeepCSV    = loadQuantity(Jet_btagDeepB, validJets, 0);
+          Jet1DeepJet    = loadQuantity(Jet_btagDeepFlavB, validJets, 0);
           JetB1EtaDou= loadQuantity(Jet_eta,     bjetList,  0);
           //JetHBCSV   = loadQuantity(Jet_btagCSVV2, bjetList,  0);
-          JetHBDeepCSV   = loadQuantity(Jet_btagDeepB, bjetList,  0);
+          //JetHBDeepCSV   = loadQuantity(Jet_btagDeepB, bjetList,  0);
+          JetHBDeepJet   = loadQuantity(Jet_btagDeepFlavB, bjetList,  0);
           JetHBindex = loadQuantity(identity,    bjetList,  0);
           JetB1Phi   = loadQuantity(Jet_phi,     bjetList,  0);
           genJet1Pt  = loadSysQuantity(genJetPt, genJets, 0);
@@ -2815,7 +2889,8 @@ int main(int argc, char** argv)
           Jet3Eta    = loadQuantity(Jet_eta,     validJets, 2);
           Jet3Phi    = loadQuantity(Jet_phi,     validJets, 2);
           //Jet3CSV    = loadQuantity(Jet_btagCSVV2, validJets, 2);
-          Jet3DeepCSV    = loadQuantity(Jet_btagDeepB, validJets, 2);
+          //Jet3DeepCSV    = loadQuantity(Jet_btagDeepB, validJets, 2);
+          Jet3DeepJet    = loadQuantity(Jet_btagDeepFlavB, validJets, 2);
 
           list.clear();
           list.push_back("Value");
