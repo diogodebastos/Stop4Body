@@ -2261,9 +2261,9 @@ int main(int argc, char** argv)
 
               // Don't consider Jets with DPhiJetMet < 1.5
 
-              double dphiJetMet = DeltaPhi(Jet_phi[jet], Met_phi);
+              double dphiJetMet = DeltaPhi(Jet_phi[jet], MET_phi);
 
-              if((Jet_jetId[jet] >= 2) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold) && (jetMask[jet] != 1) && (dphiJetMet > 1.5))
+              if((Jet_jetId[jet] >= 2) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold) && (jetMask[jet] != 1) && (dphiJetMet > -1))
               {
                 if(std::abs(Jet_eta[jet]) < 2.4){
                   validJets.GetSystematicOrValue(syst).push_back(jet);
@@ -2958,7 +2958,7 @@ int main(int argc, char** argv)
           if(year==2018){ // Veto events in HEM 15/16
             for(int jet : validJets.GetSystematicOrValue("Value"))
             {
-              double pt = jetPt.GetSystematicOrValue("Value")[jet];
+              //double pt = jetPt.GetSystematicOrValue("Value")[jet];
               float eta = Jet_eta[jet];
               float phi = Jet_phi[jet];
 

@@ -2059,8 +2059,8 @@ ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vec
 
   std::vector<std::string> list;
   list.push_back("Value");
-  list.Systematic("L1prefireWeight_Up");
-  list.Systematic("L1prefireWeight_Down");
+  list.push_back("L1prefireWeight_Up");
+  list.push_back("L1prefireWeight_Down");
 
   if(L1prefiring_jetpt_2017BtoFHist == nullptr)
    return retVal = 1.0;
@@ -2068,7 +2068,7 @@ ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vec
   double val = 1.0;
   double unc = 0.0;
 
-  doubleUnc unit(1,0)
+  doubleUnc unit(1,0);
   doubleUnc l1preFiringSF(1,0);
   for(int jet : validJets.GetSystematicOrValue("Value"))
   {
