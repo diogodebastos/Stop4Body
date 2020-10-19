@@ -128,7 +128,7 @@ bool replace(std::string& str, const std::string& from, const std::string& to)
     return true;
 }
 
-ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta, Float_t* Jet_btagCSV, Int_t* Jet_hadronFlavour)
+ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta, Float_t* bDiscr, Int_t* Jet_hadronFlavour)
 {
   ValueWithSystematics<double> retVal = 1.0;
 
@@ -161,7 +161,7 @@ ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueW
     {
       double pt = jetPt.GetSystematicOrValue(syst)[jet];
       double eta = Jet_eta[jet];
-      double csv = Jet_btagCSV[jet];
+      double csv = bDiscr[jet];
       int flavor = Jet_hadronFlavour[jet];
 
       bool isBFlav = false;
