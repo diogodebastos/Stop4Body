@@ -313,6 +313,7 @@ int main(int argc, char** argv)
     }
   }
 
+  std::cout << "Year: " << year << std::endl;
   std::cout << "bTagCalib file: " << bTagCalibrationFile << std::endl;
 
   if(!fileExists(outputDirectory+"/preProcessSamples.root"))
@@ -2769,6 +2770,7 @@ int main(int argc, char** argv)
             triggerEfficiency = triggerEfficiencyFromMETSys(MetDou);
             // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets" || process.tag() == "WNJets")
+            //if(process.tag() == "WJets" || process.tag() == "WNJets" || process.tag() == "WJetsNLO")
               EWKISRweight = EWKISRCParam * EWKISRweightFromISRpTSys(LepPt, lep_phi, MetDou, MetPhi);
             // For ISR, assume syst 50%
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lep" || process.tag() == "ttbar_lo" || process.issignal())
@@ -3030,22 +3032,6 @@ int main(int argc, char** argv)
           ValueWithSystematics<double> dphij3met = DeltaPhiSys(Jet3Phi, Met_phi);
           DPhiJet3Met = dphij3met;
 
-          if(year==2018){ // Veto events in HEM 15/16
-            for(int jet : validJets.GetSystematicOrValue("Value"))
-            {
-              //double pt = jetPt.GetSystematicOrValue("Value")[jet];
-              float eta = Jet_eta[jet];
-              float phi = Jet_phi[jet];
-
-              ValueWithSystematics<double> dphijethtmiss = DeltaPhiSys(ValueWithSystematics<double>(phi), HTmissPhi);
-              if(dphijethtmiss <  0.5){
-                if((eta > -3.2) && (eta < -1.2) && (phi > -1.77) && (phi < -0.67))
-                {
-                  continue;
-                }
-              }
-            }
-          }
 
           eta1p5HT = 0;
 
@@ -3349,7 +3335,7 @@ int main(int argc, char** argv)
               continue;
 
             // MET filters
-            if ( METFilters                         != 1 ) continue;
+            //if ( METFilters                         != 1 ) continue;
             if ( goodVertices                       != 1 ) continue;
             if (!process.issignal())
               if ( globalSuperTightHalo2016Filter          != 1 ) continue;
@@ -3409,6 +3395,32 @@ int main(int argc, char** argv)
             if(!passHLT)
               continue;
           }
+
+          bool vetoJetHEM = false;
+          list.clear();
+          list.push_back("Value");
+          loadSystematics(list, jetPt);
+
+          if(year==2018){ // Veto events in HEM 15/16
+            for(auto & syst : list)
+            {
+              for(int jet : validJets.GetSystematicOrValue(syst))
+              {
+                //double pt = jetPt.GetSystematicOrValue("Value")[jet];
+                double eta = Jet_eta[jet];
+                double phi = Jet_phi[jet];
+
+                ValueWithSystematics<double> dphijethtmiss = DeltaPhiSys(ValueWithSystematics<double>(phi), HTmissPhi);
+                if(dphijethtmiss <  0.5){
+                  if((eta > -3.2) && (eta < -1.2) && (phi > -1.77) && (phi < -0.67)){
+                    vetoJetHEM = true;
+                  }
+                }
+              }
+            }
+          }
+         if(vetoJetHEM)
+           continue;
 
           bdttree->Fill();
         }
