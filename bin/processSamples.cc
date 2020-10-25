@@ -280,19 +280,19 @@ int main(int argc, char** argv)
       CSV_Tight = 0.9693;
       */
       // DeepCSV for 2017
-      /*
+      //
       bTagCalibrationFile = "../data/DeepCSV_94XSF_V5_B_F.csv";
       CSV_Loose = 0.1522;
       CSV_Medium = 0.4941;
       CSV_Tight = 0.8001;
-      */ 
+      // 
       // DeepFlavour for 2017
-      //
+      /*
       bTagCalibrationFile = "../data/DeepFlavour_94XSF_V4_B_F.csv";
       CSV_Loose = 0.0521;
       CSV_Medium = 0.3033;
       CSV_Tight = 0.7489;
-      //
+      */
     }
     else if (year==2018)
     {
@@ -315,6 +315,7 @@ int main(int argc, char** argv)
       bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
     }
   }
+  //bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
 
   std::cout << "Year: " << year << std::endl;
   std::cout << "bTagCalib file: " << bTagCalibrationFile << std::endl;
@@ -675,11 +676,13 @@ int main(int argc, char** argv)
         EWKISRweight.Systematic("JER_Up");
         EWKISRweight.Systematic("JER_Down");
 
-        normStweight = normStweightSys(20);
+        //normStweight = normStweightSys(20.0);
+        normStweight = 1;
         normStweight.Systematic("normStWeight_Up");
         normStweight.Systematic("normStWeight_Down");
 
-        normCSVweight = normCSVweightSys(0.5);
+        //normCSVweight = normCSVweightSys(0.5);
+        normCSVweight = 1;
         normCSVweight.Systematic("normCSVWeight_Up");
         normCSVweight.Systematic("normCSVWeight_Down");
 
@@ -3176,7 +3179,7 @@ int main(int argc, char** argv)
 
           if(process.tag() == "WJetsNLO"){
             normStweight = normStweightSys(St);
-            normCSVweight = normCSVweight(JetHBDeepCSV);
+            normCSVweight = normCSVweightSys(JetHBDeepCSV);
             //normCSVweight = normStweightSys(Jet_btagDeepFlavB);
           }
           else{

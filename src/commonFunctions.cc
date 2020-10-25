@@ -2095,7 +2095,7 @@ ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vec
   return retVal;
 }
 
-ValueWithSystematics<double> normStweightSys(Float_t* St)
+ValueWithSystematics<double> normStweightSys(Float_t St)
 {
   ValueWithSystematics<double> retVal = 1.0;
   if(weightsSt_2017 == nullptr)
@@ -2118,8 +2118,10 @@ ValueWithSystematics<double> normStweightSys(Float_t* St)
   return retVal;
 }
 
-ValueWithSystematics<double> normCSVweight(Float_t* bDiscr)
+ValueWithSystematics<double> normCSVweightSys(ValueWithSystematics<float>& JetHBDeepCSV_toNorm)
 {
+  double JetHBDeepCSV = JetHBDeepCSV_toNorm.Value(); 
+
   ValueWithSystematics<double> retVal = 1.0;
   if(weightsDeepCSV_2017 == nullptr)
    return retVal = 1.0;
@@ -2127,11 +2129,11 @@ ValueWithSystematics<double> normCSVweight(Float_t* bDiscr)
   double val = 1.0;
   double unc = 0.0;
 
-  auto bin = weightsDeepCSV_2017->FindBin(bDiscr);
+  auto bin = weightsDeepCSV_2017->FindBin(JetHBDeepCSV);
   val = weightsDeepCSV_2017->GetBinContent(bin);
   unc = weightsDeepCSV_2017->GetBinError(bin);
 
-  if(bDiscr>=0.2){
+  if(JetHBDeepCSV>=0.2){
     val = 1;
     unc = 0;
   }
