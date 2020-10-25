@@ -77,6 +77,9 @@ extern TH2D* electronFullFastSFHIIPHist;
 extern TH2D* muonFullFastSFIDHist;
 extern TH2D* muonFullFastSFHIIPHist;
 
+extern TH1D* weightsSt_2017;
+extern TH1D* weightsDeepCSV_2017;
+
 bool fileExists(std::string);
 std::string getBaseName(const std::string&);
 float DeltaPhi(double, double);

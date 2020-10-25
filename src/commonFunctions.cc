@@ -75,6 +75,9 @@ TH2D* electronFullFastSFHIIPHist = nullptr;
 TH2D* muonFullFastSFIDHist = nullptr;
 TH2D* muonFullFastSFHIIPHist = nullptr;
 
+TH1D* weightsSt_2017 = nullptr;
+TH1D* weightsDeepCSV_2017 = nullptr;
+
 // To remove
 TH2D* ElectronISOSFHist2017 = nullptr;
 TH2D* MuonISOSFHist2017 = nullptr;
@@ -2088,6 +2091,55 @@ ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vec
 
   retVal.Systematic("L1prefireWeight_Up") = l1preFiringSF.value()+l1preFiringSF.uncertainty();
   retVal.Systematic("L1prefireWeight_Down") = l1preFiringSF.value()-l1preFiringSF.uncertainty();
+
+  return retVal;
+}
+
+ValueWithSystematics<double> normStweightSys(Float_t* St)
+{
+  ValueWithSystematics<double> retVal = 1.0;
+  if(weightsSt_2017 == nullptr)
+   return retVal = 1.0;
+
+  double val = 1.0;
+  double unc = 0.0;
+
+  if(St<280) St = 280;
+
+  auto bin = weightsSt_2017->FindBin(St);
+  val = weightsSt_2017->GetBinContent(bin);
+  unc = weightsSt_2017->GetBinError(bin);
+
+  retVal.Value() = val;
+
+  retVal.Systematic("normStWeight_Up") = val+unc;
+  retVal.Systematic("normStWeight_Down") = val-unc;
+
+  return retVal;
+}
+
+ValueWithSystematics<double> normCSVweight(Float_t* bDiscr)
+{
+  ValueWithSystematics<double> retVal = 1.0;
+  if(weightsDeepCSV_2017 == nullptr)
+   return retVal = 1.0;
+
+  double val = 1.0;
+  double unc = 0.0;
+
+  auto bin = weightsDeepCSV_2017->FindBin(bDiscr);
+  val = weightsDeepCSV_2017->GetBinContent(bin);
+  unc = weightsDeepCSV_2017->GetBinError(bin);
+
+  if(bDiscr>=0.2){
+    val = 1;
+    unc = 0;
+  }
+
+  retVal.Value() = val;
+
+  retVal.Systematic("normCSVWeight_Up") = val+unc;
+  retVal.Systematic("normCSVWeight_Down") = val-unc;
 
   return retVal;
 }
