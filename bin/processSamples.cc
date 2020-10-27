@@ -2081,6 +2081,12 @@ int main(int argc, char** argv)
           Met_phi = MET_phi;
           CaloMet = CaloMetDou;
 
+          if(doJetHT)
+          {
+            if(!static_cast<bool>(Met < 60))
+              continue;
+          }
+
           if(preemptiveDropEvents)
           {
             if(!swap && !static_cast<bool>(Met > MIN_MET))
