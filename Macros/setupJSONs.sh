@@ -217,8 +217,7 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
 
  mergeJSONs $JSON_PATH/plot${YEAR}-inj-2SPs-noST.json $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
 
- mergeJSONs $JSON_PATH/plot${YEAR}-fake.json      $JSON_PATH/allMC.json $JSON_PATH/DataJetHT.json 
- 
+ mergeJSONs $JSON_PATH/plot${YEAR}-fake.json      $JSON_PATH/DataJetHT.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/WJetsNLO.json $JSON_PATH/Orig/VV.json  $JSON_PATH/ttX.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/QCD.json
  #mergeJSONs $JSON_PATH/plot${YEAR}-fake.json      $JSON_PATH/DataJetHT.json $JSON_PATH/Wjets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/QCD.json
 # mergeJSONs $JSON_PATH/plot${YEAR}_DM10RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_490_FullSim.json
 # mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420_FullSim.json
