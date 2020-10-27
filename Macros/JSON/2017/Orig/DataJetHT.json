@@ -13,11 +13,11 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4794,
-          "filesPerPart":25,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/JetHT_Run2017B_17Nov2017",
-              "split":371
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/JetHT_Run2017B_25Oct2019",
+              "split":55
             }
           ]
         },
@@ -26,11 +26,11 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":9633,
-          "filesPerPart":25,
+          "filesPerPart":10,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/JetHT_Run2017C_17Nov2017",
-              "split":342
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/JetHT_Run2017C_25Oct2019",
+              "split":108
             }
           ]
         },
@@ -39,11 +39,11 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":4112,
-          "filesPerPart":25,
+          "filesPerPart":4,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/JetHT_Run2017D_17Nov2017",
-              "split":254
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/JetHT_Run2017D_25Oct2019",
+              "split":43
             }
           ]
         },
@@ -52,11 +52,11 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":9314,
-          "filesPerPart":25,
+          "filesPerPart":6,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/JetHT_Run2017E_17Nov2017",
-              "split":342
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/JetHT_Run2017E_25Oct2019",
+              "split":59
             }
           ]
         },
@@ -65,11 +65,11 @@
           "xsec":1.0,
           "br":1.0,
           "recordedLumi":13535,
-          "filesPerPart":25,
+          "filesPerPart":10,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/JetHT_Run2017F_17Nov2017",
-              "split":449
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Sep29/JetHT_Run2017F_25Oct2019",
+              "split":119
             }
           ]
         }
