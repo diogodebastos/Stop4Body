@@ -297,19 +297,19 @@ int main(int argc, char** argv)
     else if (year==2018)
     {
       // DeepCSV for 2018
-      /*
+      //
       bTagCalibrationFile = "../data/DeepCSV_102XSF_V2.csv";
       CSV_Loose = 0.1241;
       CSV_Medium = 0.4184;
       CSV_Tight = 0.7527;
-      */
-      // DeepFlavour for 2018
       //
+      // DeepFlavour for 2018
+      /*
       bTagCalibrationFile = "../data/DeepJet_102XSF_V2.csv";
       CSV_Loose = 0.0494;
       CSV_Medium = 0.2770;
       CSV_Tight = 0.7264;
-      //
+      */
     }
     else{
       bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";

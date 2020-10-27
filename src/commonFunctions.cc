@@ -2104,7 +2104,8 @@ ValueWithSystematics<double> normStweightSys(Float_t St)
   double val = 1.0;
   double unc = 0.0;
 
-  if(St<280) St = 280;
+  if(St<200) St = 200;
+  if(St>=1000) St = 999;
 
   auto bin = weightsSt_2017->FindBin(St);
   val = weightsSt_2017->GetBinContent(bin);
