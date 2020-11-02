@@ -27,7 +27,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Sep29/WJetsToLNu_Pt_100To250",
-              "split":142
+              "split":71
             }
           ]
         },
@@ -35,11 +35,11 @@
           "tag":"WJetsToLNu_Pt_250To400",
           "xsec":27.98,
           "br":1.0,
-          "filesPerPart":3,
+          "filesPerPart":2,
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Sep29/WJetsToLNu_Pt_250To400",
-              "split":174
+              "split":87
             }
           ]
         },
