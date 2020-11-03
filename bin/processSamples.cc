@@ -56,7 +56,8 @@
 
 #define ISR_JET_PT       90
 #define SECOND_LEPTON_PT 20
-#define MIN_MET          100
+//#define MIN_MET          100
+#define MIN_MET          0
 
 using json = nlohmann::json;
 
@@ -2081,12 +2082,6 @@ int main(int argc, char** argv)
           Met_phi = MET_phi;
           CaloMet = CaloMetDou;
 
-          if(doJetHT)
-          {
-            if(!static_cast<bool>(Met < 60))
-              continue;
-          }
-
           if(preemptiveDropEvents)
           {
             if(!swap && !static_cast<bool>(Met > MIN_MET))
@@ -2137,6 +2132,7 @@ int main(int argc, char** argv)
             bool lIS       = LepGood_pfRelIso03_all[i] < 0.2 || LepGood_pfAbsIso03_all[i] < 5.0;
             bool lIS_loose = LepGood_pfRelIso03_all[i] < 0.8 || LepGood_pfAbsIso03_all[i] < 20.0;
 
+            //if(lPTETA && lID && lIS && LepGood_isPFcand[i]==1)
             if(lPTETA && lID && lIS)
             {
 /*
@@ -2169,33 +2165,45 @@ int main(int argc, char** argv)
                   nGoodMu_cutId_loose++;
                 }
               }
-              else{
-                nGoodEl++;
-                if(LepGood_cutBased[i] > 0)
-                {
+              else if(std::abs(LepGood_pdgId[i]) == 11){
+                if(LepGood_cutBased[i] == 4){
+                  nGoodEl_cutId_tight++;
+                  nGoodEl_cutId_medium++;
+                  nGoodEl_cutId_loose++;
                   nGoodEl_cutId_veto++;
-                  if(LepGood_cutBased[i] > 1)
-                  {
-                    nGoodEl_cutId_loose++;
-                    if(LepGood_cutBased[i] > 2)
-                    {
-                      nGoodEl_cutId_medium++;
-                      if(LepGood_cutBased[i] > 3)
-                      {
-                        nGoodEl_cutId_tight++;
-                      }
-                    }
-                  }
+                }
+                else if(LepGood_cutBased[i] == 3){
+                  nGoodEl_cutId_medium++;
+                  nGoodEl_cutId_loose++;
+                  nGoodEl_cutId_veto++;
+                }
+                else if(LepGood_cutBased[i] == 2){
+                  nGoodEl_cutId_loose++;
+                  nGoodEl_cutId_veto++;
+                }
+                else if(LepGood_cutBased[i] == 1){
+                  nGoodEl_cutId_veto++;
+                }
+                else if(LepGood_cutBased[i] == 0 && LepGood_isPFcand[i]==1){
+                  nGoodEl++;
                 }
               }
             }
+            bool ll = false;
             if(lPTETA && lID_loose && lIS_loose)
             {
-              looseLeptons.push_back(i);
-              if(std::abs(LepGood_pdgId[i]) == 13)
+              if(std::abs(LepGood_pdgId[i]) == 13 && LepGood_isPFcand[i]==1){
                 nGoodMu_loose++;
-              else
+                ll = true;
+              }
+              else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_isPFcand[i]==1 ){
+              //else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_cutBased[i]==0){
                 nGoodEl_loose++;
+                ll = true;
+              }
+              if(ll){
+                looseLeptons.push_back(i);
+              }
             }
           }
 
@@ -3393,7 +3401,13 @@ int main(int argc, char** argv)
               }
             }
           }
-
+          //
+          if(doJetHT)
+          {
+            if(!static_cast<bool>(MET_pt < 60))
+              continue;
+          }
+          //
           if(!noSkim)
           {
             // If we are doing the loose not tight category, reject events that do not fit the category
