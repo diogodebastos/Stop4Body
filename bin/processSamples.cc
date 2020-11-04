@@ -57,7 +57,7 @@
 #define ISR_JET_PT       90
 #define SECOND_LEPTON_PT 20
 //#define MIN_MET          100
-#define MIN_MET          0
+//#define MIN_MET          0
 
 using json = nlohmann::json;
 
@@ -84,6 +84,8 @@ extern TH2D* centralMuonSFHist2018;
 extern TH2D* lowMuonSFHist2018;
 extern TH2D* muFullFastIDSFHist2018;
 //extern TH2D* muFullFastHIIPSFHist2018;
+
+extern TH1D* weightsSt_2018;
 
 extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT200to400_gen_WptHist2018;
@@ -149,6 +151,7 @@ int main(int argc, char** argv)
   std::string suffix = "";
   size_t max_sync_count = 0;
   double jetPtThreshold = 30;
+  double MIN_MET = 100;
   double genJetPtThreshold = 20;
   bool overrideXSec = false;
   bool swap = false;
@@ -265,6 +268,12 @@ int main(int argc, char** argv)
     std::cout << "You must define the lhe scale directory" << std::endl;
     return 1;
   }
+
+  if(doJetHT)
+  {
+    MIN_MET = 0;
+  }
+
   // CSVv2 for 2016
   double CSV_Loose = 0.5426;
   double CSV_Medium = 0.800;
@@ -381,6 +390,9 @@ int main(int argc, char** argv)
   muFullFastIDSFHist2018 = static_cast<TH2D*>(muFullFastSFFile2018.Get("miniIso02_MediumId_sf"));
   //muFullFastHIIPSFHist2018 = static_cast<TH2D*>(muFullFastSFFile2018.Get(""));
 
+  TFile wSt2018("../data/2018_weights_St.root", "READ");
+  weightsSt_2018 = static_cast<TH1D*>(wSt2018.Get("wrat"));
+
   // Tight to Loose ratio weight for the fake lepton method prediction TODO
   /*
   TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
@@ -453,7 +465,7 @@ int main(int argc, char** argv)
   TFile L1prefiring_jetpt_2017BtoFFile("../data/L1prefiring_jetpt_2017BtoF.root");
   L1prefiring_jetpt_2017BtoFHist = static_cast<TH2D*>(L1prefiring_jetpt_2017BtoFFile.Get("L1prefiring_jetpt_2017BtoF"));
 
-  TFile wSt2017("../data/weights_St.root", "READ");
+  TFile wSt2017("../data/2017_weights_St.root", "READ");
   weightsSt_2017 = static_cast<TH1D*>(wSt2017.Get("wrat"));
 
   TFile wDeepCSV2017("../data/weights_JetHBDeepCSV.root", "READ");
@@ -747,7 +759,7 @@ int main(int argc, char** argv)
 
       std::cout << "\t        weight" << std::endl;
       // weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
-      weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * looseNotTightWeight2017MCClosure * GENWweight * l1prefireWeight;
+      weight = puWeight * triggerEfficiency * normStweight * ISRweight * leptonRecoSF * leptonIDSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * looseNotTightWeight2017MCClosure * GENWweight * l1prefireWeight;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -3192,7 +3204,7 @@ int main(int argc, char** argv)
           St_phi = vSt.Phi();
 
           if(process.tag() == "WJetsNLO"){
-            normStweight = normStweightSys(St);
+            normStweight = normStweightSys(St,year);
             normCSVweight = normCSVweightSys(JetHBDeepCSV);
             //normCSVweight = normStweightSys(Jet_btagDeepFlavB);
           }
@@ -3268,7 +3280,7 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
             //weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonFullFastSF*Q2Var*bTagSF*GENWweight*l1prefireWeight;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*normStweight*ISRweight*leptonRecoSF*leptonIDSF*leptonFullFastSF*Q2Var*bTagSF*GENWweight*l1prefireWeight;
           else
             weight = 1.0f;
 

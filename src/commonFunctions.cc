@@ -18,6 +18,8 @@ TH2D* lowMuonSFHist2018 = nullptr;
 TH2D* muFullFastIDSFHist2018 = nullptr;
 //TH2D* muFullFastHIIPSFHist2018 = nullptr;
 
+TH1D* weightsSt_2018 = nullptr;
+
 TH1D* WJetsToLNu_HT100to200_gen_WptHist2018 = nullptr;
 TH1D* WJetsToLNu_HT200to400_gen_WptHist2018 = nullptr;
 TH1D* WJetsToLNu_HT400to600_gen_WptHist2018 = nullptr;
@@ -2095,10 +2097,10 @@ ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vec
   return retVal;
 }
 
-ValueWithSystematics<double> normStweightSys(Float_t St)
+ValueWithSystematics<double> normStweightSys(Float_t St, int year)
 {
   ValueWithSystematics<double> retVal = 1.0;
-  if(weightsSt_2017 == nullptr)
+  if(weightsSt_2017 == nullptr || weightsSt_2018 == nullptr)
    return retVal = 1.0;
 
   double val = 1.0;
@@ -2107,9 +2109,16 @@ ValueWithSystematics<double> normStweightSys(Float_t St)
   if(St<200) St = 200;
   if(St>=1000) St = 999;
 
-  auto bin = weightsSt_2017->FindBin(St);
-  val = weightsSt_2017->GetBinContent(bin);
-  unc = weightsSt_2017->GetBinError(bin);
+  if(year==2017){
+    auto bin = weightsSt_2017->FindBin(St);
+    val = weightsSt_2017->GetBinContent(bin);
+    unc = weightsSt_2017->GetBinError(bin);
+  }
+  else if(year==2018){
+    auto bin = weightsSt_2018->FindBin(St);
+    val = weightsSt_2018->GetBinContent(bin);
+    unc = weightsSt_2018->GetBinError(bin);
+  }
 
   retVal.Value() = val;
 

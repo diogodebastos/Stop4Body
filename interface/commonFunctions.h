@@ -22,6 +22,8 @@ extern TH2D* lowMuonSFHist2018;
 extern TH2D* muFullFastIDSFHist2018;
 //extern TH2D* muFullFastHIIPSFHist2018;
 
+extern TH1D* weightsSt_2018;
+
 extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT200to400_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT400to600_gen_WptHist2018;
@@ -127,7 +129,7 @@ ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double Le
 ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta, Float_t* Jet_btagCSV, Int_t* Jet_hadronFlavour);
 
 ValueWithSystematics<double> normStweightSys(Float_t St);
-ValueWithSystematics<double> normCSVweightSys(ValueWithSystematics<float>& JetHBDeepCSV_toNorm);
+ValueWithSystematics<double> normCSVweightSys(ValueWithSystematics<float>& JetHBDeepCSV_toNorm, int year);
 
 
 TStyle* getTDRStyle();
