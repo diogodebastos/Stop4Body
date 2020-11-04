@@ -128,8 +128,8 @@ ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double Le
 
 ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta, Float_t* Jet_btagCSV, Int_t* Jet_hadronFlavour);
 
-ValueWithSystematics<double> normStweightSys(Float_t St);
-ValueWithSystematics<double> normCSVweightSys(ValueWithSystematics<float>& JetHBDeepCSV_toNorm, int year);
+ValueWithSystematics<double> normStweightSys(Float_t St, int yeat);
+ValueWithSystematics<double> normCSVweightSys(ValueWithSystematics<float>& JetHBDeepCSV_toNorm);
 
 
 TStyle* getTDRStyle();
