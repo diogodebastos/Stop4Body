@@ -54,7 +54,7 @@
 #define TRACOLL_LIMIT    200
 #define LHEWEIGHT_LIMIT  9
 
-#define ISR_JET_PT       90
+#define ISR_JET_PT       70
 #define SECOND_LEPTON_PT 20
 //#define MIN_MET          100
 //#define MIN_MET          0
@@ -2145,7 +2145,7 @@ int main(int argc, char** argv)
             bool lIS_loose = LepGood_pfRelIso03_all[i] < 0.8 || LepGood_pfAbsIso03_all[i] < 20.0;
 
             //if(lPTETA && lID && lIS && LepGood_isPFcand[i]==1)
-            if(lPTETA && lID && lIS)
+            if(lPTETA && lID && lIS && LepGood_isPFcand[i]==1)
             {
 /*
               if (year==2018) { // Veto events in HEM 15/16
@@ -2367,12 +2367,14 @@ int main(int argc, char** argv)
               UInt_t closestJet = 999;
               for(UInt_t jet = 0; jet < nJetIn; ++jet)
               {
+                const auto &clJetPt = jetPt.GetSystematicOrValue(syst)[jet]; 
+                float lep_jet_ratio = LepGood_pt[looseLep]/clJetPt;
                 //if(Jet_pt[jet] > jetPtThreshold){
                 //if(Jet_jetId[jet] >= 2 && std::abs(Jet_eta[jet]) < 2.4 && Jet_pt[jet] > jetPtThreshold){
                 //if((Jet_jetId[jet] >= 2) && (std::abs(Jet_eta[jet]) < 2.4) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)){
                 if((Jet_jetId[jet] >= 2) && ((jetPt.GetSystematicOrValue(syst))[jet] > jetPtThreshold)){
                   deltaR = DeltaR(LepGood_eta[looseLep], LepGood_phi[looseLep], Jet_eta[jet],Jet_phi[jet]);
-                  if (deltaR < bestDR) {
+                  if ((deltaR < bestDR) && (lep_jet_ratio > 0.5)) {
                     closestJet = jet;
                     bestDR = deltaR;
                   }
@@ -2713,8 +2715,8 @@ int main(int argc, char** argv)
           ValueWithSystematics<double> deta = DeltaEtaSys(Jet2EtaDou, ValueWithSystematics<double>(lep_eta));
           DrJet2Lep = QuadSumSys(dphi, deta);
 
-          if(preemptiveDropEvents && !static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
-            continue;
+          //if(preemptiveDropEvents && !static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
+            //continue;
 
           TLorentzVector VLep;
 
@@ -3204,6 +3206,7 @@ int main(int argc, char** argv)
           St_phi = vSt.Phi();
 
           if(process.tag() == "WJetsNLO"){
+          //if(process.tag() == "WJetsNLO" && HT.Value() > 260){
             normStweight = normStweightSys(St,year);
             normCSVweight = normCSVweightSys(JetHBDeepCSV);
             //normCSVweight = normStweightSys(Jet_btagDeepFlavB);
