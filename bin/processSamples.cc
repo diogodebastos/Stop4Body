@@ -86,6 +86,7 @@ extern TH2D* muFullFastIDSFHist2018;
 //extern TH2D* muFullFastHIIPSFHist2018;
 
 extern TH1D* weightsSt_2018;
+extern TH2D* weightsSTandHT_2018;
 
 extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT200to400_gen_WptHist2018;
@@ -393,6 +394,9 @@ int main(int argc, char** argv)
   TFile wSt2018("../data/2018_weights_St.root", "READ");
   weightsSt_2018 = static_cast<TH1D*>(wSt2018.Get("wrat"));
 
+  TFile wSTandHT2018("../data/2018_weightsSTandHT.root", "READ");
+  weightsSTandHT_2018 = static_cast<TH2D*>(wSTandHT2018.Get("wrat"));
+
   // Tight to Loose ratio weight for the fake lepton method prediction TODO
   /*
   TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
@@ -669,7 +673,7 @@ int main(int argc, char** argv)
       ValueWithSystematics<float> Q2Var;
       ValueWithSystematics<float> bTagSF;
       ValueWithSystematics<float> normStweight;
-      ValueWithSystematics<float> normCSVweight;
+      ValueWithSystematics<float> normSTandHTweight;
       ValueWithSystematics<float> weight;
 
       std::cout << "\t      Creating the variations if needed" << std::endl;
@@ -694,10 +698,10 @@ int main(int argc, char** argv)
         normStweight.Systematic("normStWeight_Up");
         normStweight.Systematic("normStWeight_Down");
 
-        //normCSVweight = normCSVweightSys(0.5);
-        normCSVweight = 1;
-        normCSVweight.Systematic("normCSVWeight_Up");
-        normCSVweight.Systematic("normCSVWeight_Down");
+        //normSTandHTweight = normSTandHTweightSys(0.5);
+        normSTandHTweight = 1;
+        normSTandHTweight.Systematic("normSTandHTweight_Up");
+        normSTandHTweight.Systematic("normSTandHTweight_Down");
 
         std::cout << "\t        ISR" << std::endl;
         ISRweight = ISRweightFromNISRJetSys(2);
@@ -778,7 +782,7 @@ int main(int argc, char** argv)
         Q2Var.Lock();
         l1prefireWeight.Lock();
         normStweight.Lock();
-        normCSVweight.Lock();
+        normSTandHTweight.Lock();
       }
       looseNotTightWeight.Lock();
       looseNotTightWeight2017MCClosure.Lock();
@@ -800,7 +804,7 @@ int main(int argc, char** argv)
       bTagSF = 1.0;
       Q2Var = 1.0;
       normStweight = 1.0;
-      normCSVweight = 1.0;
+      normSTandHTweight = 1.0;
       weight = 1.0;
 
       Float_t genWeight=1;
@@ -830,7 +834,7 @@ int main(int argc, char** argv)
       bdttree->Branch("looseNotTightWeight2017MCClosure", &looseNotTightWeight2017MCClosure.Value(), "looseNotTightWeight2017MCClosure/F");
       bdttree->Branch("l1prefireWeight", &l1prefireWeight.Value(), "l1prefireWeight/F");
       bdttree->Branch("normStweight", &(normStweight.Value()), "normStweight/F");
-      bdttree->Branch("normCSVweight", &(normCSVweight.Value()), "normCSVweight/F");
+      bdttree->Branch("normSTandHTweight", &(normSTandHTweight.Value()), "normSTandHTweight/F");
 
 
       if(!process.isdata() && noTrim)
@@ -857,8 +861,8 @@ int main(int argc, char** argv)
           bdttree->Branch(("bTagSF_"+systematic).c_str(), &(bTagSF.Systematic(systematic)));
         for(auto& systematic: normStweight.Systematics())
           bdttree->Branch(("normStweight_"+systematic).c_str(), &(normStweight.Systematic(systematic)));
-        for(auto& systematic: normCSVweight.Systematics())
-          bdttree->Branch(("normCSVweight_"+systematic).c_str(), &(normCSVweight.Systematic(systematic)));
+        for(auto& systematic: normSTandHTweight.Systematics())
+          bdttree->Branch(("normSTandHTweight_"+systematic).c_str(), &(normSTandHTweight.Systematic(systematic)));
       }
       if(noTrim)
         for(auto& systematic: looseNotTightWeight.Systematics())
@@ -3208,12 +3212,12 @@ int main(int argc, char** argv)
           if(process.tag() == "WJetsNLO"){
           //if(process.tag() == "WJetsNLO" && HT.Value() > 260){
             normStweight = normStweightSys(St,year);
-            normCSVweight = normCSVweightSys(JetHBDeepCSV);
-            //normCSVweight = normStweightSys(Jet_btagDeepFlavB);
+            normSTandHTweight = normSTandHTweightSys(St,HT.Value(),year);
+            //normSTandHTweight = normStweightSys(Jet_btagDeepFlavB);
           }
           else{
             normStweight = 1;
-            normCSVweight = 1;
+            normSTandHTweight = 1;
           }
 
           genStopM       = GenSusyMStop;

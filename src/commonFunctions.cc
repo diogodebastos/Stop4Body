@@ -19,6 +19,7 @@ TH2D* muFullFastIDSFHist2018 = nullptr;
 //TH2D* muFullFastHIIPSFHist2018 = nullptr;
 
 TH1D* weightsSt_2018 = nullptr;
+TH2D* weightsSTandHT_2018 = nullptr;
 
 TH1D* WJetsToLNu_HT100to200_gen_WptHist2018 = nullptr;
 TH1D* WJetsToLNu_HT200to400_gen_WptHist2018 = nullptr;
@@ -2128,30 +2129,39 @@ ValueWithSystematics<double> normStweightSys(Float_t St, int year)
   return retVal;
 }
 
-ValueWithSystematics<double> normCSVweightSys(ValueWithSystematics<float>& JetHBDeepCSV_toNorm)
+ValueWithSystematics<double> normSTandHTweightSys(Float_t St, double HT,int year)
 {
-  double JetHBDeepCSV = JetHBDeepCSV_toNorm.Value(); 
-
   ValueWithSystematics<double> retVal = 1.0;
-  if(weightsDeepCSV_2017 == nullptr)
+  //if(weightsSTandHT_2017 == nullptr || weightsSTandHT_2018 == nullptr)
+  if(weightsSTandHT_2018 == nullptr)
    return retVal = 1.0;
 
   double val = 1.0;
   double unc = 0.0;
 
-  auto bin = weightsDeepCSV_2017->FindBin(JetHBDeepCSV);
-  val = weightsDeepCSV_2017->GetBinContent(bin);
-  unc = weightsDeepCSV_2017->GetBinError(bin);
+  if(St<200) St = 200;
+  if(St>=1000) St = 999;
 
-  if(JetHBDeepCSV>=0.2){
-    val = 1;
-    unc = 0;
+  if(HT<200) HT = 200;
+  if(HT>=1000) HT = 999;
+
+  if(year==2017){
+    auto bin = weightsSTandHT_2018->FindBin(HT,St);
+    val = weightsSTandHT_2018->GetBinContent(bin);
+    unc = weightsSTandHT_2018->GetBinError(bin);
   }
+  else if(year==2018){
+    auto bin = weightsSTandHT_2018->FindBin(HT,St);
+    val = weightsSTandHT_2018->GetBinContent(bin);
+    unc = weightsSTandHT_2018->GetBinError(bin);
+  }
+
+  if(val==0) val = 1.0;
 
   retVal.Value() = val;
 
-  retVal.Systematic("normCSVWeight_Up") = val+unc;
-  retVal.Systematic("normCSVWeight_Down") = val-unc;
+  retVal.Systematic("normStWeight_Up") = val+unc;
+  retVal.Systematic("normStWeight_Down") = val-unc;
 
   return retVal;
 }
