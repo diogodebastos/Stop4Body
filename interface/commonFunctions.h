@@ -24,6 +24,7 @@ extern TH2D* muFullFastIDSFHist2018;
 
 extern TH1D* weightsSt_2018;
 extern TH2D* weightsSTandHT_2018;
+extern TH2D* weightsSTandJet1Pt_2018;
 
 extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT200to400_gen_WptHist2018;
@@ -131,6 +132,7 @@ ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueW
 
 ValueWithSystematics<double> normStweightSys(Float_t St, int year);
 ValueWithSystematics<double> normSTandHTweightSys(Float_t St, double HT,int year);
+ValueWithSystematics<double> normSTandJet1PtweightSys(Float_t St, double Jet1Pt,int year);
 
 
 TStyle* getTDRStyle();

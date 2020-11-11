@@ -20,6 +20,7 @@ TH2D* muFullFastIDSFHist2018 = nullptr;
 
 TH1D* weightsSt_2018 = nullptr;
 TH2D* weightsSTandHT_2018 = nullptr;
+TH2D* weightsSTandJet1Pt_2018 = nullptr;
 
 TH1D* WJetsToLNu_HT100to200_gen_WptHist2018 = nullptr;
 TH1D* WJetsToLNu_HT200to400_gen_WptHist2018 = nullptr;
@@ -2156,12 +2157,49 @@ ValueWithSystematics<double> normSTandHTweightSys(Float_t St, double HT,int year
     unc = weightsSTandHT_2018->GetBinError(bin);
   }
 
-  if(val==0) val = 1.0;
+  //if(val==0) val = 1.0;
 
   retVal.Value() = val;
 
-  retVal.Systematic("normStWeight_Up") = val+unc;
-  retVal.Systematic("normStWeight_Down") = val-unc;
+  retVal.Systematic("normSTandHTweight_Up") = val+unc;
+  retVal.Systematic("normSTandHTweight_Down") = val-unc;
+
+  return retVal;
+}
+
+ValueWithSystematics<double> normSTandJet1PtweightSys(Float_t St, double Jet1Pt,int year)
+{
+  ValueWithSystematics<double> retVal = 1.0;
+  //if(weightsSTandJet1Pt_2017 == nullptr || weightsSTandJet1Pt_2018 == nullptr)
+  if(weightsSTandJet1Pt_2018 == nullptr)
+   return retVal = 1.0;
+
+  double val = 1.0;
+  double unc = 0.0;
+
+  if(St<200) St = 200;
+  if(St>=1000) St = 999;
+
+  if(Jet1Pt<110) Jet1Pt = 110;
+  if(Jet1Pt>=1000) Jet1Pt = 999;
+
+  if(year==2017){
+    auto bin = weightsSTandJet1Pt_2018->FindBin(Jet1Pt,St);
+    val = weightsSTandJet1Pt_2018->GetBinContent(bin);
+    unc = weightsSTandJet1Pt_2018->GetBinError(bin);
+  }
+  else if(year==2018){
+    auto bin = weightsSTandJet1Pt_2018->FindBin(Jet1Pt,St);
+    val = weightsSTandJet1Pt_2018->GetBinContent(bin);
+    unc = weightsSTandJet1Pt_2018->GetBinError(bin);
+  }
+
+  //if(val==0) val = 1.0;
+
+  retVal.Value() = val;
+
+  retVal.Systematic("normSTandJet1Ptweight_Up") = val+unc;
+  retVal.Systematic("normSTandJet1Ptweight_Down") = val-unc;
 
   return retVal;
 }
