@@ -3228,7 +3228,7 @@ int main(int argc, char** argv)
           //if(process.tag() == "WJetsNLO" && HT.Value() > 260){
             normStweight = normStweightSys(St,year);
             normSTandHTweight = normSTandHTweightSys(St,HT.Value(),year);
-            normSTandJet1Ptweight = normSTandHTweightSys(St,Jet1Pt.Value(),year);
+            normSTandJet1Ptweight = normSTandJet1PtweightSys(St,Jet1Pt.Value(),year);
             //normSTandHTweight = normStweightSys(Jet_btagDeepFlavB);
           }
           else{
