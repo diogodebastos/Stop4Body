@@ -63,7 +63,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Sep29/WJetsToLNu_Pt_600ToInf",
-              "split":6
+              "split":5
             }
           ]
         }
