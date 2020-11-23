@@ -25,6 +25,8 @@ def assure_path_exists(path):
 if __name__ == "__main__":
   import argparse
 
+  YEAR = os.getenv("YEAR")
+
   parser = argparse.ArgumentParser(description='Process the command line options')
   parser.add_argument('-i', '--inputDirectory', required=True, help='Name of the input directory')
   parser.add_argument('-o', '--outputDirectory', required=True, help='Base name of the output directory for each BDT')
@@ -91,13 +93,13 @@ if __name__ == "__main__":
             thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
             #cd /exper-sw/cmst3/cmssw/users/cbeiraod/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/
-            thisScript.write("cd UserCode/Stop4Body/Macros/\n\n")
+            thisScript.write("cd UserCode/Stop4Body-nanoAOD/Macros/\n\n")
 
             thisScript.write("#. setupJSONs.sh\n")
             thisScript.write(". setupPaths.sh\n\n")
 
             thisScript.write("getBDTcut --verbose ")
-            thisScript.write("--json $JSON_PATH/plot2017_DM" + str(bdt["deltaM"]) + "RP.json ")
+            thisScript.write("--json $JSON_PATH/plot"+YEAR+"_DM" + str(bdt["deltaM"]) + "RP.json ")
             thisScript.write("--inDir " + thisInputDirectory + " ")
             thisScript.write("--outDir " + outputDirectory + " ")
             thisScript.write("--suffix bdt ")
@@ -109,7 +111,7 @@ if __name__ == "__main__":
             os.fchmod(thisScript.fileno(), mode & 0o7777)
 
         os.chdir(jobDir)
-        cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+        cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
         print cmd
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()

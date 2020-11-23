@@ -5,7 +5,8 @@
 
 #SIGNAL=T2DegStop_500_420.root
 SIGNAL=T2DegStop_deltaM${CURRENT_DM}.root
-BACKGROUND=Background_TTbar_WJets.root
+BACKGROUND=Background_TTbar_WJetsNLO.root
+#BACKGROUND=Background_TTbar_WJets.root
 
 SIGNAL_TRAIN=${TRAIN_DIR}/${SIGNAL}
 BACKGROUND_TRAIN=${TRAIN_DIR}/${BACKGROUND}

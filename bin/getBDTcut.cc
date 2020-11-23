@@ -149,7 +149,8 @@ int main(int argc, char** argv)
     else
       bkgMap[MC.process(i).tag()] = i;
 
-    if(MC.process(i).tag() == "WJets")
+    if(MC.process(i).tag() == "WJetsNLO")
+    //if(MC.process(i).tag() == "WJets")
     {
  //     bkgMap["WJets"] = i;
       foundWJets = true;
@@ -173,7 +174,8 @@ int main(int argc, char** argv)
   }
 
 
-  auto wjets = MC.process(bkgMap["WJets"]);
+  auto wjets = MC.process(bkgMap["WJetsNLO"]);
+  //auto wjets = MC.process(bkgMap["WJets"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
   auto zinv = MC.process(bkgMap["ZInv"]);
   auto vv = MC.process(bkgMap["VV"]);

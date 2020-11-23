@@ -103,7 +103,7 @@ if __name__ == "__main__":
             os.fchmod(thisScript.fileno(), mode & 0o7777)
 
         os.chdir(jobDir)
-        cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+        cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
         print cmd
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()

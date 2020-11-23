@@ -2122,6 +2122,11 @@ ValueWithSystematics<double> normStweightSys(Float_t St, int year)
     unc = weightsSt_2018->GetBinError(bin);
   }
 
+  if(St<280){
+    val = 1.0;
+    unc = 0.0;
+  }
+
   retVal.Value() = val;
 
   retVal.Systematic("normStWeight_Up") = val+unc;

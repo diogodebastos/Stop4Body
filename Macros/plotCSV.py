@@ -54,18 +54,21 @@ if __name__ == "__main__":
 
                 for i in range(0,len(sortedlist)):
                     bdt+=[sortedlist[i][0]]
-                    r+=[sortedlist[i][1]]
+                    r+=[float(sortedlist[i][1])]
 
                 minR=min(r)
                 fminR = float(minR)
                 bdtCut = bdt[r.index(minR)]
                 print bdtCut
+                #print r
+                #print "For DM" + str(bdt["deltaM"]) #+ "cut from minXS: %" % (bdtCut)
+                #print "For DM"+bdt["deltaM"]+"cut from minXS: %" % (bdtCut)
                 #Plot Data
                 fig = plt.figure(dpi = 128, figsize = (10,6))
                 plt.plot(bdt,r,"-")
                 plt.title(file[:9]+"   Cut: "+bdtCut, fontsize = 24)
                 plt.grid()
-                plt.ylim(fminR-0.05, fminR+0.5)
+                plt.ylim(fminR-0.5, fminR+3)
                 plt.xlabel('BDT >',fontsize = 16)
                 plt.ylabel("$\sigma$ [pb]", fontsize = 16)
                 plt.tick_params(axis = 'both', which = 'major' , labelsize = 16)

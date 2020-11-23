@@ -102,7 +102,7 @@ int main(int argc, char** argv)
   Float_t J3Mass,XS,HT;
   Float_t Njet, NbLoose, NbTight, LepID, LepChg, Nevt;
   ULong64_t Event;
-  Float_t JetHBCSV;
+  Float_t JetHBDeepCSV;
   //Int_t nGoodMu, nGoodEl;
   //Float_t LepSip3, LepIso03, LepIso04, DPhiJet1Jet2,
   ValueWithSystematics<float> Jet1PtSys;
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
   ValueWithSystematics<float> NjetSys;
   ValueWithSystematics<float> JetHBptSys;
   ValueWithSystematics<float> DrJetHBLepSys;
-  ValueWithSystematics<float> JetHBCSVSys;
+  ValueWithSystematics<float> JetHBDeepCSVSys;
   std::vector<std::string> variations = {"JES_Up", "JES_Down", "JER_Up", "JER_Down"};
   if(fileName.find("Data") != std::string::npos) variations = {};
   for(auto& syst : variations)
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
     NjetSys.Systematic(syst);
     JetHBptSys.Systematic(syst);
     DrJetHBLepSys.Systematic(syst);
-    JetHBCSVSys.Systematic(syst);
+    JetHBDeepCSVSys.Systematic(syst);
   }
 
   // SET0
@@ -143,7 +143,7 @@ int main(int argc, char** argv)
   reader->AddVariable("NbLoose", &NbLoose);
   // SET1
   // SET2
-  reader->AddVariable("JetHBCSV",&JetHBCSV);
+  reader->AddVariable("JetHBDeepCSV",&JetHBDeepCSV);
   // SET3
   //reader->AddVariable("JetLepMass",&JetLepMass);
   //reader->AddVariable("J3Mass",&J3Mass);
@@ -227,7 +227,7 @@ int main(int argc, char** argv)
     OutputTree->SetBranchAddress("Njet",       &(NjetSys.Value()));
     OutputTree->SetBranchAddress("JetHBpt",    &(JetHBptSys.Value()));
     OutputTree->SetBranchAddress("DrJetHBLep", &(DrJetHBLepSys.Value()));
-    OutputTree->SetBranchAddress("JetHBCSV",   &(JetHBCSVSys.Value()));
+    OutputTree->SetBranchAddress("JetHBDeepCSV",   &(JetHBDeepCSVSys.Value()));
     for(auto& syst : variations)
     {
       OutputTree->SetBranchAddress(("Jet1Pt_" + syst).c_str(),     &(Jet1PtSys.Systematic(syst)));
@@ -238,7 +238,7 @@ int main(int argc, char** argv)
       OutputTree->SetBranchAddress(("Njet_" + syst).c_str(),       &(NjetSys.Systematic(syst)));
       OutputTree->SetBranchAddress(("JetHBpt_" + syst).c_str(),    &(JetHBptSys.Systematic(syst)));
       OutputTree->SetBranchAddress(("DrJetHBLep_" + syst).c_str(), &(DrJetHBLepSys.Systematic(syst)));
-      OutputTree->SetBranchAddress(("JetHBCSV_" + syst).c_str(),   &(JetHBCSVSys.Systematic(syst)));
+      OutputTree->SetBranchAddress(("JetHBDeepCSV_" + syst).c_str(),   &(JetHBDeepCSVSys.Systematic(syst)));
     }
 
     std::map<std::string, ValueWithSystematics<Float_t>> MVAs;
@@ -280,7 +280,7 @@ int main(int argc, char** argv)
         Njet = NjetSys.Value();
         JetHBpt = JetHBptSys.Value();
         DrJetHBLep = DrJetHBLepSys.Value();
-        JetHBCSV = JetHBCSVSys.Value();
+        JetHBDeepCSV = JetHBDeepCSVSys.Value();
         //if (ievt%1000 == 0) std::cout << "Evaluating method: \"" << mva.first << "\"" << std::endl;
         mva.second.Value() = reader->EvaluateMVA((mva.first + " method").c_str());
         MVABranches[mva.first]->Fill();
@@ -295,7 +295,7 @@ int main(int argc, char** argv)
           Njet = NjetSys.Systematic(syst);
           JetHBpt = JetHBptSys.Systematic(syst);
           DrJetHBLep = DrJetHBLepSys.Systematic(syst);
-          JetHBCSV = JetHBCSVSys.Systematic(syst);
+          JetHBDeepCSV = JetHBDeepCSVSys.Systematic(syst);
 
           mva.second.Systematic(syst) = reader->EvaluateMVA((mva.first + " method").c_str());
           MVABranches[mva.first + "_" + syst]->Fill();

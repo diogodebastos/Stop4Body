@@ -2734,8 +2734,8 @@ int main(int argc, char** argv)
           ValueWithSystematics<double> deta = DeltaEtaSys(Jet2EtaDou, ValueWithSystematics<double>(lep_eta));
           DrJet2Lep = QuadSumSys(dphi, deta);
 
-          //if(preemptiveDropEvents && !static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
-            //continue;
+          if(preemptiveDropEvents && !static_cast<bool>(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60))
+            continue;
 
           TLorentzVector VLep;
 

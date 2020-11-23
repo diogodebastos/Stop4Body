@@ -32,7 +32,7 @@ int main(int argc, char** argv)
   std::vector<std::string> methods;
   methods.clear();
   bool isHighDeltaM = false;
-  double HTCUT = 300;
+  double HTCUT = 200;
   double Jet1PtCUT=110;
 
   // Default MVA methods to be trained + tested
@@ -144,7 +144,8 @@ int main(int argc, char** argv)
   factory->AddVariable("HT",'F');
   //factory->AddVariable("NbLoose20",'F');
   factory->AddVariable("NbLoose",'F');
-  factory->AddVariable("JetHBCSV", 'F');
+  //factory->AddVariable("JetHBCSV", 'F');
+  factory->AddVariable("JetHBDeepCSV", 'F');
 
   // Other variables
   //factory->AddVariable("Q80",'F');
@@ -195,7 +196,9 @@ int main(int argc, char** argv)
     factory->AddBackgroundTree( background_test, backgroundWeight, TMVA::Types::kTesting  );
   }
 
-  factory->SetBackgroundWeightExpression( "XS/Nevt" );
+  //factory->SetBackgroundWeightExpression( "XS/Nevt" );
+  //factory->SetSignalWeightExpression("1/Nevt");
+  factory->SetBackgroundWeightExpression( "weight/Nevt" );
   factory->SetSignalWeightExpression("1/Nevt");
 
   TCut lepBase;
