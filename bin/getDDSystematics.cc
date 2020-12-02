@@ -419,16 +419,16 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
       otherMC += process.getYield(CR, mcWeight);
       otherMCinSR += process.getYield(SR, mcWeight);
     }
-    if((process.tag() != "WJets") && (process.tag().find("ttbar") == std::string::npos)){
+    if((process.tag() != "WJetsNLO") && (process.tag().find("ttbar") == std::string::npos)){
       rareMC += process.getYield(SR, mcWeight);
       //std::cout << process.tag() << ": " << process.getYield(SR, mcWeight) << std::endl;
     }
-    if((toEstimate.tag() == "WJets") && (process.tag().find("ttbar") != std::string::npos)){
+    if((toEstimate.tag() == "WJetsNLO") && (process.tag().find("ttbar") != std::string::npos)){
       contamMC = process.getYield(SR, mcWeight);
       //std::cout << "Getting contamination Process" << std::endl;
       //std::cout << process.tag() << ": " << contamMC << std::endl;
     }
-    if((toEstimate.tag().find("ttbar") != std::string::npos) && (process.tag() == "WJets")){
+    if((toEstimate.tag().find("ttbar") != std::string::npos) && (process.tag() == "WJetsNLO")){
       contamMC = process.getYield(SR, mcWeight);
       //std::cout << "Getting contamination Process" << std::endl;
       //std::cout << process.tag() << ": " << contamMC << std::endl;
