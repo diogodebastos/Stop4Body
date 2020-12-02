@@ -19,6 +19,8 @@ def assure_path_exists(path):
 if __name__ == "__main__":
   import argparse
 
+  YEAR = os.getenv("YEAR")
+
   parser = argparse.ArgumentParser(description='Process the command line options')
   parser.add_argument('-i', '--inputDirectory', required=True, help='Name of the input directory')
   parser.add_argument('-o', '--outputDirectory', required=True, help='Base name of the output directory for each BDT')
@@ -38,30 +40,43 @@ if __name__ == "__main__":
   baseDirectory = os.path.realpath(os.getcwd())
   inputDirectory = os.path.realpath(inputDirectory)
 
-### BDT Cuts for 2016
-#  BDTs = [
-#          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False},
-#          {'name': '10_alt', 'deltaM': 10, 'cut': 0.2, 'highDeltaM': False},
-#          {'name': '20', 'deltaM': 20, 'cut': 0.39, 'highDeltaM': False},
-#          {'name': '30', 'deltaM': 30, 'cut': 0.47, 'highDeltaM': False},
-#          {'name': '40', 'deltaM': 40, 'cut': 0.48, 'highDeltaM': False},
-#          {'name': '50', 'deltaM': 50, 'cut': 0.45, 'highDeltaM': False},
-#          {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False},
-#          {'name': '70', 'deltaM': 70, 'cut': 0.46, 'highDeltaM': True},
-#          {'name': '80', 'deltaM': 80, 'cut': 0.44, 'highDeltaM': True},
-#  ]
-
-### BDT Cuts for 2017
-  BDTs = [
-          {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False,'doLoosenBDT': True},
-          {'name': '20', 'deltaM': 20, 'cut': 0.36, 'highDeltaM': False,'doLoosenBDT': True},
-          {'name': '30', 'deltaM': 30, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
-          {'name': '40', 'deltaM': 40, 'cut': 0.46, 'highDeltaM': False,'doLoosenBDT': True},
-          {'name': '50', 'deltaM': 50, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': False},
-          {'name': '60', 'deltaM': 60, 'cut': 0.51, 'highDeltaM': False,'doLoosenBDT': False},
-          {'name': '70', 'deltaM': 70, 'cut': 0.43, 'highDeltaM': True,'doLoosenBDT': False},
-          {'name': '80', 'deltaM': 80, 'cut': 0.46, 'highDeltaM': True,'doLoosenBDT': False},
-  ]
+  if YEAR == 2016:
+    ### BDT Cuts for 2016
+    BDTs = [
+           {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False},
+           {'name': '10_alt', 'deltaM': 10, 'cut': 0.2, 'highDeltaM': False},
+           {'name': '20', 'deltaM': 20, 'cut': 0.39, 'highDeltaM': False},
+           {'name': '30', 'deltaM': 30, 'cut': 0.47, 'highDeltaM': False},
+           {'name': '40', 'deltaM': 40, 'cut': 0.48, 'highDeltaM': False},
+           {'name': '50', 'deltaM': 50, 'cut': 0.45, 'highDeltaM': False},
+           {'name': '60', 'deltaM': 60, 'cut': 0.50, 'highDeltaM': False},
+           {'name': '70', 'deltaM': 70, 'cut': 0.46, 'highDeltaM': True},
+           {'name': '80', 'deltaM': 80, 'cut': 0.44, 'highDeltaM': True},
+           ]
+  elif YEAR == 2017:
+    ### BDT Cuts for 2017
+    BDTs = [
+           {'name': '10', 'deltaM': 10, 'cut': 0.32, 'highDeltaM': False,'doLoosenBDT': True},  #0.31
+           {'name': '20', 'deltaM': 20, 'cut': 0.41, 'highDeltaM': False,'doLoosenBDT': True},  #0.36
+           {'name': '30', 'deltaM': 30, 'cut': 0.42, 'highDeltaM': False,'doLoosenBDT': True},  #0.46
+           {'name': '40', 'deltaM': 40, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': True},  #0.46
+           {'name': '50', 'deltaM': 50, 'cut': 0.55, 'highDeltaM': False,'doLoosenBDT': False},  #0.47
+           {'name': '60', 'deltaM': 60, 'cut': 0.48, 'highDeltaM': False,'doLoosenBDT': False},  #0.51
+           {'name': '70', 'deltaM': 70, 'cut': 0.48, 'highDeltaM': True,'doLoosenBDT': False},   #0.43
+           {'name': '80', 'deltaM': 80, 'cut': 0.48, 'highDeltaM': True,'doLoosenBDT': False},   #0.46
+           ]
+  elif YEAR == 2018:
+    ### BDT Cuts for 2018
+    BDTs = [
+           {'name': '10', 'deltaM': 10, 'cut': 0.30, 'highDeltaM': False,'doLoosenBDT': True},
+           {'name': '20', 'deltaM': 20, 'cut': 0.35, 'highDeltaM': False,'doLoosenBDT': True},
+           {'name': '30', 'deltaM': 30, 'cut': 0.38, 'highDeltaM': False,'doLoosenBDT': True},
+           {'name': '40', 'deltaM': 40, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': True},
+           {'name': '50', 'deltaM': 50, 'cut': 0.44, 'highDeltaM': False,'doLoosenBDT': False},
+           {'name': '60', 'deltaM': 60, 'cut': 0.42, 'highDeltaM': False,'doLoosenBDT': False},
+           {'name': '70', 'deltaM': 70, 'cut': 0.40, 'highDeltaM': True,'doLoosenBDT': False},
+           {'name': '80', 'deltaM': 80, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},
+           ]
 
   for bdt in BDTs:
     thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"])
@@ -104,7 +119,7 @@ if __name__ == "__main__":
 
       thisScript.write("getDDSystematics ")
       thisScript.write("--verbose ")
-      thisScript.write("--json ${JSON_PATH}/plot2017_DM"+bdt['name']+"RP.json ")
+      thisScript.write("--json ${JSON_PATH}/plot"+YEAR+"_DM"+bdt['name']+"RP.json ")
       thisScript.write("--inDir " + thisInputDirectory + " ")
       thisScript.write("--outDir " + outputDirectory + " ")
       thisScript.write("--suffix bdt ")
