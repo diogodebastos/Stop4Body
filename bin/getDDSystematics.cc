@@ -170,7 +170,7 @@ int main(int argc, char** argv)
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
   //Defenition of all  the interesting regions
-  std::string tightSelection = "(isTight == 1)";
+  std::string tightSelection = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
   std::string promptSelection = "(isPrompt == 1)";
   std::string fakeSelection = "!(isPrompt == 1)";
@@ -196,8 +196,8 @@ int main(int argc, char** argv)
       lepSelection = "(LepPt < 30)";
   }
 
-  //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
-  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
+  std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
+  //std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
   std::string preSelection = baseSelection + " && (Met > 280) && " + lepSelection;
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
@@ -241,8 +241,8 @@ int main(int argc, char** argv)
     }
     else
       bkgMap[MC.process(i).tag()] = i;
-
-    if(MC.process(i).tag() == "WJets")
+    if(MC.process(i).tag() == "WJetsNLO")
+    //if(MC.process(i).tag() == "WJets")
       foundWJets = true;
   }
   if(!foundTTbar)
@@ -290,7 +290,8 @@ int main(int argc, char** argv)
     converter >> mcWeight;
   }
 */
-  auto wjets = MC.process(bkgMap["WJets"]);
+  auto wjets = MC.process(bkgMap["WJetsNLO"]);
+  //auto wjets = MC.process(bkgMap["WJets"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
 
   // Load Systematics
@@ -302,6 +303,7 @@ int main(int argc, char** argv)
     systBase.push_back("ISRweight_Bin4");
     systBase.push_back("ISRweight_Bin5");
     systBase.push_back("ISRweight_Bin6");
+    /*
     systBase.push_back("EWKISRweight_Bin1");
     systBase.push_back("EWKISRweight_Bin2");
     systBase.push_back("EWKISRweight_Bin3");
@@ -309,6 +311,7 @@ int main(int argc, char** argv)
     systBase.push_back("EWKISRweight_Bin5");
     systBase.push_back("EWKISRweight_Bin6");
     systBase.push_back("EWKISRweight_Bin7");
+    */
   }
 
   std::vector<std::string> systematics;
