@@ -47,8 +47,9 @@ if __name__ == "__main__":
 
   baseDirectory = os.path.realpath(os.getcwd())
   inputDirectory = os.path.realpath(inputDirectory)
+  BDTs=[]
 
-  if YEAR == 2016:
+  if YEAR == "2016":
     ### BDT Cuts for 2016
     BDTs = [
            {'name': '10', 'deltaM': 10, 'cut': 0.31, 'highDeltaM': False},
@@ -61,7 +62,7 @@ if __name__ == "__main__":
            {'name': '70', 'deltaM': 70, 'cut': 0.46, 'highDeltaM': True},
            {'name': '80', 'deltaM': 80, 'cut': 0.44, 'highDeltaM': True},
            ]
-  elif YEAR == 2017:
+  elif YEAR == "2017":
     ### BDT Cuts for 2017
     BDTs = [
            {'name': '10', 'deltaM': 10, 'cut': 0.34, 'highDeltaM': False},  #0.31
@@ -73,7 +74,7 @@ if __name__ == "__main__":
            {'name': '70', 'deltaM': 70, 'cut': 0.43, 'highDeltaM': True},   #0.43
            {'name': '80', 'deltaM': 80, 'cut': 0.44, 'highDeltaM': True},   #0.46
            ]
-  elif YEAR == 2018:
+  elif YEAR == "2018":
     ### BDT Cuts for 2018
     BDTs = [
            {'name': '10', 'deltaM': 10, 'cut': 0.39, 'highDeltaM': False},
