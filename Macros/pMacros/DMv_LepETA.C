@@ -14,14 +14,15 @@ DM2.Add((path17+"_bdt30/T2DegStop_300_270_bdt.root").c_str());
 DM3.Add((path17+"_bdt50/T2DegStop_300_250_bdt.root").c_str());
 DM4.Add((path17+"_bdt80/T2DegStop_300_220_bdt.root").c_str());
 TChain WJ("bdttree");
-WJ.Add((path17+"/WJetsToLNu_Pt_250To400.root").c_str());;
+WJ.Add((path17+"/WJetsToLNu_Pt_250To400.root").c_str());
 
 /////////////////////////////////////////////////////////////
 // Define cuts
 
 // Lepton selection
 //TCut singlep = "(isTight==1)";
-TCut singlep = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";TCut lept = "LepPt < 1000.";
+TCut singlep = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";
+TCut lept = "LepPt < 1000.";
 
 // Jets
 TCut ISRjet = "Jet1Pt > 110.";
@@ -120,7 +121,7 @@ dm4->Draw("same");
  tex2->SetLineWidth(2);
  tex2->Draw();
 
- c1->SaveAs((path17+"/shapesWJetsVsSignal/DMv_LepETA.png").c_str());
- //c1->SaveAs("DMv_LepETA.pdf");
+ //c1->SaveAs((path17+"/shapesWJetsVsSignal/DMv_LepETA.png").c_str());
+ c1->SaveAs("DMv_LepETA.pdf");
 
 }

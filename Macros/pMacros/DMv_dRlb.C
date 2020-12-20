@@ -3,23 +3,30 @@ void DMv_dRlb(){
 gStyle->SetOptStat(000000);
 gStyle->SetPalette(1);
 
+std::string path17 = "/lstore/cms/dbastos/Stop4Body/nTuples17_nanoAOD_v2020-11-16_test";
+
 TChain DM1("bdttree");
-DM1.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt10/T2DegStop_300_290_bdt.root");
+DM1.Add((path17+"_bdt10/T2DegStop_300_290_bdt.root").c_str());
+
 TChain DM2("bdttree");
-DM2.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt30/T2DegStop_300_270_bdt.root");
+DM2.Add((path17+"_bdt30/T2DegStop_300_270_bdt.root").c_str());
+
 TChain DM3("bdttree");
-DM3.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt50/T2DegStop_300_250_bdt.root");
+DM3.Add((path17+"_bdt50/T2DegStop_300_250_bdt.root").c_str());
+
 TChain DM4("bdttree");
-DM4.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt80/T2DegStop_300_220_bdt.root");
+DM4.Add((path17+"_bdt80/T2DegStop_300_220_bdt.root").c_str());
+
 TChain TT("bdttree");
-TT.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_skimmed/TT_pow_skimmed.root");
+TT.Add((path17+"/TTJets.root").c_str());
 
 
 /////////////////////////////////////////////////////////////
 // Define cuts
 
 // Lepton selection
-TCut singlep = "(isTight==1)";
+//TCut singlep = "(isTight==1)";
+TCut singlep = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";
 TCut lept = "LepPt < 1000.";
 
 // Jets
