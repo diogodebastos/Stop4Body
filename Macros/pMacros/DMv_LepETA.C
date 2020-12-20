@@ -3,25 +3,25 @@ void DMv_LepETA(){
 gStyle->SetOptStat(000000);
 gStyle->SetPalette(1);
 
-std::string path17 = "/home/t3cms/dbastos/LSTORE/Stop4Body/nTuples17_nanoAOD_v2020-10-14";
+std::string path17 = "/lstore/cms/dbastos/Stop4Body/nTuples17_nanoAOD_v2020-11-16_test";
 
 TChain DM1("bdttree");
 TChain DM2("bdttree");
 TChain DM3("bdttree");
 TChain DM4("bdttree");
-DM1.Add((path17+"/T2DegStop_500_490.root").c_str());;
-DM2.Add((path17+"/T2DegStop_500_470.root").c_str());;
-DM3.Add((path17+"/T2DegStop_500_450.root").c_str());;
-DM4.Add((path17+"/T2DegStop_500_420.root").c_str());;
+DM1.Add((path17+"_bdt10/T2DegStop_300_290_bdt.root").c_str());
+DM2.Add((path17+"_bdt30/T2DegStop_300_270_bdt.root").c_str());
+DM3.Add((path17+"_bdt50/T2DegStop_300_250_bdt.root").c_str());
+DM4.Add((path17+"_bdt80/T2DegStop_300_220_bdt.root").c_str());
 TChain WJ("bdttree");
-WJ.Add((path17+"/WJetsToLNu_HT600to800.root").c_str());;
+WJ.Add((path17+"/WJetsToLNu_Pt_250To400.root").c_str());;
 
 /////////////////////////////////////////////////////////////
 // Define cuts
 
 // Lepton selection
-TCut singlep = "(isTight==1)";
-TCut lept = "LepPt < 1000.";
+//TCut singlep = "(isTight==1)";
+TCut singlep = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";TCut lept = "LepPt < 1000.";
 
 // Jets
 TCut ISRjet = "Jet1Pt > 110.";
