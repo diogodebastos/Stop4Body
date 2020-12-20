@@ -104,7 +104,7 @@ dm4->Draw("same");
  legA->SetTextFont(42);
 
  char Buffer[1024];
- sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", 35.9, 13.0);
+ sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", 41.2, 13.0);
  TLatex *   tex  = new TLatex(0.805,0.975,Buffer);
  tex->SetNDC();
  tex->SetTextAlign(33);
@@ -112,7 +112,7 @@ dm4->Draw("same");
  tex->SetTextSize(0.038);
  tex->SetLineWidth(2);
  tex->Draw();
- TLatex *   tex2 = new TLatex(0.15,0.965,"#font[61]{CMS}");
+ TLatex *   tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52]{Preliminary}");
  tex2->SetNDC();
  tex2->SetTextAlign(13);
  tex2->SetTextFont(42);
