@@ -3,21 +3,26 @@ void DM_LepPT(){
 gStyle->SetOptStat(000000);
 gStyle->SetPalette(1);
 
-TChain DM1("bdttree");
-DM1.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt30/T2DegStop_250_220_bdt.root");
-TChain DM2("bdttree");
-DM2.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt30/T2DegStop_300_270_bdt.root");
-TChain DM3("bdttree");
-DM3.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt30/T2DegStop_400_370_bdt.root");
-TChain DM4("bdttree");
-DM4.Add("/lstore/cms/cbeiraod/Stop4Body/nTuples_v2017-10-19_test_bdt30/T2DegStop_500_470_bdt.root");
+std::string path17 = "/lstore/cms/dbastos/Stop4Body/nTuples17_nanoAOD_v2020-11-16_test";
 
+TChain DM1("bdttree");
+DM1.Add((path17+"_bdt30/T2DegStop_250_220_bdt.root").c_str());
+
+TChain DM2("bdttree");
+DM2.Add((path17+"_bdt30/T2DegStop_300_270_bdt.root").c_str());
+
+TChain DM3("bdttree");
+DM3.Add((path17+"_bdt30/T2DegStop_400_370_bdt.root").c_str());
+
+TChain DM4("bdttree");
+DM4.Add((path17+"_bdt30/T2DegStop_500_470_bdt.root").c_str());
 
 /////////////////////////////////////////////////////////////
 // Define cuts
 
 // Lepton selection
-TCut singlep = "(isTight==1)";
+//TCut singlep = "(isTight==1)";
+TCut singlep = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";
 TCut lept = "LepPt < 1000.";
 // Jets
 TCut ISRjet = "Jet1Pt > 110.";
@@ -86,7 +91,7 @@ dm4->Draw("same");
  legA->SetTextFont(42);
 
  char Buffer[1024];
- sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", 35.9, 13.0);
+ sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", 41.2, 13.0);
  TLatex *   tex  = new TLatex(0.805,0.975,Buffer);
  tex->SetNDC();
  tex->SetTextAlign(33);
@@ -94,7 +99,7 @@ dm4->Draw("same");
  tex->SetTextSize(0.038);
  tex->SetLineWidth(2);
  tex->Draw();
- TLatex *   tex2 = new TLatex(0.15,0.965,"#font[61]{CMS}");
+ TLatex *   tex2 = new TLatex(0.15,0.965,"#font[61]{CMS} #font[52]{Preliminary}");
  tex2->SetNDC();
  tex2->SetTextAlign(13);
  tex2->SetTextFont(42);
