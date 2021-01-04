@@ -1,34 +1,33 @@
 {
-  "prefilter":"(isTight == 1) && (badMuonMoriond2017 == 1) && (badCloneMuonMoriond2017 == 1) && (weight < 2) && (DPhiJet1Jet2 < 2.8 || Jet2Pt < 67) && (HT > 181) && (Met > 254) && (Jet1Pt > 100)",
   "cuts":[
     {
       "name":"PreselectionMVA_highDM",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110)",
       "latex":"Preselection MVA highDM"
     },
     {
       "name":"PreselectionMVA_highDM_wjets",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (NbLoose == 0)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (NbLoose == 0)",
       "latex":"Preselection MVA highDM wjets"
     },
     {
       "name":"PreselectionMVA_highDM_ttbar",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (NbTight > 0)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (NbTight > 0)",
       "latex":"Preselection MVA highDM ttbar"
     },
     {
       "name":"PreselectionMVA_lowDM",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt < 30)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (LepPt < 30)",
       "latex":"Preselection MVA lowDM"
     },
     {
       "name":"PreselectionMVA_lowDM_wjets",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt < 30) && (NbLoose == 0)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (LepPt < 30) && (NbLoose == 0)",
       "latex":"Preselection MVA lowDM wjets"
     },
     {
       "name":"PreselectionMVA_lowDM_ttbar",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (isTight == 1) && (Jet1Pt > 110) && (LepPt < 30) && (NbTight > 0)",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (LepPt < 30) && (NbTight > 0)",
       "latex":"Preselection MVA lowDM ttbar"
     }
   ],
@@ -43,56 +42,5 @@
     }
   ],
   "2Dplots":[
-    {
-      "name":"IsoVSBDT",
-      "X":{
-        "expression":"BDT",
-        "min": -0.6,
-        "max": 0.6,
-        "bins": 48
-      },
-      "Y":{
-        "name":"HybIso",
-        "expression":"LepIso03*min(LepPt,25)",
-        "label":"HybIso",
-        "min": 0,
-        "max": 20,
-        "bins": 20
-      }
-    },
-    {
-      "name":"RelIsoVSBDT",
-      "X":{
-        "expression":"BDT",
-        "min": -0.6,
-        "max": 0.6,
-        "bins": 48
-      },
-      "Y":{
-        "name":"RelIso",
-        "expression":"LepIso03",
-        "label":"RelIso",
-        "min": 0,
-        "max": 1,
-        "bins": 20
-      }
-    },
-    {
-      "name":"LepPtVSBDT",
-      "X":{
-        "expression":"BDT",
-        "min": -0.6,
-        "max": 0.6,
-        "bins": 48
-      },
-      "Y":{
-        "expression":"LepPt",
-        "label":"p_{T}(l) [GeV]",
-        "min": 3.5,
-        "max": 38,
-        "bins": 23,
-        "note":"The bins start at 3.5 and have a pitch of 1.5. Chose the number of bins giving a nice number around 40"
-      }
-    }
   ]
 }
