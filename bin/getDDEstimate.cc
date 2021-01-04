@@ -161,14 +161,17 @@ int main(int argc, char** argv)
   std::cout << "Reading json files" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
-  std::string tightSelection = "(isTight == 1)";
+  std::string tightSelection = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";
+  //std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
   //std::string promptSelection = "(isPrompt == 1)";
   //std::string fakeSelection = "!(isPrompt == 1)";
   std::string metSelection = " && (Met > 280)";
   if(invertMet)
     metSelection = " && (Met > 200 && Met < 280)";
-  std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  //std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
@@ -232,7 +235,7 @@ int main(int argc, char** argv)
   bool foundTTbar = false, foundWJets = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
   {
-    if(MC.process(i).tag() == "WJets")
+    if(MC.process(i).tag() == "WJetsNLO")
     {
       wjetsIndex = i;
       foundWJets = true;
