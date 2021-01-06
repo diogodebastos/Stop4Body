@@ -50,6 +50,7 @@ int main(int argc, char** argv)
   bool verbose = false;
   double SRCut = 0.4;
   double CRCut = 0.2;
+  double TESTCut = 0.1;
   bool isHighDM = false;
   bool doVR1 = false; // Swap the Met and LepPt for this VR
   bool doVR2 = false; // Invert the Met for this VR
@@ -113,6 +114,12 @@ int main(int argc, char** argv)
       std::stringstream convert;
       convert << argv[++i];
       convert >> CRCut;
+    }
+    if(argument == "--TestCut")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> TESTCut;
     }
 
     if(argument == "--doVR1")
@@ -196,7 +203,8 @@ int main(int argc, char** argv)
       lepSelection = "(LepPt < 30)";
   }
 
-  std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
+  std::string baseSelection = "(METFilters==1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
+  //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
   //std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)";
   std::string preSelection = baseSelection + " && (Met > 280) && " + lepSelection;
   std::string wjetsEnrich = "(NbLoose == 0)";
@@ -205,6 +213,8 @@ int main(int argc, char** argv)
   baseSelection += " && " + lepSelection;
   std::string crSelection = "(BDT < "+ std::to_string(CRCut) +" )";
   std::string srSelection = "(BDT > "+ std::to_string(SRCut) +" )";
+  std::string testCrSelection = "(BDT < "+ std::to_string(TESTCut) +" )";
+  std::string testSrSelection = "(BDT > "+ std::to_string(TESTCut) +" )";
   if(doVR1)
     baseSelection += " && " + VR1Trigger;
 
@@ -350,12 +360,17 @@ int main(int argc, char** argv)
       std::cout << "Doing DD sys" << std::endl;
     }
     srSelection = "(BDT > 0.2)";
-    methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
-    methodTwoDDSystematics(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
+    //methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
+    //methodTwoDDSystematics(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
     if (doLoosenBDT){
       srSelection = "(BDT > 0.1)";
       crSelection = "(BDT < 0.1)";
+      srSelection = testSrSelection;
+      crSelection = testCrSelection;
     }
+    methodOneDDSystematics(wjets, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
+    methodTwoDDSystematics(wjets, Data, MC, baseSelection, srSelection, crSelection, wjetsEnrich, mcWeight.Value(), verbose);
+
     methodOneDDSystematics(ttbar, Data, MC, baseSelection, looseSelection, tightSelection, srSelection, crSelection, ttbarEnrich, mcWeight.Value(), verbose);
     methodTwoDDSystematics(ttbar, Data, MC, baseSelection, srSelection, crSelection, ttbarEnrich, mcWeight.Value(), verbose);
 

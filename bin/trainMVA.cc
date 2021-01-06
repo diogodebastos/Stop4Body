@@ -196,10 +196,11 @@ int main(int argc, char** argv)
     factory->AddBackgroundTree( background_test, backgroundWeight, TMVA::Types::kTesting  );
   }
 
-  //factory->SetBackgroundWeightExpression( "XS/Nevt" );
-  //factory->SetSignalWeightExpression("1/Nevt");
-  factory->SetBackgroundWeightExpression( "weight/Nevt" );
+  factory->SetBackgroundWeightExpression( "XS/Nevt" );
+  //factory->SetBackgroundWeightExpression( "XS*normStweight/Nevt" );
+  //factory->SetBackgroundWeightExpression( "weight/Nevt" );
   factory->SetSignalWeightExpression("1/Nevt");
+  //factory->SetSignalWeightExpression("weight/Nevt");
 
   TCut lepBase;
   if(isHighDeltaM){

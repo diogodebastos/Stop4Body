@@ -102,7 +102,8 @@ int main(int argc, char** argv)
   std::string htSelection = "(HT > " + std::to_string(HTCUT) + " )";
   std::string jet1ptSelection = "(Jet1Pt > " + std::to_string(Jet1PtCUT) + " )";
 
-  std::string preSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && " + htSelection  + " && (Met > 280) && " + jet1ptSelection + " && (isTight == 1)";
+  //std::string preSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && " + htSelection  + " && (Met > 280) && " + jet1ptSelection + " && (isTight == 1)";
+  std::string preSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && " + htSelection  + " && (Met > 280) && " + jet1ptSelection + " && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";
 
   if(isHighDM)
   {

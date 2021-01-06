@@ -110,7 +110,7 @@ if __name__ == "__main__":
   #    job = jobsDir + "/theJob.sh"
 
       #with open(jobsDir, 'w') as thisScript:
-      with open(outputDirectory + "/theJob.sh", 'w') as thisScript:
+      with open(outputDirectory + "/theJob_SRCut0p"+cut+".sh", 'w') as thisScript:
         logF = "/DDEstimateLog"
         if args.VR2:
             logF += "_VR2_C0p"+cut
@@ -160,7 +160,7 @@ if __name__ == "__main__":
         mode |= 0o111
         os.fchmod(thisScript.fileno(), mode & 0o7777)
 
-      job = outputDirectory + "/theJob.sh"
+      job = outputDirectory + "/theJob_SRCut0p"+cut+".sh"
       #os.chdir(jobsDir)
       cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
       print cmd

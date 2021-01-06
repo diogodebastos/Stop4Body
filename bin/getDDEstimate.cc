@@ -293,6 +293,7 @@ int main(int argc, char** argv)
     systVars.push_back("ISRweight_Bin5_Down");
     systVars.push_back("ISRweight_Bin6_Up");
     systVars.push_back("ISRweight_Bin6_Down");
+/*  EWKISR is not done with WJetsNLO samples, must be replaced for ST reweight
     systVars.push_back("EWKISRweight_Bin1_Up");
     systVars.push_back("EWKISRweight_Bin1_Down");
     systVars.push_back("EWKISRweight_Bin2_Up");
@@ -307,6 +308,7 @@ int main(int argc, char** argv)
     systVars.push_back("EWKISRweight_Bin6_Down");
     systVars.push_back("EWKISRweight_Bin7_Up");
     systVars.push_back("EWKISRweight_Bin7_Down");
+*/
     // 2016
 //    systVars.push_back("TightLoose_NU_Bin1_Up");
 //    systVars.push_back("TightLoose_NU_Bin1_Down");
@@ -364,9 +366,9 @@ int main(int argc, char** argv)
 
 
   // Make a plot of the BDToutput, just for control reasons
-  if(verbose)
+  if(verbose){
     std::cout << "Building control plot of BDT output" << std::endl;
-  {
+
     auto dataH = Data.process(0).getHist("BDT", "BDT;Evt.",               tightSelection+"&&"+baseSelection,     20, -1.0, 1.0);
     auto mcH   =        MC.getHist("MC", "BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
     auto sigH  =  Sig.process(0).getHist("BDT", "BDT;Evt.", mcWeight+"*("+tightSelection+"&&"+baseSelection+")", 20, -1.0, 1.0);
@@ -474,7 +476,7 @@ int main(int argc, char** argv)
 
   if(verbose)
     std::cout << "Filling table" << std::endl;
-  std::ofstream outputTable(outputDirectory+"/table.tex");
+  std::ofstream outputTable(outputDirectory+"/table_SRcut"+std::to_string(SRCut)+".tex");
   outputTable << "\\begin{tabular}{r|ccccc}\n";
   outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
 
