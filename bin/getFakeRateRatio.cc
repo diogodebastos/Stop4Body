@@ -51,10 +51,14 @@ int main(int argc, char** argv)
   std::string debug;
   double luminosity = -1;
   // Placeholder for ${JSON_PATH}
-  std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2017/DataJetHT.json";
-  std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2017/allMC.json";
-  // Placeholder for ${INPUT}
+  /*
+  std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/DataJetHT.json";
+  std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body/CMSSW_8_0_14/src/UserCode/Stop4Body/Macros/JSON/2017/allMC.json";
   std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/tuples-for-fake-rate/nTuples_v2019-04-02-fakeMCClosure";
+  */
+  std::string jsonFileNameData = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2017/DataJetHT.json";
+  std::string jsonFileNameMC = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/JSON/2017/allMC.json";
+  std::string inputDirectory = "/lstore/cms/dbastos/Stop4Body/nTuples17_nanoAOD_v2020-11-03-clJetLep_isPFcand";
   std::string outputDirectory = "./OUT/";
   std::string suffix = "";
   // Placeholder for ${variables}
@@ -151,7 +155,8 @@ int main(int argc, char** argv)
   bool foundTTbar = false, foundWJets = false, foundZInv = false, foundPrompt = false, foundQCD = false;
   for(size_t i = 0; i < MC.nProcesses(); ++i)
   {
-    if(MC.process(i).tag() == "WJets")
+    //if(MC.process(i).tag() == "WJets")
+    if(MC.process(i).tag() == "WJetsNLO")
     {
       wjetsIndex = i;
       foundWJets = true;
@@ -254,7 +259,7 @@ int main(int argc, char** argv)
      }
 
      std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
-
+/*
      // Fake Ratio in Data without the prompt contribution, estimated with MC
      auto eTL = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
 
@@ -289,7 +294,7 @@ int main(int argc, char** argv)
      ratioLepStudies->Divide(eTL);
      ratioLepStudies->Draw();
      c2.SaveAs((outputDirectory+"/"+name+"_eTL_ratio.png").c_str());
-
+*/
      // Fake Ratio systematics
 /*
      //getFakeRateSystematics();
@@ -339,12 +344,12 @@ int main(int argc, char** argv)
      delete eTLbVeto;
      delete eTLbTag;
 */
-     /*
+     //
      auto pEffRemovePromptLowEta = getFakeRateRemovePrompt(name + "_LowEta", jetht, prompt, MC, variable, dataSel + lowEta, selection + lowEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      auto pEffRemovePromptHightEta = getFakeRateRemovePrompt(name + "_HighEta", jetht, prompt, MC, variable, dataSel + highEta, selection + highEta, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
      delete pEffRemovePromptLowEta;
      delete pEffRemovePromptHightEta;
-     */
+     //
 /*
      // MC Closure
      auto mcClosure = getFakeRateMCClosure(name, MC, variable, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
