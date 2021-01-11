@@ -252,7 +252,7 @@ int main(int argc, char** argv)
       mRegion_lep_tight_step1 = selection + " && (nGoodMu_cutId_medium)";
      }
 
-     std::string name = ("tightToLooseRatios_2017_"+cut.name()+"_"+variable.name()).c_str();
+     std::string name = (outputDirectory + "/tightToLooseRatios_"+cut.name()+"_"+variable.name()).c_str();
 /*
      // Fake Ratio in Data without the prompt contribution, estimated with MC
      auto eTL = getFakeRateRemovePrompt(name, jetht, prompt, MC, variable, dataSel, selection, mRegion_lep_tight, mRegion_lep_loose, mcWeight);
