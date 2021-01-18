@@ -327,7 +327,11 @@ int main(int argc, char** argv)
       bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
     }
   }
+  // For quicker DEBUGGING or to run FakeRate because we don't use b-tag SFs
   //bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
+  if(doJetHT){
+    bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
+  }
 
   std::cout << "Year: " << year << std::endl;
   std::cout << "bTagCalib file: " << bTagCalibrationFile << std::endl;
@@ -2148,7 +2152,7 @@ int main(int argc, char** argv)
               lPTETA = LepGood_pt[i] > 3.5;
               lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.4);
             }
-            else // If an electron
+            else if(std::abs(LepGood_pdgId[i]) == 11) // If an electron
             {
               lPTETA = LepGood_pt[i] > 5.0;
               lPTETA = lPTETA && (std::abs(LepGood_eta[i]) < 2.5);
@@ -2160,64 +2164,72 @@ int main(int argc, char** argv)
                           && (std::abs(LepGood_dz[i]) < 0.1);
             bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.1)
                           && (std::abs(LepGood_dz[i]) < 0.5);
+            //bool lID_loose = (std::abs(LepGood_dxy[i]) < 0.03)
+            //              && (std::abs(LepGood_dz[i]) < 0.15);
             bool lIS       = LepGood_pfRelIso03_all[i] < 0.2 || LepGood_pfAbsIso03_all[i] < 5.0;
             bool lIS_loose = LepGood_pfRelIso03_all[i] < 0.8 || LepGood_pfAbsIso03_all[i] < 20.0;
+            //bool lIS_loose = LepGood_pfRelIso03_all[i] < 0.6 || LepGood_pfAbsIso03_all[i] < 15.0;
+            //bool lIS_loose = LepGood_pfRelIso03_all[i] < 0.3 || LepGood_pfAbsIso03_all[i] < 7.5;
 
             //if(lPTETA && lID && lIS && LepGood_isPFcand[i]==1)
-            if(lPTETA && lID && lIS && LepGood_isPFcand[i]==1)
+            bool vallep = false;
+            if(lPTETA && lID && lIS)
             {
-/*
-              if (year==2018) { // Veto events in HEM 15/16
-                if(!(LepGood_eta[i] > -3.0 && LepGood_eta[i] < -1.4 && LepGood_phi[i] > -1.77 && LepGood_phi[i] < -0.67)) {
-                  validLeptons.push_back(i);
-                }
-		else {
-		  std::cout << "HEM event rejected" << std::endl;
-		}
-              }
-              else {
-                validLeptons.push_back(i);
-              }
-*/
-              validLeptons.push_back(i);
               if(std::abs(LepGood_pdgId[i]) == 13){
-                nGoodMu++;
+                if(LepGood_isPFcand[i]==1){
+                  nGoodMu++;
+                  vallep = true;
+                }
                 if(LepGood_tightId[i]){
                   nGoodMu_cutId_tight++;
                   nGoodMu_cutId_medium++;
                   nGoodMu_cutId_loose++;
+                  vallep = true;
                 }
                 else if(LepGood_mediumId[i]){
                   nGoodMu_cutId_medium++;
                   nGoodMu_cutId_loose++;
+                  vallep = true;
                 }
                 //else if(LepGood_looseId[i]){
-                else if(LepGood_isPFcand[i] && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
+                else if(LepGood_isPFcand[i]==1 && (LepGood_isGlobal[i] || LepGood_isTracker[i]) ){
                   nGoodMu_cutId_loose++;
+                  vallep = true;
                 }
               }
               else if(std::abs(LepGood_pdgId[i]) == 11){
+                if(LepGood_isPFcand[i]==1){
+                  nGoodEl++;
+                  vallep = true;
+                }
                 if(LepGood_cutBased[i] == 4){
                   nGoodEl_cutId_tight++;
                   nGoodEl_cutId_medium++;
                   nGoodEl_cutId_loose++;
                   nGoodEl_cutId_veto++;
+                  vallep = true;
                 }
                 else if(LepGood_cutBased[i] == 3){
                   nGoodEl_cutId_medium++;
                   nGoodEl_cutId_loose++;
                   nGoodEl_cutId_veto++;
+                  vallep = true;
                 }
                 else if(LepGood_cutBased[i] == 2){
                   nGoodEl_cutId_loose++;
                   nGoodEl_cutId_veto++;
+                  vallep = true;
                 }
                 else if(LepGood_cutBased[i] == 1){
                   nGoodEl_cutId_veto++;
+                  vallep = true;
                 }
-                else if(LepGood_cutBased[i] == 0 && LepGood_isPFcand[i]==1){
-                  nGoodEl++;
-                }
+                //else if(LepGood_cutBased[i] == 0 && LepGood_isPFcand[i]==1){
+                //  nGoodEl++;
+                //}
+              }
+              if(vallep){
+                validLeptons.push_back(i);
               }
             }
             bool ll = false;
@@ -2227,7 +2239,7 @@ int main(int argc, char** argv)
                 nGoodMu_loose++;
                 ll = true;
               }
-              else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_isPFcand[i]==1 ){
+              else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_isPFcand[i]==1){
               //else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_cutBased[i]==0){
                 nGoodEl_loose++;
                 ll = true;
@@ -2380,8 +2392,15 @@ int main(int argc, char** argv)
             float deltaR;
             Int_t looseLep;
             UInt_t jetMask[nJetIn];
+            // Clean on Tight Leptons
+            //for (size_t lep = 0; lep < validLeptons.size(); lep++) {
+              //looseLep = validLeptons.at(lep);
+            // Clean on Loose Leptons
             for (size_t lep = 0; lep < looseLeptons.size(); lep++) {
               looseLep = looseLeptons.at(lep);
+            // Clean on Any Lepton
+            //for (size_t lep = 0; lep < nLepGood; lep++) {
+              //looseLep = lep;
               float bestDR = DR_CutOff;
               UInt_t closestJet = 999;
               for(UInt_t jet = 0; jet < nJetIn; ++jet)
