@@ -34,6 +34,11 @@ extern TH1D* WJetsToLNu_HT800to1200_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT1200to2500_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT2500toInf_gen_WptHist2018;
 
+extern TH1D* electronTightToLoose_2018_LowEta;
+extern TH1D* electronTightToLoose_2018_HighEta;
+extern TH1D* muonTightToLoose_2018_LowEta;
+extern TH1D* muonTightToLoose_2018_HighEta;
+
 extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronRecoSFHist2017_lowEt;
 extern TH2D* centralElectronSFHist2017;
@@ -59,6 +64,7 @@ extern TH1D* electronTightToLoose_2017_LowEta;
 extern TH1D* electronTightToLoose_2017_HighEta;
 extern TH1D* muonTightToLoose_2017_LowEta;
 extern TH1D* muonTightToLoose_2017_HighEta;
+
 extern TH1D* mcClosure_electronTightToLoose_2017_LowEta;
 extern TH1D* mcClosure_electronTightToLoose_2017_HighEta;
 extern TH1D* mcClosure_muonTightToLoose_2017_LowEta;
@@ -120,7 +126,7 @@ ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, doubl
 ValueWithSystematics<double> getLeptonIDSFSys2016(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonISOSF2016Sys(double LepID, double LepPt, double LepEta)
 ;
-ValueWithSystematics<double> getLeptonTightLooseRatio2017Sys(double LepID, double LepPt, double LepEta);
+ValueWithSystematics<double> getLeptonTightLooseRatioNanoAODSys(double LepID, double LepPt, double LepEta, int year);
 ValueWithSystematics<double> getLeptonTightLooseRatio2017MCClosureSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta);
 ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);

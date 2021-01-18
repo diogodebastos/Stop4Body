@@ -75,6 +75,8 @@ const double ECALGap_MinEta =  1.4442; // ECAL gap parameters
 const double ECALGap_MaxEta =  1.5660;
 const double DR_CutOff = 0.4;
 
+// 2018 histograms
+
 extern TH2D* centralElectronRecoSFHist2018;
 extern TH2D* centralElectronSFHist2018;
 extern TH2D* TnPlowPtIDSFHist2018;
@@ -96,6 +98,13 @@ extern TH1D* WJetsToLNu_HT600to800_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT800to1200_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT1200to2500_gen_WptHist2018;
 extern TH1D* WJetsToLNu_HT2500toInf_gen_WptHist2018;
+
+extern TH1D* electronTightToLoose_2018_LowEta;
+extern TH1D* electronTightToLoose_2018_HighEta;
+extern TH1D* muonTightToLoose_2018_LowEta;
+extern TH1D* muonTightToLoose_2018_HighEta;
+
+// 2017 histograms
 
 extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronRecoSFHist2017_lowEt;
@@ -122,6 +131,7 @@ extern TH1D* electronTightToLoose_2017_LowEta;
 extern TH1D* electronTightToLoose_2017_HighEta;
 extern TH1D* muonTightToLoose_2017_LowEta;
 extern TH1D* muonTightToLoose_2017_HighEta;
+
 extern TH1D* mcClosure_electronTightToLoose_2017_LowEta;
 extern TH1D* mcClosure_electronTightToLoose_2017_HighEta;
 extern TH1D* mcClosure_muonTightToLoose_2017_LowEta;
@@ -405,18 +415,17 @@ int main(int argc, char** argv)
   TFile wSTandJet1Pt2018("../data/2018_weightsSTandJet1Pt.root", "READ");
   weightsSTandJet1Pt_2018 = static_cast<TH2D*>(wSTandJet1Pt2018.Get("wrat"));
 
-  // Tight to Loose ratio weight for the fake lepton method prediction TODO
+  TFile tightToLooseRatios2018("../data/tightToLooseRatios_2018.root", "READ");
+  electronTightToLoose_2018_LowEta = static_cast<TH1D*>(tightToLooseRatios2018.Get("tightToLooseRatios_electron_LepPt_LowEta"));
+  electronTightToLoose_2018_HighEta = static_cast<TH1D*>(tightToLooseRatios2018.Get("tightToLooseRatios_electron_LepPt_HighEta"));
+  muonTightToLoose_2018_LowEta = static_cast<TH1D*>(tightToLooseRatios2018.Get("tightToLooseRatios_muon_LepPt_LowEta"));
+  muonTightToLoose_2018_HighEta = static_cast<TH1D*>(tightToLooseRatios2018.Get("tightToLooseRatios_muon_LepPt_HighEta"));
   /*
-  TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
-  electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_LowEta"));
-  electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_HighEta"));
-  muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_LowEta"));
-  muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_HighEta"));
   mcClosure_electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_LowEta"));
   mcClosure_electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_HighEta"));
   mcClosure_muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_LowEta"));
   mcClosure_muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_HighEta"));
-*/
+  */
   
   TFile WJetsToLNu_HT100to200_gen_WptFile2018("../data/2018_sample_WJetsToLNu_HT100to200_gen_Wpt.root","READ");
   WJetsToLNu_HT100to200_gen_WptHist2018 = static_cast<TH1D*>(WJetsToLNu_HT100to200_gen_WptFile2018.Get("wrat"));  
@@ -485,10 +494,11 @@ int main(int argc, char** argv)
 
   // Tight to Loose ratio weight for the fake lepton method prediction
   TFile tightToLooseRatios2017("../data/tightToLooseRatios_2017.root", "READ");
-  electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_LowEta"));
-  electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_electron_LepPt_HighEta"));
-  muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_LowEta"));
-  muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_2017_muon_LepPt_HighEta"));
+  electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_electron_LepPt_LowEta"));
+  electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_electron_LepPt_HighEta"));
+  muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_muon_LepPt_LowEta"));
+  muonTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("tightToLooseRatios_muon_LepPt_HighEta"));
+
   mcClosure_electronTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_LowEta"));
   mcClosure_electronTightToLoose_2017_HighEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_electron_LepPt_HighEta"));
   mcClosure_muonTightToLoose_2017_LowEta = static_cast<TH1D*>(tightToLooseRatios2017.Get("mcClosure_tightToLooseRatios_2017_muon_LepPt_LowEta"));
@@ -772,7 +782,7 @@ int main(int argc, char** argv)
       
       std::cout << "\t        looseNotTight" << std::endl;
       //looseNotTightWeight = getLeptonTightLooseRatioSys(11, 20, 1.1);
-      looseNotTightWeight = getLeptonTightLooseRatio2017Sys(11, 20, 1.1);
+      looseNotTightWeight = getLeptonTightLooseRatioNanoAODSys(11, 20, 1.1, 2017);
       looseNotTightWeight2017MCClosure = getLeptonTightLooseRatio2017MCClosureSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
@@ -3338,7 +3348,7 @@ int main(int argc, char** argv)
             }
             else
             {
-              auto efficiency = getLeptonTightLooseRatio2017Sys(LepID, LepPt, LepEta);
+              auto efficiency = getLeptonTightLooseRatioNanoAODSys(LepID, LepPt, LepEta, year);
               looseNotTightWeight = efficiency/(1-efficiency);
               weight *= looseNotTightWeight;
             }
