@@ -59,11 +59,11 @@
           "tag":"QCD_HT700to1000",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":10,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/QCD_HT700to1000",
-              "split":12
+              "path":"/lstore/cms/dbastos/Autumn18_Prod2021Jan13/QCD_HT700to1000",
+              "split":55
             }
           ]
         },
