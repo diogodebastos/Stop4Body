@@ -1937,7 +1937,8 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("Jet_pt_jerDown", &Jet_pt_jerDown);
         }
 
-        Int_t LepGood_genPartFlav[LEPCOLL_LIMIT];
+        //Int_t LepGood_genPartFlav[LEPCOLL_LIMIT];
+        UChar_t LepGood_genPartFlav[LEPCOLL_LIMIT];
         UInt_t nGenPart = 0;
         Int_t GenPart_motherId[GENPART_LIMIT];
         Int_t GenPart_status[GENPART_LIMIT];
@@ -2808,7 +2809,16 @@ int main(int argc, char** argv)
 //              bool isPromptFlag = !(genPartFlav == 0 || genPartFlav == 99 || genPartFlav == 100);
               // 1 = prompt electron (including gamma*->mu mu), 15 = electron from prompt tau, 22 = prompt photon (likely conversion), 5 = electron from b, 4 = electron from c, 3 = electron from light or unknown, 0 = unmatched
               // 1 = prompt muon (including gamma*->mu mu), 15 = muon from prompt tau, 5 = muon from b, 4 = muon from c, 3 = muon from light or unknown, 0 = unmatched
-              bool isPromptFlag = !(genPartFlav == 0 || genPartFlav == 3 || genPartFlav == 4 || genPartFlav == 5 || genPartFlav == 15 || genPartFlav == 22 || genPartFlav == 15);
+              //bool isPromptFlag = !(genPartFlav == 0 || genPartFlav == 3 || genPartFlav == 4 || genPartFlav == 5 || genPartFlav == 15 || genPartFlav == 22);
+              //
+              bool isPromptFlag;
+              if(genPartFlav == 1){
+                isPromptFlag = true; 
+              }
+              else{
+                isPromptFlag = false;
+              }
+              //
               if(!isPromptFlag)
               {
                 for(UInt_t genPartIndex = 0; genPartIndex < nGenPart; ++genPartIndex)
