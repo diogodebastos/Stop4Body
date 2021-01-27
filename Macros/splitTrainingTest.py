@@ -144,11 +144,13 @@ if __name__ == "__main__":
 
               thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
 
-              thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
-              thisScript.write(". setup.sh\n\n")
+              thisScript.write("export SCRAM_ARCH=slc6_amd64_gcc530\n")
+              thisScript.write("export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch\n")
+              thisScript.write("source $VO_CMS_SW_DIR/cmsset_default.sh\n")
+              thisScript.write("export CMS_PATH=$VO_CMS_SW_DIR\n")
+              thisScript.write("source /cvmfs/cms.cern.ch/crab3/crab.sh\n\n")
 
               thisScript.write("#cd $CMSSW_BASE/src/\n")
-              thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_0_14/src/\n")
               thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
               thisScript.write("cd " + baseDirectory + "\n\n")
