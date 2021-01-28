@@ -19,6 +19,8 @@ def listDir(path):
 if __name__ == "__main__":
   import argparse
 
+  YEAR = os.getenv("YEAR")
+
   parser = argparse.ArgumentParser(description='Process the command line options')
   parser.add_argument('-i', '--inDirectory', required=True, help='Name of the input directory')
   parser.add_argument(      '--overloadTestOut', default="", help='Use to define an alternative output directory for the test events')
@@ -112,7 +114,7 @@ if __name__ == "__main__":
     for json in jsonFiles:
       print "Splitting the samples"
       cmd = "splitTrainingTest"
-      cmd += " --json JSON/2017/" + json
+      cmd += " --json JSON/" + YEAR+ "/" + json
       cmd += " --inDir " + args.inDirectory
       cmd += " --testOutDir " + testOut
       cmd += " --trainOutDir " + trainOut
@@ -128,7 +130,7 @@ if __name__ == "__main__":
     processedFiles = [args.inDirectory + "/puWeights.root"]
     baseDirectory = os.path.realpath(os.getcwd())
     for file in jsonFiles:
-      jsonFileName = "JSON/2017/" + file
+      jsonFileName = "JSON/"+YEAR+"/" + file
       with open(jsonFileName) as data_file:
         data = json.load(data_file)
         for i in range(len(data["lines"])):
@@ -150,7 +152,7 @@ if __name__ == "__main__":
               thisScript.write("export CMS_PATH=$VO_CMS_SW_DIR\n")
               thisScript.write("source /cvmfs/cms.cern.ch/crab3/crab.sh\n\n")
 
-              thisScript.write("#cd $CMSSW_BASE/src/\n")
+              thisScript.write("cd $CMSSW_BASE/src/\n")
               thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
               thisScript.write("cd " + baseDirectory + "\n\n")
@@ -175,7 +177,7 @@ if __name__ == "__main__":
             os.chdir(trainOut + "/" + sample)
 
             jobInfo = {}
-            cmd = "qsub theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
+            cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
             print cmd
             if not args.dryRun:
               p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
