@@ -2189,7 +2189,6 @@ int main(int argc, char** argv)
               if(std::abs(LepGood_pdgId[i]) == 13){
                 if(LepGood_isPFcand[i]==1){
                   nGoodMu++;
-                  vallep = true;
                 }
                 if(LepGood_tightId[i]){
                   nGoodMu_cutId_tight++;
@@ -2205,13 +2204,12 @@ int main(int argc, char** argv)
                 //else if(LepGood_looseId[i]){
                 else if(LepGood_isPFcand[i]==1 && (LepGood_isGlobal[i] || LepGood_isTracker[i]) ){
                   nGoodMu_cutId_loose++;
-                  vallep = true;
                 }
+                nGoodMu=nGoodMu_cutId_loose;
               }
               else if(std::abs(LepGood_pdgId[i]) == 11){
                 if(LepGood_isPFcand[i]==1){
                   nGoodEl++;
-                  vallep = true;
                 }
                 if(LepGood_cutBased[i] == 4){
                   nGoodEl_cutId_tight++;
@@ -2233,8 +2231,8 @@ int main(int argc, char** argv)
                 }
                 else if(LepGood_cutBased[i] == 1){
                   nGoodEl_cutId_veto++;
-                  vallep = true;
                 }
+                nGoodEl=nGoodEl_cutId_veto;
                 //else if(LepGood_cutBased[i] == 0 && LepGood_isPFcand[i]==1){
                 //  nGoodEl++;
                 //}
@@ -2246,12 +2244,13 @@ int main(int argc, char** argv)
             bool ll = false;
             if(lPTETA && lID_loose && lIS_loose)
             {
-              if(std::abs(LepGood_pdgId[i]) == 13 && LepGood_isPFcand[i]==1){
+              //if(std::abs(LepGood_pdgId[i]) == 13 && LepGood_isPFcand[i]==1){
+              if(std::abs(LepGood_pdgId[i]) == 13 && LepGood_isPFcand[i]==1 && (LepGood_isGlobal[i] || LepGood_isTracker[i])){
                 nGoodMu_loose++;
                 ll = true;
               }
-              else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_isPFcand[i]==1){
-              //else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_cutBased[i]==0){
+              //else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_isPFcand[i]==1){
+              else if(std::abs(LepGood_pdgId[i]) == 11 && LepGood_cutBased[i]>0){
                 nGoodEl_loose++;
                 ll = true;
               }
