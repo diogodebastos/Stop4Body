@@ -95,7 +95,7 @@ int main(int argc, char** argv)
 
   if(!isHighDM)
   {
-    preSelection +=" && (LepPt > 30.)";
+    preSelection +=" && (LepPt < 30.)";
   }
 
   std::string signalRegion = "";
@@ -196,11 +196,15 @@ int main(int argc, char** argv)
     bkgMap[MC.process(i).tag()] = i;
   }
 
+  //std::string selMVA = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (BDT > 0.45) && (LepPt < 30)";
+
   if(verbose){
-    printSel("SR",preSelection + " && " + signalRegion);
+    printSel("SR",tightSelection + " && " + preSelection + " && " + signalRegion);
+    //printSel("SR",selMVA);
     for(auto& bkg : bkgMap)
     {
-      std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(preSelection + " && " + signalRegion, mcWeight) << std::endl;
+      std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight) << std::endl;
+      //std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(selMVA, mcWeight) << std::endl;
     }
   }
 
@@ -222,6 +226,8 @@ void printSel(std::string name, std::string selection)
 
 doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string mcWeight)
 {
+  //printSel("FakeinSR:", signalRegion);
+
   doubleUnc LNTinSR = LNTData.getYield(signalRegion, "weight");
   doubleUnc LNTMCinSR = LNTMC.getYield(signalRegion + " && isPrompt == 1", mcWeight);
 
@@ -233,6 +239,9 @@ doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalR
 
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
+  //printSel("DDinSR: ",tightSelection + " && " + signalRegion + " && isPrompt == 1");
+  //printSel("DDinCR: ",tightSelection + " && " + controlRegion + " && isPrompt == 1");
+
   doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
   doubleUnc NinCR = toEstimate.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
   doubleUnc DatainCR = Data.getYield(tightSelection + " && " + controlRegion, "1.0");
@@ -248,6 +257,7 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
 
   doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + controlRegion, mcWeight);
 
+  //printSel("FakeSel:", looseSelection + " && " + controlRegion);
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
 
   return estimate;

@@ -37,6 +37,7 @@ class NullStream : public std::ostream
 };
 
 void printHelp();
+void printSel(std::string, std::string);
 doubleUnc naiveDD(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
 doubleUnc promptDD(std::ostream &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string);
 doubleUnc injectDD(std::ostream &, ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string);
@@ -499,8 +500,8 @@ int main(int argc, char** argv)
 
   //outputTable << "\\hline\n";
   //outputTable << "\\hline\n";
-  fullDD(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
   fullDD(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  fullDD(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
   outputTable << "\\hline\n";
   outputTable << "\n";
 
@@ -574,6 +575,14 @@ int main(int argc, char** argv)
   outputTable << "\\hline\n\\end{tabular}\n";
 
   return 0;
+}
+
+void printSel(std::string name, std::string selection)
+{
+  std::cout << "The used " << name << ":" << std::endl;
+  std::cout << "  " << selection << std::endl;
+  std::cout << std::endl;
+  return;
 }
 
 doubleUnc naiveDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string signalRegion, std::string controlRegion, std::string mcWeight)
@@ -658,6 +667,8 @@ doubleUnc promptDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleRea
 
 doubleUnc fakeDD(std::ostream &outputTable, SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string mcWeight)
 {
+  //printSel("FakeinSR:", signalRegion);
+
   doubleUnc LNTinSR = LNTData.getYield(signalRegion, "weight");
   doubleUnc LNTMCinSR = LNTMC.getYield(signalRegion + " && isPrompt == 1", mcWeight);
 
@@ -690,8 +701,11 @@ ValueWithSystematics<doubleUnc> fakeDDSys(std::ostream &outputTable, SampleReade
 
 doubleUnc fullDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
+  //printSel("DDinSR: ",tightSelection + " && " + signalRegion + " && isPrompt == 1");
+  //printSel("DDinCR: ",tightSelection + " && " + controlRegion + " && isPrompt == 1");
   doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
   doubleUnc NinCR = toEstimate.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
+
   doubleUnc DatainCR = Data.getYield(tightSelection + " && " + controlRegion, "1.0");
   doubleUnc otherMC (0,0);
   if(static_cast<double>(NinSR) == 0)
@@ -703,6 +717,7 @@ doubleUnc fullDD(std::ostream &outputTable, ProcessInfo &toEstimate, SampleReade
   }
   NullStream null_stream; //Substitute outputTable below so that output is suppressed
   //doubleUnc fakes = fakeDD(outputTable, Data, MC, looseSelection + " && " + controlRegion, mcWeight);
+  //printSel("FakeSel:", looseSelection + " && " + controlRegion);
   doubleUnc fakes = fakeDD(null_stream, Data, MC, looseSelection + " && " + controlRegion, mcWeight);
 
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
