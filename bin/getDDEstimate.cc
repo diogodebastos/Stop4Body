@@ -161,8 +161,8 @@ int main(int argc, char** argv)
   std::cout << "Reading json files" << std::endl;
   SampleReader samples(jsonFileName, inputDirectory, suffix);
 
-  std::string tightSelection = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";
-  //std::string tightSelection = "(isTight == 1)";
+  //std::string tightSelection = "(nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1)";
+  std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
   //std::string promptSelection = "(isPrompt == 1)";
   //std::string fakeSelection = "!(isPrompt == 1)";
@@ -170,11 +170,14 @@ int main(int argc, char** argv)
   if(invertMet)
     metSelection = " && (Met > 200 && Met < 280)";
   //std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
-  std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  //std::string baseSelection = "(weight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  std::string baseSelection = "(genWeight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
 
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
+  //std::string controlRegion = "(BDT < 0.1)";
   if(special)
   {
     std::stringstream converter;
@@ -309,18 +312,18 @@ int main(int argc, char** argv)
     systVars.push_back("EWKISRweight_Bin7_Up");
     systVars.push_back("EWKISRweight_Bin7_Down");
 */
-    // 2016
-//    systVars.push_back("TightLoose_NU_Bin1_Up");
-//    systVars.push_back("TightLoose_NU_Bin1_Down");
-//    systVars.push_back("TightLoose_NU_Bin2_Up");
-//    systVars.push_back("TightLoose_NU_Bin2_Down");
-//    systVars.push_back("TightLoose_NU_Bin3_Up");
-//    systVars.push_back("TightLoose_NU_Bin3_Down");
-//    systVars.push_back("TightLoose_NU_Bin4_Up");
-//    systVars.push_back("TightLoose_NU_Bin4_Down");
-//    systVars.push_back("TightLoose_NU_Bin5_Up");
-//    systVars.push_back("TightLoose_NU_Bin5_Down");
+    systVars.push_back("TightLoose_NU_Bin1_Up");
+    systVars.push_back("TightLoose_NU_Bin1_Down");
+    systVars.push_back("TightLoose_NU_Bin2_Up");
+    systVars.push_back("TightLoose_NU_Bin2_Down");
+    systVars.push_back("TightLoose_NU_Bin3_Up");
+    systVars.push_back("TightLoose_NU_Bin3_Down");
+    systVars.push_back("TightLoose_NU_Bin4_Up");
+    systVars.push_back("TightLoose_NU_Bin4_Down");
+    systVars.push_back("TightLoose_NU_Bin5_Up");
+    systVars.push_back("TightLoose_NU_Bin5_Down");
     // 2017
+    /*
     systVars.push_back("2017_TightLoose_NU_Bin1_Up");
     systVars.push_back("2017_TightLoose_NU_Bin1_Down");
     systVars.push_back("2017_TightLoose_NU_Bin2_Up");
@@ -331,6 +334,7 @@ int main(int argc, char** argv)
     systVars.push_back("2017_TightLoose_NU_Bin4_Down");
     systVars.push_back("2017_TightLoose_NU_Bin5_Up");
     systVars.push_back("2017_TightLoose_NU_Bin5_Down");
+    */
     systVars.push_back("HF_Up");
     systVars.push_back("HF_Down");
     systVars.push_back("LF_Up");
@@ -480,8 +484,8 @@ int main(int argc, char** argv)
   outputTable << "\\begin{tabular}{r|ccccc}\n";
   outputTable << " & SR & CR & Data in CR & other MC in CR & Estimate\\\\\n\\hline\n";
 
-  naiveDD(outputTable, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
-  naiveDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
+  //naiveDD(outputTable, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
+  //naiveDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   //outputTable << "\\hline\n";
   //injectDD(outputTable, ttbar, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
@@ -492,16 +496,18 @@ int main(int argc, char** argv)
   //outputTable << "\\hline\n";
   //promptDD(outputTable, wjets, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + wjetsControlRegion, mcWeight);
   //promptDD(outputTable, ttbar, Data, MC, tightSelection + " && " + baseSelection + " && " + signalRegion, tightSelection + " && " + baseSelection + " && " + ttbarControlRegion, mcWeight);
+
+  //outputTable << "\\hline\n";
+  //outputTable << "\\hline\n";
+  fullDD(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
+  fullDD(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
+  outputTable << "\\hline\n";
+  outputTable << "\n";
+
   if(verbose)
     std::cout << "Doing Fake rate prediction" << std::endl;
   outputTable << "\\hline\n";
   fakeDD(outputTable, Data, MC, looseSelection + " && " + baseSelection + " && " + signalRegion, mcWeight);
-
-  outputTable << "\\hline\n";
-  outputTable << "\\hline\n";
-  fullDD(outputTable, wjets, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + wjetsControlRegion, mcWeight);
-  outputTable << "\\hline\n";
-  fullDD(outputTable, ttbar, Data, MC, looseSelection, tightSelection, baseSelection + " && " + signalRegion, baseSelection + " && " + ttbarControlRegion, mcWeight);
 
   outputTable << "\\hline\n";
   outputTable << "\\hline\n";

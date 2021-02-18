@@ -38,7 +38,7 @@
   <bin name="getJSONlumis"            file="getJSONlumis.cc"> </bin>
   <bin name="preProcessSamples"       file="preProcessSamples.cc"> </bin>
   <bin name="getWjetsGenWpT"          file="getWjetsGenWpT.cc"> </bin>
-  <bin name="genDataCardsForCLs"      file="genDataCardsForCLs.cc.cc"> </bin>
+  <bin name="genDataCardsForCLs"      file="genDataCardsForCLs.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>

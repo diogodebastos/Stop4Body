@@ -24,9 +24,10 @@
 
 using json = nlohmann::json;
 
-doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string)
-doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string)
-void makeBkgDataCard(SampleReader &, SampleReader &, std::string, std::string, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string, std::string, std::string, std::string, std::string){
+void printSel(std::string, std::string);
+doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
+doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
+void makeBkgDataCard(SampleReader &, SampleReader &, std::map<std::string, size_t>, std::string, std::string, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -92,6 +93,11 @@ int main(int argc, char** argv)
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
 
+  if(!isHighDM)
+  {
+    preSelection +=" && (LepPt > 30.)";
+  }
+
   std::string signalRegion = "";
   {
     std::stringstream converter;
@@ -124,7 +130,6 @@ int main(int argc, char** argv)
   // Add systematics variations
 
   ValueWithSystematics<std::string> mcWeightSys(mcWeight);
-  if(!isPseudoData)
   {
     std::vector<std::string> systVars;
     systVars.push_back("ISRweight_Bin1_Up");
@@ -174,21 +179,45 @@ int main(int argc, char** argv)
     }
   }
   if(verbose)
-  	std::cout << "Using mcWeight: " << mcWeight << std::endl;
+    std::cout << "Using mcWeight: " << mcWeight << std::endl;
   if(mcWeightSys.Systematics().size() > 0)
   {
     std::cout << "And variations:" << std::endl;
     for(auto& syst: mcWeightSys.Systematics())
-	  if(verbose)
+      if(verbose)
         std::cout << "  " << syst << ": " << mcWeightSys.Systematic(syst) << std::endl;
   }
   std::cout << std::endl;
 
+  if(verbose)
+    std::cout << "Building background process map" << std::endl;
+  std::map<std::string, size_t> bkgMap;
+  for(size_t i = 0; i < MC.nProcesses(); ++i){
+    bkgMap[MC.process(i).tag()] = i;
+  }
+
+  if(verbose){
+    printSel("SR",preSelection + " && " + signalRegion);
+    for(auto& bkg : bkgMap)
+    {
+      std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(preSelection + " && " + signalRegion, mcWeight) << std::endl;
+    }
+  }
+
   // Create Background DataCards
-  makeBkgDataCard();
+  makeBkgDataCard(Data, MC, bkgMap, tightSelection, looseSelection, preSelection, wjetsEnrich, ttbarEnrich, controlRegion, signalRegion, wjetsControlRegion, ttbarControlRegion, mcWeight);
+
   // Update Background DataCards with signal yields for Final DataCards
 
 
+}
+
+void printSel(std::string name, std::string selection)
+{
+  std::cout << "The used " << name << ":" << std::endl;
+  std::cout << "  " << selection << std::endl;
+  std::cout << std::endl;
+  return;
 }
 
 doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string mcWeight)
@@ -225,30 +254,30 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
 }
 
 // create datacards for background per DM
-void makeBkgDataCard(SampleReader &Data, SampleReader &MC, std::string tightSelection, std::string looseSelection, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string controlRegion, std::string signalRegion, std::string wjetsControlRegion, std::string ttbarControlRegion, std::string mcWeight){
+void makeBkgDataCard(SampleReader &Data, SampleReader &MC, std::map<std::string, size_t> bkgMap, std::string tightSelection, std::string looseSelection, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string controlRegion, std::string signalRegion, std::string wjetsControlRegion, std::string ttbarControlRegion, std::string mcWeight){
+  auto wjets = MC.process(bkgMap["WJetsNLO"]);
+  auto ttbar = MC.process(bkgMap["ttbar"]);
+  //auto zinv = MC.process(bkgMap["ZInv"]);
+  //auto qcd = MC.process(bkgMap["QCD"]);
 
-	auto wjets = MC.process(bkgMap["WJetsNLO"]);
-	auto ttbar = MC.process(bkgMap["ttbar"]);
-	//auto zinv = MC.process(bkgMap["ZInv"]);
-	//auto qcd = MC.process(bkgMap["QCD"]);
+  auto Wj   = fullDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
+  auto tt   = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight);
+  auto Fake = fakeDD(Data,MC, looseSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
+  auto VV   = MC.process(bkgMap["VV"]);
+  auto ST   = MC.process(bkgMap["SingleTop"]);
+  auto DY   = MC.process(bkgMap["DYJets"]);
+  auto TTX  = MC.process(bkgMap["ttx"]);
 
-    auto Wj   = fullDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
-    auto tt   = fullDD(outputTable, ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight);
-	auto Fake = fakeDD(Data,MC, looseSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
-	auto VV  = MC.process(bkgMap["VV"]);
-	auto ST  = MC.process(bkgMap["SingleTop"]);
-	auto DY  = MC.process(bkgMap["DYJets"]);
-	auto TTX = MC.process(bkgMap["ttx"]);
-
-	std::cout << "Wj:" << Wj << std::endl;
-	std::cout << "tt:" << tt << std::endl;
-	std::cout << "Fake:" << Fake << std::endl;
-	std::cout << "VV:" << VV << std::endl;
-	std::cout << "ST:" << ST << std::endl;
-	std::cout << "DY:" << DY << std::endl;
-	std::cout << "TTX:" << TTX << std::endl;
-
-	return;
+  std::cout << "Wj:" << Wj << std::endl;
+  std::cout << "tt:" << tt << std::endl;
+  std::cout << "Fake:" << Fake << std::endl;
+/*
+  std::cout << "VV:" << VV << std::endl;
+  std::cout << "ST:" << ST << std::endl;
+  std::cout << "DY:" << DY << std::endl;
+  std::cout << "TTX:" << TTX << std::endl;
+*/
+  return;
 } 
 // update background datacards per DM per SP
 
