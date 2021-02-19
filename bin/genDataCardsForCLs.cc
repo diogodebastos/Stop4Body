@@ -27,7 +27,8 @@ using json = nlohmann::json;
 void printSel(std::string, std::string);
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
-void makeBkgDataCard(SampleReader &, SampleReader &, std::map<std::string, size_t>, std::string, std::string, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string, std::string, std::string, std::string, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
+//void makeDataCard(ProcessInfo &, SampleReader &, SampleReader &, std::map<std::string, size_t>, std::string, std::string, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -207,12 +208,38 @@ int main(int argc, char** argv)
       //std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(selMVA, mcWeight) << std::endl;
     }
   }
+  
+  // Get yields
+  auto wjets = MC.process(bkgMap["WJetsNLO"]);
+  auto ttbar = MC.process(bkgMap["ttbar"]);
+  //auto zinv = MC.process(bkgMap["ZInv"]);
+  //auto qcd = MC.process(bkgMap["QCD"]);
 
-  // Create Background DataCards
-  makeBkgDataCard(Data, MC, bkgMap, tightSelection, looseSelection, preSelection, wjetsEnrich, ttbarEnrich, controlRegion, signalRegion, wjetsControlRegion, ttbarControlRegion, mcWeight);
+  auto Wj   = fullDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
+  auto tt   = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight);
+  auto Fake = fakeDD(Data,MC, looseSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
+  auto VV   = MC.process(bkgMap["VV"]).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
+  auto ST   = MC.process(bkgMap["SingleTop"]).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
+  auto DY   = MC.process(bkgMap["DYJets"]).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
+  auto TTX  = MC.process(bkgMap["ttx"]).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
 
-  // Update Background DataCards with signal yields for Final DataCards
+  std::cout << "Wj:" << Wj << std::endl;
+  std::cout << "tt:" << tt << std::endl;
+  std::cout << "Fake:" << Fake << std::endl;
 
+  std::string name;
+  std::map<std::string, size_t> sigMap;
+  for(size_t sig = 0; sig < Sig.nProcesses(); ++sig){
+   // sigMap[Sig.process(sig).tag()] = sig;
+     if(verbose)
+       std::cout << "Creating DataCard for: " << Sig.process(sig).tag() << std::endl;
+     auto signal = Sig.process(sig);
+     name = signal.tag();
+     auto Sgn  = signal.getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
+     makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX);
+     //makeDataCard(signal, Data, MC, bkgMap, tightSelection, looseSelection, preSelection, wjetsEnrich, ttbarEnrich, controlRegion, signalRegion, wjetsControlRegion, ttbarControlRegion, mcWeight);
+
+  }
 
 }
 
@@ -264,29 +291,43 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
 }
 
 // create datacards for background per DM
-void makeBkgDataCard(SampleReader &Data, SampleReader &MC, std::map<std::string, size_t> bkgMap, std::string tightSelection, std::string looseSelection, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string controlRegion, std::string signalRegion, std::string wjetsControlRegion, std::string ttbarControlRegion, std::string mcWeight){
-  auto wjets = MC.process(bkgMap["WJetsNLO"]);
-  auto ttbar = MC.process(bkgMap["ttbar"]);
-  //auto zinv = MC.process(bkgMap["ZInv"]);
-  //auto qcd = MC.process(bkgMap["QCD"]);
+//void makeDataCard(ProcessInfo &Signal, SampleReader &Data, SampleReader &MC, std::map<std::string, size_t> bkgMap, std::string tightSelection, std::string looseSelection, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string controlRegion, std::string signalRegion, std::string wjetsControlRegion, std::string ttbarControlRegion, std::string mcWeight){
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX){
+  name.replace(0,13,"");
+  //name.replace(5,1,"N");
+  std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
+  std::ofstream dataCardOut("DataCards/"+name+".txt");
+  
+  if(!dataCardIn || !dataCardOut)
+  {
+    std::cout << "Error opening files!" << std::endl;
+    return;
+  }
 
-  auto Wj   = fullDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
-  auto tt   = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight);
-  auto Fake = fakeDD(Data,MC, looseSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
-  auto VV   = MC.process(bkgMap["VV"]);
-  auto ST   = MC.process(bkgMap["SingleTop"]);
-  auto DY   = MC.process(bkgMap["DYJets"]);
-  auto TTX  = MC.process(bkgMap["ttx"]);
+  std::string bin = "B_"+name+"_SR";
 
-  std::cout << "Wj:" << Wj << std::endl;
-  std::cout << "tt:" << tt << std::endl;
-  std::cout << "Fake:" << Fake << std::endl;
-/*
-  std::cout << "VV:" << VV << std::endl;
-  std::cout << "ST:" << ST << std::endl;
-  std::cout << "DY:" << DY << std::endl;
-  std::cout << "TTX:" << TTX << std::endl;
-*/
+  std::string strTemp;
+  int i = 0;
+
+  while(getline(dataCardIn,strTemp))
+  {
+    i++;
+    if(i==5){
+      strTemp = "bin "+bin;
+    }
+    else if(i==6){
+      //strTemp = "observation " + std::to_string(std::round(totalMC.value()));
+    }
+    else if(i==8){
+      strTemp = "bin "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin;
+    }
+    else if(i==11){
+      strTemp = "rate "+std::to_string(Sgn.value())+" "+std::to_string(Wj.value())+" "+std::to_string(tt.value())+" "+std::to_string(Fake.value())+" "+std::to_string(VV.value())+" "+std::to_string(ST.value())+" "+std::to_string(DY.value())+" "+std::to_string(TTX.value());
+    }
+    strTemp += "\n";
+    dataCardOut << strTemp;
+  }
+
   return;
 } 
 // update background datacards per DM per SP
