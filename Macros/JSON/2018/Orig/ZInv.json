@@ -11,11 +11,11 @@
           "tag":"ZJetsToNuNu_HT100to200",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":1,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT100to200",
-              "split":8
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021Feb22/ZJetsToNuNu_HT100to200",
+              "split":19
             }
           ]
         },
@@ -23,11 +23,11 @@
           "tag":"ZJetsToNuNu_HT200to400",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":1,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT200to400",
-              "split":6
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021Feb22/ZJetsToNuNu_HT200to400",
+              "split":22
             }
           ]
         },
@@ -35,11 +35,11 @@
           "tag":"ZJetsToNuNu_HT400to600",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":1,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT400to600",
-              "split":3
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021Feb22/ZJetsToNuNu_HT400to600",
+              "split":10
             }
           ]
         },
@@ -47,11 +47,11 @@
           "tag":"ZJetsToNuNu_HT600to800",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":1,
+          "filesPerPart":3,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT600to800",
-              "split":2
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021Feb22/ZJetsToNuNu_HT600to800",
+              "split":9
             }
           ]
         },
@@ -59,11 +59,11 @@
           "tag":"ZJetsToNuNu_HT800to1200",
           "xsec":1.0,
           "br":1.0,
-          "filesPerPart":1,
+          "filesPerPart":3,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT800to1200",
-              "split":1
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021Feb22/ZJetsToNuNu_HT800to1200",
+              "split":3
             }
           ]
         },
@@ -74,7 +74,7 @@
           "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT1200to2500",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021Feb22/ZJetsToNuNu_HT1200to2500",
               "split":1
             }
           ]
@@ -86,7 +86,7 @@
           "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/ZJetsToNuNu_HT2500toInf",
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021Feb22/ZJetsToNuNu_HT2500toInf",
               "split":1
             }
           ]
