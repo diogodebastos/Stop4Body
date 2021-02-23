@@ -316,6 +316,7 @@ int main(int argc, char** argv)
     systBase.push_back("ISRweight_Bin4");
     systBase.push_back("ISRweight_Bin5");
     systBase.push_back("ISRweight_Bin6");
+    systBase.push_back("normSTandHTweight");
     /*
     systBase.push_back("EWKISRweight_Bin1");
     systBase.push_back("EWKISRweight_Bin2");
@@ -401,9 +402,9 @@ int main(int argc, char** argv)
 /*
     std::string tightSelectionMu = "(nGoodEl == 0 && nGoodMu_cutId_medium == 1)";
     //std::string looseSelectionMu = "(isLoose == 1) && !(isTight == 1) && nGoodEl == 0 && nGoodMu == 1";
-    std::string looseSelectionMu = "(isLoose == 1) && !(nGoodMu_cutId_medium) && nGoodEl == 0 && nGoodMu == 1";
+    std::string looseSelectionMu = "(isLoose == 1) && !(isTight) && nGoodEl == 0";
     std::string tightSelectionEl = "(nGoodEl_cutId_loose == 1 && nGoodMu == 0)";
-    std::string looseSelectionEl = "(isLoose == 1) && !(nGoodEl_cutId_loose) && nGoodEl == 1 && nGoodMu == 0";
+    std::string looseSelectionEl = "(isLoose == 1) && !(isTight) && nGoodMu == 0";
     //std::string looseSelectionEl = "(isLoose == 1) && !(isTight == 1) && nGoodEl == 1 && nGoodMu == 0";
     
     std::cout << "Mu closure" << std::endl;
