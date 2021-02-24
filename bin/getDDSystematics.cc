@@ -28,6 +28,7 @@ doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std
 
 doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
 doubleUnc getFRsysISR(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&, bool);
+double getFRsysISR2(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string , double, std::string, doubleUnc, bool);
 doubleUnc getFRsysNU(SampleReader &, SampleReader &, std::string, std::string, const double, bool);
 //doubleUnc getFRsysNUalt(SampleReader &, SampleReader &, std::string, std::string, std::string, const double);
 
@@ -316,7 +317,7 @@ int main(int argc, char** argv)
     systBase.push_back("ISRweight_Bin4");
     systBase.push_back("ISRweight_Bin5");
     systBase.push_back("ISRweight_Bin6");
-    systBase.push_back("normSTandHTweight");
+    systBase.push_back("normStWeight");
     /*
     systBase.push_back("EWKISRweight_Bin1");
     systBase.push_back("EWKISRweight_Bin2");
@@ -398,7 +399,7 @@ int main(int argc, char** argv)
     }
     // SysFR 1) Closure test for the prediction of the background with a non-prompt lepton
 
-    getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value(), verbose);
+    //getFRsysClosure(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value(), verbose);
 /*
     std::string tightSelectionMu = "(nGoodEl == 0 && nGoodMu_cutId_medium == 1)";
     //std::string looseSelectionMu = "(isLoose == 1) && !(isTight == 1) && nGoodEl == 0 && nGoodMu == 1";
@@ -413,6 +414,19 @@ int main(int argc, char** argv)
     getFRsysClosure(Data, MC, looseSelectionEl, tightSelectionEl, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value(), verbose);
 */
     // SysFR 2) ISR on fakes prediction
+    if(verbose){
+      std::cout << "Testing ISR Fake-Rate systematics" << std::endl;
+    }
+    
+    doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + signalRegion, "weight",mcWeight.Value());
+    double quadSumFakeSys;
+    std::vector<std::string> systematics;
+    for(auto& base: systBase)
+    {
+      double baseSysFakes = getFRsysISR2(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, luminosity, base, fakesCentral, verbose);
+      quadSumFakeSys += baseSysFakes*baseSysFakes;
+    }
+    std::cout << "quadSumFakeSys: " << quadSumFakeSys << std::endl;
 
     getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight, verbose);
 
@@ -776,6 +790,48 @@ doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSel
   if(verbose){
     std::cout << "" <<std::endl;
   }
+  return relSys;
+}
+
+double getFRsysISR2(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string nonPrompt, std::string signalRegion,double luminosity, std::string systBase, doubleUnc xDDCentral, bool verbose)
+
+{  
+  doubleUnc diff;
+  doubleUnc xDDUp;
+  doubleUnc xDDDown;
+  doubleUnc diffUp;
+  doubleUnc diffDown;
+  double Up;
+  double Down;
+  double xDDVar;
+  double relSys;
+
+  std::string mcWeightVarUp   = "splitFactor*weight_"+systBase+"_Up*"+lumin;
+  std::string mcWeightVarDown = "splitFactor*weight_"+systBase+"_Down*"+lumin;
+
+  xDDUp = fakeDD(Data, MC, looseSelection + " && " + signalRegion, "weight",mcWeightVarUp);
+  xDDDown = fakeDD(Data, MC, looseSelection + " && " + signalRegion, "weight",mcWeightVarDown);
+    
+  //Up = xDDUp/xDDCentral;
+  //Down = xDDDown/xDDCentral;
+  Up = std::abs((xDDUp-xDDCentral).value());
+  Down = std::abs((xDDDown-xDDCentral)).value();
+
+  xDDVar = std::max(Up, Down);
+  relSys = 1+xDDVar;
+
+  if (verbose)
+  {
+    std::cout << " > " << systBase  << std::endl;
+    std::cout << "  xDDUp: "    << xDDUp   <<std::endl;
+    std::cout << "  xDDDown: "  << xDDDown <<std::endl;
+    std::cout << "  Up: "       << Up  <<std::endl;
+    std::cout << "  Up: "       << Up  <<std::endl;
+    std::cout << "  Down: "     << Down  <<std::endl;
+    std::cout << "  xDDVar: "   << xDDVar*100  <<std::endl;
+    std::cout << "  = relSys: " << relSys <<std::endl;
+  }
+
   return relSys;
 }
 
