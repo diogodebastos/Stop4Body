@@ -418,15 +418,17 @@ int main(int argc, char** argv)
       std::cout << "Testing ISR Fake-Rate systematics" << std::endl;
     }
     
-    doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + signalRegion, "weight",mcWeight.Value());
-    double quadSumFakeSys;
+    doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + preSelection + "&&" + srSelection, "weight",mcWeight.Value());
+    double baseSysFakes=0;
+    double quadSumFakeSys=0;
     std::vector<std::string> systematics;
     for(auto& base: systBase)
     {
-      double baseSysFakes = getFRsysISR2(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, luminosity, base, fakesCentral, verbose);
+      baseSysFakes = getFRsysISR2(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, luminosity, base, fakesCentral, verbose);
       quadSumFakeSys += baseSysFakes*baseSysFakes;
     }
     std::cout << "quadSumFakeSys: " << quadSumFakeSys << std::endl;
+    std::cout << "SQRT quadSumFakeSys: " << std::sqrt(quadSumFakeSys) << std::endl;
 
     getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight, verbose);
 
@@ -795,7 +797,8 @@ doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSel
 
 double getFRsysISR2(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string nonPrompt, std::string signalRegion,double luminosity, std::string systBase, doubleUnc xDDCentral, bool verbose)
 
-{  
+{
+  std::string lumin = std::to_string(luminosity);
   doubleUnc diff;
   doubleUnc xDDUp;
   doubleUnc xDDDown;
@@ -814,8 +817,8 @@ double getFRsysISR2(SampleReader &Data, SampleReader &MC, std::string looseSelec
     
   //Up = xDDUp/xDDCentral;
   //Down = xDDDown/xDDCentral;
-  Up = std::abs((xDDUp-xDDCentral).value());
-  Down = std::abs((xDDDown-xDDCentral)).value();
+  Up =   std::abs((xDDUp-xDDCentral).value());
+  Down = std::abs((xDDDown-xDDCentral).value());
 
   xDDVar = std::max(Up, Down);
   relSys = 1+xDDVar;
