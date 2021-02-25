@@ -28,7 +28,7 @@ doubleUnc getISRsystematicsDD(ProcessInfo &, SampleReader &, SampleReader &, std
 
 doubleUnc getFRsysClosure(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
 doubleUnc getFRsysISR(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, const ValueWithSystematics<std::string>&, bool);
-double getFRsysISR2(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string , double, std::string, doubleUnc, bool);
+double getFRsys(SampleReader &, SampleReader &, std::string, std::string, std::string, std::string , double, std::string, doubleUnc, bool, bool);
 doubleUnc getFRsysNU(SampleReader &, SampleReader &, std::string, std::string, const double, bool);
 //doubleUnc getFRsysNUalt(SampleReader &, SampleReader &, std::string, std::string, std::string, const double);
 
@@ -414,21 +414,60 @@ int main(int argc, char** argv)
     getFRsysClosure(Data, MC, looseSelectionEl, tightSelectionEl, fakeSelection, preSelection + "&&" + srSelection, mcWeight.Value(), verbose);
 */
     // SysFR 2) ISR on fakes prediction
+    doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + preSelection + "&&" + srSelection, "weight",mcWeight.Value());
+    
     if(verbose){
       std::cout << "Testing ISR Fake-Rate systematics" << std::endl;
     }
-    
-    doubleUnc fakesCentral = fakeDD(Data, MC, looseSelection + " && " + preSelection + "&&" + srSelection, "weight",mcWeight.Value());
+
+    if(verbose)
+    {
+      std::cout << " fakesCentral: " << fakesCentral  << std::endl;
+    }
+
     double baseSysFakes=0;
     double quadSumFakeSys=0;
+
     std::vector<std::string> systematics;
     for(auto& base: systBase)
     {
-      baseSysFakes = getFRsysISR2(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, luminosity, base, fakesCentral, verbose);
+      baseSysFakes = getFRsys(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, luminosity, base, fakesCentral, false, verbose);
       quadSumFakeSys += baseSysFakes*baseSysFakes;
     }
     std::cout << "quadSumFakeSys: " << quadSumFakeSys << std::endl;
     std::cout << "SQRT quadSumFakeSys: " << std::sqrt(quadSumFakeSys) << std::endl;
+
+    if(verbose){
+      std::cout << "Testing ISR Non-universality systematics" << std::endl;
+    }
+
+    std::vector<std::string> systNUbase;
+    {
+      for(int i = 1; i <= 5; ++i)
+      {
+        std::stringstream converter;
+        std::string tmp;
+        converter << "TightLoose_NU_Bin" << i;
+        converter >> tmp;
+        systNUbase.push_back(tmp);
+      }
+      systNUbase.push_back("TightLoose_NU_AltCorr");
+    }
+
+    baseSysFakes=0;
+    quadSumFakeSys=0;
+    std::vector<std::string> systematics;
+    for(auto& base: systNUbase)
+    {
+      baseSysFakes = getFRsys(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, luminosity, base, fakesCentral, true, verbose);
+      quadSumFakeSys += baseSysFakes*baseSysFakes;
+    }
+    std::cout << "quadSumFakeSys: " << quadSumFakeSys << std::endl;
+    std::cout << "SQRT quadSumFakeSys: " << std::sqrt(quadSumFakeSys) << std::endl; 
+
+    if(verbose){
+      std::cout << "Old Systematics code, for testing before deleting functions" << std::endl;
+    }
 
     getFRsysISR(Data, MC, looseSelection, tightSelection, fakeSelection, preSelection + "&&" + srSelection, mcWeight, verbose);
 
@@ -795,8 +834,7 @@ doubleUnc getFRsysISR(SampleReader &Data, SampleReader &MC, std::string looseSel
   return relSys;
 }
 
-double getFRsysISR2(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string nonPrompt, std::string signalRegion,double luminosity, std::string systBase, doubleUnc xDDCentral, bool verbose)
-
+double getFRsys(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string nonPrompt, std::string signalRegion,double luminosity, std::string systBase, doubleUnc xDDCentral, bool doNUsys, bool verbose)
 {
   std::string lumin = std::to_string(luminosity);
   doubleUnc diff;
@@ -811,9 +849,17 @@ double getFRsysISR2(SampleReader &Data, SampleReader &MC, std::string looseSelec
 
   std::string mcWeightVarUp   = "splitFactor*weight_"+systBase+"_Up*"+lumin;
   std::string mcWeightVarDown = "splitFactor*weight_"+systBase+"_Down*"+lumin;
+  std::string dataWeightVarUp = "weight";
+  std::string dataWeightVarDown = "weight";
 
-  xDDUp = fakeDD(Data, MC, looseSelection + " && " + signalRegion, "weight",mcWeightVarUp);
-  xDDDown = fakeDD(Data, MC, looseSelection + " && " + signalRegion, "weight",mcWeightVarDown);
+  if(doNUsys)
+  {
+    dataWeightVarUp   = "weight_"+systBase+"_Up";
+    dataWeightVarDown = "weight_"+systBase+"_Down";
+  }
+
+  xDDUp = fakeDD(Data, MC, looseSelection + " && " + signalRegion, dataWeightVarUp, mcWeightVarUp);
+  xDDDown = fakeDD(Data, MC, looseSelection + " && " + signalRegion, dataWeightVarDown, mcWeightVarDown);
     
   //Up = xDDUp/xDDCentral;
   //Down = xDDDown/xDDCentral;
@@ -821,7 +867,7 @@ double getFRsysISR2(SampleReader &Data, SampleReader &MC, std::string looseSelec
   Down = std::abs((xDDDown-xDDCentral).value());
 
   xDDVar = std::max(Up, Down);
-  relSys = 1+xDDVar;
+  relSys = xDDVar/xDDCentral.value();
 
   if (verbose)
   {
@@ -829,10 +875,9 @@ double getFRsysISR2(SampleReader &Data, SampleReader &MC, std::string looseSelec
     std::cout << "  xDDUp: "    << xDDUp   <<std::endl;
     std::cout << "  xDDDown: "  << xDDDown <<std::endl;
     std::cout << "  Up: "       << Up  <<std::endl;
-    std::cout << "  Up: "       << Up  <<std::endl;
     std::cout << "  Down: "     << Down  <<std::endl;
-    std::cout << "  xDDVar: "   << xDDVar*100  <<std::endl;
-    std::cout << "  = relSys: " << relSys <<std::endl;
+    std::cout << "  xDDVar: "   << xDDVar <<std::endl;
+    std::cout << "  = relSys: " << relSys*100 << "%" << std::endl;
   }
 
   return relSys;
