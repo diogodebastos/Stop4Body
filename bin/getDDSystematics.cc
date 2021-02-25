@@ -435,7 +435,7 @@ int main(int argc, char** argv)
       quadSumFakeSys += baseSysFakes*baseSysFakes;
     }
     std::cout << "quadSumFakeSys: " << quadSumFakeSys << std::endl;
-    std::cout << "SQRT quadSumFakeSys: " << std::sqrt(quadSumFakeSys) << std::endl;
+    std::cout << "SQRT quadSumFakeSys: " << std::sqrt(quadSumFakeSys) * 100 << " %" << std::endl;
 
     if(verbose){
       std::cout << "Testing ISR Non-universality systematics" << std::endl;
@@ -463,7 +463,7 @@ int main(int argc, char** argv)
       quadSumFakeSys += baseSysFakes*baseSysFakes;
     }
     std::cout << "quadSumFakeSys: " << quadSumFakeSys << std::endl;
-    std::cout << "SQRT quadSumFakeSys: " << std::sqrt(quadSumFakeSys) << std::endl; 
+    std::cout << "SQRT quadSumFakeSys: " << std::sqrt(quadSumFakeSys) * 100 << " %" << std::endl; 
 
     if(verbose){
       std::cout << "Old Systematics code, for testing before deleting functions" << std::endl;
