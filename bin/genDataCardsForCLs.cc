@@ -109,6 +109,8 @@ int main(int argc, char** argv)
   std::string wjetsControlRegion = controlRegion + " && " + wjetsEnrich;
   std::string ttbarControlRegion = controlRegion + " && " + ttbarEnrich;
 
+  std::string SR = tightSelection + " && " + preSelection + " && " + signalRegion;
+
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
   auto MC = samples.getMCBkg();
@@ -200,11 +202,11 @@ int main(int argc, char** argv)
   //std::string selMVA = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (BDT > 0.45) && (LepPt < 30)";
 
   if(verbose){
-    printSel("SR",tightSelection + " && " + preSelection + " && " + signalRegion);
+    printSel("SR", SR);
     //printSel("SR",selMVA);
     for(auto& bkg : bkgMap)
     {
-      std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight) << std::endl;
+      std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(SR, mcWeight) << std::endl;
       //std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(selMVA, mcWeight) << std::endl;
     }
   }
@@ -218,10 +220,10 @@ int main(int argc, char** argv)
   auto Wj   = fullDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
   auto tt   = fullDD(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight);
   auto Fake = fakeDD(Data,MC, looseSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
-  auto VV   = MC.process(bkgMap["VV"]).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
-  auto ST   = MC.process(bkgMap["SingleTop"]).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
-  auto DY   = MC.process(bkgMap["DYJets"]).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
-  auto TTX  = MC.process(bkgMap["ttx"]).getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
+  auto VV   = MC.process(bkgMap["VV"]).getYield(SR, mcWeight);
+  auto ST   = MC.process(bkgMap["SingleTop"]).getYield(SR, mcWeight);
+  auto DY   = MC.process(bkgMap["DYJets"]).getYield(SR, mcWeight);
+  auto TTX  = MC.process(bkgMap["ttx"]).getYield(SR, mcWeight);
 
   std::cout << "Wj:" << Wj << std::endl;
   std::cout << "tt:" << tt << std::endl;
@@ -230,17 +232,17 @@ int main(int argc, char** argv)
   std::string name;
   std::map<std::string, size_t> sigMap;
   for(size_t sig = 0; sig < Sig.nProcesses(); ++sig){
-   // sigMap[Sig.process(sig).tag()] = sig;
-     if(verbose)
-       std::cout << "Creating DataCard for: " << Sig.process(sig).tag() << std::endl;
-     auto signal = Sig.process(sig);
-     name = signal.tag();
-     auto Sgn  = signal.getYield(tightSelection + " && " + preSelection + " && " + signalRegion, mcWeight);
-     makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX);
-     //makeDataCard(signal, Data, MC, bkgMap, tightSelection, looseSelection, preSelection, wjetsEnrich, ttbarEnrich, controlRegion, signalRegion, wjetsControlRegion, ttbarControlRegion, mcWeight);
+    // sigMap[Sig.process(sig).tag()] = sig;
+  	if(verbose)
+  	  std::cout << "Creating DataCard for: " << Sig.process(sig).tag() << std::endl;
+    auto signal = Sig.process(sig);
+    name = signal.tag();
+    auto Sgn  = signal.getYield(SR, mcWeight);
 
+    std::string FastS = getUpDownSysVar(signal, Sgn, SR, luminosity, "FullFast_ID_AltCorr");
+
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS);
   }
-
 }
 
 void printSel(std::string name, std::string selection)
@@ -290,9 +292,21 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
   return estimate;
 }
 
-// create datacards for background per DM
-//void makeDataCard(ProcessInfo &Signal, SampleReader &Data, SampleReader &MC, std::map<std::string, size_t> bkgMap, std::string tightSelection, std::string looseSelection, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string controlRegion, std::string signalRegion, std::string wjetsControlRegion, std::string ttbarControlRegion, std::string mcWeight){
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX){
+std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity, std::string systBase){
+  std::string UpDownVar = "1/1";
+  std::string lumin = std::to_string(luminosity);
+  std::string mcWeightVarUp   = "splitFactor*weight_"+systBase+"_Up*"+lumin;
+  std::string mcWeightVarDown = "splitFactor*weight_"+systBase+"_Down*"+lumin;
+
+  UpYield = toEstimate.getYield(selection, mcWeightVarUp);
+  DownYield = toEstimate.getYield(selection, mcWeightVarDown);
+
+  UpDownVar = std::to_string(UpYield.value()/centralYield.value())+"/"+std::to_string(DownYield.value()/centralYield.value());
+
+  return UpDownVar;
+}
+
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -324,6 +338,13 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     else if(i==11){
       strTemp = "rate "+std::to_string(Sgn.value())+" "+std::to_string(Wj.value())+" "+std::to_string(tt.value())+" "+std::to_string(Fake.value())+" "+std::to_string(VV.value())+" "+std::to_string(ST.value())+" "+std::to_string(DY.value())+" "+std::to_string(TTX.value());
     }
+    else if(i==12){
+      strTemp = "Sst lnN " + std::to_string(1+Sgn.uncertainty()/Sgn.value()) + " - - - - - - -";
+    }
+    else if(i==13)
+    {
+      strTemp = "FastS lnN " + FastS + " - - - - - - -";
+    }
     strTemp += "\n";
     dataCardOut << strTemp;
   }
@@ -331,8 +352,6 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
   return;
 } 
 // update background datacards per DM per SP
-
-
 
 
 
