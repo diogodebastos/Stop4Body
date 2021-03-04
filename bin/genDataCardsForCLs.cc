@@ -28,7 +28,7 @@ void printSel(std::string, std::string);
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
-void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double);
 //void makeDataCard(ProcessInfo &, SampleReader &, SampleReader &, std::map<std::string, size_t>, std::string, std::string, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
@@ -41,6 +41,9 @@ int main(int argc, char** argv)
   bool isHighDM = false;
   double luminosity = -1.0;
   double bdtCut = 0.20;
+  double WjSys = 0.00;
+  double ttSys = 0.00;
+  double FakeSys = 0.00;
 
   if(argc < 2)
   {
@@ -75,6 +78,27 @@ int main(int argc, char** argv)
       std::stringstream convert;
       convert << argv[++i];
       convert >> bdtCut;
+    }
+
+    if(argument == "--WjSys")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> WjSys;
+    }
+
+    if(argument == "--ttSys")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> ttSys;
+    }
+
+    if(argument == "--FakeSys")
+    {
+      std::stringstream convert;
+      convert << argv[++i];
+      convert >> FakeSys;
     }
 
     if(argument == "--verbose")
@@ -230,6 +254,10 @@ int main(int argc, char** argv)
   std::cout << "tt:" << tt << std::endl;
   std::cout << "Fake:" << Fake << std::endl;
 
+  double Wsy  = std::sqrt(std::pow(Wj.uncertainty()/Wj.value(),2) + WjSys*WjSys);
+  double ttsy = std::sqrt(std::pow(tt.uncertainty()/tt.value(),2) + ttSys*ttSys);
+  double Fksy = std::sqrt(std::pow(Fake.uncertainty()/Fake.value(),2) + FakeSys*FakeSys);
+
   std::string name;
   std::map<std::string, size_t> sigMap;
   for(size_t sig = 0; sig < Sig.nProcesses(); ++sig){
@@ -244,7 +272,7 @@ int main(int argc, char** argv)
 
     std::cout << "FastS: " << FastS << std::endl;
 
-    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS);
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy);
   }
 }
 
@@ -309,7 +337,7 @@ std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std
   return UpDownVar;
 }
 
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS){
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -347,6 +375,18 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     else if(i==13)
     {
       strTemp = "FastS lnN " + FastS + " - - - - - - -";
+    }
+    else if(i==14)
+    {
+      strTemp = "Wsy lnN - " + std::to_string(1+Wsy) + " - - - - - -";
+    }
+    else if(i==15)
+    {
+      strTemp = "ttsy lnN - - " + std::to_string(1+ttsy) + " - - - - -";
+    }
+    else if(i==16)
+    {
+      strTemp = "Fksy lnN - - - " + std::to_string(1+Fksy) + " - - - -";
     }
     strTemp += "\n";
     dataCardOut << strTemp;
