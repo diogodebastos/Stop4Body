@@ -27,7 +27,8 @@ using json = nlohmann::json;
 void printSel(std::string, std::string);
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
-void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
+std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string);
 //void makeDataCard(ProcessInfo &, SampleReader &, SampleReader &, std::map<std::string, size_t>, std::string, std::string, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
@@ -241,6 +242,8 @@ int main(int argc, char** argv)
 
     std::string FastS = getUpDownSysVar(signal, Sgn, SR, luminosity, "FullFast_ID_AltCorr");
 
+    std::cout << "FastS: " << FastS << std::endl;
+
     makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS);
   }
 }
@@ -298,8 +301,8 @@ std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std
   std::string mcWeightVarUp   = "splitFactor*weight_"+systBase+"_Up*"+lumin;
   std::string mcWeightVarDown = "splitFactor*weight_"+systBase+"_Down*"+lumin;
 
-  UpYield = toEstimate.getYield(selection, mcWeightVarUp);
-  DownYield = toEstimate.getYield(selection, mcWeightVarDown);
+  auto UpYield = toEstimate.getYield(selection, mcWeightVarUp);
+  auto DownYield = toEstimate.getYield(selection, mcWeightVarDown);
 
   UpDownVar = std::to_string(UpYield.value()/centralYield.value())+"/"+std::to_string(DownYield.value()/centralYield.value());
 
