@@ -4,6 +4,7 @@
 #include <sstream>
 #include <map>
 #include <math.h>
+#include <tuple>
 
 #include <TROOT.h>
 #include <TFile.h>
@@ -27,6 +28,8 @@ using json = nlohmann::json;
 void printSel(std::string, std::string);
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
+std::tuple<double, double> fakeDD_varyXS(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string);
+std::tuple<double, double> fullDD_varyXS(ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
 void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double);
 //void makeDataCard(ProcessInfo &, SampleReader &, SampleReader &, std::map<std::string, size_t>, std::string, std::string, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string, std::string, std::string, std::string, std::string);
@@ -239,6 +242,7 @@ int main(int argc, char** argv)
   // Get yields
   auto wjets = MC.process(bkgMap["WJetsNLO"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
+  auto vv    = MC.process(bkgMap["VV"]);
   //auto zinv = MC.process(bkgMap["ZInv"]);
   //auto qcd = MC.process(bkgMap["QCD"]);
 
@@ -258,6 +262,16 @@ int main(int argc, char** argv)
   double ttsy = std::sqrt(std::pow(tt.uncertainty()/tt.value(),2) + ttSys*ttSys);
   double Fksy = std::sqrt(std::pow(Fake.uncertainty()/Fake.value(),2) + FakeSys*FakeSys);
 
+  std::tuple<double, double> VVsyWjXS = fullDD_varyXS(vv,wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
+
+  double VVsyWjUp   = std::abs(std::get<0>VVsyWjXS-VV);
+  double VVsyWjDown = std::abs(std::get<1>VVsyWjXS-VV);
+  double VVsyWj = std::max(VVsyWjUp,VVsyWjDown);
+
+  std::cout << "VVsyWjUp: " << VVsyWjUp << std::endl;
+  std::cout << "VVsyWjDown: " << VVsyWjDown << std::endl;
+  std::cout << "VVsyWj: " << VVsyWj << std::endl;
+
   std::string name;
   std::map<std::string, size_t> sigMap;
   for(size_t sig = 0; sig < Sig.nProcesses(); ++sig){
@@ -269,8 +283,6 @@ int main(int argc, char** argv)
     auto Sgn  = signal.getYield(SR, mcWeight);
 
     std::string FastS = getUpDownSysVar(signal, Sgn, SR, luminosity, "FullFast_ID_AltCorr");
-
-    std::cout << "FastS: " << FastS << std::endl;
 
     makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy);
   }
@@ -296,7 +308,6 @@ doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalR
   return estimate;
 }
 
-
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
 {
   //printSel("DDinSR: ",tightSelection + " && " + signalRegion + " && isPrompt == 1");
@@ -317,10 +328,78 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
 
   doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + controlRegion, mcWeight);
 
-  //printSel("FakeSel:", looseSelection + " && " + controlRegion);
   doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
 
   return estimate;
+}
+
+std::tuple<double, double> fakeDD_varyXS(ProcessInfo &toVaryXS, SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string mcWeight)
+{
+  doubleUnc LNTMCinSR (0,0);
+  doubleUnc LNTMCinSRvaryUp (0,0);
+  doubleUnc LNTMCinSRvaryDown (0,0);
+  doubleUnc LNTMCinSRup (0,0);
+  doubleUnc LNTMCinSRdown (0,0);
+
+  doubleUnc LNTinSR = LNTData.getYield(signalRegion, "weight");
+
+  for(auto &process: LNTMC)
+  {
+    if(process.tag() != toVaryXS.tag()){
+      LNTMCinSR += process.getYield(signalRegion + " && isPrompt == 1", mcWeight);
+    }
+    else if(process.tag() == toVaryXS.tag()){
+      LNTMCinSRvaryUp += process.getYield(signalRegion + " && isPrompt == 1", mcWeight + "*1.5");
+      LNTMCinSRvaryDown += process.getYield(signalRegion + " && isPrompt == 1", mcWeight + "*0.5");
+    }
+  }
+
+  LNTMCinSRup   = LNTMCinSR + LNTMCinSRvaryUp;
+  LNTMCinSRdown = LNTMCinSR + LNTMCinSRvaryDown;
+
+  doubleUnc estimateUp = LNTinSR - LNTMCinSRup;
+  doubleUnc estimateDown = LNTinSR - LNTMCinSRdown;
+
+  std::cout << "Fakes estimateUp: " << estimateUp << std::endl;
+  std::cout << "Fakes estimateDown: " << estimateDown << std::endl;
+  return std::make_tuple(estimateUp, estimateDown);
+}
+
+std::tuple<double, double> fullDD_varyXS(ProcessInfo &toVaryXS, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
+{
+  doubleUnc NinSR = toEstimate.getYield(tightSelection + " && " + signalRegion + " && isPrompt == 1", mcWeight);
+  doubleUnc NinCR = toEstimate.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
+  doubleUnc DatainCR = Data.getYield(tightSelection + " && " + controlRegion, "1.0");
+  doubleUnc otherMC (0,0);
+  doubleUnc otherMCup (0,0);
+  doubleUnc otherMCdown (0,0);
+  doubleUnc varXSup (0,0);
+  doubleUnc varXSdown (0,0);
+
+  if(static_cast<double>(NinSR) == 0)
+    NinSR = doubleUnc(4,2);
+  for(auto &process: MC)
+  {
+    if(process.tag() != toEstimate.tag() && process.tag() != toVaryXS.tag()){
+      otherMC += process.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight);
+    }
+    if(process.tag() == toVaryXS.tag()){
+      varXSup = process.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight+"*1.5");
+      varXSdown = process.getYield(tightSelection + " && " + controlRegion + " && isPrompt == 1", mcWeight+"*0.5");
+    }
+  }
+
+  otherMCup = otherMC + varXSup;
+  otherMCdown = otherMC + varXSdown;
+
+  std::tuple<double, double> fakes = fakeDD_varyXS(toVaryXS, Data, MC, looseSelection + " && " + controlRegion, mcWeight);
+
+  //doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
+  double estimateUp   = NinSR.value()/NinCR.value() * (DatainCR.value() - otherMCup   - std::get<0>fakes);
+  double estimateDown = NinSR.value()/NinCR.value() * (DatainCR.value() - otherMCdown - std::get<1>fakes);
+  std::cout << "DD estimateUp: " << estimateUp << std::endl;
+  std::cout << "DD estimateDown: " << estimateDown << std::endl;
+  return std::make_tuple(estimateUp, estimateDown);
 }
 
 std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity, std::string systBase){
@@ -343,6 +422,8 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
   std::ofstream dataCardOut("DataCards/"+name+".txt");
   
+  doubleUnc totalMC = Wj+tt+Fake+VV+ST+DY+TTX;
+
   if(!dataCardIn || !dataCardOut)
   {
     std::cout << "Error opening files!" << std::endl;
@@ -361,7 +442,7 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
       strTemp = "bin "+bin;
     }
     else if(i==6){
-      //strTemp = "observation " + std::to_string(std::round(totalMC.value()));
+      strTemp = "observation " + std::to_string(std::round(totalMC.value()));
     }
     else if(i==8){
       strTemp = "bin "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin;
