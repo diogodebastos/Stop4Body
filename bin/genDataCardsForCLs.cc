@@ -264,8 +264,8 @@ int main(int argc, char** argv)
 
   std::tuple<double, double> VVsyWjXS = fullDD_varyXS(vv,wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
 
-  double VVsyWjUp   = std::abs(std::get<0>VVsyWjXS-VV);
-  double VVsyWjDown = std::abs(std::get<1>VVsyWjXS-VV);
+  double VVsyWjUp   = std::abs(std::get<0>(VVsyWjXS)-VV.value());
+  double VVsyWjDown = std::abs(std::get<1>(VVsyWjXS)-VV.value());
   double VVsyWj = std::max(VVsyWjUp,VVsyWjDown);
 
   std::cout << "VVsyWjUp: " << VVsyWjUp << std::endl;
@@ -362,7 +362,7 @@ std::tuple<double, double> fakeDD_varyXS(ProcessInfo &toVaryXS, SampleReader &LN
 
   std::cout << "Fakes estimateUp: " << estimateUp << std::endl;
   std::cout << "Fakes estimateDown: " << estimateDown << std::endl;
-  return std::make_tuple(estimateUp, estimateDown);
+  return std::make_tuple(estimateUp.value(), estimateDown.value());
 }
 
 std::tuple<double, double> fullDD_varyXS(ProcessInfo &toVaryXS, ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
@@ -395,8 +395,8 @@ std::tuple<double, double> fullDD_varyXS(ProcessInfo &toVaryXS, ProcessInfo &toE
   std::tuple<double, double> fakes = fakeDD_varyXS(toVaryXS, Data, MC, looseSelection + " && " + controlRegion, mcWeight);
 
   //doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
-  double estimateUp   = NinSR.value()/NinCR.value() * (DatainCR.value() - otherMCup   - std::get<0>fakes);
-  double estimateDown = NinSR.value()/NinCR.value() * (DatainCR.value() - otherMCdown - std::get<1>fakes);
+  double estimateUp   = NinSR.value()/NinCR.value() * (DatainCR.value() - otherMCup.value()   - std::get<0>(fakes));
+  double estimateDown = NinSR.value()/NinCR.value() * (DatainCR.value() - otherMCdown.value() - std::get<1>(fakes));
   std::cout << "DD estimateUp: " << estimateUp << std::endl;
   std::cout << "DD estimateDown: " << estimateDown << std::endl;
   return std::make_tuple(estimateUp, estimateDown);
