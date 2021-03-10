@@ -242,8 +242,8 @@ int main(int argc, char** argv)
   // Get yields
   auto wjets = MC.process(bkgMap["WJetsNLO"]);
   auto ttbar = MC.process(bkgMap["ttbar"]);
+  auto zinv = MC.process(bkgMap["ZInv"]);
   auto vv    = MC.process(bkgMap["VV"]);
-  //auto zinv = MC.process(bkgMap["ZInv"]);
   //auto qcd = MC.process(bkgMap["QCD"]);
 
   auto Wj   = fullDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
@@ -261,16 +261,25 @@ int main(int argc, char** argv)
   double Wsy  = std::sqrt(std::pow(Wj.uncertainty()/Wj.value(),2) + WjSys*WjSys);
   double ttsy = std::sqrt(std::pow(tt.uncertainty()/tt.value(),2) + ttSys*ttSys);
   double Fksy = std::sqrt(std::pow(Fake.uncertainty()/Fake.value(),2) + FakeSys*FakeSys);
-
+/*
   std::tuple<double, double> VVsyWjXS = fullDD_varyXS(vv,wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
 
-  double VVsyWjUp   = std::abs(std::get<0>(VVsyWjXS)-VV.value());
-  double VVsyWjDown = std::abs(std::get<1>(VVsyWjXS)-VV.value());
+  double VVsyWjUp   = std::abs(std::get<0>(VVsyWjXS)-Wj.value());
+  double VVsyWjDown = std::abs(std::get<1>(VVsyWjXS)-Wj.value());
   double VVsyWj = std::max(VVsyWjUp,VVsyWjDown);
 
   std::cout << "VVsyWjUp: " << VVsyWjUp << std::endl;
   std::cout << "VVsyWjDown: " << VVsyWjDown << std::endl;
   std::cout << "VVsyWj: " << VVsyWj << std::endl;
+*/
+  std::string VVsyWj = sysFromXSvar(vv, wjets, Wj, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight, "mainBkg");
+  std::cout << "VVsyWj: "   << VVsyWj   << std::endl;
+  
+  std::string VVsytt = sysFromXSvar(vv, ttbar, tt, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight, "mainBkg");
+  std::cout << "VVsytt: "   << VVsytt   << std::endl;
+
+  std::string VVsyFake sysFromXSvar(vv, zinv, Fake, Data, MC, "", "", looseSelection + " && " + preSelection + " && " + signalRegion, "", mcWeight, "fakes");
+  std::cout << "VVsyFake: " << VVsyFake << std::endl;
 
   std::string name;
   std::map<std::string, size_t> sigMap;
@@ -400,6 +409,27 @@ std::tuple<double, double> fullDD_varyXS(ProcessInfo &toVaryXS, ProcessInfo &toE
   std::cout << "DD estimateUp: " << estimateUp << std::endl;
   std::cout << "DD estimateDown: " << estimateDown << std::endl;
   return std::make_tuple(estimateUp, estimateDown);
+}
+
+std::string sysFromXSvar(ProcessInfo &toVaryXS, ProcessInfo &ddAffected, doubleUnc xDDcentral, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight, std::string ddMethod){
+
+  std::tuple<double, double> toVaryXSsyddAffected;
+
+  if (ddMethod == "mainBkg"){
+    toVaryXSsyddAffected = fullDD_varyXS(toVaryXS,ddAffected, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeight);
+  }
+  else if (ddMethod == "fakes")
+  {
+    toVaryXSsyddAffected = fakeDD_varyXS(toVaryXS, Data, MC, signalRegion, mcWeight);
+  }
+
+  std::cout << "toVaryXSsyddAffected: " << toVaryXSsyddAffected << std::endl;
+
+  double syUp = std::abs(std::get<0>(toVaryXSsyddAffected)-xDDcentral.value());
+  double syDown = std::abs(std::get<1>(toVaryXSsyddAffected)-xDDcentral.value());
+  double syMax = std::max(syUp, syDown);
+
+  return std::to_string(syMax/xDDcentral.value());
 }
 
 std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity, std::string systBase){
