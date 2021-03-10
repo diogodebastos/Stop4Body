@@ -30,6 +30,7 @@ doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 std::tuple<double, double> fakeDD_varyXS(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string);
 std::tuple<double, double> fullDD_varyXS(ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
+std::string sysFromXSvar(ProcessInfo &, ProcessInfo &, doubleUnc, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string);
 std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
 void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double);
 //void makeDataCard(ProcessInfo &, SampleReader &, SampleReader &, std::map<std::string, size_t>, std::string, std::string, std::string preSelection, std::string wjetsEnrich, std::string ttbarEnrich, std::string, std::string, std::string, std::string, std::string);
@@ -278,7 +279,7 @@ int main(int argc, char** argv)
   std::string VVsytt = sysFromXSvar(vv, ttbar, tt, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight, "mainBkg");
   std::cout << "VVsytt: "   << VVsytt   << std::endl;
 
-  std::string VVsyFake sysFromXSvar(vv, zinv, Fake, Data, MC, "", "", looseSelection + " && " + preSelection + " && " + signalRegion, "", mcWeight, "fakes");
+  std::string VVsyFake = sysFromXSvar(vv, zinv, Fake, Data, MC, "", "", looseSelection + " && " + preSelection + " && " + signalRegion, "", mcWeight, "fakes");
   std::cout << "VVsyFake: " << VVsyFake << std::endl;
 
   std::string name;
@@ -423,7 +424,7 @@ std::string sysFromXSvar(ProcessInfo &toVaryXS, ProcessInfo &ddAffected, doubleU
     toVaryXSsyddAffected = fakeDD_varyXS(toVaryXS, Data, MC, signalRegion, mcWeight);
   }
 
-  std::cout << "toVaryXSsyddAffected: " << toVaryXSsyddAffected << std::endl;
+  //std::cout << "toVaryXSsyddAffected: " << toVaryXSsyddAffected << std::endl;
 
   double syUp = std::abs(std::get<0>(toVaryXSsyddAffected)-xDDcentral.value());
   double syDown = std::abs(std::get<1>(toVaryXSsyddAffected)-xDDcentral.value());
