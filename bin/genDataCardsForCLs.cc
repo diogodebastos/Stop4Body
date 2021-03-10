@@ -33,6 +33,7 @@ std::tuple<double, double> fullDD_varyXS(ProcessInfo &, ProcessInfo &, SampleRea
 std::string sysFromXSvar(ProcessInfo &, ProcessInfo &, doubleUnc, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string);
 std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
+std::string JesJerSys(ProcessInfo &, doubleUnc, std::string, std::string, double, double, std::string);
 std::string xST(doubleUnc);
 void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 
@@ -120,7 +121,7 @@ int main(int argc, char** argv)
   std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
   std::string baseSelection = "(genWeight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60)";
-  std::string preSelection = baseSelection + "(HT > 200) && (Jet1Pt > 110) && (Met>280)";
+  std::string preSelection = baseSelection + " && (HT > 200) && (Jet1Pt > 110) && (Met>280)";
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
@@ -494,7 +495,8 @@ std::string Q2Sys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string s
   return std::to_string(1+std::sqrt(quadSumSys));
 }
 
-std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string tightSelection, std::baseSelection, double luminosity, double bdtCut, std::string syst){
+std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string tightSelection, std::string baseSelection, double luminosity, double bdtCut, std::string syst){
+  std::string UpDownVar = "1/1";
   std::string lumin = std::to_string(luminosity);
   std::string bdt   = std::to_string(bdtCut);
   std::string varHTup   = "(HT_"+syst+"_Up > 200)";
@@ -509,8 +511,11 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
   std::string selUp   = tightSelection + " && " + baseSelection + " && " + varHTup   + " && " + varJet1Ptup   + " && " + varMetup   + " && " + BDTup;
   std::string selDown = tightSelection + " && " + baseSelection + " && " + varHTdown + " && " + varJet1Ptdown + " && " + varMetdown + " && " + BDTdown;
 
-  std::string mcWeightVarUp   = "splitFactor*weight_"+systBase+"_Up*"+lumin;
-  std::string mcWeightVarDown = "splitFactor*weight_"+systBase+"_Down*"+lumin;
+  std::cout << "selUp: " << selUp << std::endl;
+  std::cout << "selDown: " << selDown << std::endl;
+
+  std::string mcWeightVarUp   = "splitFactor*weight_"+syst+"_Up*"+lumin;
+  std::string mcWeightVarDown = "splitFactor*weight_"+syst+"_Down*"+lumin;
 
   auto UpYield   = toEstimate.getYield(selUp, mcWeightVarUp);
   auto DownYield = toEstimate.getYield(selDown, mcWeightVarDown);
