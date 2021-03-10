@@ -32,8 +32,9 @@ std::tuple<double, double> fakeDD_varyXS(ProcessInfo &, SampleReader &, SampleRe
 std::tuple<double, double> fullDD_varyXS(ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 std::string sysFromXSvar(ProcessInfo &, ProcessInfo &, doubleUnc, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string);
 std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
+std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string xST(doubleUnc);
-void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -282,6 +283,9 @@ int main(int argc, char** argv)
   std::string TTXsytt   = sysFromXSvar(ttx, ttbar, tt, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight, "mainBkg");
   std::string TTXsyFake = sysFromXSvar(ttx, zinv, Fake, Data, MC, "", "", looseSelection + " && " + preSelection + " && " + signalRegion, "", mcWeight, "fakes");
 
+  std::string STQ2  = Q2Sys(st, ST, SR, luminosity);
+  std::string DYQ2  = Q2Sys(dy, DY, SR, luminosity);
+  std::string TTXQ2 = Q2Sys(ttx, TTX, SR, luminosity);
 
   std::string name;
   std::map<std::string, size_t> sigMap;
@@ -295,7 +299,9 @@ int main(int argc, char** argv)
 
     std::string FastS = getUpDownSysVar(signal, Sgn, SR, luminosity, "FullFast_ID_AltCorr");
 
-    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake);
+    std::string SgnQ2 = Q2Sys(signal, Sgn, SR, luminosity);
+
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2);
   }
 }
 
@@ -458,7 +464,25 @@ std::string xST(doubleUnc process){
   return std::to_string(1+process.uncertainty()/process.value());
 }
 
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake){
+std::string Q2Sys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity){
+  std::string lumin = std::to_string(luminosity);
+  std::string mcWeight = "splitFactor*weight";
+  doubleUnc yieldVar;
+  double quadSumSys = 0;
+
+  for (int i = 1; i <= 8; ++i)
+  {
+    std::string mcWeightVar = mcWeight + "_Q2_"+std::to_string(i)+"*"+lumin;
+    std::cout << "mcWeightVar: " << mcWeightVar << std::endl;
+    yieldVar = toEstimate.getYield(selection, mcWeightVar);
+    double percentVar = std::abs(yieldVar.value() - centralYield.value())/centralYield.value();
+    quadSumSys += percentVar*percentVar;
+  }
+
+  return std::to_string(1+std::sqrt(quadSumSys));
+}
+
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -555,7 +579,10 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     {
       strTemp = "PU    lnN 1.01 - - - 1.01 1.01 1.01 1.01";
     }
-    
+    else if(i==28)
+    {
+      strTemp = "Q2    lnN " + SgnQ2 + " - - - 1 " + STQ2 + " " + DYQ2 + " " + TTXQ2;
+    }
     strTemp += "\n";
     dataCardOut << strTemp;
   }
