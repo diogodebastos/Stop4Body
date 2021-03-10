@@ -35,7 +35,7 @@ std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string JesJerSys(ProcessInfo &, doubleUnc, std::string, std::string, double, double, std::string);
 std::string xST(doubleUnc);
-void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string , std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string , std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -298,6 +298,42 @@ int main(int argc, char** argv)
   std::string TTXJES = JesJerSys(ttx, TTX, tightSelection, baseSelection, luminosity, bdtCut, "JES");
   std::string TTXJER = JesJerSys(ttx, TTX, tightSelection, baseSelection, luminosity, bdtCut, "JER");
 
+  std::string VVBTAG1 = getUpDownSysVar(vv, VV, SR, luminosity, "CFErr1");
+  std::string VVBTAG2 = getUpDownSysVar(vv, VV, SR, luminosity, "CFErr2");
+  std::string VVBTAG3 = getUpDownSysVar(vv, VV, SR, luminosity, "LF");
+  std::string VVBTAG4 = getUpDownSysVar(vv, VV, SR, luminosity, "LFStats1");
+  std::string VVBTAG5 = getUpDownSysVar(vv, VV, SR, luminosity, "LFStats2");
+  std::string VVBTAG6 = getUpDownSysVar(vv, VV, SR, luminosity, "HF");
+  std::string VVBTAG7 = getUpDownSysVar(vv, VV, SR, luminosity, "HFStats1");
+  std::string VVBTAG8 = getUpDownSysVar(vv, VV, SR, luminosity, "HFStats2");
+
+  std::string STBTAG1 = getUpDownSysVar(st, ST, SR, luminosity, "CFErr1");
+  std::string STBTAG2 = getUpDownSysVar(st, ST, SR, luminosity, "CFErr2");
+  std::string STBTAG3 = getUpDownSysVar(st, ST, SR, luminosity, "LF");
+  std::string STBTAG4 = getUpDownSysVar(st, ST, SR, luminosity, "LFStats1");
+  std::string STBTAG5 = getUpDownSysVar(st, ST, SR, luminosity, "LFStats2");
+  std::string STBTAG6 = getUpDownSysVar(st, ST, SR, luminosity, "HF");
+  std::string STBTAG7 = getUpDownSysVar(st, ST, SR, luminosity, "HFStats1");
+  std::string STBTAG8 = getUpDownSysVar(st, ST, SR, luminosity, "HFStats2");
+
+  std::string DYBTAG1 = getUpDownSysVar(dy, DY, SR, luminosity, "CFErr1");
+  std::string DYBTAG2 = getUpDownSysVar(dy, DY, SR, luminosity, "CFErr2");
+  std::string DYBTAG3 = getUpDownSysVar(dy, DY, SR, luminosity, "LF");
+  std::string DYBTAG4 = getUpDownSysVar(dy, DY, SR, luminosity, "LFStats1");
+  std::string DYBTAG5 = getUpDownSysVar(dy, DY, SR, luminosity, "LFStats2");
+  std::string DYBTAG6 = getUpDownSysVar(dy, DY, SR, luminosity, "HF");
+  std::string DYBTAG7 = getUpDownSysVar(dy, DY, SR, luminosity, "HFStats1");
+  std::string DYBTAG8 = getUpDownSysVar(dy, DY, SR, luminosity, "HFStats2");
+
+  std::string TTXBTAG1 = getUpDownSysVar(ttx, TTX, SR, luminosity, "CFErr1");
+  std::string TTXBTAG2 = getUpDownSysVar(ttx, TTX, SR, luminosity, "CFErr2");
+  std::string TTXBTAG3 = getUpDownSysVar(ttx, TTX, SR, luminosity, "LF");
+  std::string TTXBTAG4 = getUpDownSysVar(ttx, TTX, SR, luminosity, "LFStats1");
+  std::string TTXBTAG5 = getUpDownSysVar(ttx, TTX, SR, luminosity, "LFStats2");
+  std::string TTXBTAG6 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HF");
+  std::string TTXBTAG7 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats1");
+  std::string TTXBTAG8 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats2");
+
   std::string name;
   std::map<std::string, size_t> sigMap;
   for(size_t sig = 0; sig < Sig.nProcesses(); ++sig){
@@ -324,7 +360,7 @@ int main(int argc, char** argv)
     std::string SgnBTAG7 = getUpDownSysVar(signal, Sgn, SR, luminosity, "HFStats1");
     std::string SgnBTAG8 = getUpDownSysVar(signal, Sgn, SR, luminosity, "HFStats2");
 
-    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8);
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8, VVBTAG1, VVBTAG2, VVBTAG3, VVBTAG4, VVBTAG5, VVBTAG6, VVBTAG7, VVBTAG8, STBTAG1, STBTAG2, STBTAG3, STBTAG4, STBTAG5, STBTAG6, STBTAG7, STBTAG8, DYBTAG1, DYBTAG2, DYBTAG3, DYBTAG4, DYBTAG5, DYBTAG6, DYBTAG7, DYBTAG8, TTXBTAG1, TTXBTAG2, TTXBTAG3, TTXBTAG4, TTXBTAG5, TTXBTAG6, TTXBTAG7, TTXBTAG8);
   }
 }
 
@@ -536,7 +572,7 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
   return UpDownVar;
 }
 
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER, std::string SgnBTAG1, std::string SgnBTAG2, std::string SgnBTAG3, std::string SgnBTAG4, std::string SgnBTAG5, std::string SgnBTAG6, std::string SgnBTAG7, std::string SgnBTAG8){
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER, std::string SgnBTAG1, std::string SgnBTAG2, std::string SgnBTAG3, std::string SgnBTAG4, std::string SgnBTAG5, std::string SgnBTAG6, std::string SgnBTAG7, std::string SgnBTAG8, std::string VVBTAG1, std::string VVBTAG2, std::string VVBTAG3, std::string VVBTAG4, std::string VVBTAG5, std::string VVBTAG6, std::string VVBTAG7, std::string VVBTAG8, std::string STBTAG1, std::string STBTAG2, std::string STBTAG3, std::string STBTAG4, std::string STBTAG5, std::string STBTAG6, std::string STBTAG7, std::string STBTAG8, std::string DYBTAG1, std::string DYBTAG2, std::string DYBTAG3, std::string DYBTAG4, std::string DYBTAG5, std::string DYBTAG6, std::string DYBTAG7, std::string DYBTAG8, std::string TTXBTAG1, std::string TTXBTAG2, std::string TTXBTAG3, std::string TTXBTAG4, std::string TTXBTAG5, std::string TTXBTAG6, std::string TTXBTAG7, std::string TTXBTAG8){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -647,35 +683,35 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     }
     else if(i==31)
     {
-      strTemp = "BTAG1 lnN " + SgnBTAG1 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "BTAG1 lnN " + SgnBTAG1 + " - - - " + VVBTAG1 + " " + STBTAG1 + " " + DYBTAG1 + " " + TTXBTAG1;
     }
     else if(i==32)
     {
-      strTemp = "BTAG2 lnN " + SgnBTAG2 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "BTAG2 lnN " + SgnBTAG2 + " - - - " + VVBTAG2 + " " + STBTAG2 + " " + DYBTAG2 + " " + TTXBTAG2;
     }
     else if(i==33)
     {
-      strTemp = "BTAG3 lnN " + SgnBTAG3 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "BTAG3 lnN " + SgnBTAG3 + " - - - " + VVBTAG3 + " " + STBTAG3 + " " + DYBTAG3 + " " + TTXBTAG3;
     }
     else if(i==34)
     {
-      strTemp = "BTAG4 lnN " + SgnBTAG4 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "BTAG4 lnN " + SgnBTAG4 + " - - - " + VVBTAG4 + " " + STBTAG4 + " " + DYBTAG4 + " " + TTXBTAG4;
     }
     else if(i==35)
     {
-      strTemp = "BTAG5 lnN " + SgnBTAG5 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "BTAG5 lnN " + SgnBTAG5 + " - - - " + VVBTAG5 + " " + STBTAG5 + " " + DYBTAG5 + " " + TTXBTAG5;
     }
     else if(i==36)
     {
-      strTemp = "BTAG6 lnN " + SgnBTAG6 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "BTAG6 lnN " + SgnBTAG6 + " - - - " + VVBTAG6 + " " + STBTAG6 + " " + DYBTAG6 + " " + TTXBTAG6;
     }
     else if(i==37)
     {
-      strTemp = "BTAG7 lnN " + SgnBTAG7 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "BTAG7 lnN " + SgnBTAG7 + " - - - " + VVBTAG7 + " " + STBTAG7 + " " + DYBTAG7 + " " + TTXBTAG7;
     }
     else if(i==38)
     {
-      strTemp = "BTAG8 lnN " + SgnBTAG8 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "BTAG8 lnN " + SgnBTAG8 + " - - - " + VVBTAG8 + " " + STBTAG8 + " " + DYBTAG8 + " " + TTXBTAG8;
     }
     strTemp += "\n";
     dataCardOut << strTemp;
