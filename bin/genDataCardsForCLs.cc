@@ -35,7 +35,7 @@ std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string JesJerSys(ProcessInfo &, doubleUnc, std::string, std::string, double, double, std::string);
 std::string xST(doubleUnc);
-void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string , std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string , std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string , std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string , std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -333,6 +333,14 @@ int main(int argc, char** argv)
   std::string TTXBTAG6 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HF");
   std::string TTXBTAG7 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats1");
   std::string TTXBTAG8 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats2");
+    
+  std::string WjISR1 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin1_Up", luminosity, Wj);
+
+  std::string WjnST = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "normStWeight", luminosity, Wj);
+
+  std::string ttISR1 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin1_Up", luminosity, tt);
+
+  std::string ttnST = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "normStWeight", luminosity, tt);
 
   std::string name;
   std::map<std::string, size_t> sigMap;
@@ -369,7 +377,7 @@ int main(int argc, char** argv)
     std::string SgnISR5 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin5");
     std::string SgnISR6 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin6");
 
-    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8, VVBTAG1, VVBTAG2, VVBTAG3, VVBTAG4, VVBTAG5, VVBTAG6, VVBTAG7, VVBTAG8, STBTAG1, STBTAG2, STBTAG3, STBTAG4, STBTAG5, STBTAG6, STBTAG7, STBTAG8, DYBTAG1, DYBTAG2, DYBTAG3, DYBTAG4, DYBTAG5, DYBTAG6, DYBTAG7, DYBTAG8, TTXBTAG1, TTXBTAG2, TTXBTAG3, TTXBTAG4, TTXBTAG5, TTXBTAG6, TTXBTAG7, TTXBTAG8, SgnID, SgnISR1, SgnISR2, SgnISR3, SgnISR4, SgnISR5, SgnISR6);
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8, VVBTAG1, VVBTAG2, VVBTAG3, VVBTAG4, VVBTAG5, VVBTAG6, VVBTAG7, VVBTAG8, STBTAG1, STBTAG2, STBTAG3, STBTAG4, STBTAG5, STBTAG6, STBTAG7, STBTAG8, DYBTAG1, DYBTAG2, DYBTAG3, DYBTAG4, DYBTAG5, DYBTAG6, DYBTAG7, DYBTAG8, TTXBTAG1, TTXBTAG2, TTXBTAG3, TTXBTAG4, TTXBTAG5, TTXBTAG6, TTXBTAG7, TTXBTAG8, SgnID, SgnISR1, SgnISR2, SgnISR3, SgnISR4, SgnISR5, SgnISR6, WjISR1, WjnST, ttISR1, ttnST);
   }
 }
 
@@ -514,6 +522,21 @@ std::string sysFromXSvar(ProcessInfo &toVaryXS, ProcessInfo &ddAffected, doubleU
   return std::to_string(syUp) + "/" + std::to_string(syDown);
 }
 
+std::string fullDD_sys(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string syst, double luminosity, doubleUnc xDDcentral)
+{
+  std::string UpDownVar = "1/1";
+  std::string lumin = std::to_string(luminosity);
+  std::string mcWeightVarUp   = "splitFactor*weight_"+syst+"_Up*"+lumin;
+  std::string mcWeightVarDown = "splitFactor*weight_"+syst+"_Down*"+lumin;
+
+  auto UpYield   = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeightVarUp);
+  auto DownYield = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeightVarDown);
+
+  UpDownVar = std::to_string(UpYield.value()/xDDcentral.value())+"/"+std::to_string(DownYield.value()/xDDcentral.value());
+
+  return UpDownVar;
+}
+
 std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity, std::string systBase){
   std::string UpDownVar = "1/1";
   std::string lumin = std::to_string(luminosity);
@@ -581,7 +604,7 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
   return UpDownVar;
 }
 
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER, std::string SgnBTAG1, std::string SgnBTAG2, std::string SgnBTAG3, std::string SgnBTAG4, std::string SgnBTAG5, std::string SgnBTAG6, std::string SgnBTAG7, std::string SgnBTAG8, std::string VVBTAG1, std::string VVBTAG2, std::string VVBTAG3, std::string VVBTAG4, std::string VVBTAG5, std::string VVBTAG6, std::string VVBTAG7, std::string VVBTAG8, std::string STBTAG1, std::string STBTAG2, std::string STBTAG3, std::string STBTAG4, std::string STBTAG5, std::string STBTAG6, std::string STBTAG7, std::string STBTAG8, std::string DYBTAG1, std::string DYBTAG2, std::string DYBTAG3, std::string DYBTAG4, std::string DYBTAG5, std::string DYBTAG6, std::string DYBTAG7, std::string DYBTAG8, std::string TTXBTAG1, std::string TTXBTAG2, std::string TTXBTAG3, std::string TTXBTAG4, std::string TTXBTAG5, std::string TTXBTAG6, std::string TTXBTAG7, std::string TTXBTAG8, std::string SgnID, std::string SgnISR1, std::string SgnISR2, std::string SgnISR3, std::string SgnISR4, std::string SgnISR5, std::string SgnISR6){
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER, std::string SgnBTAG1, std::string SgnBTAG2, std::string SgnBTAG3, std::string SgnBTAG4, std::string SgnBTAG5, std::string SgnBTAG6, std::string SgnBTAG7, std::string SgnBTAG8, std::string VVBTAG1, std::string VVBTAG2, std::string VVBTAG3, std::string VVBTAG4, std::string VVBTAG5, std::string VVBTAG6, std::string VVBTAG7, std::string VVBTAG8, std::string STBTAG1, std::string STBTAG2, std::string STBTAG3, std::string STBTAG4, std::string STBTAG5, std::string STBTAG6, std::string STBTAG7, std::string STBTAG8, std::string DYBTAG1, std::string DYBTAG2, std::string DYBTAG3, std::string DYBTAG4, std::string DYBTAG5, std::string DYBTAG6, std::string DYBTAG7, std::string DYBTAG8, std::string TTXBTAG1, std::string TTXBTAG2, std::string TTXBTAG3, std::string TTXBTAG4, std::string TTXBTAG5, std::string TTXBTAG6, std::string TTXBTAG7, std::string TTXBTAG8, std::string SgnID, std::string SgnISR1, std::string SgnISR2, std::string SgnISR3, std::string SgnISR4, std::string SgnISR5, std::string SgnISR6, std::string WjISR1, std::string WjnST, std::string ttISR1, std::string ttnST){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -733,7 +756,7 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     }*/
     else if(i==40)
     {
-      strTemp = "ISR1  lnN " + SgnISR1 + " " + SgnISR1 + " " + SgnISR1 + " " + SgnISR1 + " - - - -";
+      strTemp = "ISR1  lnN " + SgnISR1 + " " + WjISR1 + " " + ttISR1 + " " + "-" + " - - - -";
     }
     else if(i==41)
     {
@@ -757,7 +780,7 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     }
     else if(i==46)
     {
-      strTemp = "nST   lnN - " + SgnISR6 + " " + SgnISR6 + " " + SgnISR6 + " - - - -";
+      strTemp = "nST   lnN - " + WjnST + " " + ttnST + " " + "-" + " - - - -";
     }
 
     strTemp += "\n";
