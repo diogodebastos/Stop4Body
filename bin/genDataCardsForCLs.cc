@@ -34,7 +34,7 @@ std::string sysFromXSvar(ProcessInfo &, ProcessInfo &, doubleUnc, SampleReader &
 std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string xST(doubleUnc);
-void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -119,7 +119,8 @@ int main(int argc, char** argv)
 
   std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
-  std::string preSelection = "(genWeight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110) && (Met>280)";
+  std::string baseSelection = "(genWeight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60)";
+  std::string preSelection = baseSelection + "(HT > 200) && (Jet1Pt > 110) && (Met>280)";
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
   std::string controlRegion = "(BDT < 0.2)";
@@ -248,7 +249,7 @@ int main(int argc, char** argv)
   auto vv    = MC.process(bkgMap["VV"]);
   auto st    = MC.process(bkgMap["SingleTop"]);
   auto dy    = MC.process(bkgMap["DYJets"]);
-  auto ttx = MC.process(bkgMap["ttx"]);
+  auto ttx   = MC.process(bkgMap["ttx"]);
   //auto qcd = MC.process(bkgMap["QCD"]);
 
   auto Wj   = fullDD(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
@@ -287,6 +288,15 @@ int main(int argc, char** argv)
   std::string DYQ2  = Q2Sys(dy, DY, SR, luminosity);
   std::string TTXQ2 = Q2Sys(ttx, TTX, SR, luminosity);
 
+  std::string VVJES = JesJerSys(vv, VV, tightSelection, baseSelection, luminosity, bdtCut, "JES");
+  std::string VVJER = JesJerSys(vv, VV, tightSelection, baseSelection, luminosity, bdtCut, "JER");
+  std::string STJES = JesJerSys(st, ST, tightSelection, baseSelection, luminosity, bdtCut, "JES");
+  std::string STJER = JesJerSys(st, ST, tightSelection, baseSelection, luminosity, bdtCut, "JER");
+  std::string DYJES = JesJerSys(dy, DY, tightSelection, baseSelection, luminosity, bdtCut, "JES");
+  std::string DYJER = JesJerSys(dy, DY, tightSelection, baseSelection, luminosity, bdtCut, "JER");
+  std::string TTXJES = JesJerSys(ttx, TTX, tightSelection, baseSelection, luminosity, bdtCut, "JES");
+  std::string TTXJER = JesJerSys(ttx, TTX, tightSelection, baseSelection, luminosity, bdtCut, "JER");
+
   std::string name;
   std::map<std::string, size_t> sigMap;
   for(size_t sig = 0; sig < Sig.nProcesses(); ++sig){
@@ -301,7 +311,10 @@ int main(int argc, char** argv)
 
     std::string SgnQ2 = Q2Sys(signal, Sgn, SR, luminosity);
 
-    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2);
+    std::string SgnJES = JesJerSys(signal, Sgn, tightSelection, baseSelection, luminosity, bdtCut, "JES");
+    std::string SgnJER = JesJerSys(signal, Sgn, tightSelection, baseSelection, luminosity, bdtCut, "JER");
+
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER);
   }
 }
 
@@ -473,7 +486,6 @@ std::string Q2Sys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string s
   for (int i = 1; i <= 8; ++i)
   {
     std::string mcWeightVar = mcWeight + "_Q2_"+std::to_string(i)+"*"+lumin;
-    std::cout << "mcWeightVar: " << mcWeightVar << std::endl;
     yieldVar = toEstimate.getYield(selection, mcWeightVar);
     double percentVar = std::abs(yieldVar.value() - centralYield.value())/centralYield.value();
     quadSumSys += percentVar*percentVar;
@@ -482,7 +494,33 @@ std::string Q2Sys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string s
   return std::to_string(1+std::sqrt(quadSumSys));
 }
 
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2){
+std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string tightSelection, std::baseSelection, double luminosity, double bdtCut, std::string syst){
+  std::string lumin = std::to_string(luminosity);
+  std::string bdt   = std::to_string(bdtCut);
+  std::string varHTup   = "(HT_"+syst+"_Up > 200)";
+  std::string varHTdown = "(HT_"+syst+"_Down > 200)";
+  std::string varJet1Ptup   = "(Jet1Pt_"+syst+"_Up > 110)";
+  std::string varJet1Ptdown = "(Jet1Pt_"+syst+"_Down > 110)";
+  std::string varMetup   = "(Met_"+syst+"_Up > 280)";
+  std::string varMetdown = "(Met_"+syst+"_Down > 280)";
+  std::string BDTup   = "(BDT_"+syst+"_Up > " + bdt + ")";
+  std::string BDTdown = "(BDT_"+syst+"_Down > " + bdt + ")";
+
+  std::string selUp   = tightSelection + " && " + baseSelection + " && " + varHTup   + " && " + varJet1Ptup   + " && " + varMetup   + " && " + BDTup;
+  std::string selDown = tightSelection + " && " + baseSelection + " && " + varHTdown + " && " + varJet1Ptdown + " && " + varMetdown + " && " + BDTdown;
+
+  std::string mcWeightVarUp   = "splitFactor*weight_"+systBase+"_Up*"+lumin;
+  std::string mcWeightVarDown = "splitFactor*weight_"+systBase+"_Down*"+lumin;
+
+  auto UpYield   = toEstimate.getYield(selUp, mcWeightVarUp);
+  auto DownYield = toEstimate.getYield(selDown, mcWeightVarDown);
+
+  UpDownVar = std::to_string(UpYield.value()/centralYield.value())+"/"+std::to_string(DownYield.value()/centralYield.value());
+
+  return UpDownVar;
+}
+
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -582,6 +620,14 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     else if(i==28)
     {
       strTemp = "Q2    lnN " + SgnQ2 + " - - - 1 " + STQ2 + " " + DYQ2 + " " + TTXQ2;
+    }
+    else if(i==29)
+    {
+      strTemp = "JES   lnN " + SgnJES + " - - - " + VVJES + " " + STJES + " " + DYJES + " " + TTXJES;
+    }
+    else if(i==30)
+    {
+      strTemp = "JER   lnN " + SgnJER + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
     }
     strTemp += "\n";
     dataCardOut << strTemp;
