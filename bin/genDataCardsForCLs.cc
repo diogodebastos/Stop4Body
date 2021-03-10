@@ -31,6 +31,7 @@ doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std
 std::tuple<double, double> fakeDD_varyXS(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string);
 std::tuple<double, double> fullDD_varyXS(ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 std::string sysFromXSvar(ProcessInfo &, ProcessInfo &, doubleUnc, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string);
+std::string fullDD_sys(ProcessInfo &t, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, double, doubleUnc);
 std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string JesJerSys(ProcessInfo &, doubleUnc, std::string, std::string, double, double, std::string);
