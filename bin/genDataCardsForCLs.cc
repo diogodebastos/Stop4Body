@@ -725,64 +725,41 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     else if(i==39)
     {
       strTemp = "ID    lnN " + SgnID + " - - - 1.01 1.01 1.01 1.01";
-    }
+    }/*
     else if(i==40)
     {
       strTemp = "";
       //strTemp = "RECO  lnN " + SgnRECO + " - - - 1.01 1.01 1.01 1.01";
-    }
-    else if(i==41)
+    }*/
+    else if(i==40)
     {
       strTemp = "ISR1  lnN " + SgnISR1 + " " + SgnISR1 + " " + SgnISR1 + " " + SgnISR1 + " - - - -";
     }
-    else if(i==42)
+    else if(i==41)
     {
       strTemp = "ISR2  lnN " + SgnISR2 + " " + SgnISR2 + " " + SgnISR2 + " " + SgnISR2 + " - - - -";
     }
-    else if(i==43)
+    else if(i==42)
     {
       strTemp = "ISR3  lnN " + SgnISR3 + " " + SgnISR3 + " " + SgnISR3 + " " + SgnISR3 + " - - - -";
     }
-    else if(i==44)
+    else if(i==43)
     {
       strTemp = "ISR4  lnN " + SgnISR4 + " " + SgnISR4 + " " + SgnISR4 + " " + SgnISR4 + " - - - -";
     }
-    else if(i==45)
+    else if(i==44)
     {
       strTemp = "ISR5  lnN " + SgnISR5 + " " + SgnISR5 + " " + SgnISR5 + " " + SgnISR5 + " - - - -";
     }
-    else if(i==46)
+    else if(i==45)
     {
       strTemp = "ISR6  lnN " + SgnISR6 + " " + SgnISR6 + " " + SgnISR6 + " " + SgnISR6 + " - - - -";
     }
-    else if(i==47)
+    else if(i==46)
     {
       strTemp = "nST   lnN - " + SgnISR6 + " " + SgnISR6 + " " + SgnISR6 + " - - - -";
     }
-    else if(i==48)
-    {
-      strTemp = "";
-    }
-    else if(i==49)
-    {
-      strTemp = "";
-    }
-    else if(i==50)
-    {
-      strTemp = "";
-    }
-    else if(i==51)
-    {
-      strTemp = "";
-    }
-    else if(i==52)
-    {
-      strTemp = "";
-    }
-    else if(i==53)
-    {
-      strTemp = "";
-    }
+
     strTemp += "\n";
     dataCardOut << strTemp;
   }
