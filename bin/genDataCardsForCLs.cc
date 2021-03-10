@@ -335,11 +335,11 @@ int main(int argc, char** argv)
   std::string TTXBTAG7 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats1");
   std::string TTXBTAG8 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats2");
     
-  std::string WjISR1 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin1_Up", luminosity, Wj);
+  std::string WjISR1 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin1", luminosity, Wj);
 
   std::string WjnST = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "normStWeight", luminosity, Wj);
 
-  std::string ttISR1 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin1_Up", luminosity, tt);
+  std::string ttISR1 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin1", luminosity, tt);
 
   std::string ttnST = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "normStWeight", luminosity, tt);
 
