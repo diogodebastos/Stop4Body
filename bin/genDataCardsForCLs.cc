@@ -517,7 +517,7 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     }
     else if(i==18)
     {
-      strTemp = "VVst  lnN - - - - " + xST(VV) + "- - -";
+      strTemp = "VVst  lnN - - - - " + xST(VV) + " - - -";
     }
     else if(i==19)
     {
@@ -537,12 +537,25 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     }
     else if(i==23)
     {
-      strTemp = "TTXsy  lnN - " + TTXsyWj + " "+ TTXsytt + " " + TTXsyFake + " - - - 1.5/0.5";
+      strTemp = "TTXsy lnN - " + TTXsyWj + " "+ TTXsytt + " " + TTXsyFake + " - - - 1.5/0.5";
     }
     else if(i==24)
     {
-      strTemp = "TTXst  lnN - - - - - - - " + xST(TTX);
+      strTemp = "TTXst lnN - - - - - - - " + xST(TTX);
     }
+    else if(i==25)
+    {
+      strTemp = "Lum   lnN 1.023 - - - 1.023 1.023 1.023 1.023";
+    }
+    else if(i==26)
+    {
+      strTemp = "Trg   lnN 1.010 - - - 1.010 1.010 1.010 1.010";
+    }
+    else if(i==27)
+    {
+      strTemp = "PU    lnN 1.01 - - - 1.01 1.01 1.01 1.01";
+    }
+    
     strTemp += "\n";
     dataCardOut << strTemp;
   }
