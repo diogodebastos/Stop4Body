@@ -505,14 +505,16 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
   std::string varJet1Ptdown = "(Jet1Pt_"+syst+"_Down > 110)";
   std::string varMetup   = "(Met_"+syst+"_Up > 280)";
   std::string varMetdown = "(Met_"+syst+"_Down > 280)";
-  std::string BDTup   = "(BDT_"+syst+"_Up > " + bdt + ")";
-  std::string BDTdown = "(BDT_"+syst+"_Down > " + bdt + ")";
+  //std::string BDTup   = "(BDT_"+syst+"_Up > " + bdt + ")";
+  //std::string BDTdown = "(BDT_"+syst+"_Down > " + bdt + ")";
+  std::string BDTup   = "(BDT > " + bdt + ")";
+  std::string BDTdown = "(BDT > " + bdt + ")";
 
   std::string selUp   = tightSelection + " && " + baseSelection + " && " + varHTup   + " && " + varJet1Ptup   + " && " + varMetup   + " && " + BDTup;
   std::string selDown = tightSelection + " && " + baseSelection + " && " + varHTdown + " && " + varJet1Ptdown + " && " + varMetdown + " && " + BDTdown;
 
-  std::cout << "selUp: " << selUp << std::endl;
-  std::cout << "selDown: " << selDown << std::endl;
+  //std::cout << "selUp: " << selUp << std::endl;
+  //std::cout << "selDown: " << selDown << std::endl;
 
   std::string mcWeightVarUp   = "splitFactor*weight_"+syst+"_Up*"+lumin;
   std::string mcWeightVarDown = "splitFactor*weight_"+syst+"_Down*"+lumin;
