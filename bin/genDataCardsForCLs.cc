@@ -262,25 +262,10 @@ int main(int argc, char** argv)
   double Wsy  = std::sqrt(std::pow(Wj.uncertainty()/Wj.value(),2) + WjSys*WjSys);
   double ttsy = std::sqrt(std::pow(tt.uncertainty()/tt.value(),2) + ttSys*ttSys);
   double Fksy = std::sqrt(std::pow(Fake.uncertainty()/Fake.value(),2) + FakeSys*FakeSys);
-/*
-  std::tuple<double, double> VVsyWjXS = fullDD_varyXS(vv,wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight);
 
-  double VVsyWjUp   = std::abs(std::get<0>(VVsyWjXS)-Wj.value());
-  double VVsyWjDown = std::abs(std::get<1>(VVsyWjXS)-Wj.value());
-  double VVsyWj = std::max(VVsyWjUp,VVsyWjDown);
-
-  std::cout << "VVsyWjUp: " << VVsyWjUp << std::endl;
-  std::cout << "VVsyWjDown: " << VVsyWjDown << std::endl;
-  std::cout << "VVsyWj: " << VVsyWj << std::endl;
-*/
-  std::string VVsyWj = sysFromXSvar(vv, wjets, Wj, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight, "mainBkg");
-  std::cout << "VVsyWj: "   << VVsyWj   << std::endl;
-  
+  std::string VVsyWj = sysFromXSvar(vv, wjets, Wj, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, mcWeight, "mainBkg");  
   std::string VVsytt = sysFromXSvar(vv, ttbar, tt, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, mcWeight, "mainBkg");
-  std::cout << "VVsytt: "   << VVsytt   << std::endl;
-
   std::string VVsyFake = sysFromXSvar(vv, zinv, Fake, Data, MC, "", "", looseSelection + " && " + preSelection + " && " + signalRegion, "", mcWeight, "fakes");
-  std::cout << "VVsyFake: " << VVsyFake << std::endl;
 
   std::string name;
   std::map<std::string, size_t> sigMap;
@@ -294,7 +279,7 @@ int main(int argc, char** argv)
 
     std::string FastS = getUpDownSysVar(signal, Sgn, SR, luminosity, "FullFast_ID_AltCorr");
 
-    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy);
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake);
   }
 }
 
@@ -369,9 +354,10 @@ std::tuple<double, double> fakeDD_varyXS(ProcessInfo &toVaryXS, SampleReader &LN
 
   doubleUnc estimateUp = LNTinSR - LNTMCinSRup;
   doubleUnc estimateDown = LNTinSR - LNTMCinSRdown;
-
+  /*
   std::cout << "Fakes estimateUp: " << estimateUp << std::endl;
   std::cout << "Fakes estimateDown: " << estimateDown << std::endl;
+  */
   return std::make_tuple(estimateUp.value(), estimateDown.value());
 }
 
@@ -407,8 +393,10 @@ std::tuple<double, double> fullDD_varyXS(ProcessInfo &toVaryXS, ProcessInfo &toE
   //doubleUnc estimate = NinSR/NinCR * (DatainCR - otherMC - fakes);
   double estimateUp   = NinSR.value()/NinCR.value() * (DatainCR.value() - otherMCup.value()   - std::get<0>(fakes));
   double estimateDown = NinSR.value()/NinCR.value() * (DatainCR.value() - otherMCdown.value() - std::get<1>(fakes));
+  /*
   std::cout << "DD estimateUp: " << estimateUp << std::endl;
   std::cout << "DD estimateDown: " << estimateDown << std::endl;
+  */
   return std::make_tuple(estimateUp, estimateDown);
 }
 
@@ -423,14 +411,17 @@ std::string sysFromXSvar(ProcessInfo &toVaryXS, ProcessInfo &ddAffected, doubleU
   {
     toVaryXSsyddAffected = fakeDD_varyXS(toVaryXS, Data, MC, signalRegion, mcWeight);
   }
-
-  //std::cout << "toVaryXSsyddAffected: " << toVaryXSsyddAffected << std::endl;
-
+  /*
   double syUp = std::abs(std::get<0>(toVaryXSsyddAffected)-xDDcentral.value());
   double syDown = std::abs(std::get<1>(toVaryXSsyddAffected)-xDDcentral.value());
   double syMax = std::max(syUp, syDown);
-
+  
   return std::to_string(syMax/xDDcentral.value());
+  */
+  double syUp   = std::get<0>(toVaryXSsyddAffected)/xDDcentral.value();
+  double syDown = std::get<1>(toVaryXSsyddAffected)/xDDcentral.value();
+
+  return std::to_string(syUp) + "/" + std::to_string(syDown);
 }
 
 std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity, std::string systBase){
@@ -447,7 +438,7 @@ std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std
   return UpDownVar;
 }
 
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy){
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -479,10 +470,10 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
       strTemp = "bin "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin+" "+bin;
     }
     else if(i==11){
-      strTemp = "rate "+std::to_string(Sgn.value())+" "+std::to_string(Wj.value())+" "+std::to_string(tt.value())+" "+std::to_string(Fake.value())+" "+std::to_string(VV.value())+" "+std::to_string(ST.value())+" "+std::to_string(DY.value())+" "+std::to_string(TTX.value());
+      strTemp = "rate   "+std::to_string(Sgn.value())+" "+std::to_string(Wj.value())+" "+std::to_string(tt.value())+" "+std::to_string(Fake.value())+" "+std::to_string(VV.value())+" "+std::to_string(ST.value())+" "+std::to_string(DY.value())+" "+std::to_string(TTX.value());
     }
     else if(i==12){
-      strTemp = "Sst lnN " + std::to_string(1+Sgn.uncertainty()/Sgn.value()) + " - - - - - - -";
+      strTemp = "Sst   lnN " + std::to_string(1+Sgn.uncertainty()/Sgn.value()) + " - - - - - - -";
     }
     else if(i==13)
     {
@@ -490,15 +481,23 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     }
     else if(i==14)
     {
-      strTemp = "Wsy lnN - " + std::to_string(1+Wsy) + " - - - - - -";
+      strTemp = "Wsy   lnN - " + std::to_string(1+Wsy) + " - - - - - -";
     }
     else if(i==15)
     {
-      strTemp = "ttsy lnN - - " + std::to_string(1+ttsy) + " - - - - -";
+      strTemp = "ttsy  lnN - - " + std::to_string(1+ttsy) + " - - - - -";
     }
     else if(i==16)
     {
       strTemp = "Fksy lnN - - - " + std::to_string(1+Fksy) + " - - - -";
+    }
+    else if(i==17)
+    {
+      strTemp = "VVsy  lnN - " + VVsyWj + " "+ VVsytt + " " + VVsyFake + " 1.5/0.5 - - -";
+    }
+    else if(i==18)
+    {
+      strTemp = "VVst  lnN - - - - " + std::to_string(1+VV.uncertainty()/VV.value()) + "- - -";
     }
     strTemp += "\n";
     dataCardOut << strTemp;
