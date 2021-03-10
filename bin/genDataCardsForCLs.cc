@@ -35,7 +35,7 @@ std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string JesJerSys(ProcessInfo &, doubleUnc, std::string, std::string, double, double, std::string);
 std::string xST(doubleUnc);
-void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -315,7 +315,16 @@ int main(int argc, char** argv)
     std::string SgnJES = JesJerSys(signal, Sgn, tightSelection, baseSelection, luminosity, bdtCut, "JES");
     std::string SgnJER = JesJerSys(signal, Sgn, tightSelection, baseSelection, luminosity, bdtCut, "JER");
 
-    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER);
+    std::string SgnBTAG1 = getUpDownSysVar(signal, Sgn, SR, luminosity, "CFErr1");
+    std::string SgnBTAG2 = getUpDownSysVar(signal, Sgn, SR, luminosity, "CFErr2");
+    std::string SgnBTAG3 = getUpDownSysVar(signal, Sgn, SR, luminosity, "LF");
+    std::string SgnBTAG4 = getUpDownSysVar(signal, Sgn, SR, luminosity, "LFStats1");
+    std::string SgnBTAG5 = getUpDownSysVar(signal, Sgn, SR, luminosity, "LFStats2");
+    std::string SgnBTAG6 = getUpDownSysVar(signal, Sgn, SR, luminosity, "HF");
+    std::string SgnBTAG7 = getUpDownSysVar(signal, Sgn, SR, luminosity, "HFStats1");
+    std::string SgnBTAG8 = getUpDownSysVar(signal, Sgn, SR, luminosity, "HFStats2");
+
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8);
   }
 }
 
@@ -527,7 +536,7 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
   return UpDownVar;
 }
 
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER){
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER, std::string SgnBTAG1, std::string SgnBTAG2, std::string SgnBTAG3, std::string SgnBTAG4, std::string SgnBTAG5, std::string SgnBTAG6, std::string SgnBTAG7, std::string SgnBTAG8){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -635,6 +644,38 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     else if(i==30)
     {
       strTemp = "JER   lnN " + SgnJER + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+    }
+    else if(i==31)
+    {
+      strTemp = "BTAG1 lnN " + SgnBTAG1 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+    }
+    else if(i==32)
+    {
+      strTemp = "BTAG2 lnN " + SgnBTAG2 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+    }
+    else if(i==33)
+    {
+      strTemp = "BTAG3 lnN " + SgnBTAG3 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+    }
+    else if(i==34)
+    {
+      strTemp = "BTAG4 lnN " + SgnBTAG4 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+    }
+    else if(i==35)
+    {
+      strTemp = "BTAG5 lnN " + SgnBTAG5 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+    }
+    else if(i==36)
+    {
+      strTemp = "BTAG6 lnN " + SgnBTAG6 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+    }
+    else if(i==37)
+    {
+      strTemp = "BTAG7 lnN " + SgnBTAG7 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+    }
+    else if(i==38)
+    {
+      strTemp = "BTAG8 lnN " + SgnBTAG8 + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
     }
     strTemp += "\n";
     dataCardOut << strTemp;
