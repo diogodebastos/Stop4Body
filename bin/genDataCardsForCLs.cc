@@ -36,7 +36,7 @@ std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string JesJerSys(ProcessInfo &, doubleUnc, std::string, std::string, double, double, std::string);
 std::string xST(doubleUnc);
-void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string , std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string , std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
+void makeDataCard(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -334,6 +334,11 @@ int main(int argc, char** argv)
   std::string TTXBTAG6 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HF");
   std::string TTXBTAG7 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats1");
   std::string TTXBTAG8 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats2");
+
+  std::string VVID  = getUpDownSysVar(vv, VV, SR, luminosity, "LeptonIDSF_AltCorr");
+  std::string STID  = getUpDownSysVar(st, ST, SR, luminosity, "LeptonIDSF_AltCorr");
+  std::string DYID  = getUpDownSysVar(dy, DY, SR, luminosity, "LeptonIDSF_AltCorr");
+  std::string TTXID = getUpDownSysVar(ttx, TTX, SR, luminosity, "LeptonIDSF_AltCorr");
     
   std::string WjISR1 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin1", luminosity, Wj);
   std::string WjISR2 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin2", luminosity, Wj);
@@ -386,7 +391,7 @@ int main(int argc, char** argv)
     std::string SgnISR5 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin5");
     std::string SgnISR6 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin6");
 
-    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8, VVBTAG1, VVBTAG2, VVBTAG3, VVBTAG4, VVBTAG5, VVBTAG6, VVBTAG7, VVBTAG8, STBTAG1, STBTAG2, STBTAG3, STBTAG4, STBTAG5, STBTAG6, STBTAG7, STBTAG8, DYBTAG1, DYBTAG2, DYBTAG3, DYBTAG4, DYBTAG5, DYBTAG6, DYBTAG7, DYBTAG8, TTXBTAG1, TTXBTAG2, TTXBTAG3, TTXBTAG4, TTXBTAG5, TTXBTAG6, TTXBTAG7, TTXBTAG8, SgnID, SgnISR1, SgnISR2, SgnISR3, SgnISR4, SgnISR5, SgnISR6, WjISR1, WjISR2, WjISR3, WjISR4, WjISR5, WjISR6, WjnST, ttISR1, ttISR2, ttISR3, ttISR4, ttISR5, ttISR6, ttnST);
+    makeDataCard(name, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8, VVBTAG1, VVBTAG2, VVBTAG3, VVBTAG4, VVBTAG5, VVBTAG6, VVBTAG7, VVBTAG8, STBTAG1, STBTAG2, STBTAG3, STBTAG4, STBTAG5, STBTAG6, STBTAG7, STBTAG8, DYBTAG1, DYBTAG2, DYBTAG3, DYBTAG4, DYBTAG5, DYBTAG6, DYBTAG7, DYBTAG8, TTXBTAG1, TTXBTAG2, TTXBTAG3, TTXBTAG4, TTXBTAG5, TTXBTAG6, TTXBTAG7, TTXBTAG8, SgnID, VVID, STID, DYID, TTXID, SgnISR1, SgnISR2, SgnISR3, SgnISR4, SgnISR5, SgnISR6, WjISR1, WjISR2, WjISR3, WjISR4, WjISR5, WjISR6, WjnST, ttISR1, ttISR2, ttISR3, ttISR4, ttISR5, ttISR6, ttnST);
   }
 }
 
@@ -613,7 +618,7 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
   return UpDownVar;
 }
 
-void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER, std::string SgnBTAG1, std::string SgnBTAG2, std::string SgnBTAG3, std::string SgnBTAG4, std::string SgnBTAG5, std::string SgnBTAG6, std::string SgnBTAG7, std::string SgnBTAG8, std::string VVBTAG1, std::string VVBTAG2, std::string VVBTAG3, std::string VVBTAG4, std::string VVBTAG5, std::string VVBTAG6, std::string VVBTAG7, std::string VVBTAG8, std::string STBTAG1, std::string STBTAG2, std::string STBTAG3, std::string STBTAG4, std::string STBTAG5, std::string STBTAG6, std::string STBTAG7, std::string STBTAG8, std::string DYBTAG1, std::string DYBTAG2, std::string DYBTAG3, std::string DYBTAG4, std::string DYBTAG5, std::string DYBTAG6, std::string DYBTAG7, std::string DYBTAG8, std::string TTXBTAG1, std::string TTXBTAG2, std::string TTXBTAG3, std::string TTXBTAG4, std::string TTXBTAG5, std::string TTXBTAG6, std::string TTXBTAG7, std::string TTXBTAG8, std::string SgnID, std::string SgnISR1, std::string SgnISR2, std::string SgnISR3, std::string SgnISR4, std::string SgnISR5, std::string SgnISR6, std::string WjISR1, std::string WjISR2, std::string WjISR3, std::string WjISR4, std::string WjISR5, std::string WjISR6, std::string WjnST, std::string ttISR1, std::string ttISR2, std::string ttISR3, std::string ttISR4, std::string ttISR5, std::string ttISR6, std::string ttnST){
+void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER, std::string SgnBTAG1, std::string SgnBTAG2, std::string SgnBTAG3, std::string SgnBTAG4, std::string SgnBTAG5, std::string SgnBTAG6, std::string SgnBTAG7, std::string SgnBTAG8, std::string VVBTAG1, std::string VVBTAG2, std::string VVBTAG3, std::string VVBTAG4, std::string VVBTAG5, std::string VVBTAG6, std::string VVBTAG7, std::string VVBTAG8, std::string STBTAG1, std::string STBTAG2, std::string STBTAG3, std::string STBTAG4, std::string STBTAG5, std::string STBTAG6, std::string STBTAG7, std::string STBTAG8, std::string DYBTAG1, std::string DYBTAG2, std::string DYBTAG3, std::string DYBTAG4, std::string DYBTAG5, std::string DYBTAG6, std::string DYBTAG7, std::string DYBTAG8, std::string TTXBTAG1, std::string TTXBTAG2, std::string TTXBTAG3, std::string TTXBTAG4, std::string TTXBTAG5, std::string TTXBTAG6, std::string TTXBTAG7, std::string TTXBTAG8, std::string SgnID, std::string VVID, std::string STID, std::string DYID, std::string TTXID, std::string SgnISR1, std::string SgnISR2, std::string SgnISR3, std::string SgnISR4, std::string SgnISR5, std::string SgnISR6, std::string WjISR1, std::string WjISR2, std::string WjISR3, std::string WjISR4, std::string WjISR5, std::string WjISR6, std::string WjnST, std::string ttISR1, std::string ttISR2, std::string ttISR3, std::string ttISR4, std::string ttISR5, std::string ttISR6, std::string ttnST){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
@@ -756,38 +761,39 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
     }
     else if(i==39)
     {
-      strTemp = "ID    lnN " + SgnID + " - - - 1.01 1.01 1.01 1.01";
-    }/*
+      strTemp = "ID    lnN " + SgnID + " - - - " + VVID + " " + STID + " " + DYID + " " + TTXID;
+      //strTemp = "ID    lnN " + SgnID + " - - - 1.01 1.01 1.01 1.01";
+    }
     else if(i==40)
     {
-      strTemp = "";
+      strTemp = "ISO   lnN 1.01 - - - 1.01 1.01 1.01 1.01";
       //strTemp = "RECO  lnN " + SgnRECO + " - - - 1.01 1.01 1.01 1.01";
-    }*/
-    else if(i==40)
-    {
-      strTemp = "ISR1  lnN " + SgnISR1 + " " + WjISR1 + " " + ttISR1 + " " + "-" + " - - - -";
     }
     else if(i==41)
     {
-      strTemp = "ISR2  lnN " + SgnISR2 + " " + WjISR2 + " " + ttISR2 + " " + "-" + " - - - -";
+      strTemp = "ISR1  lnN " + SgnISR1 + " " + WjISR1 + " " + ttISR1 + " " + "-" + " - - - -";
     }
     else if(i==42)
     {
-      strTemp = "ISR3  lnN " + SgnISR3 + " " + WjISR3 + " " + ttISR3 + " " + "-" + " - - - -";
+      strTemp = "ISR2  lnN " + SgnISR2 + " " + WjISR2 + " " + ttISR2 + " " + "-" + " - - - -";
     }
     else if(i==43)
     {
-      strTemp = "ISR4  lnN " + SgnISR4 + " " + WjISR4 + " " + ttISR4 + " " + "-" + " - - - -";
+      strTemp = "ISR3  lnN " + SgnISR3 + " " + WjISR3 + " " + ttISR3 + " " + "-" + " - - - -";
     }
     else if(i==44)
     {
-      strTemp = "ISR2  lnN " + SgnISR5 + " " + WjISR5 + " " + ttISR5 + " " + "-" + " - - - -";
+      strTemp = "ISR4  lnN " + SgnISR4 + " " + WjISR4 + " " + ttISR4 + " " + "-" + " - - - -";
     }
     else if(i==45)
     {
-      strTemp = "ISR2  lnN " + SgnISR6 + " " + WjISR6 + " " + ttISR6 + " " + "-" + " - - - -";
+      strTemp = "ISR5  lnN " + SgnISR5 + " " + WjISR5 + " " + ttISR5 + " " + "-" + " - - - -";
     }
     else if(i==46)
+    {
+      strTemp = "ISR6  lnN " + SgnISR6 + " " + WjISR6 + " " + ttISR6 + " " + "-" + " - - - -";
+    }
+    else if(i==47)
     {
       strTemp = "nST   lnN - " + WjnST + " " + ttnST + " " + "-" + " - - - -";
     }
