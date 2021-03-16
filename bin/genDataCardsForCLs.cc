@@ -129,7 +129,8 @@ int main(int argc, char** argv)
 
   if(!isHighDM)
   {
-    preSelection +=" && (LepPt < 30.)";
+    baseSelection += " && (LepPt < 30.)";
+    preSelection  += " && (LepPt < 30.)";
   }
 
   std::string signalRegion = "";
