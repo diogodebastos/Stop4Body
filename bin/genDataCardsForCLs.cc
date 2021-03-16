@@ -805,21 +805,3 @@ void makeDataCard(std::string name, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, d
 
   return;
 } 
-// update background datacards per DM per SP
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
