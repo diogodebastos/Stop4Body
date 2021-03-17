@@ -57,26 +57,26 @@ if __name__ == "__main__":
   elif YEAR == "2017":
     ### BDT Cuts for 2017
     BDTs = [
-           {'name': '10', 'deltaM': 10, 'cut': 0.32, 'highDeltaM': False,'doLoosenBDT': True},  #0.31
-           {'name': '20', 'deltaM': 20, 'cut': 0.41, 'highDeltaM': False,'doLoosenBDT': True},  #0.36
-           {'name': '30', 'deltaM': 30, 'cut': 0.42, 'highDeltaM': False,'doLoosenBDT': True},  #0.46
+           {'name': '10', 'deltaM': 10, 'cut': 0.37, 'highDeltaM': False,'doLoosenBDT': True},  #0.31
+           {'name': '20', 'deltaM': 20, 'cut': 0.42, 'highDeltaM': False,'doLoosenBDT': True},  #0.36
+           {'name': '30', 'deltaM': 30, 'cut': 0.45, 'highDeltaM': False,'doLoosenBDT': True},  #0.46
            {'name': '40', 'deltaM': 40, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': True},  #0.46
-           {'name': '50', 'deltaM': 50, 'cut': 0.55, 'highDeltaM': False,'doLoosenBDT': False},  #0.47
-           {'name': '60', 'deltaM': 60, 'cut': 0.48, 'highDeltaM': False,'doLoosenBDT': False},  #0.51
-           {'name': '70', 'deltaM': 70, 'cut': 0.48, 'highDeltaM': True,'doLoosenBDT': False},   #0.43
-           {'name': '80', 'deltaM': 80, 'cut': 0.48, 'highDeltaM': True,'doLoosenBDT': False},   #0.46
+           {'name': '50', 'deltaM': 50, 'cut': 0.43, 'highDeltaM': False,'doLoosenBDT': False},  #0.47
+           {'name': '60', 'deltaM': 60, 'cut': 0.44, 'highDeltaM': False,'doLoosenBDT': False},  #0.51
+           {'name': '70', 'deltaM': 70, 'cut': 0.43, 'highDeltaM': True,'doLoosenBDT': False},   #0.43
+           {'name': '80', 'deltaM': 80, 'cut': 0.44, 'highDeltaM': True,'doLoosenBDT': False},   #0.46
            ]
   elif YEAR == "2018":
     ### BDT Cuts for 2018
     BDTs = [
-           {'name': '10', 'deltaM': 10, 'cut': 0.30, 'highDeltaM': False,'doLoosenBDT': True},
-           {'name': '20', 'deltaM': 20, 'cut': 0.35, 'highDeltaM': False,'doLoosenBDT': True},
-           {'name': '30', 'deltaM': 30, 'cut': 0.38, 'highDeltaM': False,'doLoosenBDT': True},
-           {'name': '40', 'deltaM': 40, 'cut': 0.47, 'highDeltaM': False,'doLoosenBDT': True},
-           {'name': '50', 'deltaM': 50, 'cut': 0.44, 'highDeltaM': False,'doLoosenBDT': False},
-           {'name': '60', 'deltaM': 60, 'cut': 0.42, 'highDeltaM': False,'doLoosenBDT': False},
-           {'name': '70', 'deltaM': 70, 'cut': 0.40, 'highDeltaM': True,'doLoosenBDT': False},
-           {'name': '80', 'deltaM': 80, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},
+           {'name': '10', 'deltaM': 10, 'cut': 0.39, 'highDeltaM': False,'doLoosenBDT': True},
+           {'name': '20', 'deltaM': 20, 'cut': 0.43, 'highDeltaM': False,'doLoosenBDT': True},  #0.42
+           {'name': '30', 'deltaM': 30, 'cut': 0.48, 'highDeltaM': False,'doLoosenBDT': True},  #0.48
+           {'name': '40', 'deltaM': 40, 'cut': 0.50, 'highDeltaM': False,'doLoosenBDT': True},
+           {'name': '50', 'deltaM': 50, 'cut': 0.49, 'highDeltaM': False,'doLoosenBDT': False}, #0.52
+           {'name': '60', 'deltaM': 60, 'cut': 0.53, 'highDeltaM': False,'doLoosenBDT': False}, #0.47
+           {'name': '70', 'deltaM': 70, 'cut': 0.49, 'highDeltaM': True,'doLoosenBDT': False},  #0.48
+           {'name': '80', 'deltaM': 80, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},  #0.48
            ]
 
   for bdt in BDTs:
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     job = jobsDir + "/theJob.sh"
 
     with open(job, 'w') as thisScript:
-      logF = "/SystematicsLog"
+      logF = "/AllSystematicsLog"
       if args.VR2:
           logF += "_VR2"
       if args.VR3:
