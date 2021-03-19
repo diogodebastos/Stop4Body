@@ -634,7 +634,7 @@ void makeDataCard(std::string name, bool unblind, int year, doubleUnc DatainSR, 
   name.replace(0,13,"");
   //name.replace(5,1,"N");
   std::ifstream dataCardIn("Templates/dataCardForCLs.txt");
-  std::ofstream dataCardOut("DataCards/"+name+".txt");
+  std::ofstream dataCardOut("DataCards/"+std::to_string(year)+"/"+name+".txt");
   
   doubleUnc totalMC = Wj+tt+Fake+VV+ST+DY+TTX;
 
