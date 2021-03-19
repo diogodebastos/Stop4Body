@@ -661,7 +661,8 @@ void makeDataCard(std::string name, bool unblind, int year, doubleUnc DatainSR, 
       	strTemp = "observation " + std::to_string(DatainSR);
       }
       else{
-      	strTemp = "observation " + std::to_string(std::round(totalMC.value()));
+      	int MCobs = (int) std::round(totalMC.value());
+      	strTemp = "observation " + std::to_string(MCobs);
       }
     }
     else if(i==8){
