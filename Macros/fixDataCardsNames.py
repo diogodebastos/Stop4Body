@@ -3,7 +3,7 @@
 import os, sys
 
 YEAR = os.getenv("YEAR")
-path = "DataCards/"+YEAR
+path = "DataCards/"+YEAR+"/"
 #path = "DataCards/"
 dirs = os.listdir( path )
 
