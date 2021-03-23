@@ -42,21 +42,21 @@ if __name__ == "__main__":
 
   if YEAR == "2017":
     BDTs = [
-		   {'name': '10', 'deltaM': 10, 'cut': 0.34, 
+		   {'name': '10', 'deltaM': 10, 'cut': 0.37, 
 		   "WjSys": 0.183,"ttSys": 1.119, "FakeSys": 0.345, 'highDeltaM': False},
 		   {'name': '20', 'deltaM': 20, 'cut': 0.42, 
 		   "WjSys": 0.189,"ttSys": 0.404, "FakeSys": 0.065, 'highDeltaM': False},
 		   {'name': '30', 'deltaM': 30, 'cut': 0.45, 
 		   "WjSys": 0.167,"ttSys": 0.414, "FakeSys": 0.069, 'highDeltaM': False},
-		   {'name': '40', 'deltaM': 10, 'cut': 0.34, 
+		   {'name': '40', 'deltaM': 40, 'cut': 0.47, 
 		   "WjSys": 0.215,"ttSys": 0.304, "FakeSys": 0.073, 'highDeltaM': False},
-		   {'name': '50', 'deltaM': 20, 'cut': 0.42, 
+		   {'name': '50', 'deltaM': 50, 'cut': 0.43, 
 		   "WjSys": 0.152,"ttSys": 0.239, "FakeSys": 0.087, 'highDeltaM': False},
-		   {'name': '60', 'deltaM': 30, 'cut': 0.45, 
+		   {'name': '60', 'deltaM': 60, 'cut': 0.44, 
 		   "WjSys": 0.217,"ttSys": 0.179, "FakeSys": 0.078, 'highDeltaM': False},
-		   {'name': '70', 'deltaM': 10, 'cut': 0.34, 
+		   {'name': '70', 'deltaM': 70, 'cut': 0.43, 
 		   "WjSys": 0.215,"ttSys": 0.069, "FakeSys": 0.143, 'highDeltaM': True},
-		   {'name': '80', 'deltaM': 20, 'cut': 0.42, 
+		   {'name': '80', 'deltaM': 80, 'cut': 0.44, 
 		   "WjSys": 0.295,"ttSys": 0.076, "FakeSys": 0.092, 'highDeltaM': True},
            ]
   elif YEAR == "2018":
@@ -67,29 +67,29 @@ if __name__ == "__main__":
 		   "WjSys": 0.140,"ttSys": 0.623, "FakeSys": 0.363, 'highDeltaM': False},
 		   {'name': '30', 'deltaM': 30, 'cut': 0.48, 
 		   "WjSys": 0.114,"ttSys": 0.387, "FakeSys": 0.299, 'highDeltaM': False},
-		   {'name': '40', 'deltaM': 10, 'cut': 0.50, 
+		   {'name': '40', 'deltaM': 40, 'cut': 0.50, 
 		   "WjSys": 0.216,"ttSys": 0.347, "FakeSys": 0.114, 'highDeltaM': False},
-		   {'name': '50', 'deltaM': 20, 'cut': 0.49, 
+		   {'name': '50', 'deltaM': 50, 'cut': 0.49, 
 		   "WjSys": 0.254,"ttSys": 0.294, "FakeSys": 0.189, 'highDeltaM': False},
-		   {'name': '60', 'deltaM': 30, 'cut': 0.53, 
+		   {'name': '60', 'deltaM': 60, 'cut': 0.53, 
 		   "WjSys": 0.147,"ttSys": 0.294, "FakeSys": 0.153, 'highDeltaM': False},
-		   {'name': '70', 'deltaM': 10, 'cut': 0.49, 
+		   {'name': '70', 'deltaM': 70, 'cut': 0.49, 
 		   "WjSys": 0.171,"ttSys": 0.243, "FakeSys": 0.314, 'highDeltaM': True},
-		   {'name': '80', 'deltaM': 20, 'cut': 0.45, 
+		   {'name': '80', 'deltaM': 80, 'cut': 0.45, 
 		   "WjSys": 0.204,"ttSys": 0.133, "FakeSys": 0.457, 'highDeltaM': True},
            ]
 
   for bdt in BDTs:
-  	outputDirectory = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/"
+    outputDirectory = "/lstore/cms/dbastos/REPOS/Stop4Body-nanoAOD/CMSSW_8_0_14/src/UserCode/Stop4Body-nanoAOD/Macros/"
     assure_path_exists(outputDirectory)
     outputDirectory = os.path.realpath(outputDirectory)
     thisInputDirectory = inputDirectory + "_bdt" + str(bdt["deltaM"])
 
-    jobsDir = outputDirectory + "/Jobs/"
+    jobsDir = outputDirectory + "/DataCards/"+YEAR+"/Jobs/"
     assure_path_exists(jobsDir)
     jobsDir = os.path.realpath(jobsDir)
 
-    job = jobsDir + "job_" + str(bdt["deltaM"]) + ".sh"
+    job = jobsDir + "/job_DM" + str(bdt["deltaM"]) + ".sh"
 
     with open(job, 'w') as thisScript:
       thisScript.write("#!/bin/bash\n\n")
@@ -120,7 +120,9 @@ if __name__ == "__main__":
       thisScript.write("--year "    + YEAR + " ")
       thisScript.write("--WjSys "   + str(bdt['WjSys']) + " ")
       thisScript.write("--ttSys "   + str(bdt['ttSys']) + " ")
-      thisScript.write("--fakeSys " + str(bdt['fakeSys']) + " ")
+      thisScript.write("--FakeSys " + str(bdt['FakeSys']) + " ")
+      if bdt['highDeltaM']:
+        thisScript.write("--isHighDeltaM ")
       thisScript.write("\n\n")
 
       mode = os.fstat(thisScript.fileno()).st_mode
