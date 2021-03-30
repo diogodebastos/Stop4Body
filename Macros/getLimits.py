@@ -19,6 +19,9 @@ def assure_path_exists(path):
 def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False, dryRun=True):
   for deltaM in (10, 20, 30, 40, 50, 60, 70, 80):
     for stopM in (250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 575, 600, 625, 650, 675, 700, 725, 750, 775, 800):
+  #tmpDM=[10]
+  #for deltaM in tmpDM:
+    #for stopM in (250, 275, 300, 325):
       neutM = stopM - deltaM
       datacardName = str(stopM) + "_" + str(neutM) + ".txt"
 
@@ -28,19 +31,34 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False, dr
       print cmd
       p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
       out, err = p.communicate()
-
+      
+      cwd = os.getcwd()
       job = outputDirectory + "/" + str(stopM) + "_" + str(neutM) + "/job_" + str(stopM) + "_" + str(neutM) + ".sh"
+      tmpDir=outputDirectory + "/" + str(stopM) + "_" + str(neutM) + "/"
+      os.chdir(tmpDir)
       with open(job, 'w') as thisScript:
         thisScript.write("#!/bin/bash\n\n")
-
+        
+        # 2016
         thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
 
         thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
         thisScript.write(". setup.sh\n\n")
 
-        #thisScript.write("cd $CMSSW_BASE/src/\n")
+        thisScript.write("cd $CMSSW_BASE/src/\n")
         thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_1_0/src/\n")
         thisScript.write("eval `scramv1 runtime -sh`\n\n")
+
+        # 2017 and 2018
+        #thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
+
+        #thisScript.write("export SCRAM_ARCH=slc7_amd64_gcc700\n")
+        #thisScript.write("export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch\n")
+        #thisScript.write("source $VO_CMS_SW_DIR/cmsset_default.sh\n")
+        #thisScript.write("export CMS_PATH=$VO_CMS_SW_DIR\n")
+        #thisScript.write("source /cvmfs/cms.cern.ch/crab3/crab.sh\n")
+        #thisScript.write("cd /lstore/cms/dbastos/REPOS/CMSSW_10_2_13/src/\n")
+        #thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
         thisScript.write("cd " + outputDirectory + "/" + str(stopM) + "_" + str(neutM) + "\n\n")
 
@@ -54,31 +72,31 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False, dr
 
         # Then generate a background only asimov toy and perform a maximum likelihood fit
         # The objective is to take a look at the pulls of the nuisance parameters and identify possible problems
-        thisScript.write("combine -M FitDiagnostics --forceRecreateNLL -t -1")
-        thisScript.write(" -n BOnly")
-        thisScript.write(" --expectSignal 0 " + datacardName)
-        thisScript.write(" > Bonly.txt\n")
+#        thisScript.write("combine -M FitDiagnostics --forceRecreateNLL -t -1")
+#        thisScript.write(" -n BOnly")
+#        thisScript.write(" --expectSignal 0 " + datacardName)
+#        thisScript.write(" > Bonly.txt\n")
 
         # Get the pulls of the nuisance parameters
-        thisScript.write("python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py")
-        thisScript.write(" -a fitDiagnosticsBOnly.root")
-        thisScript.write(" -g plots_Bonly.root")
-        thisScript.write(" > Bonly_pulls.txt\n")
+#        thisScript.write("python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py")
+#        thisScript.write(" -a fitDiagnosticsBOnly.root")
+#        thisScript.write(" -g plots_Bonly.root")
+#        thisScript.write(" > Bonly_pulls.txt\n")
 
-        thisScript.write("\n")
+#        thisScript.write("\n")
 
         # Repeat for B+S
-        thisScript.write("combine -M FitDiagnostics --forceRecreateNLL -t -1")
-        thisScript.write(" -n BpS")
-        thisScript.write(" --expectSignal 1 " + datacardName)
-        thisScript.write(" > BpS.txt\n")
+#        thisScript.write("combine -M FitDiagnostics --forceRecreateNLL -t -1")
+#        thisScript.write(" -n BpS")
+#        thisScript.write(" --expectSignal 1 " + datacardName)
+#        thisScript.write(" > BpS.txt\n")
 
-        thisScript.write("python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py")
-        thisScript.write(" -a fitDiagnosticsBpS.root")
-        thisScript.write(" -g plots_BpS.root")
-        thisScript.write(" > BpS_pulls.txt\n")
+#        thisScript.write("python $CMSSW_BASE/src/HiggsAnalysis/CombinedLimit/test/diffNuisances.py")
+#        thisScript.write(" -a fitDiagnosticsBpS.root")
+#        thisScript.write(" -g plots_BpS.root")
+#        thisScript.write(" > BpS_pulls.txt\n")
 
-        thisScript.write("\n")
+#        thisScript.write("\n")
 
         # Run the full CLs method
         # We need to run independently for each quantile
@@ -168,6 +186,8 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False, dr
         os.fchmod(thisScript.fileno(), mode & 0o7777)
 
       cmd = "qsub " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+      #cmd = "qsub -q lipq " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+      #cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
       print cmd
       if not dryRun:
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -178,6 +198,7 @@ def submitJobs(inputDirectory, outputDirectory, fullCLs=False, unblind=False, dr
           while getNJobs() > 1000:
             time.sleep(5*60)
           print "Done waiting"
+      os.chdir(cwd)
 
 def collectJobs(outputDirectory, fullCLs=False, unblind=False):
   doneProcessing = True
@@ -241,10 +262,11 @@ def collectJobs(outputDirectory, fullCLs=False, unblind=False):
       print "  Mstop=", stopM
       print "  Mneut=", neutM
 
+      # DM 10 and Stop 250-325 the yields are too big so we divide the only the signal yield by  factor of 0.1x and multiply r later by the same factor of 0.1x
       factor = 1
       if deltaM == 10:
         if stopM == 250 or stopM == 275 or stopM == 300 or stopM == 325:
-          factor = 10
+          factor = 0.1
 
       # Get the Asymptotic results:
       asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPriori.AsymptoticLimits.mH120.root", "READ")
@@ -262,7 +284,7 @@ def collectJobs(outputDirectory, fullCLs=False, unblind=False):
           for limit in fullCLsTree:
             aPrioriFullCLs[stopM][neutM]['{0:.3f}'.format(limit.quantileExpected)] = limit.limit * factor
             aPrioriFullCLsDM[stopM][deltaM]['{0:.3f}'.format(limit.quantileExpected)] = limit.limit * factor
-
+      print "factor: " + str(factor)
       # Repeat the above for the case we have unblinded
       if unblind:
         asympInFile = ROOT.TFile(pointDirectory + "higgsCombineAPosteriori.AsymptoticLimits.mH120.root", "READ")

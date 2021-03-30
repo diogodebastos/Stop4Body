@@ -1743,19 +1743,19 @@ ValueWithSystematics<double> getLeptonTightLooseRatioNanoAODSys(double LepID, do
 
   if(LepPt < 5)
   {
-    retVal.Systematic("TightLoose_NU_Bin1_Up") = retVal.Value() * (1 + 0.05);
-    retVal.Systematic("TightLoose_NU_Bin1_Down") = retVal.Value() * (1 - 0.05);
-    retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.05);
-    retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.05);
+    retVal.Systematic("TightLoose_NU_Bin1_Up") = retVal.Value() * (1 + 0.03);
+    retVal.Systematic("TightLoose_NU_Bin1_Down") = retVal.Value() * (1 - 0.03);
+    retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.03);
+    retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.03);
   }
   else
   {
     if(LepPt < 12)
     {
-      retVal.Systematic("TightLoose_NU_Bin2_Up") = retVal.Value() * (1 + 0.05);
-      retVal.Systematic("TightLoose_NU_Bin2_Down") = retVal.Value() * (1 - 0.05);
-      retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.05);
-      retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.05);
+      retVal.Systematic("TightLoose_NU_Bin2_Up") = retVal.Value() * (1 + 0.08);
+      retVal.Systematic("TightLoose_NU_Bin2_Down") = retVal.Value() * (1 - 0.08);
+      retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.08);
+      retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.08);
     }
     else
     {
@@ -1770,10 +1770,10 @@ ValueWithSystematics<double> getLeptonTightLooseRatioNanoAODSys(double LepID, do
       {
         if(LepPt < 30)
         {
-          retVal.Systematic("TightLoose_NU_Bin4_Up") = retVal.Value() * (1 + 0.3);
-          retVal.Systematic("TightLoose_NU_Bin4_Down") = retVal.Value() * (1 - 0.3);
-          retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.3);
-          retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.3);
+          retVal.Systematic("TightLoose_NU_Bin4_Up") = retVal.Value() * (1 + 0.15);
+          retVal.Systematic("TightLoose_NU_Bin4_Down") = retVal.Value() * (1 - 0.15);
+          retVal.Systematic("TightLoose_NU_AltCorr_Up") = retVal.Value() * (1 + 0.15);
+          retVal.Systematic("TightLoose_NU_AltCorr_Down") = retVal.Value() * (1 - 0.15);
         }
         else
         {
