@@ -209,7 +209,7 @@ int main(int argc, char** argv)
   double TTXsy = std::sqrt(std::pow(TTX.uncertainty()/TTX.value(),2) + 0.5*0.5);
 
   double totalMC = Wj.value() + tt.value() + Fake.value() + VV.value() + ST.value() + DY.value() + TTX.value();
-  double totalMCsy = std::sqrt(Wsy*Wsy + ttsy*ttsy + Fksy*Fksy + VVsy*VVsy + STsy*STsy + DYsy*DYsy + TTXsy*TTXsy);
+  double totalMCsy = std::sqrt(std::pow(Wsy*Wj.value(),2) + std::pow(ttsy*tt.value(),2) + std::pow(Fksy*Fake.value(),2) + std::pow(VVsy*VV.value(),2) + std::pow(STsy*ST.value(),2) + std::pow(DYsy*DY.value(),2) + std::pow(TTXsy*TTX.value(),2));
 
   std::cout << "WJets: " << reportYieldsUnc(Wj.value(), Wsy) << std::endl;
   std::cout << "TTbar: " << reportYieldsUnc(tt.value(), ttsy) << std::endl;
@@ -218,7 +218,8 @@ int main(int argc, char** argv)
   std::cout << "ST: " << reportYieldsUnc(ST.value(), STsy) << std::endl;
   std::cout << "DY: " << reportYieldsUnc(DY.value(), DYsy) << std::endl;
   std::cout << "TTX: " << reportYieldsUnc(TTX.value(), TTXsy) << std::endl;
-  std::cout << "totalMC: " << reportYieldsUnc(totalMC, totalMCsy) << std::endl;
+  //std::cout << "totalMC: " << reportYieldsUnc(totalMC, totalMCsy) << std::endl;
+  std::cout << "totalMC: " << totalMC << " +/- " << totalMCsy << std::endl;
   std::cout << "Signal: " << Sgn << std::endl;
 
   if(unblind)
@@ -263,8 +264,12 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
 
 std::string reportYieldsUnc(double Yield, double Unc){
   std::string report;
+  //std::cout << " " << Yield << std::endl;
+  //std::cout << " " << Unc << std::endl;
+  //double unc = (1+Unc)*Yield;
+  double unc = Unc*Yield;
 
-  report = std::to_string(Yield) + " +/- " + std::to_string(Unc);
+  report = std::to_string(Yield) + " +/- " + std::to_string(unc);
 
   return report;
 }
