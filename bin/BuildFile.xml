@@ -39,6 +39,7 @@
   <bin name="preProcessSamples"       file="preProcessSamples.cc"> </bin>
   <bin name="getWjetsGenWpT"          file="getWjetsGenWpT.cc"> </bin>
   <bin name="genDataCardsForCLs"      file="genDataCardsForCLs.cc"> </bin>
+  <bin name="finalYieldsUncTable"      file="finalYieldsUncTable.cc"> </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
