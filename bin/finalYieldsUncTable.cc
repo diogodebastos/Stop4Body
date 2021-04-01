@@ -28,6 +28,7 @@ using json = nlohmann::json;
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 std::string reportYieldsUnc(double, double);
+void printSel(std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -172,11 +173,9 @@ int main(int argc, char** argv)
 
   if(verbose){
     printSel("SR", SR);
-    //printSel("SR",selMVA);
     for(auto& bkg : bkgMap)
     {
       std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(SR, mcWeight) << std::endl;
-      //std::cout << bkg.first << " | " << MC.process(bkg.second).getYield(selMVA, mcWeight) << std::endl;
     }
   }
 
@@ -188,7 +187,7 @@ int main(int argc, char** argv)
   auto st    = MC.process(bkgMap["SingleTop"]);
   auto dy    = MC.process(bkgMap["DYJets"]);
   auto ttx   = MC.process(bkgMap["ttx"]);
-  auto Sgn   = Sig.getYield(SR, mcWeight);
+  doubleUnc Sgn = Sig.getYield(SR, mcWeight);
 
   //auto qcd = MC.process(bkgMap["QCD"]);
 
@@ -220,13 +219,14 @@ int main(int argc, char** argv)
   std::cout << "DY: " << reportYieldsUnc(DY.value(), DYsy) << std::endl;
   std::cout << "TTX: " << reportYieldsUnc(TTX.value(), TTXsy) << std::endl;
   std::cout << "totalMC: " << reportYieldsUnc(totalMC, totalMCsy) << std::endl;
+  std::cout << "Signal: " << Sgn << std::endl;
 
   if(unblind)
   {
-  	std::cout << "Data: " << DatainSR << std::endl;
+    std::cout << "Data: " << DatainSR << std::endl;
   }
 
-	return;
+  return 0;
 }
 
 doubleUnc fakeDD(SampleReader &LNTData, SampleReader &LNTMC, std::string signalRegion, std::string mcWeight)
@@ -262,10 +262,17 @@ doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, 
 }
 
 std::string reportYieldsUnc(double Yield, double Unc){
-	std::string report;
+  std::string report;
 
-	report = std::to_string(Yield) + " +/- " + std::to_string(Unc);
-  std::cout << "TTX: " << reportYieldsUnc(TTX.value(), TTXsy) << std::endl;
+  report = std::to_string(Yield) + " +/- " + std::to_string(Unc);
 
-	return report;
+  return report;
+}
+
+void printSel(std::string name, std::string selection)
+{
+  std::cout << "The used " << name << ":" << std::endl;
+  std::cout << "  " << selection << std::endl;
+  std::cout << std::endl;
+  return;
 }
