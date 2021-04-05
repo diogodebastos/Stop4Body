@@ -581,11 +581,21 @@ std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std
 
   UpDownVar = std::to_string(UpYield.value()/centralYield.value())+"/"+std::to_string(DownYield.value()/centralYield.value());
 
+  if(centralYield.value() == 0.0)
+  {
+    UpDownVar = "1";
+  }
+
   return UpDownVar;
 }
 
 std::string xST(doubleUnc process){
-  return std::to_string(1+process.uncertainty()/process.value());
+  double xST = 1+process.uncertainty()/process.value();
+  if(std::isnan(xST))
+  {
+    xST = 1;
+  }
+  return std::to_string(xST);
 }
 
 std::string Q2Sys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity){
@@ -593,6 +603,7 @@ std::string Q2Sys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string s
   std::string mcWeight = "splitFactor*weight";
   doubleUnc yieldVar;
   double quadSumSys = 0;
+  double sys;
 
   for (int i = 1; i <= 8; ++i)
   {
@@ -602,7 +613,14 @@ std::string Q2Sys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string s
     quadSumSys += percentVar*percentVar;
   }
 
-  return std::to_string(1+std::sqrt(quadSumSys));
+  sys = 1+std::sqrt(quadSumSys);
+
+  if(centralYield.value() == 0.0)
+  {
+    sys = 1;
+  }
+
+  return std::to_string(sys);
 }
 
 std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::string tightSelection, std::string baseSelection, double luminosity, double bdtCut, std::string syst){
@@ -633,6 +651,11 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
   auto DownYield = toEstimate.getYield(selDown, mcWeightVarDown);
 
   UpDownVar = std::to_string(UpYield.value()/centralYield.value())+"/"+std::to_string(DownYield.value()/centralYield.value());
+
+  if(centralYield.value() == 0.0)
+  {
+    UpDownVar = "1";
+  }
 
   return UpDownVar;
 }
