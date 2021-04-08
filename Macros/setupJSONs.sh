@@ -231,14 +231,25 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
 # mergeJSONs $JSON_PATH/plot${YEAR}_DM10RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_490_FullSim.json
 # mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP_FullSim.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420_FullSim.json
 
+ #mergeJSONs $JSON_PATH/plot${YEAR}_DM10RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json
+ #mergeJSONs $JSON_PATH/plot${YEAR}_DM20RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_480.json
+ #mergeJSONs $JSON_PATH/plot${YEAR}_DM30RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json
+ #mergeJSONs $JSON_PATH/plot${YEAR}_DM40RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_550_510.json
+ #mergeJSONs $JSON_PATH/plot${YEAR}_DM50RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_475.json
+ #mergeJSONs $JSON_PATH/plot${YEAR}_DM60RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_465.json
+ #mergeJSONs $JSON_PATH/plot${YEAR}_DM70RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_455.json
+ #mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
+
+ # NEW BENCHMARK POINTS
+
  mergeJSONs $JSON_PATH/plot${YEAR}_DM10RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM20RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_480.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM20RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_525_505.json
  mergeJSONs $JSON_PATH/plot${YEAR}_DM30RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM40RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_550_510.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM50RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_475.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM60RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_465.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM70RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_526_455.json
- mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM40RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_575_535.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM50RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_575_525.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM60RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_575_515.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM70RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_600_530.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_DM80RP.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_625_545.json
 
  mergeJSONs $JSON_PATH/allDM10.json $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM10.json
  mergeJSONs $JSON_PATH/allDM20.json $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM20.json
