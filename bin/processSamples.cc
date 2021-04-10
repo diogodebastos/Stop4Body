@@ -3286,7 +3286,8 @@ int main(int argc, char** argv)
           else
             XS = xsec;
           if(process.issignal())
-            XS = stopCrossSection(genStopM, genNeutralinoM).value();
+            int fixStopM = std::round(genStopM / 25.) * 25;
+            XS = stopCrossSectionNNLO(fixStopM).value();
 
           //TODO: This should be updated for all samples after the next heppy run
           //2016 HLT
@@ -3326,7 +3327,11 @@ int main(int argc, char** argv)
           // Filter Efficiency
           if(filterEfficiencyH != nullptr)
           {
-            auto theBin = filterEfficiencyH->FindBin(genStopM, genNeutralinoM);
+            int fixStopM = std::round(genStopM / 25.) * 25;
+
+            int fixNeutralinoM = std::round(genNeutralinoM / 5.) * 5;
+
+            auto theBin = filterEfficiencyH->FindBin(fixStopM, fixNeutralinoM);
             filterEfficiency = filterEfficiencyH->GetBinContent(theBin);
           }
           else

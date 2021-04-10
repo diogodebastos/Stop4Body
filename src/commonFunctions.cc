@@ -2615,7 +2615,190 @@ ValueWithSystematics<double> getFullFastSF2016Sys(double LepID, double LepPt, do
   return retVal;
 }
 
-doubleUnc stopCrossSection(double stopM, double lspM)
+// https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SUSYCrossSections13TeVstopsbottom
+//Table incomplete, using just mStops in the An
+
+doubleUnc stopCrossSectionNNLO(int stopM)
+{
+  double val = 0, unc = 0.1;
+
+  switch(stopM)
+  {
+  case 200:
+    val = 0.755E2;
+    unc = 6.5;
+    break;
+  case 225:
+    val = 0.420E2;
+    unc = 6.51;
+    break;
+  case 250:
+    val = 0.248E2;
+    unc = 6.54;
+    break;
+  case 275:
+    val = 0.155E2;
+    unc = 6.58;
+    break;
+  case 300:
+    val = 0.100E2;
+    unc = 6.65;
+    break;
+  case 325:
+    val = 0.657E1;
+    unc = 6.71;
+    break;
+  case 350:
+    val = 0.443E1;
+    unc = 6.79;
+    break;
+  case 375:
+    val = 0.306E1;
+    unc = 6.89;
+    break;
+  case 400:
+    val = 0.215E1;
+    unc = 6.99;
+    break;
+  case 425:
+    val = 0.154E1;
+    unc = 7.11;
+    break;
+  case 450:
+    val = 0.111E1;
+    unc = 7.25;
+    break;
+  case 475:
+    val = 0.819E0;
+    unc = 7.38;
+    break;
+  case 500:
+    val = 0.609E0;
+    unc = 7.53;
+    break;
+  case 525:
+    val = 0.458E0;
+    unc = 7.67;
+    break;
+  case 550:
+    val = 0.347E0;
+    unc = 7.81;
+    break;
+  case 575:
+    val = 0.266E0;
+    unc = 7.96;
+    break;
+  case 600:
+    val = 0.205E0;
+    unc = 8.12;
+    break;
+  case 625:
+    val = 0.160E0;
+    unc = 8.28;
+    break;
+  case 650:
+    val = 0.125E0;
+    unc = 8.45;
+    break;
+  case 675:
+    val = 0.987E-1;
+    unc = 8.63;
+    break;
+  case 700:
+    val = 0.783E-1;
+    unc = 8.8;
+    break;
+  case 725:
+    val = 0.624E-1;
+    unc = 8.98;
+    break;
+  case 750:
+    val = 0.500E-1;
+    unc = 9.16;
+    break;
+  case 775:
+    val = 0.403E-1;
+    unc = 9.35;
+    break;
+  case 800:
+    val = 0.326E-1;
+    unc = 9.53;
+    break;
+  case 825:
+    val = 0.265E-1;
+    unc = 9.73;
+    break;
+  case 850:
+    val = 0.216E-1;
+    unc = 9.93;
+    break;
+  case 875:
+    val = 0.177E-1;
+    unc = 10.13;
+    break;
+  case 900:
+    val = 0.145E-1;
+    unc = 10.33;
+    break;
+  case 925:
+    val = 0.120E-1;
+    unc = 10.54;
+    break;
+  case 950:
+    val = 0.991E-2;
+    unc = 10.76;
+    break;
+  case 975:
+    val = 0.822E-2;
+    unc = 10.97;
+    break;
+  case 1000:
+    val = 0.683E-2;
+    unc = 11.2;
+    break;
+  case 1025:
+    val = 0.570E-2;
+    unc = 11.42;
+    break;
+  case 1050:
+    val = 0.476E-2;
+    unc = 11.65;
+    break;
+  case 1075:
+    val = 0.399E-2;
+    unc = 11.88;
+    break;
+  case 1100:
+    val = 0.335E-2;
+    unc = 12.12;
+    break;
+  case 1125:
+    val = 0.282E-2;
+    unc = 12.37;
+    break;
+  case 1150:
+    val = 0.238E-2;
+    unc = 12.62;
+    break;
+  case 1175:
+    val = 0.201E-2;
+    unc = 12.87;
+    break;
+  case 1200:
+    val = 0.170E-2;
+    unc = 13.13;
+    break;
+  default:
+    val = 0;
+    unc = 20;
+  }
+  unc = unc/100;
+
+  doubleUnc retVal(val, val*unc);
+  return retVal;
+}
+
+doubleUnc stopCrossSectionNLO(double stopM, double lspM)
 {
   double val = 0, unc = 0.1;
 

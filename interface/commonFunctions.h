@@ -109,7 +109,8 @@ doubleUnc getLeptonIDSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
-doubleUnc stopCrossSection(double stopM, double lspM);
+doubleUnc stopCrossSectionNNLO(int stopM);
+doubleUnc stopCrossSectionNLO(double stopM, double lspM);
 
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(double);
 ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double>);
