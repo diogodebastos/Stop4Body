@@ -4,7 +4,8 @@ import re
 import time
 
 def getNJobs():
-  cmd = "qstat | wc -l"
+  #cmd = "qstat | wc -l"
+  cmd = "squeue -u dbastos | wc -l"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
 
@@ -38,7 +39,7 @@ if __name__ == "__main__":
   if not args.dryRun:
     print "You did not enable dry run. You are on your own!"
 
-  jsonFiles = ["MC2Process.json",
+  jsonFiles = [#"MC2Process.json",
                #"Wjets.json",
                #"TTbar.json",
                #"ZInv.json",
@@ -47,30 +48,30 @@ if __name__ == "__main__":
                #"TT_pow.json",
                #"otherMC1.json",
                #"otherMC2.json",
-               "AllSignals.json",
-               #"stop250.json",
-               #"stop275.json",
-               #"stop300.json",
-               #"stop325.json",
-               #"stop350.json",
-               #"stop375.json",
-               #"stop400.json",
-               #"stop425.json",
-               #"stop450.json",
-               #"stop475.json",
-               #"stop500.json",
-               #"stop525.json",
-               #"stop550.json",
-               #"stop575.json",
-               #"stop600.json",
-               #"stop625.json",
-               #"stop650.json",
-               #"stop675.json",
-               #"stop700.json",
-               #"stop725.json",
-               #"stop750.json",
-               #"stop775.json",
-               #"stop800.json",
+               #"AllSignals.json",
+               "stop250.json",
+               "stop275.json",
+               "stop300.json",
+               "stop325.json",
+               "stop350.json",
+               "stop375.json",
+               "stop400.json",
+               "stop425.json",
+               "stop450.json",
+               "stop475.json",
+               "stop500.json",
+               "stop525.json",
+               "stop550.json",
+               "stop575.json",
+               "stop600.json",
+               "stop625.json",
+               "stop650.json",
+               "stop675.json",
+               "stop700.json",
+               "stop725.json",
+               "stop750.json",
+               "stop775.json",
+               "stop800.json",
                #"stop825.json",
                #"stop850.json",
                #"stop875.json",
@@ -177,12 +178,15 @@ if __name__ == "__main__":
             os.chdir(trainOut + "/" + sample)
 
             jobInfo = {}
-            cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
+            theJob = "theJob.sh"
+            #cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
+            cmd = "sbatch -p lipq --export=CMSSW_BASE=$CMSSW_BASE --mem=2500 " + theJob + " -e " + theJob + ".e$SLURM_JOBID -o " + theJob + ".o$SLURM_JOBID"
             print cmd
             if not args.dryRun:
               p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
               out, err = p.communicate()
-              p = re.compile("Your job (\d+) .+")
+              #p = re.compile("Your job (\d+) .+")
+              p = re.compile("Submitted batch job (\d+)")
               jobNumber = p.search(out).group(1)
 
               jobInfo["theJob.sh"] = jobNumber

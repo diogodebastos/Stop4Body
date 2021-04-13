@@ -38,6 +38,8 @@ def createJSON(stop,neutralino,year):
         thisJSON.write("          \"tag\":\"T2DegStop_"+stop+"_"+neutralino+"\",\n")
         thisJSON.write("          \"xsec\": 1.0,\n")
         thisJSON.write("          \"br\": 1.0,\n")
+        thisJSON.write("          \"filesPerPart\": 25,\n")
+        #thisJSON.write("          \"filesPerPart\": 50,\n")
         thisJSON.write("          \"filterEfficiencyFile\":\"../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1.root\",\n")
         thisJSON.write("          \"paths\":[\n")
         thisJSON.write("            {\n")

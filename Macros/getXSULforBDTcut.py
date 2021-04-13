@@ -5,7 +5,8 @@ import time
 import shutil
 
 def getNJobs():
-  cmd = "qstat | wc -l"
+  #cmd = "qstat | wc -l"
+  cmd = "squeue -u dbastos | wc -l"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
 
@@ -88,7 +89,7 @@ if __name__ == "__main__":
             thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/\n")
             thisScript.write(". setup.sh\n\n")
 
-            thisScript.write("cd $CMSSW_BASE/src/\n")
+            #thisScript.write("cd $CMSSW_BASE/src/\n")
             thisScript.write("cd /exper-sw/cmst3/cmssw/users/cbeiraod/Stop4Body/CMSSW_8_1_0/src/\n")
             thisScript.write("eval `scramv1 runtime -sh`\n\n")
 
@@ -103,7 +104,8 @@ if __name__ == "__main__":
             os.fchmod(thisScript.fileno(), mode & 0o7777)
 
         os.chdir(jobDir)
-        cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+        #cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+        cmd = "sbatch -p lipq --export=CMSSW_BASE=$CMSSW_BASE --mem=2500 " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
         print cmd
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()

@@ -5,7 +5,9 @@ import time
 import shutil
 
 def getNJobs():
-  cmd = "qstat | wc -l"
+  #cmd = "qstat | wc -l"
+  #cmd = "squeue -u dbastos | grep \" R \" | wc -l"
+  cmd = "squeue -u dbastos | wc -l"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
 
@@ -79,7 +81,9 @@ if __name__ == "__main__":
            {'name': '80', 'deltaM': 80, 'cut': 0.45, 'highDeltaM': True,'doLoosenBDT': False},
            ]
 
-  cuts = ["0","1","2"]
+  #cuts = ["0","1","2"]
+  #cuts = [str(x * 0.01) for x in range(30, 51)]
+  cuts = [str(x) for x in range(30, 51)]
 
   for cut in cuts:
     for bdt in BDTs:
@@ -98,11 +102,13 @@ if __name__ == "__main__":
       job = jobsDir + "/theJob_"+ str(bdt["deltaM"]) +"_C0p"+cut+".sh"
 
       with open(job, 'w') as thisScript:
-        logF = "/SystematicsLog"
+        #logF = "/SystematicsLog"
+        logF = "/FakeSys_0p"
         if args.VR2:
-            logF += "_VR2_C0p"+cut
+            logF += "_VR2_C0p"
         if args.VR3:
-            logF += "_VR3_C0p"+cut
+            logF += "_VR3_C0p"
+        logF += cut
         thisScript.write("#!/bin/bash\n\n")
 
         thisScript.write("alias cmsenv='eval `scramv1 runtime -sh`'\n\n")
@@ -118,7 +124,7 @@ if __name__ == "__main__":
 
         thisScript.write("cd " + baseDirectory + "\n\n")
 
-        thisScript.write(". setupJSONs.sh\n")
+        #thisScript.write(". setupJSONs.sh\n")
         thisScript.write(". setupPaths.sh\n\n")
 
         thisScript.write("getDDSystematics ")
@@ -127,15 +133,17 @@ if __name__ == "__main__":
         thisScript.write("--inDir " + thisInputDirectory + " ")
         thisScript.write("--outDir " + outputDirectory + " ")
         thisScript.write("--suffix bdt ")
-        thisScript.write("--signalRegionCut ")
-        thisScript.write(str(bdt['cut']) + " ")
+        #thisScript.write("--signalRegionCut ")
+        #thisScript.write(str(bdt['cut']) + " ")
+        thisScript.write("--signalRegionCut 0.")
+        thisScript.write(cut + " ")
         if args.VR2:
           thisScript.write("--doVR2 ")
         if args.VR3:
           thisScript.write("--doVR3 ")
         thisScript.write("--doLoosenBDT ")
-        thisScript.write("--TestCut 0.")
-        thisScript.write(cut + " ")
+        #thisScript.write("--TestCut 0.")
+        #thisScript.write(cut + " ")
         if bdt['highDeltaM']:
           thisScript.write("--isHighDeltaM ")
         thisScript.write(" 1> " + outputDirectory + logF + ".log 2> " + outputDirectory + logF +".err")
@@ -146,7 +154,8 @@ if __name__ == "__main__":
         os.fchmod(thisScript.fileno(), mode & 0o7777)
 
       os.chdir(jobsDir)
-      cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+      #cmd = "qsub -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+      cmd = "sbatch -p lipq --export=CMSSW_BASE=$CMSSW_BASE --mem=2500 " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
       print cmd
       if not args.dryRun:
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

@@ -4,7 +4,8 @@ import re
 import time
 
 def getNJobs():
-  cmd = "qstat | wc -l"
+  #cmd = "qstat | wc -l"
+  cmd = "squeue -u dbastos | wc -l"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
 
@@ -38,6 +39,8 @@ if __name__ == "__main__":
     sampleName = os.path.basename(os.path.normpath(sample))
     if sampleName[:6] == "DataMC":
       continue
+    if sampleName[:7] == "2Dplots":
+      continue
     if sampleName[:8] == "WJetsHT_":
       continue
     if sampleName[:7] == "WNJets_":
@@ -63,44 +66,48 @@ if __name__ == "__main__":
     complete = 0
     for job in jobInfo:
       resubmitJob = False
-      outFile = sample + "/" + job + ".o" + jobInfo[job];
-      errFile = sample + "/" + job + ".e" + jobInfo[job];
+#      outFile = sample + "/" + job + ".o" + jobInfo[job];
+#      errFile = sample + "/" + job + ".e" + jobInfo[job];
+      slurmFile = sample + "/slurm-" + jobInfo[job] + ".out" 
 
-      if os.path.isfile(outFile) and os.path.isfile(errFile):
-        if 'Done' in open(outFile).read():
-          #if os.stat(errFile).st_size == 0: # if the job completed successfully, the error file will be empty
-          #if os.stat(errFile).st_size == 82: # if the job completed successfully, there will be the following error: Warning in <TClass::Init>: no dictionary for class ROOT::TIOFeatures is available -> 82 bytes
-          if os.stat(errFile).st_size <= 520: # if the job completed successfully, there will be the following error: Warning in <TClass::Init>: no dictionary for class ROOT::TIOFeatures is available -> 82 bytes
+      if os.path.isfile(slurmFile):
+        if 'Done' in open(slurmFile).read():
+          if os.stat(slurmFile).st_size > 1631:
             resubmitJob = False
             complete = complete + 1
           else:
-            resubmitJob = True
-          if 'The expected files were' in open(outFile).read():
+            #resubmitJob = True
+            resubmitJob = False #temp fix
+            complete = complete + 1 #temp fix
+          if 'The expected files were' in open(slurmFile).read():
             resubmitJob = True
             complete = complete - 1            
         else:
-          resubmitJob = True
+          cmd = "squeue -j " + jobInfo[job]
+          p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+          out, err = p.communicate()
+          if out.find("lipq") == -1:
+            resubmitJob = True
+          else:
+            resubmitJob = False
+          #resubmitJob = True
       else:
-        cmd = "qstat -j " + job
+        #cmd = "qstat -j " + job
+        cmd = "squeue -j " + job
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
+        print p.returncode
         if p.returncode != 0: #If the job was not found, which means it somehow stopped running and didn't produce an output file which would have been catched above
           resubmitJob = True
         else:
           resubmitJob = False
 
       if resubmitJob:
+        #time.sleep(15)
         if args.dryRun:
           print "  Going to run the following sequence of commands:"
 
-        cmd = "rm " + outFile
-        if args.dryRun:
-          print "\t", cmd
-        else:
-          p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-          out, err = p.communicate()
-
-        cmd = "rm " + errFile
+        cmd = "rm " + slurmFile
         if args.dryRun:
           print "\t", cmd
         else:
@@ -108,13 +115,15 @@ if __name__ == "__main__":
           out, err = p.communicate()
 
         fullJob = sample + "/" + job
-        cmd = "qsub -q lipq  -v CMSSW_BASE=$CMSSW_BASE " + fullJob + " -e " + fullJob + ".e$JOB_ID -o " + fullJob + ".o$JOB_ID"
+        #cmd = "qsub -q lipq  -v CMSSW_BASE=$CMSSW_BASE " + fullJob + " -e " + fullJob + ".e$JOB_ID -o " + fullJob + ".o$JOB_ID"
+        cmd = "sbatch -p lipq --export=CMSSW_BASE=$CMSSW_BASE --mem=2500 " + fullJob + " -e " + fullJob + ".e$SLURM_JOBID -o " + fullJob + ".o$SLURM_JOBID"
         if args.dryRun:
           print "\t", cmd
         else:
           p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
           out, err = p.communicate()
-          p = re.compile("Your job (\d+) .+")
+          #p = re.compile("Your job (\d+) .+")
+          p = re.compile("Submitted batch job (\d+)")
           jobNumber = p.search(out).group(1)
 
           jobInfo[job] = jobNumber
@@ -127,11 +136,11 @@ if __name__ == "__main__":
     with open(sample + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    if getNJobs() > 1700:
-      print "Waiting for some jobs to complete..."
-      while getNJobs() > 1000:
-        time.sleep(5*60)
-      print "Done waiting"
+#    if getNJobs() > 1700:
+#      print "Waiting for some jobs to complete..."
+#      while getNJobs() > 1000:
+#        time.sleep(5*60)
+#      print "Done waiting"
 
   print "Summary:"
   for sample in summary:

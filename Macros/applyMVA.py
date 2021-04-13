@@ -4,7 +4,8 @@ import re
 import time
 
 def getNJobs():
-  cmd = "qstat | wc -l"
+  #cmd = "qstat | wc -l"
+  cmd = "squeue -u dbastos | wc -l"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
 
@@ -83,14 +84,17 @@ if __name__ == "__main__":
     os.chdir(baseDir)
 
     jobInfo = {}
+    job = "theJob.sh"
     #cmd = "qsub theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
-    cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
+    #cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE theJob.sh -e theJob.sh.e$JOB_ID -o theJob.sh.o$JOB_ID"
+    cmd = "sbatch -p lipq --export=CMSSW_BASE=$CMSSW_BASE --mem=2500 " + theJob + " -e " + theJob + ".e$SLURM_JOBID -o " + theJob + ".o$SLURM_JOBID"
 
     print cmd
     if not args.dryRun:
       p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
       out, err = p.communicate()
-      p = re.compile("Your job (\d+) .+")
+      #p = re.compile("Your job (\d+) .+")
+      p = re.compile("Submitted batch job (\d+)")
       jobNumber = p.search(out).group(1)
 
       jobInfo["theJob.sh"] = jobNumber
@@ -100,8 +104,8 @@ if __name__ == "__main__":
     with open(baseDir + '/jobs.pickle', 'wb') as handle:
       pickle.dump(jobInfo, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-#    if getNJobs() > 1700:
-#      print "Waiting for some jobs to complete..."
-#      while getNJobs() > 1000:
-#        time.sleep(5*60)
-#      print "Done waiting"
+    if getNJobs() > 1700:
+      print "Waiting for some jobs to complete..."
+      while getNJobs() > 1500:
+        time.sleep(5*60)
+      print "Done waiting"

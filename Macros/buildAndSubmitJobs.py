@@ -4,7 +4,8 @@ import re
 import time
 
 def getNJobs():
-  cmd = "qstat | wc -l"
+  #cmd = "qstat | wc -l"
+  cmd = "squeue -u dbastos | wc -l"
   p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   out, err = p.communicate()
 
@@ -42,11 +43,12 @@ if __name__ == "__main__":
     print "Data"
     #jsonFiles.append("Data.json")
     #jsonFiles.append("analysisData.json")
-    jsonFiles.append("DataMetHT.json")
+#    jsonFiles.append("DataMetHT.json")
 #    jsonFiles.append("DataJetHT.json")
   if not args.onlyData:
     print "MC"
-    jsonFiles.append("MC2Process.json")
+#    jsonFiles.append("MC2Process.json")
+#    jsonFiles.append("AllSignals.json")
 #    jsonFiles.append("TTbar.json")
 #    jsonFiles.append("WJetsNLO.json")
 #    jsonFiles.append("ZInv.json")
@@ -62,31 +64,30 @@ if __name__ == "__main__":
     #jsonFiles.append("Orig/TTWToLNu.json")
     #jsonFiles.append("Orig/TTZToLLNuNu.json")
     #jsonFiles.append("tmpMC.json")
-    jsonFiles.append("AllSignals.json")
-    #jsonFiles.append("stop500.json")
-#    jsonFiles.append("stop250.json")
-#    jsonFiles.append("stop275.json")
-#    jsonFiles.append("stop300.json")
-#    jsonFiles.append("stop325.json")
-#    jsonFiles.append("stop350.json")
-#    jsonFiles.append("stop375.json")
-#    jsonFiles.append("stop400.json")
-#    jsonFiles.append("stop425.json")
-#    jsonFiles.append("stop450.json")
-#    jsonFiles.append("stop475.json")
+    jsonFiles.append("stop500.json")
+    jsonFiles.append("stop250.json")
+    jsonFiles.append("stop275.json")
+    jsonFiles.append("stop300.json")
+    jsonFiles.append("stop325.json")
+    jsonFiles.append("stop350.json")
+    jsonFiles.append("stop375.json")
+    jsonFiles.append("stop400.json")
+    jsonFiles.append("stop425.json")
+    jsonFiles.append("stop450.json")
+    jsonFiles.append("stop475.json")
     #jsonFiles.append("stop500_FullSim.json")
-#    jsonFiles.append("stop525.json")
-#    jsonFiles.append("stop550.json")
-#    jsonFiles.append("stop575.json")
-#    jsonFiles.append("stop600.json")
-#    jsonFiles.append("stop625.json")
-#    jsonFiles.append("stop650.json")
-#    jsonFiles.append("stop675.json")
-#    jsonFiles.append("stop700.json")
-#    jsonFiles.append("stop725.json")
-#    jsonFiles.append("stop750.json")
-#    jsonFiles.append("stop775.json")
-#    jsonFiles.append("stop800.json")
+    jsonFiles.append("stop525.json")
+    jsonFiles.append("stop550.json")
+    jsonFiles.append("stop575.json")
+    jsonFiles.append("stop600.json")
+    jsonFiles.append("stop625.json")
+    jsonFiles.append("stop650.json")
+    jsonFiles.append("stop675.json")
+    jsonFiles.append("stop700.json")
+    jsonFiles.append("stop725.json")
+    jsonFiles.append("stop750.json")
+    jsonFiles.append("stop775.json")
+    jsonFiles.append("stop800.json")
   if args.thisSample:
     jsonFiles = []
     jsonFiles.append(args.thisSample+".json")
@@ -120,13 +121,18 @@ if __name__ == "__main__":
     jobInfo = {}
     for job in jobs:
       jobName = os.path.basename(job)
-      cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+      #cmd = "qsub -q lipq -v CMSSW_BASE=$CMSSW_BASE " + job + " -e " + job + ".e$JOB_ID -o " + job + ".o$JOB_ID"
+      cmd = "sbatch -p lipq --export=CMSSW_BASE=$CMSSW_BASE --mem=2500 " + job + " -e " + job + ".e$SLURM_JOBID -o " + job + ".o$SLURM_JOBID"
       if args.dryRun:
         print "Going to run command:", cmd
       if not args.dryRun:
+        #time.sleep(5)
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
-        p = re.compile("Your job (\d+) .+")
+        #Your job 6137168 ("T2DegStop_576_505_Part0.sh") has been submitted
+        #p = re.compile("Your job (\d+) .+")
+        #Submitted batch job 719018
+        p = re.compile("Submitted batch job (\d+)")
         if args.verbose:
           print "CMD:", cmd
           print "OUT:", out
