@@ -44,7 +44,7 @@ To generate signal json files run
 
 `$python generateJSONfiles.py`
 
-Get Data Pilup distributions
+Get Data Pileup distributions
 
 `$. getPUJSONs.sh`
 
@@ -103,5 +103,34 @@ After this step, if you want, you can compare the BDT (and other variables) shap
 
 `$.x ShapeProcVarYears.C(30,false,false,true,"BDT")`
 
-After training and applying the BDTs it's time to determinate the cut to apply on the BDT output in order so maximize the signal background separation. 
+After training and applying the BDTs it's time to determinate the cut to apply on the BDT output in order so maximize the signal background separation. The first thing to be done, is to get the processes yields as a function ƒof the BDT score. To do so, run:
 
+`$./runStep5_Part1.sh`
+
+Then, get the upper limit cross-section as a function of the BDT cut:
+
+`$./runStep5_Part2.sh`
+
+And finally plot r from the ULXS, efficiencies and FOM from the datacards:
+
+`$./runStep5_Part3.sh`
+
+With step5, we have determined the BDT cut and therefore, the SR of our analysis. Now, we can get run our DD prediction methods of the background, namely, **WJets**, **TTbar** and **Fakes**. With this next step, we'll also look into the Validation Regions of our MVA, **VR2** and **VR3**, more details in `getDDEstimate.cc`. To run this step do:
+
+`$./runStep6-GetDD.sh`
+
+
+
+`$./runStep7-GetSys.sh`
+
+## Datacards and preparation to get the Limits
+
+`$./runStep8-getFinalDataCards.sh`
+
+`finalYieldsUncTable.py`
+
+## Limits
+
+`runFinalStep_Part1.sh`
+
+`runFinalStep_Part2.sh`
