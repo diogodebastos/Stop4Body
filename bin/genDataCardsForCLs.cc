@@ -793,11 +793,11 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
     {
     	if(year==2017)
     	{
-      	strTemp = "Lum"+suf+"   lnN 1.02 - - - 1.02 1.02 1.02 1.02";
+      	strTemp = "Lum"+suf+"     lnN 1.02 - - - 1.02 1.02 1.02 1.02";
     	}
     	else if (year==2018)
     	{
-      	strTemp = "Lum"+suf+"   lnN 1.015 - - - 1.015 1.015 1.015 1.015";
+      	strTemp = "Lum"+suf+"     lnN 1.015 - - - 1.015 1.015 1.015 1.015";
     	}
     }
     else if(i==26)
