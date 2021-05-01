@@ -32,6 +32,7 @@ std::tuple<double, double> fakeDD_varyXS(ProcessInfo &, SampleReader &, SampleRe
 std::tuple<double, double> fullDD_varyXS(ProcessInfo &, ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
 std::string sysFromXSvar(ProcessInfo &, ProcessInfo &, doubleUnc, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string);
 std::string fullDD_sys(ProcessInfo &t, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, double, doubleUnc);
+std::string getUpSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
 std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::string);
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string JesJerSys(ProcessInfo &, doubleUnc, std::string, std::string, double, double, std::string);
@@ -316,46 +317,46 @@ int main(int argc, char** argv)
   std::string TTXJES = JesJerSys(ttx, TTX, tightSelection, baseSelection, luminosity, bdtCut, "JES");
   std::string TTXJER = JesJerSys(ttx, TTX, tightSelection, baseSelection, luminosity, bdtCut, "JER");
 
-  std::string VVBTAG1 = getUpDownSysVar(vv, VV, SR, luminosity, "CFErr1");
-  std::string VVBTAG2 = getUpDownSysVar(vv, VV, SR, luminosity, "CFErr2");
-  std::string VVBTAG3 = getUpDownSysVar(vv, VV, SR, luminosity, "LF");
-  std::string VVBTAG4 = getUpDownSysVar(vv, VV, SR, luminosity, "LFStats1");
-  std::string VVBTAG5 = getUpDownSysVar(vv, VV, SR, luminosity, "LFStats2");
-  std::string VVBTAG6 = getUpDownSysVar(vv, VV, SR, luminosity, "HF");
-  std::string VVBTAG7 = getUpDownSysVar(vv, VV, SR, luminosity, "HFStats1");
-  std::string VVBTAG8 = getUpDownSysVar(vv, VV, SR, luminosity, "HFStats2");
+  std::string VVBTAG1 = getUpSysVar(vv, VV, SR, luminosity, "CFErr1");
+  std::string VVBTAG2 = getUpSysVar(vv, VV, SR, luminosity, "CFErr2");
+  std::string VVBTAG3 = getUpSysVar(vv, VV, SR, luminosity, "LF");
+  std::string VVBTAG4 = getUpSysVar(vv, VV, SR, luminosity, "LFStats1");
+  std::string VVBTAG5 = getUpSysVar(vv, VV, SR, luminosity, "LFStats2");
+  std::string VVBTAG6 = getUpSysVar(vv, VV, SR, luminosity, "HF");
+  std::string VVBTAG7 = getUpSysVar(vv, VV, SR, luminosity, "HFStats1");
+  std::string VVBTAG8 = getUpSysVar(vv, VV, SR, luminosity, "HFStats2");
 
-  std::string STBTAG1 = getUpDownSysVar(st, ST, SR, luminosity, "CFErr1");
-  std::string STBTAG2 = getUpDownSysVar(st, ST, SR, luminosity, "CFErr2");
-  std::string STBTAG3 = getUpDownSysVar(st, ST, SR, luminosity, "LF");
-  std::string STBTAG4 = getUpDownSysVar(st, ST, SR, luminosity, "LFStats1");
-  std::string STBTAG5 = getUpDownSysVar(st, ST, SR, luminosity, "LFStats2");
-  std::string STBTAG6 = getUpDownSysVar(st, ST, SR, luminosity, "HF");
-  std::string STBTAG7 = getUpDownSysVar(st, ST, SR, luminosity, "HFStats1");
-  std::string STBTAG8 = getUpDownSysVar(st, ST, SR, luminosity, "HFStats2");
+  std::string STBTAG1 = getUpSysVar(st, ST, SR, luminosity, "CFErr1");
+  std::string STBTAG2 = getUpSysVar(st, ST, SR, luminosity, "CFErr2");
+  std::string STBTAG3 = getUpSysVar(st, ST, SR, luminosity, "LF");
+  std::string STBTAG4 = getUpSysVar(st, ST, SR, luminosity, "LFStats1");
+  std::string STBTAG5 = getUpSysVar(st, ST, SR, luminosity, "LFStats2");
+  std::string STBTAG6 = getUpSysVar(st, ST, SR, luminosity, "HF");
+  std::string STBTAG7 = getUpSysVar(st, ST, SR, luminosity, "HFStats1");
+  std::string STBTAG8 = getUpSysVar(st, ST, SR, luminosity, "HFStats2");
 
-  std::string DYBTAG1 = getUpDownSysVar(dy, DY, SR, luminosity, "CFErr1");
-  std::string DYBTAG2 = getUpDownSysVar(dy, DY, SR, luminosity, "CFErr2");
-  std::string DYBTAG3 = getUpDownSysVar(dy, DY, SR, luminosity, "LF");
-  std::string DYBTAG4 = getUpDownSysVar(dy, DY, SR, luminosity, "LFStats1");
-  std::string DYBTAG5 = getUpDownSysVar(dy, DY, SR, luminosity, "LFStats2");
-  std::string DYBTAG6 = getUpDownSysVar(dy, DY, SR, luminosity, "HF");
-  std::string DYBTAG7 = getUpDownSysVar(dy, DY, SR, luminosity, "HFStats1");
-  std::string DYBTAG8 = getUpDownSysVar(dy, DY, SR, luminosity, "HFStats2");
+  std::string DYBTAG1 = getUpSysVar(dy, DY, SR, luminosity, "CFErr1");
+  std::string DYBTAG2 = getUpSysVar(dy, DY, SR, luminosity, "CFErr2");
+  std::string DYBTAG3 = getUpSysVar(dy, DY, SR, luminosity, "LF");
+  std::string DYBTAG4 = getUpSysVar(dy, DY, SR, luminosity, "LFStats1");
+  std::string DYBTAG5 = getUpSysVar(dy, DY, SR, luminosity, "LFStats2");
+  std::string DYBTAG6 = getUpSysVar(dy, DY, SR, luminosity, "HF");
+  std::string DYBTAG7 = getUpSysVar(dy, DY, SR, luminosity, "HFStats1");
+  std::string DYBTAG8 = getUpSysVar(dy, DY, SR, luminosity, "HFStats2");
 
-  std::string TTXBTAG1 = getUpDownSysVar(ttx, TTX, SR, luminosity, "CFErr1");
-  std::string TTXBTAG2 = getUpDownSysVar(ttx, TTX, SR, luminosity, "CFErr2");
-  std::string TTXBTAG3 = getUpDownSysVar(ttx, TTX, SR, luminosity, "LF");
-  std::string TTXBTAG4 = getUpDownSysVar(ttx, TTX, SR, luminosity, "LFStats1");
-  std::string TTXBTAG5 = getUpDownSysVar(ttx, TTX, SR, luminosity, "LFStats2");
-  std::string TTXBTAG6 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HF");
-  std::string TTXBTAG7 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats1");
-  std::string TTXBTAG8 = getUpDownSysVar(ttx, TTX, SR, luminosity, "HFStats2");
+  std::string TTXBTAG1 = getUpSysVar(ttx, TTX, SR, luminosity, "CFErr1");
+  std::string TTXBTAG2 = getUpSysVar(ttx, TTX, SR, luminosity, "CFErr2");
+  std::string TTXBTAG3 = getUpSysVar(ttx, TTX, SR, luminosity, "LF");
+  std::string TTXBTAG4 = getUpSysVar(ttx, TTX, SR, luminosity, "LFStats1");
+  std::string TTXBTAG5 = getUpSysVar(ttx, TTX, SR, luminosity, "LFStats2");
+  std::string TTXBTAG6 = getUpSysVar(ttx, TTX, SR, luminosity, "HF");
+  std::string TTXBTAG7 = getUpSysVar(ttx, TTX, SR, luminosity, "HFStats1");
+  std::string TTXBTAG8 = getUpSysVar(ttx, TTX, SR, luminosity, "HFStats2");
 
-  std::string VVID  = getUpDownSysVar(vv, VV, SR, luminosity, "LeptonIDSF_AltCorr");
-  std::string STID  = getUpDownSysVar(st, ST, SR, luminosity, "LeptonIDSF_AltCorr");
-  std::string DYID  = getUpDownSysVar(dy, DY, SR, luminosity, "LeptonIDSF_AltCorr");
-  std::string TTXID = getUpDownSysVar(ttx, TTX, SR, luminosity, "LeptonIDSF_AltCorr");
+  std::string VVID  = getUpSysVar(vv, VV, SR, luminosity, "LeptonIDSF_AltCorr");
+  std::string STID  = getUpSysVar(st, ST, SR, luminosity, "LeptonIDSF_AltCorr");
+  std::string DYID  = getUpSysVar(dy, DY, SR, luminosity, "LeptonIDSF_AltCorr");
+  std::string TTXID = getUpSysVar(ttx, TTX, SR, luminosity, "LeptonIDSF_AltCorr");
     
   std::string WjISR1 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin1", luminosity, Wj);
   std::string WjISR2 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin2", luminosity, Wj);
@@ -383,7 +384,7 @@ int main(int argc, char** argv)
     name = signal.tag();
     auto Sgn  = signal.getYield(SR, mcWeight);
 
-    std::string FastS = getUpDownSysVar(signal, Sgn, SR, luminosity, "FullFast_ID_AltCorr");
+    std::string FastS = getUpSysVar(signal, Sgn, SR, luminosity, "FullFast_ID_AltCorr");
 
     std::string SgnPU = getUpDownSysVar(signal, Sgn, SR, luminosity, "PU");
 
@@ -392,23 +393,23 @@ int main(int argc, char** argv)
     std::string SgnJES = JesJerSys(signal, Sgn, tightSelection, baseSelection, luminosity, bdtCut, "JES");
     std::string SgnJER = JesJerSys(signal, Sgn, tightSelection, baseSelection, luminosity, bdtCut, "JER");
 
-    std::string SgnBTAG1 = getUpDownSysVar(signal, Sgn, SR, luminosity, "CFErr1");
-    std::string SgnBTAG2 = getUpDownSysVar(signal, Sgn, SR, luminosity, "CFErr2");
-    std::string SgnBTAG3 = getUpDownSysVar(signal, Sgn, SR, luminosity, "LF");
-    std::string SgnBTAG4 = getUpDownSysVar(signal, Sgn, SR, luminosity, "LFStats1");
-    std::string SgnBTAG5 = getUpDownSysVar(signal, Sgn, SR, luminosity, "LFStats2");
-    std::string SgnBTAG6 = getUpDownSysVar(signal, Sgn, SR, luminosity, "HF");
-    std::string SgnBTAG7 = getUpDownSysVar(signal, Sgn, SR, luminosity, "HFStats1");
-    std::string SgnBTAG8 = getUpDownSysVar(signal, Sgn, SR, luminosity, "HFStats2");
+    std::string SgnBTAG1 = getUpSysVar(signal, Sgn, SR, luminosity, "CFErr1");
+    std::string SgnBTAG2 = getUpSysVar(signal, Sgn, SR, luminosity, "CFErr2");
+    std::string SgnBTAG3 = getUpSysVar(signal, Sgn, SR, luminosity, "LF");
+    std::string SgnBTAG4 = getUpSysVar(signal, Sgn, SR, luminosity, "LFStats1");
+    std::string SgnBTAG5 = getUpSysVar(signal, Sgn, SR, luminosity, "LFStats2");
+    std::string SgnBTAG6 = getUpSysVar(signal, Sgn, SR, luminosity, "HF");
+    std::string SgnBTAG7 = getUpSysVar(signal, Sgn, SR, luminosity, "HFStats1");
+    std::string SgnBTAG8 = getUpSysVar(signal, Sgn, SR, luminosity, "HFStats2");
 
-    std::string SgnID = getUpDownSysVar(signal, Sgn, SR, luminosity, "LeptonIDSF_AltCorr");
+    std::string SgnID = getUpSysVar(signal, Sgn, SR, luminosity, "LeptonIDSF_AltCorr");
 
-    std::string SgnISR1 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin1");
-    std::string SgnISR2 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin2");
-    std::string SgnISR3 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin3");
-    std::string SgnISR4 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin4");
-    std::string SgnISR5 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin5");
-    std::string SgnISR6 = getUpDownSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin6");
+    std::string SgnISR1 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin1");
+    std::string SgnISR2 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin2");
+    std::string SgnISR3 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin3");
+    std::string SgnISR4 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin4");
+    std::string SgnISR5 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin5");
+    std::string SgnISR6 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin6");
 
     makeDataCard(name, outputDirectory, unblind, year, DatainSR, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnPU, VVPU, STPU, DYPU, TTXPU, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8, VVBTAG1, VVBTAG2, VVBTAG3, VVBTAG4, VVBTAG5, VVBTAG6, VVBTAG7, VVBTAG8, STBTAG1, STBTAG2, STBTAG3, STBTAG4, STBTAG5, STBTAG6, STBTAG7, STBTAG8, DYBTAG1, DYBTAG2, DYBTAG3, DYBTAG4, DYBTAG5, DYBTAG6, DYBTAG7, DYBTAG8, TTXBTAG1, TTXBTAG2, TTXBTAG3, TTXBTAG4, TTXBTAG5, TTXBTAG6, TTXBTAG7, TTXBTAG8, SgnID, VVID, STID, DYID, TTXID, SgnISR1, SgnISR2, SgnISR3, SgnISR4, SgnISR5, SgnISR6, WjISR1, WjISR2, WjISR3, WjISR4, WjISR5, WjISR6, WjnST, ttISR1, ttISR2, ttISR3, ttISR4, ttISR5, ttISR6, ttnST);
   }
@@ -554,7 +555,8 @@ std::string sysFromXSvar(ProcessInfo &toVaryXS, ProcessInfo &ddAffected, doubleU
   double syUp   = std::get<0>(toVaryXSsyddAffected)/xDDcentral.value();
   double syDown = std::get<1>(toVaryXSsyddAffected)/xDDcentral.value();
 
-  return std::to_string(syUp) + "/" + std::to_string(syDown);
+  return std::to_string(syUp);
+  //return std::to_string(syUp) + "/" + std::to_string(syDown);
 }
 
 std::string fullDD_sys(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string syst, double luminosity, doubleUnc xDDcentral)
@@ -570,6 +572,23 @@ std::string fullDD_sys(ProcessInfo &toEstimate, SampleReader &Data, SampleReader
   UpDownVar = std::to_string(UpYield.value()/xDDcentral.value())+"/"+std::to_string(DownYield.value()/xDDcentral.value());
 
   return UpDownVar;
+}
+
+std::string getUpSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity, std::string systBase){
+  std::string UpVar = "1";
+  std::string lumin = std::to_string(luminosity);
+  std::string mcWeightVarUp   = "splitFactor*weight_"+systBase+"_Up*"+lumin;
+
+  auto UpYield = toEstimate.getYield(selection, mcWeightVarUp);
+
+  UpVar = std::to_string(UpYield.value()/centralYield.value());
+
+  if(centralYield.value() == 0.0)
+  {
+    UpVar = "1";
+  }
+
+  return UpVar;
 }
 
 std::string getUpDownSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity, std::string systBase){
@@ -654,6 +673,11 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
 
   UpDownVar = std::to_string(UpYield.value()/centralYield.value())+"/"+std::to_string(DownYield.value()/centralYield.value());
 
+  if ((UpYield.value()==centralYield.value()) && (DownYield.value()==centralYield.value()) )
+  {
+    UpDownVar = "1";
+  }
+
   if(centralYield.value() == 0.0)
   {
     UpDownVar = "1";
@@ -662,6 +686,7 @@ std::string JesJerSys(ProcessInfo &toEstimate, doubleUnc centralYield, std::stri
   return UpDownVar;
 }
 
+// For correlation between years: https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopSystematics
 void makeDataCard(std::string name, std::string outputDirectory, bool unblind, int year, doubleUnc DatainSR, doubleUnc Sgn, doubleUnc Wj, doubleUnc tt, doubleUnc Fake, doubleUnc VV, doubleUnc ST, doubleUnc DY, doubleUnc TTX, std::string FastS, double Wsy, double ttsy, double Fksy, std::string VVsyWj, std::string VVsytt, std::string VVsyFake, std::string STsyWj, std::string STsytt, std::string STsyFake, std::string DYsyWj, std::string DYsytt, std::string DYsyFake, std::string TTXsyWj, std::string TTXsytt, std::string TTXsyFake, std::string SgnPU, std::string VVPU, std::string STPU, std::string DYPU, std::string TTXPU, std::string SgnQ2, std::string STQ2, std::string DYQ2, std::string TTXQ2, std::string SgnJES, std::string SgnJER, std::string VVJES, std::string VVJER, std::string STJES, std::string STJER, std::string DYJES, std::string DYJER, std::string TTXJES, std::string TTXJER, std::string SgnBTAG1, std::string SgnBTAG2, std::string SgnBTAG3, std::string SgnBTAG4, std::string SgnBTAG5, std::string SgnBTAG6, std::string SgnBTAG7, std::string SgnBTAG8, std::string VVBTAG1, std::string VVBTAG2, std::string VVBTAG3, std::string VVBTAG4, std::string VVBTAG5, std::string VVBTAG6, std::string VVBTAG7, std::string VVBTAG8, std::string STBTAG1, std::string STBTAG2, std::string STBTAG3, std::string STBTAG4, std::string STBTAG5, std::string STBTAG6, std::string STBTAG7, std::string STBTAG8, std::string DYBTAG1, std::string DYBTAG2, std::string DYBTAG3, std::string DYBTAG4, std::string DYBTAG5, std::string DYBTAG6, std::string DYBTAG7, std::string DYBTAG8, std::string TTXBTAG1, std::string TTXBTAG2, std::string TTXBTAG3, std::string TTXBTAG4, std::string TTXBTAG5, std::string TTXBTAG6, std::string TTXBTAG7, std::string TTXBTAG8, std::string SgnID, std::string VVID, std::string STID, std::string DYID, std::string TTXID, std::string SgnISR1, std::string SgnISR2, std::string SgnISR3, std::string SgnISR4, std::string SgnISR5, std::string SgnISR6, std::string WjISR1, std::string WjISR2, std::string WjISR3, std::string WjISR4, std::string WjISR5, std::string WjISR6, std::string WjnST, std::string ttISR1, std::string ttISR2, std::string ttISR3, std::string ttISR4, std::string ttISR5, std::string ttISR6, std::string ttnST){
   name.replace(0,13,"");
   //name.replace(5,1,"N");
@@ -680,6 +705,16 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
 
   std::string strTemp;
   int i = 0;
+
+  std::string suf = ""
+  if(year==2017)
+  {
+    suf = "17";
+  }
+  else if (year==2018)
+  {
+    suf = "18";
+  }
 
   while(getline(dataCardIn,strTemp))
   {
@@ -704,157 +739,179 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
       strTemp = "rate   "+std::to_string(Sgn.value())+" "+std::to_string(Wj.value())+" "+std::to_string(tt.value())+" "+std::to_string(Fake.value())+" "+std::to_string(VV.value())+" "+std::to_string(ST.value())+" "+std::to_string(DY.value())+" "+std::to_string(TTX.value());
     }
     else if(i==12){
-      strTemp = "Sst   lnN " + xST(Sgn) + " - - - - - - -";
+      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
     }
     else if(i==13)
     {
-      strTemp = "FastS lnN " + FastS + " - - - - - - -";
+      strTemp = "FastS"+suf+"   lnN " + FastS + " - - - - - - -";
     }
     else if(i==14)
     {
-      strTemp = "Wsy   lnN - " + std::to_string(1+Wsy) + " - - - - - -";
+      strTemp = "Wsy       lnN - " + std::to_string(1+Wsy) + " - - - - - -";
     }
     else if(i==15)
     {
-      strTemp = "ttsy  lnN - - " + std::to_string(1+ttsy) + " - - - - -";
+      strTemp = "ttsy      lnN - - " + std::to_string(1+ttsy) + " - - - - -";
     }
     else if(i==16)
     {
-      strTemp = "Fksy  lnN - - - " + std::to_string(1+Fksy) + " - - - -";
+      strTemp = "Fksy      lnN - - - " + std::to_string(1+Fksy) + " - - - -";
     }
     else if(i==17)
     {
-      strTemp = "VVsy  lnN - " + VVsyWj + " "+ VVsytt + " " + VVsyFake + " 1.5/0.5 - - -";
+      strTemp = "VVsy      lnN - " + VVsyWj + " "+ VVsytt + " " + VVsyFake + " 1.5 - - -";
     }
     else if(i==18)
     {
-      strTemp = "VVst  lnN - - - - " + xST(VV) + " - - -";
+      strTemp = "VVst"+suf+"    lnN - - - - " + xST(VV) + " - - -";
     }
     else if(i==19)
     {
-      strTemp = "STsy  lnN - " + STsyWj + " "+ STsytt + " " + STsyFake + " - 1.5/0.5 - -";
+      strTemp = "STsy      lnN - " + STsyWj + " "+ STsytt + " " + STsyFake + " - 1.5 - -";
     }
     else if(i==20)
     {
-      strTemp = "STst  lnN - - - - - " + xST(ST) + " - -";
+      strTemp = "STst"+suf+"    lnN - - - - - " + xST(ST) + " - -";
     }
     else if(i==21)
     {
-      strTemp = "DYsy  lnN - " + DYsyWj + " "+ DYsytt + " " + DYsyFake + " - - 1.5/0.5 -";
+      strTemp = "DYsy      lnN - " + DYsyWj + " "+ DYsytt + " " + DYsyFake + " - - 1.5 -";
     }
     else if(i==22)
     {
-      strTemp = "DYst  lnN - - - - - - " + xST(DY) + " -";
+      strTemp = "DYst"+suf+"    lnN - - - - - - " + xST(DY) + " -";
     }
     else if(i==23)
     {
-      strTemp = "TTXsy lnN - " + TTXsyWj + " "+ TTXsytt + " " + TTXsyFake + " - - - 1.5/0.5";
+      strTemp = "TTXsy     lnN - " + TTXsyWj + " "+ TTXsytt + " " + TTXsyFake + " - - - 1.5";
     }
     else if(i==24)
     {
-      strTemp = "TTXst lnN - - - - - - - " + xST(TTX);
+      strTemp = "TTXst"+suf+"   lnN - - - - - - - " + xST(TTX);
     }
     else if(i==25)
     {
     	if(year==2017)
     	{
-      	strTemp = "Lum   lnN 1.023 - - - 1.023 1.023 1.023 1.023";
+      	strTemp = "Lum"+suf+"   lnN 1.02 - - - 1.02 1.02 1.02 1.02";
     	}
     	else if (year==2018)
     	{
-      	strTemp = "Lum   lnN 1.025 - - - 1.025 1.025 1.025 1.025";
+      	strTemp = "Lum"+suf+"   lnN 1.015 - - - 1.015 1.015 1.015 1.015";
     	}
     }
     else if(i==26)
     {
-      strTemp = "Trg   lnN 1.010 - - - 1.010 1.010 1.010 1.010";
+      if(year==2017)
+      {
+        strTemp = "Lum1718   lnN 1.006 - - - 1.006 1.006 1.006 1.006";
+      }
+      else if (year==2018)
+      {
+        strTemp = "Lum1718   lnN 1.002 - - - 1.002 1.002 1.002 1.002";
+      }
     }
     else if(i==27)
     {
-      //strTemp = "PU    lnN 1.01 - - - 1.01 1.01 1.01 1.01";
-      strTemp = "PU    lnN " + SgnPU + " - - - " + VVPU + " " + STPU + " " + DYPU + " " + TTXPU;
+      if(year==2017)
+      {
+        strTemp = "Lum161718 lnN 1.009 - - - 1.009 1.009 1.009 1.009";
+      }
+      else if (year==2018)
+      {
+        strTemp = "Lum161718 lnN 1.02 - - - 1.02 1.02 1.02 1.02";
+      }
     }
     else if(i==28)
     {
-      strTemp = "Q2    lnN " + SgnQ2 + " - - - 1 " + STQ2 + " " + DYQ2 + " " + TTXQ2;
+      strTemp = "Trg"+suf+"     lnN 1.010 - - - 1.010 1.010 1.010 1.010";
     }
     else if(i==29)
     {
-      strTemp = "JES   lnN " + SgnJES + " - - - " + VVJES + " " + STJES + " " + DYJES + " " + TTXJES;
+      //strTemp = "PU    lnN 1.01 - - - 1.01 1.01 1.01 1.01";
+      strTemp = "PU        lnN " + SgnPU + " - - - " + VVPU + " " + STPU + " " + DYPU + " " + TTXPU;
     }
     else if(i==30)
     {
-      strTemp = "JER   lnN " + SgnJER + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
+      strTemp = "Q2        lnN " + SgnQ2 + " - - - 1 " + STQ2 + " " + DYQ2 + " " + TTXQ2;
     }
     else if(i==31)
     {
-      strTemp = "BTAG1 lnN " + SgnBTAG1 + " - - - " + VVBTAG1 + " " + STBTAG1 + " " + DYBTAG1 + " " + TTXBTAG1;
+      strTemp = "JES       lnN " + SgnJES + " - - - " + VVJES + " " + STJES + " " + DYJES + " " + TTXJES;
     }
     else if(i==32)
     {
-      strTemp = "BTAG2 lnN " + SgnBTAG2 + " - - - " + VVBTAG2 + " " + STBTAG2 + " " + DYBTAG2 + " " + TTXBTAG2;
+      strTemp = "JER"+suf+"     lnN " + SgnJER + " - - - " + VVJER + " " + STJER + " " + DYJER + " " + TTXJER;
     }
     else if(i==33)
     {
-      strTemp = "BTAG3 lnN " + SgnBTAG3 + " - - - " + VVBTAG3 + " " + STBTAG3 + " " + DYBTAG3 + " " + TTXBTAG3;
+      strTemp = "BTAG1     lnN " + SgnBTAG1 + " - - - " + VVBTAG1 + " " + STBTAG1 + " " + DYBTAG1 + " " + TTXBTAG1;
     }
     else if(i==34)
     {
-      strTemp = "BTAG4 lnN " + SgnBTAG4 + " - - - " + VVBTAG4 + " " + STBTAG4 + " " + DYBTAG4 + " " + TTXBTAG4;
+      strTemp = "BTAG2     lnN " + SgnBTAG2 + " - - - " + VVBTAG2 + " " + STBTAG2 + " " + DYBTAG2 + " " + TTXBTAG2;
     }
     else if(i==35)
     {
-      strTemp = "BTAG5 lnN " + SgnBTAG5 + " - - - " + VVBTAG5 + " " + STBTAG5 + " " + DYBTAG5 + " " + TTXBTAG5;
+      strTemp = "BTAG3     lnN " + SgnBTAG3 + " - - - " + VVBTAG3 + " " + STBTAG3 + " " + DYBTAG3 + " " + TTXBTAG3;
     }
     else if(i==36)
     {
-      strTemp = "BTAG6 lnN " + SgnBTAG6 + " - - - " + VVBTAG6 + " " + STBTAG6 + " " + DYBTAG6 + " " + TTXBTAG6;
+      strTemp = "BTAG4     lnN " + SgnBTAG4 + " - - - " + VVBTAG4 + " " + STBTAG4 + " " + DYBTAG4 + " " + TTXBTAG4;
     }
     else if(i==37)
     {
-      strTemp = "BTAG7 lnN " + SgnBTAG7 + " - - - " + VVBTAG7 + " " + STBTAG7 + " " + DYBTAG7 + " " + TTXBTAG7;
+      strTemp = "BTAG5     lnN " + SgnBTAG5 + " - - - " + VVBTAG5 + " " + STBTAG5 + " " + DYBTAG5 + " " + TTXBTAG5;
     }
     else if(i==38)
     {
-      strTemp = "BTAG8 lnN " + SgnBTAG8 + " - - - " + VVBTAG8 + " " + STBTAG8 + " " + DYBTAG8 + " " + TTXBTAG8;
+      strTemp = "BTAG6     lnN " + SgnBTAG6 + " - - - " + VVBTAG6 + " " + STBTAG6 + " " + DYBTAG6 + " " + TTXBTAG6;
     }
     else if(i==39)
     {
-      strTemp = "ID    lnN " + SgnID + " - - - " + VVID + " " + STID + " " + DYID + " " + TTXID;
-      //strTemp = "ID    lnN " + SgnID + " - - - 1.01 1.01 1.01 1.01";
+      strTemp = "BTAG7     lnN " + SgnBTAG7 + " - - - " + VVBTAG7 + " " + STBTAG7 + " " + DYBTAG7 + " " + TTXBTAG7;
     }
     else if(i==40)
     {
-      strTemp = "ISO   lnN 1.01 - - - 1.01 1.01 1.01 1.01";
-      //strTemp = "RECO  lnN " + SgnRECO + " - - - 1.01 1.01 1.01 1.01";
+      strTemp = "BTAG8     lnN " + SgnBTAG8 + " - - - " + VVBTAG8 + " " + STBTAG8 + " " + DYBTAG8 + " " + TTXBTAG8;
     }
     else if(i==41)
     {
-      strTemp = "ISR1  lnN " + SgnISR1 + " " + WjISR1 + " " + ttISR1 + " " + "-" + " - - - -";
+      strTemp = "ID"+suf+"      lnN " + SgnID + " - - - " + VVID + " " + STID + " " + DYID + " " + TTXID;
+      //strTemp = "ID    lnN " + SgnID + " - - - 1.01 1.01 1.01 1.01";
     }
     else if(i==42)
     {
-      strTemp = "ISR2  lnN " + SgnISR2 + " " + WjISR2 + " " + ttISR2 + " " + "-" + " - - - -";
+      strTemp = "ISO"+suf+"     lnN 1.01 - - - 1.01 1.01 1.01 1.01";
+      //strTemp = "RECO  lnN " + SgnRECO + " - - - 1.01 1.01 1.01 1.01";
     }
     else if(i==43)
     {
-      strTemp = "ISR3  lnN " + SgnISR3 + " " + WjISR3 + " " + ttISR3 + " " + "-" + " - - - -";
+      strTemp = "ISR1      lnN " + SgnISR1 + " " + WjISR1 + " " + ttISR1 + " " + "-" + " - - - -";
     }
     else if(i==44)
     {
-      strTemp = "ISR4  lnN " + SgnISR4 + " " + WjISR4 + " " + ttISR4 + " " + "-" + " - - - -";
+      strTemp = "ISR2      lnN " + SgnISR2 + " " + WjISR2 + " " + ttISR2 + " " + "-" + " - - - -";
     }
     else if(i==45)
     {
-      strTemp = "ISR5  lnN " + SgnISR5 + " " + WjISR5 + " " + ttISR5 + " " + "-" + " - - - -";
+      strTemp = "ISR3      lnN " + SgnISR3 + " " + WjISR3 + " " + ttISR3 + " " + "-" + " - - - -";
     }
     else if(i==46)
     {
-      strTemp = "ISR6  lnN " + SgnISR6 + " " + WjISR6 + " " + ttISR6 + " " + "-" + " - - - -";
+      strTemp = "ISR4      lnN " + SgnISR4 + " " + WjISR4 + " " + ttISR4 + " " + "-" + " - - - -";
     }
     else if(i==47)
     {
-      strTemp = "nST   lnN - " + WjnST + " " + ttnST + " " + "-" + " - - - -";
+      strTemp = "ISR5      lnN " + SgnISR5 + " " + WjISR5 + " " + ttISR5 + " " + "-" + " - - - -";
+    }
+    else if(i==48)
+    {
+      strTemp = "ISR6      lnN " + SgnISR6 + " " + WjISR6 + " " + ttISR6 + " " + "-" + " - - - -";
+    }
+    else if(i==49)
+    {
+      strTemp = "nST       lnN - " + WjnST + " " + ttnST + " " + "-" + " - - - -";
     }
 
     strTemp += "\n";
