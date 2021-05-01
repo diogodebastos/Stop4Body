@@ -553,7 +553,7 @@ std::string sysFromXSvar(ProcessInfo &toVaryXS, ProcessInfo &ddAffected, doubleU
   return std::to_string(syMax/xDDcentral.value());
   */
   double syUp   = std::get<0>(toVaryXSsyddAffected)/xDDcentral.value();
-  double syDown = std::get<1>(toVaryXSsyddAffected)/xDDcentral.value();
+  //double syDown = std::get<1>(toVaryXSsyddAffected)/xDDcentral.value();
 
   return std::to_string(syUp);
   //return std::to_string(syUp) + "/" + std::to_string(syDown);
@@ -561,17 +561,18 @@ std::string sysFromXSvar(ProcessInfo &toVaryXS, ProcessInfo &ddAffected, doubleU
 
 std::string fullDD_sys(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string syst, double luminosity, doubleUnc xDDcentral)
 {
-  std::string UpDownVar = "1/1";
+  std::string UpVar = "1/1";
   std::string lumin = std::to_string(luminosity);
   std::string mcWeightVarUp   = "splitFactor*weight_"+syst+"_Up*"+lumin;
-  std::string mcWeightVarDown = "splitFactor*weight_"+syst+"_Down*"+lumin;
+  //std::string mcWeightVarDown = "splitFactor*weight_"+syst+"_Down*"+lumin;
 
   auto UpYield   = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeightVarUp);
-  auto DownYield = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeightVarDown);
+  //auto DownYield = fullDD(toEstimate, Data, MC, looseSelection, tightSelection, signalRegion, controlRegion, mcWeightVarDown);
 
-  UpDownVar = std::to_string(UpYield.value()/xDDcentral.value())+"/"+std::to_string(DownYield.value()/xDDcentral.value());
+  //UpDownVar = std::to_string(UpYield.value()/xDDcentral.value())+"/"+std::to_string(DownYield.value()/xDDcentral.value());
+  UpVar = std::to_string(UpYield.value()/xDDcentral.value());
 
-  return UpDownVar;
+  return UpVar;
 }
 
 std::string getUpSysVar(ProcessInfo &toEstimate, doubleUnc centralYield, std::string selection, double luminosity, std::string systBase){
