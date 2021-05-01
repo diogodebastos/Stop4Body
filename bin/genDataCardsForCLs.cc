@@ -706,7 +706,7 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
   std::string strTemp;
   int i = 0;
 
-  std::string suf = ""
+  std::string suf = "";
   if(year==2017)
   {
     suf = "17";
