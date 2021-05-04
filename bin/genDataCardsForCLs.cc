@@ -858,11 +858,11 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
     }
     else if(i==36)
     {
-      strTemp = "BTAG4     lnN " + SgnBTAG4 + " - - - " + VVBTAG4 + " " + STBTAG4 + " " + DYBTAG4 + " " + TTXBTAG4;
+      strTemp = "BTAG4"+suf+"   lnN " + SgnBTAG4 + " - - - " + VVBTAG4 + " " + STBTAG4 + " " + DYBTAG4 + " " + TTXBTAG4;
     }
     else if(i==37)
     {
-      strTemp = "BTAG5     lnN " + SgnBTAG5 + " - - - " + VVBTAG5 + " " + STBTAG5 + " " + DYBTAG5 + " " + TTXBTAG5;
+      strTemp = "BTAG5"+suf+"   lnN " + SgnBTAG5 + " - - - " + VVBTAG5 + " " + STBTAG5 + " " + DYBTAG5 + " " + TTXBTAG5;
     }
     else if(i==38)
     {
@@ -870,11 +870,11 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
     }
     else if(i==39)
     {
-      strTemp = "BTAG7     lnN " + SgnBTAG7 + " - - - " + VVBTAG7 + " " + STBTAG7 + " " + DYBTAG7 + " " + TTXBTAG7;
+      strTemp = "BTAG7"+suf+"   lnN " + SgnBTAG7 + " - - - " + VVBTAG7 + " " + STBTAG7 + " " + DYBTAG7 + " " + TTXBTAG7;
     }
     else if(i==40)
     {
-      strTemp = "BTAG8     lnN " + SgnBTAG8 + " - - - " + VVBTAG8 + " " + STBTAG8 + " " + DYBTAG8 + " " + TTXBTAG8;
+      strTemp = "BTAG8"+suf+"   lnN " + SgnBTAG8 + " - - - " + VVBTAG8 + " " + STBTAG8 + " " + DYBTAG8 + " " + TTXBTAG8;
     }
     else if(i==41)
     {

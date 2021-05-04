@@ -35,6 +35,12 @@ for file in dirs:
         Lumline   = updateLine(line,"Lum",out)
         Trgline   = updateLine(line,"Trg",out)
         JERline   = updateLine(line,"JER",out)
+        IDline    = updateLine(line,"BTAG1",out)
+        IDline    = updateLine(line,"BTAG2",out)
+        IDline    = updateLine(line,"BTAG4",out)
+        IDline    = updateLine(line,"BTAG5",out)
+        IDline    = updateLine(line,"BTAG7",out)
+        IDline    = updateLine(line,"BTAG8",out)
         IDline    = updateLine(line,"ID",out)
         ISOline   = updateLine(line,"ISO",out)
 
