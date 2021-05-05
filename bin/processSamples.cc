@@ -1725,6 +1725,7 @@ int main(int argc, char** argv)
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
       Float_t HBHENoiseIsoFilter; bdttree->Branch("HBHENoiseIsoFilter", &HBHENoiseIsoFilter,"HBHENoiseIsoFilter/F");
       Float_t eeBadScFilter; bdttree->Branch("eeBadScFilter", &eeBadScFilter,"eeBadScFilter/F");
+      Float_t ecalBadCalibFilterV2; bdttree->Branch("ecalBadCalibFilterV2", &ecalBadCalibFilterV2,"ecalBadCalibFilterV2/F");
       Float_t EcalDeadCellTriggerPrimitiveFilter; bdttree->Branch("EcalDeadCellTriggerPrimitiveFilter", &EcalDeadCellTriggerPrimitiveFilter,"EcalDeadCellTriggerPrimitiveFilter/F");
       Float_t goodVertices; bdttree->Branch("goodVertices", &goodVertices,"goodVertices/F");
       Float_t globalSuperTightHalo2016Filter; bdttree->Branch("globalSuperTightHalo2016Filter", &globalSuperTightHalo2016Filter, "globalSuperTightHalo2016Filter/F");
@@ -1990,6 +1991,7 @@ int main(int argc, char** argv)
         Bool_t Flag_HBHENoiseFilter = 1;
         Bool_t Flag_HBHENoiseIsoFilter = 1;
         Bool_t Flag_eeBadScFilter = 1;
+        Bool_t Flag_ecalBadCalibFilterV2 = 1;
         Bool_t Flag_EcalDeadCellTriggerPrimitiveFilter = 1;
         Bool_t Flag_goodVertices = 1;
         Bool_t Flag_globalSuperTightHalo2016Filter = 1;
@@ -2027,6 +2029,7 @@ int main(int argc, char** argv)
           inputtree->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter);
           inputtree->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter);
           inputtree->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter);
+          inputtree->SetBranchAddress("Flag_ecalBadCalibFilterV2", &Flag_ecalBadCalibFilterV2);
           inputtree->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter);
           inputtree->SetBranchAddress("Flag_goodVertices", &Flag_goodVertices);
           inputtree->SetBranchAddress("Flag_globalSuperTightHalo2016Filter", &Flag_globalSuperTightHalo2016Filter);
@@ -3316,13 +3319,14 @@ int main(int argc, char** argv)
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
           eeBadScFilter                       = Flag_eeBadScFilter;
+          ecalBadCalibFilterV2                = Flag_ecalBadCalibFilterV2;
           EcalDeadCellTriggerPrimitiveFilter  = Flag_EcalDeadCellTriggerPrimitiveFilter;
           goodVertices                        = Flag_goodVertices;
-          globalSuperTightHalo2016Filter           = Flag_globalSuperTightHalo2016Filter;
+          globalSuperTightHalo2016Filter      = Flag_globalSuperTightHalo2016Filter;
 //          badMuonMoriond2017                  = Flag_badMuonMoriond2017;
 //          badCloneMuonMoriond2017             = Flag_badCloneMuonMoriond2017;
-          BadPFMuonFilter                       = Flag_BadPFMuonFilter;
-          BadChargedCandidateFilter              = Flag_BadChargedCandidateFilter;
+          BadPFMuonFilter                     = Flag_BadPFMuonFilter;
+          BadChargedCandidateFilter           = Flag_BadChargedCandidateFilter;
 
           // Filter Efficiency
           if(filterEfficiencyH != nullptr)
@@ -3527,11 +3531,12 @@ int main(int argc, char** argv)
             //if ( METFilters                         != 1 ) continue;
             if ( goodVertices                       != 1 ) continue;
             if (!process.issignal())
-              if ( globalSuperTightHalo2016Filter          != 1 ) continue;
+              if ( globalSuperTightHalo2016Filter   != 1 ) continue;
             if ( HBHENoiseFilter                    != 1 ) continue;
             if ( HBHENoiseIsoFilter                 != 1 ) continue;
             if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
-            if ( BadPFMuonFilter                      != 1 ) continue;
+            if ( BadPFMuonFilter                    != 1 ) continue;
+            if ( ecalBadCalibFilterV2               != 1 ) continue;
             //if (process.isdata())
               //if ( eeBadScFilter                      != 1 ) continue;
             // Should probably only use 1 of these two
