@@ -12,12 +12,12 @@
           "tag":"Data_2017B_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":4794,
-          "filesPerPart":25,
+          "recordedLumi":1,
+          "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017B_17Nov2017/",
-              "split":317
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/SingleElectron_Run2017B_25Oct2019",
+              "split":19
             }
           ]
         },
@@ -25,12 +25,12 @@
           "tag":"Data_2017C_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":9631,
-          "filesPerPart":25,
+          "recordedLumi":1,
+          "filesPerPart":9,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017C_17Nov2017",
-              "split":427
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/SingleElectron_Run2017C_25Oct2019",
+              "split":45
             }
           ]
         },
@@ -38,12 +38,12 @@
           "tag":"Data_2017D_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":4248,
-          "filesPerPart":25,
+          "recordedLumi":1,
+          "filesPerPart":6,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017D_17Nov2017",
-              "split":347
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/SingleElectron_Run2017D_25Oct2019",
+              "split":28
             }
           ]
         },
@@ -51,12 +51,12 @@
           "tag":"Data_2017E_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":9314,
-          "filesPerPart":25,
+          "recordedLumi":1,
+          "filesPerPart":11,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017E_17Nov2017",
-              "split":427
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/SingleElectron_Run2017E_25Oct2019",
+              "split":56
             }
           ]
         },
@@ -64,12 +64,12 @@
           "tag":"Data_2017F_SingleEl",
           "xsec":1.0,
           "br":1.0,
-          "recordedLumi":13539,
-          "filesPerPart":25,
+          "recordedLumi":41523,
+          "filesPerPart":9,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/SingleElectron_Run2017F_17Nov2017",
-              "split":396
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/SingleElectron_Run2017F_25Oct2019",
+              "split":46
             }
           ]
         }
