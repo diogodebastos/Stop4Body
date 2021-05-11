@@ -173,6 +173,7 @@ int main(int argc, char** argv)
   bool doLooseLeptons = false;
   bool doPromptTagging = false;
   bool doJetHT = false;
+  bool doSingleEl = false;
   bool noTrim = false;
   int part = -1;
   int year = 0;
@@ -252,6 +253,9 @@ int main(int argc, char** argv)
     if(argument == "--doJetHT")
       doJetHT = true;
 
+    if(argument == "--doSingleEl")
+      doSingleEl = true;
+
     if(argument == "--bTagCalibrationFile")
       bTagCalibrationFile = argv[++i];
 
@@ -281,7 +285,7 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  if(doJetHT)
+  if(doJetHT || doSingleEl)
   {
     MIN_MET = 0;
   }
@@ -339,7 +343,7 @@ int main(int argc, char** argv)
   }
   // For quicker DEBUGGING or to run FakeRate because we don't use b-tag SFs
   //bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
-  if(doJetHT){
+  if(doJetHT || doSingleEl){
     bTagCalibrationFile = "../data/CSVv2_Moriond17_B_H.csv";
   }
 
@@ -1718,8 +1722,12 @@ int main(int argc, char** argv)
         bdttree->Branch("HLT_PFHT780", &HLT_PFHT780, "HLT_PFHT780/F");
         bdttree->Branch("HLT_PFHT1050", &HLT_PFHT1050, "HLT_PFHT1050/F");
       }
-      Float_t HLT_Ele;               bdttree->Branch("HLT_Ele",               &HLT_Ele,               "HLT_Ele/F"              );
-      Float_t HLT_Mu;                bdttree->Branch("HLT_Mu",                &HLT_Mu,                "HLT_Mu/F"               );
+      // 2017
+      Float_t HLT_Mu27; bdttree->Branch("HLT_Mu27",&HLT_Mu27,"HLT_Mu27/F");
+      Float_t HLT_el35; bdttree->Branch("HLT_el35",&HLT_el35,"HLT_el35/F");
+      // 2018
+      Float_t HLT_Mu24; bdttree->Branch("HLT_Mu24",&HLT_Mu24,"HLT_Mu24/F");
+      Float_t HLT_el32; bdttree->Branch("HLT_el32",&HLT_el32,"HLT_el32/F");
 
       Float_t METFilters; bdttree->Branch("METFilters", &METFilters, "METFilters/F");
       Float_t HBHENoiseFilter; bdttree->Branch("HBHENoiseFilter", &HBHENoiseFilter,"HBHENoiseFilter/F");
@@ -1979,6 +1987,8 @@ int main(int argc, char** argv)
         Bool_t HLT_PFMET120_PFMHT120_IDTight;
         Bool_t HLT_IsoMu24;
         Bool_t HLT_IsoMu27;
+        Bool_t HLT_Ele32_WPTight_Gsf;
+        Bool_t HLT_Ele35_WPTight_Gsf;
         //TODO: This should be updated for all samples after the next heppy run
         Bool_t HLT_PFHT780_input;
         Bool_t HLT_PFHT1050_input;
@@ -2009,6 +2019,8 @@ int main(int argc, char** argv)
           else { // 2017 && 2018 HLT
             inputtree->SetBranchAddress("HLT_IsoMu24", &HLT_IsoMu24);
             inputtree->SetBranchAddress("HLT_IsoMu27", &HLT_IsoMu27);
+            inputtree->SetBranchAddress("HLT_Ele32_WPTight_Gsf", &HLT_Ele32_WPTight_Gsf);
+            inputtree->SetBranchAddress("HLT_Ele35_WPTight_Gsf", &HLT_Ele35_WPTight_Gsf);
             //inputtree->SetBranchAddress("HLT_PFMET100_PFMHT100_IDTight_PFHT60", &HLT_PFMET100_PFMHT100_IDTight_PFHT60);
             inputtree->SetBranchAddress("HLT_PFMET110_PFMHT110_IDTight", &HLT_PFMET110_PFMHT110_IDTight);
             inputtree->SetBranchAddress("HLT_PFMET120_PFMHT120_IDTight", &HLT_PFMET120_PFMHT120_IDTight);
@@ -3314,8 +3326,10 @@ int main(int argc, char** argv)
            HLT_PFHT1050                        = HLT_PFHT1050_input;
           }
 
-          //HLT_Ele                             = HLT_Ele24_eta2p1_WPLoose_Gsf;
-          //HLT_Mu                              = HLT_IsoMu24;
+          HLT_Mu24                            = HLT_IsoMu24;
+          HLT_Mu27                            = HLT_IsoMu27;
+          HLT_el32                            = HLT_Ele32_WPTight_Gsf;
+          HLT_el35                            = HLT_Ele35_WPTight_Gsf;
           METFilters                          = Flag_METFilters;
           HBHENoiseFilter                     = Flag_HBHENoiseFilter;
           HBHENoiseIsoFilter                  = Flag_HBHENoiseIsoFilter;
@@ -3487,6 +3501,11 @@ int main(int argc, char** argv)
             if(!static_cast<bool>(MET_pt < 60))
               continue;
           }
+          if(doSingleEl)
+          {
+            if(!static_cast<bool>(Jet1Pt >= ISR_JET_PT))
+              continue;
+          }
           //
           if(!noSkim)
           {
@@ -3563,6 +3582,14 @@ int main(int argc, char** argv)
               else if (process.isdata() && doJetHT) {
                 if(HLT_PFHT1050 != 0)
                   passHLT = true;
+              }
+              else if (process.isdata() && doSingleEl) {
+                if(year==2017 && HLT_el35 != 0){
+                  passHLT = true;
+                }
+                if(year==2018 && HLT_el32 != 0){
+                  passHLT = true;
+                }
               }
               else
                 passHLT = true;
