@@ -7,39 +7,40 @@
 <use name="CondFormats/BTauObjects"/>
 <use name="CondTools/BTau"/>
 <environment>
-  <bin name="processSamples"          file="processSamples.cc"></bin>
-  <bin name="makePseudoData"          file="makePseudoData.cc"></bin>
-  <bin name="trainMVA"                file="trainMVA.cc">      </bin>
-  <bin name="applyMVA"                file="applyMVA.cc">      </bin>
-  <bin name="applyMVAFile"            file="applyMVAFile.cc">      </bin>
-  <bin name="getYields"               file="getYields.cc">     </bin>
-  <bin name="BDTStudy"                file="BDTStudy.cc">      </bin>
-  <bin name="mergeJSONs"              file="mergeJSONs.cc">    </bin>
-  <bin name="splitTrainingTest"       file="splitTrainingTest.cc"> </bin>
-  <bin name="splitFileTrainingTest"   file="splitFileTrainingTest.cc"> </bin>
-  <bin name="makePlots"               file="makePlots.cc"> </bin>
-  <bin name="makeTwoDPlots"           file="makeTwoDPlots.cc"> </bin>
-  <bin name="getPUWeight"             file="getPUWeight.cc"> </bin>
-  <bin name="getDDEstimate"           file="getDDEstimate.cc"> </bin>
-  <bin name="getFakeRateRatio"        file="getFakeRateRatio.cc"> </bin>
-  <bin name="fakeRateClosure"         file="fakeRateClosure.cc"> </bin>
-  <bin name="buildJobs"               file="buildJobs.cc"> </bin>
-  <bin name="fakeSystematics"         file="fakeSystematics.cc"> </bin>
-  <bin name="skimmer"                 file="skimmer.cc"> </bin>
-  <bin name="compareFiles"            file="compareFiles.cc"> </bin>
-  <bin name="getLHEweightScales"      file="getLHEweightScales.cc"> </bin>
-  <bin name="mergeLHEweightScales"    file="mergeLHEweightScales.cc"> </bin>
-  <bin name="getEventList"            file="getEventList.cc"> </bin>
-  <bin name="getEfficiencyMap"        file="getEfficiencyMap.cc"> </bin>
+  <bin name="processSamples"           file="processSamples.cc">           </bin>
+  <bin name="makePseudoData"           file="makePseudoData.cc">           </bin>
+  <bin name="trainMVA"                 file="trainMVA.cc">                 </bin>
+  <bin name="applyMVA"                 file="applyMVA.cc">                 </bin>
+  <bin name="applyMVAFile"             file="applyMVAFile.cc">             </bin>
+  <bin name="getYields"                file="getYields.cc">                </bin>
+  <bin name="BDTStudy"                 file="BDTStudy.cc">                 </bin>
+  <bin name="mergeJSONs"               file="mergeJSONs.cc">               </bin>
+  <bin name="splitTrainingTest"        file="splitTrainingTest.cc">        </bin>
+  <bin name="splitFileTrainingTest"    file="splitFileTrainingTest.cc">    </bin>
+  <bin name="makePlots"                file="makePlots.cc">                </bin>
+  <bin name="makeTwoDPlots"            file="makeTwoDPlots.cc">            </bin>
+  <bin name="getPUWeight"              file="getPUWeight.cc">              </bin>
+  <bin name="getDDEstimate"            file="getDDEstimate.cc">            </bin>
+  <bin name="getFakeRateRatio"         file="getFakeRateRatio.cc">         </bin>
+  <bin name="fakeRateClosure"          file="fakeRateClosure.cc">          </bin>
+  <bin name="buildJobs"                file="buildJobs.cc">                </bin>
+  <bin name="fakeSystematics"          file="fakeSystematics.cc">          </bin>
+  <bin name="skimmer"                  file="skimmer.cc">                  </bin>
+  <bin name="compareFiles"             file="compareFiles.cc">             </bin>
+  <bin name="getLHEweightScales"       file="getLHEweightScales.cc">       </bin>
+  <bin name="mergeLHEweightScales"     file="mergeLHEweightScales.cc">     </bin>
+  <bin name="getEventList"             file="getEventList.cc">             </bin>
+  <bin name="getEfficiencyMap"         file="getEfficiencyMap.cc">         </bin>
   <bin name="getYieldsWithSystematics" file="getYieldsWithSystematics.cc"> </bin>
-  <bin name="getDDSystematics"        file="getDDSystematics.cc"> </bin>
-  <bin name="getBDTcut"               file="getBDTcut.cc"> </bin>
-  <bin name="doLeptonStudiesEffs"     file="doLeptonStudiesEffs.cc"> </bin>
-  <bin name="getJSONlumis"            file="getJSONlumis.cc"> </bin>
-  <bin name="preProcessSamples"       file="preProcessSamples.cc"> </bin>
-  <bin name="getWjetsGenWpT"          file="getWjetsGenWpT.cc"> </bin>
-  <bin name="genDataCardsForCLs"      file="genDataCardsForCLs.cc"> </bin>
-  <bin name="finalYieldsUncTable"      file="finalYieldsUncTable.cc"> </bin>
+  <bin name="getDDSystematics"         file="getDDSystematics.cc">         </bin>
+  <bin name="getBDTcut"                file="getBDTcut.cc">                </bin>
+  <bin name="doLeptonStudiesEffs"      file="doLeptonStudiesEffs.cc">      </bin>
+  <bin name="getJSONlumis"             file="getJSONlumis.cc">             </bin>
+  <bin name="preProcessSamples"        file="preProcessSamples.cc">        </bin>
+  <bin name="getWjetsGenWpT"           file="getWjetsGenWpT.cc">           </bin>
+  <bin name="genDataCardsForCLs"       file="genDataCardsForCLs.cc">       </bin>
+  <bin name="finalYieldsUncTable"      file="finalYieldsUncTable.cc">      </bin>
+  <bin name="getTriggerEfficiency"     file="getTriggerEfficiency.cc">     </bin>
 </environment>
 
 <Flags CXXFLAGS="-g"/>
