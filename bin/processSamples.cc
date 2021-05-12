@@ -1993,7 +1993,7 @@ int main(int argc, char** argv)
         Bool_t HLT_PFHT780_input;
         Bool_t HLT_PFHT1050_input;
 //        Bool_t HLT_PFMET100_PFMHT100_IDTight_PFHT60;
-        Bool_t HLT_PFMET120_PFMHT120_IDTight_PFHT60 = 1;
+        Bool_t HLT_PFMET120_PFMHT120_IDTight_PFHT60;
         Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight;
         Bool_t HLT_PFMETNoMu120_PFMHTNoMu120_IDTight_PFHT60;
 
@@ -3312,7 +3312,7 @@ int main(int argc, char** argv)
            HLT_PFMET90_PFMHT90                 = HLT_PFMET90_PFMHT90_IDTight;
            HLT_PFMET100_PFMHT100               = HLT_PFMET100_PFMHT100_IDTight;
 //           HLT_Ele                             = HLT_Ele25_eta2p1_WPLoose_Gsf;
-           HLT_Mu                              = HLT_IsoMu27;
+           //HLT_Mu                              = HLT_IsoMu27;
           }
           else //2017 HLT
           {
@@ -3564,7 +3564,7 @@ int main(int argc, char** argv)
             if(!swap) // Normally use the MET triggers, but only for data
             {
              //TODO: This should be updated for all samples after the next heppy run
-              if(process.isdata() && !doJetHT)
+              if(process.isdata() && !doJetHT && !doSingleEl)
               {
                 /* Using onlu Unprescaled triggers for 2017 Data
                 if(HLT_PFMET90_PFMHT90_IDTight != 0)

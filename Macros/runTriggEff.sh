@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. setupJSONs.sh
+#. setupJSONs.sh
 . setupPaths.sh
 
-getTriggerEfficiency --josn ${JSON_PATH}/DataSingleElectron.josn --inDir  --year %{YEAR}
+getTriggerEfficiency --json ${JSON_PATH}/DataSingleElectron.json --inDir ${NTUPLE_DIR} --year ${YEAR} --vars variables_triggerEff.json --cuts variables_triggerEff.json
