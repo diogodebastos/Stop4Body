@@ -2913,7 +2913,11 @@ int main(int argc, char** argv)
             //if(process.tag() == "WJets" || process.tag() == "WNJets" || process.tag() == "WJetsNLO")
               EWKISRweight = EWKISRCParam * EWKISRweightFromISRpTSys(LepPt, lep_phi, MetDou, MetPhi);
             // For ISR, assume syst 50%
+            /*
             if(process.tag() == "ttbar" || process.tag() == "ttbar_lep" || process.tag() == "ttbar_lo" || process.issignal())
+              ISRweight = ISRCParam * ISRweightFromNISRJetSys(nIsr);
+              */
+            if(process.issignal())
               ISRweight = ISRCParam * ISRweightFromNISRJetSys(nIsr);
             // TODO: missing tt_pow reweighting https://twiki.cern.ch/twiki/bin/viewauth/CMS/SUSRecommendationsMoriond17
             if (year==2017)
