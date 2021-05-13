@@ -9,13 +9,13 @@
       "files":[
         {
           "tag":"TTJets",
-          "xsec": 1.0,
+          "xsec": 364.4,
           "br": 1.0,
-          "filesPerPart":3,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2020Apr20/TTJets",
-              "split":108
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/TTSemi_pow/",
+              "split":67
             }
           ]
         }
