@@ -704,7 +704,7 @@ int main(int argc, char** argv)
       {
         // Performing dummy computations just so that the placeholders for all the uncertainties are created
         std::cout << "\t        trigger" << std::endl;
-        triggerEfficiency = triggerEfficiencyFromMETSys(200.0);
+        triggerEfficiency = triggerEfficiencyFromMETSys(200.0,2017);
         triggerEfficiency.Systematic("JES_Up");
         triggerEfficiency.Systematic("JES_Down");
         triggerEfficiency.Systematic("JER_Up");
@@ -2907,7 +2907,7 @@ int main(int argc, char** argv)
             //bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagCSVV2, Jet_hadronFlavour);
             bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagDeepB, Jet_hadronFlavour);
             //bTagSF = getBTagSFSys(bReader, validJets, jetPt, Jet_eta, Jet_btagDeepFlavB, Jet_hadronFlavour);
-            triggerEfficiency = triggerEfficiencyFromMETSys(MetDou);
+            triggerEfficiency = triggerEfficiencyFromMETSys(MetDou, year);
             // For EWK ISR, assume syst 100%
             if(process.tag() == "WJets" || process.tag() == "WNJets")
             //if(process.tag() == "WJets" || process.tag() == "WNJets" || process.tag() == "WJetsNLO")

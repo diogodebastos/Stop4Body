@@ -240,16 +240,43 @@ ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueW
 }
 
 // Taken from Ivan's presentation, here: https://cernbox.cern.ch/index.php/s/xvQ8Nw48efsSdb8
-doubleUnc triggerEfficiencyFromMET(double met_pt)
+doubleUnc triggerEfficiencyFromMET(double met_pt, int year)
 {
   double val = 0, unc = 0;
-
-  double par0    = 0.9899;
-  double par1    = 109.8;
-  double par2    = 94.26;
-  double par0err = 0.0006464;
-  double par1err = 2.225;
-  double par2err = 2.443;
+  double par0;
+  double par1;
+  double par2;
+  double par0err;
+  double par1err;
+  double par2err;
+  
+  if(year==2016)
+  {
+    par0    = 0.9899;
+    par1    = 109.8;
+    par2    = 94.26;
+    par0err = 0.0006464;
+    par1err = 2.225;
+    par2err = 2.443;
+  }
+  else if(year==2017)
+  {
+    par0    = 0.9713;
+    par1    = 169.06;
+    par2    = 65.45;
+    par0err = 0.0070;
+    par1err = 3.92;
+    par2err = 6.54;
+  } 
+  else if(year==2018)
+  {
+    par0    = 0.9899;
+    par1    = 109.8;
+    par2    = 94.26;
+    par0err = 0.0006464;
+    par1err = 2.225;
+    par2err = 2.443;
+  }
 
   double recenterMet = (met_pt - par1)/par2;
 

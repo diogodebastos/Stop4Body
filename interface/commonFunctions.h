@@ -97,7 +97,7 @@ float DeltaR(double, double ,double ,double );
 
 bool replace(std::string&, const std::string&, const std::string&);
 
-doubleUnc triggerEfficiencyFromMET(double);
+doubleUnc triggerEfficiencyFromMET(double, int);
 doubleUnc WISRScaleFactorFromLepMet(double lep_pt, double lep_phi, double met_pt, double met_phi);
 doubleUnc ISRweightFromNISRJet(int nISRJet);
 doubleUnc EWKISRweightFromISRpT(double ISRpT);
