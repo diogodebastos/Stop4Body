@@ -95,14 +95,16 @@ int main(int argc, char** argv)
   else if(year==2018){
   	auxTrigger = "HLT_el32";
   }
-  std::string selection = "HT>200 && Jet1Pt > 100 && LepPt > 45";
-  std::string triggers = "HLT_PFMET120_PFMHT120";
-  if(year==2017){
-  	triggers += " || HLT_PFMET120_PFMHT120_PFHT60";
-  }
+  std::string selection = "HT>200 && Jet1Pt > 100 && LepPt > 40";
+  std::string triggers = "(HLT_PFMET120_PFMHT120 || HLT_PFMET120_PFMHT120_PFHT60)";
 
   std::string sel = auxTrigger + " && " + selection;
   std::string trigSel = auxTrigger + " && " + selection + " && " + triggers;
+
+  if(verbose){
+    std::cout << "Selection:   " << sel << std::endl;
+    std::cout << "Trigger Sel: " << trigSel << std::endl;
+  }
 
   if(verbose)
     std::cout << "Splitting samples according to type" << std::endl;
@@ -133,7 +135,7 @@ int main(int argc, char** argv)
   if(verbose)
     std::cout << "Drawing canvas" << std::endl;
 
-  TCanvas c1("DEBUG", "", 1200, 1350);
+  TCanvas c1("DEBUG", "", 700, 500);
   gStyle->SetOptStat(0);
   c1.cd();
   c1.SetGridx();
@@ -145,10 +147,16 @@ int main(int argc, char** argv)
   hlt->Divide(psl);
   hlt->SetMarkerStyle(4);
   hlt->SetMarkerColor(4);
-  hlt->Draw();
+  //hlt->SetLineColor(0);
+  hlt->Draw("");
 
   TF1  *f1 = new TF1("f1","[0]*0.5*(1+TMath::Erf((x-[1])/[2]))");
-  hlt->Fit(f1,"","",170,500);
+  f1->SetParameter(0,0.98);
+  f1->SetParameter(1,109);
+  f1->SetParameter(2,94);
+  hlt->Fit(f1,"","",200,500);
+  hlt->Draw("");
+  //f1->Draw("");
 
   TPaveText* T = new TPaveText(0.6,0.55,0.85,0.4, "NDC");
   T->SetFillColor(0);
@@ -156,9 +164,9 @@ int main(int argc, char** argv)
   T->SetLineColor(0);
   T->SetTextAlign(12);
   Char_t chindf[80];
-  sprintf(chindf,"Total : #chi^{2}/NDF = %.2f",f1->GetChisquare()/f1->GetNDF());
+  sprintf(chindf,"#chi^{2}/NDF = %.2f",f1->GetChisquare()/f1->GetNDF());
   Char_t p0[80];
-  sprintf(p0,"p0 = %.2f #pm %.2f",f1->GetParameter(0),f1->GetParError(0));
+  sprintf(p0,"p0 = %.4f #pm %.4f",f1->GetParameter(0),f1->GetParError(0));
   Char_t p1[80];
   sprintf(p1,"p1 = %.2f #pm %.2f",f1->GetParameter(1),f1->GetParError(1));
   Char_t p2[80];
