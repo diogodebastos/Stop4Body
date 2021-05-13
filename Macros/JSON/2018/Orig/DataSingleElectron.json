@@ -17,7 +17,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021May08/EGamma_Run2018A_25Oct2019/",
-              "split":1
+              "split":49
             }
           ]
         },
@@ -30,7 +30,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021May08/EGamma_Run2018B_25Oct2019",
-              "split":1
+              "split":29
             }
           ]
         },
@@ -43,7 +43,7 @@
           "paths":[
             {
               "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021May08/EGamma_Run2018C_25Oct2019",
-              "split":1
+              "split":26
             }
           ]
         },
