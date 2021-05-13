@@ -243,23 +243,16 @@ ValueWithSystematics<double> getBTagSFSys(BTagCalibrationReader& bReader, ValueW
 doubleUnc triggerEfficiencyFromMET(double met_pt, int year)
 {
   double val = 0, unc = 0;
-  double par0;
-  double par1;
-  double par2;
-  double par0err;
-  double par1err;
-  double par2err;
   
-  if(year==2016)
-  {
-    par0    = 0.9899;
-    par1    = 109.8;
-    par2    = 94.26;
-    par0err = 0.0006464;
-    par1err = 2.225;
-    par2err = 2.443;
-  }
-  else if(year==2017)
+  // year == 2016
+  double  par0    = 0.9899;
+  double  par1    = 109.8;
+  double  par2    = 94.26;
+  double  par0err = 0.0006464;
+  double  par1err = 2.225;
+  double  par2err = 2.443;
+
+  if(year==2017)
   {
     par0    = 0.9713;
     par1    = 169.06;
@@ -291,9 +284,9 @@ doubleUnc triggerEfficiencyFromMET(double met_pt, int year)
   doubleUnc retVal(val, unc);
   return retVal;
 }
-ValueWithSystematics<double> triggerEfficiencyFromMETSys(double met_pt)
+ValueWithSystematics<double> triggerEfficiencyFromMETSys(double met_pt, int year)
 {
-  doubleUnc trigEff = triggerEfficiencyFromMET(met_pt);
+  doubleUnc trigEff = triggerEfficiencyFromMET(met_pt,year);
   double val = trigEff.value();
   double unc = trigEff.uncertainty();
 
@@ -305,13 +298,13 @@ ValueWithSystematics<double> triggerEfficiencyFromMETSys(double met_pt)
   return retVal;
 }
 
-ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double> met_pt)
+ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double> met_pt, int year)
 {
-  ValueWithSystematics<double> retVal = triggerEfficiencyFromMETSys(met_pt.Value());
+  ValueWithSystematics<double> retVal = triggerEfficiencyFromMETSys(met_pt.Value(), year);
 
   for(auto& syst: met_pt.Systematics())
   {
-    retVal.Systematic(syst) = triggerEfficiencyFromMET(met_pt.Systematic(syst)).value();
+    retVal.Systematic(syst) = triggerEfficiencyFromMET(met_pt.Systematic(syst),year).value();
   }
 
   return retVal;

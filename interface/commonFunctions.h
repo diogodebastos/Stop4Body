@@ -112,8 +112,8 @@ doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
 doubleUnc stopCrossSectionNNLO(int stopM);
 doubleUnc stopCrossSectionNLO(double stopM, double lspM);
 
-ValueWithSystematics<double> triggerEfficiencyFromMETSys(double);
-ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double>);
+ValueWithSystematics<double> triggerEfficiencyFromMETSys(double,int);
+ValueWithSystematics<double> triggerEfficiencyFromMETSys(ValueWithSystematics<double>, int);
 ValueWithSystematics<double> WISRScaleFactorFromLepMetSys(double lep_pt, double lep_phi, double met_pt, double met_phi);
 ValueWithSystematics<double> getGenWptWeight(double genW_pt, std::string sample, int year);
 ValueWithSystematics<double> ISRweightFromNISRJetSys(int nISRJet);
