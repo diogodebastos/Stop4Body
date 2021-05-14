@@ -263,12 +263,12 @@ doubleUnc triggerEfficiencyFromMET(double met_pt, int year)
   } 
   else if(year==2018)
   {
-    par0    = 0.9899;
-    par1    = 109.8;
-    par2    = 94.26;
-    par0err = 0.0006464;
-    par1err = 2.225;
-    par2err = 2.443;
+    par0    = 0.9739;
+    par1    = 174.79;
+    par2    = 57.70;
+    par0err = 0.0056;
+    par1err = 2.67;
+    par2err = 4.58;
   }
 
   double recenterMet = (met_pt - par1)/par2;
