@@ -132,7 +132,7 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/allMC_LO.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
  mergeJSONs $JSON_PATH/allMC-QCD-en.json             $JSON_PATH/QCD_en.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
 
- mergeJSONs $JSON_PATH/allMC_amcatnlo.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar_amcatnlo.json $JSON_PATH/WJetsNLO.json
+ mergeJSONs $JSON_PATH/allMC_amcatnlo.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/TTbar_amcatnlo.json $JSON_PATH/WJetsNLO.json
 
  mergeJSONs $JSON_PATH/otherMC2_QCD_Mu_en.json                 $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/QCD_Mu.json $JSON_PATH/Orig/TTGJets.json $JSON_PATH/Orig/TTW_LO.json $JSON_PATH/Orig/TTWToLNu.json $JSON_PATH/Orig/TTZToLLNuNu.json
 
