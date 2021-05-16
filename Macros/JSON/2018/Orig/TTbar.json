@@ -8,17 +8,41 @@
       "label":"t#bar{t}",
       "files":[
         {
-          "tag":"TTJets",
-          "xsec": 1.0,
+          "tag":"TTSemi_pow",
+          "xsec": 364.4,
           "br": 1.0,
-          "filesPerPart":2,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/TTJets",
-              "split":105
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021May08/TTSemi_pow/",
+              "split":94
             }
           ]
-        }
+        },
+        {
+          "tag":"TTLep_pow",
+          "xsec":87.31,
+          "br":1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021May08/TTLep_pow/",
+              "split":1230
+            }
+          ]
+        },
+        {
+          "tag":"TTHad_pow",
+          "xsec":380.1,
+          "br":1.0,
+          "filesPerPart":5,
+          "paths":[
+            {
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2021May08/TTHad_pow/",
+              "split":2498
+            }
+          ]
+        }     
       ]
     }
   ]

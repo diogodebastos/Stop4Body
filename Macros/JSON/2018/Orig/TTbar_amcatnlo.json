@@ -11,11 +11,11 @@
           "tag":"TTJets",
           "xsec": 1.0,
           "br": 1.0,
-          "filesPerPart":5,
+          "filesPerPart":2,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTJets_madgraph",
-              "split":260
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body18/Autumn18_Prod2020Jan06/TTJets",
+              "split":105
             }
           ]
         }
