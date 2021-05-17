@@ -212,6 +212,7 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/puTests.json            $JSON_PATH/Orig/TTbar.json $JSON_PATH/Orig/DataJetHT.json
  # Make the JSONs for plotting
  mergeJSONs $JSON_PATH/plot${YEAR}.json           $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_amcatnlo.json           $JSON_PATH/allMC_amcatnlo.json $JSON_PATH/DataMetHT.json
  mergeJSONs $JSON_PATH/plot${YEAR}_QCD_Mu_en.json    $JSON_PATH/allMC_QCD_Mu_en.json $JSON_PATH/DataMetHT.json
  mergeJSONs $JSON_PATH/plot${YEAR}_lep_Sig300_270.json       $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json         $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
  mergeJSONs $JSON_PATH/plot${YEAR}_lep.json       $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json         $JSON_PATH/stop300.json $JSON_PATH/stop350.json $JSON_PATH/stop500.json
@@ -221,6 +222,7 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/plot${YEAR}-inj-quick.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/Wjets.json  $JSON_PATH/stop500.json
 
  mergeJSONs $JSON_PATH/plot${YEAR}-inj-2SPs.json       $JSON_PATH/plot${YEAR}.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
+ mergeJSONs $JSON_PATH/plot${YEAR}-inj-2SPs_amcatnlo.json       $JSON_PATH/plot${YEAR}_amcatnlo.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
 
  mergeJSONs $JSON_PATH/plot${YEAR}-inj-2SPs-WJetsHT.json       $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Orig/WJetsHT.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/SignalPoints/Sig_500_490.json
 
