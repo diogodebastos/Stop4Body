@@ -1,48 +1,48 @@
 {
   "lines":[
     {
-     "tag":"ttbar",
-     "isdata":false,
-     "color":614,
-     "lcolor":1,
-     "label":"t#bar{t}",
-     "files":[
-       {
-          "tag":"TTLep_pow",
-          "xsec":1.0,
-          "br":1.0,
-          "filesPerPart":5,
+      "tag":"ttbar",
+      "isdata":false,
+      "color":614,
+      "lcolor":1,
+      "label":"t#bar{t}",
+      "files":[
+        {
+          "tag":"TTSemi_pow",
+          "xsec": 364.4,
+          "br": 1.0,
+          "filesPerPart":1,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTLep_pow",
-              "split":1230
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/TTSemi_pow/",
+              "split":67
             }
           ]
         },
         {
-          "tag":"TTSemi_pow",
-          "xsec":1.0,
+          "tag":"TTLep_pow",
+          "xsec":87.31,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTSemi_pow",
-              "split":2032
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/TTLep_pow/",
+              "split":26
             }
           ]
         },
         {
           "tag":"TTHad_pow",
-          "xsec":1.0,
+          "xsec":380.1,
           "br":1.0,
           "filesPerPart":5,
           "paths":[
             {
-              "path":"/gstore/t3cms/store/user/dchasque/Stop4Body17/Fall17ProdNov10/ProdNov10/TTHad_pow",
-              "split":2498
+              "path":"/gstore/t3cms/store/user/dchasque/nanoAOD/Stop4Body17/Fall17_Prod2021May06/TTHad_pow/",
+              "split":51
             }
           ]
-        }
+        }     
       ]
     }
   ]
