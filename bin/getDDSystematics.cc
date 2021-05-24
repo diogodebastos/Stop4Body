@@ -793,7 +793,6 @@ double getFRsysRawClosure(SampleReader &Data, SampleReader &MC, std::string loos
   //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight);
 
   if(verbose){
-    std::cout << "/* Fake-rate Systematics: Non-Closure */" << std::endl;
     std::cout << "NTightNonPrompt: " << NTightNonPrompt <<std::endl;
     std::cout << "NDDnonPromptMC: " << NDDnonPromptMC <<std::endl;
     std::cout << "diff: " << diff <<std::endl;
