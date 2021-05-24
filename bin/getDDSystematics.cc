@@ -583,7 +583,12 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   doubleUnc D = RinSR - RinCR;
   doubleUnc NDDinSR = naiveDD(toEstimate, Data, MC, baseSelection, signalRegion, controlRegion, xEnrich, mcWeight);
 
-  double diffD = std::pow(D.value(),2) - std::pow(D.uncertainty(),2);
+  double D2 = std::pow(D.value(),2);
+  double dD2 = std::pow(D.uncertainty(),2);
+  doubleUnc newSysUnDD = std::sqrt(std::max(D2,dD2));
+  doubleUnc newRelSysDD = newSysUnDD/NDDinSR;
+
+  double diffD = D2 - dD2;
   doubleUnc SysUnDD = std::sqrt(std::max(diffD, std::pow(NDDinSR.uncertainty(),2)));
 
   doubleUnc RelSysDD = SysUnDD/NDDinSR;
@@ -609,6 +614,11 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
     std::cout << "NDDinSRUncPow2: " << std::pow(NDDinSR.uncertainty(),2) << std::endl;
     std::cout << "SysUnDD: " << SysUnDD << std::endl;
     std::cout << "RelSysDD: " << RelSysDD.value()*100 << std::endl;
+    std::cout << "new SYS" << std::endl;
+    std::cout << "D2: " << D2 << std::endl;
+    std::cout << "dD2: " << dD2 << std::endl;
+    std::cout << "newSysUnDD: " << newSysUnDD << std::endl;
+    std::cout << "newRelSysDD: " << newRelSysDD.value()*100 << std::endl;    
     std::cout << std::endl;
   }
 
@@ -784,11 +794,15 @@ double getFRsysRawClosure(SampleReader &Data, SampleReader &MC, std::string loos
 
   doubleUnc diff = NDDnonPromptMC-NTightNonPrompt;
   doubleUnc sigDiff = std::sqrt(std::pow(NTightNonPrompt.uncertainty(),2)+std::pow(NDDnonPromptMC.uncertainty(),2));
+  doubleUnc newSysClosure = std::sqrt(std::max(std::pow(diff.value(),2),std::pow(sigDiff.value(),2)));
+  doubleUnc newrelSysUnc = newSysClosure/NDDnonPromptMC;
+
   //doubleUnc SysClosure = std::sqrt(std::max(std::pow(diff.value(),2)-std::pow(sigDiff.value(),2),0));
   double diffSquare = std::pow(diff.value(),2)-std::pow(sigDiff.value(),2);
   doubleUnc SysClosure = std::sqrt(std::max(diffSquare ,0.0));
   doubleUnc relSysUnc = SysClosure/NDDnonPromptMC;
   relSys = relSysUnc.value();
+  relSys = newrelSysUnc.value();
 
   //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight);
 
