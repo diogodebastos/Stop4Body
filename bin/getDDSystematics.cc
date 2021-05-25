@@ -312,15 +312,15 @@ int main(int argc, char** argv)
 
   // Load Systematics
   std::vector<std::string> systBase;
-  {
+  { 
+    systBase.push_back("normStWeight");
+    /*
     systBase.push_back("ISRweight_Bin1");
     systBase.push_back("ISRweight_Bin2");
     systBase.push_back("ISRweight_Bin3");
     systBase.push_back("ISRweight_Bin4");
     systBase.push_back("ISRweight_Bin5");
     systBase.push_back("ISRweight_Bin6");
-    systBase.push_back("normStWeight");
-    /*
     systBase.push_back("EWKISRweight_Bin1");
     systBase.push_back("EWKISRweight_Bin2");
     systBase.push_back("EWKISRweight_Bin3");
@@ -868,6 +868,10 @@ double getFRsysRawClosure(SampleReader &Data, SampleReader &MC, std::string loos
     std::cout << "relSys: " << relSys <<std::endl;
     std::cout << "" <<std::endl;
   }
+  std::cout << "Drawing table" << std::endl;
+  std::cout << "Rel sys: " << relSys*100 << " %" << std::endl;
+  std::cout << "(#GeV) & $N^{SR}_{Tight}(np)$  & $N^{SR}_{DDfake}(np)$ &  Closure ##" << std::endl;
+  std::cout << "dm & " << NTightNonPrompt << " & " << NDDnonPromptMC << " & " << relSys*100 << " #% ##" << std::endl;
   return relSys;
 }
 
