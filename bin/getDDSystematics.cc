@@ -34,6 +34,8 @@ doubleUnc getFRsysNU(SampleReader &, SampleReader &, std::string, std::string, c
 
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
+void drawDDsys1table(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
+void drawDDsys2table(std::string, doubleUnc, doubleUnc, doubleUnc, double);
 
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
@@ -487,6 +489,7 @@ int main(int argc, char** argv)
 // Ported from getDDEstimate.cc -> Might want to incorporate this function on commonFunctions.cc
 double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight, bool verbose)
 {
+  std::string name = toEstimate.tag();
   std::string SR = signalRegion + " && " + tightSelection + " && " + xEnrich  + " && " + baseSelection;
   std::string CR = controlRegion + " && " + tightSelection + " && " + xEnrich  + " && " + baseSelection;
 
@@ -553,7 +556,36 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
     std::cout << "RelSysDD: " << RelSysDD.value()*100 << std::endl;
     std::cout << std::endl;
   }
+
+  std::cout << "Drawing table" << std::endl;
+  std::cout << "Rel sys: " << RelSysDD.value()*100 << " %" << std::endl;
+
+  drawDDsys1table(name, NinCR, otherMCinCR, DatainCR, NinSR, NDDinSR, otherMCinSR, NPredinSR, DatainSR);
+
   return RelSysDD.value()*100;
+}
+
+void drawDDsys1table(std::string name, doubleUnc NinCR, doubleUnc otherMCinCR, doubleUnc DatainCR, doubleUnc NinSR, doubleUnc NDDinSR, doubleUnc otherMCinSR, doubleUnc NPredinSR, doubleUnc DatainSR){
+  std::string procTex = "";
+  if (name=="WJetsNLO")
+  {
+    procTex = "wjets";
+  }
+  else if (name=="ttbar")
+  {
+    procTex = "ttbar";
+  }
+  std::cout << "#hline" << std::endl;
+  std::cout << " & $N^{CR}(#" << procTex << ")$ & & $N^{CR}(Other)$ & & $N^{CR}(Data)$ ##" << std::endl;
+  std::cout << "#hline" << std::endl;
+  std::cout << "CR(#" << procTex << ") & " << NinCR << " & & " << otherMCinCR << " & & " << DatainCR << " ##" << std::endl;
+  std::cout << "#hline" << std::endl;
+  std::cout << " & $N^{SR}(#" << procTex << ")$ & $N^{SR}_{DD}(#" << procTex << ")$ & $N^{SR}(Other)$ & $N^{SR}(Predicted)$ & $N^{SR}(Data)$ ##" << std::endl;
+  std::cout << "#hline" << std::endl;
+  std::cout << "SR(#" << procTex << ") & " << NinSR << " & " << NDDinSR << " & " << otherMCinSR << " & " << NPredinSR << " & " << DatainSR << " ##" << std::endl;
+  std::cout << "#hline" << std::endl;
+
+  return;
 }
 
 double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight, bool verbose){
@@ -621,8 +653,27 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
     std::cout << "newRelSysDD: " << newRelSysDD.value()*100 << std::endl;    
     std::cout << std::endl;
   }
+  std::cout << "Drawing table" << std::endl;
+  std::cout << "Rel sys: " << newRelSysDD.value()*100 << " %" << std::endl;
+  void drawDDsys2table(name, RinCR, RinSR, D, newRelSysDD.value()*100);
 
   return RelSysDD.value()*100;
+}
+
+void drawDDsys2table(std::string name, doubleUnc RinCR, doubleUnc RinSR, doubleUnc D, double relSys){
+  std::string procTex = "";
+  if (name=="WJetsNLO")
+  {
+    procTex = "wjets";
+  }
+  else if (name=="ttbar")
+  {
+    procTex = "ttbar";
+  }
+  std::cout << "(#GeV) & $R^{CR}(#" << procTex << ")$ & $R^{SR}(#" << procTex << ")$ & $D$ & $Sys'_{DD}$ ##" << std::endl;
+  std::cout << "dm & " << RinCR << " & " << RinSR << " & " << D << " & " << relSys << " #% ##" << std::endl;
+
+  return;
 }
 
 doubleUnc fullDD(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string signalRegion, std::string controlRegion, std::string mcWeight)
