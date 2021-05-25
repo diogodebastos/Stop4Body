@@ -560,7 +560,7 @@ double methodOneDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   std::cout << "Drawing table" << std::endl;
   std::cout << "Rel sys: " << RelSysDD.value()*100 << " %" << std::endl;
 
-  drawDDsys1table(name, NinCR, otherMCinCR, DatainCR, NinSR, NDDinSR, otherMCinSR, NPredinSR, DatainSR);
+  drawDDsys1table(name, NinCR, otherMC, DatainCR, NinSR, NDDinSR, otherMCinSR, NPredinSR, DatainSR);
 
   return RelSysDD.value()*100;
 }
@@ -589,6 +589,7 @@ void drawDDsys1table(std::string name, doubleUnc NinCR, doubleUnc otherMCinCR, d
 }
 
 double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, SampleReader &MC, std::string baseSelection, std::string signalRegion, std::string controlRegion, std::string xEnrich, std::string mcWeight, bool verbose){
+  std::string name = toEstimate.tag();
   std::string SR = signalRegion + " && (isTight ==1) && " + xEnrich  + " && " + baseSelection;
   std::string CR = controlRegion + " && (isTight ==1) && " + xEnrich  + " && " + baseSelection;
   //std::string SR = signalRegion + " && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && " + xEnrich  + " && " + baseSelection;
@@ -655,7 +656,7 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   }
   std::cout << "Drawing table" << std::endl;
   std::cout << "Rel sys: " << newRelSysDD.value()*100 << " %" << std::endl;
-  void drawDDsys2table(name, RinCR, RinSR, D, newRelSysDD.value()*100);
+  drawDDsys2table(name, RinCR, RinSR, D, newRelSysDD.value()*100);
 
   return RelSysDD.value()*100;
 }
