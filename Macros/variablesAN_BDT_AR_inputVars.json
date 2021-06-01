@@ -1,14 +1,14 @@
 {
   "cuts":[
     {
-      "name":"PreselectionMVA_highDM",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110)",
-      "latex":"Preselection MVA highDM"
+      "name":"SelectionMVA_highDM",
+      "expression":"(genWeight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (BDT > 0.35)",
+      "latex":"Selection MVA highDM"
     },
     {
-      "name":"PreselectionMVA_lowDM",
-      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (LepPt < 30)",
-      "latex":"Preselection MVA lowDM"
+      "name":"SelectionMVA_lowDM",
+      "expression":"(genWeight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (LepPt < 30) && (BDT > 0.35)",
+      "latex":"Selection MVA lowDM"
     }
   ],
   "variables":[
@@ -16,9 +16,9 @@
       "expression":"BDT",
       "label":"BDT",
       "legPos":"top",
-      "min":-0.6,
+      "min":0.35,
       "max":0.6,
-      "bins":48
+      "bins":14
     },
     {
       "expression":"HT",
