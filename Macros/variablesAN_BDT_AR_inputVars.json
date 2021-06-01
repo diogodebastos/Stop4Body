@@ -1,0 +1,152 @@
+{
+  "cuts":[
+    {
+      "name":"PreselectionMVA_highDM",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110)",
+      "latex":"Preselection MVA highDM"
+    },
+    {
+      "name":"PreselectionMVA_lowDM",
+      "expression":"(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Met > 280) && (nGoodEl_cutId_loose+nGoodMu_cutId_medium == 1) && (Jet1Pt > 110) && (LepPt < 30)",
+      "latex":"Preselection MVA lowDM"
+    }
+  ],
+  "variables":[
+    {
+      "expression":"BDT",
+      "label":"BDT",
+      "legPos":"top",
+      "min":-0.6,
+      "max":0.6,
+      "bins":48
+    },
+    {
+      "expression":"HT",
+      "label":"H_{T} [GeV]",
+      "legPos":"top",
+      "min":280.0,
+      "max":1000.0,
+      "bins":30
+    },
+    {
+      "expression":"Jet1Pt",
+      "label":"p_{T}(jet 1) [GeV]",
+      "legPos":"top",
+      "min":110.0,
+      "max":800.0,
+      "bins":33
+    },
+    {
+      "expression":"St",
+      "label":"p_{T}(l) + E_{T}^{miss} [GeV]",
+      "min":280.0,
+      "max":1000.0,
+      "bins":30
+    },
+    {
+      "expression":"LepPt",
+      "label":"p_{T}(l) [GeV]",
+      "legPos":"top",
+      "max":35.0,
+      "bins":20
+    },
+    {
+      "name":"LepPt_ext",
+      "expression":"LepPt",
+      "label":"p_{T}(l) [GeV]",
+      "legPos":"top",
+      "max":105.0,
+      "bins":30
+    },
+    {
+     "expression":"Met",
+     "label":"E_{T}^{miss} [GeV]",
+     "legPos":"top",
+      "min":280.0,
+      "max":1000.0,
+      "bins":30
+    },
+    {
+      "expression":"Jet2Pt",
+      "label":"p_{T}(jet 2) [GeV]",
+      "legPos":"top",
+      "min":30.0,
+      "max":800.0,
+      "bins":25
+    },
+    {
+      "expression":"Jet1Eta",
+      "label":"#eta(jet 1)",
+      "legPos":"top",
+      "min":-2.4,
+      "max":2.4,
+      "bins":25
+    },
+    {
+      "expression":"JetHBDeepCSV",
+      "label":"DeepCSV(jet HB)",
+      "legPos":"top",
+      "max":1.0,
+      "bins":20
+    },
+    {
+      "expression":"DPhiLepMet",
+      "label":"#Delta #phi (l,E_{T}^{miss})",
+      "min":0.0,
+      "max":3,
+      "bins":25
+    },
+    {
+     "expression":"Njet",
+     "label":"N_{Jet}",
+     "legPos":"top",
+     "min":-0.5,
+     "max":5.5,
+     "bins":6
+    },
+    {
+      "expression":"LepEta",
+      "label":"#eta(l)",
+      "min":-3,
+      "max":3,
+      "bins":50
+    },
+    {
+      "expression":"LepChg",
+      "label":"Lepton Charge",
+      "min":-1.1,
+      "max":1.1,
+      "bins":20
+    },
+    {
+      "expression":"mt",
+      "label":"M_{T} [GeV]",
+      "max":300.0,
+      "bins":40
+    },
+    {
+      "expression":"DrJetHBLep",
+      "label":"#Delta R (J_{B1},l)",
+      "max":4.0,
+      "bins":40
+    },
+    {
+      "expression":"JetHBpt",
+      "label":"p_{T}(jet HB) [GeV]",
+      "legPos":"top",
+      "min":30.0,
+      "max":710.0,
+      "bins":34
+    },
+    {
+      "expression":"NbLoose",
+      "label":"N_{b Loose}",
+      "legPos":"top",
+      "min":-0.5,
+      "max":5.5,
+      "bins":6
+    }
+  ],
+  "2Dplots":[
+  ]
+}
