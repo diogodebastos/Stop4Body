@@ -217,6 +217,7 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/plot${YEAR}_pow.json           $JSON_PATH/allMC_pow.json $JSON_PATH/DataMetHT.json
  mergeJSONs $JSON_PATH/plot${YEAR}_QCD_Mu_en.json    $JSON_PATH/allMC_QCD_Mu_en.json $JSON_PATH/DataMetHT.json
  mergeJSONs $JSON_PATH/plot${YEAR}_lep_Sig300_270.json       $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json         $JSON_PATH/Orig/SignalPoints/Sig_300_270.json
+ mergeJSONs $JSON_PATH/plot${YEAR}_lep_Sig250_220.json       $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json         $JSON_PATH/Orig/SignalPoints/Sig_250_220.json
  mergeJSONs $JSON_PATH/plot${YEAR}_lep.json       $JSON_PATH/allMC.json $JSON_PATH/DataMetHT.json         $JSON_PATH/stop300.json $JSON_PATH/stop350.json $JSON_PATH/stop500.json
 
  mergeJSONs $JSON_PATH/plot${YEAR}-QCD-en.json    $JSON_PATH/allMC-QCD-en.json $JSON_PATH/DataMetHT.json

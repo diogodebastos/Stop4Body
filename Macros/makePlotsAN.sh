@@ -39,11 +39,11 @@ if [[ -d ${INPUT} ]] ; then
   #makeTwoDPlots --json ${JSON_PATH}/plot2016swap_lep.json --outDir ${OUTPUT}/Corr/VR1/ --inDir ${INPUT_SWAP}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --final
 
   JSONFILE=variablesAN_DataMC_VR2.json
-  makePlots --json ${JSON_PATH}/plot${YEAR}_lep_Sig300_270.json --outDir ${OUTPUT}/DataMC/VR2/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --final
+  makePlots --json ${JSON_PATH}/plot${YEAR}_lep_Sig250_220.json --outDir ${OUTPUT}/DataMC/VR2/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --final
   makeTwoDPlots --json ${JSON_PATH}/plot${YEAR}_lep.json --outDir ${OUTPUT}/Corr/VR2/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --final
 
   JSONFILE=variablesAN_DataMC_VR3.json
-  makePlots --json ${JSON_PATH}/plot${YEAR}_lep_Sig300_270.json --outDir ${OUTPUT}/DataMC/VR3/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --final
+  makePlots --json ${JSON_PATH}/plot${YEAR}_lep_Sig250_220.json --outDir ${OUTPUT}/DataMC/VR3/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --final
   makeTwoDPlots --json ${JSON_PATH}/plot${YEAR}_lep.json --outDir ${OUTPUT}/Corr/VR3/ --inDir ${INPUT}/ --variables ${VARIABLE_JSON} --cuts ${JSONFILE} --final
 
   for deltaM in 10 20 30 40 50 60 70 80; do
