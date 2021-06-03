@@ -357,21 +357,35 @@ int main(int argc, char** argv)
   std::string STID  = getUpSysVar(st, ST, SR, luminosity, "LeptonIDSF_AltCorr");
   std::string DYID  = getUpSysVar(dy, DY, SR, luminosity, "LeptonIDSF_AltCorr");
   std::string TTXID = getUpSysVar(ttx, TTX, SR, luminosity, "LeptonIDSF_AltCorr");
-    
+  /*    
   std::string WjISR1 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin1", luminosity, Wj);
   std::string WjISR2 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin2", luminosity, Wj);
   std::string WjISR3 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin3", luminosity, Wj);
   std::string WjISR4 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin4", luminosity, Wj);
   std::string WjISR5 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin5", luminosity, Wj);
   std::string WjISR6 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin6", luminosity, Wj);
+  */
+  std::string WjISR1 = "-";
+  std::string WjISR2 = "-";
+  std::string WjISR3 = "-";
+  std::string WjISR4 = "-";
+  std::string WjISR5 = "-";
+  std::string WjISR6 = "-";
   std::string WjnST = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "normStWeight", luminosity, Wj);
-
+  /*
   std::string ttISR1 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin1", luminosity, tt);
   std::string ttISR2 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin2", luminosity, tt);
   std::string ttISR3 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin3", luminosity, tt);
   std::string ttISR4 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin4", luminosity, tt);
   std::string ttISR5 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin5", luminosity, tt);
   std::string ttISR6 = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "ISRweight_Bin6", luminosity, tt);
+  */
+  std::string ttISR1 = "-";
+  std::string ttISR2 = "-";
+  std::string ttISR3 = "-";
+  std::string ttISR4 = "-";
+  std::string ttISR5 = "-";
+  std::string ttISR6 = "-";
   std::string ttnST = fullDD_sys(ttbar, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + ttbarControlRegion, "normStWeight", luminosity, tt);
 
   std::string name;
@@ -825,7 +839,8 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
     }
     else if(i==28)
     {
-      strTemp = "Trg"+suf+"     lnN 1.010 - - - 1.010 1.010 1.010 1.010";
+      //strTemp = "Trg"+suf+"     lnN 1.010 - - - 1.010 1.010 1.010 1.010";
+      strTemp = "Trg       lnN 1.010 - - - 1.010 1.010 1.010 1.010";
     }
     else if(i==29)
     {
@@ -913,6 +928,10 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
     else if(i==49)
     {
       strTemp = "nST       lnN - " + WjnST + " " + ttnST + " " + "-" + " - - - -";
+    }
+    else if(i==50)
+    {
+      strTemp = "ISRtt     lnN - - 1.010 - - - - -";
     }
 
     strTemp += "\n";
