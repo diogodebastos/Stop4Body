@@ -3558,8 +3558,8 @@ int main(int argc, char** argv)
             if ( EcalDeadCellTriggerPrimitiveFilter != 1 ) continue;
             if ( BadPFMuonFilter                    != 1 ) continue;
             if ( ecalBadCalibFilterV2               != 1 ) continue;
-            //if (process.isdata())
-              //if ( eeBadScFilter                      != 1 ) continue;
+            if (process.isdata())
+              if ( eeBadScFilter                      != 1 ) continue;
             // Should probably only use 1 of these two
             //if ( badMuonMoriond2017                 != 1 ) continue;
 //            if ( badCloneMuonMoriond2017            != 1 ) continue; // This one removes some of the spikes in QCD for some reason
