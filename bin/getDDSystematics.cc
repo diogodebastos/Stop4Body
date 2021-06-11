@@ -625,7 +625,8 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   double relDD = std::pow(NDDinSR.uncertainty() / NDDinSR.value(),2) ;
   doubleUnc SysUnDD = std::sqrt(std::max(diffD, relDD));
 
-  doubleUnc RelSysDD = SysUnDD/NDDinSR;
+  //doubleUnc RelSysDD = SysUnDD/NDDinSR;
+  doubleUnc RelSysDD = SysUnDD;
 
   if(verbose){
     std::cout << std::endl;
