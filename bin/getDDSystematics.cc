@@ -35,7 +35,7 @@ doubleUnc getFRsysNU(SampleReader &, SampleReader &, std::string, std::string, c
 double methodOneDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool);
 double methodTwoDDSystematics(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string, bool);
 void drawDDsys1table(std::string, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc);
-void drawDDsys2table(std::string, doubleUnc, doubleUnc, doubleUnc, double);
+void drawDDsys2table(std::string, doubleUnc, doubleUnc, doubleUnc, double, double, double);
 
 doubleUnc fakeDD(SampleReader &, SampleReader &, std::string, std::string, std::string);
 doubleUnc fullDD(ProcessInfo &, SampleReader &, SampleReader &, std::string, std::string, std::string, std::string, std::string);
@@ -622,7 +622,8 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   doubleUnc newRelSysDD = newSysUnDD/NDDinSR;
 
   double diffD = D2 - dD2;
-  doubleUnc SysUnDD = std::sqrt(std::max(diffD, std::pow(NDDinSR.uncertainty(),2)));
+  double relDD = std::pow(NDDinSR.uncertainty() / NDDinSR.value(),2) ;
+  doubleUnc SysUnDD = std::sqrt(std::max(diffD, relDD));
 
   doubleUnc RelSysDD = SysUnDD/NDDinSR;
 
@@ -657,12 +658,12 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   std::cout << "Drawing table" << std::endl;
   std::cout << "Rel sys: " << newRelSysDD.value()*100 << " %" << std::endl;
   //drawDDsys2table(name, RinCR, RinSR, D, newRelSysDD.value()*100);
-  drawDDsys2table(name, RinCR, RinSR, D, RelSysDD.value()*100);
+  drawDDsys2table(name, RinCR, RinSR, D, diffD, relDD, RelSysDD.value()*100);
 
   return RelSysDD.value()*100;
 }
 
-void drawDDsys2table(std::string name, doubleUnc RinCR, doubleUnc RinSR, doubleUnc D, double relSys){
+void drawDDsys2table(std::string name, doubleUnc RinCR, doubleUnc RinSR, doubleUnc D, double diffD, double relDD, double relSys){
   std::string procTex = "";
   if (name=="WJetsNLO")
   {
@@ -672,8 +673,8 @@ void drawDDsys2table(std::string name, doubleUnc RinCR, doubleUnc RinSR, doubleU
   {
     procTex = "ttbar";
   }
-  std::cout << "(#GeV) & $R^{CR}(#" << procTex << ")$ & $R^{SR}(#" << procTex << ")$ & $D$ & $Sys'_{DD}$ ##" << std::endl;
-  std::cout << "dm & " << RinCR << " & " << RinSR << " & " << D << " & " << relSys << " #% ##" << std::endl;
+  std::cout << "(#GeV) & $R^{CR}(#" << procTex << ")$ & $R^{SR}(#" << procTex << ")$ & $D$ & $D^2 - #delta^2_D$ & $#left(#frac{#delta_{sta}(DD)}{N^{SR}_{DD}(X)}#right)^2$ & $Sys'_{DD}$ ##" << std::endl;
+  std::cout << "dm & " << RinCR << " & " << RinSR << " & " << D << " & " << diffD << " & " << relDD << " & " << relSys << " #% ##" << std::endl;
 
   return;
 }
