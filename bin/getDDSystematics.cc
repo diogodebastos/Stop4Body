@@ -257,7 +257,7 @@ int main(int argc, char** argv)
     }
     else
       bkgMap[MC.process(i).tag()] = i;
-    if(MC.process(i).tag() == "WJetsNLO")
+    if(MC.process(i).tag() == "WJetsNLO" || MC.process(i).tag() == "WJets")
     //if(MC.process(i).tag() == "WJets")
       foundWJets = true;
   }
@@ -656,7 +656,8 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
   }
   std::cout << "Drawing table" << std::endl;
   std::cout << "Rel sys: " << newRelSysDD.value()*100 << " %" << std::endl;
-  drawDDsys2table(name, RinCR, RinSR, D, newRelSysDD.value()*100);
+  //drawDDsys2table(name, RinCR, RinSR, D, newRelSysDD.value()*100);
+  drawDDsys2table(name, RinCR, RinSR, D, RelSysDD.value()*100);
 
   return RelSysDD.value()*100;
 }
@@ -851,10 +852,16 @@ double getFRsysRawClosure(SampleReader &Data, SampleReader &MC, std::string loos
 
   //doubleUnc SysClosure = std::sqrt(std::max(std::pow(diff.value(),2)-std::pow(sigDiff.value(),2),0));
   double diffSquare = std::pow(diff.value(),2)-std::pow(sigDiff.value(),2);
-  doubleUnc SysClosure = std::sqrt(std::max(diffSquare ,0.0));
-  doubleUnc relSysUnc = SysClosure/NDDnonPromptMC;
-  relSys = relSysUnc.value();
+
+  doubleUnc oldSysClosure = std::sqrt(std::max(diffSquare ,0.0));
+  doubleUnc oldRelSysUnc = oldSysClosure/NDDnonPromptMC;
+
+  doubleUnc SysClosure = std::sqrt(std::max(diffSquare, std::pow(NDDnonPromptMC.uncertainty(),2)));
+  doubleUnc RelSysUnc = SysClosure/NDDnonPromptMC;
+
+  double oldRelSys = oldRelSysUnc.value();
   relSys = newrelSysUnc.value();
+  relSys = RelSysUnc.value();
 
   //doubleUnc fakes = fakeDD(Data, MC, looseSelection + " && " + signalRegion, mcWeight);
 
@@ -864,6 +871,8 @@ double getFRsysRawClosure(SampleReader &Data, SampleReader &MC, std::string loos
     std::cout << "diff: " << diff <<std::endl;
     std::cout << "sigDiff: " << sigDiff <<std::endl;
     std::cout << "diffSquare: " << diffSquare <<std::endl;
+    std::cout << "oldSysClosure: " << oldSysClosure <<std::endl;
+    std::cout << "oldRelSys: " << oldRelSys <<std::endl;
     std::cout << "SysClosure: " << SysClosure <<std::endl;
     std::cout << "relSys: " << relSys <<std::endl;
     std::cout << "" <<std::endl;
