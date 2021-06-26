@@ -15,10 +15,12 @@
 extern TH2D* centralElectronRecoSFHist2018;
 extern TH2D* centralElectronSFHist2018;
 extern TH2D* TnPlowPtIDSFHist2018;
+extern TH2D* TnPElectronISOIPSFHist2018;
 extern TH2D* elFullFastIDSFHist2018;
 //extern TH2D* elFullFastHIIPSFHist2018;
 extern TH2D* centralMuonSFHist2018;
 extern TH2D* lowMuonSFHist2018;
+extern TH2D* TnPMuonISOIPSFHist2018;
 extern TH2D* muFullFastIDSFHist2018;
 //extern TH2D* muFullFastHIIPSFHist2018;
 
@@ -42,11 +44,13 @@ extern TH1D* muonTightToLoose_2018_HighEta;
 extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronRecoSFHist2017_lowEt;
 extern TH2D* centralElectronSFHist2017;
+extern TH2D* TnPElectronISOIPSFHist2017;
 extern TH2D* TnPlowPtIDSFHist2017;
 extern TH2D* elFullFastIDSFHist2017;
 // extern TH2D* elFullFastHIIPSFHist2017;
 extern TH2D* centralMuonSFHist2017;
 extern TH2D* lowMuonSFHist2017;
+extern TH2D* TnPMuonISOIPSFHist2017;
 extern TH2D* muFullFastIDSFHist2017;
 // extern TH2D* muFullFastHIIPSFHist2017;
 

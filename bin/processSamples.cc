@@ -80,10 +80,12 @@ const double DR_CutOff = 0.4;
 extern TH2D* centralElectronRecoSFHist2018;
 extern TH2D* centralElectronSFHist2018;
 extern TH2D* TnPlowPtIDSFHist2018;
+extern TH2D* TnPElectronISOIPSFHist2018;
 extern TH2D* elFullFastIDSFHist2018;
 //extern TH2D* elFullFastHIIPSFHist2018;
 extern TH2D* centralMuonSFHist2018;
 extern TH2D* lowMuonSFHist2018;
+extern TH2D* TnPMuonISOIPSFHist2018;
 extern TH2D* muFullFastIDSFHist2018;
 //extern TH2D* muFullFastHIIPSFHist2018;
 
@@ -110,10 +112,12 @@ extern TH2D* centralElectronRecoSFHist2017;
 extern TH2D* centralElectronRecoSFHist2017_lowEt;
 extern TH2D* centralElectronSFHist2017;
 extern TH2D* TnPlowPtIDSFHist2017;
+extern TH2D* TnPElectronISOIPSFHist2017;
 extern TH2D* elFullFastIDSFHist2017;
 // extern TH2D* elFullFastHIIPSFHist2017;
 extern TH2D* centralMuonSFHist2017;
 extern TH2D* lowMuonSFHist2017;
+extern TH2D* TnPMuonISOIPSFHist2017;
 extern TH2D* muFullFastIDSFHist2017;
 // extern TH2D* muFullFastHIIPSFHist2017;
 
@@ -384,11 +388,9 @@ int main(int argc, char** argv)
   TFile centralElectronSFFile2018("../data/ElectronScaleFactors_Run2018.root", "READ");
   centralElectronSFHist2018 = static_cast<TH2D*>(centralElectronSFFile2018.Get("Run2018_CutBasedLooseNoIso94XV2"));
 
-  // - Analysis specific SFs for Ele ID low-pt 5-20 GeV
-  TFile TnPlowPtIDSFFile2018("../data/egammaEffi.txt_EGM2D_2018_TnP_lowPt_ID.root", "READ");
-  TnPlowPtIDSFHist2018 = static_cast<TH2D*>(TnPlowPtIDSFFile2018.Get("EGamma_SF2D"));
-
-  // - Analysis specific SFs for Ele ISO/IP 5-500 GeV TODO
+  // - Analysis specific SFs for Ele ISO+IP
+  TFile TnPElectronISOIPSFFile2018("../data/egammaEffi.txt_IPISO_2018_EGM2D.root", "READ");
+  TnPElectronISOIPSFHist2018 = static_cast<TH2D*>(TnPElectronISOIPSFFile2018.Get("EGamma_SF2D"));
 
   // El Full/Fast Sim SFs
   TFile elFullFastSFFile2018("../data/detailed_ele_full_fast_sf_18.root", "READ");
@@ -404,6 +406,9 @@ int main(int argc, char** argv)
   lowMuonSFHist2018 = static_cast<TH2D*>(lowMuonSFFile2018.Get("NUM_MediumID_DEN_genTracks_pt_abseta"));
 
   // - Analysis specific SFs for Mu ISO/IP 3.5-500 GeV TODO
+  TFile TnPMuonISOIPSFFile2018("../data/2018_NUM_S4BISO_DEN_MediumID_abseta_pt.root", "READ");
+  TCanvas* tnpMuIso18c = static_cast<TCanvas*>(TnPMuonISOIPSFFile2018.Get("cNUM_S4BISO_DEN_MediumID_abseta_pt"));
+  TnPMuonISOIPSFHist2018 = static_cast<TH2D*>(tnpMuIso18c->GetPrimitive("NUM_S4BISO_DEN_MediumID_abseta_pt"));  
 
   // Mu Full/Fast Sim SFs
   TFile muFullFastSFFile2018("../data/detailed_mu_full_fast_sf_18.root", "READ");
@@ -464,7 +469,9 @@ int main(int argc, char** argv)
   TFile TnPlowPtIDSFFile2017("../data/egammaEffi.txt_EGM2D_2017_TnP_lowPt_ID.root", "READ");
   TnPlowPtIDSFHist2017 = static_cast<TH2D*>(TnPlowPtIDSFFile2017.Get("EGamma_SF2D"));
 
-  // - Analysis specific SFs for Ele ISO/IP 5-500 GeV TODO
+  // - Analysis specific SFs for Ele ISO/IP 5-500 GeV
+  TFile TnPElectronISOIPSFFile2017("../data/egammaEffi.txt_IPISO_2017_EGM2D.root", "READ");
+  TnPElectronISOIPSFHist2017 = static_cast<TH2D*>(TnPElectronISOIPSFFile2017.Get("EGamma_SF2D"));
 
   // El Full/Fast Sim SFs
   TFile elFullFastSFFile2017("../data/detailed_ele_full_fast_sf_17.root", "READ");
@@ -479,7 +486,10 @@ int main(int argc, char** argv)
   TFile lowMuonSFFile2017("../data/RunBCDEF_SF_ID_JPsi_syst.root", "READ");
   lowMuonSFHist2017 = static_cast<TH2D*>(lowMuonSFFile2017.Get("NUM_MediumID_DEN_genTracks_pt_abseta"));
 
-  // - Analysis specific SFs for Mu ISO/IP 3.5-500 GeV TODO
+  // - Analysis specific SFs for Mu ISO/IP 3.5-500 GeV
+  TFile TnPMuonISOIPSFFile2017("../data/2017_NUM_S4BISO_DEN_MediumID_abseta_pt.root", "READ");
+  TCanvas* tnpMuIso17c = static_cast<TCanvas*>(TnPMuonISOIPSFFile2017.Get("cNUM_S4BISO_DEN_MediumID_abseta_pt"));
+  TnPMuonISOIPSFHist2017 = static_cast<TH2D*>(tnpMuIso17c->GetPrimitive("NUM_S4BISO_DEN_MediumID_abseta_pt"));
 
   // Mu Full/Fast Sim SFs
   TFile muFullFastSFFile2017("../data/detailed_mu_full_fast_sf_17.root", "READ");
@@ -745,7 +755,7 @@ int main(int argc, char** argv)
         std::cout << "\t        lISO" << std::endl;
         //leptonISOSF = getLeptonISOSF2017Sys(13, 20, 1.1);
         // Using 2016 ISO SFs
-        leptonISOSF = getLeptonISOSFSys(13, 7.5, 1.1);
+        leptonISOSF = getLeptonISOSFSys(13, 7.5, 1.1, 2017);
         std::cout << "\t        FullFastSim" << std::endl;
         leptonFullFastSF = getFullFastSFSys(11, 20, 1.1, 2017);
         std::cout << "\t        Q^2" << std::endl;
