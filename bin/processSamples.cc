@@ -86,7 +86,9 @@ extern TH2D* elFullFastIDSFHist2018;
 extern TH2D* centralMuonSFHist2018;
 extern TH2D* lowMuonSFHist2018;
 extern TH2D* TnPMuonISOIPSFHist2018;
+
 extern TH2D* muFullFastIDSFHist2018;
+extern TH1D* genFilterHist2018;
 //extern TH2D* muFullFastHIIPSFHist2018;
 
 extern TH1D* weightsSt_2018;
@@ -118,7 +120,9 @@ extern TH2D* elFullFastIDSFHist2017;
 extern TH2D* centralMuonSFHist2017;
 extern TH2D* lowMuonSFHist2017;
 extern TH2D* TnPMuonISOIPSFHist2017;
+
 extern TH2D* muFullFastIDSFHist2017;
+extern TH1D* genFilterHist2017;
 // extern TH2D* muFullFastHIIPSFHist2017;
 
 extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2017;
@@ -388,7 +392,6 @@ int main(int argc, char** argv)
   TFile centralElectronSFFile2018("../data/ElectronScaleFactors_Run2018.root", "READ");
   centralElectronSFHist2018 = static_cast<TH2D*>(centralElectronSFFile2018.Get("Run2018_CutBasedLooseNoIso94XV2"));
 
-
   // - Analysis specific SFs for Ele ID low-pt 5-20 GeV
   TFile TnPlowPtIDSFFile2018("../data/egammaEffi.txt_EGM2D_2018_TnP_lowPt_ID.root", "READ");
    TnPlowPtIDSFHist2018 = static_cast<TH2D*>(TnPlowPtIDSFFile2018.Get("EGamma_SF2D"));
@@ -401,6 +404,10 @@ int main(int argc, char** argv)
   TFile elFullFastSFFile2018("../data/detailed_ele_full_fast_sf_18.root", "READ");
   elFullFastIDSFHist2018 = static_cast<TH2D*>(elFullFastSFFile2018.Get("CutBasedLooseNoIso94XV2_sf"));
   //elFullFastHIIPSFHist2018 = static_cast<TH2D*>(elFullFastSFFile2018.Get(""));
+
+  // Signal Gen Filter Efficiency
+  TFile genFilterFile2018("../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1_2018.root", "READ");
+  genFilterHist2018 = static_cast<TH1D*>(genFilterFile2018.Get("hFilterEff"));
 
   // - Centraly produced SFs for Mu ID 20-120 GeV
   TFile centralMuonSFFile2018("../data/MuonScaleFactors_ID_Run2018.root", "READ");
@@ -482,6 +489,10 @@ int main(int argc, char** argv)
   TFile elFullFastSFFile2017("../data/detailed_ele_full_fast_sf_17.root", "READ");
   elFullFastIDSFHist2017 = static_cast<TH2D*>(elFullFastSFFile2017.Get("CutBasedLooseNoIso94XV2_sf"));
   //elFullFastHIIPSFHist2017 = static_cast<TH2D*>(elFullFastSFFile2017.Get(""));
+
+  // Signal Gen Filter Efficiency
+  TFile genFilterFile2017("../data/filterEffs_SMS_T2tt_dM_10to80_genHT_160_genMET_80_mWMin_0p1_2017.root", "READ");
+  genFilterHist2017 = static_cast<TH1D*>(genFilterFile2017.Get("hFilterEff"));
 
   // - Centraly produced SFs for Mu ID 20-120 GeV
   TFile centralMuonSFFile2017("../data/MuonScaleFactors_ID_Run2017.root", "READ");
@@ -1769,6 +1780,7 @@ int main(int argc, char** argv)
 
 
       std::cout << "\t  Getting filter efficiency" << std::endl;
+      /*
       TH2F* filterEfficiencyH = nullptr;
       if(sample.filterEfficiencyFile() != "")
       {
@@ -1777,6 +1789,7 @@ int main(int argc, char** argv)
         cwd->cd();
         filterEfficiencyH = static_cast<TH2F*>(filterEfficiencyFile.Get("filterEfficiency")->Clone("filterEfficiencyH"));
       }
+      */
 
       // Get total number of entries and other important values
       Nevt = 0;
@@ -3363,6 +3376,13 @@ int main(int argc, char** argv)
           BadChargedCandidateFilter           = Flag_BadChargedCandidateFilter;
 
           // Filter Efficiency
+          if (process.issignal())
+          {
+            filterEfficiency = getGenFilterEff(fixStopM,fixNeutralinoM,year);
+          }
+          else
+            filterEfficiency = 1.0;
+          /*
           if(filterEfficiencyH != nullptr)
           {
             auto theBin = filterEfficiencyH->FindBin(fixStopM, fixNeutralinoM);
@@ -3370,6 +3390,7 @@ int main(int argc, char** argv)
           }
           else
             filterEfficiency = 1.0;
+          */
 
           if(swap)
           {
@@ -3679,8 +3700,10 @@ int main(int argc, char** argv)
       v.Write("ParellelSelection");
       //puDistrib.Write();
 
+      /*
       if(filterEfficiencyH != nullptr)
         delete filterEfficiencyH;
+      */
     }
 
     delete puWeightDistrib;

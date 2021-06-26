@@ -17,7 +17,9 @@ TH2D* elFullFastIDSFHist2018 = nullptr;
 TH2D* centralMuonSFHist2018 = nullptr;
 TH2D* lowMuonSFHist2018 = nullptr;
 TH2D* TnPMuonISOIPSFHist2018 = nullptr;
+
 TH2D* muFullFastIDSFHist2018 = nullptr;
+TH1D* genFilterHist2018 = nullptr;
 //TH2D* muFullFastHIIPSFHist2018 = nullptr;
 
 TH1D* weightsSt_2018 = nullptr;
@@ -48,7 +50,9 @@ TH2D* elFullFastIDSFHist2017 = nullptr;
 TH2D* centralMuonSFHist2017 = nullptr;
 TH2D* lowMuonSFHist2017 = nullptr;
 TH2D* TnPMuonISOIPSFHist2017 = nullptr;
+
 TH2D* muFullFastIDSFHist2017 = nullptr;
+TH1D* genFilterHist2017 = nullptr;
 // TH2D* muFullFastHIIPSFHist2017 = nullptr;
 
 TH1D* WJetsToLNu_HT100to200_gen_WptHist2017 = nullptr;
@@ -2636,6 +2640,25 @@ ValueWithSystematics<double> getFullFastSF2016Sys(double LepID, double LepPt, do
   retVal.Systematic("FullFast_Down") = retVal.Value() * (1 - 0.02);
 
   return retVal;
+}
+
+Float_t getGenFilterEff(int mStop, int mNeutralino, int year)
+{
+  Float_t filterEfficiency = 1.0;
+  std::string model = std::to_string(mStop)+"_"+std::to_string(mNeutralino);
+  const char* mdl = model.c_str();
+
+  if(genFilterHist2017 == nullptr || genFilterHist2018 == nullptr)
+    return 1.0;
+  if(year == 2017){
+    auto bin = genFilterHist2017->GetXaxis()->FindBin(mdl);
+    filterEfficiency = genFilterHist2017->GetBinContent(bin);
+  }
+  else if(year == 2018){
+    auto bin = genFilterHist2018->GetXaxis()->FindBin(mdl);
+    filterEfficiency = genFilterHist2018->GetBinContent(bin);
+  }
+  return filterEfficiency;
 }
 
 // https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SUSYCrossSections13TeVstopsbottom

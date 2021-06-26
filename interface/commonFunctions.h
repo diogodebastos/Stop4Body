@@ -21,7 +21,10 @@ extern TH2D* elFullFastIDSFHist2018;
 extern TH2D* centralMuonSFHist2018;
 extern TH2D* lowMuonSFHist2018;
 extern TH2D* TnPMuonISOIPSFHist2018;
+
 extern TH2D* muFullFastIDSFHist2018;
+extern TH1D* genFilterHist2018;
+
 //extern TH2D* muFullFastHIIPSFHist2018;
 
 extern TH1D* weightsSt_2018;
@@ -51,7 +54,9 @@ extern TH2D* elFullFastIDSFHist2017;
 extern TH2D* centralMuonSFHist2017;
 extern TH2D* lowMuonSFHist2017;
 extern TH2D* TnPMuonISOIPSFHist2017;
+
 extern TH2D* muFullFastIDSFHist2017;
+extern TH1D* genFilterHist2017;
 // extern TH2D* muFullFastHIIPSFHist2017;
 
 extern TH1D* WJetsToLNu_HT100to200_gen_WptHist2017;
@@ -113,6 +118,7 @@ doubleUnc getLeptonIDSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
+Float_t getGenFilterEff(int mStop, int mNeutralino, int year)
 doubleUnc stopCrossSectionNNLO(int stopM);
 doubleUnc stopCrossSectionNLO(double stopM, double lspM);
 
