@@ -890,7 +890,7 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(double ISRpT)
         retVal = 1.211;
         retVal.Systematic("EWKISRweight_Bin2_Up") = 1.211+0.211;
         retVal.Systematic("EWKISRweight_Bin2_Down") = 1.211-0.211;
-        retVal.Systematic("EWKISRweight_AltCorr_Up") =f 1.211+0.211;
+        retVal.Systematic("EWKISRweight_AltCorr_Up") = 1.211+0.211;
         retVal.Systematic("EWKISRweight_AltCorr_Down") = 1.211-0.211;
       }
       else
@@ -1207,6 +1207,8 @@ doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta, int year)
       unc = TnPMuonISOIPSFHist2018->GetBinError(bin);
     }
   }
+ doubleUnc retVal(val, unc);
+ return retVal;
 }
 
 ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta, int year)
