@@ -388,6 +388,11 @@ int main(int argc, char** argv)
   TFile centralElectronSFFile2018("../data/ElectronScaleFactors_Run2018.root", "READ");
   centralElectronSFHist2018 = static_cast<TH2D*>(centralElectronSFFile2018.Get("Run2018_CutBasedLooseNoIso94XV2"));
 
+
+  // - Analysis specific SFs for Ele ID low-pt 5-20 GeV
+  TFile TnPlowPtIDSFFile2018("../data/egammaEffi.txt_EGM2D_2018_TnP_lowPt_ID.root", "READ");
+   TnPlowPtIDSFHist2018 = static_cast<TH2D*>(TnPlowPtIDSFFile2018.Get("EGamma_SF2D"));
+
   // - Analysis specific SFs for Ele ISO+IP
   TFile TnPElectronISOIPSFFile2018("../data/egammaEffi.txt_IPISO_2018_EGM2D.root", "READ");
   TnPElectronISOIPSFHist2018 = static_cast<TH2D*>(TnPElectronISOIPSFFile2018.Get("EGamma_SF2D"));
@@ -753,9 +758,9 @@ int main(int argc, char** argv)
         std::cout << "\t        lID" << std::endl;
         leptonIDSF = getLeptonIDSFSys(13, 7.5, 1.1, 2017);
         std::cout << "\t        lISO" << std::endl;
-        //leptonISOSF = getLeptonISOSF2017Sys(13, 20, 1.1);
+        leptonISOSF = getLeptonISOSFSys(13, 20, 1.1, 2017);
         // Using 2016 ISO SFs
-        leptonISOSF = getLeptonISOSFSys(13, 7.5, 1.1, 2017);
+        //leptonISOSF = getLeptonISOSFSys(13, 7.5, 1.1, 2017);
         std::cout << "\t        FullFastSim" << std::endl;
         leptonFullFastSF = getFullFastSFSys(11, 20, 1.1, 2017);
         std::cout << "\t        Q^2" << std::endl;
@@ -2818,8 +2823,8 @@ int main(int argc, char** argv)
             if(!process.isdata())
             {
               leptonRecoSF = getLeptonRecoSFSys(LepID, LepPt, LepEta, year);
-              leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta, year);
-              leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta, year);
+              leptonIDSF   = getLeptonIDSFSys(LepID, LepPt, LepEta, year);
+              leptonISOSF  = getLeptonISOSFSys(LepID, LepPt, LepEta, year);
               //leptonISOSF = getLeptonISOSF2017Sys(LepID, LepPt, LepEta);
               if(sample.isFastsim() || process.isfastsim()) // Maybe need to add some more conditions here
                 leptonFullFastSF = getFullFastSFSys(LepID, LepPt, LepEta, year);

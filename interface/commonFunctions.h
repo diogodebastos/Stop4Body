@@ -134,8 +134,8 @@ ValueWithSystematics<double> getLeptonISOSF2016Sys(double LepID, double LepPt, d
 ValueWithSystematics<double> getLeptonTightLooseRatioNanoAODSys(double LepID, double LepPt, double LepEta, int year);
 ValueWithSystematics<double> getLeptonTightLooseRatio2017MCClosureSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getL1preFiringMapsSys(ValueWithSystematics<std::vector<int>>& validJets, ValueWithSystematics<std::vector<double>>& jetPt, Float_t* Jet_eta);
-ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);
-ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
+//ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta);
+//ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getFullFastSFSys(double LepID, double LepPt, double LepEta, int year);
 ValueWithSystematics<double> getLeptonTightLooseRatioSys(double LepID, double LepPt, double LepEta);
 

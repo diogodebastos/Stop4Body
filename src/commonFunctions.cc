@@ -1194,8 +1194,8 @@ doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta, int year)
       return doubleUnc(1,0);
     if(LepEta >= 2.4)
       LepEta = 2.39999;
-    if (LepPt >= 500)
-      LepPt = 499.999;
+    if (LepPt >= 120)
+      LepPt = 119.999;
     if(year == 2017){
       auto bin = TnPMuonISOIPSFHist2017->FindBin(LepEta, LepPt);
       val = TnPMuonISOIPSFHist2017->GetBinContent(bin);
