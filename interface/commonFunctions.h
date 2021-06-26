@@ -108,7 +108,7 @@ doubleUnc EWKISRweightFromISRpT(double ISRpT);
 doubleUnc EWKISRweightFromISRpT(double lep_pt, double lep_phi, double met_pt, double met_phi);
 doubleUnc getLeptonRecoSF(double LepID, double LepPt, double LepEta, int year);
 doubleUnc getLeptonIDSF(double LepID, double LepPt, double LepEta, int year);
-doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta);
+doubleUnc getLeptonISOSF(double LepID, double LepPt, double LepEta, int year);
 doubleUnc getLeptonIDSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta);
@@ -127,7 +127,7 @@ ValueWithSystematics<double> EWKISRweightFromISRpTSys(ValueWithSystematics<doubl
 ValueWithSystematics<double> EWKISRweightFromISRpTSys(double lep_pt, double lep_phi, ValueWithSystematics<double> met_pt, ValueWithSystematics<double> met_phi);
 ValueWithSystematics<double> getLeptonRecoSFSys(double LepID, double LepPt, double LepEta, int year);
 ValueWithSystematics<double> getLeptonIDSFSys(double LepID, double LepPt, double LepEta, int year);
-ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta);
+ValueWithSystematics<double> getLeptonISOSFSys(double LepID, double LepPt, double LepEta, int year);
 ValueWithSystematics<double> getLeptonIDSFSys2016(double LepID, double LepPt, double LepEta);
 ValueWithSystematics<double> getLeptonISOSF2016Sys(double LepID, double LepPt, double LepEta)
 ;

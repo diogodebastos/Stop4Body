@@ -800,8 +800,7 @@ int main(int argc, char** argv)
       looseNotTightWeight2017MCClosure = getLeptonTightLooseRatio2017MCClosureSys(11, 20, 1.1);
 
       std::cout << "\t        weight" << std::endl;
-      // weight = puWeight * triggerEfficiency * EWKISRweight * ISRweight * leptonRecoSF * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight * looseNotTightWeight2017MCClosure;
-      weight = puWeight * triggerEfficiency * normStweight * ISRweight * leptonRecoSF * leptonIDSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * looseNotTightWeight2017MCClosure * GENWweight * l1prefireWeight;
+      weight = puWeight * triggerEfficiency * normStweight * ISRweight * leptonRecoSF * leptonIDSF * leptonISOSF * leptonFullFastSF * looseNotTightWeight * Q2Var * bTagSF * l1prefireWeight;
 
       std::cout << "\t        locking" << std::endl;
       if(!process.isdata())
@@ -2819,7 +2818,7 @@ int main(int argc, char** argv)
             if(!process.isdata())
             {
               leptonRecoSF = getLeptonRecoSFSys(LepID, LepPt, LepEta, year);
-              //leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta);
+              leptonISOSF = getLeptonISOSFSys(LepID, LepPt, LepEta, year);
               leptonIDSF = getLeptonIDSFSys(LepID, LepPt, LepEta, year);
               //leptonISOSF = getLeptonISOSF2017Sys(LepID, LepPt, LepEta);
               if(sample.isFastsim() || process.isfastsim()) // Maybe need to add some more conditions here
@@ -3377,7 +3376,7 @@ int main(int argc, char** argv)
 
           if(!process.isdata())
             //weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*EWKISRweight*ISRweight*leptonRecoSF*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF;
-            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*normStweight*ISRweight*leptonRecoSF*leptonIDSF*leptonFullFastSF*Q2Var*bTagSF*GENWweight*l1prefireWeight;
+            weight = puWeight*XS*filterEfficiency*(genWeight/sumGenWeight)*triggerEfficiency*normStweight*ISRweight*leptonRecoSF*leptonIDSF*leptonISOSF*leptonFullFastSF*Q2Var*bTagSF*l1prefireWeight;
           else
             weight = 1.0f;
 
