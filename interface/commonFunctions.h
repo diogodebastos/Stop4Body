@@ -118,7 +118,7 @@ doubleUnc getLeptonIDSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonISOSF2016(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio2017(double LepID, double LepPt, double LepEta);
 doubleUnc getLeptonTightLooseRatio(double LepID, double LepPt, double LepEta);
-Float_t getGenFilterEff(int mStop, int mNeutralino, int year)
+Float_t getGenFilterEff(int mStop, int mNeutralino, int year);
 doubleUnc stopCrossSectionNNLO(int stopM);
 doubleUnc stopCrossSectionNLO(double stopM, double lspM);
 
