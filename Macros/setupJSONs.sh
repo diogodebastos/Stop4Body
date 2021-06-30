@@ -132,7 +132,7 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/allMC_LO.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
  mergeJSONs $JSON_PATH/allMC-QCD-en.json             $JSON_PATH/QCD_en.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
 
- mergeJSONs $JSON_PATH/allMC_pow.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/TTbar_pow.json $JSON_PATH/WJetsNLO.json
+ mergeJSONs $JSON_PATH/allMC_pow.json                $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/TTbar_pow.json $JSON_PATH/WJetsNLO.json
 
  mergeJSONs $JSON_PATH/allMC_HT_pow.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/TTbar_pow.json $JSON_PATH/Orig/WJetsHT.json
 
@@ -290,6 +290,14 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/allDM70.json $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM70.json
  mergeJSONs $JSON_PATH/allDM80.json $JSON_PATH/allMC.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM80.json
 
+ mergeJSONs $JSON_PATH/allDM10_pow.json $JSON_PATH/allMC_pow.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM10.json
+ mergeJSONs $JSON_PATH/allDM20_pow.json $JSON_PATH/allMC_pow.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM20.json
+ mergeJSONs $JSON_PATH/allDM30_pow.json $JSON_PATH/allMC_pow.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM30.json
+ mergeJSONs $JSON_PATH/allDM40_pow.json $JSON_PATH/allMC_pow.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM40.json
+ mergeJSONs $JSON_PATH/allDM50_pow.json $JSON_PATH/allMC_pow.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM50.json
+ mergeJSONs $JSON_PATH/allDM60_pow.json $JSON_PATH/allMC_pow.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM60.json
+ mergeJSONs $JSON_PATH/allDM70_pow.json $JSON_PATH/allMC_pow.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM70.json
+ mergeJSONs $JSON_PATH/allDM80_pow.json $JSON_PATH/allMC_pow.json $JSON_PATH/Orig/DataMetHT.json $JSON_PATH/stop_deltaM80.json
 
  # For Lepton Studies
  mergeJSONs $JSON_PATH/lepStudies.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json $JSON_PATH/Orig/SignalPoints/Sig_526_465.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/DataMetHT.json
