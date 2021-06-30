@@ -618,8 +618,8 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
 
   double D2 = std::pow(D.value(),2);
   double dD2 = std::pow(D.uncertainty(),2);
-  doubleUnc newSysUnDD = std::sqrt(std::max(D2,dD2));
-  doubleUnc newRelSysDD = newSysUnDD/NDDinSR;
+  //doubleUnc newSysUnDD = std::sqrt(std::max(D2,dD2));
+  //doubleUnc newRelSysDD = newSysUnDD/NDDinSR;
 
   double diffD = D2 - dD2;
   double relDD = std::pow(NDDinSR.uncertainty() / NDDinSR.value(),2) ;
@@ -644,20 +644,21 @@ double methodTwoDDSystematics(ProcessInfo &toEstimate, SampleReader &Data, Sampl
     std::cout << "RinCR: " << RinCR << std::endl;
     std::cout << "RinSR: " << RinSR << std::endl;
     std::cout << "D: " << D << std::endl;
+    std::cout << "D2: " << D2 << std::endl;
+    std::cout << "dD2: " << dD2 << std::endl;
     std::cout << "diffD: " << diffD << std::endl;
     std::cout << "NDDinSR: " << NDDinSR << std::endl;
     std::cout << "NDDinSRUncPow2: " << std::pow(NDDinSR.uncertainty(),2) << std::endl;
+    std::cout << "relDD: " << relDD << std::endl;
     std::cout << "SysUnDD: " << SysUnDD << std::endl;
     std::cout << "RelSysDD: " << RelSysDD.value()*100 << std::endl;
-    std::cout << "new SYS" << std::endl;
-    std::cout << "D2: " << D2 << std::endl;
-    std::cout << "dD2: " << dD2 << std::endl;
-    std::cout << "newSysUnDD: " << newSysUnDD << std::endl;
-    std::cout << "newRelSysDD: " << newRelSysDD.value()*100 << std::endl;    
+    //std::cout << "new SYS" << std::endl;
+    //std::cout << "newSysUnDD: " << newSysUnDD << std::endl;
+    //std::cout << "newRelSysDD: " << newRelSysDD.value()*100 << std::endl;    
     std::cout << std::endl;
   }
   std::cout << "Drawing table" << std::endl;
-  std::cout << "Rel sys: " << newRelSysDD.value()*100 << " %" << std::endl;
+  std::cout << "Rel sys: " << RelSysDD.value()*100 << " %" << std::endl;
   //drawDDsys2table(name, RinCR, RinSR, D, newRelSysDD.value()*100);
   drawDDsys2table(name, RinCR, RinSR, D, diffD, relDD, RelSysDD.value()*100);
 
