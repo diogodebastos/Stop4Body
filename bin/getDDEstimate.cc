@@ -64,6 +64,7 @@ int main(int argc, char** argv)
   bool invertLepPt = false;
   bool special = false;
   bool doMCFakeClosure = false;
+  int year = 0;
 
   if(argc < 2)
   {
@@ -147,6 +148,13 @@ int main(int argc, char** argv)
     {
       doMCFakeClosure = true;
     }
+
+    if(argument == "--year")
+    {
+      std::stringstream converter;
+      converter << argv[++i];
+      converter >> year;
+    }
   }
 
   if(SRCut < 0.2 && !special)
@@ -173,7 +181,12 @@ int main(int argc, char** argv)
   //std::string baseSelection = "(badCloneMuonMoriond2017 == 1) && (badMuonMoriond2017 == 1) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
   //std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
   //std::string baseSelection = "(weight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
-  std::string baseSelection = "(genWeight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+  std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60) && (HT > 200) && (Jet1Pt > 110)" + metSelection;
+
+  if (year==2017)
+  {
+    baseSelection += " && (genWeight > 0)";
+  }
 
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
