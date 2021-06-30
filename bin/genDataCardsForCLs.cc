@@ -132,7 +132,13 @@ int main(int argc, char** argv)
 
   std::string tightSelection = "(isTight == 1)";
   std::string looseSelection = "(isLoose == 1) && !(isTight == 1)";
-  std::string baseSelection = "(genWeight > 0) && (DPhiJet1Jet2 < 2.5 || Jet2Pt < 60)";
+  std::string baseSelection = "(DPhiJet1Jet2 < 2.5 || Jet2Pt < 60)";
+
+  if (year==2017)
+  {
+    baseSelection += " && (genWeight > 0)";
+  }
+
   std::string preSelection = baseSelection + " && (HT > 200) && (Jet1Pt > 110) && (Met>280)";
   std::string wjetsEnrich = "(NbLoose == 0)";
   std::string ttbarEnrich = "(NbTight > 0)";
@@ -898,32 +904,38 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
     }
     else if(i==42)
     {
-      strTemp = "ISO"+suf+"     lnN 1.01 - - - 1.01 1.01 1.01 1.01";
-      //strTemp = "RECO  lnN " + SgnRECO + " - - - 1.01 1.01 1.01 1.01";
+      //strTemp = "ISO"+suf+"     lnN 1.01 - - - 1.01 1.01 1.01 1.01";
+      strTemp = "ISO"+suf+"      lnN " + SgnISO + " - - - " + VVISO + " " + STISO + " " + DYISO + " " + TTXISO;
     }
     else if(i==43)
     {
       strTemp = "ISR1      lnN " + SgnISR1 + " " + WjISR1 + " " + ttISR1 + " " + "-" + " - - - -";
+      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
     }
     else if(i==44)
     {
       strTemp = "ISR2      lnN " + SgnISR2 + " " + WjISR2 + " " + ttISR2 + " " + "-" + " - - - -";
+      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
     }
     else if(i==45)
     {
       strTemp = "ISR3      lnN " + SgnISR3 + " " + WjISR3 + " " + ttISR3 + " " + "-" + " - - - -";
+      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
     }
     else if(i==46)
     {
       strTemp = "ISR4      lnN " + SgnISR4 + " " + WjISR4 + " " + ttISR4 + " " + "-" + " - - - -";
+      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
     }
     else if(i==47)
     {
       strTemp = "ISR5      lnN " + SgnISR5 + " " + WjISR5 + " " + ttISR5 + " " + "-" + " - - - -";
+      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
     }
     else if(i==48)
     {
       strTemp = "ISR6      lnN " + SgnISR6 + " " + WjISR6 + " " + ttISR6 + " " + "-" + " - - - -";
+      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
     }
     else if(i==49)
     {
