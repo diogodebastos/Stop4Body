@@ -37,7 +37,7 @@ std::string getUpDownSysVar(ProcessInfo &, doubleUnc, std::string, double, std::
 std::string Q2Sys(ProcessInfo &, doubleUnc, std::string, double);
 std::string JesJerSys(ProcessInfo &, doubleUnc, std::string, std::string, double, double, std::string);
 std::string xST(doubleUnc);
-void makeDataCard(std::string, std::string, bool, int, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
+void makeDataCard(std::string, std::string, bool, int, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, doubleUnc, std::string, double, double, double, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string, std::string);
 
 int main(int argc, char** argv)
 {
@@ -363,6 +363,11 @@ int main(int argc, char** argv)
   std::string STID  = getUpSysVar(st, ST, SR, luminosity, "LeptonIDSF_AltCorr");
   std::string DYID  = getUpSysVar(dy, DY, SR, luminosity, "LeptonIDSF_AltCorr");
   std::string TTXID = getUpSysVar(ttx, TTX, SR, luminosity, "LeptonIDSF_AltCorr");
+
+  std::string VVISO  = getUpSysVar(vv, VV, SR, luminosity, "LeptonISOSF_AltCorr");
+  std::string STISO  = getUpSysVar(st, ST, SR, luminosity, "LeptonISOSF_AltCorr");
+  std::string DYISO  = getUpSysVar(dy, DY, SR, luminosity, "LeptonISOSF_AltCorr");
+  std::string TTXISO = getUpSysVar(ttx, TTX, SR, luminosity, "LeptonISOSF_AltCorr");
   /*    
   std::string WjISR1 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin1", luminosity, Wj);
   std::string WjISR2 = fullDD_sys(wjets, Data, MC, looseSelection, tightSelection, preSelection + " && " + signalRegion, preSelection + " && " + wjetsControlRegion, "ISRweight_Bin2", luminosity, Wj);
@@ -423,6 +428,7 @@ int main(int argc, char** argv)
     std::string SgnBTAG8 = getUpSysVar(signal, Sgn, SR, luminosity, "HFStats2");
 
     std::string SgnID = getUpSysVar(signal, Sgn, SR, luminosity, "LeptonIDSF_AltCorr");
+    std::string SgnISO = getUpSysVar(signal, Sgn, SR, luminosity, "LeptonISOSF_AltCorr");
 
     std::string SgnISR1 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin1");
     std::string SgnISR2 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin2");
@@ -431,7 +437,7 @@ int main(int argc, char** argv)
     std::string SgnISR5 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin5");
     std::string SgnISR6 = getUpSysVar(signal, Sgn, SR, luminosity, "ISRweight_Bin6");
 
-    makeDataCard(name, outputDirectory, unblind, year, DatainSR, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnPU, VVPU, STPU, DYPU, TTXPU, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8, VVBTAG1, VVBTAG2, VVBTAG3, VVBTAG4, VVBTAG5, VVBTAG6, VVBTAG7, VVBTAG8, STBTAG1, STBTAG2, STBTAG3, STBTAG4, STBTAG5, STBTAG6, STBTAG7, STBTAG8, DYBTAG1, DYBTAG2, DYBTAG3, DYBTAG4, DYBTAG5, DYBTAG6, DYBTAG7, DYBTAG8, TTXBTAG1, TTXBTAG2, TTXBTAG3, TTXBTAG4, TTXBTAG5, TTXBTAG6, TTXBTAG7, TTXBTAG8, SgnID, VVID, STID, DYID, TTXID, SgnISR1, SgnISR2, SgnISR3, SgnISR4, SgnISR5, SgnISR6, WjISR1, WjISR2, WjISR3, WjISR4, WjISR5, WjISR6, WjnST, ttISR1, ttISR2, ttISR3, ttISR4, ttISR5, ttISR6, ttnST);
+    makeDataCard(name, outputDirectory, unblind, year, DatainSR, Sgn, Wj, tt, Fake, VV, ST, DY, TTX, FastS, Wsy, ttsy, Fksy, VVsyWj, VVsytt, VVsyFake, STsyWj, STsytt, STsyFake, DYsyWj, DYsytt, DYsyFake, TTXsyWj, TTXsytt, TTXsyFake, SgnPU, VVPU, STPU, DYPU, TTXPU, SgnQ2, STQ2, DYQ2, TTXQ2, SgnJES, SgnJER, VVJES, VVJER, STJES, STJER, DYJES, DYJER, TTXJES, TTXJER, SgnBTAG1, SgnBTAG2, SgnBTAG3, SgnBTAG4, SgnBTAG5, SgnBTAG6, SgnBTAG7, SgnBTAG8, VVBTAG1, VVBTAG2, VVBTAG3, VVBTAG4, VVBTAG5, VVBTAG6, VVBTAG7, VVBTAG8, STBTAG1, STBTAG2, STBTAG3, STBTAG4, STBTAG5, STBTAG6, STBTAG7, STBTAG8, DYBTAG1, DYBTAG2, DYBTAG3, DYBTAG4, DYBTAG5, DYBTAG6, DYBTAG7, DYBTAG8, TTXBTAG1, TTXBTAG2, TTXBTAG3, TTXBTAG4, TTXBTAG5, TTXBTAG6, TTXBTAG7, TTXBTAG8, SgnID, VVID, STID, DYID, TTXID, SgnISO, VVISO, STISO, DYISO, TTXISO, SgnISR1, SgnISR2, SgnISR3, SgnISR4, SgnISR5, SgnISR6, WjISR1, WjISR2, WjISR3, WjISR4, WjISR5, WjISR6, WjnST, ttISR1, ttISR2, ttISR3, ttISR4, ttISR5, ttISR6, ttnST);
   }
   
   std::cout << "Done!" << std::endl;
@@ -909,33 +915,33 @@ void makeDataCard(std::string name, std::string outputDirectory, bool unblind, i
     }
     else if(i==43)
     {
-      strTemp = "ISR1      lnN " + SgnISR1 + " " + WjISR1 + " " + ttISR1 + " " + "-" + " - - - -";
-      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
+      //strTemp = "ISR1      lnN " + SgnISR1 + " " + WjISR1 + " " + ttISR1 + " " + "-" + " - - - -";
+      strTemp = "ISR1      lnN " + SgnISR1 + " - - - - - - -";
     }
     else if(i==44)
     {
-      strTemp = "ISR2      lnN " + SgnISR2 + " " + WjISR2 + " " + ttISR2 + " " + "-" + " - - - -";
-      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
+      //strTemp = "ISR2      lnN " + SgnISR2 + " " + WjISR2 + " " + ttISR2 + " " + "-" + " - - - -";
+      strTemp = "ISR2      lnN " + SgnISR2 + " - - - - - - -";
     }
     else if(i==45)
     {
-      strTemp = "ISR3      lnN " + SgnISR3 + " " + WjISR3 + " " + ttISR3 + " " + "-" + " - - - -";
-      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
+      //strTemp = "ISR3      lnN " + SgnISR3 + " " + WjISR3 + " " + ttISR3 + " " + "-" + " - - - -";
+      strTemp = "ISR3      lnN " + SgnISR3 + " - - - - - - -";
     }
     else if(i==46)
     {
-      strTemp = "ISR4      lnN " + SgnISR4 + " " + WjISR4 + " " + ttISR4 + " " + "-" + " - - - -";
-      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
+      //strTemp = "ISR4      lnN " + SgnISR4 + " " + WjISR4 + " " + ttISR4 + " " + "-" + " - - - -";
+      strTemp = "ISR4      lnN " + SgnISR4 + " - - - - - - -";
     }
     else if(i==47)
     {
-      strTemp = "ISR5      lnN " + SgnISR5 + " " + WjISR5 + " " + ttISR5 + " " + "-" + " - - - -";
-      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
+      //strTemp = "ISR5      lnN " + SgnISR5 + " " + WjISR5 + " " + ttISR5 + " " + "-" + " - - - -";
+      strTemp = "ISR5      lnN " + SgnISR5 + " - - - - - - -";
     }
     else if(i==48)
     {
-      strTemp = "ISR6      lnN " + SgnISR6 + " " + WjISR6 + " " + ttISR6 + " " + "-" + " - - - -";
-      strTemp = "Sst"+suf+"     lnN " + xST(Sgn) + " - - - - - - -";
+      //strTemp = "ISR6      lnN " + SgnISR6 + " " + WjISR6 + " " + ttISR6 + " " + "-" + " - - - -";
+      strTemp = "ISR6      lnN " + SgnISR6 + " - - - - - - -";
     }
     else if(i==49)
     {
