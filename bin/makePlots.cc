@@ -84,6 +84,7 @@ int main(int argc, char** argv)
   bool rawEvents = false;
   bool noSF = false;
   bool unblind = false;
+  bool blind = false;
   bool dofakeclosure = false;
   bool dofakeratio = false;
   bool skipSyst = false;
@@ -164,6 +165,11 @@ int main(int argc, char** argv)
     if(argument == "--unblind")
     {
       unblind = true;
+    }
+
+    if(argument == "--blind")
+    {
+      blind = true;
     }
 
     if(argument == "--dofakeclosure")
@@ -394,7 +400,14 @@ int main(int argc, char** argv)
     if(!noSF)
     {
       converter << "splitFactor*weight"; // Full
+      //converter << "splitFactor*weight/normStweight"; // Full
+      //converter << "splitFactor*weight/triggerEfficiency"; // Full
+      //converter << "splitFactor*weight/looseNotTightWeight"; // Full
+      //converter << "splitFactor*weight/normStweight"; // Full
+      //converter << "splitFactor*weight/normStweight*normSTandHTweight";
+      //converter << "splitFactor*weight/normStweight*normSTandJet1Ptweight";
       
+      //converter << "splitFactor*weight/looseNotTightWeight"; // Full
       //converter << "splitFactor*weight/(EWKISRweight*ISRweight)"; // noISR
       //converter << "splitFactor*weight/(EWKISRweight)"; // noEWKISR
       //converter << "splitFactor*weight/0.925337*0.865516"; // noEWKISR
@@ -412,6 +425,8 @@ int main(int argc, char** argv)
      //converter << "XS*filterEfficiency*(genWeight/sumGenWeight)";
       //converter << "XS*(genWeight/sumGenWeight)*puWeight*EWKISRweight*ISRweight";
       //converter << "XS*(genWeight/sumGenWeight)*puWeight*triggerEfficiency";
+      //converter << "XS*(genWeight/sumGenWeight)*puWeight";
+
       converter << "XS*(genWeight/sumGenWeight)*puWeight";
     }
     converter << "*" << luminosity;
@@ -518,11 +533,11 @@ int main(int argc, char** argv)
   std::string blindSel = "";
   if(verbose)
     std::cout << "Data has BDT: " << ((Data.hasBDT())?("True"):("False")) << std::endl;
-  if(!unblind && Data.hasBDT())
+  if((!unblind && Data.hasBDT()) or blind)
   {
     if(verbose)
       std::cout << "Blinding!!!!!!!!!!!!!!" << std::endl;
-    blindSel = "(BDT < 0.3) && ";
+    blindSel = "(BDT < 0.2) && ";
   }
   std::ofstream outSummary(outputDirectory+"/summary.txt", std::ios_base::binary | std::ios_base::trunc);
   for(auto& cut : cutFlow)
@@ -571,10 +586,12 @@ int main(int argc, char** argv)
       else
       {
         mcSel = mcWeight+"*("+selection+")";
-        if(variable.expression() == "BDT")
+        if(variable.expression() == "BDT" or blind)
           dataSel = blindSel+selection;
+          //dataSel = "weight * ("+blindSel+selection+")";
         else
           dataSel = selection;
+          //dataSel = "weight * ("+selection+")";
       }
       if(dofakeratio)
       {
@@ -585,6 +602,7 @@ int main(int argc, char** argv)
        //mcSel = mcWeight+"/(filterEfficiency*looseNotTightWeight*triggerEfficiency*EWKISRweight*ISRweight*leptonIDSF*leptonISOSF*leptonFullFastSF*bTagSF*puWeight) * ("+selection+")";
        //dataSel = "weight * (" +selection+")";
        dataSel = "((HLT_PFHT1050) && " +selection+")";
+       //dataSel = "((HLT_PFHT1050) && (METFilters == 1) && " +selection+")";
        //dataSel = "weight*( (HLT_PFHT1050) && " +selection+")";
       }
 
@@ -1029,7 +1047,9 @@ int main(int argc, char** argv)
       bgUnc->SetMarkerStyle(1);
       bgUncH->Reset("ICE");
       bgUncH->Draw();
-      bgUnc->Draw("3");
+      if(!dofakeratio){
+        bgUnc->Draw("3");
+      }
       double minErr = -0.1;
       double maxErr = 2.1;
       double yscale = (1.0-0.2)/(0.18-0);
@@ -1312,7 +1332,8 @@ int main(int argc, char** argv)
       mcSelToUse = mcSel;
       mcWeightToUse = mcWeight;
       dataSelToUse = dataSel;
-      dataWeightToUse = "weight";
+      dataWeightToUse = "1";
+      //dataWeightToUse = "weight";
     }
     if(rawEvents)
     {
