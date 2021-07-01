@@ -26,12 +26,15 @@ def createJSON(stop,neutralino,year):
         thisJSON.write("      \"issignal\":true,\n")
         thisJSON.write("      \"isfastsim\":true,\n")
         thisJSON.write("      \"spimpose\":true,\n")
-        thisJSON.write("      \"color\":616,\n")
+        if stop == "500" and neutralino == "490":
+          thisJSON.write("      \"color\":400,\n")
+        else:
+          thisJSON.write("      \"color\":616,\n")
         thisJSON.write("      \"lwidth\":4,\n")
         thisJSON.write("      \"lstyle\":1,\n")
         thisJSON.write("      \"fill\":0,\n")
         thisJSON.write("      \"marker\":1,\n")
-        thisJSON.write("      \"label\":\"signal=("+stop+","+neutralino+")\",\n")
+        thisJSON.write("      \"label\":\"#tilde{t}_{1} #rightarrow b f f' #tilde{#chi}#lower[0.2]{#scale[0.85]{^{0}}}#kern[-1.3]{#lower[0.2]{#scale[0.85]{_{1}}}} ("+stop+","+neutralino+")\",\n")
         thisJSON.write("      \"selection\":\"(GenSusyMStop=="+stop+")&&(GenSusyMNeutralino=="+neutralino+")\",\n")
         thisJSON.write("      \"files\":[\n")
         thisJSON.write("        {\n")

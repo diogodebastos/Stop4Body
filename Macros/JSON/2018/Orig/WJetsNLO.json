@@ -5,7 +5,7 @@
       "isdata":false,
       "color":811,
       "lcolor":1,
-      "label":"W + Jets NLO",
+      "label":"W + jets",
       "files":[
         {
           "tag":"WJetsToLNu_Pt_50To100",

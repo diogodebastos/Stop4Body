@@ -5,7 +5,7 @@
       "isdata":false,
       "color":831,
       "lcolor":1,
-      "label":"DY + Jets",
+      "label":"Z/#gamma* + jets",
       "files":[
         {
           "tag":"DYJetsToLL_M50_HT100to200",

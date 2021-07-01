@@ -128,11 +128,11 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  cp         $JSON_PATH/Orig/WNJets.json               $JSON_PATH/WNJets.json
  cp         $JSON_PATH/Orig/WJetsNLO.json               $JSON_PATH/WJetsNLO.json
 
- mergeJSONs $JSON_PATH/allMC.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/WJetsNLO.json
+ mergeJSONs $JSON_PATH/allMC.json                    $JSON_PATH/ttX.json $JSON_PATH/Orig/QCD.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/WJetsNLO.json
  mergeJSONs $JSON_PATH/allMC_LO.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
  mergeJSONs $JSON_PATH/allMC-QCD-en.json             $JSON_PATH/QCD_en.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/TTbar.json $JSON_PATH/Wjets.json
 
- mergeJSONs $JSON_PATH/allMC_pow.json                $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/TTbar_pow.json $JSON_PATH/WJetsNLO.json
+ mergeJSONs $JSON_PATH/allMC_pow.json                $JSON_PATH/ttX.json $JSON_PATH/Orig/QCD.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/TTbar_pow.json $JSON_PATH/WJetsNLO.json
 
  mergeJSONs $JSON_PATH/allMC_HT_pow.json                    $JSON_PATH/Orig/QCD.json $JSON_PATH/ttX.json $JSON_PATH/ZInv.json $JSON_PATH/Orig/VV.json $JSON_PATH/Orig/SingleTop.json $JSON_PATH/Orig/DYJets.json $JSON_PATH/Orig/TTbar_pow.json $JSON_PATH/Orig/WJetsHT.json
 
