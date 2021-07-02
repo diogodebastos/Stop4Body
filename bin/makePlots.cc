@@ -91,6 +91,7 @@ int main(int argc, char** argv)
   bool doSummary = false;
   bool quick = false;
   bool final = false;
+  bool cleanQCD = false;
 
   for(int i = 1; i < argc; ++i)
   {
@@ -189,6 +190,9 @@ int main(int argc, char** argv)
 
     if(argument == "--doSummary")
       doSummary = true;
+
+    if(argument == "--cleanQCD")
+      cleanQCD = true;
 
     if(argument == "--quick") //Don't load all the systematics for quicker plots. Use when debuggind or want to check small code iterations
       quick = true;
@@ -639,6 +643,11 @@ int main(int argc, char** argv)
 
       for(auto& process : Sig)
       {
+
+      }
+
+      for(auto& process : Sig)
+      {
         cwd->cd();
         auto tmpHist = process.getHist(cut.name(), variable, mcSel);
         syncPlot.cd();
@@ -654,7 +663,18 @@ int main(int argc, char** argv)
       for(auto& process : MC)
       {
         cwd->cd();
-        auto tmpHist = process.getHist(cut.name(), variable, mcSel);
+        TH1D* tmpHist = nullptr;
+
+        if (process.tag() == "QCD" && cleanQCD)
+        {
+          std::string cleanSelection = selection+"&& (METFilters==1)"; 
+          std::string cleanMcSel = mcWeight+"*("+cleanSelection+")";
+          tmpHist = process.getHist(cut.name(), variable, cleanMcSel);
+        }
+        else{
+          tmpHist = process.getHist(cut.name(), variable, mcSel);
+        }
+        
         syncPlot.cd();
 
         tmpHist->Write(process.tag().c_str());
@@ -851,7 +871,7 @@ int main(int argc, char** argv)
         cwd->cd();
       }
       auto ratio = static_cast<TH1D*>(dataH->Clone((cut.name()+"_"+variable.name()+"_Ratio").c_str()));
-      ratio->SetTitle((";" + variable.label() + ";Data/#Sigma MC").c_str());
+      ratio->SetTitle((";" + variable.label() + ";Data/MC").c_str());
       ratio->Divide(mcH);
 
       for(int xbin=1; xbin <= dataH->GetXaxis()->GetNbins(); xbin++)
@@ -963,7 +983,7 @@ int main(int argc, char** argv)
       T->Draw("same");
       T->SetBorderSize(0);// */
       char Buffer[1024];
-      sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", luminosity/1000, 13.0);
+      sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", luminosity/1000, 13);
       TLatex *   tex  = new TLatex(0.805,0.975,Buffer);
       tex->SetNDC();
       tex->SetTextAlign(33);
@@ -1053,7 +1073,7 @@ int main(int argc, char** argv)
       double minErr = -0.1;
       double maxErr = 2.1;
       double yscale = (1.0-0.2)/(0.18-0);
-      bgUncH->GetYaxis()->SetTitle("Data/#Sigma MC");
+      bgUncH->GetYaxis()->SetTitle("Data/MC");
       bgUncH->SetMinimum(minErr);
       bgUncH->SetMaximum(maxErr);
       bgUncH->GetXaxis()->SetTitle("");
@@ -1068,6 +1088,7 @@ int main(int argc, char** argv)
       ratio->Draw("same");
 
       c1.SaveAs((outputDirectory+"/"+plotBaseName+".png").c_str());
+      c1.SaveAs((outputDirectory+"/"+plotBaseName+".pdf").c_str());
       c1.SaveAs((outputDirectory+"/"+plotBaseName+".C").c_str());
 
       delete dataH;
