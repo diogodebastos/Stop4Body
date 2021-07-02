@@ -643,11 +643,6 @@ int main(int argc, char** argv)
 
       for(auto& process : Sig)
       {
-
-      }
-
-      for(auto& process : Sig)
-      {
         cwd->cd();
         auto tmpHist = process.getHist(cut.name(), variable, mcSel);
         syncPlot.cd();
@@ -983,7 +978,7 @@ int main(int argc, char** argv)
       T->Draw("same");
       T->SetBorderSize(0);// */
       char Buffer[1024];
-      sprintf(Buffer, "%.1f fb^{-1} (%.1f TeV)", luminosity/1000, 13);
+      sprintf(Buffer, "%.1f fb^{-1} (%d TeV)", luminosity/1000, 13);
       TLatex *   tex  = new TLatex(0.805,0.975,Buffer);
       tex->SetNDC();
       tex->SetTextAlign(33);
