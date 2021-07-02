@@ -5,7 +5,12 @@
 
 #SIGNAL=T2DegStop_500_420.root
 SIGNAL=T2DegStop_deltaM${CURRENT_DM}.root
-BACKGROUND=Background_TTbar_WJetsNLO.root
+
+if [ ${YEAR} == 2017 ]; then
+  BACKGROUND=Background_TTbar_WJetsNLO.root
+elif [ ${YEAR} == 2018 ]; then
+  BACKGROUND=Background_TTbarPOW_WJetsNLO.root
+fi
 #BACKGROUND=Background_TTbar_WJets.root
 
 SIGNAL_TRAIN=${TRAIN_DIR}/${SIGNAL}
