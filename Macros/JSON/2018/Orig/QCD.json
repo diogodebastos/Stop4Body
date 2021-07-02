@@ -5,7 +5,7 @@
       "isdata":false,
       "color":809,
       "lcolor":1,
-      "label":"QCD multijet",
+      "label":"Multijet",
       "files":[
         {
           "tag":"QCD_HT100to200",
