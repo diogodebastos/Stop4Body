@@ -92,6 +92,7 @@ int main(int argc, char** argv)
   bool quick = false;
   bool final = false;
   bool cleanQCD = false;
+  bool cleanLowStats = false;
 
   for(int i = 1; i < argc; ++i)
   {
@@ -193,6 +194,8 @@ int main(int argc, char** argv)
 
     if(argument == "--cleanQCD")
       cleanQCD = true;
+    if(argument == "--cleanLowStats")
+      cleanLowStats = true;
 
     if(argument == "--quick") //Don't load all the systematics for quicker plots. Use when debuggind or want to check small code iterations
       quick = true;
@@ -660,7 +663,7 @@ int main(int argc, char** argv)
         cwd->cd();
         TH1D* tmpHist = nullptr;
 
-        if (process.tag() == "QCD" && cleanQCD)
+        if(process.tag() == "QCD" && cleanQCD)
         {
           std::string cleanSelection = selection+"&& (METFilters==1)"; 
           std::string cleanMcSel = mcWeight+"*("+cleanSelection+")";
@@ -672,10 +675,15 @@ int main(int argc, char** argv)
         
         syncPlot.cd();
 
-        tmpHist->Write(process.tag().c_str());
-        mcS->Add(tmpHist);
-        mcH->Add(tmpHist);
+        if (!(cleanLowStats && tmpHist->GetEntries() <= 5))
+        {
+          tmpHist->Write(process.tag().c_str());
+          mcS->Add(tmpHist);
+          mcH->Add(tmpHist);
+        }
+
       }
+
 
       mcH->Write("mcSum");
       mcS->Write("mcStack");
