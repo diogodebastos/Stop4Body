@@ -301,5 +301,9 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
 
  # For Lepton Studies
  mergeJSONs $JSON_PATH/lepStudies.json     $JSON_PATH/allMC.json $JSON_PATH/Orig/SignalPoints/Sig_475_465.json $JSON_PATH/Orig/SignalPoints/Sig_550_520.json $JSON_PATH/Orig/SignalPoints/Sig_526_465.json $JSON_PATH/Orig/SignalPoints/Sig_500_420.json $JSON_PATH/Orig/DataMetHT.json
+ 
+ # For Raw Closure studies
+ mergeJSONs $JSON_PATH/DataAndST.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/SingleTop.json
+ mergeJSONs $JSON_PATH/DataAndVV.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/VV.json
 
 fi
