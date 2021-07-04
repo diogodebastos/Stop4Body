@@ -305,5 +305,6 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  # For Raw Closure studies
  mergeJSONs $JSON_PATH/DataAndST.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/SingleTop.json
  mergeJSONs $JSON_PATH/DataAndVV.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/VV.json
+ mergeJSONs $JSON_PATH/DataAndTTpow.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/TTbar_pow.json
 
 fi
