@@ -306,5 +306,7 @@ elif [ ${YEAR} == 2016 ] || [ ${YEAR} == 2017 ] || [ ${YEAR} == 2018 ]; then
  mergeJSONs $JSON_PATH/DataAndST.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/SingleTop.json
  mergeJSONs $JSON_PATH/DataAndVV.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/VV.json
  mergeJSONs $JSON_PATH/DataAndTTpow.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/TTbar_pow.json
+ mergeJSONs $JSON_PATH/DataAndZInv.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/ZInv.json
+  mergeJSONs $JSON_PATH/DataAndWJets.json $JSON_PATH/DataMetHT.json $JSON_PATH/Orig/WJetsNLO.json
 
 fi
