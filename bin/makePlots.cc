@@ -27,6 +27,8 @@
 #define _USE_CERN_ROOT
 #include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
+#define MINSTATS 9
+
 using json = nlohmann::json;
 
 void printHelp();
@@ -675,8 +677,9 @@ int main(int argc, char** argv)
         
         syncPlot.cd();
 
-        if (!(cleanLowStats && tmpHist->GetEntries() <= 5))
+        if (!(cleanLowStats && tmpHist->GetEntries() <= MINSTATS))
         {
+          std::cout << " nEntries for " << process.tag() << ": " << tmpHist->GetEntries() << std::endl;
           tmpHist->Write(process.tag().c_str());
           mcS->Add(tmpHist);
           mcH->Add(tmpHist);
