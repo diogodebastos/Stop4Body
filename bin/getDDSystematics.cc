@@ -21,6 +21,8 @@
 #define _USE_CERN_ROOT
 #include "UserCode/Stop4Body-nanoAOD/interface/ValueWithSystematics.h"
 
+#define MINSTATS 30
+
 using json = nlohmann::json;
 
 doubleUnc getISRsystematicsSignal(SampleReader &, std::string, const ValueWithSystematics<std::string>&, bool);
@@ -844,9 +846,34 @@ doubleUnc getISRsystematicsSignal(SampleReader &Sig, std::string signalRegion, c
 double getFRsysRawClosure(SampleReader &Data, SampleReader &MC, std::string looseSelection, std::string tightSelection, std::string nonPrompt, std::string signalRegion, std::string mcWeight, bool verbose)
 {
   double relSys;
-  doubleUnc NTightNonPrompt = MC.getYield(tightSelection + "&&" + signalRegion + "&&" + nonPrompt, mcWeight);
 
-  doubleUnc NDDnonPromptMC = MC.getYield(looseSelection + "&&" + signalRegion + "&&" + nonPrompt, mcWeight);
+  std::string NTsel  = tightSelection + "&&" + signalRegion + "&&" + nonPrompt;
+  std::string NDDsel = looseSelection + "&&" + signalRegion + "&&" + nonPrompt;
+
+  doubleUnc NTightNonPrompt = 0;
+  doubleUnc NDDnonPromptMC = 0;
+
+  for(auto& process : MC)
+  {
+    auto tmpHistNT = process.getHist("BDT", "BDT;Evt.",mcWeight+"*("+NTsel+")",20, -1.0, 1.0);
+    auto tmpHistNDD = process.getHist("BDT", "BDT;Evt.",mcWeight+"*("+NDDsel+")",20, -1.0, 1.0);
+
+    std::cout << " nEntries for " << process.tag() << std::endl;
+    std::cout << "   NT:  " << tmpHistNT->GetEntries() << std::endl;
+    std::cout << "   NDD: " << tmpHistNDD->GetEntries() << std::endl;
+
+    if(!(tmpHistNT->GetEntries() <= MINSTATS || tmpHistNDD->GetEntries() <= MINSTATS))
+    {
+      auto yieldNT  = process.getYield(NTsel, mcWeight);
+      auto yieldNDD = process.getYield(NDDsel, mcWeight);
+
+      NTightNonPrompt += yieldNT;
+      NDDnonPromptMC  += yieldNDD;
+    }
+  }
+
+  //doubleUnc NTightNonPrompt = MC.getYield(tightSelection + "&&" + signalRegion + "&&" + nonPrompt, mcWeight);
+  //doubleUnc NDDnonPromptMC = MC.getYield(looseSelection + "&&" + signalRegion + "&&" + nonPrompt, mcWeight);
 
   doubleUnc diff = NDDnonPromptMC-NTightNonPrompt;
   doubleUnc sigDiff = std::sqrt(std::pow(NTightNonPrompt.uncertainty(),2)+std::pow(NDDnonPromptMC.uncertainty(),2));
